@@ -1,3 +1,42 @@
-.vue-panel,.vue-panel-table {
-    margin: 0 0px 10px;
-};
+.vue-panel,
+.vue-panel-table {
+	margin: 0 0px 10px;
+}
+.panel_list {
+	.ivu-card-head {
+		padding: 0px 10px;
+	}
+	.ivu-card-body {
+		padding: 10px 5px 5px;
+	}
+	.ivu-form-item {
+		margin-bottom: 7px;
+	}
+	.ivu-form-item-error-tip {
+		padding-top: 1px;
+	}
+	.ivu-table td,
+	.ivu-table th {
+		height: 30px;
+	}
+	.ivu-table-cell {
+		padding-left: 5px;
+		padding-right: 5px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+    }
+    .vue-panel-page .ivu-page{
+        margin-top: 5px;
+    }
+    .edit-btn{
+        border-right: 1px solid #e8e8e8;
+        padding: 0 3px;
+        &:last-child{
+            border-right: none;
+        }
+        &:hover{
+            color: #666;  
+        }
+    }
+}

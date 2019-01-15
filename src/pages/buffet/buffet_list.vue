@@ -8,33 +8,91 @@
       <p slot="title">
         条件查询
         <router-link to="/buffet/buffet_add">
-          <Button icon="plus" class="fr vue-back-btn header-btn" type="primary" size="small">添加餐柜</Button>
+          <Button
+            icon="plus"
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+          >添加餐柜</Button>
         </router-link>
-          <router-link to="/buffet/buffet_desc">
-          <Button icon="plus" class="fr vue-back-btn header-btn" type="primary" size="small">餐柜使用情况</Button>
+        <router-link to="/buffet/buffet_desc">
+          <Button
+            icon="plus"
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+          >餐柜使用情况</Button>
         </router-link>
-
       </p>
-      <Form ref="formItem" :model="formItem" :label-width="80" :rules="ruleValidate">
+      <Form
+        ref="formItem"
+        :model="formItem"
+        :label-width="80"
+        :rules="ruleValidate"
+      >
         <Row>
-          <Col :xs="24" :sm="24" :md="8" :lg="8" span="8">
-          <FormItem label="添加时间:" prop="addtime">
-            <DatePicker style="width:100%" v-model="formItem.addtime" format="yyyy-MM-dd HH:mm:ss" type="datetimerange" placement="bottom-start" placeholder="请选择餐柜添加时间"></DatePicker>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="8"
+            :lg="8"
+            span="8"
+          >
+          <FormItem
+            label="添加时间:"
+            prop="addtime"
+          >
+            <DatePicker
+              style="width:100%"
+              v-model="formItem.addtime"
+              format="yyyy-MM-dd HH:mm:ss"
+              type="datetimerange"
+              placement="bottom-start"
+              placeholder="请选择餐柜添加时间"
+            ></DatePicker>
           </FormItem>
           </Col>
-          <Col :xs="24" :sm="24" :md="8" :lg="8" span="8">
-          <FormItem label="餐柜ID:" prop="buffet_id">
-            <Input clearable v-model="formItem.buffet_id" placeholder="请输入餐柜ID" clearable></Input>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="8"
+            :lg="8"
+            span="8"
+          >
+          <FormItem
+            label="餐柜ID:"
+            prop="buffet_id"
+          >
+            <Input
+              clearable
+              v-model="formItem.buffet_id"
+              placeholder="请输入餐柜ID"
+              clearable
+            ></Input>
             <!-- <DatePicker style="width:100%" v-model="formItem.createTime" format="yyyy-MM-dd" type="daterange" placement="bottom-start" placeholder="请选择日期"></DatePicker> -->
           </FormItem>
           </Col>
-            <Col :xs="24" :sm="24" :md="8" :lg="8" span="8">
-          <FormItem label="设备ID:" prop="device_id">
-            <Input clearable v-model="formItem.device_id" placeholder="请输入设备ID" clearable></Input>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="8"
+            :lg="8"
+            span="8"
+          >
+          <FormItem
+            label="设备ID:"
+            prop="device_id"
+          >
+            <Input
+              clearable
+              v-model="formItem.device_id"
+              placeholder="请输入设备ID"
+              clearable
+            ></Input>
             <!-- <DatePicker style="width:100%" v-model="formItem.createTime" format="yyyy-MM-dd" type="daterange" placement="bottom-start" placeholder="请选择日期"></DatePicker> -->
           </FormItem>
           </Col>
-            <!-- <Col :xs="24" :sm="24" :md="8" :lg="8" span="8">
+          <!-- <Col :xs="24" :sm="24" :md="8" :lg="8" span="8">
             <FormItem label="设备状态:" prop="state">
             <Select v-model="formItem.state">
             <Option value=''>全部</Option>
@@ -44,69 +102,186 @@
           </FormItem>
           </Col> -->
 
-          <Col :xs="24" :sm="24" :md="8" :lg="8" span="8">
-          <FormItem label="餐柜名称:" prop="buffet_name">
-            <Input clearable v-model="formItem.buffet_name" placeholder="请输入餐柜名称" clearable></Input>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="8"
+            :lg="8"
+            span="8"
+          >
+          <FormItem
+            label="餐柜名称:"
+            prop="buffet_name"
+          >
+            <Input
+              clearable
+              v-model="formItem.buffet_name"
+              placeholder="请输入餐柜名称"
+              clearable
+            ></Input>
           </FormItem>
           </Col>
-          <Col :xs="24" :sm="24" :md="8" :lg="8" span="8">
-          <FormItem label="餐柜地址:" prop="address">
-            <Input clearable v-model="formItem.address" placeholder="请输入餐柜详细地址" clearable></Input>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="8"
+            :lg="8"
+            span="8"
+          >
+          <FormItem
+            label="餐柜地址:"
+            prop="address"
+          >
+            <Input
+              clearable
+              v-model="formItem.address"
+              placeholder="请输入餐柜详细地址"
+              clearable
+            ></Input>
           </FormItem>
           </Col>
-          <Col :xs="24" :sm="24" :md="8" :lg="8" span="8">
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="8"
+            :lg="8"
+            span="8"
+          >
           <FormItem>
-            <Button type="primary" @click="handleSubmit('formItem')" style="width:80px" long>查询</Button>
-            <Button type="ghost" style="width:80px;margin-left: 8px" @click="clearForm('formItem')">清除</Button>
+            <Button
+              type="primary"
+              @click="handleSubmit('formItem')"
+              style="width:80px"
+              long
+            >查询</Button>
+            <Button
+              type="ghost"
+              style="width:80px;margin-left: 8px"
+              @click="clearForm('formItem')"
+            >清除</Button>
           </FormItem>
           </Col>
         </Row>
       </Form>
     </Card>
     <Card class="vue-panel-table">
-      <Table :data="tableData" :columns="tableColumns" stripe></Table>
-      <div class="vue-panel-page" v-if="tableData.length<total">
+      <Table
+        :data="tableData"
+        :columns="tableColumns"
+        stripe
+      ></Table>
+      <div
+        class="vue-panel-page"
+        v-if="tableData.length<total"
+      >
         <div style="float: right;">
-          <Page :total="total" show-total show-elevator show-sizer :page-size="pageSize" :current="pageNo" @on-page-size-change="changeSize" @on-change="changePage"></Page>
+          <Page
+            :total="total"
+            show-total
+            show-elevator
+            show-sizer
+            :page-size="pageSize"
+            :current="pageNo"
+            @on-page-size-change="changeSize"
+            @on-change="changePage"
+          ></Page>
         </div>
 
       </div>
     </Card>
-    <Modal title="预约时间段" v-model="modal11" class-name="test vertical-center-modal">
-      <Button style="margin-top: -5px;margin-bottom: 10px;" type="primary" icon="plus" size="small" @click="modal12 = true">添加预约时间</Button>
-      <Table border :columns="columns8" :data="data7"></Table>
+    <Modal
+      title="预约时间段"
+      v-model="modal11"
+      class-name="test vertical-center-modal"
+    >
+      <Button
+        style="margin-top: -5px;margin-bottom: 10px;"
+        type="primary"
+        icon="plus"
+        size="small"
+        @click="modal12 = true"
+      >添加预约时间</Button>
+      <Table
+        border
+        :columns="columns8"
+        :data="data7"
+      ></Table>
       <div slot="footer">
       </div>
     </Modal>
-    <Modal title="添加时间段" v-model="modal12" class-name="test vertical-center-modal">
-      <Form ref="formValidate3" :model="formValidate3" :rules="ruleValidate">
-        <div v-for="(item, index) in formValidate3.items" :key="index">
-          <Row v-if="item.status" :gutter="16">
+    <Modal
+      title="添加时间段"
+      v-model="modal12"
+      class-name="test vertical-center-modal"
+    >
+      <Form
+        ref="formValidate3"
+        :model="formValidate3"
+        :rules="ruleValidate"
+      >
+        <div
+          v-for="(item, index) in formValidate3.items"
+          :key="index"
+        >
+          <Row
+            v-if="item.status"
+            :gutter="16"
+          >
             <Col span="9">
-            <FormItem :prop="'items.' + index + '.name'" :rules="{required: true, message: '请输入预约时间段名称', trigger: 'blur'}">
-              <Input type="text" v-model="item.name" placeholder="请输入预约时间段名称"></Input>
+            <FormItem
+              :prop="'items.' + index + '.name'"
+              :rules="{required: true, message: '请输入预约时间段名称', trigger: 'blur'}"
+            >
+              <Input
+                type="text"
+                v-model="item.name"
+                placeholder="请输入预约时间段名称"
+              ></Input>
             </FormItem>
             </Col>
 
             <Col span="9">
-            <FormItem :prop="'items.' + index + '.time'" :rules="{validator: use_start_date_validator,  trigger: 'change'}">
-              <TimePicker v-model="item.time" format="HH:mm" type="timerange" placement="bottom-end" placeholder="请选择预约时间段"></TimePicker>
+            <FormItem
+              :prop="'items.' + index + '.time'"
+              :rules="{validator: use_start_date_validator,  trigger: 'change'}"
+            >
+              <TimePicker
+                v-model="item.time"
+                format="HH:mm"
+                type="timerange"
+                placement="bottom-end"
+                placeholder="请选择预约时间段"
+              ></TimePicker>
             </FormItem>
             </Col>
-            <Col span="4" offset="1">
-            <Button type="error" @click="handleRemove(index)">删除</Button>
+            <Col
+              span="4"
+              offset="1"
+            >
+            <Button
+              type="error"
+              @click="handleRemove(index)"
+            >删除</Button>
             </Col>
           </Row>
         </div>
         <FormItem>
           <Row>
             <Col span="12 ">
-            <Button type="dashed" long @click="handleAdd" icon="plus-round ">添加预约时间段</Button>
+            <Button
+              type="dashed"
+              long
+              @click="handleAdd"
+              icon="plus-round "
+            >添加预约时间段</Button>
             </Col>
           </Row>
         </FormItem>
         <FormItem>
-          <Button type="primary" @click="handleSubmit2('formValidate3') ">保存</Button>
+          <Button
+            type="primary"
+            @click="handleSubmit2('formValidate3') "
+          >保存</Button>
           <!-- <Button type="ghost " @click="handleReset( 'formValidate') " style="margin-left: 8px ">清空</Button> -->
         </FormItem>
       </Form>
@@ -114,29 +289,78 @@
       <div slot="footer">
       </div>
     </Modal>
-    <Modal title="餐柜网格" v-model="modal10" class-name="test vertical-center-modal">
-      <Form ref="formInline" :rules="ruleValidate">
-        <Row :gutter="16" class="add-grid">
-          <Col :md="19" span="19" :lg="19" :xs="24" :sm="24">
+    <Modal
+      title="餐柜网格"
+      v-model="modal10"
+      class-name="test vertical-center-modal"
+    >
+      <Form
+        ref="formInline"
+        :rules="ruleValidate"
+      >
+        <Row
+          :gutter="16"
+          class="add-grid"
+        >
+          <Col
+            :md="19"
+            span="19"
+            :lg="19"
+            :xs="24"
+            :sm="24"
+          >
           <FormItem prop="inputGrid">
-            <Input clearable v-model="inputGrid" placeholder="请输入网格编号，批量多个可用，隔开" />
+            <Input
+              clearable
+              v-model="inputGrid"
+              placeholder="请输入网格编号，批量多个可用，隔开"
+            />
           </FormItem>
           </Col>
-          <Col :md="4" :lg="4" :xs="24" :sm="24">
+          <Col
+            :md="4"
+            :lg="4"
+            :xs="24"
+            :sm="24"
+          >
           <FormItem>
-            <Button type="primary" @click="addGrid">添加网格</Button>
+            <Button
+              type="primary"
+              @click="addGrid"
+            >添加网格</Button>
           </FormItem>
           </Col>
         </Row>
       </Form>
-      <Table border :columns="columns7" :data="data6"></Table>
+      <Table
+        border
+        :columns="columns7"
+        :data="data6"
+      ></Table>
       <div slot="footer">
       </div>
     </Modal>
-    <Modal title="编辑网格" :on-ok="sure" class="test vertical-center-modal" v-model="modal9">
-      <Form ref="formValidate" :model="formValidate2" :rules="ruleValidate" :label-width="80">
-        <FormItem label="网格编号" prop="grid_code">
-          <Input clearable v-model="formValidate2.grid_code" placeholder="请输入网格编号"></Input>
+    <Modal
+      title="编辑网格"
+      :on-ok="sure"
+      class="test vertical-center-modal"
+      v-model="modal9"
+    >
+      <Form
+        ref="formValidate"
+        :model="formValidate2"
+        :rules="ruleValidate"
+        :label-width="80"
+      >
+        <FormItem
+          label="网格编号"
+          prop="grid_code"
+        >
+          <Input
+            clearable
+            v-model="formValidate2.grid_code"
+            placeholder="请输入网格编号"
+          ></Input>
         </FormItem>
         <!-- <FormItem label="状态" prop="is_lock">
           <Select placeholder="请选择使用状态" v-model="formValidate2.is_lock">
@@ -145,8 +369,15 @@
             </Select>
         </FormItem> -->
         <FormItem>
-          <Button type="primary" @click="sure">保存</Button>
-          <Button type="ghost" @click="cancle" style="margin-left: 8px">取消</Button>
+          <Button
+            type="primary"
+            @click="sure"
+          >保存</Button>
+          <Button
+            type="ghost"
+            @click="cancle"
+            style="margin-left: 8px"
+          >取消</Button>
         </FormItem>
       </Form>
 
@@ -250,7 +481,7 @@ export default {
                       this.modal9 = true
                       this.formValidate2 = {
                         ...params.row,
-                        is_lock:params.row.is_lock?params.row.is_lock+'':'0'
+                        is_lock: params.row.is_lock ? params.row.is_lock + '' : '0'
                       }
                     }
                   }
@@ -324,10 +555,10 @@ export default {
             trigger: "blur"
           }
         ],
-          is_lock: [
+        is_lock: [
           {
             required: true,
-            type:'string',
+            type: 'string',
             message: "请选择使用状态",
             trigger: "change"
           }
@@ -373,7 +604,7 @@ export default {
           searchOperator: "=",
           key: "buffet_code"
         },
-             {
+        {
           title: "设备ID",
           searchOperator: "=",
           key: "device_id"
@@ -387,9 +618,9 @@ export default {
             const row = params.row
             const addtime = row.addtime
               ? filters.formatDate(
-                  new Date(row.addtime * 1000),
-                  "yyyy-MM-dd hh:mm:ss"
-                )
+                new Date(row.addtime * 1000),
+                "yyyy-MM-dd hh:mm:ss"
+              )
               : row.addtime
             return h("span", addtime)
           }
@@ -405,20 +636,20 @@ export default {
           searchOperator: "like",
           key: "address"
         },
-         {
+        {
           title: "状态",
           searchOperator: "=",
           key: "state",
-            render: (h, params) => {
+          render: (h, params) => {
             const row = params.row
             const state = filters.state(row.state)
             return h("Tag", {
-                 props: {
-                   type:'dot',
-                   color:row.state===0?'green':'red'
-                  },
-                  
-            },state)
+              props: {
+                type: 'dot',
+                color: row.state === 0 ? 'green' : 'red'
+              },
+
+            }, state)
           }
         },
         {
@@ -512,7 +743,7 @@ export default {
                 },
                 "预约时间段"
               ),
-               h(
+              h(
                 "Button",
                 {
                   props: {
@@ -524,7 +755,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.setAd(params.row.device_id,params.row.buffet_id)
+                      this.setAd(params.row.device_id, params.row.buffet_id)
                     }
                   }
                 },
@@ -586,13 +817,13 @@ export default {
         this.data7 = res.data
       }
     },
-    async setAd(id,buffet_id) {
+    async setAd(id, buffet_id) {
       const res = await buffet_setAd({
         device_id: id,
         buffet_id
       })
       if (res) {
-        console.log(res,'0000000000000000')
+        console.log(res, '0000000000000000')
       }
     },
     async sure() {
@@ -613,7 +844,7 @@ export default {
     },
     cancle() {
       this.modal9 = false
-    
+
     },
     async addTime() {
       console.log(this.formValidate3)
@@ -853,7 +1084,7 @@ export default {
         this.pageNo = 1
       }
     },
-    clearForm(name) { this.pageNo=1 
+    clearForm(name) {    this.pageNo = 1
       this.formItem = {}
       this.$refs[name].resetFields()
     },
@@ -875,9 +1106,9 @@ export default {
         经纬度：${obj.lat}，${obj.lng}<br>
         餐柜详细地址：${obj.address}<br>
         创建时间：${filters.formatDate(
-          new Date(obj.addtime * 1000),
-          "yyyy-MM-dd hh:mm:ss"
-        )}<br>
+            new Date(obj.addtime * 1000),
+            "yyyy-MM-dd hh:mm:ss"
+          )}<br>
         `
       })
     }
