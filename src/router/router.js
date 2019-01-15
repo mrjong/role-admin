@@ -69,37 +69,6 @@ export const otherRouter = {
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
 	{
-		path: '/buffet',
-		icon: 'ios-grid-view',
-		name: 'buffet',
-		access: 1,
-		title: '餐柜管理',
-		component: Main,
-		children: [
-			{
-				path: 'buffet_list',
-				icon: 'ios-list',
-				name: 'buffet_list',
-				title: '餐柜列表',
-				component: () => import('@/pages/buffet/buffet_list.vue')
-			},
-			{
-				path: 'buffet_desc',
-				icon: 'ios-keypad-outline',
-				name: 'buffet_desc',
-				title: '餐柜使用情况',
-				component: () => import('@/pages/buffet/buffet_desc.vue')
-			},
-			{
-				path: 'buffet_add',
-				icon: 'ios-plus-empty',
-				name: 'buffet_add',
-				title: '添加餐柜',
-				component: () => import('@/pages/buffet/buffet_add.vue')
-			}
-		]
-	},
-	{
 		path: '/collection',
 		icon: 'ios-grid-view',
 		name: 'collection',
