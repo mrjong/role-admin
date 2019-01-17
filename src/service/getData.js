@@ -40,3 +40,14 @@ fetch({
     method: 'POST',
     data: qs.stringify(obj)
 });
+
+
+/**
+ * 工作流保存
+ */
+export const findTreeByCurrentUser = (obj = {}) =>
+fetch({
+    url: '/findTreeByCurrentUser',
+    method: 'POST',
+    data: qs.stringify(obj)
+});

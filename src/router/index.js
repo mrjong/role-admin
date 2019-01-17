@@ -4,9 +4,9 @@ import Util from '../libs/util';
 import VueRouter from 'vue-router';
 import Cookies from 'js-cookie'
 import { routers, otherRouter, appRouter } from './router';
-
 Vue.use(VueRouter);
-
+console.log(routers,'----------------')
+// 路由 处理
 // 路由配置
 const RouterConfig = {
     // mode: 'history',
@@ -26,11 +26,11 @@ router.beforeEach((to, from, next) => {
     } else if (Cookies.get('locking') === '0' && to.name === 'locking') {
         next(false);
     } else {
-        if (!Cookies.get('token') && to.name !== 'login') { // 判断是否已经登录且前往的页面不是登录页
+        if (!Cookies.get('SXF-TOKEN') && to.name !== 'login') { // 判断是否已经登录且前往的页面不是登录页
             next({
                 name: 'login'
             });
-        } else if (Cookies.get('token') && to.name === 'login') { // 判断是否已经登录且前往的是登录页
+        } else if (Cookies.get('SXF-TOKEN') && to.name === 'login') { // 判断是否已经登录且前往的是登录页
             Util.title();
             next({
                 name: 'home'

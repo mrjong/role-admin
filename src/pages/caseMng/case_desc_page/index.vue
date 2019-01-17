@@ -1,6 +1,6 @@
 <template>
 
-  <div class="panel_list">
+  <div class="panel_list p5">
     <!-- 检索条件 -->
     <Card class="vue-panel">
       <p
@@ -8,14 +8,37 @@
         @click="showPanel=!showPanel"
       >
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
-        检索条件
-        <router-link to="/demo/demo_desc">
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >详情</Button>
-        </router-link>
+        张三（男/22）
+        <Button
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+        >上一个</Button>
+        <Button
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+        >下一个</Button>
+        <Button
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+        >申请减免</Button>
+        <Button
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+        >申请划扣</Button>
+        <Button
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+        >申请还款</Button>
+        <Button
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+        >申请仲裁</Button>
       </p>
       <Form
         v-if="!showPanel"
@@ -165,12 +188,22 @@
             label="逾期天数:"
             prop="device_id"
           >
-            <InputNumber :max="10" size="small" :min="1" v-model="value1"></InputNumber>
+            <InputNumber
+              :max="10"
+              size="small"
+              :min="1"
+              v-model="value1"
+            ></InputNumber>
             <span>-</span>
-            <InputNumber :max="10" size="small" :min="1" v-model="value1"></InputNumber>
+            <InputNumber
+              :max="10"
+              size="small"
+              :min="1"
+              v-model="value1"
+            ></InputNumber>
           </FormItem>
           </Col>
-           <Col
+          <Col
             :xs="24"
             :sm="24"
             :md="6"
@@ -181,12 +214,22 @@
             label="逾期应还金额:"
             prop="device_id"
           >
-            <InputNumber :max="10" size="small" :min="1" v-model="value1"></InputNumber>
+            <InputNumber
+              :max="10"
+              size="small"
+              :min="1"
+              v-model="value1"
+            ></InputNumber>
             <span>-</span>
-            <InputNumber :max="10" size="small" :min="1" v-model="value1"></InputNumber>
+            <InputNumber
+              :max="10"
+              size="small"
+              :min="1"
+              v-model="value1"
+            ></InputNumber>
           </FormItem>
           </Col>
-<Col
+          <Col
             :xs="24"
             :sm="24"
             :md="6"
@@ -224,7 +267,7 @@
             />
           </FormItem>
           </Col>
-             <Col
+          <Col
             :xs="24"
             :sm="24"
             :md="6"
@@ -248,7 +291,7 @@
             </Select>
           </FormItem>
           </Col>
-            <Col
+          <Col
             :xs="24"
             :sm="24"
             :md="6"
@@ -272,7 +315,6 @@
             </Select>
           </FormItem>
           </Col>
-
 
           <Col
             :xs="24"
@@ -387,6 +429,105 @@
         @click="showPanel2=!showPanel2"
       >
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
+        案件信息
+        <span class="qishu">还到（12期）</span>
+      </p>
+      <!-- 表格 -->
+      <div v-if="!showPanel2">
+        <Form
+          v-if="!showPanel"
+          ref="formItem"
+          :model="formItem"
+          :label-width="80"
+          :rules="ruleValidate"
+        >
+          <div class="panel-desc">
+            <Row :gutter="16">
+              <Col span="4">
+              <div class="panel-desc-title">
+                  账单号：<span>BIL2018091015251600028780</span>
+              </div>
+              </Col>
+               <Col span="4">
+              <div class="panel-desc-title">
+                  借款本金：<span>675.00</span>
+              </div>
+              </Col>
+               <Col span="4">
+              <div class="panel-desc-title">
+                  借款时间：<span>2018-09-10   15:25:16</span>
+              </div>
+              </Col>
+               <Col span="4">
+              <div class="panel-desc-title">
+                  银行卡号：<span>622253******6484</span>
+              </div>
+              </Col>
+               <Col span="4">
+              <div class="panel-desc-title">
+                  银行卡：<span>交通银行</span>
+              </div>
+              </Col>
+              
+            </Row>
+          </div>
+        </Form>
+        <Table
+          :data="tableData"
+          :columns="tableColumns"
+          stripe
+        ></Table>
+      </div>
+    </Card>
+
+    <!-- 检索结果 -->
+    <Card class="vue-panel-table">
+      <p>
+        <Tabs
+          type="card"
+          size="small"
+          :animated="false"
+        >
+          <TabPane label="标签一">
+            <div>
+              <Table
+                :data="tableData"
+                :columns="tableColumns"
+                stripe
+              ></Table>
+              <!-- 分页 -->
+              <div class="vue-panel-page">
+
+                <div style="float: right;">
+                  <Page
+                    :total="total"
+                    show-total
+                    size="small"
+                    :page-size-opts="[10, 20, 50, 100]"
+                    show-elevator
+                    show-sizer
+                    :page-size="pageSize"
+                    :current="pageNo"
+                    @on-page-size-change="changeSize"
+                    @on-change="changePage"
+                  ></Page>
+                </div>
+
+              </div>
+            </div>
+          </TabPane>
+          <TabPane label="标签二">标签二的内容</TabPane>
+          <TabPane label="标签三">标签三的内容</TabPane>
+          <Button
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            @click="handleTabsAdd"
+            size="small"
+            slot="extra"
+          >增加</Button>
+        </Tabs>
+      </p>
+      <!-- <p slot="title">
         检索结果
         <router-link to="/buffet/buffet_add">
           <Button
@@ -395,35 +536,8 @@
             size="small"
           >导出数据</Button>
         </router-link>
-      </p>
+      </p> -->
       <!-- 表格 -->
-
-      <div v-if="!showPanel2">
-        <Table
-          :data="tableData"
-          :columns="tableColumns"
-          stripe
-        ></Table>
-        <!-- 分页 -->
-        <div class="vue-panel-page">
-
-          <div style="float: right;">
-            <Page
-              :total="total"
-              show-total
-              size="small"
-              :page-size-opts="[10, 20, 50, 100]"
-              show-elevator
-              show-sizer
-              :page-size="pageSize"
-              :current="pageNo"
-              @on-page-size-change="changeSize"
-              @on-change="changePage"
-            ></Page>
-          </div>
-
-        </div>
-      </div>
     </Card>
   </div>
 </template>

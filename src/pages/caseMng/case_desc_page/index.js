@@ -1,6 +1,6 @@
 import { buffet_list } from '@/service/getData';
 export default {
-	name: 'case_desc_page',
+	name: 'case_desc',
 	data() {
 		return {
             showPanel:false,

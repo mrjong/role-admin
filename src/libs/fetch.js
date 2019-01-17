@@ -11,11 +11,11 @@ let num = 0;
 let reqConfig = {};
 axios.interceptors.request.use(
 	(config) => {
-		const TOKEN = Cookie.get('token');
+		const TOKEN = Cookie.get('SXF-TOKEN');
 		if (TOKEN) {
-			config.headers['token'] = TOKEN;
+			config.headers['SXF-TOKEN'] = TOKEN;
 		} else {
-			config.headers['token'] = '';
+			config.headers['SXF-TOKEN'] = '';
 		}
 		num++;
 		if (!reqConfig.hideLoading) {

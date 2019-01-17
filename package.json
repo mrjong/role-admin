@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "init": "webpack --progress --config build/webpack.dev.config.js",
-    "dev": "webpack-dev-server  --config build/webpack.dev.config.js --watch",
+    "dev": "npm run clear && webpack-dev-server  --config build/webpack.dev.config.js --watch",
     "build": "webpack --progress --hide-modules --config build/webpack.prod.config.js",
     "lint": "eslint --fix --ext .js,.vue src",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "clear": "rimraf ./dist"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "js-cookie": "^2.2.0",
     "js-md5": "^0.7.3",
     "rasterizehtml": "^1.2.4",
+    "rimraf": "^2.6.3",
     "simplemde": "^1.11.2",
     "sortablejs": "^1.7.0",
     "tinymce": "^4.7.4",
