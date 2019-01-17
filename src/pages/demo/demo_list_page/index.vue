@@ -383,4 +383,4 @@
     </Card>
   </div>
 </template>
-<script src="./demo_list.js"></script>
+<script src="./index.js"></script>

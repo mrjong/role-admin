@@ -1,4 +1,3 @@
-import { buffet_list } from '@/service/getData';
 export default {
 	name: 'case_search_page',
 	data() {
@@ -288,23 +287,7 @@ export default {
 		async getList() {
 			const searchParam = [];
 			console.log(this.getParam());
-			const res = await buffet_list({
-				searchParam: this.formItem && JSON.stringify(this.formItem) !== '{}' && this.getParam(),
-				page: this.pageNo,
-				perPage: this.pageSize,
-				config: {
-					hideMessage: true
-				}
-			});
-			if (res.data && res.data.data) {
-				this.tableData = res.data.data;
-				this.total = res.data.total;
-				this.pageNo = res.data.current_page;
-			} else {
-				this.tableData = [];
-				this.total = 0;
-				this.pageNo = 1;
-			}
+		
 		},
 		// 重置
 		clearForm(name) {
