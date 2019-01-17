@@ -63,26 +63,11 @@ module.exports = merge(webpackBaseConfig, {
         proxy: {
             '/admin': {
                 // target: 'http://shopadmin.e-blive.com/', //目标接口域名
-                target: 'http://testshopadmin.e-blive.com/', //目标接口域名
-                pathRewrite: { '^/admin': '/admin' }, //重写接口
+                target: 'http://172.18.40.116:8080', //目标接口域名
+                pathRewrite: { '^/admin': '' }, //重写接口
                 changeOrigin: true, //是否跨域
                 // demo=>  'http://localhost:8080/api' ===> 'http://www.abc.com/api'
-            },
-            '/uploads': {
-                target: 'http://testshop.e-blive.com/', //目标接口域名
-                pathRewrite: { '^/uploads': '/uploads' }, //重写接口
-                changeOrigin: true, //是否跨域
-            },
-            '/geocoder/v2': {
-                target: 'http://testapi.map.baidu.com/', //目标接口域名
-                pathRewrite: { '^/geocoder/v2': '/geocoder/v2' }, //重写接口
-                changeOrigin: true, //是否跨域
-            },
-            //  '/fqa': {
-            //   target: 'http://172.18.40.173:8080/disting', //目标接口域名
-            //   changeOrigin: true, //是否跨域
-            //   // demo=>  'http://localhost:8080/api' ===> 'http://www.abc.com/api'
-            // }
+            }
         },
     },
 });

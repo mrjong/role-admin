@@ -15,7 +15,7 @@ Object.keys(filters).forEach(k => {
 });
 Vue.use(VueI18n);
 Vue.use(iView);
-Vue.prototype.BASEURL = 'http://shopadmin.e-blive.com'
+// Vue.prototype.BASEURL = 'http://172.18.40.116:8080'
 
 // // 组件之间通信 eventBus
 // Vue.prototype.$eventBus = new Vue();
