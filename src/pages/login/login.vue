@@ -89,7 +89,7 @@ export default {
                 this.$Message.success('登录成功!');
             Cookies.set("user", this.form.loginName)
             Cookies.set("loginPwd", this.form.loginPwd)
-            Cookies.set("token", '222222222222')
+            Cookies.set("SXF-TOKEN", '222222222222')
             this.$store.commit(
               "setAvator",
               "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
@@ -108,7 +108,7 @@ export default {
         //     this.$Message.success('登录成功!');
         //     Cookies.set("user", this.form.loginName)
         //     Cookies.set("loginPwd", this.form.loginPwd)
-        //     Cookies.set("token", res.data)
+        //     Cookies.set("SXF-TOKEN", res.data)
         //     this.$store.commit(
         //       "setAvator",
         //       "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"

@@ -21,17 +21,6 @@ util.clearAllCookie = function () {
         }
     }
 }
-// const ajaxUrl = env === 'development'
-//     ? 'http://shopadmin.e-blive.com'
-//     : env === 'production'
-//         ? 'https://www.url.com'
-//         : 'https://debug.url.com';
-
-// util.ajax = axios.create({
-//     baseURL: ajaxUrl,
-//     timeout: 10000
-// });
-
 util.inOf = function (arr, targetArr) {
     let res = true;
     arr.forEach(item => {
@@ -260,52 +249,5 @@ util.fullscreenEvent = function (vm) {
     vm.$store.commit('updateMenulist');
     // 全屏相关
 };
-
-// util.checkUpdate = function (vm) {
-//     axios.get('https://api.github.com/repos/iview/iview-admin/releases/latest').then(res => {
-//         let version = res.data.tag_name;
-//         vm.$Notice.config({
-//             duration: 0
-//         });
-//         if (semver.lt(packjson.version, version)) {
-//             vm.$Notice.info({
-//                 title: 'iview-admin更新啦',
-//                 desc: '<p>iView-admin更新到了' + version + '了，去看看有哪些变化吧</p><a style="font-size:13px;" href="https://github.com/iview/iview-admin/releases" target="_blank">前往github查看</a>'
-//             });
-//         }
-//     });
-// };
-util.download=function(url,data){
-    console.log(data)
-    let baseUrl = 'http://shopadmin.e-blive.com'
-    let params = baseUrl + url + '?';
-    if (Object.prototype.toString.call(data.searchParam) === '[object Array]') {
-        for (let i = 0; i < data.searchParam.length; i++) {
-            for (const key in data.searchParam[i]) {
-                console.log(data.searchParam);
-                if (Object.prototype.toString.call(data.searchParam[key]) === '[object Array]') {
-                    for (let j = 0; j < data.searchParam[key].length; j++) {
-                        params = params + `searchParam[${i}][${key}]=${encodeURIComponent(data.searchParam[key][j])}&`;
-                    }
-                } else {
-                    params = params + `searchParam[${i}][${key}]=${encodeURIComponent(data.searchParam[i][key])}&`;
-                }
-            }
-        }
-    }
-    if (data.datetime) {
-        params = params + 'datatime=' + data.datetime + '&';
-    }
-    if (data.buffet_id) {
-        params = params + 'buffet_id=' + data.buffet_id + '&';
-    }
-    if (data.name_demo) {
-        params = params + 'goods_name=' + data.name_demo + '&';
-    }
-    params = params.slice(0, params.length - 1);
-    console.log('导出数据',params)
-    window.open(params)
-    // return params;
-}
 
 export default util;

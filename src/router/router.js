@@ -1,4 +1,4 @@
-import Main from '@/pages/main/Main.vue';
+import Main from '@/pages/common/main';
 
 // 不作为Main组件的子页面展示的页面单独写，如下
 export const loginRouter = {
@@ -9,6 +9,14 @@ export const loginRouter = {
 	},
 	component: () => import('@/pages/login/login.vue')
 };
+export const case_desc = {
+	path: '/case_desc',
+    name: 'case_desc',
+    meta: {
+		title: '案件详情'
+	},
+	component: () => import('@/pages/caseMng/case_desc_page')
+};
 
 export const page404 = {
 	path: '/*',
@@ -17,13 +25,6 @@ export const page404 = {
 		title: '404-页面不存在'
 	},
 	component: () => import('@/pages/error-page/404.vue')
-};
-export const case_desc = {
-	path: '/case_desc',
-	icon: 'ios-list',
-	name: 'case_desc',
-	title: '案件查询',
-	component: () => import('@/pages/caseMng/case_desc_page')
 };
 
 export const page403 = {
@@ -312,9 +313,9 @@ export const routers = [
 	otherRouter,
 	// preview,
 	locking,
-	...appRouter,
+    ...appRouter,
+	case_desc,    
 	page500,
 	page403,
 	page404,
-	case_desc
 ];
