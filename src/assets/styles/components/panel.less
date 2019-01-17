@@ -1,19 +1,20 @@
-.vue-panel,
-.vue-panel-table {
-	margin: 0 0px 10px;
-}
+// 表格页面
 .panel_list {
+	.vue-panel,
+	.vue-panel-table {
+		margin: 0 0px 10px;
+	}
 	.ivu-card-head {
 		padding: 0px 10px;
 	}
 	.ivu-card-body {
-		padding: 10px 5px 5px;
+		padding: 5px;
 	}
 	.ivu-form-item {
-		margin-bottom: 7px;
+		margin-bottom: 2px;
 	}
 	.ivu-form-item-error-tip {
-		padding-top: 1px;
+		padding-top: 0px;
 	}
 	.ivu-table td,
 	.ivu-table th {
@@ -25,18 +26,32 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+	.vue-panel-page .ivu-page {
+		margin-top: 5px;
+	}
+	.edit-btn {
+		border-right: 1px solid #e8e8e8;
+		padding: 0 3px;
+		&:last-child {
+			border-right: none;
+		}
+		&:hover {
+			color: #666;
+		}
+	}
+	.vue-panel,
+	.panel_list .vue-panel-table {
+		margin: 0 0px 5px;
+	}
+	.panel-label {
+		line-height: 37px;
+	}
+	.panel-desc-btn {
+		text-align: right;
+		margin: 10px;
     }
-    .vue-panel-page .ivu-page{
-        margin-top: 5px;
-    }
-    .edit-btn{
-        border-right: 1px solid #e8e8e8;
-        padding: 0 3px;
-        &:last-child{
-            border-right: none;
-        }
-        &:hover{
-            color: #666;  
-        }
+    .ivu-tabs-bar{
+        margin-bottom: 5px;
     }
 }

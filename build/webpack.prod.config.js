@@ -67,10 +67,6 @@ module.exports = merge(webpackBaseConfig, {
             {
                 from: 'src/components/theme-switch/theme'
             },
-            {
-                from: 'src/../static',
-                to:'../static'
-            }
         ], {
             ignore: [
                 'text-editor.vue'

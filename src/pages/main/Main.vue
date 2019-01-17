@@ -8,7 +8,7 @@
         <shrinkable-menu :shrink="shrink" @on-change="handleSubmenuChange" :theme="menuTheme" :before-push="beforePush" :open-names="openedSubmenuArr" :menu-list="menuList">
           <div slot="top" class="logo-con" @click="$router.push('/home')">
             <img v-show="!shrink" src="../../images/logo.png" key="max-logo" />
-            <img v-show="shrink" src="../../images/logo-min.png" key="min-logo" />
+            <img v-show="shrink" src="../../images/logo-min.jpg" key="min-logo" />
           </div>
         </shrinkable-menu>
       </scroll-bar>
@@ -39,7 +39,7 @@
                   <Icon type="arrow-down-b"></Icon>
                 </a>
                 <DropdownMenu slot="list">
-                  <!-- <DropdownItem name="ownSpace"> divided个人中心</DropdownItem> -->
+                  <DropdownItem name="ownSpace"> 修改密码</DropdownItem>
                   <DropdownItem name="loginout" >退出登录</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
