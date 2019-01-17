@@ -75,30 +75,30 @@ export const otherRouter = {
 };
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
-	// {
-	// 	path: '/demo',
-	// 	icon: 'ios-grid-view',
-	// 	name: 'demo',
-	// 	access: 1,
-	// 	title: '列表demo',
-	// 	component: Main,
-	// 	children: [
-	// 		{
-	// 			path: 'demo_list',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_list',
-	// 			title: 'demo列表',
-	// 			component: () => import('@/pages/demo/demo_list_page')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: 'demo详情',
-	// 			component: () => import('@/pages/demo/demo_desc_page')
-	// 		}
-	// 	]
-	// },
+	{
+		path: '/demo',
+		icon: 'ios-grid-view',
+		name: 'demo',
+		access: 1,
+		title: '列表demo',
+		component: Main,
+		children: [
+			{
+				path: 'demo_list',
+				icon: 'ios-list',
+				name: 'demo_list',
+				title: 'demo列表',
+				component: () => import('@/pages/demo/demo_list_page')
+			},
+			{
+				path: 'demo_desc',
+				icon: 'ios-list',
+				name: 'demo_desc',
+				title: 'demo详情',
+				component: () => import('@/pages/demo/demo_desc_page')
+			}
+		]
+	},
 	{
 		path: '/caseMng',
 		icon: 'ios-grid-view',
