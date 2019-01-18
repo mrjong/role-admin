@@ -1,10 +1,11 @@
-import { buffet_list } from '@/service/getData';
 export default {
 	name: 'case_desc',
 	data() {
 		return {
-            showPanel:false,
-            showPanel2:false,
+			showBtn: false,
+			showPanel: false,
+			showPanel2: false,
+			value1: 1,
 			phoneCallList: [
 				{
 					value: 'New York',
@@ -221,13 +222,17 @@ export default {
 		// }
 	},
 	created() {
-		this.getList();
+		// this.getList();
 	},
 	methods: {
+		isShow() {
+			this.showBtn = !this.showBtn;
+			console.log('00000');
+		},
 		// 页码改变的回调
 		changePage(pageNo) {
 			this.pageNo = pageNo;
-			this.getList();
+			// this.getList();
 		},
 		// 切换每页条数时的回调
 		changeSize(pageSize) {
@@ -284,34 +289,14 @@ export default {
 		handleSubmit(name) {
 			this.$refs[name].validate((valid) => {
 				if (valid) {
-					this.getList();
+					// this.getList();
 				} else {
 					this.$Message.error('查询条件格式有误，请重新填写');
 				}
 			});
 		},
 		// 获取表格数据
-		async getList() {
-			const searchParam = [];
-			console.log(this.getParam());
-			const res = await buffet_list({
-				searchParam: this.formItem && JSON.stringify(this.formItem) !== '{}' && this.getParam(),
-				page: this.pageNo,
-				perPage: this.pageSize,
-				config: {
-					hideMessage: true
-				}
-			});
-			if (res.data && res.data.data) {
-				this.tableData = res.data.data;
-				this.total = res.data.total;
-				this.pageNo = res.data.current_page;
-			} else {
-				this.tableData = [];
-				this.total = 0;
-				this.pageNo = 1;
-			}
-		},
+		async getList() {},
 		// 重置
 		clearForm(name) {
 			this.pageNo = 1;
