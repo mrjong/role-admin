@@ -98,6 +98,30 @@ export const appRouter = [
 				component: () => import('@/pages/demo/demo_desc_page')
 			}
 		]
+    },
+    {
+		path: '/workflow',
+		icon: 'ios-grid-view',
+		name: 'workflow',
+		access: 1,
+		title: '工作流',
+		component: Main,
+		children: [
+			{
+				path: 'definition',
+				icon: 'ios-list',
+				name: 'definition',
+				title: '工作流定义',
+				component: () => import('@/pages/workflow/definition')
+			},
+			{
+				path: 'task',
+				icon: 'ios-list',
+				name: 'task',
+				title: '工作流任务',
+				component: () => import('@/pages/workflow/task')
+			},
+		]
 	},
 	{
 		path: '/caseMng',

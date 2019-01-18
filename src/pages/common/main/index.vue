@@ -89,7 +89,7 @@
                   <Icon type="arrow-down-b"></Icon>
                 </a>
                 <DropdownMenu slot="list">
-                  <DropdownItem name="ownSpace"> 修改密码</DropdownItem>
+                  <DropdownItem name="editPwd"> 修改密码</DropdownItem>
                   <DropdownItem name="loginout">退出登录</DropdownItem>
                 </DropdownMenu>
               </Dropdown>

@@ -1,9 +1,14 @@
+import gongzuoliu from '@/components/workflow/gongzuoliu'
 export default {
-	name: 'case_search_page',
+    name: 'case_search_page',
+    components:{
+        gongzuoliu
+    },
 	data() {
 		return {
-            showPanel:false,
-            showPanel2:false,
+			visible1: false,
+			showPanel: false,
+			showPanel2: false,
 			phoneCallList: [
 				{
 					value: 'New York',
@@ -118,8 +123,8 @@ export default {
 					key: 'buffet_id'
 				},
 				{
-                    title: '餐柜编码',
-                    width: 120,
+					title: '餐柜编码',
+					width: 120,
 					searchOperator: '=',
 					key: 'buffet_code'
 				},
@@ -130,8 +135,8 @@ export default {
 				},
 				{
 					title: '餐柜添加时间',
-                    key: 'addtime',
-                    width: 3000,
+					key: 'addtime',
+					width: 3000,
 					sortable: true,
 					render: (h, params) => {
 						const row = params.row;
@@ -142,8 +147,8 @@ export default {
 					}
 				},
 				{
-                    title: '餐柜名称',
-                    width: 120,
+					title: '餐柜名称',
+					width: 120,
 					searchOperator: 'like',
 					key: 'buffet_name',
 					sortable: true
@@ -219,6 +224,9 @@ export default {
 		this.getList();
 	},
 	methods: {
+		handView() {
+			this.visible1 = true;
+		},
 		// 页码改变的回调
 		changePage(pageNo) {
 			this.pageNo = pageNo;
@@ -289,7 +297,6 @@ export default {
 		async getList() {
 			const searchParam = [];
 			console.log(this.getParam());
-		
 		},
 		// 重置
 		clearForm(name) {
