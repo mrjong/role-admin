@@ -260,51 +260,51 @@ export const appRouter = [
 	// 		}
 	// 	]
 	// },
-	// {
-	// 	path: '/system',
-	// 	icon: 'ios-grid-view',
-	// 	name: 'system',
-	// 	access: 1,
-	// 	title: '系统管理',
-	// 	component: Main,
-	// 	children: [
-	//         {
-	// 			path: 'wkProcessDef_list',
-	// 			icon: 'ios-list',
-	// 			name: 'wkProcessDef_list',
-	// 			title: '系统角色管理',
-	// 			component: () => import('@/pages/system/wkProcessDef_list.vue')
-	// 		},
-	// 		{
-	// 			path: 'wkProcessDef_list',
-	// 			icon: 'ios-list',
-	// 			name: 'wkProcessDef_list',
-	// 			title: '系统用户管理',
-	// 			component: () => import('@/pages/system/wkProcessDef_list.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '人员管理',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	//         },
-	//         {
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '坐席关系维护',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	//         },
-	//         {
-	// 			path: 'wkProcessDef_list',
-	// 			icon: 'ios-list',
-	// 			name: 'wkProcessDef_list',
-	// 			title: '数据字典管理',
-	// 			component: () => import('@/pages/system/wkProcessDef_list.vue')
-	// 		},
-	// 	]
-	// }
+	{
+		path: '/system',
+		icon: 'ios-grid-view',
+		name: 'system',
+		access: 1,
+		title: '系统管理',
+		component: Main,
+		children: [
+	        {
+				path: 'wkProcessDef_list',
+				icon: 'ios-list',
+				name: 'wkProcessDef_list',
+				title: '系统角色管理',
+				component: () => import('@/pages/system/wkProcessDef_list.vue')
+			},
+			{
+				path: 'system_user',
+				icon: 'ios-list',
+				name: 'system_user',
+				title: '系统用户管理',
+				component: () => import('@/pages/system/system_user_page/index.vue')
+			},
+			{
+				path: 'user_manager',
+				icon: 'ios-list',
+				name: 'user_manager',
+				title: '人员管理',
+				component: () => import('@/pages/system/user_manager_page/index.vue')
+	        },
+	        {
+				path: 'relationship_maintain',
+				icon: 'ios-list',
+				name: 'relationship_maintain',
+				title: '坐席关系维护',
+				component: () => import('@/pages/system/relationship_maintain_page/index.vue')
+	        },
+	        {
+				path: 'data_dictionary',
+				icon: 'ios-list',
+				name: 'data_dictionary',
+				title: '数据字典管理',
+				component: () => import('@/pages/system/data_dictionary_page/index.vue')
+			},
+		]
+	}
 ];
 
 // 所有上面定义的路由都要写在下面的routers里

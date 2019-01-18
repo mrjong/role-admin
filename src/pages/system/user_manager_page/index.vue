@@ -1,5 +1,5 @@
 <template>
-  <div class="panel_list">
+  <div>
     <!-- 检索条件 -->
     <Card class="vue-panel">
       <p slot="title" @click="showPanel=!showPanel">
@@ -107,39 +107,6 @@
         </Row>
       </Form>
     </Card>
-    <!-- 检索结果 -->
-    <Card class="vue-panel-table collection_recording">
-      <p slot="title" @click="showPanel2=!showPanel2">
-        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
-        <router-link to="/buffet/buffet_add">
-          <Button class="fr vue-back-btn header-btn" type="primary" size="small">导出数据</Button>
-        </router-link>
-      </p>
-      <!-- 表格 -->
-      <div v-if="!showPanel2">
-        <Table :data="tableData" :columns="tableColumns" stripe width="1200" size="small" align="center"></Table>
-        <!-- 分页 -->
-        <div class="vue-panel-page">
-          <div style="float: right;">
-            <Page
-              :total="total"
-              show-total
-              size="small"
-              :page-size-opts="[10, 20, 50, 100]"
-              show-elevator
-              show-sizer
-              :page-size="pageSize"
-              :current="pageNo"
-              @on-page-size-change="changeSize"
-              @on-change="changePage"
-            ></Page>
-          </div>
-        </div>
-      </div>
-    </Card>
   </div>
 </template>
 <script src="./index.js"></script>
-
-
-
