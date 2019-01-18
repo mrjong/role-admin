@@ -24,7 +24,7 @@ export const page404 = {
 	meta: {
 		title: '404-页面不存在'
 	},
-	component: () => import('@/pages/error-page/404.vue')
+	component: () => import('@/pages/common/error-page/404.vue')
 };
 
 export const page403 = {
@@ -33,7 +33,7 @@ export const page403 = {
 		title: '403-权限不足'
 	},
 	name: 'error-403',
-	component: () => import('@//pages/error-page/403.vue')
+	component: () => import('@/pages/common/error-page/403.vue')
 };
 
 export const page500 = {
@@ -42,7 +42,7 @@ export const page500 = {
 		title: '500-服务端错误'
 	},
 	name: 'error-500',
-	component: () => import('@/pages/error-page/500.vue')
+	component: () => import('@/pages/common/error-page/500.vue')
 };
 
 export const locking = {
@@ -69,7 +69,7 @@ export const otherRouter = {
 			path: 'message',
 			title: '消息中心',
 			name: 'message_index',
-			component: () => import('@/pages/message/message.vue')
+			component: () => import('@/pages/common/message/message.vue')
 		}
 	]
 };
@@ -128,38 +128,38 @@ export const appRouter = [
 			// 	component: () => import('@/pages/demo/demo_desc.vue')
 			// }
 		]
-	}
-	// {
-	// 	path: '/demo',
-	// 	icon: 'ios-grid-view',
-	// 	name: 'demo',
-	// 	access: 1,
-	// 	title: '催收管理',
-	// 	component: Main,
-	// 	children: [
-	// 		{
-	// 			path: 'demo_list',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_list',
-	// 			title: '我的案件',
-	// 			component: () => import('@/pages/demo/demo_list.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '催收记录',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: '催收录音',
-	// 			title: '分案规则',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	// 		}
-	// 	]
-	// },
+	},
+	{
+		path: '/collection',
+		icon: 'ios-grid-view',
+		name: 'collection',
+		access: 1,
+		title: '催收管理',
+		component: Main,
+		children: [
+			{
+				path: 'my_case',
+				icon: 'ios-list',
+				name: 'my_case',
+				title: '我的案件',
+				component: () => import('@/pages/demo/demo_list_page/index.vue')
+			},
+			{
+				path: 'collection_records',
+				icon: 'ios-list',
+				name: 'collection_records',
+				title: '催收记录',
+				component: () => import('@/pages/demo/demo_desc_page/index.vue')
+			},
+			{
+				path: 'collection_recording',
+				icon: 'ios-list',
+				name: 'collection_recording',
+				title: '催收录音',
+				component: () => import('@/pages/collection/collection_recording_page/index.vue')
+			}
+		]
+	},
 	// {
 	// 	path: '/demo',
 	// 	icon: 'ios-grid-view',
@@ -314,7 +314,7 @@ export const routers = [
 	// preview,
 	locking,
     ...appRouter,
-	case_desc,    
+	case_desc,
 	page500,
 	page403,
 	page404,
