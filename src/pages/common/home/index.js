@@ -1,6 +1,5 @@
-
 export default {
-	name: 'demo_list',
+	name: 'case_search_page',
 	data() {
 		return {
             showPanel:false,
@@ -286,7 +285,7 @@ export default {
 		},
 		// 获取表格数据
 		async getList() {
-        let res = await getList()
+			const searchParam = [];
 			console.log(this.getParam());
 		
 		},

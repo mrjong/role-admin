@@ -63,7 +63,7 @@ export const otherRouter = {
 			path: 'home',
 			title: { i18n: 'home' },
 			name: 'home',
-			component: () => import('@/pages/home/home.vue')
+			component: () => import('@/pages/common/home')
 		},
 		{
 			path: 'message',

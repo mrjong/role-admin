@@ -43,7 +43,7 @@ fetch({
 
 
 /**
- * 工作流保存
+ * 菜单权限
  */
 export const findTreeByCurrentUser = (obj = {}) =>
 fetch({

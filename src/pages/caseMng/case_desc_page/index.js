@@ -1,11 +1,20 @@
+import jianmian from '@/components/caseDesc/jianmian.vue';
 export default {
 	name: 'case_desc',
+	components: {
+		jianmian
+	},
 	data() {
 		return {
 			showBtn: false,
 			showPanel: false,
 			showPanel2: false,
+			imgName: '',
+			visible: false,
+			showBottom: false,
 			value1: 1,
+			modalTitle: '',
+			visible1: false,
 			phoneCallList: [
 				{
 					value: 'New York',
@@ -87,14 +96,25 @@ export default {
 			modal12: false,
 			inputGrid: '',
 			modal11: false,
+			formValidate: {},
 			formValidate2: {},
 			ruleValidate: {
-				buffet_id: [
-					{
-						required: true,
-						message: '请输入网格编号',
-						trigger: 'blur'
-					}
+				name: [ { required: true, message: 'The name cannot be empty', trigger: 'blur' } ],
+				mail: [
+					{ required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
+					{ type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+				],
+				city: [ { required: true, message: 'Please select the city', trigger: 'change' } ],
+				gender: [ { required: true, message: 'Please select gender', trigger: 'change' } ],
+				interest: [
+					{ required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change' },
+					{ type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change' }
+				],
+				date: [ { required: true, type: 'date', message: 'Please select the date', trigger: 'change' } ],
+				time: [ { required: true, type: 'string', message: 'Please select time', trigger: 'change' } ],
+				desc: [
+					{ required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
+					{ type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
 				]
 			},
 			pageNo: 1,
@@ -225,6 +245,20 @@ export default {
 		// this.getList();
 	},
 	methods: {
+		handleCancle() {
+			this.showBottom = false;
+		},
+		handCall() {
+			this.showBottom = true;
+		},
+		handOpen(type, title) {
+			this.modalTitle = title;
+			this.visible1 = true;
+		},
+		handleView(name) {
+			this.imgName = name;
+			this.visible = true;
+		},
 		isShow() {
 			this.showBtn = !this.showBtn;
 			console.log('00000');
@@ -239,52 +273,6 @@ export default {
 			this.pageSize = pageSize;
 			this.pageNo = 1;
 			this.getList();
-		},
-		getParam() {
-			let searchParam = [];
-
-			if (!(this.formItem.addtime && this.formItem.addtime[0]) || !this.formItem.addtime[1]) {
-				delete this.formItem.addtime;
-			} else {
-				let startTime = this.formItem.addtime[0].getTime() / 1000;
-				let endTime = this.formItem.addtime[1].getTime() / 1000;
-				console.log();
-				let addtime = [
-					{
-						searchValue: startTime,
-						searchColumn: 'addtime',
-						searchOperator: '>'
-					},
-					{
-						searchValue: endTime,
-						searchColumn: 'addtime',
-						searchOperator: '<='
-					}
-				];
-				if (this.formItem && JSON.stringify(addtime) !== '[]') {
-					for (let i = 0; i < addtime.length; i++) {
-						searchParam.push(addtime[i]);
-					}
-				}
-			}
-			console.log(searchParam);
-			for (let i = 0; i < this.tableColumns.length; i++) {
-				for (const key in this.formItem) {
-					if (
-						this.formItem[key] &&
-						this.tableColumns[i].searchOperator &&
-						key === this.tableColumns[i].key &&
-						key !== 'addtime'
-					) {
-						let item = {};
-						item.searchValue = this.formItem[key];
-						item.searchColumn = this.tableColumns[i].key;
-						item.searchOperator = this.tableColumns[i].searchOperator;
-						searchParam.push(item);
-					}
-				}
-			}
-			return searchParam;
 		},
 		handleSubmit(name) {
 			this.$refs[name].validate((valid) => {

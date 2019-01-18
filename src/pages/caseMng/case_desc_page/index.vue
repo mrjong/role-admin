@@ -1,40 +1,62 @@
 <template>
 
   <div class="panel_list p5">
+    <!-- 弹层 -->
+    <Modal
+      title="查看图片"
+      v-model="visible"
+    >
+      <img
+        :src="imgName"
+        v-if="visible"
+        style="width: 100%"
+      >
+    </Modal>
+    <Modal
+     class="jianmian"
+      width="90%"
+      v-model="visible1"
+    >
+    <jianmian></jianmian>
+    </Modal>
+    <!-- 弹层 -->
     <div
       class="case-left-container"
       :style="{paddingRight:showBtn?'25px':'370px'}"
     >
       <!-- 检索条件 -->
-      <Card class="vue-panel">
+      <Card class="vue-panel case-desc">
         <p
           slot="title"
           @click="showPanel=!showPanel"
         >
           <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
           张三（男/22）
-
           <Button
+            @click="handOpen('zhongcai','申请仲裁')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
-          >申请减免</Button>
+          >申请仲裁</Button>
           <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >申请划扣</Button>
-          <Button
+            @click="handOpen('huankuan','申请还款')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
           >申请还款</Button>
           <Button
+            @click="handOpen('huakou','申请划扣')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
-          >申请仲裁</Button>
+          >申请划扣</Button>
 
+          <Button
+            @click="handOpen('jianmian','申请减免')"
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+          >申请减免</Button>
           <Button
             class="fr vue-back-btn header-btn"
             type="primary"
@@ -90,22 +112,58 @@
             </div>
             </Col>
             </Col>
-            <Col>
             <Col
-              :xs="8"
-              :sm="8"
-              :md="8"
-              :lg="8"
+              :xs="24"
+              :sm="24"
+              :md="12"
+              :lg="12"
             >
-            <div class="demo-upload-list"><img
-                src="https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar"
-                style="vertical-align: top;"
-              >
-              <div class="demo-upload-list-cover">
-                  <i class="ivu-icon ivu-icon-ios-eye-outline"></i> 
-                  </div>
+            <div class="fl">
+              <div class="demo-upload-list">
+                <img
+                  src="http://www.pptok.com/wp-content/uploads/2012/08/xunguang-4.jpg"
+                  style="vertical-align: top;"
+                >
+                <div
+                  class="demo-upload-list-cover "
+                  @click="handleView('http://www.pptok.com/wp-content/uploads/2012/08/xunguang-4.jpg')"
+                >
+                  <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
+                </div>
+              </div>
+              <div class="text-center card-text">身份证正面</div>
             </div>
-            </Col>
+            <div class="fl">
+              <div class="demo-upload-list">
+                <img
+                  src="https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar"
+                  style="vertical-align: top;"
+                >
+                <div
+                  class="demo-upload-list-cover"
+                  @click="handleView('https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar')"
+                >
+                  <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
+                </div>
+              </div>
+              <div class="text-center card-text">身份证反面</div>
+            </div>
+            <div class="fl">
+              <div class="demo-upload-list">
+                <img
+                  src="https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar"
+                  style="vertical-align: top;"
+                >
+                <div
+                  class="demo-upload-list-cover"
+                  @click="handleView('https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar')"
+                >
+                  <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
+                </div>
+              </div>
+              <div class="text-center card-text">活体认证照片</div>
+            </div>
+
             </Col>
 
           </Row>
@@ -132,56 +190,26 @@
           >
             <div class="panel-desc">
               <Row :gutter="5">
-                <Col
-                  :xs="12"
-                  :sm="12"
-                  :md="6"
-                  :lg="6"
-                >
-                <div class="panel-desc-title">
+
+                <div class="panel-desc-title fl mr10">
                   账单号：<span>BIL2018091015251600028780</span>
                 </div>
-                </Col>
-                <Col
-                  :xs="12"
-                  :sm="12"
-                  :md="4"
-                  :lg="4"
-                >
-                <div class="panel-desc-title">
+
+                <div class="panel-desc-title fl mr10">
                   借款本金：<span>675.00</span>
                 </div>
-                </Col>
-                <Col
-                  :xs="12"
-                  :sm="12"
-                  :md="6"
-                  :lg="6"
-                >
-                <div class="panel-desc-title">
+
+                <div class="panel-desc-title fl mr10">
                   借款时间：<span>2018-09-10 15:25:16</span>
                 </div>
-                </Col>
-                <Col
-                  :xs="12"
-                  :sm="12"
-                  :md="4"
-                  :lg="4"
-                >
-                <div class="panel-desc-title">
+
+                <div class="panel-desc-title fl mr10">
                   银行卡号：<span>622253******6484</span>
                 </div>
-                </Col>
-                <Col
-                  :xs="12"
-                  :sm="12"
-                  :md="4"
-                  :lg="4"
-                >
-                <div class="panel-desc-title">
+
+                <div class="panel-desc-title fl mr10">
                   银行卡：<span>交通银行</span>
                 </div>
-                </Col>
 
               </Row>
             </div>
@@ -306,6 +334,7 @@
             <Card
               style="width:370px"
               class="heighti case-top-panel"
+              :style="{height:!this.showBottom?'inherit':'calc(100% - 325px)'}"
             >
               <div>
                 <div
@@ -326,7 +355,10 @@
                     </span>
                     谢晓峰<span>（本人）</span>
                   </span>
-                  <span class="tel">
+                  <span
+                    class="tel"
+                    @click="handCall"
+                  >
                     <Tooltip
                       content="拨打"
                       placement="left"
@@ -355,7 +387,10 @@
                   <span class="name">
                     谢晓峰<span>（配偶）</span>
                   </span>
-                  <span class="tel">
+                  <span
+                    class="tel"
+                    @click="handCall"
+                  >
                     <Tooltip
                       content="拨打"
                       placement="left"
@@ -384,7 +419,10 @@
                   <span class="name">
                     谢晓峰<span>（同学）</span>
                   </span>
-                  <span class="tel">
+                  <span
+                    class="tel"
+                    @click="handCall"
+                  >
                     <Tooltip
                       content="拨打"
                       placement="left"
@@ -446,15 +484,116 @@
                   <Button
                     class="fr vue-back-btn header-btn"
                     type="primary"
-                    @click="handleTabsAdd"
                     size="small"
                     slot="extra"
                   >增加</Button>
                 </Tabs>
               </div>
             </Card>
-            <Card>
-              <div class="case-bottom-panel">9999999999</div>
+            <Card
+              class="case-bottom-panel"
+              :style="{bottom:this.showBottom?'0px':'-1000px'}"
+            >
+
+              <Form
+                ref="formValidate"
+                :model="formValidate"
+                :rules="ruleValidate"
+                :label-width="100"
+              >
+                <FormItem
+                  label="沟通对象"
+                  prop="name"
+                >
+                  <Input
+                    size="small"
+                    disabled
+                    v-model="formValidate.name"
+                    placeholder="请输入沟通对象"
+                  ></Input>
+                </FormItem>
+                <FormItem
+                  label="关系"
+                  prop="city"
+                >
+                  <Select
+                    size="small"
+                    v-model="formValidate.city"
+                    placeholder="请输入选择关系"
+                  >
+                    <Option value="beijing">New York</Option>
+                    <Option value="shanghai">London</Option>
+                    <Option value="shenzhen">Sydney</Option>
+                  </Select>
+                </FormItem>
+
+                <FormItem
+                  label="拨打状态"
+                  prop="city"
+                >
+                  <Select
+                    size="small"
+                    v-model="formValidate.city"
+                    placeholder="请输入选择拨打状态"
+                  >
+                    <Option value="beijing">New York</Option>
+                    <Option value="shanghai">London</Option>
+                    <Option value="shenzhen">Sydney</Option>
+                  </Select>
+                </FormItem>
+
+                <FormItem
+                  label="沟通状态"
+                  prop="city"
+                >
+                  <Select
+                    size="small"
+                    v-model="formValidate.city"
+                    placeholder="请输入选择沟通状态"
+                  >
+                    <Option value="beijing">New York</Option>
+                    <Option value="shanghai">London</Option>
+                    <Option value="shenzhen">Sydney</Option>
+                  </Select>
+                </FormItem>
+
+                <FormItem
+                  label="承诺还款时间"
+                  prop="date"
+                >
+                  <DatePicker
+                    style="width:100%;"
+                    size="small"
+                    type="date"
+                    placeholder="请选择承诺还款时间"
+                    v-model="formValidate.date"
+                  ></DatePicker>
+                </FormItem>
+                <FormItem
+                  label="备注"
+                  prop="desc"
+                >
+                  <Input
+                    v-model="formValidate.desc"
+                    type="textarea"
+                    :autosize="{minRows: 2,maxRows: 5}"
+                    placeholder="请输入备注"
+                  ></Input>
+                </FormItem>
+                <FormItem style="margin-top:10px">
+                  <Button
+                    type="primary"
+                    size="small"
+                    @click="handleSubmit('formValidate')"
+                  >提交</Button>
+                  <Button
+                    type="ghost"
+                    size="small"
+                    @click="handleCancle()"
+                    style="margin-left: 8px"
+                  >取消</Button>
+                </FormItem>
+              </Form>
             </Card>
           </div>
         </transition>
