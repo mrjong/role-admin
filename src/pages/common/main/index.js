@@ -23,7 +23,10 @@ export default {
 	},
 	data() {
 		return {
-			shrink: false,
+			visible1: false,
+            shrink: false,
+            formItem:{},
+            ruleValidate:{},
 			userName: '',
 			isFullScreen: false,
 			openedSubmenuArr: this.$store.state.app.openedSubmenuArr
@@ -59,6 +62,10 @@ export default {
 		}
 	},
 	methods: {
+        ok(){
+
+        },
+        cancel(){},
 		// 获取菜单
 		async menuData() {
 			let res = await findTreeByCurrentUser();
@@ -81,24 +88,7 @@ export default {
 		},
 		async handleClickUserDropdown(name) {
 			if (name === 'editPwd') {
-				this.$Modal.confirm({
-					render: (h) => {
-						return h('Input', {
-							props: {
-                                style:'margin-top:10px',
-                                type:'password',
-								value: this.value,
-								autofocus: true,
-								placeholder: '请输入密码'
-							},
-							on: {
-								input: (val) => {
-									this.value = val;
-								}
-							}
-						});
-					}
-				});
+				this.visible1 = true;
 			} else if (name === 'loginout') {
 				// 退出登录
 				const res = await logout();

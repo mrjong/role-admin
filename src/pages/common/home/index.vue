@@ -1,7 +1,6 @@
 <template>
 
   <div class="panel_list">
-    <!-- 检索结果 -->
     <Row :gutter="10">
       <Col
         :xs="24"
@@ -12,28 +11,29 @@
       <Card class="vue-panel-table">
         <p
           slot="title"
-          @click="showPanel2=!showPanel2"
+          @click="showPanel1=!showPanel1"
         >
-          <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
+          <Icon :type="!showPanel1?'chevron-down':'chevron-up'"></Icon>
           公告
           <Button
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
+            @click.stop="showAlert('1')"
           >添加</Button>
         </p>
         <!-- 表格 -->
 
-        <div v-if="!showPanel2">
+        <div v-if="!showPanel1">
           <Table
-            v-if="tableData.length>0"
+            v-if="announcement_list1.length>0"
             :show-header="false"
-            :data="tableData"
+            :data="announcement_list1"
             :columns="tableColumns"
             stripe
           ></Table>
           <div
-            v-if="!tableData||tableData.length<=0"
+            v-else
             class="home-no-data"
           >
             暂无数据
@@ -58,20 +58,21 @@
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
+            @click.stop="showAlert('2')"
           >添加</Button>
         </p>
         <!-- 表格 -->
 
         <div v-if="!showPanel2">
           <Table
-            v-if="tableData.length>0"
+            v-if="announcement_list2.length>0"
             :show-header="false"
-            :data="tableData"
-            :columns="tableColumns"
+            :data="announcement_list2"
+            :columns="tableColumns2"
             stripe
           ></Table>
           <div
-            v-if="!tableData||tableData.length<=0"
+            v-if="!announcement_list2||announcement_list2.length<=0"
             class="home-no-data"
           >
             暂无数据
@@ -88,28 +89,29 @@
       <Card class="vue-panel-table">
         <p
           slot="title"
-          @click="showPanel2=!showPanel2"
+          @click="showPanel3=!showPanel3"
         >
-          <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
+          <Icon :type="!showPanel3?'chevron-down':'chevron-up'"></Icon>
           其他
           <Button
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
+            @click.stop="showAlert('3')"
           >添加</Button>
         </p>
         <!-- 表格 -->
 
-        <div v-if="!showPanel2">
+        <div v-if="!showPanel3">
           <Table
-            v-if="tableData.length>0"
+            v-if="announcement_list3.length>0"
             :show-header="false"
-            :data="tableData"
+            :data="announcement_list3"
             :columns="tableColumns"
             stripe
           ></Table>
           <div
-            v-if="!tableData||tableData.length<=0"
+            v-if="!announcement_list3||announcement_list3.length<=0"
             class="home-no-data"
           >
             暂无数据
