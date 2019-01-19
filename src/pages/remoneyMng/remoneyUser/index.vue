@@ -85,8 +85,6 @@
               ></DatePicker>
             </FormItem>
           </Col>
-        </Row>
-        <Row>
           <Col
             :xs="24"
             :sm="24"
@@ -149,8 +147,6 @@
               </Select>
             </FormItem>
           </Col>
-        </Row>
-        <Row>
           <Col
             :xs="24"
             :sm="24"

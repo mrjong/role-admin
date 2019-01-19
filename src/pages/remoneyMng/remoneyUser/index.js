@@ -359,7 +359,6 @@ export default {
 	async getList1() {
            let res= await repay_repayUserOrSystem_list(this.formValidate)
             console.log(res)
-		
 
 			// const searchParam = [];
 			// console.log(this.getParam());
