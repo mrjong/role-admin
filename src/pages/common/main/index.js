@@ -8,7 +8,7 @@ import themeSwitch from '@/components/theme-switch/theme-switch.vue';
 import Cookies from 'js-cookie';
 import util from '@/libs/util.js';
 import scrollBar from '@/components/scroll-bar/vue-scroller-bars';
-import { logout, findTreeByCurrentUser } from '@/service/getData';
+import { logout, findTreeByCurrentUser, reset_passWord } from '@/service/getData';
 import demo from './demo.json';
 export default {
 	components: {
@@ -24,17 +24,14 @@ export default {
 	data() {
 		return {
 			visible1: false,
-            shrink: false,
-            formItem:{},
-            ruleValidate:{},
+			shrink: false,
+			formItem: {},
+			ruleValidate: {},
 			userName: '',
 			isFullScreen: false,
 			openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
       productLineList:[],
 		};
-	},
-	created() {
-		this.menuData();
 	},
 	computed: {
 		menuList() {
@@ -63,10 +60,32 @@ export default {
 		}
 	},
 	methods: {
-        ok(){
-
-        },
-        cancel(){},
+		ok() {
+			this.$refs.formItem.validate((valid) => {
+				if (valid) {
+					this.reset_passWord();
+				}
+			});
+		},
+		async reset_passWord() {
+			const res = await reset_passWord({
+				loginName: Cookies.get('user'),
+				loginPwd: Cookies.get('loginPwd'),
+				newLoginPwd: this.formItem.newLoginPwd
+			});
+			if (res.code === 1) {
+				this.$Message.success('修改成功');
+				setTimeout(() => {
+					this.$router.push({
+						name: 'login'
+					});
+				}, 2000);
+			} else {
+				this.$Message.error(res.message);
+			}
+			console.log(res);
+		},
+		cancel() {},
 		// 获取菜单
 		async menuData() {
 			let res = await findTreeByCurrentUser();

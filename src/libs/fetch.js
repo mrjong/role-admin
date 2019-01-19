@@ -70,8 +70,20 @@ axios.interceptors.response.use(
 		timer = '';
 		timerList = [];
 		iView.Message.destroy();
-		console.log(error);
-		iView.Message.error('服务器繁忙,稍后重试');
+		switch (error && error.response.status) {
+			case 401:
+				iView.Message.error((error && error.response && error.response.data) || '服务器繁忙,稍后重试');
+				setTimeout(() => {
+					window.$router.push({
+						name: 'login'
+					});
+				}, 3000);
+				break;
+
+			default:
+				break;
+		}
+
 		return Promise.resolve(error.response);
 	}
 );

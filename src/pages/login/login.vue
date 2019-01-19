@@ -119,7 +119,7 @@ export default {
               name: "home"
             })
           } else {
-            this.$Message.success(res.message);
+            this.$Message.error(res.message);
           }
         }
       })

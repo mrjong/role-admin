@@ -115,7 +115,10 @@ export default {
 		};
 	},
 	created() {
-		this.announcement_list_fun();
+        console.log('---------')
+        window.$router = this.$router;
+        this.announcement_list_fun();
+     
 	},
 	methods: {
 		showAlert(type, uuid, val) {
