@@ -51,6 +51,7 @@
           >
             <FormItem
               span="6"
+              prop="mblNo"
               label="手机号:"
             >
               <Input
