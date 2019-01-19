@@ -50,7 +50,6 @@ export const locking = {
 	name: 'locking',
 	component: () => import('@/components/lockscreen/components/locking-page.vue')
 };
-
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
 export const otherRouter = {
 	path: '/',
@@ -97,6 +96,30 @@ export const appRouter = [
 				title: 'demo详情',
 				component: () => import('@/pages/demo/demo_desc_page')
 			}
+		]
+    },
+    {
+		path: '/workflow',
+		icon: 'ios-grid-view',
+		name: 'workflow',
+		access: 1,
+		title: '工作流',
+		component: Main,
+		children: [
+			{
+				path: 'definition',
+				icon: 'ios-list',
+				name: 'definition',
+				title: '工作流定义',
+				component: () => import('@/pages/workflow/definition')
+			},
+			{
+				path: 'task',
+				icon: 'ios-list',
+				name: 'task',
+				title: '工作流任务',
+				component: () => import('@/pages/workflow/task')
+			},
 		]
 	},
 	{
@@ -160,37 +183,37 @@ export const appRouter = [
 			}
 		]
 	},
-	// {
-	// 	path: '/demo',
-	// 	icon: 'ios-grid-view',
-	// 	name: 'demo',
-	// 	access: 1,
-	// 	title: '回款管理',
-	// 	component: Main,
-	// 	children: [
-	// 		{
-	// 			path: 'demo_list',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_list',
-	// 			title: '确认回款明细',
-	// 			component: () => import('@/pages/demo/demo_list.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '用户主动还款',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '系统代扣还款',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	// 		}
-	// 	]
-	// },
+	{
+		path: '/remoneyMng',
+		icon: 'ios-grid-view',
+		name: 'remoneyMng',
+		access: 1,
+		title: '回款管理',
+		component: Main,
+		children: [
+			{
+				path: 'remoney_detail',
+				icon: 'ios-list',
+				name: 'remoney_detail',
+				title: '确认回款明细',
+				component: () => import ('@/pages/remoneyMng/remoneyDetail')
+			},
+			{
+				path: 'remoney_user',
+				icon: 'ios-list',
+				name: 'remoney_user',
+				title: '用户主动还款',
+				component: () => import ('@/pages/remoneyMng/remoneyUser')
+			},
+			{
+				path: 'remoney_system',
+				icon: 'ios-list',
+				name: 'remoney_system',
+				title: '系统代扣还款',
+				component: () => import ('@/pages/remoneyMng/remoneySys')
+			}
+		]
+	},
 	// {
 	// 	path: '/demo',
 	// 	icon: 'ios-grid-view',
@@ -312,7 +335,6 @@ export const routers = [
 	loginRouter,
 	otherRouter,
 	// preview,
-	locking,
     ...appRouter,
 	case_desc,
 	page500,

@@ -1,13 +1,9 @@
-import formValidateFun from '@/mixin/formValidateFun';
 export default {
 	name: 'case_search_page',
-	mixins: [ formValidateFun ],
 	data() {
-		console.log(this.GLOBAL);
-
 		return {
-			showPanel: false,
-			showPanel2: false,
+            showPanel:false,
+            showPanel2:false,
 			phoneCallList: [
 				{
 					value: 'New York',
@@ -86,62 +82,15 @@ export default {
 					label: 'Canberra'
 				}
 			],
+			modal12: false,
+			inputGrid: '',
+			modal11: false,
+			formValidate2: {},
 			ruleValidate: {
-				idNo: [
+				buffet_id: [
 					{
-						pattern: this.GLOBAL.idNo,
-						message: '请输入正确身份证号',
-						trigger: 'blur'
-					}
-				],
-				mblNo: [
-					{
-						pattern: this.GLOBAL.mblNo,
-						message: '请输入正确手机号',
-						trigger: 'blur'
-					}
-				],
-				overdueDaysLt: [
-					{
-						pattern: this.GLOBAL.num,
-						message: '逾期天数为正整数',
-						trigger: 'blur'
-					},
-					{
-						validator: this.validate_yqts_start,
-						trigger: 'blur'
-					}
-				],
-				overdueDaysBt: [
-					{
-						pattern: this.GLOBAL.num,
-						message: '逾期天数为正整数',
-						trigger: 'blur'
-					},
-					{
-						validator: this.validate_yqts_end,
-						trigger: 'blur'
-					}
-				],
-				billOvduAmtLt: [
-					{
-						pattern: this.GLOBAL.money,
-						message: '金额格式不正确',
-						trigger: 'blur'
-					},
-					{
-						validator: this.validate_yqyhje_start,
-						trigger: 'blur'
-					}
-				],
-				billOvduAmtBt: [
-					{
-						pattern: this.GLOBAL.money,
-						message: '金额格式不正确',
-						trigger: 'blur'
-					},
-					{
-						validator: this.validate_yqyhje_end,
+						required: true,
+						message: '请输入网格编号',
 						trigger: 'blur'
 					}
 				]
@@ -169,8 +118,8 @@ export default {
 					key: 'buffet_id'
 				},
 				{
-					title: '餐柜编码',
-					width: 120,
+                    title: '餐柜编码',
+                    width: 120,
 					searchOperator: '=',
 					key: 'buffet_code'
 				},
@@ -181,8 +130,8 @@ export default {
 				},
 				{
 					title: '餐柜添加时间',
-					key: 'addtime',
-					width: 3000,
+                    key: 'addtime',
+                    width: 3000,
 					sortable: true,
 					render: (h, params) => {
 						const row = params.row;
@@ -193,8 +142,8 @@ export default {
 					}
 				},
 				{
-					title: '餐柜名称',
-					width: 120,
+                    title: '餐柜名称',
+                    width: 120,
 					searchOperator: 'like',
 					key: 'buffet_name',
 					sortable: true
@@ -340,6 +289,7 @@ export default {
 		async getList() {
 			const searchParam = [];
 			console.log(this.getParam());
+		
 		},
 		// 重置
 		clearForm(name) {

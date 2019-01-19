@@ -29,12 +29,12 @@
           >
             <img
               v-show="!shrink"
-              src="../../../images/logo.png"
+              src="../../../assets/images/logo.png"
               key="max-logo"
             />
             <img
               v-show="shrink"
-              src="../../../images/logo-min.jpg"
+              src="../../../assets/images/logo-min.jpg"
               key="min-logo"
             />
           </div>
@@ -89,7 +89,7 @@
                   <Icon type="arrow-down-b"></Icon>
                 </a>
                 <DropdownMenu slot="list">
-                  <DropdownItem name="ownSpace"> 修改密码</DropdownItem>
+                  <DropdownItem name="editPwd"> 修改密码</DropdownItem>
                   <DropdownItem name="loginout">退出登录</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
