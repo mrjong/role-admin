@@ -6,6 +6,118 @@
     class="main"
     :class="{'main-hide-text': shrink}"
   >
+    <Modal
+      width="70%"
+      title="修改密码"
+      v-model="visible1"
+      @on-ok="ok"
+      @on-cancel="cancel"
+    >
+    <Form
+        ref="formItem"
+        :model="formItem"
+        :label-width="90"
+        :rules="ruleValidate"
+      >
+        <Row>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+          <FormItem
+            span="6"
+            label="编号:"
+            prop="buffet_id"
+          >
+            <Select
+              size="small"
+              v-model="formItem.productLine"
+            >
+              <Option
+                v-for="item in productLineList"
+                :value="item.value"
+                :key="item.value"
+              >{{ item.label }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+          <FormItem
+            span="6"
+            label="类型:"
+            prop="buffet_id"
+          >
+            <Select
+              size="small"
+              v-model="formItem.productLine"
+            >
+              <Option
+                v-for="item in productLineList"
+                :value="item.value"
+                :key="item.value"
+              >{{ item.label }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+          <FormItem
+            span="6"
+            label="驳回类型:"
+            prop="buffet_id"
+          >
+            <Select
+              size="small"
+              v-model="formItem.productLine"
+            >
+              <Option
+                v-for="item in productLineList"
+                :value="item.value"
+                :key="item.value"
+              >{{ item.label }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+          <FormItem>
+            <Button
+              type="primary"
+              @click="handleSubmit('formItem')"
+              style="width:80px"
+              long
+              size="small"
+            >检索</Button>
+            <Button
+              size="small"
+              type="ghost"
+              style="width:80px;margin-left: 8px"
+              @click="clearForm('formItem')"
+            >重置</Button>
+          </FormItem>
+          </Col>
+        </Row>
+      </Form>
+    </Modal>
     <div
       class="sidebar-menu-con"
       :style="{width: shrink?'60px':'200px', overflow: shrink ? 'visible' : 'auto'}"

@@ -1,10 +1,16 @@
 import { buffet_list } from '@/service/getData';
+import Remodal from './components/user_info_form';
 export default {
+  components: {
+    Remodal
+  },
   name: 'demo_list',
   data() {
     return {
       showPanel: false,
       showPanel2: false,
+      modal: false,
+      parentData: {},
       phoneCallList: [
         {
           value: 'New York',
@@ -88,10 +94,10 @@ export default {
       modal11: false,
       formValidate2: {},
       ruleValidate: {
-        buffet_id: [
+        name: [
           {
             required: true,
-            message: '请输入网格编号',
+            message: '请输入姓名',
             trigger: 'blur'
           }
         ]
@@ -112,7 +118,12 @@ export default {
       tableData: [
         {
           recording_id: 1,
-          operate: '操作'
+          name: "啦啦",
+          account_number: "123",
+          status: "1",
+          role: "0",
+          email: "123123@qq.com",
+          mobile: "123456"
         }
       ],
       tableColumns: [
@@ -126,45 +137,9 @@ export default {
           align: 'center'
         },
         {
-          title: '操作',
-          width: 100,
-          key: 'edit',
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h(
-                'Poptip',
-                {
-                  props: {
-                    confirm: true,
-                    title: '您确定要删除这条数据吗?',
-                    transfer: true
-                  },
-                  on: {
-                    'on-ok': () => {
-                      this.deleteGoods(params.row.recording_id);
-                    }
-                  }
-                },
-                [
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {}
-                    },
-                    '播放'
-                  )
-                ]
-              )
-            ]);
-          }
-        },
-        {
-          title: '时长',
-          width: 100,
+          title: '登录账号',
           searchOperator: '=',
-          key: 'time_length',
+          key: 'loginName',
           align: 'center'
         },
         // {
@@ -181,17 +156,16 @@ export default {
         //   }
         // },
         {
-          title: '客户姓名',
+          title: '用户名称',
           searchOperator: 'like',
-          key: 'client_name',
+          key: 'name',
           sortable: true,
           align: 'center'
         },
         {
-          title: '关系',
-          width: 80,
+          title: '系统角色名称',
           searchOperator: 'like',
-          key: 'relation',
+          key: 'uapLoginName',
           align: 'center'
           // render: (h, params) => {
           //   return h('div', [
@@ -211,52 +185,81 @@ export default {
           //   ]);
           // }
         },
+        // {
+        //   title: '催收角色名称',
+        //   searchOperator: '=',
+        //   key: 'collection_role',
+        //   align: 'center'
+        // },
+        // {
+        //   title: '呼叫开始时间',
+        //   searchOperator: '=',
+        //   key: 'call_begin_time',
+        //   ellipsis: true,
+        //   align: 'center'
+        // },
         {
-          title: '呼叫电话',
+          title: '状态',
           searchOperator: '=',
-          key: 'call_number',
-          align: 'center'
-        },
-        {
-          title: '呼叫开始时间',
-          searchOperator: '=',
-          key: 'call_begin_time',
+          key: 'state',
           ellipsis: true,
           align: 'center'
         },
         {
-          title: '呼叫结束时间',
+          title: '手机号',
           searchOperator: '=',
-          key: 'call_end_time',
+          key: 'mobile',
+          align: 'center'
+        },
+        {
+          title: '邮箱',
+          searchOperator: '=',
+          key: 'email',
           ellipsis: true,
           align: 'center'
         },
         {
-          title: '经办人',
+          title: '创建时间',
           searchOperator: '=',
-          key: 'operator',
-          align: 'center'
-        },
-        {
-          title: '案件编码',
-          searchOperator: '=',
-          key: 'case_id',
+          key: 'createtime',
           ellipsis: true,
           align: 'center'
         },
         {
-          title: '账单号',
+          title: '最后操作时间',
           searchOperator: '=',
-          key: 'bill_number',
+          key: 'operate_time',
           ellipsis: true,
           align: 'center'
         },
         {
-          title: '客户身份证号',
-          searchOperator: '=',
-          key: 'id_card',
-          ellipsis: true,
-          align: 'center'
+          title: '操作',
+          width: 100,
+          key: 'edit',
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h(
+                'a', {
+                  class: 'look-btn',
+                  props: {},
+                  on: {
+                    click: () => {
+
+                    }
+                  }
+                }, '查看'),
+              h('a', {
+                class: 'edit-btn',
+                props: {},
+                on: {
+                  click: () => {
+
+                  }
+                }
+              }, '修改')
+            ]);
+          }
         },
       ]
     };
@@ -265,6 +268,17 @@ export default {
     this.getList();
   },
   methods: {
+    getChildrenStatus () {
+      this.modal = true;
+      this.parentData = {
+        modal: this.modal,
+        tableData: this.tableData
+      }
+    },
+    // 添加列表新数据按钮
+    handleAdd (form) {
+      this.modal = true;
+    },
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
@@ -284,7 +298,6 @@ export default {
       } else {
         let startTime = this.formItem.addtime[0].getTime() / 1000;
         let endTime = this.formItem.addtime[1].getTime() / 1000;
-        console.log();
         let addtime = [
           {
             searchValue: startTime,
@@ -334,7 +347,6 @@ export default {
     // 获取表格数据
     async getList() {
       const searchParam = [];
-      console.log(this.getParam());
       const res = await buffet_list({
         searchParam: this.formItem && JSON.stringify(this.formItem) !== '{}' && this.getParam(),
         page: this.pageNo,

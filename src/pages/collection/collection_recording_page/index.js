@@ -1,10 +1,27 @@
 import { buffet_list } from '@/service/getData';
+import 'video.js/dist/video-js.css'
+import { videoPlayer } from 'vue-video-player'
 export default {
   name: 'demo_list',
+  components: {
+    videoPlayer,
+  },
   data() {
     return {
       showPanel: false,
       showPanel2: false,
+      modal1: false,
+      playerOptions: {
+        // videojs options
+        muted: false,
+        language: 'en',
+        playbackRates: [0.7, 1.0, 1.5, 2.0],
+        sources: [{
+          type: "video/mp4",
+          src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
+        }],
+        poster: "/static/images/author.jpg",
+      },
       phoneCallList: [
         {
           value: 'New York',
@@ -133,29 +150,18 @@ export default {
           render: (h, params) => {
             return h('div', [
               h(
-                'Poptip',
+                'a',
                 {
+                  class: 'edit-btn',
                   props: {
-                    confirm: true,
-                    title: '您确定要删除这条数据吗?',
-                    transfer: true
                   },
                   on: {
-                    'on-ok': () => {
-                      this.deleteGoods(params.row.recording_id);
+                    click: () => {
+                      this.modal1 = true;
                     }
                   }
                 },
-                [
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {}
-                    },
-                    '播放'
-                  )
-                ]
+                '播放'
               )
             ]);
           }
@@ -264,7 +270,32 @@ export default {
   created() {
     this.getList();
   },
+  computed: {
+    player() {
+      return this.$refs.videoPlayer.player
+    }
+  },
   methods: {
+    // listen event
+    onPlayerPlay(player) {
+      // console.log('player play!', player)
+    },
+    onPlayerPause(player) {
+      // console.log('player pause!', player)
+    },
+    // ...player event
+
+    // or listen state event
+    playerStateChanged(playerCurrentState) {
+      // console.log('player current update state', playerCurrentState)
+    },
+
+    // player is ready
+    playerReadied(player) {
+      console.log('the player is readied', player)
+      // you can use it to do something...
+      // player.[methods]
+    },
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
@@ -358,6 +389,14 @@ export default {
       this.pageNo = 1;
       this.formItem = {};
       this.$refs[name].resetFields();
+    },
+    ok() {
+      this.$Message.info('Clicked ok');
+    },
+    cancel() {
+      this.$Message.info('Clicked cancel');
+      console.log(this.$Modal);
+      this.$Modal.remove();
     }
   }
 };
