@@ -333,7 +333,7 @@ export default {
     };
   },
   created() {
-    //this.getList();
+    this.getList();
   },
   methods: {
     // 改变日期区间的格式之后进行处理
@@ -404,20 +404,14 @@ export default {
     handleSubmit(name) {
       console.log(this.formValidate);
       this.getList();
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.getList();
-        } else {
-          this.$Message.error('查询条件格式有误，请重新填写');
-        }
-      });
     },
     // 获取表格数据
     async getList() {
       const res = await repay_repayUserOrSystem_list(this.formValidate);
-      if(res && res.code === 1){
+      console.log(res, '99999用户主动还款或者系统代扣列表查询');
+      if(res && res.code == 1){
         this.$Message.success('查询成功');
-        console.log(res, '用户主动还款或者系统代扣列表查询');
+
       }
 
 

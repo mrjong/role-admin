@@ -29,7 +29,8 @@ export default {
             ruleValidate:{},
 			userName: '',
 			isFullScreen: false,
-			openedSubmenuArr: this.$store.state.app.openedSubmenuArr
+			openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
+      productLineList:[],
 		};
 	},
 	created() {
