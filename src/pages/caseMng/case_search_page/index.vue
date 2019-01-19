@@ -166,7 +166,6 @@
           >
           <FormItem
             label="逾期天数:"
-            prop="overdueDays"
           >
             <Col
               :xs="11"
@@ -175,10 +174,15 @@
               :lg="11"
               span="11"
             >
+             <FormItem
+            prop="overdueDaysLt"
+          >
             <Input
               size="small"
+              clearable
               v-model="formItem.overdueDaysLt"
             ></Input>
+            </FormItem>
             </Col>
             <Col
               :xs="2"
@@ -196,10 +200,15 @@
               :lg="11"
               span="11"
             >
+               <FormItem
+            prop="overdueDaysBt"
+          >
             <Input
               size="small"
+              clearable
               v-model="formItem.overdueDaysBt"
             ></Input>
+             </FormItem>
             </Col>
           </FormItem>
           </Col>

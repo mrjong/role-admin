@@ -1,9 +1,17 @@
 export default {
 	name: 'case_search_page',
 	data() {
+		console.log(this.GLOBAL);
+		const validate_yqts = (rule, value, callback) => {
+            console.log(this.formItem.overdueDaysLt,this.formItem.overdueDaysBt)
+			if (this.formItem.overdueDaysLt&&this.formItem.overdueDaysBt&&this.formItem.overdueDaysLt<this.formItem.overdueDaysBt) {
+                callback(new Error("逾期开始天数不能大于逾期结束天数"))
+			}
+			callback();
+		};
 		return {
-            showPanel:false,
-            showPanel2:false,
+			showPanel: false,
+			showPanel2: false,
 			phoneCallList: [
 				{
 					value: 'New York',
@@ -82,15 +90,40 @@ export default {
 					label: 'Canberra'
 				}
 			],
-			modal12: false,
-			inputGrid: '',
-			modal11: false,
-			formValidate2: {},
 			ruleValidate: {
-				buffet_id: [
+				idNo: [
 					{
-						required: true,
-						message: '请输入网格编号',
+						pattern: this.GLOBAL.idNo,
+						message: '请输入正确身份证号',
+						trigger: 'blur'
+					}
+				],
+				mblNo: [
+					{
+						pattern: this.GLOBAL.mblNo,
+						message: '请输入正确手机号',
+						trigger: 'blur'
+					}
+				],
+				overdueDaysLt: [
+					{
+						pattern: this.GLOBAL.num,
+						message: '逾期天数为正整数',
+						trigger: 'blur'
+					},
+					{
+						validator: validate_yqts,
+						trigger: 'blur'
+					}
+				],
+				overdueDaysBt: [
+					{
+						pattern: this.GLOBAL.num,
+						message: '逾期天数为正整数',
+						trigger: 'blur'
+					},
+					{
+						validator: validate_yqts,
 						trigger: 'blur'
 					}
 				]
@@ -118,8 +151,8 @@ export default {
 					key: 'buffet_id'
 				},
 				{
-                    title: '餐柜编码',
-                    width: 120,
+					title: '餐柜编码',
+					width: 120,
 					searchOperator: '=',
 					key: 'buffet_code'
 				},
@@ -130,8 +163,8 @@ export default {
 				},
 				{
 					title: '餐柜添加时间',
-                    key: 'addtime',
-                    width: 3000,
+					key: 'addtime',
+					width: 3000,
 					sortable: true,
 					render: (h, params) => {
 						const row = params.row;
@@ -142,8 +175,8 @@ export default {
 					}
 				},
 				{
-                    title: '餐柜名称',
-                    width: 120,
+					title: '餐柜名称',
+					width: 120,
 					searchOperator: 'like',
 					key: 'buffet_name',
 					sortable: true
@@ -289,7 +322,6 @@ export default {
 		async getList() {
 			const searchParam = [];
 			console.log(this.getParam());
-		
 		},
 		// 重置
 		clearForm(name) {
