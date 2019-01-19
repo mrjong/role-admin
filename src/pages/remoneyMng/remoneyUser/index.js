@@ -1,4 +1,5 @@
 import { buffet_list } from '@/service/getData';
+import { repay_repayUserOrSystem_list } from '@/service/getData';
 export default {
   name: 'remoney_user',
   data() {
@@ -19,28 +20,43 @@ export default {
       showPanel2:false,
       productTypeList: [
         {
-          value: 'Ottawa',
-          label: 'Ottawa'
+          value: '01',
+          label: '还到'
         },
         {
-          value: 'Paris',
-          label: 'Paris'
+          value: '02',
+          label: '随行付钱包'
         },
         {
-          value: 'Canberra',
-          label: 'Canberra'
+          value: '03',
+          label: '商户贷'
         }
       ],
       orderStsList: [
         {
-          value: 'New York',
+          value: 'gbbg',
           label: 'New York'
+        }
+      ],
+      rutTypeList: [
+        {
+          value: '01',
+          label:'11'
+        },
+        {
+          value: '02',
+          label: '22',
+        },
+        {
+          value: '03',
+          label: '33'
         }
       ],
       modal12: false,
       inputGrid: '',
       modal11: false,
-      formValidate: {
+      startAndend:'', //还款日期区间
+      formValidate: { // 查询接口时候所需的参数值传递
         billNo: '1', //账单号,
         dkorgOrdNo: '2', // string 代扣订单号,
         userNm: '3', // 用户姓名,
@@ -50,11 +66,12 @@ export default {
         ordDt: '9', // 还款时间,
         acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口,
         rutCopyOrg: '15',// 代扣类型,
-        startAndend:'', //还款日期区间
         startRepayDate: '', //起始时间段
         endRepayDate: '', // 结束时间段
         repayOrdTyp: 'UR', //区分用户主动还款、系统代扣还款，UR：用户主动还款，SR：系统代扣还款
-        nametwo: '', //此处的名称必须要与 ruleValidate的里面具体的校验规则名称完全的保持一致性，不然会出现校验bug
+        pageNum: 1,
+        pageSize: 10,  // 每次页面请求数据
+        //nametwo: '', //此处的名称必须要与 ruleValidate的里面具体的校验规则名称完全的保持一致性，不然会出现校验bug
       },
       formValidate2: {},
       ruleValidate: {
@@ -67,15 +84,6 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      formValidate3: {
-        items: [
-          {
-            value: '',
-            index: 1,
-            status: 1
-          }
-        ]
-      },
       tableData: [
         {
           billNo: '1', //账单号
@@ -325,13 +333,16 @@ export default {
     };
   },
   created() {
-    this.getList();
+    //this.getList();
   },
   methods: {
     // 改变日期区间的格式之后进行处理
-    changeDange(){
-      console.log('123',this.formValidate.startAndend);
-      this.formValidate.startAndend[1].Date('yyyy-MM-dd');
+    changeDange(val1,val2){
+      this.formValidate.startRepayDate = val1[0];
+      this.formValidate.endRepayDate = val1[1];
+      console.log('123',this.formValidate);
+
+      //this.formValidate.startAndend[1].Date('yyyy-MM-dd');
     },
     // 页码改变的回调
     changePage(pageNo) {
@@ -391,6 +402,8 @@ export default {
       return searchParam;
     },
     handleSubmit(name) {
+      console.log(this.formValidate);
+      this.getList();
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.getList();
@@ -401,6 +414,13 @@ export default {
     },
     // 获取表格数据
     async getList() {
+      const res = await repay_repayUserOrSystem_list(this.formValidate);
+      if(res && res.code === 1){
+        this.$Message.success('查询成功');
+        console.log(res, '用户主动还款或者系统代扣列表查询');
+      }
+
+
       // const searchParam = [];
       // console.log(this.getParam());
       // const res = await buffet_list({
@@ -424,7 +444,7 @@ export default {
     // 重置
     clearForm(name) {
       this.pageNo = 1;
-      this.formItem = {};
+      this.formValidate= {};
       this.$refs[name].resetFields();
     }
   }
