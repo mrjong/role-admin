@@ -18,39 +18,38 @@ export const case_desc = {
 	component: () => import('@/pages/caseMng/case_desc_page')
 };
 
-// export const page404 = {
-// 	path: '/*',
-// 	name: 'error-404',
-// 	meta: {
-// 		title: '404-页面不存在'
-// 	},
-// 	component: () => import('@/pages/error-page/404.vue')
-// };
-//
-// export const page403 = {
-// 	path: '/403',
-// 	meta: {
-// 		title: '403-权限不足'
-// 	},
-// 	name: 'error-403',
-// 	component: () => import('@//pages/error-page/403.vue')
-// };
-//
-// export const page500 = {
-// 	path: '/500',
-// 	meta: {
-// 		title: '500-服务端错误'
-// 	},
-// 	name: 'error-500',
-// 	component: () => import('@/pages/error-page/500.vue')
-// };
-//
-// export const locking = {
-// 	path: '/locking',
-// 	name: 'locking',
-// 	component: () => import('@/components/lockscreen/components/locking-page.vue')
-// };
+export const page404 = {
+	path: '/*',
+	name: 'error-404',
+	meta: {
+		title: '404-页面不存在'
+	},
+	component: () => import('@/pages/common/error-page/404.vue')
+};
 
+export const page403 = {
+	path: '/403',
+	meta: {
+		title: '403-权限不足'
+	},
+	name: 'error-403',
+	component: () => import('@/pages/common/error-page/403.vue')
+};
+
+export const page500 = {
+	path: '/500',
+	meta: {
+		title: '500-服务端错误'
+	},
+	name: 'error-500',
+	component: () => import('@/pages/common/error-page/500.vue')
+};
+
+export const locking = {
+	path: '/locking',
+	name: 'locking',
+	component: () => import('@/components/lockscreen/components/locking-page.vue')
+};
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
 export const otherRouter = {
 	path: '/',
@@ -63,42 +62,66 @@ export const otherRouter = {
 			path: 'home',
 			title: { i18n: 'home' },
 			name: 'home',
-			component: () => import('@/pages/home/home.vue')
+			component: () => import('@/pages/common/home')
 		},
-		// {
-		// 	path: 'message',
-		// 	title: '消息中心',
-		// 	name: 'message_index',
-		// 	component: () => import('@/pages/message/message.vue')
-		// }
+		{
+			path: 'message',
+			title: '消息中心',
+			name: 'message_index',
+			component: () => import('@/pages/common/message/message.vue')
+		}
 	]
 };
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
-	// {
-	// 	path: '/demo',
-	// 	icon: 'ios-grid-view',
-	// 	name: 'demo',
-	// 	access: 1,
-	// 	title: '列表demo',
-	// 	component: Main,
-	// 	children: [
-	// 		{
-	// 			path: 'demo_list',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_list',
-	// 			title: 'demo列表',
-	// 			component: () => import('@/pages/demo/demo_list_page')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: 'demo详情',
-	// 			component: () => import('@/pages/demo/demo_desc_page')
-	// 		}
-	// 	]
-	// },
+	{
+		path: '/demo',
+		icon: 'ios-grid-view',
+		name: 'demo',
+		access: 1,
+		title: '列表demo',
+		component: Main,
+		children: [
+			{
+				path: 'demo_list',
+				icon: 'ios-list',
+				name: 'demo_list',
+				title: 'demo列表',
+				component: () => import('@/pages/demo/demo_list_page')
+			},
+			{
+				path: 'demo_desc',
+				icon: 'ios-list',
+				name: 'demo_desc',
+				title: 'demo详情',
+				component: () => import('@/pages/demo/demo_desc_page')
+			}
+		]
+    },
+    {
+		path: '/workflow',
+		icon: 'ios-grid-view',
+		name: 'workflow',
+		access: 1,
+		title: '工作流',
+		component: Main,
+		children: [
+			{
+				path: 'definition',
+				icon: 'ios-list',
+				name: 'definition',
+				title: '工作流定义',
+				component: () => import('@/pages/workflow/definition')
+			},
+			{
+				path: 'task',
+				icon: 'ios-list',
+				name: 'task',
+				title: '工作流任务',
+				component: () => import('@/pages/workflow/task')
+			},
+		]
+	},
 	{
 		path: '/caseMng',
 		icon: 'ios-grid-view',
@@ -129,37 +152,37 @@ export const appRouter = [
 			// }
 		]
 	},
-	// {
-	// 	path: '/demo',
-	// 	icon: 'ios-grid-view',
-	// 	name: 'demo',
-	// 	access: 1,
-	// 	title: '催收管理',
-	// 	component: Main,
-	// 	children: [
-	// 		{
-	// 			path: 'demo_list',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_list',
-	// 			title: '我的案件',
-	// 			component: () => import('@/pages/demo/demo_list.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '催收记录',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: '催收录音',
-	// 			title: '分案规则',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	// 		}
-	// 	]
-	// },
+	{
+		path: '/collection',
+		icon: 'ios-grid-view',
+		name: 'collection',
+		access: 1,
+		title: '催收管理',
+		component: Main,
+		children: [
+			{
+				path: 'my_case',
+				icon: 'ios-list',
+				name: 'my_case',
+				title: '我的案件',
+				component: () => import('@/pages/demo/demo_list_page/index.vue')
+			},
+			{
+				path: 'collection_records',
+				icon: 'ios-list',
+				name: 'collection_records',
+				title: '催收记录',
+				component: () => import('@/pages/demo/demo_desc_page/index.vue')
+			},
+			{
+				path: 'collection_recording',
+				icon: 'ios-list',
+				name: 'collection_recording',
+				title: '催收录音',
+				component: () => import('@/pages/collection/collection_recording_page/index.vue')
+			}
+		]
+	},
 	{
 		path: '/remoneyMng',
 		icon: 'ios-grid-view',
@@ -260,51 +283,51 @@ export const appRouter = [
 	// 		}
 	// 	]
 	// },
-	// {
-	// 	path: '/system',
-	// 	icon: 'ios-grid-view',
-	// 	name: 'system',
-	// 	access: 1,
-	// 	title: '系统管理',
-	// 	component: Main,
-	// 	children: [
-	//         {
-	// 			path: 'wkProcessDef_list',
-	// 			icon: 'ios-list',
-	// 			name: 'wkProcessDef_list',
-	// 			title: '系统角色管理',
-	// 			component: () => import('@/pages/system/wkProcessDef_list.vue')
-	// 		},
-	// 		{
-	// 			path: 'wkProcessDef_list',
-	// 			icon: 'ios-list',
-	// 			name: 'wkProcessDef_list',
-	// 			title: '系统用户管理',
-	// 			component: () => import('@/pages/system/wkProcessDef_list.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '人员管理',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	//         },
-	//         {
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '坐席关系维护',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	//         },
-	//         {
-	// 			path: 'wkProcessDef_list',
-	// 			icon: 'ios-list',
-	// 			name: 'wkProcessDef_list',
-	// 			title: '数据字典管理',
-	// 			component: () => import('@/pages/system/wkProcessDef_list.vue')
-	// 		},
-	// 	]
-	// }
+	{
+		path: '/system',
+		icon: 'ios-grid-view',
+		name: 'system',
+		access: 1,
+		title: '系统管理',
+		component: Main,
+		children: [
+	        {
+				path: 'wkProcessDef_list',
+				icon: 'ios-list',
+				name: 'wkProcessDef_list',
+				title: '系统角色管理',
+				component: () => import('@/pages/system/wkProcessDef_list.vue')
+			},
+			{
+				path: 'system_user',
+				icon: 'ios-list',
+				name: 'system_user',
+				title: '系统用户管理',
+				component: () => import('@/pages/system/system_user_page/index.vue')
+			},
+			{
+				path: 'user_manager',
+				icon: 'ios-list',
+				name: 'user_manager',
+				title: '人员管理',
+				component: () => import('@/pages/system/user_manager_page/index.vue')
+	        },
+	        {
+				path: 'relationship_maintain',
+				icon: 'ios-list',
+				name: 'relationship_maintain',
+				title: '坐席关系维护',
+				component: () => import('@/pages/system/relationship_maintain_page/index.vue')
+	        },
+	        {
+				path: 'data_dictionary',
+				icon: 'ios-list',
+				name: 'data_dictionary',
+				title: '数据字典管理',
+				component: () => import('@/pages/system/data_dictionary_page/index.vue')
+			},
+		]
+	}
 ];
 
 // 所有上面定义的路由都要写在下面的routers里
@@ -314,4 +337,7 @@ export const routers = [
 	// preview,
     ...appRouter,
 	case_desc,
+	page500,
+	page403,
+	page404,
 ];

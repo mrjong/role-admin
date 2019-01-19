@@ -1,4 +1,4 @@
-import fetch from '../libs/fetch';
+import fetch from '@/libs/fetch';
 import qs from 'qs';
 /**
  * 登录
@@ -43,7 +43,7 @@ fetch({
 
 
 /**
- * 工作流保存
+ * 菜单权限
  */
 export const findTreeByCurrentUser = (obj = {}) =>
 fetch({

@@ -230,6 +230,98 @@
       </div>
     </Card>
 
+ <!-- 检索条件 -->
+      <Card class="vue-panel">
+        <p
+          slot="title"
+          @click="showPanel=!showPanel"
+        >
+          <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
+          张三（男/22）
+
+          <Button
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+          >申请减免</Button>
+          <Button
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+          >申请划扣</Button>
+          <Button
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+          >申请还款</Button>
+          <Button
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+          >申请仲裁</Button>
+
+          <Button
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+          >下一个</Button>
+          <Button
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+          >上一个</Button>
+        </p>
+        <div class="panel-desc">
+          <Row :gutter="10">
+            <Col span="12">
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="24"
+            >
+            <div class="panel-desc-title">
+              身份证号：<span>360732199105251538</span>
+            </div>
+            </Col>
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="24"
+            >
+            <div class="panel-desc-title">
+              逾期应还金额：<span>675.00</span>
+            </div>
+            </Col>
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="24"
+            >
+            <div class="panel-desc-title">
+              总逾期期数：<span>2018-09-10 15:25:16</span>
+            </div>
+            </Col>
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="24"
+            >
+            <div class="panel-desc-title">
+              家庭住址：<span>甘肃省兰州市兰州市城关区南昌路1852号703室</span>
+            </div>
+            </Col>
+            </Col>
+            <Col>
+            
+            </Col>
+
+          </Row>
+        </div>
+      </Card>
     <!-- 检索结果 -->
     <Card class="vue-panel-table">
       <p>
@@ -291,4 +383,4 @@
     </Card>
   </div>
 </template>
-<script src="./demo_list.js"></script>
+<script src="./index.js"></script>

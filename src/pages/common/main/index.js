@@ -30,8 +30,8 @@ export default {
 		};
 	},
 	created() {
-        this.menuData()
-    },
+		this.menuData();
+	},
 	computed: {
 		menuList() {
 			return this.$store.state.app.menuList;
@@ -80,10 +80,24 @@ export default {
 			this.shrink = !this.shrink;
 		},
 		async handleClickUserDropdown(name) {
-			if (name === 'ownSpace') {
-				util.openNewPage(this, 'ownspace_index');
-				this.$router.push({
-					name: 'ownspace_index'
+			if (name === 'editPwd') {
+				this.$Modal.confirm({
+					render: (h) => {
+						return h('Input', {
+							props: {
+                                style:'margin-top:10px',
+                                type:'password',
+								value: this.value,
+								autofocus: true,
+								placeholder: '请输入密码'
+							},
+							on: {
+								input: (val) => {
+									this.value = val;
+								}
+							}
+						});
+					}
 				});
 			} else if (name === 'loginout') {
 				// 退出登录
