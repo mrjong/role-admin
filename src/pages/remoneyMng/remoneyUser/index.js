@@ -11,22 +11,13 @@ export default {
         callback();
       }
     };
+    var alignCenter = 'center';
+    var widthVal = 180;
+    var widthMidVal = 100;
     return {
       showPanel:false,
       showPanel2:false,
-      phoneCallList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
+      productTypeList: [
         {
           value: 'Ottawa',
           label: 'Ottawa'
@@ -40,74 +31,34 @@ export default {
           label: 'Canberra'
         }
       ],
-      productTimeList: [
+      orderStsList: [
         {
           value: 'New York',
           label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
-      productLineList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
         }
       ],
       modal12: false,
       inputGrid: '',
       modal11: false,
       formValidate: {
+        billNo: '1', //账单号,
+        dkorgOrdNo: '2', // string 代扣订单号,
+        userNm: '3', // 用户姓名,
+        mblNo: '5', // 手机号,
+        ordSts: '7', // 订单状态 借口中取,
+        orgFnlMsg: '8', //失败原因,
+        ordDt: '9', // 还款时间,
+        acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口,
+        rutCopyOrg: '15',// 代扣类型,
+        startAndend:'', //还款日期区间
+        startRepayDate: '', //起始时间段
+        endRepayDate: '', // 结束时间段
+        repayOrdTyp: 'UR', //区分用户主动还款、系统代扣还款，UR：用户主动还款，SR：系统代扣还款
         nametwo: '', //此处的名称必须要与 ruleValidate的里面具体的校验规则名称完全的保持一致性，不然会出现校验bug
       },
       formValidate2: {},
       ruleValidate: {
-        buffet_id: [
-          {
-            required: true,
-            message: '请输入网格编号',
-            trigger: 'blur'
-          },
           //ruleValidate添加表单的校验规则，用来提示用户的输入法则，具体使用在表单里面 ：rule='ruleValidate'直接使用即可
-        ],
         nametwo: [
           { required: true, message: '手机号不能为空',trigger: 'blur' },
           { validator: validatetel, trigger: 'blur'}
@@ -125,111 +76,251 @@ export default {
           }
         ]
       },
-      formItem: {
-        phoneNum: '',
-      },
-      tableData: [],
+      tableData: [
+        {
+          billNo: '1', //账单号
+          dkorgOrdNo: '2', // string 代扣订单号
+          userNm: '3', // 用户姓名
+          idNoHid: '4', // 身份证号
+          mblNoHid: '5', // 手机号
+          repayOrdAmt: '6', //还款金额
+          ordSts: '7', // 订单状态 借口中取
+          orgFnlMsg: '8', //失败原因,
+          ordDt: '9', // 还款时间,
+          crdAcTyp: '10', //卡类型
+          crdCorpOrg: '11',// 还款银行
+          crdNoLast: '12', //还款银行四位
+          repayOrdPrcp: '13', // 已还本金
+          acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
+          rutCopyOrg: '15',// 代扣类型
+        },
+        {
+          billNo: '1', //账单号
+          dkorgOrdNo: '2', // string 代扣订单号
+          userNm: '3', // 用户姓名
+          idNoHid: '4', // 身份证号
+          mblNoHid: '5', // 手机号
+          repayOrdAmt: '6', //还款金额
+          ordSts: '7', // 订单状态 借口中取
+          orgFnlMsg: '8', //失败原因,
+          ordDt: '9', // 还款时间,
+          crdAcTyp: '10', //卡类型
+          crdCorpOrg: '11',// 还款银行
+          crdNoLast: '12', //还款银行四位
+          repayOrdPrcp: '13', // 已还本金
+          acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
+          rutCopyOrg: '15',// 代扣类型
+        },
+        {
+          billNo: '1', //账单号
+          dkorgOrdNo: '2', // string 代扣订单号
+          userNm: '3', // 用户姓名
+          idNoHid: '4', // 身份证号
+          mblNoHid: '5', // 手机号
+          repayOrdAmt: '6', //还款金额
+          ordSts: '7', // 订单状态 借口中取
+          orgFnlMsg: '8', //失败原因,
+          ordDt: '9', // 还款时间,
+          crdAcTyp: '10', //卡类型
+          crdCorpOrg: '11',// 还款银行
+          crdNoLast: '12', //还款银行四位
+          repayOrdPrcp: '13', // 已还本金
+          acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
+          rutCopyOrg: '15',// 代扣类型
+        },
+        {
+          billNo: '1', //账单号
+          dkorgOrdNo: '2', // string 代扣订单号
+          userNm: '3', // 用户姓名
+          idNoHid: '4', // 身份证号
+          mblNoHid: '5', // 手机号
+          repayOrdAmt: '6', //还款金额
+          ordSts: '7', // 订单状态 借口中取
+          orgFnlMsg: '8', //失败原因,
+          ordDt: '9', // 还款时间,
+          crdAcTyp: '10', //卡类型
+          crdCorpOrg: '11',// 还款银行
+          crdNoLast: '12', //还款银行四位
+          repayOrdPrcp: '13', // 已还本金
+          acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
+          rutCopyOrg: '15',// 代扣类型
+        }
+      ],
       tableColumns: [
         {
-          title: '餐柜ID',
-          width: 100,
+          type: 'selection',   // 通过给columns 数据设置 type:'selection'即可自动开启多选功能
+          width: 60,
+          align: alignCenter,
+        },
+        {
+          title: '序号',
+          width: 60,
           searchOperator: '=',
-          sortable: true,
+          align: alignCenter,
           key: 'buffet_id'
         },
         {
-          title: '餐柜编码',
+          title: '账单号',
           searchOperator: '=',
-          key: 'buffet_code'
+          key: 'billNo',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal,
         },
         {
-          title: '设备ID',
-          searchOperator: '=',
-          key: 'device_id'
-        },
-        {
-          title: '餐柜添加时间',
-          key: 'addtime',
-          sortable: true,
-          width: 160,
-          render: (h, params) => {
-            const row = params.row;
-            const addtime = row.addtime
-              ? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-              : row.addtime;
-            return h('span', addtime);
-          }
-        },
-        {
-          title: '餐柜名称',
+          title: '代扣订单号',
           searchOperator: 'like',
-          key: 'buffet_name',
-          sortable: true
+          key: 'dkorgOrdNo',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal,
         },
         {
-          title: '餐柜详细地址',
+          title: '客户姓名',
           searchOperator: 'like',
-          key: 'address',
-          render: (h, params) => {
-            return h('div', [
-              h(
-                'Tooltip',
-                {
-                  style: {
-                    margin: '0 5px'
-                  },
-                  props: {
-                    content: params.row.address,
-                    placement: 'top'
-                  }
-                },
-                [ h('div', {}, params.row.address) ]
-              )
-            ]);
-          }
+          key: 'userNm',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal,
         },
         {
-          title: '操作',
-          width: 100,
-          key: 'edit',
-          render: (h, params) => {
-            return h('div', [
-              h(
-                'Poptip',
-                {
-                  props: {
-                    confirm: true,
-                    title: '您确定要删除这条数据吗?',
-                    transfer: true
-                  },
-                  on: {
-                    'on-ok': () => {
-                      this.deleteGoods(params.row.buffet_id);
-                    }
-                  }
-                },
-                [
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {}
-                    },
-                    '删除'
-                  ),
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {}
-                    },
-                    '删除'
-                  )
-                ]
-              )
-            ]);
-          }
-        }
+          title: '身份证号',
+          searchOperator: 'like',
+          key: 'idNoHid',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal,
+        },
+        {
+          title: '手机号',
+          searchOperator: 'like',
+          key: 'mblNoHid',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal,
+        },
+        {
+          title: '还款金额',
+          searchOperator: 'like',
+          key: 'repayOrdAmt',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal,
+        },
+        {
+          title: '订单状态',
+          searchOperator: 'like',
+          key: 'ordSts',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal,
+        },
+        {
+          title: '失败原因',
+          searchOperator: 'like',
+          key: 'orgFnlMsg',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal,
+        },
+        {
+          title: '还款日期',
+          searchOperator: 'like',
+          key: 'ordDt',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal,
+        },
+        {
+          title: '卡类型',
+          searchOperator: 'like',
+          key: 'crdAcTyp',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal,
+        },
+        {
+          title: '还款银行',
+          searchOperator: 'like',
+          key: 'crdCorpOrg',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal,
+        },
+        {
+          title: '还款银行卡后四位',
+          searchOperator: 'like',
+          key: 'crdNoLast',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal,
+        },
+        {
+          title: '已还本金',
+          searchOperator: 'like',
+          key: 'repayOrdPrcp',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal,
+        },
+        {
+          title: '产品类型',
+          searchOperator: 'like',
+          key: 'acTyp',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal,
+        },
+        {
+          title: '代扣通道',
+          searchOperator: 'like',
+          key: 'rutCopyOrg',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal,
+        },
+        // {
+        //   title: '操作',
+        //   width: 100,
+        //   key: 'edit',
+        //   render: (h, params) => {
+        //     return h('div', [
+        //       h(
+        //         'Poptip',
+        //         {
+        //           props: {
+        //             confirm: true,
+        //             title: '您确定要删除这条数据吗?',
+        //             transfer: true
+        //           },
+        //           on: {
+        //             'on-ok': () => {
+        //               this.deleteGoods(params.row.buffet_id);
+        //             }
+        //           }
+        //         },
+        //         [
+        //           h(
+        //             'a',
+        //             {
+        //               class: 'edit-btn',
+        //               props: {}
+        //             },
+        //             '删除'
+        //           ),
+        //           h(
+        //             'a',
+        //             {
+        //               class: 'edit-btn',
+        //               props: {}
+        //             },
+        //             '删除'
+        //           )
+        //         ]
+        //       )
+        //     ]);
+        //   }
+        // }
       ]
     };
   },
@@ -237,6 +328,11 @@ export default {
     this.getList();
   },
   methods: {
+    // 改变日期区间的格式之后进行处理
+    changeDange(){
+      console.log('123',this.formValidate.startAndend);
+      this.formValidate.startAndend[1].Date('yyyy-MM-dd');
+    },
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;

@@ -33,12 +33,11 @@
           >
             <FormItem
               label="客户名称:"
-              prop="device_id"
             >
               <Input
                 size="small"
                 clearable
-                v-model="formItem.buffet_name"
+                v-model="formValidate.userNm"
                 placeholder="请输入客户名称"
               ></Input>
             </FormItem>
@@ -53,12 +52,11 @@
             <FormItem
               span="6"
               label="手机号:"
-              prop="nametwo"
             >
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.nametwo"
+                v-model="formValidate.mblNo"
                 placeholder="请输入手机号"
               ></Input>
             </FormItem>
@@ -72,16 +70,17 @@
           >
             <FormItem
               label="还款日期:"
-              prop="addtime"
             >
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="formItem.addtime"
-                format="yyyy-MM-dd HH:mm:ss"
+                v-model="formValidate.startAndend"
+                format="yyyy-MM-dd"
                 type="datetimerange"
                 placement="bottom-start"
                 placeholder="请选择还款时间区间"
+                @on-change="changeDange"
+                @on-ok="changeDange"
               ></DatePicker>
             </FormItem>
           </Col>
@@ -95,32 +94,12 @@
             span="6"
           >
             <FormItem
-              label="案件编码:"
-              prop="device_id"
-            >
-              <Input
-                size="small"
-                clearable
-                v-model="formItem.device_id"
-                placeholder="请输入案件编码"
-              />
-            </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
               label="账单号:"
-              prop="buffet_id"
             >
               <Input
                 size="small"
                 clearable
-                v-model="formItem.buffet_name"
+                v-model="formValidate.billNo"
                 placeholder="请输入账单号"
               ></Input>
             </FormItem>
@@ -134,14 +113,35 @@
           >
             <FormItem
               label="订单状态:"
-              prop="buffet_id"
             >
               <Select
                 size="small"
-                v-model="formItem.productTime"
+                v-model="formValidate.ordSts"
               >
                 <Option
-                  v-for="item in productTimeList"
+                  v-for="item in orderStsList"
+                  :value="item.value"
+                  :key="item.value"
+                >{{ item.label }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+            <FormItem
+              label="产品类型:"
+            >
+              <Select
+                size="small"
+                v-model="formValidate.acTyp"
+              >
+                <Option
+                  v-for="item in productTypeList"
                   :value="item.value"
                   :key="item.value"
                 >{{ item.label }}</Option>
@@ -158,36 +158,12 @@
             span="6"
           >
             <FormItem
-              label="产品类型:"
-              prop="buffet_id"
-            >
-              <Select
-                size="small"
-                v-model="formItem.productTime"
-              >
-                <Option
-                  v-for="item in productTimeList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
-              </Select>
-            </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
               label="代扣类型:"
-              prop="address"
             >
               <Input
                 size="small"
                 clearable
-                v-model="formItem.address"
+                v-model="formValidate.rutCopyOrg"
                 placeholder="请输入代扣类型"
               ></Input>
             </FormItem>
@@ -201,12 +177,11 @@
           >
             <FormItem
               label="代扣订单号:"
-              prop="address"
             >
               <Input
                 size="small"
                 clearable
-                v-model="formItem.address"
+                v-model="formValidate.dkorgOrdNo"
                 placeholder="请输入代扣订单号"
               ></Input>
             </FormItem>
@@ -221,7 +196,7 @@
             <FormItem>
               <Button
                 type="primary"
-                @click="handleSubmit('formItem')"
+                @click="handleSubmit('formValidate')"
                 style="width:80px"
                 long
                 size="small"
@@ -230,7 +205,7 @@
                 size="small"
                 type="ghost"
                 style="width:80px;margin-left: 8px"
-                @click="clearForm('formItem')"
+                @click="clearForm('formValidate')"
               >重置</Button>
             </FormItem>
           </Col>
@@ -256,9 +231,11 @@
 
       <div v-if="!showPanel2">
         <Table
+          border
           :data="tableData"
           :columns="tableColumns"
           stripe
+          class="tableBox"
         ></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
@@ -284,3 +261,12 @@
   </div>
 </template>
 <script src="./index.js"></script>
+<style lang="less">
+  .tableBox {
+    overflow-x: scroll ;
+    overflow-y: hidden;
+    .tableMainW {
+      min-width: 400px;
+    }
+  }
+</style>
