@@ -1,14 +1,10 @@
+import formValidateFun from '@/mixin/formValidateFun';
 export default {
 	name: 'case_search_page',
+	mixins: [ formValidateFun ],
 	data() {
 		console.log(this.GLOBAL);
-		const validate_yqts = (rule, value, callback) => {
-            console.log(this.formItem.overdueDaysLt,this.formItem.overdueDaysBt)
-			if (this.formItem.overdueDaysLt&&this.formItem.overdueDaysBt&&this.formItem.overdueDaysLt<this.formItem.overdueDaysBt) {
-                callback(new Error("逾期开始天数不能大于逾期结束天数"))
-			}
-			callback();
-		};
+
 		return {
 			showPanel: false,
 			showPanel2: false,
@@ -112,7 +108,7 @@ export default {
 						trigger: 'blur'
 					},
 					{
-						validator: validate_yqts,
+						validator: this.validate_yqts_start,
 						trigger: 'blur'
 					}
 				],
@@ -123,7 +119,29 @@ export default {
 						trigger: 'blur'
 					},
 					{
-						validator: validate_yqts,
+						validator: this.validate_yqts_end,
+						trigger: 'blur'
+					}
+				],
+				billOvduAmtLt: [
+					{
+						pattern: this.GLOBAL.money,
+						message: '金额格式不正确',
+						trigger: 'blur'
+					},
+					{
+						validator: this.validate_yqyhje_start,
+						trigger: 'blur'
+					}
+				],
+				billOvduAmtBt: [
+					{
+						pattern: this.GLOBAL.money,
+						message: '金额格式不正确',
+						trigger: 'blur'
+					},
+					{
+						validator: this.validate_yqyhje_end,
 						trigger: 'blur'
 					}
 				]

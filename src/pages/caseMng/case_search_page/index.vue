@@ -38,6 +38,7 @@
             prop="caseHandleStatus"
           >
             <Select
+              clearable
               size="small"
               placeholder="请选择案件状态"
               v-model="formItem.caseHandleStatus"
@@ -64,6 +65,7 @@
           >
             <Select
               size="small"
+              clearable
               placeholder="请选择产品线"
               v-model="formItem.prdTyp"
             >
@@ -89,6 +91,7 @@
           >
             <Select
               size="small"
+              clearable
               placeholder="请选择产品期数"
               v-model="formItem.perdCnt"
             >
@@ -164,9 +167,7 @@
             :lg="6"
             span="6"
           >
-          <FormItem
-            label="逾期天数:"
-          >
+          <FormItem label="逾期天数:">
             <Col
               :xs="11"
               :sm="11"
@@ -174,14 +175,12 @@
               :lg="11"
               span="11"
             >
-             <FormItem
-            prop="overdueDaysLt"
-          >
-            <Input
-              size="small"
-              clearable
-              v-model="formItem.overdueDaysLt"
-            ></Input>
+            <FormItem prop="overdueDaysLt">
+              <Input
+                size="small"
+                clearable
+                v-model="formItem.overdueDaysLt"
+              ></Input>
             </FormItem>
             </Col>
             <Col
@@ -200,15 +199,13 @@
               :lg="11"
               span="11"
             >
-               <FormItem
-            prop="overdueDaysBt"
-          >
-            <Input
-              size="small"
-              clearable
-              v-model="formItem.overdueDaysBt"
-            ></Input>
-             </FormItem>
+            <FormItem prop="overdueDaysBt">
+              <Input
+                size="small"
+                clearable
+                v-model="formItem.overdueDaysBt"
+              ></Input>
+            </FormItem>
             </Col>
           </FormItem>
           </Col>
@@ -219,10 +216,7 @@
             :lg="6"
             span="6"
           >
-          <FormItem
-            label="逾期应还金额:"
-            prop="device_id"
-          >
+          <FormItem label="逾期应还金额:">
             <Col
               :xs="11"
               :sm="11"
@@ -230,10 +224,13 @@
               :lg="11"
               span="11"
             >
-            <Input
-              size="small"
-              v-model="formItem.billOvduAmtLt"
-            ></Input>
+            <FormItem prop="billOvduAmtLt">
+              <Input
+                size="small"
+                clearable
+                v-model="formItem.billOvduAmtLt"
+              ></Input>
+            </FormItem>
             </Col>
             <Col
               :xs="2"
@@ -251,10 +248,13 @@
               :lg="11"
               span="11"
             >
-            <Input
-              size="small"
-              v-model="formItem.billOvduAmtBt"
-            ></Input>
+            <FormItem prop="billOvduAmtBt">
+              <Input
+                size="small"
+                clearable
+                v-model="formItem.billOvduAmtBt"
+              ></Input>
+            </FormItem>
             </Col>
           </FormItem>
           </Col>
@@ -334,6 +334,8 @@
           >
             <Select
               size="small"
+              clearable
+              placeholder="请选择信用级别"
               v-model="formItem.creditLevel"
             >
               <Option
