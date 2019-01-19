@@ -29,12 +29,12 @@
           >
             <img
               v-show="!shrink"
-              src="../../../images/logo.png"
+              src="../../../assets/images/logo.png"
               key="max-logo"
             />
             <img
               v-show="shrink"
-              src="../../../images/logo-min.jpg"
+              src="../../../assets/images/logo-min.jpg"
               key="min-logo"
             />
           </div>

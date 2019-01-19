@@ -1,4 +1,4 @@
-import fetch from '../libs/fetch';
+import fetch from '@/libs/fetch';
 import qs from 'qs';
 /**
  * 登录

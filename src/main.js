@@ -4,24 +4,17 @@ import { router } from './router/index';
 import { appRouter } from './router/router';
 import store from './store';
 import App from './app.vue';
-import '@/locale';
 import 'iview/dist/styles/iview.css';
-import VueI18n from 'vue-i18n';
-import fetch from './libs/fetch';
 import filters from '@/filters';
-
+import validate from '@/libs/validate';
+Object.keys(validate).forEach(k => {
+    Vue.prototype[`${k}`] = validate[k];
+});
 Object.keys(filters).forEach(k => {
     Vue.filter(k, filters[k])
 });
-Vue.use(VueI18n);
 Vue.use(iView);
-// Vue.prototype.BASEURL = 'http://172.18.40.116:8080'
 
-// // 组件之间通信 eventBus
-// Vue.prototype.$eventBus = new Vue();
-
-// 将API方法绑定到全局
-Vue.prototype.$fetch = fetch;
 new Vue({
     el: '#app',
     router: router,

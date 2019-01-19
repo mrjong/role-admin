@@ -21,7 +21,7 @@
         v-if="!showPanel"
         ref="formItem"
         :model="formItem"
-        :label-width="90"
+        :label-width="95"
         :rules="ruleValidate"
       >
         <Row>
@@ -35,11 +35,12 @@
           <FormItem
             span="6"
             label="案件状态:"
-            prop="buffet_id"
+            prop="caseHandleStatus"
           >
             <Select
               size="small"
-              v-model="formItem.productLine"
+              placeholder="请选择案件状态"
+              v-model="formItem.caseHandleStatus"
             >
               <Option
                 v-for="item in productLineList"
@@ -59,11 +60,12 @@
           <FormItem
             span="6"
             label="产品线:"
-            prop="buffet_id"
+            prop="prdTyp"
           >
             <Select
               size="small"
-              v-model="formItem.productLine"
+              placeholder="请选择产品线"
+              v-model="formItem.prdTyp"
             >
               <Option
                 v-for="item in productLineList"
@@ -83,11 +85,12 @@
           <FormItem
             span="6"
             label="产品期数:"
-            prop="buffet_id"
+            prop="perdCnt"
           >
             <Select
               size="small"
-              v-model="formItem.productLine"
+              placeholder="请选择产品期数"
+              v-model="formItem.perdCnt"
             >
               <Option
                 v-for="item in productLineList"
@@ -106,13 +109,13 @@
           >
           <FormItem
             label="客户姓名:"
-            prop="device_id"
+            prop="userNm"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.device_id"
-              placeholder="请输入设备ID"
+              v-model="formItem.userNm"
+              placeholder="请输入客户姓名"
             />
           </FormItem>
           </Col>
@@ -125,13 +128,13 @@
           >
           <FormItem
             label="身份证号:"
-            prop="device_id"
+            prop="idNo"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.device_id"
-              placeholder="请输入设备ID"
+              v-model="formItem.idNo"
+              placeholder="请输入身份证号"
             />
           </FormItem>
           </Col>
@@ -144,13 +147,13 @@
           >
           <FormItem
             label="手机号:"
-            prop="device_id"
+            prop="mblNo"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.device_id"
-              placeholder="请输入设备ID"
+              v-model="formItem.mblNo"
+              placeholder="请输入手机号"
             />
           </FormItem>
           </Col>
@@ -163,14 +166,44 @@
           >
           <FormItem
             label="逾期天数:"
-            prop="device_id"
+            prop="overdueDays"
           >
-            <InputNumber :max="10" size="small" :min="1" v-model="value1"></InputNumber>
-            <span>-</span>
-            <InputNumber :max="10" size="small" :min="1" v-model="value1"></InputNumber>
+            <Col
+              :xs="11"
+              :sm="11"
+              :md="11"
+              :lg="11"
+              span="11"
+            >
+            <Input
+              size="small"
+              v-model="formItem.overdueDaysLt"
+            ></Input>
+            </Col>
+            <Col
+              :xs="2"
+              :sm="2"
+              :md="2"
+              :lg="2"
+              span="2"
+            >
+            <div class="text-center">-</div>
+            </Col>
+            <Col
+              :xs="11"
+              :sm="11"
+              :md="11"
+              :lg="11"
+              span="11"
+            >
+            <Input
+              size="small"
+              v-model="formItem.overdueDaysBt"
+            ></Input>
+            </Col>
           </FormItem>
           </Col>
-           <Col
+          <Col
             :xs="24"
             :sm="24"
             :md="6"
@@ -181,12 +214,42 @@
             label="逾期应还金额:"
             prop="device_id"
           >
-            <InputNumber :max="10" size="small" :min="1" v-model="value1"></InputNumber>
-            <span>-</span>
-            <InputNumber :max="10" size="small" :min="1" v-model="value1"></InputNumber>
+            <Col
+              :xs="11"
+              :sm="11"
+              :md="11"
+              :lg="11"
+              span="11"
+            >
+            <Input
+              size="small"
+              v-model="formItem.billOvduAmtLt"
+            ></Input>
+            </Col>
+            <Col
+              :xs="2"
+              :sm="2"
+              :md="2"
+              :lg="2"
+              span="2"
+            >
+            <div class="text-center">-</div>
+            </Col>
+            <Col
+              :xs="11"
+              :sm="11"
+              :md="11"
+              :lg="11"
+              span="11"
+            >
+            <Input
+              size="small"
+              v-model="formItem.billOvduAmtBt"
+            ></Input>
+            </Col>
           </FormItem>
           </Col>
-<Col
+          <Col
             :xs="24"
             :sm="24"
             :md="6"
@@ -195,13 +258,13 @@
           >
           <FormItem
             label="案件编号:"
-            prop="device_id"
+            prop="caseNo"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.device_id"
-              placeholder="请输入设备ID"
+              v-model="formItem.caseNo"
+              placeholder="请输入案件编号"
             />
           </FormItem>
           </Col>
@@ -214,24 +277,24 @@
           >
           <FormItem
             label="账单号:"
-            prop="device_id"
+            prop="billNo"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.device_id"
-              placeholder="请输入设备ID"
+              v-model="formItem.billNo"
+              placeholder="请输入账单号"
             />
           </FormItem>
           </Col>
-             <Col
+          <Col
             :xs="24"
             :sm="24"
             :md="6"
             :lg="6"
             span="6"
           >
-          <FormItem
+          <!-- <FormItem
             span="6"
             label="还款状态:"
             prop="buffet_id"
@@ -246,9 +309,9 @@
                 :key="item.value"
               >{{ item.label }}</Option>
             </Select>
-          </FormItem>
+          </FormItem> -->
           </Col>
-            <Col
+          <Col
             :xs="24"
             :sm="24"
             :md="6"
@@ -258,11 +321,11 @@
           <FormItem
             span="6"
             label="信用级别:"
-            prop="buffet_id"
+            prop="creditLevel"
           >
             <Select
               size="small"
-              v-model="formItem.productLine"
+              v-model="formItem.creditLevel"
             >
               <Option
                 v-for="item in productLineList"
@@ -270,88 +333,6 @@
                 :key="item.value"
               >{{ item.label }}</Option>
             </Select>
-          </FormItem>
-          </Col>
-
-
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            label="添加时间:"
-            prop="addtime"
-          >
-            <DatePicker
-              size="small"
-              style="width:100%"
-              v-model="formItem.addtime"
-              format="yyyy-MM-dd HH:mm:ss"
-              type="datetimerange"
-              placement="bottom-start"
-              placeholder="请选择餐柜添加时间"
-            ></DatePicker>
-          </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            label="设备ID:"
-            prop="device_id"
-          >
-            <Input
-              size="small"
-              clearable
-              v-model="formItem.device_id"
-              placeholder="请输入设备ID"
-            />
-          </FormItem>
-          </Col>
-
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            label="餐柜名称:"
-            prop="buffet_id"
-          >
-            <Input
-              size="small"
-              clearable
-              v-model="formItem.buffet_name"
-              placeholder="请输入餐柜名称"
-            ></Input>
-          </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            label="餐柜地址:"
-            prop="address"
-          >
-            <Input
-              size="small"
-              clearable
-              v-model="formItem.address"
-              placeholder="请输入餐柜详细地址"
-            ></Input>
           </FormItem>
           </Col>
           <Col
