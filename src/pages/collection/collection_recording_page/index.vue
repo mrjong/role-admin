@@ -117,7 +117,14 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-        <Table :data="tableData" :columns="tableColumns" stripe width="1200" size="small" align="center"></Table>
+        <Table
+          :data="tableData"
+          :columns="tableColumns"
+          stripe
+          width="1200"
+          size="small"
+          align="center"
+        ></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div style="float: right;">
@@ -137,9 +144,36 @@
         </div>
       </div>
     </Card>
+    <!-- modal -->
+    <div v-if="modal1" class="modal_wrap">
+      <Modal v-model="modal1" title="录音播放" @on-ok="ok" @on-cancel="cancel" :transfer='false'>
+        <video-player
+          class="video-player-box"
+          ref="videoPlayer"
+          :options="playerOptions"
+          :playsinline="true"
+          customEventName="customstatechangedeventname"
+          @play="onPlayerPlay($event)"
+          @pause="onPlayerPause($event)"
+          @ended="onPlayerEnded($event)"
+          @waiting="onPlayerWaiting($event)"
+          @statechanged="playerStateChanged($event)"
+          @ready="playerReadied"
+        ></video-player>
+      </Modal>
+    </div>
   </div>
 </template>
+
 <script src="./index.js"></script>
+
+<style lang="less">
+.video-player-box,
+.video-js, #modal_wrap{
+  width: 100%;
+  box-sizing: border-box;
+}
+</style>
 
 
 
