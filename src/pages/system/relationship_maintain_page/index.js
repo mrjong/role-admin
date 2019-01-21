@@ -1,10 +1,18 @@
 import { buffet_list } from '@/service/getData';
+import Addform from './components/add_role_page'
+import Reviseform from './components/revise_role_page'
 export default {
   name: 'demo_list',
+  components: {
+    Addform,
+    Reviseform,
+  },
   data() {
     return {
       showPanel: false,
       showPanel2: false,
+      modal: false,
+      modal2: false,
       phoneCallList: [
         {
           value: 'New York',
@@ -31,58 +39,7 @@ export default {
           label: 'Canberra'
         }
       ],
-      productTimeList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
-      productLineList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
+
       modal12: false,
       inputGrid: '',
       modal11: false,
@@ -126,45 +83,10 @@ export default {
           align: 'center'
         },
         {
-          title: '操作',
-          width: 100,
-          key: 'edit',
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h(
-                'Poptip',
-                {
-                  props: {
-                    confirm: true,
-                    title: '您确定要删除这条数据吗?',
-                    transfer: true
-                  },
-                  on: {
-                    'on-ok': () => {
-                      this.deleteGoods(params.row.recording_id);
-                    }
-                  }
-                },
-                [
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {}
-                    },
-                    '播放'
-                  )
-                ]
-              )
-            ]);
-          }
-        },
-        {
-          title: '时长',
+          title: '坐席编号',
           width: 100,
           searchOperator: '=',
-          key: 'time_length',
+          key: 'uuid',
           align: 'center'
         },
         // {
@@ -181,17 +103,23 @@ export default {
         //   }
         // },
         {
-          title: '客户姓名',
+          title: '登录账号',
           searchOperator: 'like',
-          key: 'client_name',
+          key: 'loginId',
           sortable: true,
           align: 'center'
         },
         {
-          title: '关系',
-          width: 80,
+          title: '员工姓名',
           searchOperator: 'like',
-          key: 'relation',
+          key: 'empno',
+          sortable: true,
+          align: 'center'
+        },
+        {
+          title: '接听方式',
+          searchOperator: 'like',
+          key: 'extenType',
           align: 'center'
           // render: (h, params) => {
           //   return h('div', [
@@ -212,51 +140,79 @@ export default {
           // }
         },
         {
-          title: '呼叫电话',
+          title: '状态',
           searchOperator: '=',
-          key: 'call_number',
+          key: 'status',
           align: 'center'
         },
         {
-          title: '呼叫开始时间',
+          title: '创建时间',
           searchOperator: '=',
-          key: 'call_begin_time',
+          key: 'createTime',
           ellipsis: true,
           align: 'center'
         },
         {
-          title: '呼叫结束时间',
+          title: '修改时间',
           searchOperator: '=',
-          key: 'call_end_time',
+          key: 'updateTime',
           ellipsis: true,
           align: 'center'
         },
         {
-          title: '经办人',
+          title: '创建人',
           searchOperator: '=',
-          key: 'operator',
+          key: 'createUser',
           align: 'center'
         },
         {
-          title: '案件编码',
+          title: '修改人',
           searchOperator: '=',
-          key: 'case_id',
+          key: 'updateUser',
           ellipsis: true,
           align: 'center'
         },
         {
-          title: '账单号',
-          searchOperator: '=',
-          key: 'bill_number',
-          ellipsis: true,
-          align: 'center'
-        },
-        {
-          title: '客户身份证号',
-          searchOperator: '=',
-          key: 'id_card',
-          ellipsis: true,
-          align: 'center'
+          title: '操作',
+          width: 100,
+          key: 'edit',
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h('Poptip', {
+                props: {
+                  confirm: true,
+                  title: '您确定要删除这条数据吗?',
+                  transfer: true
+                },
+                on: {
+                  'on-ok': () => {
+                    this.deleteGoods(params.row.recording_id);
+                  }
+                }
+              },
+                [
+                  h('a', {
+                    class: 'del-btn',
+                    props: {}
+                  },
+                    '删除'
+                  )
+                ],
+              ),
+              h('a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  on: {
+                    'click': () => {
+                      this.modal2 = true;
+                    }
+                  }
+                }
+                , '更改')
+            ])
+          }
         },
       ]
     };
@@ -265,6 +221,10 @@ export default {
     this.getList();
   },
   methods: {
+    // 添加列表新数据按钮
+    handleAdd(form) {
+      this.modal = true;
+    },
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;

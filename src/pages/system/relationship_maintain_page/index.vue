@@ -2,8 +2,8 @@
   <div class="panel_list">
     <!-- 检索条件 -->
     <Card class="vue-panel">
-      <p slot="title" @click="showPanel=!showPanel">
-        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
+      <p slot="title">
+        <Icon :type="!showPanel?'chevron-down':'chevron-up'" @click="showPanel=!showPanel"></Icon>检索条件
         <router-link to="/demo/demo_desc">
           <Button class="fr vue-back-btn header-btn" type="primary" size="small">详情</Button>
         </router-link>
@@ -18,12 +18,12 @@
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="坐席编号:">
-              <Input size="small" clearable v-model="formItem.seats_id" placeholder="请输入坐席编号"></Input>
+              <Input size="small" clearable v-model="formItem.uuid" placeholder="请输入坐席编号"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="账单号:">
-              <Input size="small" clearable v-model="formItem.employee_name" placeholder="请输入员工姓名"></Input>
+            <FormItem span="6" label="员工姓名:">
+              <Input size="small" clearable v-model="formItem.empno" placeholder="请输入员工姓名"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
@@ -48,11 +48,19 @@
     </Card>
     <!-- 检索结果 -->
     <Card class="vue-panel-table collection_recording">
-      <p slot="title" @click="showPanel2=!showPanel2">
-        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
+      <p slot="title">
+        <Icon :type="!showPanel2?'chevron-down':'chevron-up'" @click="showPanel2=!showPanel2"></Icon>检索结果
         <!-- <router-link to="/buffet/buffet_add">
           <Button class="fr vue-back-btn header-btn" type="primary" size="small">导出数据</Button>
         </router-link>-->
+        <Button
+          class="fr header-btn"
+          type="primary"
+          @click="handleAdd('formItem')"
+          style="width:80px"
+          long
+          size="small"
+        >添加</Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
@@ -76,6 +84,8 @@
         </div>
       </div>
     </Card>
+    <Addform v-model="modal" v-if="modal"></Addform>
+    <Reviseform v-model="modal2" v-if="modal2"></Reviseform>
   </div>
 </template>
 <script src="./index.js"></script>
