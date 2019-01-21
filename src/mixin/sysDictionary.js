@@ -9,12 +9,10 @@ const mixin = {
 			if (arg && arg.length > 0) {
 				arg.forEach((element) => {
 					console.log(element);
-					if (this.$store[arg]) {
-						// this.getDirObj[element] = this.$store[element];
-						this.$set(this.getDirObj, element, this.$store[element]);
+					if (this.$store.state[arg]) {
+						this.$set(this.getDirObj, element, this.$store.state[element]);
 					} else {
 						this.$store.dispatch('getDictionary', element).then((res) => {
-							console.log(element, '------------------------------');
 							this.$set(this.getDirObj, element, res);
 						});
 					}
@@ -44,7 +42,7 @@ const mixin = {
 // IMG_TYPE	图片类型	身份证图片类型
 // MSG_TPYE	通知类型	各种发送通知的类型
 // ANNOUNCEMENT_TYPE	公告类型	首页公告类型
-// APPROVAL_STATE	仲裁状态	仲裁状态
+// APPROVAL_STATE	仲裁状态	仲裁状态 审核状态
 // RES_FLAG	呼叫记录是否成功	呼叫成功标志
 // MUSIC_STATUS	录音下载状态	录音下载状态
 // 0_1_EFFECT_INVAL	0-1有效无效	0:有效 1:无效

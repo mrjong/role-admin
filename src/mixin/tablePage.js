@@ -16,7 +16,11 @@ const mixin = {
 		// 页码改变的回调
 		changePage(pageNo) {
 			this.pageNo = pageNo;
-			this.getList();
+			this.getList({
+				...this.formItem,
+				pageNum: pageNo,
+				pageSize: this.pageSize
+			});
 		},
 		// 切换每页条数时的回调
 		changeSize(pageSize) {

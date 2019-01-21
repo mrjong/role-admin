@@ -1,7 +1,7 @@
 import axios from 'axios';
 import iView from 'iview';
 import qs from 'qs';
-import Vue from 'vue'
+import Vue from 'vue';
 import Cookie from 'js-cookie';
 import util from './util';
 axios.defaults.baseURL = '/admin';
@@ -9,7 +9,6 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 let timer;
 let timerList = [];
 let num = 0;
-let reqConfig = {};
 axios.interceptors.request.use(
 	(config) => {
 		const TOKEN = Cookie.get('SXF-TOKEN');
@@ -19,7 +18,8 @@ axios.interceptors.request.use(
 			config.headers['SXF-TOKEN'] = '';
 		}
 		num++;
-		if (!reqConfig.hideLoading) {
+
+		if (config || config.options.hideLoading) {
 			// 防止时间短，出现loading 导致闪烁
 			timer = setTimeout(() => {
 				console.log(timerList);
@@ -34,7 +34,6 @@ axios.interceptors.request.use(
 			}, 500);
 			timerList.push(timer);
 		}
-		console.log('---', config);
 		return config;
 	},
 	(error) => {
@@ -90,12 +89,13 @@ axios.interceptors.response.use(
 		return Promise.resolve(error.response);
 	}
 );
-export default function fetch({ url = '', method = 'GET', data = {} }) {
+export default function fetch({ url = '', method = 'GET', data = {}, options = {} }) {
 	return axios({
 		method: method.toLocaleLowerCase(),
 		url,
 		data,
-		timeout: 10000
+		timeout: 10000,
+		options
 	})
 		.then((res) => {
 			return res;

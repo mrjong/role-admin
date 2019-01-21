@@ -25,7 +25,7 @@
         :rules="ruleValidate"
       >
         <Row>
-          
+
           <Col
             :xs="24"
             :sm="24"
@@ -45,10 +45,10 @@
               v-model="formItem.prdTyp"
             >
               <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in getDirObj.PROD_TYPE"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -71,10 +71,10 @@
               v-model="formItem.perdCnt"
             >
               <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in getDirObj.PROD_CNT"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -278,30 +278,6 @@
             :lg="6"
             span="6"
           >
-          <!-- <FormItem
-            span="6"
-            label="还款状态:"
-            prop="buffet_id"
-          >
-            <Select
-              size="small"
-              v-model="formItem.productLine"
-            >
-              <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
-            </Select>
-          </FormItem> -->
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
           <FormItem
             span="6"
             label="信用级别:"
@@ -314,14 +290,14 @@
               v-model="formItem.creditLevel"
             >
               <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in getDirObj.CREDIT_LEVEL"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>
-           <Col
+          <Col
             :xs="24"
             :sm="24"
             :md="6"
@@ -340,39 +316,13 @@
               v-model="formItem.creditLevel"
             >
               <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in getDirObj.CREDIT_LEVEL"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>
-           <!-- <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            span="6"
-            label="电催中心:"
-            prop="opCompayName"
-          >
-            <Select
-              size="small"
-              clearable
-              placeholder="请选择电催中心"
-              v-model="formItem.opCompayName"
-            >
-              <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
-            </Select>
-          </FormItem>
-          </Col> -->
           <Col
             :xs="24"
             :sm="24"
@@ -407,13 +357,11 @@
       >
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
         检索结果
-        <router-link to="/buffet/buffet_add">
           <Button
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
           >导出数据</Button>
-        </router-link>
       </p>
       <!-- 表格 -->
 

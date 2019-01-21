@@ -124,9 +124,21 @@ export const repay_repayUserOrSystem_exportDown = (obj) =>
 *
 * 根据父级id获取相应字典数据
 * */
-export const sysDictionary_getListByParentId = (obj) =>
+export const sysDictionary_getListByParentId = (obj, options) =>
 	fetch({
 		url: '/sysDictionary/getListByParentId',
+		method: 'POST',
+		data: qs.stringify(obj),
+		options
+	});
+
+/*
+*
+* 催收管理 我的案件
+* */
+export const case_collect_case_list = (obj, options) =>
+	fetch({
+		url: '/case/collect/case_list',
 		method: 'POST',
 		data: qs.stringify(obj)
 	});

@@ -13,9 +13,14 @@ const dictionary = {
 	},
 	actions: {
 		async getDictionary({ commit }, arg) {
-			const { data } = await sysDictionary_getListByParentId({
-				itemCode: arg
-			});
+			const { data } = await sysDictionary_getListByParentId(
+				{
+					itemCode: arg
+				},
+				{
+					hideLoading: true
+				}
+			);
 			commit('dictionaryObj', {
 				data,
 				arg
