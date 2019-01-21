@@ -158,16 +158,26 @@ export default {
 				{
 					title: '逾期金额',
 					minWidth: 120,
-					key: 'overdueAmt'
+					sortable: true,
+					key: 'overdueAmt',
+					render: (h, params) => {
+						let overdueAmt = params.row.overdueAmt;
+						overdueAmt = overdueAmt
+							? this.$options.filters['money'](overdueAmt)
+							: overdueAmt;
+						return h('span', overdueAmt);
+					}
 				},
 				{
 					title: '逾期天数',
 					minWidth: 100,
+					sortable: true,
 					key: 'overdueDays'
 				},
 				{
 					title: '到期期数',
-					minWidth: 60,
+					minWidth: 100,
+					sortable: true,
 					key: 'maxPerdCnt'
 				},
 				{
@@ -179,6 +189,7 @@ export default {
 				{
 					title: '信用级别',
 					minWidth: 120,
+					sortable: true,
 					key: 'creditLevel'
 				},
 				{
@@ -219,9 +230,16 @@ export default {
 				},
 				{
 					title: '承诺还款时间',
-					minWidth: 100,
+					minWidth: 130,
 					sortable: true,
-					key: 'promiseRepayDate'
+					key: 'promiseRepayDate',
+					render: (h, params) => {
+						let promiseRepayDate = params.row.promiseRepayDate;
+						promiseRepayDate = promiseRepayDate
+							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD HH:mm:ss')
+							: promiseRepayDate;
+						return h('span', promiseRepayDate);
+					}
 				},
 				{
 					title: '紧急联系人拨打状态',
