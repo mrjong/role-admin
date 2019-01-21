@@ -1,6 +1,8 @@
 
+import tablePage from '@/mixin/tablePage'
 export default {
-	name: 'demo_list',
+    name: 'demo_list',
+    mixin:[tablePage],
 	data() {
 		return {
             showPanel:false,
@@ -218,83 +220,11 @@ export default {
 		this.getList();
 	},
 	methods: {
-		// 页码改变的回调
-		changePage(pageNo) {
-			this.pageNo = pageNo;
-			this.getList();
-		},
-		// 切换每页条数时的回调
-		changeSize(pageSize) {
-			this.pageSize = pageSize;
-			this.pageNo = 1;
-			this.getList();
-		},
-		getParam() {
-			let searchParam = [];
-
-			if (!(this.formItem.addtime && this.formItem.addtime[0]) || !this.formItem.addtime[1]) {
-				delete this.formItem.addtime;
-			} else {
-				let startTime = this.formItem.addtime[0].getTime() / 1000;
-				let endTime = this.formItem.addtime[1].getTime() / 1000;
-				console.log();
-				let addtime = [
-					{
-						searchValue: startTime,
-						searchColumn: 'addtime',
-						searchOperator: '>'
-					},
-					{
-						searchValue: endTime,
-						searchColumn: 'addtime',
-						searchOperator: '<='
-					}
-				];
-				if (this.formItem && JSON.stringify(addtime) !== '[]') {
-					for (let i = 0; i < addtime.length; i++) {
-						searchParam.push(addtime[i]);
-					}
-				}
-			}
-			console.log(searchParam);
-			for (let i = 0; i < this.tableColumns.length; i++) {
-				for (const key in this.formItem) {
-					if (
-						this.formItem[key] &&
-						this.tableColumns[i].searchOperator &&
-						key === this.tableColumns[i].key &&
-						key !== 'addtime'
-					) {
-						let item = {};
-						item.searchValue = this.formItem[key];
-						item.searchColumn = this.tableColumns[i].key;
-						item.searchOperator = this.tableColumns[i].searchOperator;
-						searchParam.push(item);
-					}
-				}
-			}
-			return searchParam;
-		},
-		handleSubmit(name) {
-			this.$refs[name].validate((valid) => {
-				if (valid) {
-					this.getList();
-				} else {
-					this.$Message.error('查询条件格式有误，请重新填写');
-				}
-			});
-		},
 		// 获取表格数据
 		async getList() {
         let res = await getList()
 			console.log(this.getParam());
 		
-		},
-		// 重置
-		clearForm(name) {
-			this.pageNo = 1;
-			this.formItem = {};
-			this.$refs[name].resetFields();
 		}
 	}
 };

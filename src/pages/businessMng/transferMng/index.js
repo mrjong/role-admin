@@ -1,6 +1,6 @@
 import { repay_repayUserOrSystem_list } from '@/service/getData';
 export default {
-  name: 'remoney_user',
+  name: 'transferMng',
   data() {
     var alignCenter = 'center';
     var widthVal = 180;
@@ -28,53 +28,15 @@ export default {
           label: 'New York'
         }
       ],
-      rutTypeList: [
-        {
-          value: '01',
-          label: '11'
-        },
-        {
-          value: '02',
-          label: '22'
-        },
-        {
-          value: '03',
-          label: '33'
-        }
-      ], //代扣类型
       modal12: false,
       inputGrid: '',
       modal11: false,
-      startAndend: '', //还款日期区间
-      formValidate: {
-        // 查询接口时候所需的参数值传递
-        billNo: '', //账单号,
-        dkorgOrdNo: '', // string 代扣订单号,
-        userNm: '', // 用户姓名,
-        mblNo: '', // 手机号,
-        ordSts: '', // 订单状态 借口中取,
-        orgFnlMsg: '', //失败原因,
-        ordDt: '', // 还款时间,
-        acTyp: '', //产品线01：还到02：随行付钱包 03：商户贷，调接口,
-        rutCopyOrg: '', // 代扣类型,
-        startRepayDate: '', //起始时间段
-        endRepayDate: '', // 结束时间段
-        //nametwo: '', //此处的名称必须要与 ruleValidate的里面具体的校验规则名称完全的保持一致性，不然会出现校验bug
-      },
-      ruleValidate: {
-        //ruleValidate添加表单的校验规则，用来提示用户的输入法则，具体使用在表单里面 ：rule='ruleValidate'直接使用即可
-        mblNo: [
-          {
-            pattern: this.GLOBAL.mblNo,
-            message: '请输入正确手机号',
-            trigger: 'blur'
-          }
-        ]
-      },
+      applyDate: '', //申请日期区间
+      formValidate: {},
+      ruleValidate: {},
       pageNo: 1,
       pageSize: 10,
-      total: 100,
-      repayOrdTyp: 'SR', //区分用户主动还款、系统代扣还款，UR：用户主动还款，SR：系统代扣还款
+      total: 0,
       tableData: [
         {
           billNo: '1', //账单号
@@ -152,14 +114,7 @@ export default {
           align: alignCenter
         },
         {
-          title: '序号',
-          width: 60,
-          searchOperator: '=',
-          align: alignCenter,
-          key: 'buffet_id'
-        },
-        {
-          title: '账单号',
+          title: '申请流水号',
           searchOperator: '=',
           key: 'billNo',
           className: 'tableMainW',
@@ -175,7 +130,7 @@ export default {
           width: widthVal
         },
         {
-          title: '客户姓名',
+          title: '案件编号',
           searchOperator: 'like',
           key: 'userNm',
           className: 'tableMainW',
@@ -183,7 +138,7 @@ export default {
           width: widthMidVal
         },
         {
-          title: '身份证号',
+          title: '账单号',
           searchOperator: 'like',
           key: 'idNoHid',
           className: 'tableMainW',
@@ -191,7 +146,15 @@ export default {
           width: widthVal
         },
         {
-          title: '手机号',
+          title: '还款金额',
+          searchOperator: 'like',
+          key: 'repayOrdAmt',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal
+        },
+        {
+          title: '还款账户',
           searchOperator: 'like',
           key: 'mblNoHid',
           className: 'tableMainW',
@@ -199,9 +162,17 @@ export default {
           width: widthMidVal
         },
         {
-          title: '还款金额',
+          title: '审核状态',
           searchOperator: 'like',
-          key: 'repayOrdAmt',
+          key: 'mblNoHid',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal
+        },
+        {
+          title: '审核备注',
+          searchOperator: 'like',
+          key: 'mblNoHid',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal
@@ -215,57 +186,9 @@ export default {
           width: widthVal
         },
         {
-          title: '失败原因',
+          title: '代扣订单信息',
           searchOperator: 'like',
           key: 'orgFnlMsg',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '还款日期',
-          searchOperator: 'like',
-          key: 'ordDt',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '卡类型',
-          searchOperator: 'like',
-          key: 'crdAcTyp',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthMidVal
-        },
-        {
-          title: '还款银行',
-          searchOperator: 'like',
-          key: 'crdCorpOrg',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthMidVal
-        },
-        {
-          title: '还款银行卡后四位',
-          searchOperator: 'like',
-          key: 'crdNoLast',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthMidVal
-        },
-        {
-          title: '已还本金',
-          searchOperator: 'like',
-          key: 'repayOrdPrcp',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '产品类型',
-          searchOperator: 'like',
-          key: 'acTyp',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
@@ -277,8 +200,154 @@ export default {
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
-        }
+        },
+        {
+          title: '失败原因',
+          searchOperator: 'like',
+          key: 'rutCopyOrg',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
+        {
+          title: '产品名称',
+          searchOperator: 'like',
+          key: 'rutCopyOrg',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
+        {
+          title: '借款期限',
+          searchOperator: 'like',
+          key: 'ordDt',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
+        {
+          title: '最后还款日期',
+          searchOperator: 'like',
+          key: 'ordDt',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
+        {
+          title: '逾期应还金额',
+          searchOperator: 'like',
+          key: 'ordDt',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
+        {
+          title: '客户姓名',
+          searchOperator: 'like',
+          key: 'ordDt',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
+        {
+          title: '身份证号',
+          searchOperator: 'like',
+          key: 'crdAcTyp',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal
+        },
+        {
+          title: '手机号',
+          searchOperator: 'like',
+          key: 'crdCorpOrg',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal
+        },
+        {
+          title: '申请时间',
+          searchOperator: 'like',
+          key: 'crdNoLast',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal
+        },
+        {
+          title: '申请人',
+          searchOperator: 'like',
+          key: 'repayOrdPrcp',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
+        {
+          title: '电催中心',
+          searchOperator: 'like',
+          key: 'acTyp',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
+        {
+          title: '审核人',
+          searchOperator: 'like',
+          key: 'ordDt',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
+        {
+          title: '审核日期',
+          searchOperator: 'like',
+          key: 'ordDt',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
 
+        // {
+        //   title: '操作',
+        //   width: 100,
+        //   key: 'edit',
+        //   render: (h, params) => {
+        //     return h('div', [
+        //       h(
+        //         'Poptip',
+        //         {
+        //           props: {
+        //             confirm: true,
+        //             title: '您确定要删除这条数据吗?',
+        //             transfer: true
+        //           },
+        //           on: {
+        //             'on-ok': () => {
+        //               this.deleteGoods(params.row.buffet_id);
+        //             }
+        //           }
+        //         },
+        //         [
+        //           h(
+        //             'a',
+        //             {
+        //               class: 'edit-btn',
+        //               props: {}
+        //             },
+        //             '删除'
+        //           ),
+        //           h(
+        //             'a',
+        //             {
+        //               class: 'edit-btn',
+        //               props: {}
+        //             },
+        //             '删除'
+        //           )
+        //         ]
+        //       )
+        //     ]);
+        //   }
+        // }
       ]
     };
   },
@@ -287,19 +356,15 @@ export default {
   },
   methods: {
     // 改变日期区间的格式之后进行处理
-    changeDange(val1, val2) {
+    changeApplyDate(val1, val2) {
       this.formValidate.startRepayDate = val1[0];
       this.formValidate.endRepayDate = val1[1];
       console.log('123', this.formValidate);
-
-      //this.formValidate.startAndend[1].Date('yyyy-MM-dd');
     },
     // 页码改变的回调
-    changePage(pageNo) { //默认带入一个参数是当前的页码数
-      console.log(pageNo,'当前的页码数量值');
+    changePage(pageNo) {
       this.pageNo = pageNo;
-
-      //this.getList();
+      this.getList();
     },
     // 切换每页条数时的回调
     changeSize(pageSize) {
@@ -316,14 +381,15 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      let res= await repay_repayUserOrSystem_list({
-        pageNo: this.pageNo,
-        pageSize: this.pageSize,
-        repayOrdTyp: this.repayOrdTyp,
-        ...this.formValidate
-      })
+      // let res= await repay_repayUserOrSystem_list({
+      //   pageNo: this.pageNo,
+      //   pageSize: this.pageSize,
+      //   repayOrdTyp: this.repayOrdTyp,
+      //   ...this.formValidate
+      // })
       console.log(res)
-      // 试着处理数据和分页组件之间的关系,
+      // 请求成功之后需要做分页处理，然后将拿到的数据进行数据处理，总数目和展示条数
+
     },
     // 重置
     clearForm(name) {

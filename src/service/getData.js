@@ -116,3 +116,35 @@ export const repay_repayUserOrSystem_exportDown = (obj) =>
 		method: 'POST',
 		data: qs.stringify(obj)
 	});
+
+// 回款明细列表查询接口
+
+export const repay_repayDetail_list = (obj) =>
+  fetch({
+    url: '/repay/repayDetail/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 回款明细导出接口
+export const repay_repayDetail_exportDown = (obj) =>
+  fetch({
+    url: '/repay/repayDetail/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 日常监控的坐席报表
+export const monitor_agentState_list = (obj) =>
+  fetch({
+    url: '/monitor/agentState/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 日常监控的坐席报表导出
+export const monitor_agentState_exportDown = (obj) =>
+  fetch({
+    url: '/monitor/agentState/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })

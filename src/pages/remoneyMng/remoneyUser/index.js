@@ -41,27 +41,24 @@ export default {
 					value: '03',
 					label: '33'
 				}
-			],
+			], //代扣类型
 			modal12: false,
 			inputGrid: '',
 			modal11: false,
 			startAndend: '', //还款日期区间
 			formValidate: {
 				// 查询接口时候所需的参数值传递
-				billNo: '1', //账单号,
-				dkorgOrdNo: '2', // string 代扣订单号,
-				userNm: '3', // 用户姓名,
-				mblNo: '5', // 手机号,
-				ordSts: '7', // 订单状态 借口中取,
-				orgFnlMsg: '8', //失败原因,
-				ordDt: '9', // 还款时间,
-				acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口,
-				rutCopyOrg: '15', // 代扣类型,
+				billNo: '', //账单号,
+				dkorgOrdNo: '', // string 代扣订单号,
+				userNm: '', // 用户姓名,
+				mblNo: '', // 手机号,
+				ordSts: '', // 订单状态 借口中取,
+				orgFnlMsg: '', //失败原因,
+				ordDt: '', // 还款时间,
+				acTyp: '', //产品线01：还到02：随行付钱包 03：商户贷，调接口,
+				rutCopyOrg: '', // 代扣类型,
 				startRepayDate: '', //起始时间段
 				endRepayDate: '', // 结束时间段
-				repayOrdTyp: 'UR', //区分用户主动还款、系统代扣还款，UR：用户主动还款，SR：系统代扣还款
-				pageNum: 1,
-				pageSize: 10 // 每次页面请求数据
 				//nametwo: '', //此处的名称必须要与 ruleValidate的里面具体的校验规则名称完全的保持一致性，不然会出现校验bug
 			},
 			ruleValidate: {
@@ -77,7 +74,8 @@ export default {
 			pageNo: 1,
 			pageSize: 10,
 			total: 0,
-			tableData: [
+      repayOrdTyp: 'UR', //区分用户主动还款、系统代扣还款，UR：用户主动还款，SR：系统代扣还款
+      tableData: [
 				{
 					billNo: '1', //账单号
 					dkorgOrdNo: '2', // string 代扣订单号
@@ -326,7 +324,7 @@ export default {
 		};
 	},
 	created() {
-		this.getList1();
+		this.getList();
 	},
 	methods: {
 		// 改变日期区间的格式之后进行处理
@@ -356,29 +354,16 @@ export default {
 			});
 		},
 		// 获取表格数据
-	async getList1() {
-           let res= await repay_repayUserOrSystem_list(this.formValidate)
-            console.log(res)
+	async getList() {
+		  let res= await repay_repayUserOrSystem_list({
+             pageNo: this.pageNo,
+             pageSize: this.pageSize,
+             repayOrdTyp: this.repayOrdTyp,
+             ...this.formValidate
+           })
+    console.log(res)
+    // 请求成功之后需要做分页处理，然后将拿到的数据进行数据处理，总数目和展示条数
 
-			// const searchParam = [];
-			// console.log(this.getParam());
-			// const res = await buffet_list({
-			//   searchParam: this.formItem && JSON.stringify(this.formItem) !== '{}' && this.getParam(),
-			//   page: this.pageNo,
-			//   perPage: this.pageSize,
-			//   config: {
-			//     hideMessage: true
-			//   }
-			// });
-			// if (res.data && res.data.data) {
-			//   this.tableData = res.data.data;
-			//   this.total = res.data.total;
-			//   this.pageNo = res.data.current_page;
-			// } else {
-			//   this.tableData = [];
-			//   this.total = 0;
-			//   this.pageNo = 1;
-			// }
 		},
 		// 重置
 		clearForm(name) {

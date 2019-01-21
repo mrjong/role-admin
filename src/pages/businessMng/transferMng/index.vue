@@ -32,60 +32,14 @@
             span="6"
           >
             <FormItem
-              label="实际还款日期:"
-            >
-              <DatePicker
-                size="small"
-                style="width:100%"
-                v-model="startRepayDateRange"
-                format="yyyy-MM-dd"
-                type="datetimerange"
-                placement="bottom-start"
-                placeholder="请选择实际还款时间区间"
-                @on-change="changeActDate"
-                @on-ok="changeActDate"
-              ></DatePicker>
-            </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="应还款日期:"
-            >
-              <DatePicker
-                size="small"
-                style="width:100%"
-                v-model="shouldRepayDate"
-                format="yyyy-MM-dd"
-                type="datetimerange"
-                placement="bottom-start"
-                placeholder="请选择应还款时间区间"
-                @on-change="changeDueDate"
-                @on-ok="changeDueDate"
-              ></DatePicker>
-            </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="还款状态:"
+              label="产品线:"
             >
               <Select
                 size="small"
-                v-model="formValidate.payOffSts"
+                v-model="formValidate.acTyp"
               >
                 <Option
-                  v-for="item in payOffStsList"
+                  v-for="item in productTypeList"
                   :value="item.value"
                   :key="item.value"
                 >{{ item.label }}</Option>
@@ -100,13 +54,13 @@
             span="6"
           >
             <FormItem
-              label="案件编码:"
+              label="案件编号:"
             >
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.caseNo"
-                placeholder="请输入案件编码"
+                v-model="formValidate.casebillNo"
+                placeholder="请输入账单号"
               ></Input>
             </FormItem>
           </Col>
@@ -128,6 +82,7 @@
               ></Input>
             </FormItem>
           </Col>
+
           <Col
             :xs="24"
             :sm="24"
@@ -136,16 +91,18 @@
             span="6"
           >
             <FormItem
-              span="6"
-              prop="mblNo"
-              label="经办人:"
+              label="审核状态:"
             >
-              <Input
+              <Select
                 size="small"
-                clearable
-                v-model="formValidate.opUserName"
-                placeholder="请输入手机号"
-              ></Input>
+                v-model="formValidate.checkSts">
+                <Option
+                  v-for="item in rutTypeList"
+                  :value="item.value"
+                  :key="item.value">
+                  {{ item.label }}
+                </Option>
+              </Select>
             </FormItem>
           </Col>
           <Col
@@ -156,14 +113,14 @@
             span="6"
           >
             <FormItem
-              label="电催中心:"
+              label="订单状态:"
             >
               <Select
                 size="small"
-                v-model="formValidate.opCompanyName"
+                v-model="formValidate.orderSts"
               >
                 <Option
-                  v-for="item in opCompanyNameList"
+                  v-for="item in orderStsList"
                   :value="item.value"
                   :key="item.value"
                 >{{ item.label }}</Option>
@@ -178,14 +135,42 @@
             span="6"
           >
             <FormItem
-              label="客户姓名:"
+              label="申请日期:"
             >
-              <Input
+              <DatePicker
                 size="small"
-                clearable
-                v-model="formValidate.userNm"
-                placeholder="请输入客户姓名"
-              ></Input>
+                style="width:100%"
+                v-model="applyDate"
+                format="yyyy-MM-dd"
+                type="datetimerange"
+                placement="bottom-start"
+                placeholder="请选择申请日期区间"
+                @on-change="changeApplyDate"
+                @on-ok="changeDange"
+              ></DatePicker>
+            </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+            <FormItem
+              label="审核日期:"
+            >
+              <DatePicker
+                size="small"
+                style="width:100%"
+                v-model="startAndend"
+                format="yyyy-MM-dd"
+                type="datetimerange"
+                placement="bottom-start"
+                placeholder="请选择还款时间区间"
+                @on-change="changeDange"
+                @on-ok="changeDange"
+              ></DatePicker>
             </FormItem>
           </Col>
           <Col

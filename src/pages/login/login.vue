@@ -99,7 +99,6 @@ export default {
           // this.$router.push({
           //   name: "home"
           // })
-
           const res = await login({
             loginName: this.form.loginName,
             loginPwd: this.form.loginPwd

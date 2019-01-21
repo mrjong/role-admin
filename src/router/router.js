@@ -214,75 +214,61 @@ export const appRouter = [
 			}
 		]
 	},
-	// {
-	// 	path: '/demo',
-	// 	icon: 'ios-grid-view',
-	// 	name: 'demo',
-	// 	access: 1,
-	// 	title: '业务管理',
-	// 	component: Main,
-	// 	children: [
-	// 		{
-	// 			path: 'demo_list',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_list',
-	// 			title: '减免管理',
-	// 			component: () => import('@/pages/demo/demo_list.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '还款管理',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '划扣管理',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	// 		}
-	// 	]
-	// },
-	// {
-	// 	path: '/demo',
-	// 	icon: 'ios-grid-view',
-	// 	name: 'demo',
-	// 	access: 1,
-	// 	title: '日常监控',
-	// 	component: Main,
-	// 	children: [
-	// 		{
-	// 			path: 'demo_list',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_list',
-	// 			title: '逾期日报',
-	// 			component: () => import('@/pages/demo/demo_list.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '催收回收率',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '坐席报表',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	// 		},
-	// 		{
-	// 			path: 'demo_desc',
-	// 			icon: 'ios-list',
-	// 			name: 'demo_desc',
-	// 			title: '呼叫明细',
-	// 			component: () => import('@/pages/demo/demo_desc.vue')
-	// 		}
-	// 	]
-	// },
+	{
+		path: '/businessMng',
+		icon: 'ios-grid-view',
+		name: 'businessMng',
+		access: 1,
+		title: '业务管理',
+		component: Main,
+		children: [
+			{
+				path: 'transferMng',
+				icon: 'ios-list',
+				name: 'transferMng',
+				title: '划扣管理',
+				component: () => import('@/pages/businessMng/transferMng')
+			}
+		]
+	},
+	{
+		path: '/daliyMonitoring',
+		icon: 'ios-grid-view',
+		name: 'daliyMonitoring',
+		access: 1,
+		title: '日常监控',
+		component: Main,
+		children: [
+			{
+				path: 'overduePayment',
+				icon: 'ios-list',
+				name: 'overduePayment',
+				title: '逾期日报',
+				component: () => import('@/pages/dailyMonitoring/overduePayment')
+			},
+			{
+				path: 'recovery',
+				icon: 'ios-list',
+				name: 'recovery',
+				title: '催收回收率',
+				component: () => import('@/pages/dailyMonitoring/recovery')
+			},
+			{
+				path: 'seatTable',
+				icon: 'ios-list',
+				name: 'seatTable',
+				title: '坐席报表',
+				component: () => import('@/pages/dailyMonitoring/seatTable')
+			},
+			{
+				path: 'callDetail',
+				icon: 'ios-list',
+				name: 'callDetail',
+				title: '呼叫明细',
+				component: () => import('@/pages/dailyMonitoring/callDetail')
+			}
+		]
+	},
 	{
 		path: '/system',
 		icon: 'ios-grid-view',

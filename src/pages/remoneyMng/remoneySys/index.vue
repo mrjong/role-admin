@@ -1,197 +1,273 @@
 <template>
-  <Table border :columns="columns4" :data="data1" class="tableBox"></Table>
+  <div class="panel_list">
+    <!-- 检索条件 -->
+    <Card class="vue-panel">
+      <p
+        slot="title"
+        @click="showPanel=!showPanel"
+      >
+        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
+        检索条件
+        <router-link to="/demo/demo_desc">
+          <Button
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+          >详情</Button>
+        </router-link>
+      </p>
+      <Form
+        v-if="!showPanel"
+        ref="formValidate"
+        :model="formValidate"
+        :label-width="90"
+        :rules="ruleValidate"
+      >
+        <Row>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+            <FormItem
+              label="客户名称:"
+            >
+              <Input
+                size="small"
+                clearable
+                v-model="formValidate.userNm"
+                placeholder="请输入客户名称"
+              ></Input>
+            </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+            <FormItem
+              span="6"
+              prop="mblNo"
+              label="手机号:"
+            >
+              <Input
+                size="small"
+                clearable
+                v-model="formValidate.mblNo"
+                placeholder="请输入手机号"
+              ></Input>
+            </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+            <FormItem
+              label="还款日期:"
+            >
+              <DatePicker
+                size="small"
+                style="width:100%"
+                v-model="startAndend"
+                format="yyyy-MM-dd"
+                type="datetimerange"
+                placement="bottom-start"
+                placeholder="请选择还款时间区间"
+                @on-change="changeDange"
+                @on-ok="changeDange"
+              ></DatePicker>
+            </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+            <FormItem
+              label="账单号:"
+            >
+              <Input
+                size="small"
+                clearable
+                v-model="formValidate.billNo"
+                placeholder="请输入账单号"
+              ></Input>
+            </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+            <FormItem
+              label="订单状态:"
+            >
+              <Select
+                size="small"
+                v-model="formValidate.ordSts"
+              >
+                <Option
+                  v-for="item in orderStsList"
+                  :value="item.value"
+                  :key="item.value"
+                >{{ item.label }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+            <FormItem
+              label="产品类型:"
+            >
+              <Select
+                size="small"
+                v-model="formValidate.acTyp"
+              >
+                <Option
+                  v-for="item in productTypeList"
+                  :value="item.value"
+                  :key="item.value"
+                >{{ item.label }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+            <FormItem
+              label="代扣类型:"
+            >
+              <Select
+                size="small"
+                v-model="formValidate.rutCopyOrg">
+                <Option
+                  v-for="item in rutTypeList"
+                  :value="item.value"
+                  :key="item.value">
+                  {{ item.label }}
+                </Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+            <FormItem
+              label="代扣订单号:"
+            >
+              <Input
+                size="small"
+                clearable
+                v-model="formValidate.dkorgOrdNo"
+                placeholder="请输入代扣订单号"
+              ></Input>
+            </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+            <FormItem>
+              <Button
+                type="primary"
+                @click="handleSubmit('formValidate')"
+                style="width:80px"
+                long
+                size="small"
+              >检索</Button>
+              <Button
+                size="small"
+                type="ghost"
+                style="width:80px;margin-left: 8px"
+                @click="clearForm('formValidate')"
+              >重置</Button>
+            </FormItem>
+          </Col>
+        </Row>
+      </Form>
+    </Card>
+    <Card class="vue-panel-table">
+      <p
+        slot="title"
+        @click="showPanel2=!showPanel2"
+      >
+        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
+        检索结果
+        <router-link to="/buffet/buffet_add">
+          <Button
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+          >导出数据</Button>
+        </router-link>
+      </p>
+      <!-- 表格 -->
+
+      <div v-if="!showPanel2">
+        <Table
+          border
+          :data="tableData"
+          :columns="tableColumns"
+          stripe
+          class="tableBox"
+        ></Table>
+        <!-- 分页 -->
+        <div class="vue-panel-page">
+
+          <div style="float: right;">
+            <Page
+              :total="total"
+              show-total
+              size="small"
+              :page-size-opts="[10, 20, 50, 100]"
+              show-elevator
+              show-sizer
+              :page-size="pageSize"
+              :current="pageNo"
+              @on-page-size-change="changeSize"
+              @on-change="changePage"
+            ></Page>
+          </div>
+
+        </div>
+      </div>
+    </Card>
+  </div>
 </template>
-<script>
-  export default {
-    data () {
-      var textAlign = 'center';
-      var widthNum = 200;
-      return {
-        columns4: [
-          {
-            type: 'selection',   // 通过给columns 数据设置 type:'selection'即可自动开启多选功能
-            width: 60,
-            align: 'center',
-          },
-          {
-            title: '姓名',
-            key: 'name',
-            align: textAlign,
-            width: widthNum,
-            className: 'tablecol',
-          },
-          {
-            title: '年龄',
-            key: 'age',// 通过key来获取数据里的对应值
-            align: textAlign,
-            width: widthNum,
-          },
-          {
-            title: '地址',
-            key: 'address',
-            align: textAlign,
-            width: widthNum,
-          },
-          {
-            title: 'city',
-            key: 'city',
-            align: textAlign,
-            width: widthNum,
-          },
-          {
-            title: 'address',
-            key: 'adddeatails',
-            align: textAlign,
-            width: widthNum,
-          },
-          {
-            title: '电话',
-            key: 'tel',
-            align: textAlign,
-            width: widthNum,
-          }
-        ],
-        data1: [
-          {
-            name: '王小明',
-            age: 18,
-            address: '北京市朝阳区芍药居',
-            city: 'city',
-            tel: '124****7787',
-            adddetails: 'nbnb',
-            _checked: true,  //通过给data设置特殊的key,_checked,disabled true||false 控制当前项的默认状态和可选性
-          },
-          {
-            name: '张小刚',
-            age: 25,
-            address: '北京市海淀区西二旗',
-            city: 'city',
-            tel: '124****7787',
-            adddetails: 'nbnb',
-            _disabled: true
-          },
-          {
-            name: '李小红',
-            age: 30,
-            address: '上海市浦东新区世纪大道',
-            city: 'city',
-            tel: '124****7787',
-            adddetails: 'nbnb',
-          },
-          {
-            name: '周小伟',
-            age: 26,
-            address: '深圳市南山区深南大道',
-            city: 'city',
-            tel: '124****7787',
-            adddetails: 'nbnb',
-          }
-        ]
-      }
-    }
-  }
-</script>
-<style lang = 'less'>
-  .tableBox{
-    overflow-x:scroll ;
+<script src="./index.js"></script>
+<style lang="less">
+  .tableBox {
+    overflow-x: scroll ;
     overflow-y: hidden;
-    .tablecol{
-      background: red;
+    .tableMainW {
+      min-width: 400px;
     }
   }
 </style>
-
-<!--<template>-->
-  <!--<Form-->
-    <!--ref="formValidate"-->
-    <!--:model="formValidate"-->
-    <!--:rules="ruleValidate"-->
-    <!--:label-width="80">-->
-    <!--<Form-item label="姓名" prop="name">-->
-      <!--<Input v-model="formValidate.name" placeholder="请输入姓名"></Input>-->
-    <!--</Form-item>-->
-    <!--<Form-item label="邮箱" prop="mail">-->
-      <!--<Input v-model="formValidate.mail" placeholder="请输入邮箱"></Input>-->
-    <!--</Form-item>-->
-  <!--</Form>-->
-<!--</template>-->
-<!--<script>-->
-  <!--export default {-->
-    <!--data () {-->
-      <!--return {-->
-        <!--formValidate: {-->
-          <!--name: '',-->
-          <!--mail: '',-->
-        <!--},-->
-        <!--ruleValidate: {-->
-          <!--name: [-->
-            <!--{ required: true, message: '姓名不能为空', trigger: 'blur' }-->
-          <!--],-->
-          <!--mail: [-->
-            <!--{ required: true, message: '邮箱不能为空', trigger: 'blur' },-->
-            <!--{ type: 'email', message: '邮箱格式不正确', trigger: 'blur' }-->
-          <!--],-->
-          <!--desc: [-->
-            <!--{ required: true, message: '请输入个人介绍', trigger: 'blur' },-->
-            <!--{ type: 'string', min: 20, message: '介绍不能少于20字', trigger: 'blur' }-->
-          <!--]-->
-        <!--},-->
-        <!--columns4: [-->
-          <!--{-->
-            <!--type: 'selection',-->
-            <!--width: 60,-->
-            <!--align: 'center'-->
-          <!--},-->
-          <!--{-->
-            <!--title: '姓名',-->
-            <!--key: 'name'-->
-          <!--},-->
-          <!--{-->
-            <!--title: '年龄',-->
-            <!--key: 'age'-->
-          <!--},-->
-          <!--{-->
-            <!--title: '地址',-->
-            <!--key: 'address'-->
-          <!--}-->
-        <!--],-->
-        <!--data1: [-->
-          <!--{-->
-            <!--name: '王小明',-->
-            <!--age: 18,-->
-            <!--address: '北京市朝阳区芍药居'-->
-          <!--},-->
-          <!--{-->
-            <!--name: '张小刚',-->
-            <!--age: 25,-->
-            <!--address: '北京市海淀区西二旗'-->
-          <!--},-->
-          <!--{-->
-            <!--name: '李小红',-->
-            <!--age: 30,-->
-            <!--address: '上海市浦东新区世纪大道'-->
-          <!--},-->
-          <!--{-->
-            <!--name: '周小伟',-->
-            <!--age: 26,-->
-            <!--address: '深圳市南山区深南大道'-->
-          <!--}-->
-        <!--]-->
-      <!--}-->
-    <!--},-->
-    <!--methods: {-->
-      <!--handleSubmit (name) {-->
-        <!--this.$refs[name].validate((valid) => {-->
-          <!--if (valid) {-->
-            <!--this.$Message.success('提交成功!');-->
-          <!--} else {-->
-            <!--this.$Message.error('表单验证失败!');-->
-          <!--}-->
-        <!--})-->
-      <!--},-->
-      <!--handleReset (name) {-->
-        <!--this.$refs[name].resetFields();-->
-      <!--}-->
-    <!--}-->
-  <!--}-->
-<!--</script>-->
