@@ -6,6 +6,42 @@
     class="main"
     :class="{'main-hide-text': shrink}"
   >
+    <Modal
+      width="450"
+      title="修改密码"
+      v-model="visible1"
+      @on-ok="ok"
+      class="panel_list"
+      @on-cancel="cancel"
+    >
+      <Form
+        ref="formItem"
+        :model="formItem"
+        :label-width="60"
+        :rules="ruleValidate"
+      >
+        <Row>
+          <Col
+          :xs="24" :sm="24" :md="24" :lg="24" span="24">
+          <FormItem
+            span="6"
+            label="新密码:"
+            prop="newLoginPwd"
+          >
+            <Input
+              size="small"
+              clearable
+              type="password"
+              v-model="formItem.newLoginPwd"
+              placeholder="请输入新密码"
+            ></Input>
+          </FormItem>
+          </Col>
+          <Col>
+          </Col>
+        </Row>
+      </Form>
+    </Modal>
     <div
       class="sidebar-menu-con"
       :style="{width: shrink?'60px':'200px', overflow: shrink ? 'visible' : 'auto'}"

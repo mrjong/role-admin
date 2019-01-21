@@ -86,10 +86,29 @@ export default {
     handleSubmit() {
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
-                this.$Message.success('登录成功!');
+          //     this.$Message.success('登录成功!');
+          // Cookies.set("user", this.form.loginName)
+          // Cookies.set("loginPwd", this.form.loginPwd)
+          // Cookies.set("SXF-TOKEN", '222222222222')
+          // this.$store.commit(
+          //   "setAvator",
+          //   "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
+          // )
+          // Cookies.set("access", 1)
+          // window.VueRouter = this.$router
+          // this.$router.push({
+          //   name: "home"
+          // })
+
+          const res = await login({
+            loginName: this.form.loginName,
+            loginPwd: this.form.loginPwd
+          })
+          if (res && res.code === 1) {
+            this.$Message.success('登录成功!');
             Cookies.set("user", this.form.loginName)
             Cookies.set("loginPwd", this.form.loginPwd)
-            Cookies.set("SXF-TOKEN", '222222222222')
+            Cookies.set("SXF-TOKEN", res.data)
             this.$store.commit(
               "setAvator",
               "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
@@ -99,28 +118,9 @@ export default {
             this.$router.push({
               name: "home"
             })
-
-        //   const res = await login({
-        //     loginName: this.form.loginName,
-        //     loginPwd: md5(this.form.loginPwd)
-        //   })
-        //   if (res && res.code === 1) {
-        //     this.$Message.success('登录成功!');
-        //     Cookies.set("user", this.form.loginName)
-        //     Cookies.set("loginPwd", this.form.loginPwd)
-        //     Cookies.set("SXF-TOKEN", res.data)
-        //     this.$store.commit(
-        //       "setAvator",
-        //       "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
-        //     )
-        //     Cookies.set("access", 1)
-        //     window.VueRouter = this.$router
-        //     this.$router.push({
-        //       name: "home"
-        //     })
-        //   } else {
-        //     this.$Message.success(res.message);
-        //   }
+          } else {
+            this.$Message.error(res.message);
+          }
         }
       })
     }

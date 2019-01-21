@@ -8,7 +8,7 @@ import themeSwitch from '@/components/theme-switch/theme-switch.vue';
 import Cookies from 'js-cookie';
 import util from '@/libs/util.js';
 import scrollBar from '@/components/scroll-bar/vue-scroller-bars';
-import { logout, findTreeByCurrentUser } from '@/service/getData';
+import { logout, findTreeByCurrentUser, reset_passWord } from '@/service/getData';
 import demo from './demo.json';
 export default {
 	components: {
@@ -23,14 +23,15 @@ export default {
 	},
 	data() {
 		return {
+			visible1: false,
 			shrink: false,
+			formItem: {},
+			ruleValidate: {},
 			userName: '',
 			isFullScreen: false,
-			openedSubmenuArr: this.$store.state.app.openedSubmenuArr
+			openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
+			productLineList: []
 		};
-	},
-	created() {
-		this.menuData();
 	},
 	computed: {
 		menuList() {
@@ -59,6 +60,35 @@ export default {
 		}
 	},
 	methods: {
+		ok() {
+			this.$refs.formItem.validate((valid) => {
+				if (valid) {
+					this.reset_passWord();
+				}
+			});
+		},
+		async reset_passWord() {
+			const res = await reset_passWord({
+				loginName: Cookies.get('user'),
+				loginPwd: Cookies.get('loginPwd'),
+				newLoginPwd: this.formItem.newLoginPwd
+			});
+			if (res.code === 1) {
+				this.$Message.success('修改成功');
+				this.$store.commit('logout', this);
+				this.$store.commit('clearOpenedSubmenu');
+				util.clearAllCookie();
+				setTimeout(() => {
+					this.$router.push({
+						name: 'login'
+					});
+				}, 2000);
+			} else {
+				this.$Message.error(res.message);
+			}
+			console.log(res);
+		},
+		cancel() {},
 		// 获取菜单
 		async menuData() {
 			let res = await findTreeByCurrentUser();
@@ -81,32 +111,23 @@ export default {
 		},
 		async handleClickUserDropdown(name) {
 			if (name === 'editPwd') {
-				this.$Modal.confirm({
-					render: (h) => {
-						return h('Input', {
-							props: {
-                                style:'margin-top:10px',
-                                type:'password',
-								value: this.value,
-								autofocus: true,
-								placeholder: '请输入密码'
-							},
-							on: {
-								input: (val) => {
-									this.value = val;
-								}
-							}
-						});
-					}
-				});
+				this.visible1 = true;
 			} else if (name === 'loginout') {
 				// 退出登录
 				const res = await logout();
-				this.$store.commit('logout', this);
-				this.$store.commit('clearOpenedSubmenu');
-				this.$router.push({
-					name: 'login'
-				});
+				if (res.code === 1) {
+					this.$Message.success('退出成功');
+					util.clearAllCookie();
+					setTimeout(() => {
+						this.$router.push({
+							name: 'login'
+						});
+					}, 2000);
+					this.$store.commit('logout', this);
+					this.$store.commit('clearOpenedSubmenu');
+				} else {
+					this.$Message.error(res.message);
+				}
 			}
 		},
 		checkTag(name) {

@@ -51,6 +51,7 @@
           >
             <FormItem
               span="6"
+              prop="mblNo"
               label="手机号:"
             >
               <Input
@@ -74,7 +75,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="formValidate.startAndend"
+                v-model="startAndend"
                 format="yyyy-MM-dd"
                 type="datetimerange"
                 placement="bottom-start"
@@ -160,12 +161,16 @@
             <FormItem
               label="代扣类型:"
             >
-              <Input
-                size="small"
-                clearable
-                v-model="formValidate.rutCopyOrg"
-                placeholder="请输入代扣类型"
-              ></Input>
+              <Select
+              size="small"
+              v-model="formValidate.rutCopyOrg">
+                <Option
+                v-for="item in rutTypeList"
+                :value="item.value"
+                :key="item.value">
+                  {{ item.label }}
+                </Option>
+              </Select>
             </FormItem>
           </Col>
           <Col

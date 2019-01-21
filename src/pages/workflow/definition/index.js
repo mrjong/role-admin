@@ -1,4 +1,5 @@
 import gongzuoliu from '@/components/workflow/gongzuoliu'
+wkProcessDef_list
 export default {
     name: 'case_search_page',
     components:{
@@ -91,15 +92,6 @@ export default {
 			inputGrid: '',
 			modal11: false,
 			formValidate2: {},
-			ruleValidate: {
-				buffet_id: [
-					{
-						required: true,
-						message: '请输入网格编号',
-						trigger: 'blur'
-					}
-				]
-			},
 			pageNo: 1,
 			pageSize: 10,
 			total: 0,

@@ -35,7 +35,7 @@ new Vue({
 		// iview-admin检查更新
 		// util.checkUpdate(this);
 	},
-	created() {
+	created() {		
 		let tagsList = [];
 		appRouter.map((item) => {
 			if (item.children.length <= 1) {

@@ -63,7 +63,11 @@ module.exports = merge(webpackBaseConfig, {
         proxy: {
             '/admin': {
                 // target: 'http://shopadmin.e-blive.com/', //目标接口域名
+<<<<<<< HEAD
                 target: 'http://172.18.30.201:8050', //目标接口域名
+=======
+                target: 'http://172.18.30.201:8050', //目标接口域名志向
+>>>>>>> e402e4312fd361498a04c5ae1370c1f009c16806
                 pathRewrite: { '^/admin': '' }, //重写接口
                 changeOrigin: true, //是否跨域
                 // demo=>  'http://localhost:8080/api' ===> 'http://www.abc.com/api'
