@@ -11,8 +11,8 @@ export const loginRouter = {
 };
 export const case_desc = {
 	path: '/case_desc',
-    name: 'case_desc',
-    meta: {
+	name: 'case_desc',
+	meta: {
 		title: '案件详情'
 	},
 	component: () => import('@/pages/caseMng/case_desc_page')
@@ -97,8 +97,8 @@ export const appRouter = [
 				component: () => import('@/pages/demo/demo_desc_page')
 			}
 		]
-    },
-    {
+	},
+	{
 		path: '/workflow',
 		icon: 'ios-grid-view',
 		name: 'workflow',
@@ -119,7 +119,7 @@ export const appRouter = [
 				name: 'task',
 				title: '工作流任务',
 				component: () => import('@/pages/workflow/task')
-			},
+			}
 		]
 	},
 	{
@@ -153,33 +153,57 @@ export const appRouter = [
 		]
 	},
 	{
-		path: '/collection',
+		path: '/arbitramentMng',
 		icon: 'ios-grid-view',
-		name: 'collection',
+		name: 'arbitramentMng',
+		access: 1,
+		title: '仲裁管理',
+		component: Main,
+		children: [
+			{
+				path: 'my_arbitrament_page',
+				icon: 'ios-list',
+				name: 'my_arbitrament_page',
+				title: '我的仲裁',
+				component: () => import('@/pages/arbitramentMng/my_arbitrament_page')
+			},
+			{
+				path: 'arbitrament_approve_page',
+				icon: 'ios-list',
+				name: 'arbitrament_approve_page',
+				title: '仲裁审批',
+				component: () => import('@/pages/arbitramentMng/arbitrament_approve_page')
+			}
+		]
+	},
+	{
+		path: '/collectionMng',
+		icon: 'ios-grid-view',
+		name: 'collectionMng',
 		access: 1,
 		title: '催收管理',
 		component: Main,
 		children: [
 			{
-				path: 'my_case',
+				path: 'my_case_page',
 				icon: 'ios-list',
-				name: 'my_case',
+				name: 'my_case_page',
 				title: '我的案件',
-				component: () => import('@/pages/demo/demo_list_page/index.vue')
+				component: () => import('@/pages/collectionMng/my_case_page')
 			},
 			{
-				path: 'collection_records',
+				path: 'collection_records_page',
 				icon: 'ios-list',
-				name: 'collection_records',
+				name: 'collection_records_page',
 				title: '催收记录',
-				component: () => import('@/pages/demo/demo_desc_page/index.vue')
+				component: () => import('@/pages/collectionMng/collection_records_page')
 			},
 			{
-				path: 'collection_recording',
+				path: 'collection_recording_page',
 				icon: 'ios-list',
-				name: 'collection_recording',
+				name: 'collection_recording_page',
 				title: '催收录音',
-				component: () => import('@/pages/collection/collection_recording_page/index.vue')
+				component: () => import('@/pages/collectionMng/collection_recording_page')
 			}
 		]
 	},
@@ -196,21 +220,21 @@ export const appRouter = [
 				icon: 'ios-list',
 				name: 'remoney_detail',
 				title: '确认回款明细',
-				component: () => import ('@/pages/remoneyMng/remoneyDetail')
+				component: () => import('@/pages/remoneyMng/remoneyDetail')
 			},
 			{
 				path: 'remoney_user',
 				icon: 'ios-list',
 				name: 'remoney_user',
 				title: '用户主动还款',
-				component: () => import ('@/pages/remoneyMng/remoneyUser')
+				component: () => import('@/pages/remoneyMng/remoneyUser')
 			},
 			{
 				path: 'remoney_system',
 				icon: 'ios-list',
 				name: 'remoney_system',
 				title: '系统代扣还款',
-				component: () => import ('@/pages/remoneyMng/remoneySys')
+				component: () => import('@/pages/remoneyMng/remoneySys')
 			}
 		]
 	},
@@ -277,7 +301,7 @@ export const appRouter = [
 		title: '系统管理',
 		component: Main,
 		children: [
-	        {
+			{
 				path: 'wkProcessDef_list',
 				icon: 'ios-list',
 				name: 'wkProcessDef_list',
@@ -297,21 +321,21 @@ export const appRouter = [
 				name: 'user_manager',
 				title: '人员管理',
 				component: () => import('@/pages/system/user_manager_page/index.vue')
-	        },
-	        {
+			},
+			{
 				path: 'relationship_maintain',
 				icon: 'ios-list',
 				name: 'relationship_maintain',
 				title: '坐席关系维护',
 				component: () => import('@/pages/system/relationship_maintain_page/index.vue')
-	        },
-	        {
+			},
+			{
 				path: 'data_dictionary',
 				icon: 'ios-list',
 				name: 'data_dictionary',
 				title: '数据字典管理',
 				component: () => import('@/pages/system/data_dictionary_page/index.vue')
-			},
+			}
 		]
 	}
 ];
@@ -321,9 +345,9 @@ export const routers = [
 	loginRouter,
 	otherRouter,
 	// preview,
-    ...appRouter,
+	...appRouter,
 	case_desc,
 	page500,
 	page403,
-	page404,
+	page404
 ];

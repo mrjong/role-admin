@@ -10,7 +10,9 @@ export default {
       showPanel: false,
       showPanel2: false,
       modal: false,
-      parentData: {},
+      parentData: {
+        modal: false,
+      },
       phoneCallList: [
         {
           value: 'New York',
@@ -245,7 +247,7 @@ export default {
                   props: {},
                   on: {
                     click: () => {
-
+                      this.handleAdd('1');
                     }
                   }
                 }, '查看'),
@@ -254,7 +256,7 @@ export default {
                 props: {},
                 on: {
                   click: () => {
-
+                    this.handleAdd('2');
                   }
                 }
               }, '修改')
@@ -268,7 +270,7 @@ export default {
     this.getList();
   },
   methods: {
-    getChildrenStatus () {
+    getChildrenStatus() {
       this.modal = true;
       this.parentData = {
         modal: this.modal,
@@ -276,8 +278,13 @@ export default {
       }
     },
     // 添加列表新数据按钮
-    handleAdd (form) {
+    handleAdd(type) {
       this.modal = true;
+      this.parentData = {
+        modal: this.modal,
+        type: type
+      };
+      console.log(this.parentData);
     },
     // 页码改变的回调
     changePage(pageNo) {

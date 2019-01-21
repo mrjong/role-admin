@@ -67,7 +67,7 @@
         <Button
           class="fr header-btn"
           type="primary"
-          @click="getChildrenStatus('formItem')"
+          @click="handleAdd('0')"
           style="width:80px"
           long
           size="small"
@@ -95,7 +95,7 @@
         </div>
       </div>
     </Card>
-    <Remodal v-model="modal" v-if="modal"></Remodal>
+    <Remodal v-model="parentData" v-if="parentData.modal"></Remodal>
   </div>
 </template>
 <script src="./index.js"></script>

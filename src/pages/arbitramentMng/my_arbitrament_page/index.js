@@ -7,9 +7,8 @@ export default {
 		console.log(this.GLOBAL);
 
 		return {
-			getDirList: [ 'PROD_TYPE', 'PROD_CNT','CREDIT_LEVEL','CASE_HANDLE_STATUS' ],
-            getDirObj: {},
-            
+			getDirList: [ 'PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS' ],
+			getDirObj: {},
 			showPanel: false,
 			showPanel2: false,
 			phoneCallList: [

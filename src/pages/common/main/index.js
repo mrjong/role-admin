@@ -30,7 +30,7 @@ export default {
 			userName: '',
 			isFullScreen: false,
 			openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
-      productLineList:[],
+			productLineList: []
 		};
 	},
 	computed: {
@@ -58,7 +58,7 @@ export default {
 		mesCount() {
 			return this.$store.state.app.messageCount;
 		}
-	},
+    },
 	methods: {
 		ok() {
 			this.$refs.formItem.validate((valid) => {
@@ -75,6 +75,9 @@ export default {
 			});
 			if (res.code === 1) {
 				this.$Message.success('修改成功');
+				this.$store.commit('logout', this);
+				this.$store.commit('clearOpenedSubmenu');
+				util.clearAllCookie();
 				setTimeout(() => {
 					this.$router.push({
 						name: 'login'
@@ -112,11 +115,15 @@ export default {
 			} else if (name === 'loginout') {
 				// 退出登录
 				const res = await logout();
-				this.$store.commit('logout', this);
-				this.$store.commit('clearOpenedSubmenu');
-				this.$router.push({
-					name: 'login'
-				});
+				if (res.code === 1) {
+					this.$Message.success('退出成功');
+                    util.clearAllCookie();
+                    location.replace('/')
+					this.$store.commit('logout', this);
+					this.$store.commit('clearOpenedSubmenu');
+				} else {
+					this.$Message.error(res.message);
+				}
 			}
 		},
 		checkTag(name) {
@@ -172,7 +179,6 @@ export default {
 		window.addEventListener('resize', this.scrollBarResize);
 	},
 	created() {
-		window.VueRouter = this.$router;
 		// 显示打开的页面的列表
 		this.$store.commit('setOpenedList');
 	},

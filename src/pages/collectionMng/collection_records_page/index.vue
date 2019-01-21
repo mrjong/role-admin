@@ -25,32 +25,7 @@
         :rules="ruleValidate"
       >
         <Row>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            span="6"
-            label="案件状态:"
-            prop="caseHandleStatus"
-          >
-            <Select
-              clearable
-              size="small"
-              placeholder="请选择案件状态"
-              v-model="formItem.caseHandleStatus"
-            >
-              <Option
-                v-for="item in getDirObj.CASE_HANDLE_STATUS"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
-            </Select>
-          </FormItem>
-          </Col>
+
           <Col
             :xs="24"
             :sm="24"
@@ -70,37 +45,10 @@
               v-model="formItem.prdTyp"
             >
               <Option
-                v-for="item in getDirObj.PROD_TYPE"
-                :value="item.itemCode"
-                :key="item.itemName"
-              >{{ item.itemName }}</Option>
-            </Select>
-          </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            span="6"
-            label="产品期数:"
-            prop="perdCnt"
-          >
-            <Select
-              size="small"
-              clearable
-              placeholder="请选择产品期数"
-              v-model="formItem.perdCnt"
-            >
-              <Option
-                v-for="item in getDirObj.PROD_CNT"
-                :value="item.itemCode"
-                :key="item.itemName"
-              >{{ item.itemName }}</Option>
-            </Select>
+                v-for="item in productLineList"
+                :value="item.value"
+                :key="item.value"
+              >{{ item.label }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -150,14 +98,14 @@
             span="6"
           >
           <FormItem
-            label="手机号:"
+            label="催收电话:"
             prop="mblNo"
           >
             <Input
               size="small"
               clearable
               v-model="formItem.mblNo"
-              placeholder="请输入手机号"
+              placeholder="请输入催收电话"
             />
           </FormItem>
           </Col>
@@ -168,95 +116,20 @@
             :lg="6"
             span="6"
           >
-          <FormItem label="逾期天数:">
-            <Col
-              :xs="11"
-              :sm="11"
-              :md="11"
-              :lg="11"
-              span="11"
-            >
-            <FormItem prop="overdueDaysLt">
-              <Input
-                size="small"
-                clearable
-                v-model="formItem.overdueDaysLt"
-              ></Input>
-            </FormItem>
-            </Col>
-            <Col
-              :xs="2"
-              :sm="2"
-              :md="2"
-              :lg="2"
-              span="2"
-            >
-            <div class="text-center">-</div>
-            </Col>
-            <Col
-              :xs="11"
-              :sm="11"
-              :md="11"
-              :lg="11"
-              span="11"
-            >
-            <FormItem prop="overdueDaysBt">
-              <Input
-                size="small"
-                clearable
-                v-model="formItem.overdueDaysBt"
-              ></Input>
-            </FormItem>
-            </Col>
-          </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
+          <!-- beginDate endDate -->
+          <FormItem
+            label="催收时间:"
+            prop="mblNo"
           >
-          <FormItem label="逾期应还金额:">
-            <Col
-              :xs="11"
-              :sm="11"
-              :md="11"
-              :lg="11"
-              span="11"
-            >
-            <FormItem prop="billOvduAmtLt">
-              <Input
-                size="small"
-                clearable
-                v-model="formItem.billOvduAmtLt"
-              ></Input>
-            </FormItem>
-            </Col>
-            <Col
-              :xs="2"
-              :sm="2"
-              :md="2"
-              :lg="2"
-              span="2"
-            >
-            <div class="text-center">-</div>
-            </Col>
-            <Col
-              :xs="11"
-              :sm="11"
-              :md="11"
-              :lg="11"
-              span="11"
-            >
-            <FormItem prop="billOvduAmtBt">
-              <Input
-                size="small"
-                clearable
-                v-model="formItem.billOvduAmtBt"
-              ></Input>
-            </FormItem>
-            </Col>
+            <DatePicker
+              size="small"
+              style="width:100%"
+              v-model="formItem.csDate"
+              format="yyyy-MM-dd"
+              type="datetimerange"
+              placement="bottom-start"
+              placeholder="请选择催收时间"
+            ></DatePicker>
           </FormItem>
           </Col>
           <Col
@@ -304,22 +177,17 @@
             :lg="6"
             span="6"
           >
-          <!-- <FormItem
-            span="6"
-            label="还款状态:"
-            prop="buffet_id"
+          <FormItem
+            label="经办人:"
+            prop="opUserName"
           >
-            <Select
+            <Input
               size="small"
-              v-model="formItem.productLine"
-            >
-              <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
-            </Select>
-          </FormItem> -->
+              clearable
+              v-model="formItem.opUserName"
+              placeholder="请输入经办人"
+            />
+          </FormItem>
           </Col>
           <Col
             :xs="24"
@@ -330,20 +198,20 @@
           >
           <FormItem
             span="6"
-            label="信用级别:"
-            prop="creditLevel"
+            label="电催中心:"
+            prop="opCompayName"
           >
             <Select
               size="small"
               clearable
-              placeholder="请选择信用级别"
-              v-model="formItem.creditLevel"
+              placeholder="请选择电催中心"
+              v-model="formItem.opCompayName"
             >
               <Option
-                v-for="item in getDirObj.CREDIT_LEVEL"
-                :value="item.itemCode"
-                :key="item.itemName"
-              >{{ item.itemName }}</Option>
+                v-for="item in productLineList"
+                :value="item.value"
+                :key="item.value"
+              >{{ item.label }}</Option>
             </Select>
           </FormItem>
           </Col>

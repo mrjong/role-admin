@@ -1,89 +1,26 @@
 import { buffet_list } from '@/service/getData';
+import 'video.js/dist/video-js.css'
+import { videoPlayer } from 'vue-video-player'
 export default {
   name: 'demo_list',
+  components: {
+    videoPlayer,
+  },
   data() {
     return {
       showPanel: false,
       showPanel2: false,
-      data5: [
-        {
-          title: 'parent 1',
-          expand: true,
-          render: (h, { root, node, data }) => {
-            return h('span', {
-              style: {
-                display: 'inline-block',
-                width: '100%'
-              }
-            }, [
-                h('span', [
-                  h('Icon', {
-                    props: {
-                      type: 'ios-folder-outline'
-                    },
-                    style: {
-                      marginRight: '8px'
-                    }
-                  }),
-                  h('span', data.title)
-                ]),
-                h('span', {
-                  style: {
-                    display: 'inline-block',
-                    float: 'right',
-                    marginRight: '32px'
-                  }
-                }, [
-                    h('Button', {
-                      props: Object.assign({}, this.buttonProps, {
-                        icon: 'ios-plus-empty',
-                        type: 'primary'
-                      }),
-                      style: {
-                        width: '52px'
-                      },
-                      on: {
-                        click: () => { this.append(data) }
-                      }
-                    })
-                  ])
-              ]);
-          },
-          children: [
-            {
-              title: 'child 1-1',
-              expand: true,
-              children: [
-                {
-                  title: 'leaf 1-1-1',
-                  expand: true
-                },
-                {
-                  title: 'leaf 1-1-2',
-                  expand: true
-                }
-              ]
-            },
-            {
-              title: 'child 1-2',
-              expand: true,
-              children: [
-                {
-                  title: 'leaf 1-2-1',
-                  expand: true
-                },
-                {
-                  title: 'leaf 1-2-1',
-                  expand: true
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      buttonProps: {
-        type: 'ghost',
-        size: 'small',
+      modal1: false,
+      playerOptions: {
+        // videojs options
+        muted: false,
+        language: 'en',
+        playbackRates: [0.7, 1.0, 1.5, 2.0],
+        sources: [{
+          type: "video/mp4",
+          src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
+        }],
+        poster: "/static/images/author.jpg",
       },
       phoneCallList: [
         {
@@ -111,7 +48,62 @@ export default {
           label: 'Canberra'
         }
       ],
+      productTimeList: [
+        {
+          value: 'New York',
+          label: 'New York'
+        },
+        {
+          value: 'London',
+          label: 'London'
+        },
+        {
+          value: 'Sydney',
+          label: 'Sydney'
+        },
+        {
+          value: 'Ottawa',
+          label: 'Ottawa'
+        },
+        {
+          value: 'Paris',
+          label: 'Paris'
+        },
+        {
+          value: 'Canberra',
+          label: 'Canberra'
+        }
+      ],
+      productLineList: [
+        {
+          value: 'New York',
+          label: 'New York'
+        },
+        {
+          value: 'London',
+          label: 'London'
+        },
+        {
+          value: 'Sydney',
+          label: 'Sydney'
+        },
+        {
+          value: 'Ottawa',
+          label: 'Ottawa'
+        },
+        {
+          value: 'Paris',
+          label: 'Paris'
+        },
+        {
+          value: 'Canberra',
+          label: 'Canberra'
+        }
+      ],
+      modal12: false,
       inputGrid: '',
+      modal11: false,
+      formValidate2: {},
       ruleValidate: {
         buffet_id: [
           {
@@ -158,29 +150,18 @@ export default {
           render: (h, params) => {
             return h('div', [
               h(
-                'Poptip',
+                'a',
                 {
+                  class: 'edit-btn',
                   props: {
-                    confirm: true,
-                    title: '您确定要删除这条数据吗?',
-                    transfer: true
                   },
                   on: {
-                    'on-ok': () => {
-                      this.deleteGoods(params.row.recording_id);
+                    click: () => {
+                      this.modal1 = true;
                     }
                   }
                 },
-                [
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {}
-                    },
-                    '播放'
-                  )
-                ]
+                '播放'
               )
             ]);
           }
@@ -289,67 +270,31 @@ export default {
   created() {
     this.getList();
   },
+  computed: {
+    player() {
+      return this.$refs.videoPlayer.player
+    }
+  },
   methods: {
-    renderContent(h, { root, node, data }) {
-      return h('span', {
-        style: {
-          display: 'inline-block',
-          width: '100%'
-        }
-      }, [
-          h('span', [
-            h('Icon', {
-              props: {
-                type: 'ios-paper-outline'
-              },
-              style: {
-                marginRight: '8px'
-              }
-            }),
-            h('span', data.title)
-          ]),
-          h('span', {
-            style: {
-              display: 'inline-block',
-              float: 'right',
-              marginRight: '32px'
-            }
-          }, [
-              h('Button', {
-                props: Object.assign({}, this.buttonProps, {
-                  icon: 'ios-plus-empty'
-                }),
-                style: {
-                  marginRight: '8px'
-                },
-                on: {
-                  click: () => { this.append(data) }
-                }
-              }),
-              h('Button', {
-                props: Object.assign({}, this.buttonProps, {
-                  icon: 'ios-minus-empty'
-                }),
-                on: {
-                  click: () => { this.remove(root, node, data) }
-                }
-              })
-            ])
-        ]);
+    // listen event
+    onPlayerPlay(player) {
+      // console.log('player play!', player)
     },
-    append(data) {
-      const children = data.children || [];
-      children.push({
-        title: 'appended node',
-        expand: true
-      });
-      this.$set(data, 'children', children);
+    onPlayerPause(player) {
+      // console.log('player pause!', player)
     },
-    remove(root, node, data) {
-      const parentKey = root.find(el => el === node).parent;
-      const parent = root.find(el => el.nodeKey === parentKey).node;
-      const index = parent.children.indexOf(data);
-      parent.children.splice(index, 1);
+    // ...player event
+
+    // or listen state event
+    playerStateChanged(playerCurrentState) {
+      // console.log('player current update state', playerCurrentState)
+    },
+
+    // player is ready
+    playerReadied(player) {
+      console.log('the player is readied', player)
+      // you can use it to do something...
+      // player.[methods]
     },
     // 页码改变的回调
     changePage(pageNo) {
@@ -444,6 +389,14 @@ export default {
       this.pageNo = 1;
       this.formItem = {};
       this.$refs[name].resetFields();
+    },
+    ok() {
+      this.$Message.info('Clicked ok');
+    },
+    cancel() {
+      this.$Message.info('Clicked cancel');
+      console.log(this.$Modal);
+      this.$Modal.remove();
     }
   }
 };
