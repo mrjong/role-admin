@@ -175,11 +175,11 @@ export const appRouter = [
 				component: () => import('@/pages/collectionMng/collection_records_page')
 			},
 			{
-				path: 'collection_recording',
+				path: 'collection_recording_page',
 				icon: 'ios-list',
-				name: 'collection_recording',
+				name: 'collection_recording_page',
 				title: '催收录音',
-				component: () => import('@/pages/collection/collection_recording_page/index.vue')
+				component: () => import('@/pages/collectionMng/collection_recording_page')
 			}
 		]
 	},
