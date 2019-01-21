@@ -1,5 +1,11 @@
 import { buffet_list } from '@/service/getData';
+import organizationForm from './components/organization_form_page';
+import invalidEmployees from './components/invalid_employees_page';
 export default {
+  components: {
+    organizationForm,
+    invalidEmployees,
+  },
   name: 'demo_list',
   data() {
     return {
@@ -7,9 +13,8 @@ export default {
       showPanel2: false,
       showPanel3: false,
       modal1: false,
-      status: '0',
-      acount: '123123',
       modalType: '',
+      formDisabled: '',
       data5: [
         {
           title: '大机构',
@@ -78,139 +83,7 @@ export default {
           label: 'Sydney'
         },
       ],
-      ruleValidate: {
-        buffet_id: [
-          {
-            required: true,
-            message: '请输入网格编号',
-            trigger: 'blur'
-          }
-        ]
-      },
-      pageNo: 1,
-      pageSize: 10,
-      total: 0,
-      formItem: {},
-      organizationFormItem: {
-name: '',
-person: '',
-createUser: '',
-      },
-      tableData: [
-        {
-          recording_id: 1,
-          operate: '操作'
-        }
-      ],
-      tableColumns: [
-        {
-          title: '序号',
-          width: 80,
-          searchOperator: '=',
-          sortable: true,
-          key: 'recording_id',
-          fixed: 'left',
-          align: 'center'
-        },
-        {
-          title: '账号',
-          width: 100,
-          searchOperator: '=',
-          key: 'loginCount',
-          align: 'center'
-        },
-        // {
-        //   title: '餐柜添加时间',
-        //   key: 'addtime',
-        //   sortable: true,
-        //   width: 160,
-        //   render: (h, params) => {
-        //     const row = params.row;
-        //     const addtime = row.addtime
-        //       ? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-        //       : row.addtime;
-        //     return h('span', addtime);
-        //   }
-        // },
-        {
-          title: '用户名称',
-          searchOperator: 'like',
-          width: 120,
-          key: 'userName',
-          sortable: true,
-          align: 'center',
-          ellipsis: true,
-        },
-        {
-          title: '公司名称',
-          width: 150,
-          searchOperator: 'like',
-          key: 'relation',
-          align: 'center',
-          ellipsis: true,
-          // render: (h, params) => {
-          //   return h('div', [
-          //     h(
-          //       'Tooltip',
-          //       {
-          //         style: {
-          //           margin: '0 5px'
-          //         },
-          //         props: {
-          //           content: params.row.address,
-          //           placement: 'top'
-          //         }
-          //       },
-          //       [h('div', {}, params.row.address)]
-          //     )
-          //   ]);
-          // }
-        },
-        {
-          title: '部门',
-          searchOperator: '=',
-          key: 'department',
-          align: 'center',
-          width: 120
-        },
-        {
-          title: '角色',
-          searchOperator: '=',
-          key: 'role',
-          align: 'center',
-          ellipsis: true,
-          width: 120,
-        },
-        {
-          title: '创建时间',
-          searchOperator: '=',
-          key: 'createTime',
-          ellipsis: true,
-          width: 200,
-          align: 'center'
-        },
-        {
-          title: '操作',
-          width: 100,
-          key: 'edit',
-          align: 'center',
-          fixed: 'right',
-          render: (h, params) => {
-            return h('div', [
-              h('a',
-                {
-                  class: 'edit-btn',
-                  props: {},
-                  on: {
-                    click: () => {
-                      this.modal1 = true;
-                    }
-                  }
-                }, '状态')
-            ]);
-          }
-        },
-      ]
+
     };
   },
   created() {
@@ -316,28 +189,11 @@ createUser: '',
     selectNode(node) {
       console.log(node)
     },
-    ok() {
-      // this.$Message.info('Clicked ok');
-      this.modal1 = false;
-    },
-    cancel() {
-      this.modal1 = false;
-    },
     // 控制右侧几个卡片的显隐
     setModalType(type) {
       this.modalType = type;
     },
-    // 页码改变的回调
-    changePage(pageNo) {
-      this.pageNo = pageNo;
-      this.getList();
-    },
-    // 切换每页条数时的回调
-    changeSize(pageSize) {
-      this.pageSize = pageSize;
-      this.pageNo = 1;
-      this.getList();
-    },
+
     getParam() {
       let searchParam = [];
 
@@ -384,15 +240,6 @@ createUser: '',
       }
       return searchParam;
     },
-    handleSubmit(name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.getList();
-        } else {
-          this.$Message.error('查询条件格式有误，请重新填写');
-        }
-      });
-    },
     // 获取表格数据
     async getList() {
       const searchParam = [];
@@ -415,11 +262,5 @@ createUser: '',
         this.pageNo = 1;
       }
     },
-    // 重置
-    clearForm(name) {
-      this.pageNo = 1;
-      this.formItem = {};
-      this.$refs[name].resetFields();
-    }
   }
 };
