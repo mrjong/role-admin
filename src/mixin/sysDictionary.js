@@ -1,27 +1,27 @@
 const mixin = {
-	created() {
-		if (this.getDirList && this.getDirList.length > 0) {
-			this.getDir(this.getDirList);
-		}
-	},
-	methods: {
-		getDir(arg) {
-			if (arg && arg.length > 0) {
-				arg.forEach((element) => {
-					console.log(element);
-					if (this.$store[arg]) {
-						// this.getDirObj[element] = this.$store[element];
-						this.$set(this.getDirObj, element, this.$store[element]);
-					} else {
-						this.$store.dispatch('getDictionary', element).then((res) => {
-							console.log(element, '------------------------------');
-							this.$set(this.getDirObj, element, res);
-						});
-					}
-				});
-			}
-		}
-	}
+  created() {
+    if (this.getDirList && this.getDirList.length > 0) {
+      this.getDir(this.getDirList);
+    }
+  },
+  methods: {
+    getDir(arg) {
+      if (arg && arg.length > 0) {
+        arg.forEach((element) => {
+          console.log(element);
+          if (this.$store[arg]) {
+            // this.getDirObj[element] = this.$store[element];
+            this.$set(this.getDirObj, element, this.$store[element]);
+          } else {
+            this.$store.dispatch('getDictionary', element).then((res) => {
+              console.log(element, '------------------------------');
+              this.$set(this.getDirObj, element, res);
+            });
+          }
+        });
+      }
+    }
+  }
 };
 // PROD_TYPE	产品线	公司的产品类型
 // GENDER	性别	性别：男，女
@@ -52,4 +52,5 @@ const mixin = {
 // 01_02_NO_YES	01-02否是	01:否 02:是
 // 1_0_AVAILABLE_DISABLE	1-0可用停用	1:可用 0:停用
 // 1_0_EFFECT_INVAL	1-0有效无效	1:有效 0:无效
+
 export default mixin;

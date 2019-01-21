@@ -55,10 +55,10 @@
                 v-model="formValidate.agent"
               >
                 <Option
-                  v-for="item in opCompanyNameList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
+                  v-for="item in getDirObj.SEAT_TYPE"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -159,14 +159,18 @@
   </div>
 </template>
 <script>
+  import sysDictionary from '@/mixin/sysDictionary';
   import { monitor_agentState_list, monitor_agentState_exportDown } from '@/service/getData';
   export default {
     name: 'seatTable',
+    mixins: [sysDictionary],
     data() {
       var alignCenter = 'center';
       var widthVal = 180;
       var widthMidVal = 100;
       return {
+        getDirList:['SEAT_TYPE'],
+        getDirObj:{},
         showPanel: false,
         showPanel2: false,
         opCompanyNameList: [

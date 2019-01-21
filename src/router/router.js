@@ -167,13 +167,13 @@ export const appRouter = [
 				title: '我的仲裁',
 				component: () => import('@/pages/arbitramentMng/my_arbitrament_page')
 			},
-			{
-				path: 'arbitrament_approve_page',
-				icon: 'ios-list',
-				name: 'arbitrament_approve_page',
-				title: '仲裁审批',
-				component: () => import('@/pages/arbitramentMng/arbitrament_approve_page')
-			}
+			// {
+			// 	path: 'arbitrament_approve_page',
+			// 	icon: 'ios-list',
+			// 	name: 'arbitrament_approve_page',
+			// 	title: '仲裁审批',
+			// 	component: () => import('@/pages/arbitramentMng/arbitrament_approve_page')
+			// }
 		]
 	},
 	{
