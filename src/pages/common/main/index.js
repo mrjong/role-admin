@@ -117,12 +117,8 @@ export default {
 				const res = await logout();
 				if (res.code === 1) {
 					this.$Message.success('退出成功');
-					util.clearAllCookie();
-					setTimeout(() => {
-						this.$router.push({
-							name: 'login'
-						});
-					}, 2000);
+                    util.clearAllCookie();
+                    location.replace('/')
 					this.$store.commit('logout', this);
 					this.$store.commit('clearOpenedSubmenu');
 				} else {

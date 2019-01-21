@@ -1,6 +1,7 @@
 import axios from 'axios';
 import iView from 'iview';
 import qs from 'qs';
+import Vue from 'vue'
 import Cookie from 'js-cookie';
 import util from './util';
 axios.defaults.baseURL = '/admin';
@@ -73,6 +74,8 @@ axios.interceptors.response.use(
 		switch (error && error.response.status) {
 			case 401:
 				iView.Message.error((error && error.response && error.response.data) || '服务器繁忙,稍后重试');
+				util.clearAllCookie();
+				console.log(Vue);
 				setTimeout(() => {
 					window.$router.push({
 						name: 'login'

@@ -40,9 +40,9 @@ module.exports = merge(webpackBaseConfig, {
             {
                 from: 'src/components/theme-switch/theme'
             },
-            // {
-            //     from: 'src/components/text-editor/tinymce'
-            // }
+            {
+                from: 'src/assets/libs'
+            },
         ], {
                 ignore: [
                     'text-editor.vue'

@@ -161,18 +161,18 @@ export const appRouter = [
 		component: Main,
 		children: [
 			{
-				path: 'my_case',
+				path: 'my_case_page',
 				icon: 'ios-list',
-				name: 'my_case',
+				name: 'my_case_page',
 				title: '我的案件',
-				component: () => import('@/pages/demo/demo_list_page/index.vue')
+				component: () => import('@/pages/collectionMng/my_case_page')
 			},
 			{
-				path: 'collection_records',
+				path: 'collection_records_page',
 				icon: 'ios-list',
-				name: 'collection_records',
+				name: 'collection_records_page',
 				title: '催收记录',
-				component: () => import('@/pages/demo/demo_desc_page/index.vue')
+				component: () => import('@/pages/collectionMng/collection_records_page')
 			},
 			{
 				path: 'collection_recording',

@@ -82,7 +82,60 @@ export default {
       }
     }
   },
+  created() {
+  },
   methods: {
+    call() {
+
+      // 初始化打电话
+      let url = 'https://zx.ketianyun.com'
+      let loginName = '01@suixingfu.com'
+      let password = '123456'
+      var config = {
+        uname: loginName,
+        pwd: password,
+        debug: true,
+        isAutoAnswer: true,
+        stateListenerCallBack: stateCallback,
+        forceAnswerWhenRing: false,
+        autoReady: true,
+        url: url
+      };
+      /**
+* 设置状态监听回调
+*/
+      function stateCallback(data) {
+        console.info(data);
+        if (data.msg === "READY") {
+
+        } else if (data.msg === "RINGING") {
+          console.log('振铃', data.data.phoneNum)
+          // document.getElementById('callnum').innerHTML = data.data.phoneNum;
+        } else if (data.msg === "HANGUP") {
+          console.log('挂断')
+          // document.getElementById('calluuid').innerHTML = '';
+          // document.getElementById('msg').innerHTML = '';
+          // document.getElementById('callnum').innerHTML = '';
+        }
+      }
+      /**
+* 初始化方法回调是否成功
+*/
+      function initCallback(data) {
+        console.info('---------------------');
+        if (data.successChange) {
+          //显示本机号码
+          // document.getElementById('agentnum').innerHTML = data.data.agentnumber;
+          //电话条ready状态变更
+          //CallHelper.ready();
+          console.log('您已登录成功！');
+        } else {
+          console.log('登录失败，请联系管理员！');
+        }
+      }
+
+      CallHelper.init(config, initCallback);
+    },
     handleSubmit() {
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
@@ -113,8 +166,9 @@ export default {
               "setAvator",
               "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
             )
+            this.call()
             Cookies.set("access", 1)
-            window.VueRouter = this.$router
+            window.$router = this.$router
             this.$router.push({
               name: "home"
             })
