@@ -82,7 +82,8 @@ export default {
 				{
 					title: '案件编码',
 					minWidth: 150,
-					key: 'id',
+                    key: 'id',
+                    align: 'center',
 					render(h, params) {
 						const id = params.row.id;
 						return h('div', [
@@ -118,21 +119,25 @@ export default {
 				{
 					title: '客户姓名',
 					minWidth: 60,
+					align: 'center',
 					key: 'userNmHid'
 				},
 				{
 					title: '身份证号',
 					minWidth: 150,
+					align: 'center',
 					key: 'idNoHid'
 				},
 				{
 					title: '手机号',
 					minWidth: 100,
+					align: 'center',
 					key: 'mblNoHid'
 				},
 				{
 					title: '产品线',
 					minWidth: 120,
+					align: 'center',
 					key: 'prdTyp',
 					render: (h, params) => {
 						let prdTyp = params.row.prdTyp;
@@ -152,6 +157,7 @@ export default {
 				{
 					title: '账单号',
 					minWidth: 180,
+					align: 'center',
 					key: 'billNo'
 				},
 
@@ -159,12 +165,11 @@ export default {
 					title: '逾期金额',
 					minWidth: 120,
 					sortable: true,
+					align: 'center',
 					key: 'overdueAmt',
 					render: (h, params) => {
 						let overdueAmt = params.row.overdueAmt;
-						overdueAmt = overdueAmt
-							? this.$options.filters['money'](overdueAmt)
-							: overdueAmt;
+						overdueAmt = overdueAmt ? this.$options.filters['money'](overdueAmt) : overdueAmt;
 						return h('span', overdueAmt);
 					}
 				},
@@ -172,17 +177,20 @@ export default {
 					title: '逾期天数',
 					minWidth: 100,
 					sortable: true,
+					align: 'center',
 					key: 'overdueDays'
 				},
 				{
 					title: '到期期数',
 					minWidth: 100,
 					sortable: true,
+					align: 'center',
 					key: 'maxPerdCnt'
 				},
 				{
 					title: '身份证属地',
 					minWidth: 200,
+					align: 'center',
 					key: 'device_id'
 				},
 
@@ -190,12 +198,14 @@ export default {
 					title: '信用级别',
 					minWidth: 120,
 					sortable: true,
+					align: 'center',
 					key: 'creditLevel'
 				},
 				{
 					title: '分配时间',
 					minWidth: 150,
 					sortable: true,
+					align: 'center',
 					key: 'allotDate',
 					render: (h, params) => {
 						let allotDate = params.row.allotDate;
@@ -208,6 +218,7 @@ export default {
 				{
 					title: '最后催收时间',
 					minWidth: 150,
+					align: 'center',
 					key: 'lastCollectDate',
 					render: (h, params) => {
 						let lastCollectDate = params.row.lastCollectDate;
@@ -220,18 +231,21 @@ export default {
 				{
 					title: '借款人拨打状态',
 					minWidth: 120,
+					align: 'center',
 					key: 'lastCurrentCollectResult'
 				},
 
 				{
 					title: '借款人沟通结果',
 					minWidth: 120,
+					align: 'center',
 					key: 'collectSts'
 				},
 				{
 					title: '承诺还款时间',
 					minWidth: 130,
 					sortable: true,
+					align: 'center',
 					key: 'promiseRepayDate',
 					render: (h, params) => {
 						let promiseRepayDate = params.row.promiseRepayDate;
@@ -244,11 +258,13 @@ export default {
 				{
 					title: '紧急联系人拨打状态',
 					minWidth: 120,
+					align: 'center',
 					key: 'lastCntCollectResult'
 				},
 				{
 					title: '是否提交仲裁',
 					minWidth: 120,
+					align: 'center',
 					key: 'isSubmit'
 				}
 				// {

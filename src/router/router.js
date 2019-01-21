@@ -130,9 +130,9 @@ export const appRouter = [
 		component: Main,
 		children: [
 			{
-				path: 'case_search',
+				path: 'case_search_page',
 				icon: 'ios-list',
-				name: 'case_search',
+				name: 'case_search_page',
 				title: '案件查询',
 				component: () => import('@/pages/caseMng/case_search_page')
 			}
