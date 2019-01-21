@@ -544,11 +544,11 @@
 
                 <FormItem
                   label="沟通状态"
-                  prop="city"
+                  prop="collectSts"
                 >
                   <Select
                     size="small"
-                    v-model="formValidate.city"
+                    v-model="formValidate.collectSts"
                     placeholder="请输入选择沟通状态"
                   >
                     <Option value="beijing">New York</Option>

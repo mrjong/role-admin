@@ -1,15 +1,11 @@
 import formValidateFun from '@/mixin/formValidateFun';
-import sysDictionary from '@/mixin/sysDictionary';
 export default {
 	name: 'case_search_page',
-	mixins: [ formValidateFun, sysDictionary ],
+	mixins: [ formValidateFun ],
 	data() {
 		console.log(this.GLOBAL);
 
 		return {
-			getDirList: [ 'PROD_TYPE', 'PROD_CNT','CREDIT_LEVEL','CASE_HANDLE_STATUS' ],
-            getDirObj: {},
-            
 			showPanel: false,
 			showPanel2: false,
 			phoneCallList: [

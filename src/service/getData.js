@@ -109,10 +109,24 @@ export const repay_repayUserOrSystem_list = (obj = {}) =>
 		data: qs.stringify(obj)
 	});
 
-// 用户主动还款&系统代扣还款列表导出
+/*
+*
+* 用户主动还款&系统代扣还款列表导出
+* */
 export const repay_repayUserOrSystem_exportDown = (obj) =>
 	fetch({
 		url: '/repay/repayUserOrSystem/exportDown',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+* 根据父级id获取相应字典数据
+* */
+export const sysDictionary_getListByParentId = (obj) =>
+	fetch({
+		url: '/sysDictionary/getListByParentId',
 		method: 'POST',
 		data: qs.stringify(obj)
 	});

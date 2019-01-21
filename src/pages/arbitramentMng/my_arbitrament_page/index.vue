@@ -61,14 +61,14 @@
           >
           <FormItem
             span="6"
-            label="产品期数:"
-            prop="perdCnt"
+            label="性别:"
+            prop="userGender"
           >
             <Select
               size="small"
               clearable
-              placeholder="请选择产品期数"
-              v-model="formItem.perdCnt"
+              placeholder="请选择性别"
+              v-model="formItem.userGender"
             >
               <Option
                 v-for="item in productLineList"
@@ -184,6 +184,52 @@
             </Col>
           </FormItem>
           </Col>
+              <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+          <!-- dueDateLt & dueDateBt -->
+          <FormItem
+            label="应还款日期:"
+            prop="mblNo"
+          >
+            <DatePicker
+              size="small"
+              style="width:100%"
+              v-model="formItem.csDate"
+              format="yyyy-MM-dd"
+              type="datetimerange"
+              placement="bottom-start"
+              placeholder="请选择应还款日期"
+            ></DatePicker>
+          </FormItem>
+          </Col>
+              <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+          <!-- allotDateLt & allotDateBt -->
+          <FormItem
+            label="分配日期:"
+            prop="mblNo"
+          >
+            <DatePicker
+              size="small"
+              style="width:100%"
+              v-model="formItem.csDate"
+              format="yyyy-MM-dd"
+              type="datetimerange"
+              placement="bottom-start"
+              placeholder="请选择分配日期"
+            ></DatePicker>
+          </FormItem>
+          </Col>
           <Col
             :xs="24"
             :sm="24"
@@ -191,7 +237,26 @@
             :lg="6"
             span="6"
           >
-          <FormItem label="逾期应还金额:">
+          <FormItem
+            label="经办人:"
+            prop="opUserName"
+          >
+            <Input
+              size="small"
+              clearable
+              v-model="formItem.opUserName"
+              placeholder="请输入经办人"
+            />
+          </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+          <FormItem label="逾期金额:">
             <Col
               :xs="11"
               :sm="11"
@@ -241,77 +306,15 @@
             span="6"
           >
           <FormItem
-            label="案件编号:"
-            prop="caseNo"
-          >
-            <Input
-              size="small"
-              clearable
-              v-model="formItem.caseNo"
-              placeholder="请输入案件编号"
-            />
-          </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
             span="6"
-          >
-          <FormItem
-            label="账单号:"
-            prop="billNo"
-          >
-            <Input
-              size="small"
-              clearable
-              v-model="formItem.billNo"
-              placeholder="请输入账单号"
-            />
-          </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <!-- <FormItem
-            span="6"
-            label="还款状态:"
-            prop="buffet_id"
-          >
-            <Select
-              size="small"
-              v-model="formItem.productLine"
-            >
-              <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
-            </Select>
-          </FormItem> -->
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            span="6"
-            label="信用级别:"
-            prop="creditLevel"
+            label="审核状态:"
+            prop="approvalState"
           >
             <Select
               size="small"
               clearable
-              placeholder="请选择信用级别"
-              v-model="formItem.creditLevel"
+              placeholder="请选择审核状态"
+              v-model="formItem.approvalState"
             >
               <Option
                 v-for="item in productLineList"
@@ -321,58 +324,6 @@
             </Select>
           </FormItem>
           </Col>
-           <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            span="6"
-            label="沟通状态:"
-            prop="creditLevel"
-          >
-            <Select
-              size="small"
-              clearable
-              placeholder="请选择沟通状态"
-              v-model="formItem.creditLevel"
-            >
-              <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
-            </Select>
-          </FormItem>
-          </Col>
-           <!-- <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            span="6"
-            label="电催中心:"
-            prop="opCompayName"
-          >
-            <Select
-              size="small"
-              clearable
-              placeholder="请选择电催中心"
-              v-model="formItem.opCompayName"
-            >
-              <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
-            </Select>
-          </FormItem>
-          </Col> -->
           <Col
             :xs="24"
             :sm="24"

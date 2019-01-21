@@ -44,10 +44,10 @@
               v-model="formItem.caseHandleStatus"
             >
               <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in getDirObj.CASE_HANDLE_STATUS"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -70,10 +70,10 @@
               v-model="formItem.prdTyp"
             >
               <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in getDirObj.PROD_TYPE"
+                :value="item.itemCode"
+                :key="item.itemName"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -96,10 +96,11 @@
               v-model="formItem.perdCnt"
             >
               <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in getDirObj.PROD_CNT"
+                :value="item.itemCode"
+                :key="item.itemName"
+              >{{ item.itemName }}</Option>
+            </Select>
             </Select>
           </FormItem>
           </Col>
@@ -339,10 +340,10 @@
               v-model="formItem.creditLevel"
             >
               <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in getDirObj.CREDIT_LEVEL"
+                :value="item.itemCode"
+                :key="item.itemName"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>

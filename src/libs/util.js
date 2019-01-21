@@ -249,5 +249,4 @@ util.fullscreenEvent = function (vm) {
     vm.$store.commit('updateMenulist');
     // 全屏相关
 };
-
 export default util;

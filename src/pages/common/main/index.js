@@ -58,7 +58,7 @@ export default {
 		mesCount() {
 			return this.$store.state.app.messageCount;
 		}
-	},
+    },
 	methods: {
 		ok() {
 			this.$refs.formItem.validate((valid) => {
@@ -179,7 +179,6 @@ export default {
 		window.addEventListener('resize', this.scrollBarResize);
 	},
 	created() {
-		window.VueRouter = this.$router;
 		// 显示打开的页面的列表
 		this.$store.commit('setOpenedList');
 	},
