@@ -91,10 +91,6 @@ export default {
           label: 'Canberra'
         }
       ],
-      modal12: false,
-      inputGrid: '',
-      modal11: false,
-      formValidate2: {},
       ruleValidate: {
         name: [
           {
@@ -107,26 +103,8 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      formValidate3: {
-        items: [
-          {
-            value: '',
-            index: 1,
-            status: 1
-          }
-        ]
-      },
       formItem: {},
       tableData: [
-        {
-          recording_id: 1,
-          name: "啦啦",
-          account_number: "123",
-          status: "1",
-          role: "0",
-          email: "123123@qq.com",
-          mobile: "123456"
-        }
       ],
       tableColumns: [
         {
@@ -144,19 +122,6 @@ export default {
           key: 'loginName',
           align: 'center'
         },
-        // {
-        //   title: '餐柜添加时间',
-        //   key: 'addtime',
-        //   sortable: true,
-        //   width: 160,
-        //   render: (h, params) => {
-        //     const row = params.row;
-        //     const addtime = row.addtime
-        //       ? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-        //       : row.addtime;
-        //     return h('span', addtime);
-        //   }
-        // },
         {
           title: '用户名称',
           searchOperator: 'like',
@@ -169,37 +134,7 @@ export default {
           searchOperator: 'like',
           key: 'uapLoginName',
           align: 'center'
-          // render: (h, params) => {
-          //   return h('div', [
-          //     h(
-          //       'Tooltip',
-          //       {
-          //         style: {
-          //           margin: '0 5px'
-          //         },
-          //         props: {
-          //           content: params.row.address,
-          //           placement: 'top'
-          //         }
-          //       },
-          //       [h('div', {}, params.row.address)]
-          //     )
-          //   ]);
-          // }
         },
-        // {
-        //   title: '催收角色名称',
-        //   searchOperator: '=',
-        //   key: 'collection_role',
-        //   align: 'center'
-        // },
-        // {
-        //   title: '呼叫开始时间',
-        //   searchOperator: '=',
-        //   key: 'call_begin_time',
-        //   ellipsis: true,
-        //   align: 'center'
-        // },
         {
           title: '状态',
           searchOperator: '=',
@@ -224,13 +159,6 @@ export default {
           title: '创建时间',
           searchOperator: '=',
           key: 'createtime',
-          ellipsis: true,
-          align: 'center'
-        },
-        {
-          title: '最后操作时间',
-          searchOperator: '=',
-          key: 'operate_time',
           ellipsis: true,
           align: 'center'
         },

@@ -18,17 +18,17 @@
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="姓名:">
-              <Input size="small" clearable v-model="formItem.username" placeholder="请输入姓名"></Input>
+              <Input size="small" clearable v-model="formItem.name" placeholder="请输入姓名"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="账号:">
-              <Input size="small" clearable v-model="formItem.account_number" placeholder="请输入账号"></Input>
+              <Input size="small" clearable v-model="formItem.loginName" placeholder="请输入账号"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="状态:">
-              <Select size="small" v-model="formItem.status" filterable clearable>
+              <Select size="small" v-model="formItem.state" filterable clearable>
                 <Option
                   v-for="item in productTimeList"
                   :value="item.value"

@@ -5,84 +5,63 @@ export default {
     return {
       showPanel: false,
       showPanel2: false,
+      showPanel3: false,
+      modal1: false,
+      status: '0',
+      acount: '123123',
+      modalType: '',
       data5: [
         {
-          title: 'parent 1',
+          title: '大机构',
           expand: true,
-          render: (h, { root, node, data }) => {
-            return h('span', {
-              style: {
-                display: 'inline-block',
-                width: '100%'
-              }
-            }, [
-                h('span', [
-                  h('Icon', {
-                    props: {
-                      type: 'ios-folder-outline'
-                    },
-                    style: {
-                      marginRight: '8px'
-                    }
-                  }),
-                  h('span', data.title)
-                ]),
-                h('span', {
-                  style: {
-                    display: 'inline-block',
-                    float: 'right',
-                    marginRight: '32px'
-                  }
-                }, [
-                    h('Button', {
-                      props: Object.assign({}, this.buttonProps, {
-                        icon: 'ios-plus-empty',
-                        type: 'primary'
-                      }),
-                      style: {
-                        width: '52px'
-                      },
-                      on: {
-                        click: () => { this.append(data) }
-                      }
-                    })
-                  ])
-              ]);
-          },
+          type: '1',
           children: [
             {
-              title: 'child 1-1',
+              title: '催收公司',
               expand: true,
+              type: '2',
               children: [
                 {
-                  title: 'leaf 1-1-1',
-                  expand: true
+                  title: '催收人员',
+                  expand: true,
+                  type: '4',
+
                 },
                 {
-                  title: 'leaf 1-1-2',
-                  expand: true
+                  title: '催收部门',
+                  expand: true,
+                  type: '3',
+
                 }
               ]
             },
             {
-              title: 'child 1-2',
+              title: '催收公司',
+              type: '2',
               expand: true,
               children: [
                 {
-                  title: 'leaf 1-2-1',
-                  expand: true
+                  title: '催收人员',
+                  expand: true,
+                  type: '4',
                 },
                 {
-                  title: 'leaf 1-2-1',
-                  expand: true
+                  title: '催收人员',
+                  expand: true,
+                  type: '4',
                 }
               ]
+            },
+            {
+              title: '催收人员',
+              type: '4',
+              expand: true,
             }
           ]
         }
       ],
       buttonProps: {
-        type: 'ghost',
+        type: 'primary',
         size: 'small',
       },
       phoneCallList: [
@@ -98,20 +77,7 @@ export default {
           value: 'Sydney',
           label: 'Sydney'
         },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
       ],
-      inputGrid: '',
       ruleValidate: {
         buffet_id: [
           {
@@ -124,16 +90,12 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      formValidate3: {
-        items: [
-          {
-            value: '',
-            index: 1,
-            status: 1
-          }
-        ]
-      },
       formItem: {},
+      organizationFormItem: {
+name: '',
+person: '',
+createUser: '',
+      },
       tableData: [
         {
           recording_id: 1,
@@ -151,45 +113,10 @@ export default {
           align: 'center'
         },
         {
-          title: '操作',
-          width: 100,
-          key: 'edit',
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h(
-                'Poptip',
-                {
-                  props: {
-                    confirm: true,
-                    title: '您确定要删除这条数据吗?',
-                    transfer: true
-                  },
-                  on: {
-                    'on-ok': () => {
-                      this.deleteGoods(params.row.recording_id);
-                    }
-                  }
-                },
-                [
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {}
-                    },
-                    '播放'
-                  )
-                ]
-              )
-            ]);
-          }
-        },
-        {
-          title: '时长',
+          title: '账号',
           width: 100,
           searchOperator: '=',
-          key: 'time_length',
+          key: 'loginCount',
           align: 'center'
         },
         // {
@@ -206,18 +133,21 @@ export default {
         //   }
         // },
         {
-          title: '客户姓名',
+          title: '用户名称',
           searchOperator: 'like',
-          key: 'client_name',
+          width: 120,
+          key: 'userName',
           sortable: true,
-          align: 'center'
+          align: 'center',
+          ellipsis: true,
         },
         {
-          title: '关系',
-          width: 80,
+          title: '公司名称',
+          width: 150,
           searchOperator: 'like',
           key: 'relation',
-          align: 'center'
+          align: 'center',
+          ellipsis: true,
           // render: (h, params) => {
           //   return h('div', [
           //     h(
@@ -237,51 +167,48 @@ export default {
           // }
         },
         {
-          title: '呼叫电话',
+          title: '部门',
           searchOperator: '=',
-          key: 'call_number',
-          align: 'center'
+          key: 'department',
+          align: 'center',
+          width: 120
         },
         {
-          title: '呼叫开始时间',
+          title: '角色',
           searchOperator: '=',
-          key: 'call_begin_time',
+          key: 'role',
+          align: 'center',
           ellipsis: true,
-          align: 'center'
+          width: 120,
         },
         {
-          title: '呼叫结束时间',
+          title: '创建时间',
           searchOperator: '=',
-          key: 'call_end_time',
+          key: 'createTime',
           ellipsis: true,
+          width: 200,
           align: 'center'
         },
         {
-          title: '经办人',
-          searchOperator: '=',
-          key: 'operator',
-          align: 'center'
-        },
-        {
-          title: '案件编码',
-          searchOperator: '=',
-          key: 'case_id',
-          ellipsis: true,
-          align: 'center'
-        },
-        {
-          title: '账单号',
-          searchOperator: '=',
-          key: 'bill_number',
-          ellipsis: true,
-          align: 'center'
-        },
-        {
-          title: '客户身份证号',
-          searchOperator: '=',
-          key: 'id_card',
-          ellipsis: true,
-          align: 'center'
+          title: '操作',
+          width: 100,
+          key: 'edit',
+          align: 'center',
+          fixed: 'right',
+          render: (h, params) => {
+            return h('div', [
+              h('a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.modal1 = true;
+                    }
+                  }
+                }, '状态')
+            ]);
+          }
         },
       ]
     };
@@ -290,6 +217,21 @@ export default {
     this.getList();
   },
   methods: {
+    // 判断添加的机构类别
+    getOrganization(type) {
+      if (type === '1') {
+        return '添加公司'
+      }
+      if (type === '2') {
+        return '添加部门'
+      }
+      if (type === '0') {
+        return '添加机构'
+      }
+      if (type === '4') {
+        return null;
+      }
+    },
     renderContent(h, { root, node, data }) {
       return h('span', {
         style: {
@@ -300,42 +242,61 @@ export default {
           h('span', [
             h('Icon', {
               props: {
-                type: 'ios-paper-outline'
+                type: data.type === '4' ? 'person' : 'home',
               },
               style: {
-                marginRight: '8px'
+                marginRight: '4px'
               }
             }),
-            h('span', data.title)
+            h('span', {
+              style: {
+                cursor: 'pointer'
+              },
+              on: {
+                'click': () => {
+                  console.log(data);
+                  this.setModalType(data.type);
+                }
+              }
+            }, data.title)
           ]),
           h('span', {
             style: {
               display: 'inline-block',
               float: 'right',
-              marginRight: '32px'
+              marginRight: '20px'
             }
           }, [
-              h('Button', {
-                props: Object.assign({}, this.buttonProps, {
-                  icon: 'ios-plus-empty'
-                }),
-                style: {
-                  marginRight: '8px'
-                },
-                on: {
-                  click: () => { this.append(data) }
-                }
-              }),
-              h('Button', {
-                props: Object.assign({}, this.buttonProps, {
-                  icon: 'ios-minus-empty'
-                }),
-                on: {
-                  click: () => { this.remove(root, node, data) }
-                }
-              })
+              data.type === '4' || data.type === '3' ? null :
+                h('Button', {
+                  props: Object.assign({}, this.buttonProps, {
+                    // icon: 'ios-plus-empty'
+                  }),
+                  style: {
+                    marginRight: data.type === '4' || data.type === '3' ? 0 : '4px'
+                  },
+                  on: {
+                    click: () => { this.append(data) }
+                  }
+                }, this.getOrganization(data.type)),
+              data.type === '4' ? null :
+                h('Button', {
+                  props: Object.assign({}, this.buttonProps, {
+                    // icon: 'ios-plus-empty'
+                  }),
+                  style: {
+                    // marginRight: data.type === '4' || data.type === '3' ? 0 : '4px'
+                  },
+                  on: {
+                    click: () => { this.append(data) }
+                  }
+                }, '添加人员'),
             ])
         ]);
+    },
+    // 新增结构
+    addOrganization() {
+
     },
     append(data) {
       const children = data.children || [];
@@ -350,6 +311,21 @@ export default {
       const parent = root.find(el => el.nodeKey === parentKey).node;
       const index = parent.children.indexOf(data);
       parent.children.splice(index, 1);
+    },
+    // 选中节点的回调函数
+    selectNode(node) {
+      console.log(node)
+    },
+    ok() {
+      // this.$Message.info('Clicked ok');
+      this.modal1 = false;
+    },
+    cancel() {
+      this.modal1 = false;
+    },
+    // 控制右侧几个卡片的显隐
+    setModalType(type) {
+      this.modalType = type;
     },
     // 页码改变的回调
     changePage(pageNo) {
