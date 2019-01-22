@@ -53,14 +53,6 @@
         <!-- <router-link to="/buffet/buffet_add">
           <Button class="fr vue-back-btn header-btn" type="primary" size="small">导出数据</Button>
         </router-link>-->
-        <Button
-          class="fr header-btn"
-          type="primary"
-          @click="handleAdd('formItem')"
-          style="width:80px"
-          long
-          size="small"
-        >添加</Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel3">
@@ -296,3 +288,8 @@ export default {
   },
 }
 </script>
+<style lang="less">
+.ivu-col {
+  margin-bottom: 5px;
+}
+</style>

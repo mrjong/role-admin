@@ -1,10 +1,20 @@
 import { buffet_list } from '@/service/getData';
 import organizationForm from './components/organization_form_page';
 import invalidEmployees from './components/invalid_employees_page';
+import componeyForm from './components/componey_form_page';
+import departmentForm from './components/department_form_page';
+import staffForm from './components/staff_form_page';
+import addRole from './components/add_staff_page';
+import addOrganization from './components/add_organization_page';
 export default {
   components: {
     organizationForm,
     invalidEmployees,
+    componeyForm,
+    departmentForm,
+    staffForm,
+    addRole,
+    addOrganization,
   },
   name: 'demo_list',
   data() {
@@ -13,6 +23,10 @@ export default {
       showPanel2: false,
       showPanel3: false,
       modal1: false,
+      roleModal: false,
+      roleType: '',
+      organizationModal: false,
+      organizationType: '',
       modalType: '',
       formDisabled: '',
       data5: [
@@ -36,7 +50,6 @@ export default {
                   title: '催收部门',
                   expand: true,
                   type: '3',
-
                 }
               ]
             },
@@ -149,7 +162,7 @@ export default {
                     marginRight: data.type === '4' || data.type === '3' ? 0 : '4px'
                   },
                   on: {
-                    click: () => { this.append(data) }
+                    click: () => { this.addOrganization(data) }
                   }
                 }, this.getOrganization(data.type)),
               data.type === '4' ? null :
@@ -161,29 +174,26 @@ export default {
                     // marginRight: data.type === '4' || data.type === '3' ? 0 : '4px'
                   },
                   on: {
-                    click: () => { this.append(data) }
+                    click: () => { this.addRole(data) }
                   }
                 }, '添加人员'),
             ])
         ]);
     },
-    // 新增结构
-    addOrganization() {
-
+    addRole(data) {
+      // const children = data.children || [];
+      // children.push({
+      //   title: 'appended node',
+      //   expand: true
+      // });
+      // this.$set(data, 'children', children);
+      this.roleModal = true;
+      this.roleType = data.type;
     },
-    append(data) {
-      const children = data.children || [];
-      children.push({
-        title: 'appended node',
-        expand: true
-      });
-      this.$set(data, 'children', children);
-    },
-    remove(root, node, data) {
-      const parentKey = root.find(el => el === node).parent;
-      const parent = root.find(el => el.nodeKey === parentKey).node;
-      const index = parent.children.indexOf(data);
-      parent.children.splice(index, 1);
+    // 新增机构
+    addOrganization(data) {
+      this.organizationModal = true;
+      this.organizationType = data.type;
     },
     // 选中节点的回调函数
     selectNode(node) {
@@ -196,7 +206,6 @@ export default {
 
     getParam() {
       let searchParam = [];
-
       if (!(this.formItem.addtime && this.formItem.addtime[0]) || !this.formItem.addtime[1]) {
         delete this.formItem.addtime;
       } else {

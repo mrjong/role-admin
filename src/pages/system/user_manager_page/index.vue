@@ -20,7 +20,7 @@
             <Button
               class="fr header-btn"
               type="primary"
-              @click="addOrganization('formItem')"
+              @click="addOrganization({'type': '0'})"
               style="width:64px"
               long
               size="small"
@@ -42,13 +42,33 @@
       <Col span="16" class="detail-col" v-if="modalType === '1'">
         <organizationForm></organizationForm>
       </Col>
-      <!--  -->
+      <!-- 查看公司详情 -->
+      <Col span="16" class="detail-col" v-if="modalType === '2'">
+        <componeyForm></componeyForm>
+      </Col>
+      <!-- 查看部门详情 -->
+      <Col span="16" class="detail-col" v-if="modalType === '3'">
+        <departmentForm></departmentForm>
+      </Col>
+      <!-- 查看员工详情 -->
+      <Col span="16" class="detail-col" v-if="modalType === '4'">
+        <staffForm></staffForm>
+      </Col>
+      <!-- 新增员工 -->
+      <Col span="16" class="detail-col" v-if="roleModal">
+        <addRole :type="roleType"></addRole>
+      </Col>
+      <!-- 新增机构 -->
+      <Col span="16" class="detail-col" v-if="organizationModal">
+        <addOrganization :type='organizationType'></addOrganization>
+      </Col>
     </Row>
   </div>
 </template>
 <script src="./index.js"></script>
 <style lang="less">
-.table-col {
+.table-col,
+.detail-col {
   position: relative;
   .ivu-modal-wrap,
   .ivu-modal-mask {
