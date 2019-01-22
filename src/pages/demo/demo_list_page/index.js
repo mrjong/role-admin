@@ -230,7 +230,6 @@ export default {
 		// 获取表格数据
 		async getList() {
 			let res = await getList();
-			console.log(this.getParam());
 		}
 	}
 };

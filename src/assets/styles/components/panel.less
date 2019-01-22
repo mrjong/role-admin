@@ -27,9 +27,9 @@
 	.edit-desc {
 		color: #2d8cf0;
 		&:hover {
-            color: #57a3f3;
-            text-decoration-line: underline;
-            cursor: pointer;
+			color: #57a3f3;
+			text-decoration-line: underline;
+			cursor: pointer;
 		}
 	}
 	.ivu-table-cell {
@@ -70,12 +70,30 @@
 .panel-desc {
 	margin-bottom: 5px;
 	.panel-desc-title {
-		padding: 5px 0;
+		padding: 5px;
 		font-size: 12px;
 		color: #333;
 		font-weight: normal;
 		span {
 			font-weight: 500;
 		}
+	}
+}
+.border-sh {
+    border: 1px dashed #7f8490;
+    margin-top: 10px;
+	padding: 5px 8px;
+	position: relative;
+	.border-sh-icon {
+		font-size: 16px;
+		top: -9px;
+		right: -7px;
+		display: inline-block;
+		z-index: 10;
+		position: absolute;
+        cursor: pointer;
+        &:hover{
+            color: #2d8cf0;
+        }
 	}
 }

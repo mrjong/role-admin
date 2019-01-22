@@ -1,9 +1,12 @@
+import { wkProcessTask_detail, wkProcessTask_list } from '@/service/getData';
+import tablePage from '@/mixin/tablePage';
 export default {
 	name: 'case_search_page',
+	mixins: [ tablePage ],
 	data() {
 		return {
-            showPanel:false,
-            showPanel2:false,
+			showPanel: false,
+			showPanel2: false,
 			phoneCallList: [
 				{
 					value: 'New York',
@@ -111,64 +114,40 @@ export default {
 			tableData: [],
 			tableColumns: [
 				{
-					title: '餐柜ID',
+					title: '定义ID',
 					width: 100,
-					searchOperator: '=',
 					sortable: true,
-					key: 'buffet_id'
+					key: 'defId'
 				},
 				{
-                    title: '餐柜编码',
-                    width: 120,
-					searchOperator: '=',
-					key: 'buffet_code'
+					title: '定义名称',
+					width: 120,
+					key: 'defName'
 				},
 				{
-					title: '设备ID',
-					searchOperator: '=',
-					key: 'device_id'
+					title: '业务标识',
+					width: 120,
+					key: 'busiKey'
 				},
 				{
-					title: '餐柜添加时间',
-                    key: 'addtime',
-                    width: 3000,
-					sortable: true,
-					render: (h, params) => {
-						const row = params.row;
-						const addtime = row.addtime
-							? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-							: row.addtime;
-						return h('span', addtime);
-					}
+					title: '节点名称',
+					width: 120,
+					key: 'taskNodeName'
 				},
 				{
-                    title: '餐柜名称',
-                    width: 120,
-					searchOperator: 'like',
-					key: 'buffet_name',
-					sortable: true
+					title: '节点顺序',
+					width: 120,
+					key: 'taskNodeSort'
 				},
 				{
-					title: '餐柜详细地址',
-					searchOperator: 'like',
-					key: 'address',
-					render: (h, params) => {
-						return h('div', [
-							h(
-								'Tooltip',
-								{
-									style: {
-										margin: '0 5px'
-									},
-									props: {
-										content: params.row.address,
-										placement: 'top'
-									}
-								},
-								[ h('div', {}, params.row.address) ]
-							)
-						]);
-					}
+					title: '处理人',
+					width: 120,
+					key: 'waitDealName'
+				},
+				{
+					title: '申请人',
+					width: 120,
+					key: 'applyName'
 				},
 				{
 					title: '操作',
@@ -177,37 +156,20 @@ export default {
 					render: (h, params) => {
 						return h('div', [
 							h(
-								'Poptip',
+								'a',
 								{
-									props: {
-										confirm: true,
-										title: '您确定要删除这条数据吗?',
-										transfer: true
-									},
-									on: {
-										'on-ok': () => {
-											this.deleteGoods(params.row.buffet_id);
-										}
-									}
+									class: 'edit-btn',
+									props: {}
 								},
-								[
-									h(
-										'a',
-										{
-											class: 'edit-btn',
-											props: {}
-										},
-										'删除'
-									),
-									h(
-										'a',
-										{
-											class: 'edit-btn',
-											props: {}
-										},
-										'删除'
-									)
-								]
+								'详情'
+							),
+							h(
+								'a',
+								{
+									class: 'edit-btn',
+									props: {}
+								},
+								'审核'
 							)
 						]);
 					}
@@ -219,83 +181,19 @@ export default {
 		this.getList();
 	},
 	methods: {
-		// 页码改变的回调
-		changePage(pageNo) {
-			this.pageNo = pageNo;
-			this.getList();
-		},
-		// 切换每页条数时的回调
-		changeSize(pageSize) {
-			this.pageSize = pageSize;
-			this.pageNo = 1;
-			this.getList();
-		},
-		getParam() {
-			let searchParam = [];
-
-			if (!(this.formItem.addtime && this.formItem.addtime[0]) || !this.formItem.addtime[1]) {
-				delete this.formItem.addtime;
-			} else {
-				let startTime = this.formItem.addtime[0].getTime() / 1000;
-				let endTime = this.formItem.addtime[1].getTime() / 1000;
-				console.log();
-				let addtime = [
-					{
-						searchValue: startTime,
-						searchColumn: 'addtime',
-						searchOperator: '>'
-					},
-					{
-						searchValue: endTime,
-						searchColumn: 'addtime',
-						searchOperator: '<='
-					}
-				];
-				if (this.formItem && JSON.stringify(addtime) !== '[]') {
-					for (let i = 0; i < addtime.length; i++) {
-						searchParam.push(addtime[i]);
-					}
-				}
-			}
-			console.log(searchParam);
-			for (let i = 0; i < this.tableColumns.length; i++) {
-				for (const key in this.formItem) {
-					if (
-						this.formItem[key] &&
-						this.tableColumns[i].searchOperator &&
-						key === this.tableColumns[i].key &&
-						key !== 'addtime'
-					) {
-						let item = {};
-						item.searchValue = this.formItem[key];
-						item.searchColumn = this.tableColumns[i].key;
-						item.searchOperator = this.tableColumns[i].searchOperator;
-						searchParam.push(item);
-					}
-				}
-			}
-			return searchParam;
-		},
-		handleSubmit(name) {
-			this.$refs[name].validate((valid) => {
-				if (valid) {
-					this.getList();
-				} else {
-					this.$Message.error('查询条件格式有误，请重新填写');
-				}
-			});
-		},
-		// 获取表格数据
 		async getList() {
-			const searchParam = [];
-			console.log(this.getParam());
-		
-		},
-		// 重置
-		clearForm(name) {
-			this.pageNo = 1;
-			this.formItem = {};
-			this.$refs[name].resetFields();
+			const res = await wkProcessTask_list({
+				...this.formItem,
+				pageNum: this.pageNo,
+				pageSize: this.pageSize
+			});
+			if (res.code === 1) {
+				this.tableData = res.data.content;
+				this.pageSize = res.data.size;
+				this.total = res.data.totalElements;
+			} else {
+				this.$Message.error(res.message);
+			}
 		}
 	}
 };

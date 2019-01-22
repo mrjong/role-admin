@@ -301,19 +301,19 @@ export const appRouter = [
 		title: '系统管理',
 		component: Main,
 		children: [
-			{
-				path: 'wkProcessDef_list',
-				icon: 'ios-list',
-				name: 'wkProcessDef_list',
-				title: '系统角色管理',
-				component: () => import('@/pages/system/wkProcessDef_list.vue')
-			},
+			// {
+			// 	path: 'wkProcessDef_list',
+			// 	icon: 'ios-list',
+			// 	name: 'wkProcessDef_list',
+			// 	title: '系统角色管理',
+			// 	component: () => import('@/pages/system/wkProcessDef_list.vue')
+			// },
 			{
 				path: 'system_user_page',
 				icon: 'ios-list',
 				name: 'system_user_page',
 				title: '系统用户管理',
-				component: () => import('@/pages/system/system_user_page/index.vue')
+				component: () => import('@/pages/system/system_user_page')
 			},
 			{
 				path: 'user_manager_page',
@@ -327,7 +327,7 @@ export const appRouter = [
 				icon: 'ios-list',
 				name: 'relationship_maintain_page',
 				title: '坐席关系维护',
-				component: () => import('@/pages/system/relationship_maintain_page/index.vue')
+				component: () => import('@/pages/system/relationship_maintain_page')
 			},
 			{
 				path: 'data_dictionary_page',

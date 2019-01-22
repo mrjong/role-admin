@@ -1,9 +1,15 @@
 const mixin = {
 	methods: {
 		handleSubmit(name) {
+            console.log('------------')
 			this.$refs[name].validate((valid) => {
 				if (valid) {
-					this.getList();
+                console.log(valid)
+					this.getList({
+						...this.formItem,
+						pageNum: this.pageNo,
+						pageSize: this.pageSize
+					});
 				}
 			});
 		},
@@ -16,6 +22,11 @@ const mixin = {
 		// 页码改变的回调
 		changePage(pageNo) {
 			this.pageNo = pageNo;
+			console.log({
+				...this.formItem,
+				pageNum: pageNo,
+				pageSize: this.pageSize
+			});
 			this.getList({
 				...this.formItem,
 				pageNum: pageNo,
@@ -26,7 +37,16 @@ const mixin = {
 		changeSize(pageSize) {
 			this.pageSize = pageSize;
 			this.pageNo = 1;
-			this.getList();
+			console.log({
+				...this.formItem,
+				pageNum: pageNo,
+				pageSize: this.pageSize
+			});
+			this.getList({
+				...this.formItem,
+				pageNum: pageNo,
+				pageSize: this.pageSize
+			});
 		}
 	}
 };
