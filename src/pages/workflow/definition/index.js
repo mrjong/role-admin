@@ -1,10 +1,12 @@
 import gongzuoliu from '@/components/workflow/gongzuoliu'
-wkProcessDef_list
+import { wkProcessDef_list } from "@/service/getData"
+import tablePage from '@/mixin/tablePage';
 export default {
     name: 'case_search_page',
     components:{
         gongzuoliu
     },
+    mixin:[tablePage],
 	data() {
 		return {
 			visible1: false,
@@ -105,7 +107,8 @@ export default {
 				]
 			},
 			formItem: {},
-			tableData: [],
+            tableData: [],
+            ruleValidate:{},
 			tableColumns: [
 				{
 					title: '餐柜ID',
@@ -219,63 +222,6 @@ export default {
 		handView() {
 			this.visible1 = true;
 		},
-		// 页码改变的回调
-		changePage(pageNo) {
-			this.pageNo = pageNo;
-			this.getList();
-		},
-		// 切换每页条数时的回调
-		changeSize(pageSize) {
-			this.pageSize = pageSize;
-			this.pageNo = 1;
-			this.getList();
-		},
-		getParam() {
-			let searchParam = [];
-
-			if (!(this.formItem.addtime && this.formItem.addtime[0]) || !this.formItem.addtime[1]) {
-				delete this.formItem.addtime;
-			} else {
-				let startTime = this.formItem.addtime[0].getTime() / 1000;
-				let endTime = this.formItem.addtime[1].getTime() / 1000;
-				console.log();
-				let addtime = [
-					{
-						searchValue: startTime,
-						searchColumn: 'addtime',
-						searchOperator: '>'
-					},
-					{
-						searchValue: endTime,
-						searchColumn: 'addtime',
-						searchOperator: '<='
-					}
-				];
-				if (this.formItem && JSON.stringify(addtime) !== '[]') {
-					for (let i = 0; i < addtime.length; i++) {
-						searchParam.push(addtime[i]);
-					}
-				}
-			}
-			console.log(searchParam);
-			for (let i = 0; i < this.tableColumns.length; i++) {
-				for (const key in this.formItem) {
-					if (
-						this.formItem[key] &&
-						this.tableColumns[i].searchOperator &&
-						key === this.tableColumns[i].key &&
-						key !== 'addtime'
-					) {
-						let item = {};
-						item.searchValue = this.formItem[key];
-						item.searchColumn = this.tableColumns[i].key;
-						item.searchOperator = this.tableColumns[i].searchOperator;
-						searchParam.push(item);
-					}
-				}
-			}
-			return searchParam;
-		},
 		handleSubmit(name) {
 			this.$refs[name].validate((valid) => {
 				if (valid) {
@@ -287,8 +233,6 @@ export default {
 		},
 		// 获取表格数据
 		async getList() {
-			const searchParam = [];
-			console.log(this.getParam());
 		},
 		// 重置
 		clearForm(name) {

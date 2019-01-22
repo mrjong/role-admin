@@ -8,12 +8,18 @@
       :mask-closable="false"
       @on-visible-change="del"
     >
-      <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+      <p
+        slot="header"
+        style="color:#333; font-size: 20px; font-weight: 600"
+      >
         <span>用户信息</span>
       </p>
       <div style="text-align:center">
         <!-- 用户信息 -->
-        <Card class="vue-panel" :dis-hover="true">
+        <Card
+          class="vue-panel"
+          :dis-hover="true"
+        >
           <!-- <p slot="title" style="text-align: left">用户信息</p> -->
           <Form
             v-if="!showPanel"
@@ -24,70 +30,169 @@
             disabled
           >
             <Row>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem span="4" label="姓名:" prop="name" disabled>
-                  <Input size="small" clearable v-model="formItem.name" placeholder="请输入姓名" :disabled="model.type === '1'? true: false"></Input>
-                </FormItem>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="10"
+                :lg="10"
+                span="4"
+              >
+              <FormItem
+                span="4"
+                label="姓名:"
+                prop="name"
+                disabled
+              >
+                <Input
+                  size="small"
+                  clearable
+                  v-model="formItem.name"
+                  placeholder="请输入姓名"
+                  :disabled="model.type === '1'? true: false"
+                ></Input>
+              </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem span="4" label="账号:" prop="account_number">
-                  <Input size="small" clearable v-model="formItem.account_number" placeholder="请输入账号" :disabled="model.type === '1'? true: false"></Input>
-                </FormItem>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="10"
+                :lg="10"
+                span="4"
+              >
+              <FormItem
+                span="4"
+                label="账号:"
+                prop="loginName"
+              >
+                <Input
+                  size="small"
+                  clearable
+                  v-model="formItem.loginName"
+                  placeholder="请输入账号"
+                  :disabled="model.type === '1'? true: false"
+                ></Input>
+              </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem label="状态:" span="4" prop="status">
-                  <Select size="small" v-model="formItem.status" filterable clearable placeholder="请选择状态" :disabled="model.type === '1'? true: false">
-                    <Option
-                      v-for="item in productTimeList"
-                      :value="item.value"
-                      :key="item.value"
-                    >{{ item.label }}</Option>
-                  </Select>
-                </FormItem>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="10"
+                :lg="10"
+                span="4"
+              >
+              <FormItem
+                label="账户状态:"
+                span="4"
+                prop="state"
+              >
+                <Select
+                  size="small"
+                  v-model="formItem.state"
+                  filterable
+                  clearable
+                  placeholder="请选择账户状态"
+                  :disabled="model.type === '1'? true: false"
+                >
+                  <Option
+                    v-for="item in getDirObj['1_0_AVAILABLE_DISABLE']"
+                    :value="item.itemCode"
+                    :key="item.itemCode"
+                  >{{ item.itemName }}</Option>
+                </Select>
+              </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem label="系统角色:" span="4" prop="role">
-                  <Select
-                    size="small"
-                    v-model="formItem.role"
-                    filterable
-                    clearable
-                    placeholder="请选择系统角色"
-                    :disabled="model.type === '1'? true: false"
-                  >
-                    <Option
-                      v-for="item in productTimeList"
-                      :value="item.value"
-                      :key="item.value"
-                    >{{ item.label }}</Option>
-                  </Select>
-                </FormItem>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="10"
+                :lg="10"
+                span="4"
+              >
+              <FormItem
+                label="系统角色:"
+                span="4"
+                prop="userType"
+              >
+                <Select
+                  size="small"
+                  v-model="formItem.userType"
+                  filterable
+                  multiple
+                  clearable
+                  placeholder="请选择系统角色"
+                  :disabled="model.type === '1'? true: false"
+                >
+                  <Option
+                    v-for="item in productTimeList"
+                    :value="item.value"
+                    :key="item.value"
+                  >{{ item.label }}</Option>
+                </Select>
+              </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem span="4" label="邮箱:">
-                  <Input size="small" clearable v-model="formItem.email" placeholder="请输入邮箱" :disabled="model.type === '1'? true: false"></Input>
-                </FormItem>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="10"
+                :lg="10"
+                span="4"
+              >
+              <FormItem
+                span="4"
+                label="邮箱:"
+              >
+                <Input
+                  size="small"
+                  clearable
+                  v-model="formItem.email"
+                  placeholder="请输入邮箱"
+                  :disabled="model.type === '1'? true: false"
+                ></Input>
+              </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem span="4" label="电话:">
-                  <Input size="small" clearable v-model="formItem.mobile" placeholder="请输入电话号" :disabled="model.type === '1'? true: false"></Input>
-                </FormItem>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="10"
+                :lg="10"
+                span="4"
+              >
+              <FormItem
+                span="4"
+                label="电话:"
+              >
+                <Input
+                  size="small"
+                  clearable
+                  v-model="formItem.mobile"
+                  placeholder="请输入电话号"
+                  :disabled="model.type === '1'? true: false"
+                ></Input>
+              </FormItem>
               </Col>
             </Row>
           </Form>
         </Card>
       </div>
       <div slot="footer">
-        <Button type="ghost" size="small" @click="del">关闭</Button>
-        <Button type="primary" size="small" @click="del" v-if="model.type !== '1'">修改</Button>
+        <Button
+          type="ghost"
+          size="small"
+          @click="del"
+        >关闭</Button>
+        <Button
+          type="primary"
+          size="small"
+          @click="handleSubmit('formItem')"
+          v-if="model.type !== '1'"
+        >保存</Button>
       </div>
     </Modal>
   </div>
 </template>
  <script>
-import { buffet_list } from "@/service/getData";
+import { system_user_add, system_user_roles } from "@/service/getData";
 export default {
-  // props: ["parentData"],
   model: {
     prop: "model",
     event: "passBack"
@@ -115,7 +220,23 @@ export default {
             message: "请输入姓名",
             trigger: "blur"
           }
-        ]
+        ],
+        state: [
+          {
+            required: true,
+            message: "请选择用户状态",
+            trigger: "change"
+          }
+        ],
+        userType: [
+          {
+            required: true,
+            message: "请选择用户类型",
+            trigger: "change"
+          }
+        ],
+
+
       },
       formItem: {
         name: "",
@@ -125,99 +246,44 @@ export default {
         email: "",
         mobile: ""
       },
-      productTimeList: [
-        {
-          value: "New York",
-          label: "New York"
-        },
-        {
-          value: "London",
-          label: "London"
-        },
-        {
-          value: "Sydney",
-          label: "Sydney"
-        },
-        {
-          value: "Ottawa",
-          label: "Ottawa"
-        },
-        {
-          value: "Paris",
-          label: "Paris"
-        },
-        {
-          value: "Canberra",
-          label: "Canberra"
-        }
-      ]
     };
   },
-  props: { model: {} },
+  props: {    model: {},
+    getDirObj: {}
+  },
   watch: {
-    model: function() {
+    model: function () {
       // 监听父组件的变化
       this.childrenData = this.model;
     }
   },
   created() {
     console.log(this.model);
+    this.system_user_roles()
   },
   methods: {
+    // 获取表格数据
+    async system_user_roles() {
+      const res = await system_user_roles();
+      console.log(res)
+    },
+    handleSubmit(name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          console.log(valid)
+        }
+      });
+    },
+    async save() {
+      const res = await system_user_add()
+
+    },
     del() {
       this.childrenData = this.model;
       this.childrenData.modal = false;
       console.log(this.childrenData);
       this.$emit("passBack", this.childrenData);
       // this.$emit("getChildrenStatus", this.childrenData);
-    },
-    getParam() {
-      let searchParam = [];
-
-      if (
-        !(this.formItem.addtime && this.formItem.addtime[0]) ||
-        !this.formItem.addtime[1]
-      ) {
-        delete this.formItem.addtime;
-      } else {
-        let startTime = this.formItem.addtime[0].getTime() / 1000;
-        let endTime = this.formItem.addtime[1].getTime() / 1000;
-        let addtime = [
-          {
-            searchValue: startTime,
-            searchColumn: "addtime",
-            searchOperator: ">"
-          },
-          {
-            searchValue: endTime,
-            searchColumn: "addtime",
-            searchOperator: "<="
-          }
-        ];
-        if (this.formItem && JSON.stringify(addtime) !== "[]") {
-          for (let i = 0; i < addtime.length; i++) {
-            searchParam.push(addtime[i]);
-          }
-        }
-      }
-      console.log(searchParam);
-      for (let i = 0; i < this.tableColumns.length; i++) {
-        for (const key in this.formItem) {
-          if (
-            this.formItem[key] &&
-            this.tableColumns[i].searchOperator &&
-            key === this.tableColumns[i].key &&
-            key !== "addtime"
-          ) {
-            let item = {};
-            item.searchValue = this.formItem[key];
-            item.searchColumn = this.tableColumns[i].key;
-            item.searchOperator = this.tableColumns[i].searchOperator;
-            searchParam.push(item);
-          }
-        }
-      }
-      return searchParam;
     },
     // // 获取表格数据
     // async getList() {
@@ -226,7 +292,6 @@ export default {
     //     searchParam:
     //       this.formItem &&
     //       JSON.stringify(this.formItem) !== "{}" &&
-    //       this.getParam(),
     //     page: this.pageNo,
     //     perPage: this.pageSize,
     //     config: {
