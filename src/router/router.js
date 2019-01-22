@@ -316,26 +316,33 @@ export const appRouter = [
 				component: () => import('@/pages/system/system_user_page')
 			},
 			{
-				path: 'user_manager',
+				path: 'user_manager_page',
 				icon: 'ios-list',
-				name: 'user_manager',
-				title: '人员管理',
-				component: () => import('@/pages/system/user_manager_page')
+				name: 'user_manager_page',
+				title: '催收人员管理',
+				component: () => import('@/pages/system/user_manager_page/index.vue')
 			},
 			{
-				path: 'relationship_maintain',
+				path: 'relationship_maintain_page',
 				icon: 'ios-list',
-				name: 'relationship_maintain',
+				name: 'relationship_maintain_page',
 				title: '坐席关系维护',
 				component: () => import('@/pages/system/relationship_maintain_page')
 			},
 			{
-				path: 'data_dictionary',
+				path: 'data_dictionary_page',
 				icon: 'ios-list',
-				name: 'data_dictionary',
+				name: 'data_dictionary_page',
 				title: '数据字典管理',
-				component: () => import('@/pages/system/data_dictionary_page')
-			}
+				component: () => import('@/pages/system/data_dictionary_page/index.vue')
+			},
+			{
+				path: 'menu_manager_page',
+				icon: 'ios-list',
+				name: 'menu_manager_page',
+				title: '菜单管理',
+				component: () => import('@/pages/system/menu_manager_page/index.vue')
+			},
 		]
 	}
 ];

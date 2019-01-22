@@ -124,11 +124,18 @@ export default {
         remark: ""
       },
       ruleValidate: {
-        buffet_id: [
+        name: [
           {
             required: true,
-            message: "请输入网格编号",
+            message: "请输入机构名称",
             trigger: "blur"
+          }
+        ],
+        person: [
+          {
+            required: true,
+            message: "请选择机构负责人",
+            trigger: "change"
           }
         ]
       },
@@ -162,3 +169,8 @@ export default {
   }
 };
 </script>
+<style lang="less">
+.ivu-col {
+  margin-bottom: 5px;
+}
+</style>

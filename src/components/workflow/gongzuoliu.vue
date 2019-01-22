@@ -21,14 +21,40 @@
             <FormItem
               span="6"
               label="工作流名称:"
-              prop="buffet_id"
+              prop="defName"
             >
               <Input
                 size="small"
                 clearable
-                v-model="formItem.buffet_name"
+                v-model="formItem.defName"
                 placeholder="请输入工作流名称"
               ></Input>
+            </FormItem>
+            </Col>
+
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="6"
+              :lg="6"
+              span="6"
+            >
+            <FormItem
+              label="驳回类型:"
+              prop="backType"
+            >
+              <Select
+                size="small"
+                placeholder="请选择驳回类型"
+                v-model="formItem.backType"
+              >
+                <Option
+                  v-for="item in backTypeList"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
+              </Select>
+
             </FormItem>
             </Col>
             <Col
@@ -40,18 +66,18 @@
             >
             <FormItem
               label="工作流类型:"
-              prop="buffet_id"
+              prop="defType"
             >
               <Select
                 size="small"
                 placeholder="请选择工作流类型"
-                v-model="formItem.productTime"
+                v-model="formItem.defType"
               >
                 <Option
-                  v-for="item in productTimeList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
+                  v-for="item in defTypeList"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
             </Col>
@@ -65,13 +91,34 @@
             <FormItem
               span="6"
               label="工作流编号:"
-              prop="buffet_id"
+              prop="defCode"
             >
               <Input
                 size="small"
                 clearable
-                v-model="formItem.buffet_name"
+                v-model="formItem.defCode"
                 placeholder="请输入工作流编号"
+              ></Input>
+            </FormItem>
+            </Col>
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="6"
+              :lg="6"
+              span="6"
+            >
+            <FormItem
+              span="6"
+              label="描述:"
+              prop="defDesc"
+            >
+              <Input
+                size="small"
+                clearable
+                type="textarea"
+                v-model="formItem.defDesc"
+                placeholder="请输入描述"
               ></Input>
             </FormItem>
             </Col>
@@ -94,59 +141,152 @@
           :sm="24"
         >
         <Form
-          ref="formItem"
-          :model="formItem"
-          :rules="ruleValidate"
-          :label-width="100"
+          ref="goodsAddForm"
+          :rules="rules"
+          :label-width="120"
         >
-          <FormItem
-            label="答题标题:"
-            prop="title"
-          >
-            <Input
-              clearable
-              v-model="formItem.title"
-              placeholder="请输入答题标题"
-            ></Input>
-          </FormItem>
-          <FormItem
-            v-for="(item, index) in formItem.items"
-            v-if="item.status"
+          <Row
+            class="panel_list border-sh"
             :key="index"
-            label="答题选项："
-            :prop="'items.' + index + '.value'"
-            :rules="{required: true, message: '答题选项内容不能为空', trigger: 'blur'}"
+            v-for="(item,index) in defNodeList"
           >
-            <Row>
-              <Col span="18">
+            <Icon
+              v-if="item.nodeSort!==51&&item.nodeSort!==0"
+              @click="handleDel(index)"
+              type="close-circled border-sh-icon"
+            ></Icon>
+            <Col
+              span="6"
+              :md="6"
+              :lg="6"
+              :xs="12"
+              :sm="12"
+            >
+            <FormItem
+              label="节点名称"
+              :prop="`items.${index}.nodeName`"
+            >
+              <Input
+                clearable
+                v-model="item.nodeName"
+                type="text"
+                size="small"
+                placeholder="请输入节点名称"
+              ></Input>
+            </FormItem>
+            </Col>
+            <Col
+              span="6"
+              :md="6"
+              :lg="6"
+              :xs="12"
+              :sm="12"
+            >
+            <FormItem
+              :prop="`items.${index}.nodeDesc`"
+              label="节点描述"
+            >
               <Input
                 type="text"
-                v-model="item.value"
-                placeholder="请输入答题选项内容"
+                clearable
+                v-model="item.nodeDesc"
+                size="small"
+                placeholder="请输入节点描述"
               ></Input>
-              </Col>
-              <Col
-                span="4"
-                offset="1"
-              >
-              <Button
-                type="error"
-                @click="handleRemove(index)"
-              >删除</Button>
-              </Col>
-            </Row>
-          </FormItem>
-          <FormItem>
-            <Row>
-              <Col span="12">
-              <Button
-                type="dashed"
-                long
-                @click="handleAdd"
-                icon="plus-round "
-              >添加答题选项</Button>
-              </Col>
-            </Row>
+            </FormItem>
+            </Col>
+            <Col
+              span="6"
+              :md="6"
+              :lg="6"
+              :xs="12"
+              :sm="12"
+            >
+            <FormItem
+              :prop="`items.${index}.nodeCode`"
+              label="节点编号"
+            >
+              <Input
+                clearable
+                v-model="item.nodeCode"
+                type="text"
+                size="small"
+                placeholder="请输入节点编号"
+              ></Input>
+            </FormItem>
+            </Col>
+            <Col
+              span="6"
+              :md="6"
+              :lg="6"
+              :xs="12"
+              :sm="12"
+            >
+            <FormItem
+              :prop="`items.${index}.nodeDealUserId`"
+              label="节点处理人ID"
+            >
+              <Input
+                type="text"
+                clearable
+                v-model="item.nodeDealUserId"
+                size="small"
+                placeholder="请输入节点处理人ID"
+              ></Input>
+            </FormItem>
+            </Col>
+            <Col
+              span="6"
+              :md="6"
+              :lg="6"
+              :xs="12"
+              :sm="12"
+            >
+            <FormItem
+              :prop="`items.${index}.nodeDealName`"
+              label="处理人姓名"
+            >
+              <Input
+                type="text"
+                clearable
+                v-model="item.nodeDealName"
+                size="small"
+                placeholder="请输入处理人姓名"
+              ></Input>
+            </FormItem>
+            </Col>
+            <Col
+              span="6"
+              :md="6"
+              :lg="6"
+              :xs="12"
+              :sm="12"
+            >
+            <FormItem
+              label="节点顺序"
+              :prop="`items.${index}.nodeSort`"
+            >
+              <Input
+                type="text"
+                clearable
+                :disabled="item.nodeSort===51||item.nodeSort===0"
+                v-model="item.nodeSort"
+                size="small"
+                placeholder="请输入节点顺序"
+              ></Input>
+            </FormItem>
+            </Col>
+
+          </Row>
+          <FormItem class="mt10">
+            <Col span="12">
+            <Button
+              type="dashed"
+              long
+              @click="handleAdd"
+              icon="plus-round "
+            >添加节点</Button>
+            </Col>
           </FormItem>
         </Form>
         </Col>
