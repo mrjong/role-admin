@@ -1,71 +1,65 @@
 <template>
   <div class="panel_list">
-    <!-- 检索条件 -->
     <Row :gutter="8">
-      <Col span="8">
-        <Card class="vue-panel">
+      <!-- 左侧树结构 -->
+      <Col span="8" class="tree-col">
+        <Card class="vue-panel tree-card">
           <p slot="title">
             <Icon :type="!showPanel?'chevron-down':'chevron-up'" @click="showPanel=!showPanel"></Icon>催收人员
             <!-- <router-link to="/demo/demo_desc">
               <Button class="fr vue-back-btn header-btn" type="primary" size="small">详情</Button>
             </router-link>-->
+            <Button
+              class="fr header-btn"
+              type="primary"
+              @click="setModalType('tableList')"
+              style="width:90px"
+              long
+              size="small"
+            >查看无效员工</Button>
+            <Button
+              class="fr header-btn"
+              type="primary"
+              @click="addOrganization('formItem')"
+              style="width:64px"
+              long
+              size="small"
+            >添加机构</Button>
           </p>
-          <Tree :data="data5" :render="renderContent" v-if="!showPanel"></Tree>
+          <Tree
+            :data="data5"
+            :render="renderContent"
+            v-if="!showPanel"
+            @on-select-change="selectNode"
+          ></Tree>
         </Card>
       </Col>
-      <Col span="16">
-        <Card class="vue-panel">
-          <p slot="title">
-            <Icon :type="!showPanel2?'chevron-down':'chevron-up'" @click="showPanel2=!showPanel2"></Icon>检索条件
-            <!-- <router-link to="/demo/demo_desc">
-              <Button class="fr vue-back-btn header-btn" type="primary" size="small">详情</Button>
-            </router-link> -->
-          </p>
-          <Form
-            v-if="!showPanel2"
-            ref="formItem"
-            :model="formItem"
-            :label-width="90"
-            :rules="ruleValidate"
-          >
-            <Row>
-              <Col :xs="24" :sm="24" :md="8" :lg="8" span="4">
-                <FormItem label="公司名称:" prop="device_id">
-                  <Input
-                    size="small"
-                    clearable
-                    v-model="formItem.componey_name"
-                    placeholder="请输入公司名称"
-                  />
-                </FormItem>
-              </Col>
-              <Col :xs="24" :sm="24" :md="8" :lg="8" span="4">
-                <FormItem label="用户名称:">
-                  <Input size="small" clearable v-model="formItem.name" placeholder="请输入用户名称"></Input>
-                </FormItem>
-              </Col>
-              <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
-                <FormItem>
-                  <Button
-                    type="primary"
-                    @click="handleSubmit('formItem')"
-                    style="width:80px"
-                    long
-                    size="small"
-                  >检索</Button>
-                  <Button
-                    size="small"
-                    type="ghost"
-                    style="width:80px;margin-left: 8px"
-                    @click="clearForm('formItem')"
-                  >重置</Button>
-                </FormItem>
-              </Col>
-            </Row>
-          </Form>
-        </Card>
+      <!-- 无效员工列表 -->
+      <Col span="16" class="table-col" v-if="modalType==='tableList'">
+        <invalidEmployees></invalidEmployees>
       </Col>
+      <!-- 查看机构详情 -->
+      <Col span="16" class="detail-col" v-if="modalType === '1'">
+        <organizationForm></organizationForm>
+      </Col>
+      <!--  -->
     </Row>
   </div>
 </template>
 <script src="./index.js"></script>
+<style lang="less">
+.table-col {
+  position: relative;
+  .ivu-modal-wrap,
+  .ivu-modal-mask {
+    position: absolute;
+  }
+}
+.detail-col {
+  position: relative;
+  .ivu-form {
+    overflow: hidden;
+  }
+}
+</style>
+

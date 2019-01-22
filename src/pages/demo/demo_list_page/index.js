@@ -1,12 +1,16 @@
-
-import tablePage from '@/mixin/tablePage'
+import tablePage from '@/mixin/tablePage';
+import iconList from '@/components/iconList';
 export default {
-    name: 'demo_list',
-    mixin:[tablePage],
+	name: 'demo_list',
+	mixin: [ tablePage ],
+	components: {
+		iconList
+	},
 	data() {
 		return {
-            showPanel:false,
-            showPanel2:false,
+			visible1: false,
+			showPanel: false,
+			showPanel2: false,
 			phoneCallList: [
 				{
 					value: 'New York',
@@ -220,11 +224,13 @@ export default {
 		this.getList();
 	},
 	methods: {
+		openIcon() {
+			this.visible1 = true;
+		},
 		// 获取表格数据
 		async getList() {
-        let res = await getList()
+			let res = await getList();
 			console.log(this.getParam());
-		
 		}
 	}
 };

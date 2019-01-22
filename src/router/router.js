@@ -130,9 +130,9 @@ export const appRouter = [
 		component: Main,
 		children: [
 			{
-				path: 'case_search',
+				path: 'case_search_page',
 				icon: 'ios-list',
-				name: 'case_search',
+				name: 'case_search_page',
 				title: '案件查询',
 				component: () => import('@/pages/caseMng/case_search_page')
 			}
@@ -309,32 +309,32 @@ export const appRouter = [
 				component: () => import('@/pages/system/wkProcessDef_list.vue')
 			},
 			{
-				path: 'system_user',
+				path: 'system_user_page',
 				icon: 'ios-list',
-				name: 'system_user',
+				name: 'system_user_page',
 				title: '系统用户管理',
-				component: () => import('@/pages/system/system_user_page/index.vue')
+				component: () => import('@/pages/system/system_user_page')
 			},
 			{
 				path: 'user_manager',
 				icon: 'ios-list',
 				name: 'user_manager',
 				title: '人员管理',
-				component: () => import('@/pages/system/user_manager_page/index.vue')
+				component: () => import('@/pages/system/user_manager_page')
 			},
 			{
 				path: 'relationship_maintain',
 				icon: 'ios-list',
 				name: 'relationship_maintain',
 				title: '坐席关系维护',
-				component: () => import('@/pages/system/relationship_maintain_page/index.vue')
+				component: () => import('@/pages/system/relationship_maintain_page')
 			},
 			{
 				path: 'data_dictionary',
 				icon: 'ios-list',
 				name: 'data_dictionary',
 				title: '数据字典管理',
-				component: () => import('@/pages/system/data_dictionary_page/index.vue')
+				component: () => import('@/pages/system/data_dictionary_page')
 			}
 		]
 	}

@@ -326,8 +326,8 @@
           <Col
             :xs="24"
             :sm="24"
-            :md="6"
-            :lg="6"
+            :md="24"
+            :lg="24"
             span="6"
           >
           <FormItem>
@@ -370,6 +370,7 @@
           :data="tableData"
           :columns="tableColumns"
           stripe
+          border
         ></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">

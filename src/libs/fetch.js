@@ -10,7 +10,7 @@ let timer;
 let timerList = [];
 let num = 0;
 axios.interceptors.request.use(
-	(config) => {
+	(config, options) => {
 		const TOKEN = Cookie.get('SXF-TOKEN');
 		if (TOKEN) {
 			config.headers['SXF-TOKEN'] = TOKEN;
@@ -19,7 +19,7 @@ axios.interceptors.request.use(
 		}
 		num++;
 
-		if (config || config.options.hideLoading) {
+		if (!config.hideLoading) {
 			// 防止时间短，出现loading 导致闪烁
 			timer = setTimeout(() => {
 				console.log(timerList);

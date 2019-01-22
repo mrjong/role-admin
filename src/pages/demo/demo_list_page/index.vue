@@ -1,6 +1,12 @@
 <template>
 
   <div class="panel_list">
+    <Modal
+      width="90%"
+      v-model="visible1"
+    >
+      <icon-list></icon-list>
+    </Modal>
     <!-- 检索条件 -->
     <Card class="vue-panel">
       <p
@@ -9,13 +15,12 @@
       >
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
         检索条件
-        <router-link to="/demo/demo_desc">
           <Button
+          @click.stop="openIcon"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
-          >详情</Button>
-        </router-link>
+          >icon选择</Button>
       </p>
       <Form
         v-if="!showPanel"
@@ -161,8 +166,8 @@
           <Col
             :xs="24"
             :sm="24"
-            :md="6"
-            :lg="6"
+            :md="24"
+            :lg="24"
             span="6"
           >
           <FormItem>

@@ -36,7 +36,7 @@
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
                 <FormItem label="状态:" span="4" prop="status">
-                  <Select size="small" v-model="formItem.status" filterable clearable placeholder="‘’请选择状态" :disabled="model.type === '1'? true: false">
+                  <Select size="small" v-model="formItem.status" filterable clearable placeholder="请选择状态" :disabled="model.type === '1'? true: false">
                     <Option
                       v-for="item in productTimeList"
                       :value="item.value"
