@@ -30,7 +30,7 @@ export const reset_passWord = (obj = {}) =>
 		data: qs.stringify(obj)
 	});
 /**
- * 工作流列表
+ * 工作流定义列表
  */
 export const wkProcessDef_list = (obj = {}) =>
 	fetch({
@@ -184,3 +184,46 @@ export const system_user_list = (obj, options) =>
 		method: 'POST',
 		data: qs.stringify(obj)
 	});
+
+    /*
+*
+* 系统用户查看用户详情
+* */
+export const system_user_info = (obj, options) =>
+fetch({
+    url: '/system/user/info',
+    method: 'POST',
+    data: qs.stringify(obj)
+});
+
+    /*
+* 新增系统用户 
+* */
+export const system_user_add = (obj, options) =>
+fetch({
+    url: '/system/user/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+});
+
+/*
+* 查看所有用户角色
+* */
+export const system_user_roles = (obj, options) =>
+fetch({
+    url: '/system/user/roles',
+    method: 'POST',
+    data: qs.stringify(obj)
+});
+
+
+    /*
+*
+* 修改系统用户
+* */
+export const system_user_update = (obj, options) =>
+fetch({
+    url: '/system/user/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+});

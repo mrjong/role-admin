@@ -151,7 +151,7 @@
         </div>
       </div>
     </Card>
-    <Remodal v-model="parentData" v-if="parentData.modal"></Remodal>
+    <Remodal v-model="parentData" :getDirObj="getDirObj" v-if="parentData.modal"></Remodal>
   </div>
 </template>
 <script src="./index.js"></script>

@@ -357,15 +357,22 @@
       >
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
         检索结果
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >导出数据</Button>
       </p>
       <!-- 表格 -->
 
       <div v-if="!showPanel2">
+        <div class="panel-desc">
+          <Row :gutter="5">
+
+            <div class="panel-desc-title fl mr10">
+              案件数(笔)：<span>BIL2018091015251600028780</span>
+            </div>
+
+            <div class="panel-desc-title fl mr10">
+              逾期金额(元)：<span>{{67225.00 | money}}</span>
+            </div>
+          </Row>
+        </div>
         <Table
           :data="tableData"
           :columns="tableColumns"

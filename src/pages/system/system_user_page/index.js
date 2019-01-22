@@ -73,7 +73,7 @@ export default {
 					searchOperator: '=',
 					key: 'email',
 					ellipsis: true,
-					minWidth: 150,
+					minWidth: 180,
 					align: 'center'
 				},
 				{
@@ -93,16 +93,15 @@ export default {
 				},
 				{
 					title: '操作',
-					width: 100,
 					key: 'edit',
-					minWidth: 150,
+					minWidth: 180,
 					align: 'center',
 					render: (h, params) => {
 						return h('div', [
 							h(
 								'a',
 								{
-									class: 'look-btn',
+									class: 'edit-btn',
 									props: {},
 									on: {
 										click: () => {
@@ -124,6 +123,18 @@ export default {
 									}
 								},
 								'修改'
+							),h(
+								'a',
+								{
+									class: 'edit-btn',
+									props: {},
+									on: {
+										click: () => {
+											this.handleAdd('3');
+										}
+									}
+								},
+								'重置密码'
 							)
 						]);
 					}
@@ -132,7 +143,7 @@ export default {
 		};
 	},
 	created() {
-		this.getList();
+        this.getList();
 	},
 	methods: {
 		getChildrenStatus() {
@@ -153,15 +164,14 @@ export default {
 		},
 		// 获取表格数据
 		async getList(params) {
-            console.log('+++++++++++')
 			const res = await system_user_list(params);
 			if (res.code === 1) {
-				this.tableData = res.data.content;
+				this.tableData = res.data.data;
 				this.pageSize = res.data.size;
-				this.total = res.data.totalElements;
+				this.total = res.data.total;
 			} else {
 				this.$Message.error(res.message);
 			}
-		}
+        },
 	}
 };
