@@ -242,7 +242,7 @@ fetch({
 });
 
     /*
-* 新增系统用户 
+* 新增系统用户
 * */
 export const system_user_add = (obj, options) =>
 fetch({
@@ -272,3 +272,42 @@ fetch({
     method: 'POST',
     data: qs.stringify(obj)
 });
+
+
+// 业务管理的划扣管理
+export const deduct_list = (obj) =>
+  fetch({
+    url: '/deduct/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+// 系统管理系统角色相关接口
+// 查询接口
+export const system_role_list = (obj) =>
+  fetch({
+    url: '/system/role/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 角色管理添加接口
+export const system_role_add = (obj) =>
+  fetch({
+    url: '/system/role/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+//编辑修改
+export const system_role_info = (obj) =>
+  fetch({
+    url: '/system/role/info',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 角色更新接口
+export const system_role_update = (obj) =>
+  fetch({
+    url: '/system/role/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });

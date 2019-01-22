@@ -1,4 +1,4 @@
-import { repay_repayUserOrSystem_list } from '@/service/getData';
+import { deduct_list } from '@/service/getData';
 export default {
   name: 'transferMng',
   data() {
@@ -28,6 +28,20 @@ export default {
           label: 'New York'
         }
       ],
+      checkStsList:[
+        {
+          value: '01',
+          label: '审核中'
+        },
+        {
+          value: '02',
+          label:'审核通过'
+        },
+        {
+          value: '03',
+          label:'审核拒绝'
+        }
+      ],
       modal12: false,
       inputGrid: '',
       modal11: false,
@@ -37,6 +51,7 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
+      checkStartAndEnd:[],
       tableData: [
         {
           billNo: '1', //账单号
@@ -361,6 +376,11 @@ export default {
       this.formValidate.endRepayDate = val1[1];
       console.log('123', this.formValidate);
     },
+    changeShouldDate(val1, val2) {
+      this.formValidate.startRepayDate = val1[0];
+      this.formValidate.endRepayDate = val1[1];
+      console.log('123', this.formValidate);
+    },
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
@@ -381,12 +401,12 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      // let res= await repay_repayUserOrSystem_list({
-      //   pageNo: this.pageNo,
-      //   pageSize: this.pageSize,
-      //   repayOrdTyp: this.repayOrdTyp,
-      //   ...this.formValidate
-      // })
+      let res= await deduct_list({
+        pageNo: this.pageNo,
+        pageSize: this.pageSize,
+        //repayOrdTyp: this.repayOrdTyp,
+        //...this.formValidate
+      })
       console.log(res)
       // 请求成功之后需要做分页处理，然后将拿到的数据进行数据处理，总数目和展示条数
 

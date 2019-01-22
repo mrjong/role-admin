@@ -1,11 +1,14 @@
 import { repay_repayDetail_list, repay_repayDetail_exportDown } from '@/service/getData';
+import sysDictionary from '@/mixin/sysDictionary';
 export default {
   name: 'remoney_detail',
+  mixins: [sysDictionary],
   data() {
     var alignCenter = 'center';
     var widthVal = 180;
     var widthMidVal = 100;
     return {
+
       showPanel: false,
       showPanel2: false,
       opCompanyNameList: [

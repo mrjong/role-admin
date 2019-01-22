@@ -8,13 +8,6 @@
       >
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
         检索条件
-        <router-link to="/demo/demo_desc">
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >详情</Button>
-        </router-link>
       </p>
       <Form
         v-if="!showPanel"
@@ -97,7 +90,7 @@
                 size="small"
                 v-model="formValidate.checkSts">
                 <Option
-                  v-for="item in rutTypeList"
+                  v-for="item in checkStsList"
                   :value="item.value"
                   :key="item.value">
                   {{ item.label }}
@@ -146,7 +139,6 @@
                 placement="bottom-start"
                 placeholder="请选择申请日期区间"
                 @on-change="changeApplyDate"
-                @on-ok="changeDange"
               ></DatePicker>
             </FormItem>
           </Col>
@@ -163,13 +155,12 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="startAndend"
+                v-model="checkStartAndEnd"
                 format="yyyy-MM-dd"
                 type="datetimerange"
                 placement="bottom-start"
                 placeholder="请选择还款时间区间"
-                @on-change="changeDange"
-                @on-ok="changeDange"
+                @on-change="changeShouldDate"
               ></DatePicker>
             </FormItem>
           </Col>

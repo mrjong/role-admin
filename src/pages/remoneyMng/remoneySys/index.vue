@@ -37,7 +37,7 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.userNm"
+                v-model="formValidate.usrNm"
                 placeholder="请输入客户名称"
               ></Input>
             </FormItem>
@@ -137,7 +137,7 @@
             >
               <Select
                 size="small"
-                v-model="formValidate.acTyp"
+                v-model="formValidate.prdTyp"
               >
                 <Option
                   v-for="item in productTypeList"
@@ -155,7 +155,7 @@
             span="6"
           >
             <FormItem
-              label="代扣类型:"
+              label="代扣通道:"
             >
               <Select
                 size="small"

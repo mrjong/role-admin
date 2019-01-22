@@ -302,11 +302,11 @@ export const appRouter = [
 		component: Main,
 		children: [
 			{
-				path: 'wkProcessDef_list',
+				path: 'role_manage_page',
 				icon: 'ios-list',
-				name: 'wkProcessDef_list',
+				name: 'role_manage_page',
 				title: '系统角色管理',
-				component: () => import('@/pages/system/wkProcessDef_list.vue')
+				component: () => import('@/pages/system/role_manage_page')
 			},
 			{
 				path: 'system_user_page',

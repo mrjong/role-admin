@@ -47,19 +47,6 @@ export default {
 			modal11: false,
 			startAndend: '', //还款日期区间
 			formValidate: {
-				// 查询接口时候所需的参数值传递
-				billNo: '', //账单号,
-				dkorgOrdNo: '', // string 代扣订单号,
-				userNm: '', // 用户姓名,
-				mblNo: '', // 手机号,
-				ordSts: '', // 订单状态 借口中取,
-				orgFnlMsg: '', //失败原因,
-				ordDt: '', // 还款时间,
-				acTyp: '', //产品线01：还到02：随行付钱包 03：商户贷，调接口,
-				rutCopyOrg: '', // 代扣类型,
-				startRepayDate: '', //起始时间段
-				endRepayDate: '', // 结束时间段
-				//nametwo: '', //此处的名称必须要与 ruleValidate的里面具体的校验规则名称完全的保持一致性，不然会出现校验bug
 			},
 			ruleValidate: {
 				//ruleValidate添加表单的校验规则，用来提示用户的输入法则，具体使用在表单里面 ：rule='ruleValidate'直接使用即可
@@ -77,73 +64,22 @@ export default {
       repayOrdTyp: 'UR', //区分用户主动还款、系统代扣还款，UR：用户主动还款，SR：系统代扣还款
       tableData: [
 				{
-					billNo: '1', //账单号
-					dkorgOrdNo: '2', // string 代扣订单号
-					userNm: '3', // 用户姓名
-					idNoHid: '4', // 身份证号
-					mblNoHid: '5', // 手机号
-					repayOrdAmt: '6', //还款金额
-					ordSts: '7', // 订单状态 借口中取
-					orgFnlMsg: '8', //失败原因,
-					ordDt: '9', // 还款时间,
-					crdAcTyp: '10', //卡类型
-					crdCorpOrg: '11', // 还款银行
-					crdNoLast: '12', //还款银行四位
-					repayOrdPrcp: '13', // 已还本金
-					acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
-					rutCopyOrg: '15' // 代扣类型
+          billNo: '1', //账单号
+          dkorgOrdNo: '2', // string 代扣订单号
+          usrNmHid: '3', // 用户姓名
+          idNoHid: '4', // 身份证号
+          mblNoHid: '5', // 手机号
+          repayOrdAmt: '6', //还款金额
+          ordSts: '7', // 订单状态 借口中取
+          orgFnlMsg: '8', //失败原因,
+          ordDt: '9', // 还款时间,
+          crdAcTyp: '10', //卡类型
+          crdCorpOrg: '11', // 还款银行
+          crdNoLast: '12', //还款银行四位
+          repayOrdPrcp: '13', // 已还本金
+          prdTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
+          rutCopyOrg: '15' // 代扣类型
 				},
-				{
-					billNo: '1', //账单号
-					dkorgOrdNo: '2', // string 代扣订单号
-					userNm: '3', // 用户姓名
-					idNoHid: '4', // 身份证号
-					mblNoHid: '5', // 手机号
-					repayOrdAmt: '6', //还款金额
-					ordSts: '7', // 订单状态 借口中取
-					orgFnlMsg: '8', //失败原因,
-					ordDt: '9', // 还款时间,
-					crdAcTyp: '10', //卡类型
-					crdCorpOrg: '11', // 还款银行
-					crdNoLast: '12', //还款银行四位
-					repayOrdPrcp: '13', // 已还本金
-					acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
-					rutCopyOrg: '15' // 代扣类型
-				},
-				{
-					billNo: '1', //账单号
-					dkorgOrdNo: '2', // string 代扣订单号
-					userNm: '3', // 用户姓名
-					idNoHid: '4', // 身份证号
-					mblNoHid: '5', // 手机号
-					repayOrdAmt: '6', //还款金额
-					ordSts: '7', // 订单状态 借口中取
-					orgFnlMsg: '8', //失败原因,
-					ordDt: '9', // 还款时间,
-					crdAcTyp: '10', //卡类型
-					crdCorpOrg: '11', // 还款银行
-					crdNoLast: '12', //还款银行四位
-					repayOrdPrcp: '13', // 已还本金
-					acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
-					rutCopyOrg: '15' // 代扣类型
-				},
-				{
-					billNo: '1', //账单号
-					dkorgOrdNo: '2', // string 代扣订单号
-					userNm: '3', // 用户姓名
-					idNoHid: '4', // 身份证号
-					mblNoHid: '5', // 手机号
-					repayOrdAmt: '6', //还款金额
-					ordSts: '7', // 订单状态 借口中取
-					orgFnlMsg: '8', //失败原因,
-					ordDt: '9', // 还款时间,
-					crdAcTyp: '10', //卡类型
-					crdCorpOrg: '11', // 还款银行
-					crdNoLast: '12', //还款银行四位
-					repayOrdPrcp: '13', // 已还本金
-					acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
-					rutCopyOrg: '15' // 代扣类型
-				}
 			],
 			tableColumns: [
 				{
@@ -153,6 +89,7 @@ export default {
 				},
 				{
 					title: '序号',
+          type:'index',
 					width: 60,
 					searchOperator: '=',
 					align: alignCenter,
@@ -177,7 +114,7 @@ export default {
 				{
 					title: '客户姓名',
 					searchOperator: 'like',
-					key: 'userNm',
+					key: 'usrNmHid',
 					className: 'tableMainW',
 					align: alignCenter,
 					width: widthMidVal
@@ -265,7 +202,7 @@ export default {
 				{
 					title: '产品类型',
 					searchOperator: 'like',
-					key: 'acTyp',
+					key: 'prdTyp',
 					className: 'tableMainW',
 					align: alignCenter,
 					width: widthVal
