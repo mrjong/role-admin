@@ -143,14 +143,59 @@ export const monitor_agentState_list = (obj) =>
     url: '/monitor/agentState/list',
     method: 'POST',
     data: qs.stringify(obj)
-  })
+  });
 // 日常监控的坐席报表导出
 export const monitor_agentState_exportDown = (obj) =>
   fetch({
     url: '/monitor/agentState/exportDown',
     method: 'POST',
     data: qs.stringify(obj)
-  })
+  });
+// 日常监控的逾期日志列表请求
+export const monitor_overdueReports_list = (obj) =>
+  fetch({
+    url: '/monitor/overdueReports/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 日常监控逾期报表导出接口
+export const monitor_overDueReports_exportDown = (obj) =>
+  fetch({
+    url: '/monitor/overDueReports/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 呼叫明细列表接口查询
+export const monitor_callDetail_list = (obj) =>
+  fetch({
+    url: '/monitor/callDetail/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 呼叫明细导出
+export const monitor_callDetail_exportDown = (obj) =>
+  fetch({
+    url: '/monitor/callDetail/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 催收回收率列表导出
+export const monitor_collectRate_exportDown = (obj) =>
+  fetch({
+    url: '/monitor/collectRate/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 催收回收列表查询
+export const monitor_collectRate_list = (obj) =>
+  fetch({
+    url: '/monitor/collectRate/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 /*
 *
 * 根据父级id获取相应字典数据

@@ -11,8 +11,8 @@
       </p>
       <Form
         v-if="!showPanel"
-        ref="formValidate"
-        :model="formValidate"
+        ref="formItem"
+        :model="formItem"
         :label-width="90"
         :rules="ruleValidate"
       >
@@ -79,13 +79,13 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="startRepayDateRange"
+                v-model="formItem.defaultDate"
                 format="yyyy-MM-dd"
                 type="date"
                 placement="bottom-start"
                 placeholder="请选择日期"
-                @on-change="changeActDate"
-                @on-ok="changeActDate"
+                @on-change="changeDate"
+                @on-ok="changeDate"
               ></DatePicker>
             </FormItem>
           </Col>
@@ -99,7 +99,7 @@
             <FormItem>
               <Button
                 type="primary"
-                @click="handleSubmit('formValidate')"
+                @click="handleSubmit('formItem')"
                 style="width:80px"
                 long
                 size="small"
@@ -108,7 +108,7 @@
                 size="small"
                 type="ghost"
                 style="width:80px;margin-left: 8px"
-                @click="clearForm('formValidate')"
+                @click="clearForm('formItem')"
               >重置</Button>
             </FormItem>
           </Col>
@@ -165,80 +165,107 @@
 </template>
 <script>
   import sysDictionary from '@/mixin/sysDictionary';
-  import { monitor_agentState_list, monitor_agentState_exportDown } from '@/service/getData';
+  import formValidateFun from '@/mixin/formValidateFun';
+  import { monitor_overdueReports_list, monitor_overDuereports_exportDown } from '@/service/getData';
   export default {
     name: 'overduePayment',
-    mixins: [sysDictionary],
+    mixins: [sysDictionary, formValidateFun],
     data() {
       var alignCenter = 'center';
-      var widthVal = 180;
+      var widthVal = 140;
       var widthMidVal = 100;
       return {
         showPanel: false,
         showPanel2: false,
-        opCompanyNameList: [
-          {
-            value: '01',
-            label: '还到'
-          },
-          {
-            value: '02',
-            label: '随行付钱包'
-          },
-          {
-            value: '03',
-            label: '商户贷'
-          }
-        ],
-        payOffStsList: [
-          {
-            value: 'gbbg',
-            label: 'New York'
-          }
-        ],
         modal12: false,
         inputGrid: '',
         modal11: false,
-        startRepayDateRange: [], //实际还款日期区间
-        shouldRepayDate: [],
-        formValidate: {
-          startDate : '', // 实际还款起始日期
-          endDate: '', //实际还款结束日期
-          agent: '', // 坐席
-          parentRoleId: '', //组别
-        },
         formItem: {
+          defaultDate: new Date(), //默认获取当前的日期时间
           overdueDaysLt:'',
           overdueDaysBt: '',
         },
-        ruleValidate:{},
+        ruleValidate:{
+          overdueDaysLt: [
+            {
+              pattern: this.GLOBAL.num,
+              message: '逾期天数为正整数',
+              trigger: 'blur'
+            },
+            {
+              validator: this.validate_yqts_start,
+              trigger: 'blur'
+            }
+          ],
+          overdueDaysBt: [
+            {
+              pattern: this.GLOBAL.num,
+              message: '逾期天数为正整数',
+              trigger: 'blur'
+            },
+            {
+              validator: this.validate_yqts_end,
+              trigger: 'blur'
+            }
+          ],
+        },
         pageNo: 1,
         pageSize: 10,
         total: 10,
         tableData: [
-          {
-            agentName:'', //催收员
-            dialout: '', // 外呼数
-            effectiveLink:'', // 有效接通数
-            linkRate: '', // 接通率
-            onlineTimeStr:'', // 在线总时长
-            effectiveTalkTimeStr: '',//有效接通总时长
-            caseCount: '',// 在案量
-            caseAmountCount:'',//载案金
-            memberProcessRate:'',//用户处理率
-            dialoutMemberRate:'',//外呼覆盖率
-            linkMemberRate:'',//接通覆盖率
-            repayOrderCount:'',//还款笔数
-            linkRepayRate:'',//接通还款率
-            avgProcessCount:'',//每1H处理量
-            repayAmountCount:'',//还款本金
-            repayCountRate:'',//笔数还款率
-            repayAmountRate:''//金额还款率
-          },
+          // {
+          //   caseNo:'',//案件编码
+          //   caseHandleStatus: '', //案件状态
+          //   prdTyp:'', // 产品线
+          //   billNo:'', //账单号
+          //   creditLevel:'',// 信用级别
+          //   billRegDt:'', //申请日期
+          //   ordSuccDt:'',//放款日期
+          //   overdueTotalCount:'',//逾期触发次数
+          //   overdueTotalDays:'',//逾期累计天数
+          //   perdCnt:'',//分期期数
+          //   waitPerdNum:'',//未分期数
+          //   cardNoHid: "",//银行卡号
+          //   corpOrgNm: '',//银行名称
+          //   billPrcpAmt:'',//借款本金
+          //   billTotAmt:'',//订单总金额
+          //   perdPrcpAmt:'',//每期应还本金
+          //   billSerAmt:'',//服务费
+          //   billItrtAmt:'',//利息
+          //   perdTotAmt:'',//每期应还总金额
+          //   billOvdtAmt:'',//逾期费
+          //   billOvduAmt:'',//滞纳金
+          //   perdNowTotAmt:'',//当前应还总额
+          //   billSts:'',//账单类型
+          //   idNoHid:'',//用户身份证号
+          //   usrNm:'',//用户名
+          //   usrId:'',//用户ID
+          //   mblNoHid:'',//用户手机号
+          //   cntUsrNm:'',//紧急联系人姓名
+          //   cntRelTyp:'',//与用户的关系
+          //   cntMblNo:'',//紧急联系人手机号
+          //   usrBirthDt:'',//年龄
+          //   usrGender:'',//性别
+          //   idDtlAddr:'',//户籍地址
+          //   billOvdtSts:'',//逾期状态
+          //   perpRepayDt:'',//实际还款时间
+          //   perdNum:'',//当前逾期期数
+          //   perdDueDt:'',//应还日期
+          //   perdOutDueDt:'',//逾期日期
+          //   perdAllNum:'',//逾期期数
+          //   perdTotRep:'',//实际还款金额
+          //   drtFineAmt:'',//减免金额
+          //   perdItrtRep:'',//实收利息
+          //   perdFineRep:'',//实收罚息
+          //   overDueDays:'',//逾期天数
+          //   billRemainPrcpAmt:'',//剩余本金
+          //   ordSuccCount:'',//放款次数
+          //   opUserName:'' ,//经办人
+          // },
         ],
         tableColumns: [
           {
-            title: 'id',
+            title: '序号',
             type: 'index',
             width: 60,
             searchOperator: '=',
@@ -246,144 +273,351 @@
             key: 'listIndex'
           },
           {
-            title: '催收员',
+            title: '案件编码',
             searchOperator: '=',
-            key: 'agentName',
+            key: 'caseNo',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
           },
           {
-            title: '外呼数',
+            title: '案件状态',
             searchOperator: '=',
             key: 'dialout',
-            className: 'tableMainW',
+            className: 'caseHandleStatus',
             align: alignCenter,
             width: widthVal
           },
           {
-            title: '有效接通数',
+            title: '产品线',
             searchOperator: 'like',
-            key: 'effectiveLink',
+            key: 'prdTyp',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
           },
           {
-            title: '接通率',
+            title: '账单号',
             key: 'linkRate',
-            className: 'tableMainW',
+            className: 'billNo',
             align: alignCenter,
             width: widthMidVal,
           },
           {
-            title: '在线总时长',
+            title: '信用级别',
             searchOperator: 'like',
-            key: 'onlineTimeStr',
+            key: 'creditLevel',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
           },
           {
-            title: '还款期数',
+            title: '申请日期',
             searchOperator: 'like',
-            key: 'perdCnt',
+            key: 'billRegDt',
             className: 'tableMainW',
             align: alignCenter,
             width: widthMidVal
           },
           {
-            title: '有效接通总时长',
+            title: '放款日期',
             searchOperator: 'like',
-            key: 'effectiveTalkTimeStr',
+            key: 'ordSuccDt',
             className: 'tableMainW',
             align: alignCenter,
             width: widthMidVal,
           },
           {
-            title: '在案量',
+            title: '逾期触发次数',
             searchOperator: 'like',
-            key: 'userNmHid',
+            key: 'overdueTotalCount',
             className: 'caseCount',
             align: alignCenter,
             width: widthVal
           },
           {
-            title: '载案金',
+            title: '逾期累计天数',
             searchOperator: 'like',
-            key: 'caseAmountCount',
+            key: 'overdueTotalDays',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
           },
           {
-            title: '用户处理率',
+            title: '分期期数',
             searchOperator: 'like',
-            key: 'memberProcessRate',
+            key: 'perdCnt',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
           },
           {
-            title: '外呼覆盖率',
+            title: '未分期数',
             searchOperator: 'like',
-            key: 'dialoutMemberRate',
+            key: 'waitPerdNum',
             className: 'tableMainW',
             align: alignCenter,
             width: widthMidVal
           },
           {
-            title: '接通覆盖率',
+            title: '银行卡号',
             searchOperator: 'like',
-            key: 'linkMemberRate',
+            key: 'cardNoHid',
             className: 'tableMainW',
             align: alignCenter,
             width: widthMidVal
           },
           {
-            title: '还款笔数',
+            title: '银行名称',
             searchOperator: 'like',
-            key: 'repayOrderCount',
+            key: 'corpOrgNm',
             className: 'tableMainW',
             align: alignCenter,
             width: widthMidVal
           },
           {
-            title: '接通还款率',
+            title: '借款本金',
             searchOperator: 'like',
-            key: 'linkRepayRate',
+            key: 'billPrcpAmt',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
           },
           {
-            title: '每1H处理量',
+            title: '订单总金额',
             searchOperator: 'like',
-            key: 'avgProcessCount',
+            key: 'billTotAmt',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
           },
           {
-            title: '还款本金',
+            title: '每期应还本金',
             searchOperator: 'like',
-            key: 'repayAmountCount',
+            key: 'perdPrcpAmt',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
           },
           {
-            title: '笔数还款率',
+            title: '服务费',
             searchOperator: 'like',
-            key: 'repayCountRate',
+            key: 'billSerAmt',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
           },
           {
-            title: '金额还款率',
+            title: '利息',
             searchOperator: 'like',
-            key: 'repayAmountRate',
+            key: 'billItrtAmt',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '每期应还总金额',
+            searchOperator: '=',
+            key: 'perdTotAmt',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '账单类型',
+            searchOperator: '=',
+            key: 'billSts',
+            className: 'caseHandleStatus',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '用户身份证号',
+            searchOperator: 'like',
+            key: 'idNoHid',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '用户名',
+            key: 'linkRate',
+            className: 'usrNm',
+            align: alignCenter,
+            width: widthMidVal,
+          },
+          {
+            title: '用户ID',
+            searchOperator: 'like',
+            key: 'usrId',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '用户手机号',
+            searchOperator: 'like',
+            key: 'mblNoHid',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthMidVal
+          },
+          {
+            title: '紧急联系人姓名',
+            searchOperator: 'like',
+            key: 'cntUsrNm',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthMidVal,
+          },
+          {
+            title: '与用户的关系',
+            searchOperator: 'like',
+            key: 'cntRelTyp',
+            className: 'caseCount',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '紧急联系人手机号',
+            searchOperator: 'like',
+            key: 'cntMblNo',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '年龄',
+            searchOperator: 'like',
+            key: 'usrBirthDt',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '性别',
+            searchOperator: 'like',
+            key: 'usrGender',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthMidVal
+          },
+          {
+            title: '户籍地址',
+            searchOperator: 'like',
+            key: 'idDtlAddr',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthMidVal
+          },
+          {
+            title: '逾期状态',
+            searchOperator: 'like',
+            key: 'billOvdtSts',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthMidVal
+          },
+          {
+            title: '实际还款时间',
+            searchOperator: 'like',
+            key: 'perpRepayDt',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '当前逾期期数',
+            searchOperator: 'like',
+            key: 'perdNum',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '应还日期',
+            searchOperator: 'like',
+            key: 'perdDueDt',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '逾期日期',
+            searchOperator: 'like',
+            key: 'perdOutDueDt',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '逾期期数',
+            searchOperator: 'like',
+            key: 'perdAllNum',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '实际还款金额',
+            searchOperator: 'like',
+            key: 'perdTotRep',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '减免金额',
+            searchOperator: 'like',
+            key: 'drtFineAmt',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '实收利息',
+            searchOperator: 'like',
+            key: 'perdItrtRep',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '实收罚息',
+            searchOperator: 'like',
+            key: 'perdFineRep',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '逾期天数',
+            searchOperator: 'like',
+            key: 'overDueDays',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '剩余本金',
+            searchOperator: 'like',
+            key: 'billRemainPrcpAmt',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '放款次数',
+            searchOperator: 'like',
+            key: 'ordSuccCount',
+            className: 'tableMainW',
+            align: alignCenter,
+            width: widthVal
+          },
+          {
+            title: '经办人',
+            searchOperator: 'like',
+            key: 'opUserName',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
@@ -396,11 +630,12 @@
     },
     methods: {
       // 改变日期区间的格式之后进行处理
-      changeActDate(val1, val2) {
-        this.formValidate.startDate = val1[0];
-        this.formValidate.endDate = val1[1];
-        console.log('123', this.formValidate);
-        //this.formValidate.startAndend[1].Date('yyyy-MM-dd');
+      changeDate(val1, val2) {
+        console.log(val1, typeof val1)
+        console.log(val2, typeof val2)
+
+        this.formItem.defaultDate = val1;
+        // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
       },
       // 页码改变的回调
       changePage(pageNo) { //默认带入一个参数是当前的页码数
@@ -419,10 +654,10 @@
       },
       // 获取表格数据
       async getList() {
-        let res= await monitor_agentState_list({
+        let res= await monitor_overdueReports_list({
           pageNo: this.pageNo,
           pageSize: this.pageSize,
-          ...this.formValidate
+          ...this.formItem
         })
         console.log(res)
         if(res && res.code === 1){
@@ -434,7 +669,6 @@
         } else{
           this.$Message.error(res.message);
         }
-        // 试着处理数据和分页组件之间的关系,
       },
       // 重置
       clearForm(name) {
