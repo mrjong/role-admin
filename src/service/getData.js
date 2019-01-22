@@ -40,11 +40,60 @@ export const wkProcessDef_list = (obj = {}) =>
 	});
 
 /**
+ * 工作流定义列表-禁用
+ */
+export const wkProcessDef_forbid = (obj = {}) =>
+	fetch({
+		url: '/wkProcessDef/forbid',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/**
+ * 工作流定义列表-复制
+ */
+export const wkProcessDef_copy = (obj = {}) =>
+	fetch({
+		url: '/wkProcessDef/copy',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/**
+ * 工作流定义列表-发布
+ */
+export const wkProcessDef_release = (obj = {}) =>
+	fetch({
+		url: '/wkProcessDef/release',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+/**
  * 工作流保存
  */
 export const wkProcessDef_save = (obj = {}) =>
 	fetch({
 		url: '/wkProcessDef/save',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/**
+ * 任务详情
+ */
+export const wkProcessTask_detail = (obj = {}) =>
+	fetch({
+		url: `/wkProcessTask/detail/${obj.id}`,
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/**
+ * 任务列表
+ */
+export const wkProcessTask_list = (obj = {}) =>
+	fetch({
+		url: '/wkProcessTask/list',
 		method: 'POST',
 		data: qs.stringify(obj)
 	});
@@ -230,45 +279,44 @@ export const system_user_list = (obj, options) =>
 		data: qs.stringify(obj)
 	});
 
-    /*
+/*
 *
 * 系统用户查看用户详情
 * */
 export const system_user_info = (obj, options) =>
-fetch({
-    url: '/system/user/info',
-    method: 'POST',
-    data: qs.stringify(obj)
-});
+	fetch({
+		url: '/system/user/info',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 
-    /*
+/*
 * 新增系统用户 
 * */
 export const system_user_add = (obj, options) =>
-fetch({
-    url: '/system/user/add',
-    method: 'POST',
-    data: qs.stringify(obj)
-});
+	fetch({
+		url: '/system/user/add',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 
 /*
 * 查看所有用户角色
 * */
 export const system_user_roles = (obj, options) =>
-fetch({
-    url: '/system/user/roles',
-    method: 'POST',
-    data: qs.stringify(obj)
-});
+	fetch({
+		url: '/system/user/roles',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 
-
-    /*
+/*
 *
 * 修改系统用户
 * */
 export const system_user_update = (obj, options) =>
-fetch({
-    url: '/system/user/update',
-    method: 'POST',
-    data: qs.stringify(obj)
-});
+	fetch({
+		url: '/system/user/update',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});

@@ -1,178 +1,80 @@
-import gongzuoliu from '@/components/workflow/gongzuoliu'
-import { wkProcessDef_list } from "@/service/getData"
+import gongzuoliu from '@/components/workflow/gongzuoliu';
+import { wkProcessDef_list, wkProcessDef_forbid, wkProcessDef_release, wkProcessDef_copy } from '@/service/getData';
 import tablePage from '@/mixin/tablePage';
 export default {
-    name: 'case_search_page',
-    components:{
-        gongzuoliu
-    },
-    mixin:[tablePage],
+	name: 'case_search_page',
+	components: {
+		gongzuoliu
+	},
+	mixins: [ tablePage ],
 	data() {
 		return {
 			visible1: false,
 			showPanel: false,
 			showPanel2: false,
-			phoneCallList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
-			productTimeList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
-			productLineList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
-			modal12: false,
-			inputGrid: '',
-			modal11: false,
-			formValidate2: {},
+			formItem: {},
+			backTypeList: [],
+			defTypeList: [],
 			pageNo: 1,
 			pageSize: 10,
 			total: 0,
-			formValidate3: {
-				items: [
-					{
-						value: '',
-						index: 1,
-						status: 1
-					}
-				]
-			},
-			formItem: {},
-            tableData: [],
-            ruleValidate:{},
+			tableData: [],
+			ruleValidate: {},
 			tableColumns: [
 				{
-					title: '餐柜ID',
-					width: 100,
-					searchOperator: '=',
+					title: '名称',
+					minWidth: 180,
 					sortable: true,
-					key: 'buffet_id'
+					align: 'center',
+					key: 'defName'
 				},
 				{
-					title: '餐柜编码',
-					width: 120,
-					searchOperator: '=',
-					key: 'buffet_code'
+					title: '类型',
+					minWidth: 150,
+					align: 'center',
+					key: 'defType'
 				},
 				{
-					title: '设备ID',
-					searchOperator: '=',
-					key: 'device_id'
+					title: '编号',
+					align: 'center',
+					minWidth: 200,
+					key: 'defCode'
 				},
 				{
-					title: '餐柜添加时间',
-					key: 'addtime',
-					width: 3000,
-					sortable: true,
+					title: '版本号',
+					minWidth: 100,
+					align: 'center',
+					key: 'version'
+				},
+				{
+					title: '状态',
+					align: 'center',
+					minWidth: 100,
+					key: 'status'
+				},
+				{
+					title: '创建时间',
+					minWidth: 150,
+					align: 'center',
+					key: 'createTime',
 					render: (h, params) => {
 						const row = params.row;
-						const addtime = row.addtime
-							? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-							: row.addtime;
-						return h('span', addtime);
+						const createTime = row.createTime
+							? this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
+							: row.createTime;
+						return h('span', createTime);
 					}
 				},
 				{
-					title: '餐柜名称',
-					width: 120,
-					searchOperator: 'like',
-					key: 'buffet_name',
-					sortable: true
-				},
-				{
-					title: '餐柜详细地址',
-					searchOperator: 'like',
-					key: 'address',
-					render: (h, params) => {
-						return h('div', [
-							h(
-								'Tooltip',
-								{
-									style: {
-										margin: '0 5px'
-									},
-									props: {
-										content: params.row.address,
-										placement: 'top'
-									}
-								},
-								[ h('div', {}, params.row.address) ]
-							)
-						]);
-					}
+					title: '创建人',
+					align: 'center',
+					minWidth: 100,
+					key: 'creater'
 				},
 				{
 					title: '操作',
-					width: 100,
+					width: 200,
+					align: 'center',
 					key: 'edit',
 					render: (h, params) => {
 						return h('div', [
@@ -198,16 +100,100 @@ export default {
 											props: {}
 										},
 										'删除'
-									),
+									)
+								]
+							),
+							h(
+								'Poptip',
+								{
+									props: {
+										confirm: true,
+										title: '您确定要禁用这条数据吗?',
+										transfer: true
+									},
+									on: {
+										'on-ok': () => {
+											this.forbid(params.row.id);
+										}
+									}
+								},
+								[
 									h(
 										'a',
 										{
 											class: 'edit-btn',
 											props: {}
 										},
-										'删除'
+										'禁用'
 									)
 								]
+							),
+							h(
+								'Poptip',
+								{
+									props: {
+										confirm: true,
+										title: '您确定要发布这条数据吗?',
+										transfer: true
+									},
+									on: {
+										'on-ok': () => {
+											this.release(params.row.id);
+										}
+									}
+								},
+								[
+									h(
+										'a',
+										{
+											class: 'edit-btn',
+											props: {}
+										},
+										'发布'
+									)
+								]
+							),
+							h(
+								'Poptip',
+								{
+									props: {
+										confirm: true,
+										title: '您确定要复制这条数据吗?',
+										transfer: true
+									},
+									on: {
+										'on-ok': () => {
+											this.copy(params.row.id);
+										}
+									}
+								},
+								[
+									h(
+										'a',
+										{
+											class: 'edit-btn',
+											props: {}
+										},
+										'复制'
+									)
+								]
+							),
+
+							h(
+								'a',
+								{
+									class: 'edit-btn',
+									props: {}
+								},
+								'修改'
+							),
+							h(
+								'a',
+								{
+									class: 'edit-btn',
+									props: {}
+								},
+								'详情'
 							)
 						]);
 					}
@@ -215,30 +201,66 @@ export default {
 			]
 		};
 	},
+
 	created() {
 		this.getList();
 	},
 	methods: {
+		async forbid(id) {
+			const res = await wkProcessDef_forbid({ id });
+			if (res.code === 1) {
+				this.$Message.success('禁用成功');
+				this.pageNo = 1;
+				setTimeout(() => {
+					this.getList();
+				}, 3000);
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+		async copy(id) {
+			const res = await wkProcessDef_copy({ id });
+			if (res.code === 1) {
+				this.$Message.success('复制成功');
+				this.pageNo = 1;
+				setTimeout(() => {
+					this.getList();
+				}, 3000);
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+		async release(id) {
+			const res = await wkProcessDef_release({ id });
+			if (res.code === 1) {
+				this.$Message.success('发布成功');
+				this.pageNo = 1;
+				setTimeout(() => {
+					this.getList();
+				}, 3000);
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
 		handView() {
 			this.visible1 = true;
 		},
-		handleSubmit(name) {
-			this.$refs[name].validate((valid) => {
-				if (valid) {
-					this.getList();
-				} else {
-					this.$Message.error('查询条件格式有误，请重新填写');
-				}
-			});
-		},
 		// 获取表格数据
 		async getList() {
-		},
-		// 重置
-		clearForm(name) {
-			this.pageNo = 1;
-			this.formItem = {};
-			this.$refs[name].resetFields();
+			const res = await wkProcessDef_list({
+				...this.formItem,
+				pageNum: this.pageNo,
+				pageSize: this.pageSize
+			});
+			if (res.code === 1) {
+				this.tableData = res.data.pageList.content;
+				this.pageSize = res.data.pageList.size;
+				this.total = res.data.pageList.totalElements;
+				this.backTypeList = res.data.backTypeList;
+				this.defTypeList = res.data.defTypeList;
+			} else {
+				this.$Message.error(res.message);
+			}
 		}
 	}
 };

@@ -9,11 +9,11 @@
       >
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
         检索条件
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >添加</Button>
+        <Button
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+        >添加</Button>
       </p>
       <Form
         v-if="!showPanel"
@@ -33,18 +33,14 @@
           <FormItem
             span="6"
             label="任务ID:"
-            prop="buffet_id"
+            prop="defCode"
           >
-            <Select
+            <Input
               size="small"
-              v-model="formItem.productLine"
-            >
-              <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
-            </Select>
+              clearable
+              v-model="formItem.defCode"
+              placeholder="请输入任务ID"
+            ></Input>
           </FormItem>
           </Col>
           <Col
@@ -57,25 +53,21 @@
           <FormItem
             span="6"
             label="业务标识:"
-            prop="buffet_id"
+            prop="defCode"
           >
-            <Select
+            <Input
               size="small"
-              v-model="formItem.productLine"
-            >
-              <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
-            </Select>
+              clearable
+              v-model="formItem.defCode"
+              placeholder="请输入业务标识"
+            ></Input>
           </FormItem>
           </Col>
           <Col
             :xs="24"
             :sm="24"
-            :md="6"
-            :lg="6"
+            :md="24"
+            :lg="24"
             span="6"
           >
           <FormItem>

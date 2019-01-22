@@ -7,7 +7,10 @@
       width="90%"
       v-model="visible1"
     >
-      <gongzuoliu></gongzuoliu>
+      <gongzuoliu
+      :backTypeList="backTypeList"
+      :defTypeList="defTypeList"
+      ></gongzuoliu>
     </Modal>
     <Card class="vue-panel">
       <p
@@ -31,6 +34,7 @@
         :rules="ruleValidate"
       >
         <Row>
+
           <Col
             :xs="24"
             :sm="24"
@@ -41,18 +45,14 @@
           <FormItem
             span="6"
             label="编号:"
-            prop="buffet_id"
+            prop="defCode"
           >
-            <Select
+            <Input
               size="small"
-              v-model="formItem.productLine"
-            >
-              <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
-            </Select>
+              clearable
+              v-model="formItem.defCode"
+              placeholder="请输入工作流编号"
+            ></Input>
           </FormItem>
           </Col>
           <Col
@@ -64,18 +64,18 @@
           >
           <FormItem
             span="6"
-            label="类型:"
-            prop="buffet_id"
+            label="工作流类型:"
+            prop="defType"
           >
             <Select
               size="small"
-              v-model="formItem.productLine"
+              v-model="formItem.defType"
             >
-              <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+               <Option
+                v-for="item in defTypeList"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -89,17 +89,17 @@
           <FormItem
             span="6"
             label="驳回类型:"
-            prop="buffet_id"
+            prop="backType"
           >
             <Select
               size="small"
-              v-model="formItem.productLine"
+              v-model="formItem.backType"
             >
               <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in backTypeList"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -143,6 +143,7 @@
       <div v-if="!showPanel2">
         <Table
           :data="tableData"
+          border
           :columns="tableColumns"
           stripe
         ></Table>

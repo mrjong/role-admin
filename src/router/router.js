@@ -301,13 +301,13 @@ export const appRouter = [
 		title: '系统管理',
 		component: Main,
 		children: [
-			{
-				path: 'wkProcessDef_list',
-				icon: 'ios-list',
-				name: 'wkProcessDef_list',
-				title: '系统角色管理',
-				component: () => import('@/pages/system/wkProcessDef_list.vue')
-			},
+			// {
+			// 	path: 'wkProcessDef_list',
+			// 	icon: 'ios-list',
+			// 	name: 'wkProcessDef_list',
+			// 	title: '系统角色管理',
+			// 	component: () => import('@/pages/system/wkProcessDef_list.vue')
+			// },
 			{
 				path: 'system_user_page',
 				icon: 'ios-list',
