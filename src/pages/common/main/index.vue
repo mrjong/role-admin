@@ -55,7 +55,6 @@
           @on-change="handleSubmenuChange"
           :theme="menuTheme"
           :before-push="beforePush"
-          :open-names="openedSubmenuArr"
           :menu-list="menuList"
         >
           <div

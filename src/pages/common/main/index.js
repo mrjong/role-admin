@@ -35,7 +35,7 @@ export default {
 	},
 	computed: {
 		menuList() {
-			return this.$store.state.app.menuList;
+			return this.$store.state.app.menuTreeList;
 		},
 		pageTagsList() {
 			return this.$store.state.app.pageOpenedList; // 打开的页面的页面对象
@@ -96,7 +96,7 @@ export default {
 		},
 		init() {
 			let pathArr = util.setCurrentPath(this, this.$route.name);
-			this.$store.commit('updateMenulist');
+			// this.$store.commit('updateMenulist');
 			if (pathArr.length >= 2) {
 				this.$store.commit('addOpenSubmenu', pathArr[1].name);
 			}
