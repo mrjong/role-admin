@@ -64,16 +64,16 @@ export const otherRouter = {
 			name: 'home',
 			component: () => import('@/pages/common/home')
 		},
-		{
-			path: 'message',
-			title: '消息中心',
-			name: 'message_index',
-			component: () => import('@/pages/common/message/message.vue')
-		}
+		// {
+		// 	path: 'message',
+		// 	title: '消息中心',
+		// 	name: 'message_index',
+		// 	component: () => import('@/pages/common/message/message.vue')
+		// }
 	]
 };
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
-export const appRouter = [
+ const appRouter = [
 	{
 		path: '/demo',
 		icon: 'ios-grid-view',
@@ -161,19 +161,12 @@ export const appRouter = [
 		component: Main,
 		children: [
 			{
-				path: 'my_arbitrament_page',
+				path: 'arbitrament_approve_page',
 				icon: 'ios-list',
-				name: 'my_arbitrament_page',
-				title: '我的仲裁',
-				component: () => import('@/pages/arbitramentMng/my_arbitrament_page')
-			},
-			// {
-			// 	path: 'arbitrament_approve_page',
-			// 	icon: 'ios-list',
-			// 	name: 'arbitrament_approve_page',
-			// 	title: '仲裁审批',
-			// 	component: () => import('@/pages/arbitramentMng/arbitrament_approve_page')
-			// }
+				name: 'arbitrament_approve_page',
+				title: '仲裁审批',
+				component: () => import('@/pages/arbitramentMng/arbitrament_approve_page')
+			}
 		]
 	},
 	{
@@ -352,7 +345,6 @@ export const routers = [
 	loginRouter,
 	otherRouter,
 	// preview,
-	...appRouter,
 	case_desc,
 	page500,
 	page403,
