@@ -9,7 +9,6 @@ import Cookies from 'js-cookie';
 import util from '@/libs/util.js';
 import scrollBar from '@/components/scroll-bar/vue-scroller-bars';
 import { logout, findTreeByCurrentUser, reset_passWord } from '@/service/getData';
-import demo from './demo.json';
 export default {
 	components: {
 		shrinkableMenu,
