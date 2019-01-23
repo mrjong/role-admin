@@ -14,7 +14,7 @@
         v-if="!showPanel"
         ref="formItem"
         :model="formItem"
-        :label-width="90"
+        :label-width="60"
         :rules="ruleValidate"
       >
         <Row>

@@ -150,11 +150,11 @@
               :lg="11"
               span="11"
             >
-            <FormItem prop="overdueDaysLt">
+            <FormItem prop="minOverdueDays">
               <Input
                 size="small"
                 clearable
-                v-model="formItem.overdueDaysLt"
+                v-model="formItem.minOverdueDays"
               ></Input>
             </FormItem>
             </Col>
@@ -174,11 +174,11 @@
               :lg="11"
               span="11"
             >
-            <FormItem prop="overdueDaysBt">
+            <FormItem prop="maxOverdueDays">
               <Input
                 size="small"
                 clearable
-                v-model="formItem.overdueDaysBt"
+                v-model="formItem.maxOverdueDays"
               ></Input>
             </FormItem>
             </Col>
@@ -199,11 +199,11 @@
               :lg="11"
               span="11"
             >
-            <FormItem prop="billOvduAmtLt">
+            <FormItem prop="minOverdueAmt">
               <Input
                 size="small"
                 clearable
-                v-model="formItem.billOvduAmtLt"
+                v-model="formItem.minOverdueAmt"
               ></Input>
             </FormItem>
             </Col>
@@ -223,11 +223,11 @@
               :lg="11"
               span="11"
             >
-            <FormItem prop="billOvduAmtBt">
+            <FormItem prop="maxOverdueAmt">
               <Input
                 size="small"
                 clearable
-                v-model="formItem.billOvduAmtBt"
+                v-model="formItem.maxOverdueAmt"
               ></Input>
             </FormItem>
             </Col>
@@ -242,12 +242,12 @@
           >
           <FormItem
             label="案件编号:"
-            prop="caseNo"
+            prop="id"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.caseNo"
+              v-model="formItem.id"
               placeholder="请输入案件编号"
             />
           </FormItem>
@@ -365,11 +365,11 @@
           <Row :gutter="5">
 
             <div class="panel-desc-title fl mr10">
-              案件数(笔)：<span>BIL2018091015251600028780</span>
+              案件数(笔)：<span>{{summary.totalCount || 0}}</span>
             </div>
 
             <div class="panel-desc-title fl mr10">
-              逾期金额(元)：<span>{{67225.00 | money}}</span>
+              逾期金额(元)：<span>{{summary.totalOverdueAmt | money}}</span>
             </div>
           </Row>
         </div>

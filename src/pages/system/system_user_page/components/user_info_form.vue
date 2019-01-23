@@ -3,7 +3,6 @@
     <Modal
       v-model="model.modal"
       width="800"
-      :transfer="false"
       class-name="user_info_form_modal"
       :mask-closable="false"
       @on-visible-change="del"
@@ -17,7 +16,7 @@
       <div style="text-align:center">
         <!-- 用户信息 -->
         <Card
-          class="vue-panel"
+          class="vue-panel panel_list"
           :dis-hover="true"
         >
           <!-- <p slot="title" style="text-align: left">用户信息</p> -->
@@ -101,35 +100,7 @@
                 </Select>
               </FormItem>
               </Col>
-              <Col
-                :xs="24"
-                :sm="24"
-                :md="10"
-                :lg="10"
-                span="4"
-              >
-              <FormItem
-                label="系统角色:"
-                span="4"
-                prop="userType"
-              >
-                <Select
-                  size="small"
-                  v-model="formItem.userType"
-                  filterable
-                  multiple
-                  clearable
-                  placeholder="请选择系统角色"
-                  :disabled="model.type === '1'? true: false"
-                >
-                  <Option
-                    v-for="item in productTimeList"
-                    :value="item.value"
-                    :key="item.value"
-                  >{{ item.label }}</Option>
-                </Select>
-              </FormItem>
-              </Col>
+
               <Col
                 :xs="24"
                 :sm="24"
@@ -140,6 +111,7 @@
               <FormItem
                 span="4"
                 label="邮箱:"
+                prop="email"
               >
                 <Input
                   size="small"
@@ -160,6 +132,7 @@
               <FormItem
                 span="4"
                 label="电话:"
+                prop="mobile"
               >
                 <Input
                   size="small"
@@ -168,6 +141,35 @@
                   placeholder="请输入电话号"
                   :disabled="model.type === '1'? true: false"
                 ></Input>
+              </FormItem>
+              </Col>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="24"
+                :lg="24"
+                span="4"
+              >
+              <FormItem
+                label="系统角色:"
+                span="4"
+                prop="roleIds"
+              >
+                <Select
+                  size="small"
+                  v-model="formItem.roleIds"
+                  filterable
+                  multiple
+                  clearable
+                  placeholder="请选择系统角色"
+                  :disabled="model.type === '1'? true: false"
+                >
+                  <Option
+                    v-for="item in rolesData"
+                    :value="item.id"
+                    :key="item.id"
+                  >{{ item.name }}</Option>
+                </Select>
               </FormItem>
               </Col>
             </Row>
@@ -213,12 +215,34 @@ export default {
       showPanel: false,
       childrenData: {},
       childrenModel: false,
+      rolesData: [],
       ruleValidate: {
         name: [
           {
             required: true,
             message: "请输入姓名",
             trigger: "blur"
+          }
+        ],
+        loginName: [
+          {
+            required: true,
+            message: "请输入账号",
+            trigger: "blur"
+          }
+        ],
+        email: [
+          {
+            pattern: this.GLOBAL.email,
+            message: '请输入正确邮箱号',
+            trigger: 'blur'
+          }
+        ],
+        mobile: [
+          {
+            pattern: this.GLOBAL.mblNo,
+            message: '请输入正确手机号',
+            trigger: 'blur'
           }
         ],
         state: [
@@ -228,23 +252,18 @@ export default {
             trigger: "change"
           }
         ],
-        userType: [
+        roleIds: [
           {
             required: true,
-            message: "请选择用户类型",
-            trigger: "change"
+            message: "请选择系统角色",
+            trigger: "change",
+            type: 'array'
           }
         ],
 
 
       },
       formItem: {
-        name: "",
-        account_number: "",
-        status: "",
-        role: "",
-        email: "",
-        mobile: ""
       },
     };
   },
@@ -265,17 +284,38 @@ export default {
     // 获取表格数据
     async system_user_roles() {
       const res = await system_user_roles();
-      console.log(res)
+      if (res.code === 1) {
+        this.rolesData = res.data
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          console.log(valid)
+          this.system_user_add()
         }
       });
     },
-    async save() {
-      const res = await system_user_add()
+    async system_user_add() {
+      let roleIds = ''
+      if (this.formItem && this.formItem.roleIds && this.formItem.roleIds.length > 0) {
+        this.formItem.roleIds.forEach(element => {
+          roleIds = roleIds + element + ','
+        });
+
+        delete (this.formItem.roleIds)
+        console.log(roleIds, this.formItem)
+      }
+      const res = await system_user_add({
+        ...this.formItem,
+        roleIds
+      })
+      if (res.code === 1) {
+        this.$Message.success('添加成功');
+      } else {
+        this.$Message.error(res.message);
+      }
 
     },
     del() {

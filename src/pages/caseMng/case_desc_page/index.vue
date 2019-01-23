@@ -13,11 +13,11 @@
       >
     </Modal>
     <Modal
-     class="jianmian"
+      class="jianmian"
       width="90%"
       v-model="visible1"
     >
-    <jianmian></jianmian>
+      <jianmian></jianmian>
     </Modal>
     <!-- 弹层 -->
     <div
@@ -226,15 +226,20 @@
       <Card class="vue-panel-table">
         <p>
           <Tabs
+            @on-click="tabClick"
             type="card"
             size="small"
             :animated="false"
           >
-            <TabPane label="催收信息">
+            <TabPane
+              label="催收信息"
+              name="case_detail_remark_list"
+            >
               <div>
                 <Table
-                  :data="tableData"
-                  :columns="tableColumns"
+                  border
+                  :data="case_detail_remark_list_tableData"
+                  :columns="case_detail_remark_list_tableColumns"
                   stripe
                 ></Table>
                 <!-- 分页 -->
@@ -242,25 +247,118 @@
 
                   <div style="float: right;">
                     <Page
-                      :total="total"
+                      :total="case_detail_remark_list_total"
                       show-total
                       size="small"
                       :page-size-opts="[10, 20, 50, 100]"
                       show-elevator
                       show-sizer
-                      :page-size="pageSize"
-                      :current="pageNo"
-                      @on-page-size-change="changeSize"
-                      @on-change="changePage"
+                      :page-size="case_detail_remark_list_pageSize"
+                      :current="case_detail_remark_list_pageNo"
+                      @on-page-size-change="changeSize('case_detail_remark_list')"
+                      @on-change="changePage('case_detail_remark_list')"
                     ></Page>
                   </div>
 
                 </div>
               </div>
             </TabPane>
-            <TabPane label="回款信息">标签二的内容</TabPane>
-            <TabPane label="用户主动还款">标签三的内容</TabPane>
-            <TabPane label="用户主动还款">系统代扣还款</TabPane>
+            <TabPane
+              label="回款信息"
+              name="case_detail_repay_ord_list"
+            >
+              <div>
+                <Table
+                  border
+                  :data="case_detail_repay_ord_list_tableData"
+                  :columns="case_detail_repay_ord_list_tableColumns"
+                  stripe
+                ></Table>
+                <!-- 分页 -->
+                <div class="vue-panel-page">
+
+                  <div style="float: right;">
+                    <Page
+                      :total="case_detail_repay_ord_list_total"
+                      show-total
+                      size="small"
+                      :page-size-opts="[10, 20, 50, 100]"
+                      show-elevator
+                      show-sizer
+                      :page-size="case_detail_repay_ord_list_pageSize"
+                      :current="case_detail_repay_ord_list_pageNo"
+                      @on-page-size-change="changeSize('case_detail_repay_ord_list')"
+                      @on-change="changePage('case_detail_repay_ord_list')"
+                    ></Page>
+                  </div>
+
+                </div>
+              </div>
+            </TabPane>
+            <TabPane
+              label="用户主动还款"
+              name="case_detail_user_repay_list"
+            >
+              <div>
+                <Table
+                  border
+                  :data="case_detail_user_repay_list_tableData"
+                  :columns="case_detail_user_repay_list_tableColumns"
+                  stripe
+                ></Table>
+                <!-- 分页 -->
+                <div class="vue-panel-page">
+
+                  <div style="float: right;">
+                    <Page
+                      :total="case_detail_user_repay_list_total"
+                      show-total
+                      size="small"
+                      :page-size-opts="[10, 20, 50, 100]"
+                      show-elevator
+                      show-sizer
+                      :page-size="case_detail_user_repay_list_pageSize"
+                      :current="case_detail_user_repay_list_pageNo"
+                      @on-page-size-change="changeSize('case_detail_user_repay_list')"
+                      @on-change="changePage('case_detail_user_repay_list')"
+                    ></Page>
+                  </div>
+
+                </div>
+              </div>
+            </TabPane>
+            <TabPane
+              label="系统代扣还款"
+              name="case_detail_system_repay_list"
+            >
+              <div>
+                <Table
+                  border
+                  :data="case_detail_system_repay_list_tableData"
+                  :columns="case_detail_system_repay_list_tableColumns"
+                  stripe
+                ></Table>
+                <!-- 分页 -->
+                <div class="vue-panel-page">
+
+                  <div style="float: right;">
+                    <Page
+                      :total="case_detail_system_repay_list_total"
+                      show-total
+                      size="small"
+                      :page-size-opts="[10, 20, 50, 100]"
+                      show-elevator
+                      show-sizer
+                      :page-size="case_detail_system_repay_list_pageSize"
+                      :current="case_detail_system_repay_list_pageNo"
+                      @on-page-size-change="changeSize('case_detail_system_repay_list')"
+                      @on-change="changePage('case_detail_system_repay_list')"
+                    ></Page>
+                  </div>
+
+                </div>
+              </div>
+            </TabPane>
           </Tabs>
         </p>
       </Card>
@@ -271,14 +369,19 @@
 
           <Tabs
             type="card"
+            @on-click="tabClick"            
             size="small"
             :animated="false"
           >
-            <TabPane label="用户绑卡信息">
+            <TabPane
+              label="用户绑卡信息"
+              name="case_detail_bindcard_list"
+            >
               <div>
                 <Table
-                  :data="tableData"
-                  :columns="tableColumns"
+                  border
+                  :data="case_detail_bindcard_list_tableData"
+                  :columns="case_detail_bindcard_list_tableColumns"
                   stripe
                 ></Table>
                 <!-- 分页 -->
@@ -286,26 +389,81 @@
 
                   <div style="float: right;">
                     <Page
-                      :total="total"
+                      :total="case_detail_bindcard_list_total"
                       show-total
                       size="small"
                       :page-size-opts="[10, 20, 50, 100]"
                       show-elevator
                       show-sizer
-                      :page-size="pageSize"
-                      :current="pageNo"
-                      @on-page-size-change="changeSize"
-                      @on-change="changePage"
+                      :page-size="case_detail_bindcard_list_pageSize"
+                      :current="case_detail_bindcard_list_pageNo"
+                      @on-page-size-change="changeSize('case_detail_bindcard_list')"
+                      @on-change="changePage('case_detail_bindcard_list')"
                     ></Page>
                   </div>
 
                 </div>
               </div>
             </TabPane>
-            <TabPane label="分配信息">标签二的内容</TabPane>
-            <TabPane label="站内信记录">标签三的内容</TabPane>
-            <TabPane label="合同信息">系统代扣还款</TabPane>
-            <TabPane label="地址信息">系统代扣还款</TabPane>
+            <TabPane label="分配信息" name="case_detail_allot_list">
+                 <div>
+                <Table
+                  border
+                  :data="case_detail_allot_list_tableData"
+                  :columns="case_detail_allot_list_tableColumns"
+                  stripe
+                ></Table>
+                <!-- 分页 -->
+                <div class="vue-panel-page">
+
+                  <div style="float: right;">
+                    <Page
+                      :total="case_detail_allot_list_total"
+                      show-total
+                      size="small"
+                      :page-size-opts="[10, 20, 50, 100]"
+                      show-elevator
+                      show-sizer
+                      :page-size="case_detail_allot_list_pageSize"
+                      :current="case_detail_allot_list_pageNo"
+                      @on-page-size-change="changeSize('case_detail_allot_list')"
+                      @on-change="changePage('case_detail_allot_list')"
+                    ></Page>
+                  </div>
+
+                </div>
+              </div>
+            </TabPane>
+            <TabPane label="站内信记录" name="case_detail_siteletter_list">
+                 <div>
+                <Table
+                  border
+                  :data="case_detail_siteletter_list_tableData"
+                  :columns="case_detail_siteletter_list_tableColumns"
+                  stripe
+                ></Table>
+                <!-- 分页 -->
+                <div class="vue-panel-page">
+
+                  <div style="float: right;">
+                    <Page
+                      :total="case_detail_siteletter_list_total"
+                      show-total
+                      size="small"
+                      :page-size-opts="[10, 20, 50, 100]"
+                      show-elevator
+                      show-sizer
+                      :page-size="case_detail_siteletter_list_pageSize"
+                      :current="case_detail_siteletter_list_pageNo"
+                      @on-page-size-change="changeSize('case_detail_siteletter_list')"
+                      @on-change="changePage('case_detail_siteletter_list')"
+                    ></Page>
+                  </div>
+
+                </div>
+              </div>
+            </TabPane>
+            <TabPane label="地址信息" name="case_detail_address_info">系统代扣还款</TabPane>
           </Tabs>
         </p>
       </Card>

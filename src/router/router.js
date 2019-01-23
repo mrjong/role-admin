@@ -10,8 +10,8 @@ export const loginRouter = {
 	component: () => import('@/pages/login/login.vue')
 };
 export const case_desc = {
-	path: '/case_desc',
-	name: 'case_desc',
+	path: '/case_desc_page',
+	name: 'case_desc_page',
 	meta: {
 		title: '案件详情'
 	},

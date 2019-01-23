@@ -70,7 +70,7 @@
             />
             <img
               v-show="shrink"
-              src="../../../assets/images/logo-min.jpg"
+              src="../../../assets/images/logo-min.png"
               key="min-logo"
             />
           </div>
