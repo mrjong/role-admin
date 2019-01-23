@@ -369,7 +369,7 @@
 
           <Tabs
             type="card"
-            @on-click="tabClick"            
+            @on-click="tabClick"
             size="small"
             :animated="false"
           >
@@ -405,8 +405,11 @@
                 </div>
               </div>
             </TabPane>
-            <TabPane label="分配信息" name="case_detail_allot_list">
-                 <div>
+            <TabPane
+              label="分配信息"
+              name="case_detail_allot_list"
+            >
+              <div>
                 <Table
                   border
                   :data="case_detail_allot_list_tableData"
@@ -434,8 +437,11 @@
                 </div>
               </div>
             </TabPane>
-            <TabPane label="站内信记录" name="case_detail_siteletter_list">
-                 <div>
+            <TabPane
+              label="站内信记录"
+              name="case_detail_siteletter_list"
+            >
+              <div>
                 <Table
                   border
                   :data="case_detail_siteletter_list_tableData"
@@ -463,7 +469,10 @@
                 </div>
               </div>
             </TabPane>
-            <TabPane label="地址信息" name="case_detail_address_info">系统代扣还款</TabPane>
+            <TabPane
+              label="地址信息"
+              name="case_detail_address_info"
+            >系统代扣还款</TabPane>
           </Tabs>
         </p>
       </Card>
@@ -606,14 +615,19 @@
               <div class="heighti">
 
                 <Tabs
+                  @on-click="tabClick"
                   :animated="false"
                   size="small"
                 >
-                  <TabPane label="通话统计">
+                  <TabPane
+                    label="通话统计"
+                    name="case_detail_mail_statistics_list"
+                  >
                     <div>
                       <Table
-                        :data="tableData"
-                        :columns="tableColumns"
+                        border
+                        :data="case_detail_mail_statistics_list_tableData"
+                        :columns="case_detail_mail_statistics_list_tableColumns"
                         stripe
                       ></Table>
                       <!-- 分页 -->
@@ -621,24 +635,118 @@
 
                         <div style="float: right;">
                           <Page
-                            :total="total"
+                            :total="case_detail_mail_statistics_list_total"
                             show-total
                             size="small"
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
-                            :page-size="pageSize"
-                            :current="pageNo"
-                            @on-page-size-change="changeSize"
-                            @on-change="changePage"
+                            show-sizer
+                            :page-size="case_detail_mail_statistics_list_pageSize"
+                            :current="case_detail_mail_statistics_list_pageNo"
+                            @on-page-size-change="changeSize('case_detail_mail_statistics_list')"
+                            @on-change="changePage('case_detail_mail_statistics_list')"
                           ></Page>
                         </div>
 
                       </div>
                     </div>
                   </TabPane>
-                  <TabPane label="通话明细">通话记录明细</TabPane>
-                  <TabPane label="通讯录">通讯录</TabPane>
-                  <TabPane label="通话更新">通话记录更新</TabPane>
+                  <TabPane
+                    label="通话明细"
+                    name="case_detail_mail_detail_list"
+                  >
+                    <div>
+                      <Table
+                        border
+                        :data="case_detail_mail_detail_list_tableData"
+                        :columns="case_detail_mail_detail_list_tableColumns"
+                        stripe
+                      ></Table>
+                      <!-- 分页 -->
+                      <div class="vue-panel-page">
+
+                        <div style="float: right;">
+                          <Page
+                            :total="case_detail_mail_detail_list_total"
+                            show-total
+                            size="small"
+                            :page-size-opts="[10, 20, 50, 100]"
+                            show-elevator
+                            show-sizer
+                            :page-size="case_detail_mail_detail_list_pageSize"
+                            :current="case_detail_mail_detail_list_pageNo"
+                            @on-page-size-change="changeSize('case_detail_mail_detail_list')"
+                            @on-change="changePage('case_detail_mail_detail_list')"
+                          ></Page>
+                        </div>
+
+                      </div>
+                    </div>
+                  </TabPane>
+                  <TabPane
+                    label="通讯录"
+                    name="case_detail_mail_list"
+                  >
+                    <div>
+                      <Table
+                        border
+                        :data="case_detail_mail_list_tableData"
+                        :columns="case_detail_mail_list_tableColumns"
+                        stripe
+                      ></Table>
+                      <!-- 分页 -->
+                      <div class="vue-panel-page">
+
+                        <div style="float: right;">
+                          <Page
+                            :total="case_detail_mail_list_total"
+                            show-total
+                            size="small"
+                            :page-size-opts="[10, 20, 50, 100]"
+                            show-elevator
+                            show-sizer
+                            :page-size="case_detail_mail_list_pageSize"
+                            :current="case_detail_mail_list_pageNo"
+                            @on-page-size-change="changeSize('case_detail_mail_list')"
+                            @on-change="changePage('case_detail_mail_list')"
+                          ></Page>
+                        </div>
+
+                      </div>
+                    </div>
+                  </TabPane>
+                  <TabPane
+                    label="通话更新"
+                    name="case_detail_mail_list_appended"
+                  >
+                    <div>
+                      <Table
+                        border
+                        :data="case_detail_mail_list_appended_tableData"
+                        :columns="case_detail_mail_list_appended_tableColumns"
+                        stripe
+                      ></Table>
+                      <!-- 分页 -->
+                      <div class="vue-panel-page">
+
+                        <div style="float: right;">
+                          <Page
+                            :total="case_detail_mail_list_appended_total"
+                            show-total
+                            size="small"
+                            :page-size-opts="[10, 20, 50, 100]"
+                            show-elevator
+                            show-sizer
+                            :page-size="case_detail_mail_list_appended_pageSize"
+                            :current="case_detail_mail_list_appended_pageNo"
+                            @on-page-size-change="changeSize('case_detail_mail_list_appended')"
+                            @on-change="changePage('case_detail_mail_list_appended')"
+                          ></Page>
+                        </div>
+
+                      </div>
+                    </div>
+                  </TabPane>
                   <Button
                     class="fr vue-back-btn header-btn"
                     type="primary"

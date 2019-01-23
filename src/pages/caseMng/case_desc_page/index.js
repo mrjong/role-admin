@@ -1,14 +1,19 @@
 import jianmian from '@/components/caseDesc/jianmian.vue';
 import qs from 'qs';
 import {
-	case_detail_remark_list,
-	case_detail_repay_ord_list,
-	case_detail_user_repay_list,
-	case_detail_system_repay_list,
-	case_detail_bindcard_list,
-	case_detail_allot_list,
-	case_detail_siteletter_list,
-	case_detail_address_info
+	case_detail_remark_list, // 催收
+	case_detail_repay_ord_list, // 回款
+	case_detail_user_repay_list, // 用户主动
+	case_detail_system_repay_list, // 系统代扣
+	case_detail_bindcard_list, // 绑卡信息
+	case_detail_allot_list, // 分配
+	case_detail_siteletter_list, // 站内
+	case_detail_address_info, // 地址
+	case_detail_mail_detail_list, // 通话明细
+	case_detail_mail_list, // 通讯录（指定案件）
+	case_detail_mail_list_appended, // 定案件后追加的
+	case_detail_mail_statistics_list, // 通信记录统计
+	case_detail_urgent_contact // 紧急联系人
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
@@ -794,12 +799,386 @@ export default {
 						);
 					}
 				}
+			],
+
+			// 通话统计
+			case_detail_mail_statistics_list_pageNo: 1,
+			case_detail_mail_statistics_list_pageSize: 10,
+			case_detail_mail_statistics_list_total: 0,
+			case_detail_mail_statistics_list_tableData: [],
+			case_detail_mail_statistics_list_tableColumns: [
+				{
+					title: '序号',
+					width: 100,
+					align: 'center',
+					type: 'index',
+					sortable: true
+				},
+				{
+					title: '催收时间',
+					align: 'center',
+					key: 'remarkDate',
+					width: 200,
+					render: (h, params) => {
+						let remarkDate = params.row.remarkDate;
+						remarkDate = remarkDate
+							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
+							: remarkDate;
+						return h('span', remarkDate);
+					}
+				},
+				{
+					title: '催收电话',
+					align: 'center',
+					width: 150,
+					key: 'mblNoHid'
+				},
+				{
+					title: '催收姓名',
+					align: 'center',
+					width: 100,
+					key: 'opUserName'
+				},
+				{
+					title: '催收对象',
+					align: 'center',
+					width: 100,
+					key: 'userNmHid'
+				},
+				{
+					title: '拨打状态',
+					align: 'center',
+					width: 100,
+					key: 'collectResult'
+				},
+				{
+					title: '沟通状态',
+					align: 'center',
+					width: 100,
+					key: 'communicateResult'
+				},
+				{
+					title: 'PTP时间',
+					align: 'center',
+					width: 200,
+					key: 'promiseRepayDate',
+					render: (h, params) => {
+						let promiseRepayDate = params.row.promiseRepayDate;
+						promiseRepayDate = promiseRepayDate
+							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
+							: promiseRepayDate;
+						return h('span', promiseRepayDate);
+					}
+				},
+				{
+					title: '备注',
+					align: 'center',
+					minWidth: 400,
+					key: 'collectRmk',
+					render: (h, params) => {
+						let collectRmk = params.row.collectRmk;
+						return h(
+							'Tooltip',
+							{
+								style: {
+									margin: '0 5px'
+								},
+								props: {
+									content: params.row.collectRmk,
+									placement: 'top'
+								}
+							},
+							[ h('div', {}, params.row.collectRmk) ]
+						);
+					}
+				}
+			],
+
+			// 通话明细
+			case_detail_mail_detail_list_pageNo: 1,
+			case_detail_mail_detail_list_pageSize: 10,
+			case_detail_mail_detail_list_total: 0,
+			case_detail_mail_detail_list_tableData: [],
+			case_detail_mail_detail_list_tableColumns: [
+				{
+					title: '序号',
+					width: 100,
+					align: 'center',
+					type: 'index',
+					sortable: true
+				},
+				{
+					title: '催收时间',
+					align: 'center',
+					key: 'remarkDate',
+					width: 200,
+					render: (h, params) => {
+						let remarkDate = params.row.remarkDate;
+						remarkDate = remarkDate
+							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
+							: remarkDate;
+						return h('span', remarkDate);
+					}
+				},
+				{
+					title: '催收电话',
+					align: 'center',
+					width: 150,
+					key: 'mblNoHid'
+				},
+				{
+					title: '催收姓名',
+					align: 'center',
+					width: 100,
+					key: 'opUserName'
+				},
+				{
+					title: '催收对象',
+					align: 'center',
+					width: 100,
+					key: 'userNmHid'
+				},
+				{
+					title: '拨打状态',
+					align: 'center',
+					width: 100,
+					key: 'collectResult'
+				},
+				{
+					title: '沟通状态',
+					align: 'center',
+					width: 100,
+					key: 'communicateResult'
+				},
+				{
+					title: 'PTP时间',
+					align: 'center',
+					width: 200,
+					key: 'promiseRepayDate',
+					render: (h, params) => {
+						let promiseRepayDate = params.row.promiseRepayDate;
+						promiseRepayDate = promiseRepayDate
+							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
+							: promiseRepayDate;
+						return h('span', promiseRepayDate);
+					}
+				},
+				{
+					title: '备注',
+					align: 'center',
+					minWidth: 400,
+					key: 'collectRmk',
+					render: (h, params) => {
+						let collectRmk = params.row.collectRmk;
+						return h(
+							'Tooltip',
+							{
+								style: {
+									margin: '0 5px'
+								},
+								props: {
+									content: params.row.collectRmk,
+									placement: 'top'
+								}
+							},
+							[ h('div', {}, params.row.collectRmk) ]
+						);
+					}
+				}
+			],
+
+			// 通讯录
+			case_detail_mail_list_pageNo: 1,
+			case_detail_mail_list_pageSize: 10,
+			case_detail_mail_list_total: 0,
+			case_detail_mail_list_tableData: [],
+			case_detail_mail_list_tableColumns: [
+				{
+					title: '序号',
+					width: 100,
+					align: 'center',
+					type: 'index',
+					sortable: true
+				},
+				{
+					title: '催收时间',
+					align: 'center',
+					key: 'remarkDate',
+					width: 200,
+					render: (h, params) => {
+						let remarkDate = params.row.remarkDate;
+						remarkDate = remarkDate
+							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
+							: remarkDate;
+						return h('span', remarkDate);
+					}
+				},
+				{
+					title: '催收电话',
+					align: 'center',
+					width: 150,
+					key: 'mblNoHid'
+				},
+				{
+					title: '催收姓名',
+					align: 'center',
+					width: 100,
+					key: 'opUserName'
+				},
+				{
+					title: '催收对象',
+					align: 'center',
+					width: 100,
+					key: 'userNmHid'
+				},
+				{
+					title: '拨打状态',
+					align: 'center',
+					width: 100,
+					key: 'collectResult'
+				},
+				{
+					title: '沟通状态',
+					align: 'center',
+					width: 100,
+					key: 'communicateResult'
+				},
+				{
+					title: 'PTP时间',
+					align: 'center',
+					width: 200,
+					key: 'promiseRepayDate',
+					render: (h, params) => {
+						let promiseRepayDate = params.row.promiseRepayDate;
+						promiseRepayDate = promiseRepayDate
+							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
+							: promiseRepayDate;
+						return h('span', promiseRepayDate);
+					}
+				},
+				{
+					title: '备注',
+					align: 'center',
+					minWidth: 400,
+					key: 'collectRmk',
+					render: (h, params) => {
+						let collectRmk = params.row.collectRmk;
+						return h(
+							'Tooltip',
+							{
+								style: {
+									margin: '0 5px'
+								},
+								props: {
+									content: params.row.collectRmk,
+									placement: 'top'
+								}
+							},
+							[ h('div', {}, params.row.collectRmk) ]
+						);
+					}
+				}
+			],
+
+			// 通话更新
+			case_detail_mail_list_appended_pageNo: 1,
+			case_detail_mail_list_appended_pageSize: 10,
+			case_detail_mail_list_appended_total: 0,
+			case_detail_mail_list_appended_tableData: [],
+			case_detail_mail_list_appended_tableColumns: [
+				{
+					title: '序号',
+					width: 100,
+					align: 'center',
+					type: 'index',
+					sortable: true
+				},
+				{
+					title: '催收时间',
+					align: 'center',
+					key: 'remarkDate',
+					width: 200,
+					render: (h, params) => {
+						let remarkDate = params.row.remarkDate;
+						remarkDate = remarkDate
+							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
+							: remarkDate;
+						return h('span', remarkDate);
+					}
+				},
+				{
+					title: '催收电话',
+					align: 'center',
+					width: 150,
+					key: 'mblNoHid'
+				},
+				{
+					title: '催收姓名',
+					align: 'center',
+					width: 100,
+					key: 'opUserName'
+				},
+				{
+					title: '催收对象',
+					align: 'center',
+					width: 100,
+					key: 'userNmHid'
+				},
+				{
+					title: '拨打状态',
+					align: 'center',
+					width: 100,
+					key: 'collectResult'
+				},
+				{
+					title: '沟通状态',
+					align: 'center',
+					width: 100,
+					key: 'communicateResult'
+				},
+				{
+					title: 'PTP时间',
+					align: 'center',
+					width: 200,
+					key: 'promiseRepayDate',
+					render: (h, params) => {
+						let promiseRepayDate = params.row.promiseRepayDate;
+						promiseRepayDate = promiseRepayDate
+							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
+							: promiseRepayDate;
+						return h('span', promiseRepayDate);
+					}
+				},
+				{
+					title: '备注',
+					align: 'center',
+					minWidth: 400,
+					key: 'collectRmk',
+					render: (h, params) => {
+						let collectRmk = params.row.collectRmk;
+						return h(
+							'Tooltip',
+							{
+								style: {
+									margin: '0 5px'
+								},
+								props: {
+									content: params.row.collectRmk,
+									placement: 'top'
+								}
+							},
+							[ h('div', {}, params.row.collectRmk) ]
+						);
+					}
+				}
 			]
 		};
 	},
 	created() {
-		const queryData = qs.parse(location.hash, { ignoreQueryPrefix: true });
+		let params = location.hash.split('?');
+		const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
 		this.caseNo = queryData.caseNo;
+		console.log(queryData);
 		this.userId = queryData.userId;
 		// 催收信息
 		this.case_detail_remark_list();
@@ -807,6 +1186,7 @@ export default {
 	methods: {
 		// 催收信息
 		async case_detail_remark_list() {
+			console.log(this.caseNo);
 			const res = await case_detail_remark_list({
 				caseNo: this.caseNo,
 				userId: this.userId,
@@ -916,6 +1296,74 @@ export default {
 				this.case_detail_siteletter_list_tableData = res.data.content;
 				this.case_detail_siteletter_list_pageSize = res.data.size;
 				this.case_detail_siteletter_list_total = res.data.totalElements;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+
+		// 通信记录统计
+		async case_detail_mail_statistics_list() {
+			const res = await case_detail_mail_statistics_list({
+				caseNo: this.caseNo,
+				userId: this.userId,
+				pageNum: this.case_detail_mail_statistics_list_pageNo,
+				pageSize: this.case_detail_mail_statistics_list_pageSize
+			});
+			if (res.code === 1) {
+				this.case_detail_mail_statistics_list_tableData = res.data.content;
+				this.case_detail_mail_statistics_list_pageSize = res.data.size;
+				this.case_detail_mail_statistics_list_total = res.data.totalElements;
+			} else {
+				this.$Message.error(res.message);
+			}
+        },
+        
+        	// 通话明细
+		async case_detail_mail_detail_list() {
+			const res = await case_detail_mail_detail_list({
+				caseNo: this.caseNo,
+				userId: this.userId,
+				pageNum: this.case_detail_mail_detail_list_pageNo,
+				pageSize: this.case_detail_mail_detail_list_pageSize
+			});
+			if (res.code === 1) {
+				this.case_detail_mail_detail_list_tableData = res.data.content;
+				this.case_detail_mail_detail_list_pageSize = res.data.size;
+				this.case_detail_mail_detail_list_total = res.data.totalElements;
+			} else {
+				this.$Message.error(res.message);
+			}
+        },
+        
+        	// 通讯录
+		async case_detail_mail_list() {
+			const res = await case_detail_mail_list({
+				caseNo: this.caseNo,
+				userId: this.userId,
+				pageNum: this.case_detail_mail_list_pageNo,
+				pageSize: this.case_detail_mail_list_pageSize
+			});
+			if (res.code === 1) {
+				this.case_detail_mail_list_tableData = res.data.content;
+				this.case_detail_mail_list_pageSize = res.data.size;
+				this.case_detail_mail_list_total = res.data.totalElements;
+			} else {
+				this.$Message.error(res.message);
+			}
+        },
+        
+        	// 通话更新
+		async case_detail_mail_list_appended() {
+			const res = await case_detail_mail_list_appended({
+				caseNo: this.caseNo,
+				userId: this.userId,
+				pageNum: this.case_detail_mail_list_appended_pageNo,
+				pageSize: this.case_detail_mail_list_appended_pageSize
+			});
+			if (res.code === 1) {
+				this.case_detail_mail_list_appended_tableData = res.data.content;
+				this.case_detail_mail_list_appended_pageSize = res.data.size;
+				this.case_detail_mail_list_appended_total = res.data.totalElements;
 			} else {
 				this.$Message.error(res.message);
 			}
