@@ -49,6 +49,42 @@
 					"template": "/collectionMng/collection_recording_page"
 				}
 			]
+		},
+		{
+			"id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+			"text": "工作流",
+			"url": "/workflow",
+			"icon": "ionic",
+			"template": null,
+			"childrens": [
+				{
+					"text": "工作流定义",
+					"url": "/workflow/definition",
+					"icon": "arrow-up-c",
+					"template": "/workflow/definition"
+				},
+				{
+					"text": "工作流任务",
+					"url": "/workflow/task",
+					"icon": "arrow-up-c",
+					"template": "/workflow/task"
+				}
+			]
+		},
+		{
+			"id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+			"text": "仲裁管理",
+			"url": "/arbitramentMng",
+			"icon": "ionic",
+			"template": null,
+			"childrens": [
+				{
+					"text": "仲裁审批",
+					"url": "/arbitramentMng/arbitrament_approve_page",
+					"icon": "arrow-up-c",
+					"template": "/arbitramentMng/arbitrament_approve_page"
+				}
+			]
 		}
 	],
 	"extra": null,
