@@ -1,4 +1,4 @@
-import { system_role_list, system_role_add, system_role_update, system_role_info } from '@/service/getData';
+import { system_role_list, system_role_add, system_role_update, system_role_info, stytem_menu_list, stytem_menu_opration } from '@/service/getData';
 export default {
   name: 'remoney_user',
   data() {
@@ -8,6 +8,12 @@ export default {
     return {
       showPanel: false,
       showPanel2: false,
+      menuModal: false,
+      name: '',
+      userId: '',
+      roleId: '',
+      menuIds: [],
+      data5: [],
       orderStsList: [
         {
           value: 'gbbg',
@@ -15,9 +21,6 @@ export default {
         }
       ],
       modalSee: false,
-      modalChange: true,
-      inputGrid: '',
-      modal11: false,
       formValidate: {
         // 查询接口时候所需的参数值传递
         billNo: '', //账单号,
@@ -132,35 +135,44 @@ export default {
           width: widthMidVal,
           render: (h, params) => {
             return h('div', [
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {},
-                      on: {
-                        click: () => {
-                          this.testClick();
-                        }
-                      }
+              h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.testClick();
+                    }
+                  }
+                },
+                '查看'
+              ),
+              h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {}
+                },
+                '修改'
+              ),
+              h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  on: {
+                    click: () => {
+                      console.log(params.row)
+                      this.roleId = params.row.id;
+                      this.name = params.row.name;
+                      this.getMenuList();
+                      this.menuModal = true;
                     },
-                    '查看'
-                  ),
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {}
-                    },
-                    '修改'
-                  ),
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {}
-                    },
-                    '菜单分配'
-                  )
+                  }
+                },
+                '菜单分配'
+              )
             ]);
           }
         }
@@ -171,8 +183,56 @@ export default {
     this.getList();
   },
   methods: {
-    ok(){
+    // 勾选节点的回调函数
+    checkChange(arr) {
+      arr.forEach(item => {
+        this.menuIds.push(item.id)
+      });
+      console.log(this.menuIds);
+    },
+    // 选中节点的回调函数
+    selectNode(node) {
+      console.log(node)
+    },
+    renderContent(h, { root, node, data }) {
+      return h('span', {
+        style: {
+          display: 'inline-block',
+          width: '94%',
+          boxSizing: 'border-box',
+        }
+      }, [
+          h('span', [
+            h('Icon', {
+              props: {
+                type: '',
+              },
+              style: {
+                marginRight: '4px'
+              }
+            }),
+            h('span', {
+              props: {
+              },
+              style: {
+                cursor: 'pointer'
+              },
+              class: 'tree_title',
+              on: {
+                'click': (e) => {
 
+                }
+              }
+            }, data.text)
+          ]),
+        ]);
+    },
+    ok() {
+
+    },
+    // 关闭菜单分配和提交
+    menuModalClose() {
+      this.menuModal = false;
     },
     // 改变日期区间的格式之后进行处理
     changeDange(val1, val2) {
@@ -184,9 +244,8 @@ export default {
     },
     // 页码改变的回调
     changePage(pageNo) { //默认带入一个参数是当前的页码数
-      console.log(pageNo,'当前的页码数量值');
+      console.log(pageNo, '当前的页码数量值');
       this.pageNo = pageNo;
-
       //this.getList();
     },
     // 切换每页条数时的回调
@@ -203,21 +262,43 @@ export default {
       });
     },
     //
-    testClick(){
+    testClick() {
       this.modalSee = true;
     },
-    closeModalSee(){
+    closeModalSee() {
       this.modalSee = false;
+    },
+    // 保存更新的菜单分配
+    updateMenu () {
+
     },
     // 获取表格数据
     async getList() {
-      let res= await system_role_list({
+      let res = await system_role_list({
         pageNo: this.pageNo,
         pageSize: this.pageSize,
       })
       this.tableData = res.data;
       console.log(res, '返回结果')
       // 试着处理数据和分页组件之间的关系,
+    },
+    // 获取菜单列表数据
+    async getMenuList() {
+      let res = await stytem_menu_list({ state: '01' });
+      if (res.code === 1) {
+        this.data5 = res.data;
+      } else {
+        this.$Message.error(res.message)
+      }
+    },
+    // 菜单分配的接口
+    async menuUpdate() {
+      let res = await stytem_menu_opration({ roleId: this.roleId, menuIds: JSON.stringify(this.menuIds) });
+      if (res.code === 1) {
+        this.menuModal = false;
+      } else {
+        this.$Message.error(res.message)
+      }
     },
     // 重置
     clearForm(name) {

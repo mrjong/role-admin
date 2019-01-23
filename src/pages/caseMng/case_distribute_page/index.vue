@@ -1,0 +1,152 @@
+<template>
+  <div class="panel_list">
+    <Card class="vue-panel">
+      <p slot="title" @click="showPanel=!showPanel">
+        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
+      </p>
+      <Form
+        v-if="!showPanel"
+        ref="formItem"
+        :model="formItem"
+        :label-width="95"
+        :rules="ruleValidate"
+      >
+        <Row>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="案件状态:" prop="caseHandleStatus">
+              <Select
+                clearable
+                size="small"
+                placeholder="请选择案件状态"
+                v-model="formItem.caseHandleStatus"
+              >
+                <Option
+                  v-for="item in getDirObj.CASE_HANDLE_STATUS"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="产品线:" prop="prdTyp">
+              <Select size="small" clearable placeholder="请选择产品线" v-model="formItem.prdTyp">
+                <Option
+                  v-for="item in getDirObj.PROD_TYPE"
+                  :value="item.itemCode"
+                  :key="item.itemName"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="产品期数:" prop="perdCnt">
+              <Select size="small" clearable placeholder="请选择产品期数" v-model="formItem.perdCnt">
+                <Option
+                  v-for="item in getDirObj.PROD_CNT"
+                  :value="item.itemCode"
+                  :key="item.itemName"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="客户姓名:" prop="userNm">
+              <Input size="small" clearable v-model="formItem.userNm" placeholder="请输入客户姓名"/>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="身份证号:" prop="idNo">
+              <Input size="small" clearable v-model="formItem.idNo" placeholder="请输入身份证号"/>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="手机号:" prop="mblNo">
+              <Input size="small" clearable v-model="formItem.mblNo" placeholder="请输入手机号"/>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="逾期天数:">
+              <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
+                <FormItem prop="overdueDaysLt">
+                  <Input size="small" clearable v-model="formItem.overdueDaysLt"></Input>
+                </FormItem>
+              </Col>
+              <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
+                <div class="text-center">-</div>
+              </Col>
+              <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
+                <FormItem prop="overdueDaysBt">
+                  <Input size="small" clearable v-model="formItem.overdueDaysBt"></Input>
+                </FormItem>
+              </Col>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="逾期应还金额:">
+              <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
+                <FormItem prop="billOvduAmtLt">
+                  <Input size="small" clearable v-model="formItem.billOvduAmtLt"></Input>
+                </FormItem>
+              </Col>
+              <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
+                <div class="text-center">-</div>
+              </Col>
+              <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
+                <FormItem prop="billOvduAmtBt">
+                  <Input size="small" clearable v-model="formItem.billOvduAmtBt"></Input>
+                </FormItem>
+              </Col>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="还款日期:" prop="caseNo">
+              <Input size="small" clearable v-model="formItem.caseNo" placeholder="请输入案件编号"/>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="案件编号:" prop="caseNo">
+              <Input size="small" clearable v-model="formItem.caseNo" placeholder="请输入案件编号"/>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="账单号:" prop="billNo">
+              <Input size="small" clearable v-model="formItem.billNo" placeholder="请输入账单号"/>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="信用级别:" prop="creditLevel">
+              <Select size="small" clearable placeholder="请选择信用级别" v-model="formItem.creditLevel">
+                <Option
+                  v-for="item in getDirObj.CREDIT_LEVEL"
+                  :value="item.itemCode"
+                  :key="item.itemName"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
+            <FormItem>
+              <Button
+                type="primary"
+                @click="handleSubmit('formItem')"
+                style="width:80px"
+                long
+                size="small"
+              >检索</Button>
+              <Button
+                size="small"
+                type="ghost"
+                style="width:80px;margin-left: 8px"
+                @click="clearForm('formItem')"
+              >重置</Button>
+            </FormItem>
+          </Col>
+        </Row>
+      </Form>
+    </Card>
+  </div>
+</template>
+<script src='./index.js'></script>
+
+

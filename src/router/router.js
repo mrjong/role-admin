@@ -125,7 +125,8 @@ export const appRouter = [
 	{
 		path: '/caseMng',
 		icon: 'ios-grid-view',
-		name: 'caseMng',
+    name: 'caseMng',
+    access: 1,
 		title: '案件管理',
 		component: Main,
 		children: [
@@ -135,21 +136,21 @@ export const appRouter = [
 				name: 'case_search_page',
 				title: '案件查询',
 				component: () => import('@/pages/caseMng/case_search_page')
+			},
+			{
+				path: 'case_distrubute_page',
+				icon: 'ios-list',
+				name: 'case_distrubute_page',
+				title: '案件分配',
+				component: () => import('@/pages/caseMng/case_distribute_page')
+			},
+			{
+				path: 'case_rule_page',
+				icon: 'ios-list',
+				name: 'case_rule_page',
+				title: '分案规则',
+				component: () => import('@/pages/caseMng/case_rule_page')
 			}
-			// {
-			// 	path: 'demo_desc',
-			// 	icon: 'ios-list',
-			// 	name: 'demo_desc',
-			// 	title: '案件分配',
-			// 	component: () => import('@/pages/demo/demo_desc.vue')
-			// },
-			// {
-			// 	path: 'demo_desc',
-			// 	icon: 'ios-list',
-			// 	name: 'demo_desc',
-			// 	title: '分案规则',
-			// 	component: () => import('@/pages/demo/demo_desc.vue')
-			// }
 		]
 	},
 	{
