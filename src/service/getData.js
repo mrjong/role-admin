@@ -540,3 +540,27 @@ export const case_detail_urgent_contact = (obj, options) =>
 		method: 'POST',
 		data: qs.stringify(obj)
 	});
+
+/*
+*
+*     
+查询案件详情基础信息
+* */
+export const case_detail_case_base_info = (obj, options) =>
+	fetch({
+		url: '/case/detail/case_base_info',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+*     
+查询案件详情身份信息
+* */
+export const case_detail_case_identity_info = (obj, options) =>
+	fetch({
+		url: '/case/detail/case_identity_info',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});

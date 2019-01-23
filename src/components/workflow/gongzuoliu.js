@@ -7,48 +7,48 @@ export default {
 			visible: false,
 			rules: {},
 			rulesTempl: {
-				nodeName: [
-					{
-						required: true,
-						message: '请输入节点名称',
-						trigger: 'blur'
-					}
-				],
-				nodeDesc: [
-					{
-						required: true,
-						message: '请输入节点描述',
-						trigger: 'blur'
-					}
-				],
-				nodeCode: [
-					{
-						required: true,
-						message: '请输入节点编号',
-						trigger: 'blur'
-					}
-				],
-				nodeDealUserId: [
-					{
-						required: true,
-						message: '请输入节点处理人ID',
-						trigger: 'blur'
-					}
-				],
-				nodeDealName: [
-					{
-						required: true,
-						message: '请输入处理人姓名',
-						trigger: 'blur'
-					}
-				],
-				nodeSort: [
-					{
-						required: true,
-						message: '请输入节点处理顺序',
-						trigger: 'blur'
-					}
-				]
+				// nodeName: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入节点名称',
+				// 		trigger: 'blur'
+				// 	}
+				// ],
+				// nodeDesc: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入节点描述',
+				// 		trigger: 'blur'
+				// 	}
+				// ],
+				// nodeCode: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入节点编号',
+				// 		trigger: 'blur'
+				// 	}
+				// ],
+				// nodeDealUserId: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入节点处理人ID',
+				// 		trigger: 'blur'
+				// 	}
+				// ],
+				// nodeDealName: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入处理人姓名',
+				// 		trigger: 'blur'
+				// 	}
+				// ],
+				// nodeSort: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入节点处理顺序',
+				// 		trigger: 'blur'
+				// 	}
+				// ]
 			},
 			defNodeList: [
 				{

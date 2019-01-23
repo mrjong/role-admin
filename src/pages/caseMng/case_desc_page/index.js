@@ -13,7 +13,9 @@ import {
 	case_detail_mail_list, // 通讯录（指定案件）
 	case_detail_mail_list_appended, // 定案件后追加的
 	case_detail_mail_statistics_list, // 通信记录统计
-	case_detail_urgent_contact // 紧急联系人
+	case_detail_urgent_contact, // 紧急联系人
+	case_detail_case_base_info, // 查询案件详情基础信息
+	case_detail_case_identity_info // 查询案件详情身份信息
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
@@ -33,6 +35,7 @@ export default {
 			value1: 1,
 			modalTitle: '',
 			visible1: false,
+			queryData: {},
 			phoneCallList: [
 				{
 					value: 'New York',
@@ -116,6 +119,8 @@ export default {
 			modal11: false,
 			formValidate: {},
 			formValidate2: {},
+			case_detail_case_identity_info_Data: {},
+			case_detail_urgent_contact_Data: {},
 			ruleValidate: {
 				name: [ { required: true, message: 'The name cannot be empty', trigger: 'blur' } ],
 				mail: [
@@ -155,6 +160,7 @@ export default {
 			case_detail_remark_list_pageSize: 10,
 			case_detail_remark_list_total: 0,
 			case_detail_remark_list_tableData: [],
+			case_detail_case_base_info_Data: {},
 			case_detail_remark_list_tableColumns: [
 				{
 					title: '序号',
@@ -1177,11 +1183,15 @@ export default {
 	created() {
 		let params = location.hash.split('?');
 		const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
-		this.caseNo = queryData.caseNo;
-		console.log(queryData);
-		this.userId = queryData.userId;
+		this.caseNo = queryData.caseNotest;
+		this.userId = queryData.userIdtest;
+		delete queryData.caseNotest;
+		delete queryData.userIdtest;
+		this.queryData = queryData;
 		// 催收信息
-		this.case_detail_remark_list();
+		this.case_detail_remark_list(); // 催收信息
+		this.case_detail_urgent_contact(); // 紧急联系人
+		this.case_detail_case_base_info(); // 基本信息
 	},
 	methods: {
 		// 催收信息
@@ -1316,9 +1326,9 @@ export default {
 			} else {
 				this.$Message.error(res.message);
 			}
-        },
-        
-        	// 通话明细
+		},
+
+		// 通话明细
 		async case_detail_mail_detail_list() {
 			const res = await case_detail_mail_detail_list({
 				caseNo: this.caseNo,
@@ -1333,9 +1343,9 @@ export default {
 			} else {
 				this.$Message.error(res.message);
 			}
-        },
-        
-        	// 通讯录
+		},
+
+		// 通讯录
 		async case_detail_mail_list() {
 			const res = await case_detail_mail_list({
 				caseNo: this.caseNo,
@@ -1350,9 +1360,9 @@ export default {
 			} else {
 				this.$Message.error(res.message);
 			}
-        },
-        
-        	// 通话更新
+		},
+
+		// 通话更新
 		async case_detail_mail_list_appended() {
 			const res = await case_detail_mail_list_appended({
 				caseNo: this.caseNo,
@@ -1364,6 +1374,39 @@ export default {
 				this.case_detail_mail_list_appended_tableData = res.data.content;
 				this.case_detail_mail_list_appended_pageSize = res.data.size;
 				this.case_detail_mail_list_appended_total = res.data.totalElements;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+
+		// 紧急联系人
+		async case_detail_urgent_contact() {
+			const res = await case_detail_urgent_contact({
+				caseNo: this.caseNo,
+				userId: this.userId
+			});
+			if (res.code === 1) {
+				this.case_detail_urgent_contact_Data = res.data.content;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+
+		// 查询案件详情基础信息
+		async case_detail_case_base_info() {
+			const res = await case_detail_case_base_info(this.queryData);
+			if (res.code === 1) {
+				this.case_detail_case_base_info_Data = res.data.content;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+
+		// 查询案件详情身份信息
+		async case_detail_case_identity_info() {
+			const res = await case_detail_case_identity_info(this.queryData);
+			if (res.code === 1) {
+				this.case_detail_case_identity_info_Data = res.data.content;
 			} else {
 				this.$Message.error(res.message);
 			}
