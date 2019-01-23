@@ -76,23 +76,23 @@ export default {
       total: 100,
       repayOrdTyp: 'SR', //区分用户主动还款、系统代扣还款，UR：用户主动还款，SR：系统代扣还款
       tableData: [
-        {
-          billNo: '1', //账单号
-          dkorgOrdNo: '2', // string 代扣订单号
-          usrNmHid: '3', // 用户姓名
-          idNoHid: '4', // 身份证号
-          mblNoHid: '5', // 手机号
-          repayOrdAmt: '6', //还款金额
-          ordSts: '7', // 订单状态 借口中取
-          orgFnlMsg: '8', //失败原因,
-          ordDt: '9', // 还款时间,
-          crdAcTyp: '10', //卡类型
-          crdCorpOrg: '11', // 还款银行
-          crdNoLast: '12', //还款银行四位
-          repayOrdPrcp: '13', // 已还本金
-          prdTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
-          rutCopyOrg: '15' // 代扣类型
-        },
+        // {
+        //   billNo: '1', //账单号
+        //   dkorgOrdNo: '2', // string 代扣订单号
+        //   usrNmHid: '3', // 用户姓名
+        //   idNoHid: '4', // 身份证号
+        //   mblNoHid: '5', // 手机号
+        //   repayOrdAmt: '6', //还款金额
+        //   ordSts: '7', // 订单状态 借口中取
+        //   orgFnlMsg: '8', //失败原因,
+        //   ordDt: '9', // 还款时间,
+        //   crdAcTyp: '10', //卡类型
+        //   crdCorpOrg: '11', // 还款银行
+        //   crdNoLast: '12', //还款银行四位
+        //   repayOrdPrcp: '13', // 已还本金
+        //   prdTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
+        //   rutCopyOrg: '15' // 代扣类型
+        // },
       ],
       tableColumns: [
         {
@@ -154,7 +154,15 @@ export default {
           key: 'repayOrdAmt',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: widthMidVal,
+          render: (h, params) => {
+            let Amt = params.row.repayOrdAmt;
+            Amt = Amt
+              ? this.$options.filters['money'](Amt)
+              : Amt;
+            return h('span', Amt);
+          }
+
         },
         {
           title: '订单状态',
@@ -162,7 +170,7 @@ export default {
           key: 'ordSts',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthVal,
         },
         {
           title: '失败原因',
@@ -178,7 +186,14 @@ export default {
           key: 'ordDt',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthVal,
+          render: (h, params) => {
+            let lastDate = params.row.ordDt;
+            lastDate = lastDate
+              ? this.$options.filters['formatDate'](lastDate, 'YYYY-MM-DD HH:mm:ss')
+              : lastDate;
+            return h('span', lastDate);
+          },
         },
         {
           title: '卡类型',
@@ -267,11 +282,17 @@ export default {
     // 获取表格数据
     async getList() {
       let res= await repay_repayUserOrSystem_list({
-        pageNo: this.pageNo,
+        pageNum: this.pageNo,
         pageSize: this.pageSize,
         repayOrdTyp: this.repayOrdTyp,
         ...this.formValidate
       })
+      if(res && res.code === 1){
+        this.tableData = res.data.content;
+        this.total = res.data.totalElements;
+      } else{
+        this.$Message.error(res.message);
+      }
       console.log(res)
       // 试着处理数据和分页组件之间的关系,
     },

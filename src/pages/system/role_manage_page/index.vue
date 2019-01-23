@@ -57,12 +57,10 @@
               </Select>
             </FormItem>
           </Col>
+        </Row>
+        <Row>
           <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
+            span="12"
           >
             <FormItem>
               <Button
@@ -72,6 +70,13 @@
                 long
                 size="small"
               >检索</Button>
+              <Button
+                type="primary"
+                @click="addRole"
+                style="width:80px;margin-left: 8px"
+                long
+                size="small"
+              >添加</Button>
               <Button
                 size="small"
                 type="ghost"
@@ -152,9 +157,9 @@
                 >
                   <Input
                     size="small"
-                    clearable
-                    v-model="formValidate.caseNo"
+                    v-model="formValidateInfo.name"
                     placeholder="催收经理"
+                    disabled
                   ></Input>
                 </FormItem>
               </Col>
@@ -165,9 +170,9 @@
                   label="描述:"
                 >
                   <Input
+                    disabled
                     size="small"
-                    clearable
-                    v-model="formValidate.billNo"
+                    v-model="formValidateInfo.desciption"
                     placeholder="催收经理"
                   ></Input>
                 </FormItem>
@@ -178,15 +183,13 @@
                 span="12"
               >
                 <FormItem
-                  span="6"
-                  prop="mblNo"
                   label="创建时间:"
                 >
                   <Input
+                    disabled
                     size="small"
-                    clearable
-                    v-model="formValidate.opUserName"
-                    placeholder="2018-1-09 7：09：12"
+                    v-model="formValidateInfo.createtime"
+                    placeholder="2018-09-08"
                   ></Input>
                 </FormItem>
               </Col>
@@ -197,9 +200,9 @@
                   label="创建人:"
                 >
                   <Input
+                    disabled
                     size="small"
-                    clearable
-                    v-model="formValidate.userNm"
+                    v-model="formValidateInfo.createUser"
                     placeholder="超级管理员"
                   ></Input>
                 </FormItem>
@@ -213,9 +216,9 @@
                   label="修改时间:"
                 >
                   <Input
+                    disabled
                     size="small"
-                    clearable
-                    v-model="formValidate.caseNo"
+                    v-model="formValidateInfo.updatetime"
                     placeholder="2018-09-08"
                   ></Input>
                 </FormItem>
@@ -227,9 +230,9 @@
                   label="修改人:"
                 >
                   <Input
+                    disabled
                     size="small"
-                    clearable
-                    v-model="formValidate.billNo"
+                    v-model="formValidateInfo.updateUser"
                     placeholder="催收经理"
                   ></Input>
                 </FormItem>
@@ -245,9 +248,9 @@
                   label="角色状态:"
                 >
                   <Input
+                    disabled
                     size="small"
-                    clearable
-                    v-model="formValidate.opUserName"
+                    v-model="formValidateInfo.roleStatus"
                     placeholder="有效"
                   ></Input>
                 </FormItem>
@@ -259,9 +262,9 @@
                   label="角色类型:"
                 >
                   <Input
+                    disabled
                     size="small"
-                    clearable
-                    v-model="formValidate.userNm"
+                    v-model="formValidateInfo.roleType"
                     placeholder="超级管理员"
                   ></Input>
                 </FormItem>
@@ -270,13 +273,14 @@
           </Form>
         </Card>
       <div slot="footer">
-        <Button  size="small" long :loading="modal_loading" @click="closeModalSee">关闭</Button>
+        <Button  size="large" long :loading="modal_loading" @click="closeModal('1')">关闭</Button>
       </div>
     </Modal>
     <Modal
       v-model="modalChange"
       title="基本信息"
-      @on-ok="ok">
+      @on-ok=""
+    >
       <p slot="header">
         <Icon type="filing"></Icon>
         <span>角色信息</span>
@@ -289,23 +293,23 @@
         </p>
         <Form
           v-if="!showPanel"
-          ref="formValidate"
-          :model="formValidate"
+          ref="formValidateChange"
+          :model="formValidateChange"
           :label-width="90"
-          :rules="ruleValidate"
+          :rules="ruleValidateChange"
         >
-          <Row class="eachRow">
+          <Row class="">
             <Col
               span="12"
             >
               <FormItem
                 label="角色名称:"
-                prop="changeRoleNm"
+                prop="name"
               >
                 <Input
                   size="small"
                   clearable
-                  v-model="formValidate.caseNo"
+                  v-model="formValidateChange.name"
                   placeholder="催收经理"
                 ></Input>
               </FormItem>
@@ -315,14 +319,14 @@
             >
               <FormItem
                 label="账户状态:"
-                prop="changeSts"
+                prop="roleStatus"
               >
                 <Select
                   size="small"
-                  v-model="formValidate.payOffSts"
+                  v-model="formValidateChange.roleStatus"
                 >
                   <Option
-                    v-for="item in payOffStsList"
+                    v-for="item in orderStsList"
                     :value="item.value"
                     :key="item.value"
                   >{{ item.label }}</Option>
@@ -330,7 +334,7 @@
               </FormItem>
             </Col>
           </Row>
-          <Row class="eachRow">
+          <Row class="">
             <Col
               span="12"
             >
@@ -340,7 +344,7 @@
                 <Input
                   size="small"
                   clearable
-                  v-model="formValidate.billNo"
+                  v-model="formValidateChange.description"
                 ></Input>
               </FormItem>
             </Col>
@@ -349,14 +353,14 @@
             >
               <FormItem
                 label="角色类型:"
-                prop="changeRoleTyp"
+                prop="roleType"
               >
                 <Select
                   size="small"
-                  v-model="formValidate.payOffSts"
+                  v-model="formValidateChange.roleType"
                 >
                   <Option
-                    v-for="item in payOffStsList"
+                    v-for="item in orderStsList"
                     :value="item.value"
                     :key="item.value"
                   >{{ item.label }}</Option>
@@ -366,9 +370,113 @@
           </Row>
         </Form>
       </Card>
-      <div slot="footer">
-        <Button  size="small" long :loading="modal_loading" @click="closeModalSee">关闭</Button>
-      </div>
+      <p slot="footer">
+        <Button
+        @click="closeModal('2')"
+        >取消</Button>
+        <Button
+          type="primary"
+          @click="modalChangeOk('formValidateChange')"
+        >确定</Button>
+      </p>
+    </Modal>
+    <Modal
+      v-model="modalAddRole"
+      title="基本信息"
+    >
+      <p slot="header">
+        <Icon type="filing"></Icon>
+        <span>角色信息</span>
+      </p>
+      <Card class="vue-panel">
+        <p
+          slot="title"
+        >
+          基本信息
+        </p>
+        <Form
+          v-if="!showPanel"
+          ref="formValidateAdd"
+          :model="formValidateAdd"
+          :label-width="90"
+          :rules="ruleValidateAdd"
+        >
+          <Row class="">
+            <Col
+              span="12"
+            >
+              <FormItem
+                label="角色名称:"
+                prop="name"
+              >
+                <Input
+                  size="small"
+                  clearable
+                  v-model="formValidateAdd.name"
+                  placeholder="催收经理"
+                ></Input>
+              </FormItem>
+            </Col>
+            <Col
+              span="12"
+            >
+              <FormItem
+                label="描述:"
+              >
+                <Input
+                  size="small"
+                  clearable
+                  v-model="formValidateAdd.description"
+                ></Input>
+              </FormItem>
+            </Col>
+          </Row>
+          <Row class="">
+            <Col
+              span="12"
+            >
+              <FormItem
+                label="角色类型:"
+                prop="roleType"
+              >
+                <Select
+                  size="small"
+                  v-model="formValidateAdd.roleType"
+                >
+                  <Option
+                    v-for="item in orderStsList"
+                    :value="item.value"
+                    :key="item.value"
+                  >{{ item.label }}</Option>
+                </Select>
+              </FormItem>
+            </Col>
+            <Col
+              span="12"
+            >
+              <FormItem
+                label="角色状态:"
+                prop="roleStatus"
+              >
+                <Select
+                  size="small"
+                  v-model="formValidateAdd.roleStatus"
+                >
+                  <Option
+                    v-for="item in orderStsList"
+                    :value="item.value"
+                    :key="item.value"
+                  >{{ item.label }}</Option>
+                </Select>
+              </FormItem>
+            </Col>
+          </Row>
+        </Form>
+      </Card>
+      <p slot="footer">
+        <Button @click="closeModal('3')">取消</Button>
+        <Button @click="sureAddRole('formValidateAdd')" type="primary">确定</Button>
+      </p>
     </Modal>
   </div>
 </template>

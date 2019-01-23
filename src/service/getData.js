@@ -289,15 +289,11 @@ export const system_user_info = (obj, options) =>
 		method: 'POST',
 		data: qs.stringify(obj)
 	});
-
-<<<<<<< HEAD
-    /*
+ /*
 * 新增系统用户
 =======
 /*
-* 新增系统用户
->>>>>>> 174313f413a83420c592bbf783024338ce2de70e
-* */
+* 新增系统用户* */
 export const system_user_add = (obj, options) =>
 	fetch({
 		url: '/system/user/add',
@@ -320,7 +316,6 @@ export const system_user_roles = (obj, options) =>
 * 修改系统用户
 * */
 export const system_user_update = (obj, options) =>
-<<<<<<< HEAD
 fetch({
     url: '/system/user/update',
     method: 'POST',

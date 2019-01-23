@@ -191,7 +191,14 @@ export default {
           key: 'repayDate',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: widthMidVal,
+          render: (h, params) => {
+            let lastDate = params.row.repayDate;
+            lastDate = lastDate
+              ? this.$options.filters['formatDate'](lastDate, 'YYYY-MM-DD HH:mm:ss')
+              : lastDate;
+            return h('span', lastDate);
+          },
         },
         {
           title: '应还款时间',
@@ -199,7 +206,14 @@ export default {
           key: 'dueDate',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: widthMidVal,
+          render: (h, params) => {
+            let lastDate = params.row.dueDate;
+            lastDate = lastDate
+              ? this.$options.filters['formatDate'](lastDate, 'YYYY-MM-DD HH:mm:ss')
+              : lastDate;
+            return h('span', lastDate);
+          },
         },
         {
           title: '分配时间',
@@ -207,7 +221,14 @@ export default {
           key: 'allotDate',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: widthMidVal,
+          render: (h, params) => {
+            let lastDate = params.row.allotDate;
+            lastDate = lastDate
+              ? this.$options.filters['formatDate'](lastDate, 'YYYY-MM-DD HH:mm:ss')
+              : lastDate;
+            return h('span', lastDate);
+          },
         },
         {
           title: '电催中心',
@@ -232,6 +253,17 @@ export default {
     //this.getList();
   },
   methods: {
+    // 导出数据
+    exportData(){
+      this.$Modal.confirm({
+        content:'确认要导出数据',
+        onOk:function(){
+          let res= repay_repayDetail_exportDown({
+            ...this.formValidate
+          })
+        },
+      })
+    },
     // 改变日期区间的格式之后进行处理
     changeActDate(val1, val2) {
       this.formValidate.startRepayDate = val1[0];
@@ -266,7 +298,7 @@ export default {
     // 获取表格数据
     async getList() {
       let res= await repay_repayDetail_list({
-        pageNo: this.pageNo,
+        pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formValidate
       })
@@ -275,7 +307,7 @@ export default {
         this.$Message.success('请求成功!');
         let data = res.data;
         this.tableData = data.page.content;
-        data.page.totalElements //接口中在该条件下取得的数据量
+        this.total = data.page.totalElements //接口中在该条件下取得的数据量
         data.page.size // 数据的大小
         //data.page.numberOfElements  当前页面实际返回的数量
       } else{
