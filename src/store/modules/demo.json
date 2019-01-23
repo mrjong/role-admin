@@ -1,0 +1,137 @@
+{
+	"code": 1,
+	"message": "OK",
+	"data": [
+		{
+			"id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+			"text": "demo",
+			"url": "/demo",
+			"icon": "ionic",
+			"template": null,
+			"childrens": [
+				{
+					"text": "demo详情",
+					"url": "/demo/demo_desc_page",
+					"icon": "arrow-return-left",
+					"template": "/demo/demo_desc_page"
+				},
+				{
+					"text": "demo列表",
+					"url": "/demo/demo_list_page",
+					"icon": "arrow-up-c",
+					"template": "/demo/demo_list_page"
+				}
+			]
+		},
+		{
+			"id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+			"text": "催收管理",
+			"url": "/collectionMng",
+			"icon": "ionic",
+			"template": null,
+			"childrens": [
+				{
+					"text": "我的案件",
+					"url": "/collectionMng/my_case_page",
+					"icon": "arrow-up-c",
+					"template": "/collectionMng/my_case_page"
+				},
+				{
+					"text": "催收记录",
+					"url": "/collectionMng/collection_records_page",
+					"icon": "arrow-up-c",
+					"template": "/collectionMng/collection_records_page"
+				},
+				{
+					"text": "催收录音",
+					"url": "/collectionMng/collection_recording_page",
+					"icon": "arrow-return-left",
+					"template": "/collectionMng/collection_recording_page"
+				}
+			]
+		},
+		{
+			"id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+			"text": "工作流",
+			"url": "/workflow",
+			"icon": "ionic",
+			"template": null,
+			"childrens": [
+				{
+					"text": "工作流定义",
+					"url": "/workflow/definition",
+					"icon": "arrow-up-c",
+					"template": "/workflow/definition"
+				},
+				{
+					"text": "工作流任务",
+					"url": "/workflow/task",
+					"icon": "arrow-up-c",
+					"template": "/workflow/task"
+				}
+			]
+		},
+		{
+			"id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+			"text": "仲裁管理",
+			"url": "/arbitramentMng",
+			"icon": "ionic",
+			"template": null,
+			"childrens": [
+				{
+					"text": "仲裁审批",
+					"url": "/arbitramentMng/arbitrament_approve_page",
+					"icon": "arrow-up-c",
+					"template": "/arbitramentMng/arbitrament_approve_page"
+				}
+			]
+		},
+		{
+			"id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+			"text": "系统管理",
+			"url": "/system",
+			"icon": "ionic",
+			"template": null,
+			"childrens": [
+				{
+					"text": "系统用户管理",
+					"url": "/system/system_user_page",
+					"icon": "arrow-up-c",
+					"template": "/system/system_user_page"
+				},
+				{
+					"text": "系统角色管理",
+					"url": "/system/role_manage_page",
+					"icon": "arrow-up-c",
+					"template": "/system/role_manage_page"
+				},
+				{
+					"text": "催收人员管理",
+					"url": "/system/user_manager_page",
+					"icon": "arrow-up-c",
+					"template": "/system/user_manager_page"
+				},
+				{
+					"text": "菜单管理",
+					"url": "/system/menu_manager_page",
+					"icon": "arrow-up-c",
+					"template": "/system/menu_manager_page"
+				},
+				{
+					"text": "坐席关系维护",
+					"url": "/system/relationship_maintain_page",
+					"icon": "arrow-up-c",
+					"template": "/system/relationship_maintain_page"
+				},
+				{
+					"text": "数据字典",
+					"url": "/system/data_dictionary_page",
+					"icon": "arrow-up-c",
+					"template": "/system/data_dictionary_page"
+				}
+			]
+		}
+	],
+	"extra": null,
+	"success": true
+}

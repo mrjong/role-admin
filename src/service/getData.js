@@ -188,63 +188,63 @@ export const repay_repayDetail_exportDown = (obj) =>
 
 // 日常监控的坐席报表
 export const monitor_agentState_list = (obj) =>
-  fetch({
-    url: '/monitor/agentState/list',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/monitor/agentState/list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 // 日常监控的坐席报表导出
 export const monitor_agentState_exportDown = (obj) =>
-  fetch({
-    url: '/monitor/agentState/exportDown',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/monitor/agentState/exportDown',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 // 日常监控的逾期日志列表请求
 export const monitor_overdueReports_list = (obj) =>
-  fetch({
-    url: '/monitor/overdueReports/list',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/monitor/overdueReports/list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 
 // 日常监控逾期报表导出接口
 export const monitor_overDueReports_exportDown = (obj) =>
-  fetch({
-    url: '/monitor/overDueReports/exportDown',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/monitor/overDueReports/exportDown',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 
 // 呼叫明细列表接口查询
 export const monitor_callDetail_list = (obj) =>
-  fetch({
-    url: '/monitor/callDetail/list',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/monitor/callDetail/list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 // 呼叫明细导出
 export const monitor_callDetail_exportDown = (obj) =>
-  fetch({
-    url: '/monitor/callDetail/exportDown',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/monitor/callDetail/exportDown',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 
 // 催收回收率列表导出
 export const monitor_collectRate_exportDown = (obj) =>
-  fetch({
-    url: '/monitor/collectRate/exportDown',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/monitor/collectRate/exportDown',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 // 催收回收列表查询
 export const monitor_collectRate_list = (obj) =>
-  fetch({
-    url: '/monitor/collectRate/list',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/monitor/collectRate/list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 /*
 *
 * 根据父级id获取相应字典数据
@@ -325,34 +325,34 @@ export const system_user_update = (obj, options) =>
 
 // 业务管理的划扣管理
 export const deduct_list = (obj) =>
-  fetch({
-    url: '/deduct/list',
-    method: 'POST',
-    data: qs.stringify(obj)
-  })
+	fetch({
+		url: '/deduct/list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 
 // 系统管理系统角色相关接口
 // 查询接口
 export const system_role_list = (obj) =>
-  fetch({
-    url: '/system/role/list',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/system/role/list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 // 角色管理添加接口
 export const system_role_add = (obj) =>
-  fetch({
-    url: '/system/role/add',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/system/role/add',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 //编辑修改
 export const system_role_info = (obj) =>
-  fetch({
-    url: '/system/role/info',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/system/role/info',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
 // 角色更新接口
 export const system_role_update = (obj) =>
   fetch({
@@ -392,3 +392,151 @@ export const stytem_menu_opration = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+
+/*
+*
+* 催收记录
+* */
+export const case_detail_remark_list = (obj, options) =>
+	fetch({
+		url: '/case/detail/remark_list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+/*
+*
+* 回款信息
+* */
+export const case_detail_repay_ord_list = (obj, options) =>
+	fetch({
+		url: '/case/detail/repay_ord_list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+* 用户主动还款（指定案件、用户）
+* */
+export const case_detail_user_repay_list = (obj, options) =>
+	fetch({
+		url: '/case/detail/user_repay_list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+* 系统代扣还款（指定案件）
+* */
+export const case_detail_system_repay_list = (obj, options) =>
+	fetch({
+		url: '/case/detail/system_repay_list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+* 绑卡信息（指定案件、用户）
+* */
+export const case_detail_bindcard_list = (obj, options) =>
+	fetch({
+		url: '/case/detail/bindcard_list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+* 分配信息（指定案件）
+* */
+export const case_detail_allot_list = (obj, options) =>
+	fetch({
+		url: '/case/detail/allot_list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+* 站内信息（指定案件）
+* */
+export const case_detail_siteletter_list = (obj, options) =>
+	fetch({
+		url: '/case/detail/siteletter_list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+*
+地址信息（指定案件）
+* */
+export const case_detail_address_info = (obj, options) =>
+	fetch({
+		url: '/case/detail/address_info',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+*
+通信录明细（指定案件）
+* */
+export const case_detail_mail_detail_list = (obj, options) =>
+	fetch({
+		url: '/case/detail/mail_detail_list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+*
+通讯录（指定案件）
+* */
+export const case_detail_mail_list = (obj, options) =>
+	fetch({
+		url: '/case/detail/mail_list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+*
+通讯录（指定案件后追加的）
+* */
+export const case_detail_mail_list_appended = (obj, options) =>
+	fetch({
+		url: '/case/detail/mail_list_appended',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+*
+通信记录统计
+* */
+export const case_detail_mail_statistics_list = (obj, options) =>
+	fetch({
+		url: '/case/detail/mail_statistics_list',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});
+
+/*
+*
+*
+紧急联系人
+* */
+export const case_detail_urgent_contact = (obj, options) =>
+	fetch({
+		url: '/case/detail/urgent_contact',
+		method: 'POST',
+		data: qs.stringify(obj)
+	});

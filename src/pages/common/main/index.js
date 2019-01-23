@@ -9,7 +9,6 @@ import Cookies from 'js-cookie';
 import util from '@/libs/util.js';
 import scrollBar from '@/components/scroll-bar/vue-scroller-bars';
 import { logout, findTreeByCurrentUser, reset_passWord } from '@/service/getData';
-import demo from './demo.json';
 export default {
 	components: {
 		shrinkableMenu,
@@ -35,7 +34,7 @@ export default {
 	},
 	computed: {
 		menuList() {
-			return this.$store.state.app.menuList;
+			return this.$store.state.app.menuTreeList;
 		},
 		pageTagsList() {
 			return this.$store.state.app.pageOpenedList; // 打开的页面的页面对象
@@ -96,7 +95,6 @@ export default {
 		},
 		init() {
 			let pathArr = util.setCurrentPath(this, this.$route.name);
-			this.$store.commit('updateMenulist');
 			if (pathArr.length >= 2) {
 				this.$store.commit('addOpenSubmenu', pathArr[1].name);
 			}
