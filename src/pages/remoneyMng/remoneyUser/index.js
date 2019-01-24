@@ -141,7 +141,14 @@ export default {
 					key: 'repayOrdAmt',
 					className: 'tableMainW',
 					align: alignCenter,
-					width: widthMidVal
+					width: widthMidVal,
+          render: (h, params) => {
+            let Amt = params.row.repayOrdAmt;
+            Amt = Amt
+              ? this.$options.filters['money'](Amt)
+              : Amt;
+            return h('span', Amt);
+          }
 				},
 				{
 					title: '订单状态',
@@ -165,7 +172,14 @@ export default {
 					key: 'ordDt',
 					className: 'tableMainW',
 					align: alignCenter,
-					width: widthVal
+					width: widthVal,
+          render: (h, params) => {
+            let lastDate = params.row.ordDt;
+            lastDate = lastDate
+              ? this.$options.filters['formatDate'](lastDate, 'YYYY-MM-DD HH:mm:ss')
+              : lastDate;
+            return h('span', lastDate);
+          },
 				},
 				{
 					title: '卡类型',
@@ -293,14 +307,19 @@ export default {
 		// 获取表格数据
 	async getList() {
 		  let res= await repay_repayUserOrSystem_list({
-             pageNo: this.pageNo,
+             pageNum: this.pageNo,
              pageSize: this.pageSize,
              repayOrdTyp: this.repayOrdTyp,
              ...this.formValidate
            })
     console.log(res)
     // 请求成功之后需要做分页处理，然后将拿到的数据进行数据处理，总数目和展示条数
-
+        if(res && res.code === 1){
+		    this.tableData = res.data.content;
+		    this.total = res.data.totalElements;
+      } else {
+		    this.$Message.error(res.message);
+        }
 		},
 		// 重置
 		clearForm(name) {

@@ -1,3 +1,4 @@
+import { wkProcessDef_add } from '@/service/getData';
 export default {
 	data() {
 		return {
@@ -7,48 +8,48 @@ export default {
 			visible: false,
 			rules: {},
 			rulesTempl: {
-				nodeName: [
-					{
-						required: true,
-						message: '请输入节点名称',
-						trigger: 'blur'
-					}
-				],
-				nodeDesc: [
-					{
-						required: true,
-						message: '请输入节点描述',
-						trigger: 'blur'
-					}
-				],
-				nodeCode: [
-					{
-						required: true,
-						message: '请输入节点编号',
-						trigger: 'blur'
-					}
-				],
-				nodeDealUserId: [
-					{
-						required: true,
-						message: '请输入节点处理人ID',
-						trigger: 'blur'
-					}
-				],
-				nodeDealName: [
-					{
-						required: true,
-						message: '请输入处理人姓名',
-						trigger: 'blur'
-					}
-				],
-				nodeSort: [
-					{
-						required: true,
-						message: '请输入节点处理顺序',
-						trigger: 'blur'
-					}
-				]
+				// nodeName: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入节点名称',
+				// 		trigger: 'blur'
+				// 	}
+				// ],
+				// nodeDesc: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入节点描述',
+				// 		trigger: 'blur'
+				// 	}
+				// ],
+				// nodeCode: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入节点编号',
+				// 		trigger: 'blur'
+				// 	}
+				// ],
+				// nodeDealUserId: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入节点处理人ID',
+				// 		trigger: 'blur'
+				// 	}
+				// ],
+				// nodeDealName: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入处理人姓名',
+				// 		trigger: 'blur'
+				// 	}
+				// ],
+				// nodeSort: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入节点处理顺序',
+				// 		trigger: 'blur'
+				// 	}
+				// ]
 			},
 			defNodeList: [
 				{
@@ -110,7 +111,12 @@ export default {
 	},
 	props: {
 		defTypeList: {},
-		backTypeList: {}
+		backTypeList: {},
+		model: {}
+	},
+	model: {
+		prop: 'model',
+		event: 'passBack'
 	},
 	created() {
 		this.handleRenderRuler();
@@ -126,6 +132,38 @@ export default {
 		},
 		handleDel(index) {
 			this.defNodeList.splice(index, 1);
+		},
+		handleSubmit() {
+			this.$refs.formItem.validate((valid) => {
+				if (valid) {
+					this.wkProcessDef_add();
+				} else {
+					this.visible1 = true;
+				}
+			});
+		},
+		async wkProcessDef_add() {
+			const res = await wkProcessDef_add({
+				domain: this.formItem,
+				nodeList: this.defNodeList
+			});
+			if (res.code === 1) {
+				this.$Message.success('添加成功');
+				this.childrenData = this.model;
+				this.childrenData.modal = false;
+				console.log(this.childrenData);
+				this.$emit('passBack', this.childrenData);
+			} else {
+				this.$Message.error(res.message);
+				this.visible1 = true;
+			}
+		},
+		del() {
+			this.childrenData = this.model;
+			this.childrenData.modal = false;
+			console.log(this.childrenData);
+			this.$emit('passBack', this.childrenData);
+			// this.$emit("getChildrenStatus", this.childrenData);
 		},
 		// 生成 ruler
 		handleRenderRuler() {

@@ -13,6 +13,7 @@ export default {
 			showPanel: false,
 			showPanel2: false,
 			formItem: {},
+			parentData: {},
 			backTypeList: [],
 			defTypeList: [],
 			pageNo: 1,
@@ -83,33 +84,11 @@ export default {
 								{
 									props: {
 										confirm: true,
-										title: '您确定要删除这条数据吗?',
-										transfer: true
-									},
-									on: {
-										'on-ok': () => {
-											this.deleteGoods(params.row.buffet_id);
-										}
-									}
-								},
-								[
-									h(
-										'a',
-										{
-											class: 'edit-btn',
-											props: {}
-										},
-										'删除'
-									)
-								]
-							),
-							h(
-								'Poptip',
-								{
-									props: {
-										confirm: true,
 										title: '您确定要禁用这条数据吗?',
 										transfer: true
+									},
+									style: {
+										display: params.row.status === '02' ? 'inline-block' : 'none'
 									},
 									on: {
 										'on-ok': () => {
@@ -122,7 +101,10 @@ export default {
 										'a',
 										{
 											class: 'edit-btn',
-											props: {}
+											props: {},
+											style: {
+												display: params.row.status === '02' ? 'inline-block' : 'none'
+											}
 										},
 										'禁用'
 									)
@@ -131,11 +113,13 @@ export default {
 							h(
 								'Poptip',
 								{
+									class: 'edit-btn',
 									props: {
 										confirm: true,
 										title: '您确定要发布这条数据吗?',
 										transfer: true
 									},
+
 									on: {
 										'on-ok': () => {
 											this.release(params.row.id);
@@ -147,7 +131,10 @@ export default {
 										'a',
 										{
 											class: 'edit-btn',
-											props: {}
+											props: {},
+											style: {
+												display: params.row.status === '01' ? 'inline-block' : 'none'
+											}
 										},
 										'发布'
 									)
@@ -161,6 +148,7 @@ export default {
 										title: '您确定要复制这条数据吗?',
 										transfer: true
 									},
+
 									on: {
 										'on-ok': () => {
 											this.copy(params.row.id);
@@ -172,7 +160,13 @@ export default {
 										'a',
 										{
 											class: 'edit-btn',
-											props: {}
+											props: {},
+											style: {
+												display:
+													params.row.status === '02' || params.row.status === '03'
+														? 'inline-block'
+														: 'none'
+											}
 										},
 										'复制'
 									)
@@ -183,7 +177,10 @@ export default {
 								'a',
 								{
 									class: 'edit-btn',
-									props: {}
+									props: {},
+									style: {
+										display: params.row.status === '01' ? 'inline-block' : 'none'
+									}
 								},
 								'修改'
 							),
@@ -206,6 +203,12 @@ export default {
 		this.getList();
 	},
 	methods: {
+		passBack(name) {
+            this.getList()
+		},
+		handleSubmit() {
+			this.$refs.mychild.handleSubmit();
+		},
 		async forbid(id) {
 			const res = await wkProcessDef_forbid({ id });
 			if (res.code === 1) {
@@ -242,8 +245,11 @@ export default {
 				this.$Message.error(res.message);
 			}
 		},
+
 		handView() {
-			this.visible1 = true;
+			this.parentData = {
+				modal: true
+			};
 		},
 		// 获取表格数据
 		async getList() {

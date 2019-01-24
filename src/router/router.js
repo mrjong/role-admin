@@ -250,9 +250,9 @@ export const otherRouter = {
 		]
 	},
 	{
-		path: '/daliyMonitoring',
+		path: '/dailyMonitoring',
 		icon: 'ios-grid-view',
-		name: 'daliyMonitoring',
+		name: 'dailyMonitoring',
 		access: 1,
 		title: '日常监控',
 		component: Main,

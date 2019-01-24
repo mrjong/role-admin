@@ -8,13 +8,6 @@
       >
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
         检索条件
-        <router-link to="/demo/demo_desc">
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >详情</Button>
-        </router-link>
       </p>
       <Form
         v-if="!showPanel"
@@ -221,13 +214,12 @@
       >
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
         检索结果
-        <router-link to="/buffet/buffet_add">
           <Button
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
+            @click.stop="exportData"
           >导出数据</Button>
-        </router-link>
       </p>
       <!-- 表格 -->
 

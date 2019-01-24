@@ -157,7 +157,82 @@
 					"template": "/system/data_dictionary_page"
 				}
 			]
-		}
+		},
+    {
+      "id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+      "text": "业务管理",
+      "url": "/businessMng",
+      "icon": "ionic",
+      "template": null,
+      "childrens": [
+        {
+          "text": "划扣管理",
+          "url": "/businessMng/transferMng",
+          "icon": "arrow-up-c",
+          "template": "/businessMng/transferMng"
+        }
+      ]
+    },
+    {
+      "id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+      "text": "回款管理",
+      "url": "/remoneyMng",
+      "icon": "ionic",
+      "template": null,
+      "childrens": [
+        {
+          "text": "确认回款明细",
+          "url": "/remoneyMng/remoney_detail",
+          "icon": "arrow-up-c",
+          "template": "/remoneyMng/remoney_detail"
+        },
+        {
+          "text": "用户主动还款",
+          "url": "/remoneyMng/remoney_user",
+          "icon": "arrow-up-c",
+          "template": "/remoneyMng/remoney_user"
+        },
+        {
+          "text": "系统代扣还款",
+          "url": "/remoneyMng/remoney_system",
+          "icon": "arrow-return-left",
+          "template": "/remoneyMng/remoney_system"
+        }
+      ]
+    },
+    {
+      "id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+      "text": "日常监控",
+      "url": "/dailyMonitoring",
+      "icon": "ionic",
+      "template": null,
+      "childrens": [
+        {
+          "text": "逾期日报",
+          "url": "/dailyMonitoring/overduePayment",
+          "icon": "arrow-up-c",
+          "template": "/dailyMonitoring/overduePayment"
+        },
+        {
+          "text": "催收回收率",
+          "url": "/dailyMonitoring/recovery",
+          "icon": "arrow-up-c",
+          "template": "/dailyMonitoring/recovery"
+        },
+        {
+          "text": "坐席报表",
+          "url": "/dailyMonitoring/seatTable",
+          "icon": "arrow-return-left",
+          "template": "/dailyMonitoring/seatTable"
+        },
+        {
+          "text": "呼叫明细",
+          "url": "/dailyMonitoring/callDetail",
+          "icon": "arrow-return-left",
+          "template": "/dailyMonitoring/callDetail"
+        }
+      ]
+    }
 	],
 	"extra": null,
 	"success": true

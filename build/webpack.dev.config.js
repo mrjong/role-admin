@@ -62,7 +62,9 @@ module.exports = merge(webpackBaseConfig, {
         disableHostCheck: true,
         proxy: {
             '/admin': {
-                // target: 'http://172.18.40.181:8080', //目标接口域名
+                //target: 'http://172.18.40.22:8080', // 后台本地
+                //target: 'http://172.18.40.245:8080', //目标接口域名
+                // target: 'http://172.18.40.151:8080', //目标接口域名
                 // target: 'http://shopadmin.e-blive.com/', //目标接口域名
                 // target: 'http://172.18.40.181:8080', //清泉目标接口域名
                 target: 'http://172.16.151.158:8080', //测试目标接口域名

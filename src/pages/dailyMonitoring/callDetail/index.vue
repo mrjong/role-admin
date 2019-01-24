@@ -267,7 +267,7 @@
       // 获取表格数据
       async getList() {
         let res= await monitor_callDetail_list({
-          pageNo: this.pageNo,
+          pageNum: this.pageNo,
           pageSize: this.pageSize,
           ...this.formItem
         })
