@@ -171,7 +171,6 @@ export const repay_repayUserOrSystem_exportDown = (obj) =>
 
 // 回款明细列表查询接口
 
-<<<<<<< HEAD
 export const repay_repayDetail_list = (obj, options) =>
 	fetch({
 		url: '/repay/repayDetail/list',
@@ -187,22 +186,6 @@ export const repay_repayDetail_exportDown = (obj, options) =>
 		data: qs.stringify(obj),
     responseType: 'blob',
 	});
-=======
-export const repay_repayDetail_list = (obj) =>
-  fetch({
-    url: '/repay/repayDetail/list',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
-
-// 回款明细导出接口
-export const repay_repayDetail_exportDown = (obj) =>
-  fetch({
-    url: '/repay/repayDetail/exportDown',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
->>>>>>> 70ce56a928c7a03fccdad8b61b825dce4b22e4fa
 
 // 日常监控的坐席报表
 export const monitor_agentState_list = (obj) =>
@@ -646,4 +629,3 @@ fetch({
   options
 });
 
-  
