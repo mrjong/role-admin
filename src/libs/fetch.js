@@ -60,6 +60,7 @@ axios.interceptors.response.use(
 				duration: 10000
 			});
 		}
+		console.log(response, '00000000000');
 		return response.data;
 	},
 	(error) => {
@@ -89,13 +90,14 @@ axios.interceptors.response.use(
 		return Promise.resolve(error.response);
 	}
 );
-export default function fetch({ url = '', method = 'GET', data = {}, options = {} }) {
+export default function fetch({ url = '', method = 'GET', data = {}, options = {}, responseType }) {
 	return axios({
 		method: method.toLocaleLowerCase(),
 		url,
 		data,
 		timeout: 10000,
-		options
+		options,
+		responseType
 	})
 		.then((res) => {
 			return res;

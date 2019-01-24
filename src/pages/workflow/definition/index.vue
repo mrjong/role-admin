@@ -2,17 +2,13 @@
 
   <div class="panel_list">
     <!-- 检索条件 -->
-    <Modal
-      class="gongzuoliu"
-      width="90%"
-      title="工作流定义"
-      v-model="visible1"
-    >
-      <gongzuoliu
+    <gongzuoliu
+    v-on:passBack="passBack"
+      v-model="parentData"
       :backTypeList="backTypeList"
       :defTypeList="defTypeList"
-      ></gongzuoliu>
-    </Modal>
+    ></gongzuoliu>
+
     <Card class="vue-panel">
       <p
         slot="title"
@@ -24,7 +20,7 @@
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
-          @click="handView"
+          @click.stop="handView"
         >添加</Button>
       </p>
       <Form
@@ -72,7 +68,7 @@
               size="small"
               v-model="formItem.defType"
             >
-               <Option
+              <Option
                 v-for="item in defTypeList"
                 :value="item.itemCode"
                 :key="item.itemCode"
