@@ -164,7 +164,7 @@ export default {
           key: 'userName',
           sortable: true,
           align: 'center',
-          ellipsis: true,
+          ellipsis: true
         },
         {
           title: '公司名称',
@@ -172,7 +172,7 @@ export default {
           searchOperator: 'like',
           key: 'relation',
           align: 'center',
-          ellipsis: true,
+          ellipsis: true
           // render: (h, params) => {
           //   return h('div', [
           //     h(
@@ -204,7 +204,7 @@ export default {
           key: 'role',
           align: 'center',
           ellipsis: true,
-          width: 120,
+          width: 120
         },
         {
           title: '创建时间',
@@ -234,7 +234,7 @@ export default {
                 }, '状态')
             ]);
           }
-        },
+        }
       ],
       formItem: {
         componey_name: '',
@@ -247,8 +247,8 @@ export default {
             message: '请输入网格编号',
             trigger: 'blur'
           }
-        ],
-      },
+        ]
+      }
     }
   },
   methods: {
@@ -284,8 +284,8 @@ export default {
     },
     cancel() {
       this.modal1 = false;
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="less">

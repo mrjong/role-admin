@@ -19,6 +19,102 @@
     >
       <jianmian></jianmian>
     </Modal>
+
+    <Modal
+      title="新增通讯录"
+      v-model="modal7"
+    >
+      <Form
+        ref="formItem2"
+        :model="formItem2"
+        :label-width="100"
+        class="panel_list"
+        :rules="ruleValidate2"
+      >
+        <Row>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="12"
+            :lg="12"
+            span="12"
+          >
+          <FormItem
+            span="6"
+            label="手机号码:"
+            prop="mblNo"
+          >
+            <Input
+              size="small"
+              clearable
+              v-model="formItem2.mblNo"
+              placeholder="请输入手机号码"
+            ></Input>
+          </FormItem>
+          </Col>
+
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="12"
+            :lg="12"
+            span="12"
+          >
+          <FormItem
+            span="6"
+            label="姓名:"
+            prop="userNm"
+          >
+            <Input
+              size="small"
+              clearable
+              v-model="formItem2.userNm"
+              placeholder="请输入姓名"
+            ></Input>
+          </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="12"
+            :lg="12"
+            span="12"
+          >
+          <FormItem
+            label="关系:"
+            prop="callUserType"
+          >
+            <Select
+              size="small"
+              placeholder="请选择关系"
+              v-model="formItem2.callUserType"
+            >
+              <Option
+                v-for="item in getDirObj.CNT_REL_TYP"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+
+        </Row>
+
+      </Form>
+      <div slot="footer">
+        <Button
+          type="ghost"
+          size="small"
+          @click="closeTxl"
+        >关闭</Button>
+        <Button
+          type="primary"
+          size="small"
+          @click="saveTxl"
+        >提交</Button>
+      </div>
+    </Modal>
+
     <!-- 弹层 -->
     <div
       class="case-left-container"
@@ -78,7 +174,9 @@
               :lg="24"
             >
             <div class="panel-desc-title">
-              身份证号：<span>360732199105251538</span>
+              身份证号：<span>
+                  {{99956789876545678}}
+              </span>
             </div>
             </Col>
             <Col
@@ -88,7 +186,9 @@
               :lg="24"
             >
             <div class="panel-desc-title">
-              逾期应还金额：<span>675.00</span>
+              逾期应还金额：<span>
+                  {{999|| money}}
+              </span>
             </div>
             </Col>
             <Col
@@ -98,7 +198,9 @@
               :lg="24"
             >
             <div class="panel-desc-title">
-              总逾期期数：<span>2018-09-10 15:25:16</span>
+              总逾期期数：<span>
+                  甘肃省兰州市兰州市城关区南昌路1852号703室
+              </span>
             </div>
             </Col>
             <Col
@@ -108,7 +210,9 @@
               :lg="24"
             >
             <div class="panel-desc-title">
-              家庭住址：<span>甘肃省兰州市兰州市城关区南昌路1852号703室</span>
+              家庭住址：<span>
+                  甘肃省兰州市兰州市城关区南昌路1852号703室
+              </span>
             </div>
             </Col>
             </Col>
@@ -472,7 +576,37 @@
             <TabPane
               label="地址信息"
               name="case_detail_address_info"
-            >系统代扣还款</TabPane>
+            >
+              <div class="panel-desc">
+                <Row :gutter="10">
+                  <Col
+                    :xs="24"
+                    :sm="24"
+                    :md="24"
+                    :lg="24"
+                  >
+                  <div class="panel-desc-title">
+                    家庭住址：<span>
+                      {{case_detail_address_info_Data.usrProvAddr}}{{case_detail_address_info_Data.usrCityAddr}}{{case_detail_address_info_Data.usrDtlAddr}}
+                    </span>
+                  </div>
+                  </Col>
+
+                  <Col
+                    :xs="24"
+                    :sm="24"
+                    :md="24"
+                    :lg="24"
+                  >
+                  <div class="panel-desc-title">
+                    工作地址：<span>
+                      {{case_detail_address_info_Data.workProvAddr}}{{case_detail_address_info_Data.workCityAddr}}{{case_detail_address_info_Data.workDtlAddr}}
+                    </span>
+                  </div>
+                  </Col>
+                </Row>
+              </div>
+            </TabPane>
           </Tabs>
         </p>
       </Card>
@@ -547,12 +681,15 @@
                     ></Icon>
                   </Tooltip>
                 </div>
-                <div class="ivu-alert-copy ivu-alert-error">
+                <div
+                  class="ivu-alert-copy ivu-alert-error"
+                  v-for="(item,index) in case_detail_urgent_contact_Data"
+                >
                   <span class="state-name">
                     紧急联系人
                   </span>
                   <span class="name">
-                    谢晓峰<span>（配偶）</span>
+                    {{item.cntUserNameHid}}<span>（{{item.cntRelTypName}}）</span>
                   </span>
                   <span
                     class="tel"
@@ -562,11 +699,11 @@
                       content="拨打"
                       placement="left"
                     >
-                      138900000000
+                      {{item.cntUserMblNoHid}}
                     </Tooltip>
                   </span>
                   <span class="state">
-                    关机
+                    {{item.callStateName}}
                   </span>
                   <Tooltip
                     class="edit-hover"
@@ -579,38 +716,7 @@
                     ></Icon>
                   </Tooltip>
                 </div>
-                <div class="ivu-alert-copy ivu-alert-error">
-                  <span class="state-name">
-                    紧急联系人
-                  </span>
-                  <span class="name">
-                    谢晓峰<span>（同学）</span>
-                  </span>
-                  <span
-                    class="tel"
-                    @click="handCall"
-                  >
-                    <Tooltip
-                      content="拨打"
-                      placement="left"
-                    >
-                      138900000000
-                    </Tooltip>
-                  </span>
-                  <span class="state">
-                    关机
-                  </span>
-                  <Tooltip
-                    class="edit-hover"
-                    content="编辑"
-                    placement="left"
-                  >
-                    <Icon
-                      class="edit"
-                      type="edit"
-                    ></Icon>
-                  </Tooltip>
-                </div>
+
               </div>
               <div class="heighti">
 
@@ -748,11 +854,12 @@
                     </div>
                   </TabPane>
                   <Button
-                    class="fr vue-back-btn header-btn"
+                    class="vue-back-btn header-btn mt5"
                     type="primary"
                     size="small"
                     slot="extra"
-                  >增加</Button>
+                    @click.stop="addtxl"
+                  >新增</Button>
                 </Tabs>
               </div>
             </Card>
@@ -830,7 +937,8 @@
                   <DatePicker
                     style="width:100%;"
                     size="small"
-                    type="date"
+                    type="datetime"
+                    format="yyyy-MM-dd HH:mm"
                     placeholder="请选择承诺还款时间"
                     v-model="formValidate.date"
                   ></DatePicker>

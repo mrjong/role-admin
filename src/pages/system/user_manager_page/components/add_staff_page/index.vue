@@ -213,7 +213,7 @@ export default {
             message: "请选择机构负责人",
             trigger: "change"
           }
-        ],
+        ]
       },
       ruleValidate2: {
         name: [
@@ -283,8 +283,8 @@ export default {
           this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less">

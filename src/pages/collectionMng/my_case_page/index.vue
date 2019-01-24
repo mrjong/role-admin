@@ -9,13 +9,6 @@
       >
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
         检索条件
-        <router-link to="/demo/demo_desc">
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >详情</Button>
-        </router-link>
       </p>
       <Form
         v-if="!showPanel"
@@ -316,7 +309,7 @@
               v-model="formItem.creditLevel"
             >
               <Option
-                v-for="item in getDirObj.CREDIT_LEVEL"
+                v-for="item in getDirObj.TALK_RESULT"
                 :value="item.itemCode"
                 :key="item.itemCode"
               >{{ item.itemName }}</Option>

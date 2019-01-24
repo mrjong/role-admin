@@ -21,16 +21,16 @@
 
 <script>
 export default {
-    name: 'Error501',
-    methods: {
-        backPage () {
-            this.$router.go(-1);
-        },
-        goHome () {
-            this.$router.push({
-                name: 'home'
-            });
-        }
+  name: 'Error501',
+  methods: {
+    backPage () {
+      this.$router.go(-1);
+    },
+    goHome () {
+      this.$router.push({
+        name: 'home'
+      });
     }
+  }
 };
 </script>

@@ -8,20 +8,20 @@ import sysDictionary from './modules/sysDictionary';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-    state: {
-        //
-    },
-    mutations: {
-        //
-    },
-    actions: {
+  state: {
+    //
+  },
+  mutations: {
+    //
+  },
+  actions: {
 
-    },
-    modules: {
-        app,
-        user,
-        sysDictionary
-    }
+  },
+  modules: {
+    app,
+    user,
+    sysDictionary
+  }
 });
 
 export default store;

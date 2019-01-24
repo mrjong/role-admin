@@ -11,7 +11,7 @@ export default {
 		console.log(this.GLOBAL);
 		const _this = this;
 		return {
-			getDirList: [ 'PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL' ],
+			getDirList: [ 'PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL','TALK_RESULT' ],
 			getDirObj: {},
 			showPanel: false,
 			showPanel2: false,
@@ -147,21 +147,7 @@ export default {
 					title: '产品线',
 					minWidth: 120,
 					align: 'center',
-					key: 'prdTyp',
-					render: (h, params) => {
-						let prdTyp = params.row.prdTyp;
-						switch (prdTyp) {
-							case '01':
-								setTimeout(() => {
-									prdTyp = 'huandao';
-								}, 3000);
-								break;
-
-							default:
-								break;
-						}
-						return h('span', prdTyp);
-					}
+					key: 'prdName',
 				},
 				{
 					title: '账单号',
@@ -200,7 +186,7 @@ export default {
 					title: '身份证属地',
 					minWidth: 200,
 					align: 'center',
-					key: 'device_id'
+					key: 'idAddr'
 				},
 
 				{
@@ -241,14 +227,14 @@ export default {
 					title: '借款人拨打状态',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResult'
+					key: 'lastCurrentCollectResultName'
 				},
 
 				{
 					title: '借款人沟通结果',
 					minWidth: 120,
 					align: 'center',
-					key: 'collectSts'
+					key: 'collectStsName'
 				},
 				{
 					title: '承诺还款时间',
@@ -268,7 +254,7 @@ export default {
 					title: '紧急联系人拨打状态',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCntCollectResult'
+					key: 'lastCntCollectResultName'
 				},
 				{
 					title: '是否提交仲裁',

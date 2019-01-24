@@ -1,25 +1,24 @@
 const mixin = {
-	created() {
-		if (this.getDirList && this.getDirList.length > 0) {
-			this.getDir(this.getDirList);
-		}
-	},
-	methods: {
-		getDir(arg) {
-			if (arg && arg.length > 0) {
-				arg.forEach((element) => {
-					console.log(element);
-					if (this.$store.state[arg]) {
-						this.$set(this.getDirObj, element, this.$store.state[element]);
-					} else {
-						this.$store.dispatch('getDictionary', element).then((res) => {
-							this.$set(this.getDirObj, element, res);
-						});
-					}
-				});
-			}
-		}
-	}
+  created() {
+    if (this.getDirList && this.getDirList.length > 0) {
+      this.getDir(this.getDirList);
+    }
+  },
+  methods: {
+    getDir(arg) {
+      if (arg && arg.length > 0) {
+        arg.forEach((element) => {
+          if (JSON.stringify(this.$store.state['sysDictionary']) !== "{}") {
+            this.$set(this.getDirObj, element, this.$store.state['sysDictionary'][element]);
+          } else {
+            this.$store.dispatch('getDictionary', element).then((res) => {
+              this.$set(this.getDirObj, element, res);
+            });
+          }
+        });
+      }
+    }
+  }
 };
 // PROD_TYPE	产品线	公司的产品类型
 // GENDER	性别	性别：男，女
