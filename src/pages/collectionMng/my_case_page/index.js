@@ -3,7 +3,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import tablePage from '@/mixin/tablePage';
 import qs from 'qs';
 import sysDictionary from '@/mixin/sysDictionary';
-import util from '../../../libs/util';
+import util from '@/libs/util';
 export default {
 	name: 'case_search_page',
 	mixins: [ formValidateFun, sysDictionary, tablePage ],
