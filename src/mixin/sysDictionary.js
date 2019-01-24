@@ -1,25 +1,24 @@
 const mixin = {
-	created() {
-		if (this.getDirList && this.getDirList.length > 0) {
-			this.getDir(this.getDirList);
-		}
-	},
-	methods: {
-		getDir(arg) {
-			if (arg && arg.length > 0) {
-				arg.forEach((element) => {
-					console.log(element);
-					if (this.$store.state[arg]) {
-						this.$set(this.getDirObj, element, this.$store.state[element]);
-					} else {
-						this.$store.dispatch('getDictionary', element).then((res) => {
-							this.$set(this.getDirObj, element, res);
-						});
-					}
-				});
-			}
-		}
-	}
+  created() {
+    if (this.getDirList && this.getDirList.length > 0) {
+      this.getDir(this.getDirList);
+    }
+  },
+  methods: {
+    getDir(arg) {
+      if (arg && arg.length > 0) {
+        arg.forEach((element) => {
+          if (JSON.stringify(this.$store.state['sysDictionary']) !== "{}") {
+            this.$set(this.getDirObj, element, this.$store.state['sysDictionary'][element]);
+          } else {
+            this.$store.dispatch('getDictionary', element).then((res) => {
+              this.$set(this.getDirObj, element, res);
+            });
+          }
+        });
+      }
+    }
+  }
 };
 // PROD_TYPE	产品线	公司的产品类型
 // GENDER	性别	性别：男，女
@@ -45,7 +44,7 @@ const mixin = {
 // APPROVAL_STATE	仲裁状态	仲裁状态 审核状态
 // RES_FLAG	呼叫记录是否成功	呼叫成功标志
 // MUSIC_STATUS	录音下载状态	录音下载状态
-// 0_1_EFFECT_INVAL	0-1有效无效	0:有效 1:无效 
+// 0_1_EFFECT_INVAL	0-1有效无效	0:有效 1:无效
 // 01_02_EFFECT_INVAL	01-02有效无效	01:有效 02:无效
 // 01_02_NO_YES	01-02否是	01:否 02:是
 // 1_0_AVAILABLE_DISABLE	1-0可用停用	1:可用 0:停用

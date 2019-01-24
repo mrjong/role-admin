@@ -1,5 +1,6 @@
 import jianmian from '@/components/caseDesc/jianmian.vue';
 import qs from 'qs';
+import sysDictionary from '@/mixin/sysDictionary';
 import {
 	case_detail_remark_list, // 催收
 	case_detail_repay_ord_list, // 回款
@@ -15,15 +16,35 @@ import {
 	case_detail_mail_statistics_list, // 通信记录统计
 	case_detail_urgent_contact, // 紧急联系人
 	case_detail_case_base_info, // 查询案件详情基础信息
-	case_detail_case_identity_info // 查询案件详情身份信息
+	case_detail_case_identity_info, // 查询案件详情身份信息
+	mail_list_add // 新增通讯录
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
 	components: {
 		jianmian
 	},
+	mixins: [ sysDictionary ],
 	data() {
 		return {
+			formItem2: {},
+			ruleValidate2: {
+				mblNo: [
+					{
+						required: true,
+						message: '请输入手机号码',
+						trigger: 'blur'
+                    },
+                    {
+						pattern: this.GLOBAL.mblNo,
+						message: '请输入正确手机号',
+						trigger: 'blur'
+					}
+				]
+			},
+			getDirList: [ 'CNT_REL_TYP' ],
+			getDirObj: {},
+
 			caseNo: '',
 			userId: '',
 			showBtn: true,
@@ -35,6 +56,7 @@ export default {
 			value1: 1,
 			modalTitle: '',
 			visible1: false,
+			modal7: false,
 			queryData: {},
 			phoneCallList: [
 				{
@@ -156,6 +178,7 @@ export default {
 			tableColumns: [],
 			// 催收信息
 			tableData: [],
+			case_detail_address_info_Data: {},
 			case_detail_remark_list_pageNo: 1,
 			case_detail_remark_list_pageSize: 10,
 			case_detail_remark_list_total: 0,
@@ -192,28 +215,28 @@ export default {
 					title: '催收姓名',
 					align: 'center',
 					width: 100,
-					key: 'opUserName'
+					key: 'userNmHid'
 				},
 				{
 					title: '催收对象',
 					align: 'center',
 					width: 100,
-					key: 'userNmHid'
+					key: 'callUserTypeName'
 				},
 				{
 					title: '拨打状态',
 					align: 'center',
 					width: 100,
-					key: 'collectResult'
+					key: 'collectResultName'
 				},
 				{
 					title: '沟通状态',
 					align: 'center',
 					width: 100,
-					key: 'communicateResult'
+					key: 'communicateResultName'
 				},
 				{
-					title: 'PTP时间',
+					title: '承诺还款时间',
 					align: 'center',
 					width: 200,
 					key: 'promiseRepayDate',
@@ -239,11 +262,11 @@ export default {
 									margin: '0 5px'
 								},
 								props: {
-									content: params.row.collectRmk,
+									content: collectRmk,
 									placement: 'top'
 								}
 							},
-							[ h('div', {}, params.row.collectRmk) ]
+							[ h('div', {}, collectRmk) ]
 						);
 					}
 				}
@@ -263,82 +286,64 @@ export default {
 					sortable: true
 				},
 				{
-					title: '催收时间',
+					title: '还款时间',
 					align: 'center',
-					key: 'remarkDate',
+					key: 'repayDate',
 					width: 200,
 					render: (h, params) => {
-						let remarkDate = params.row.remarkDate;
-						remarkDate = remarkDate
-							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
-							: remarkDate;
-						return h('span', remarkDate);
+						let repayDate = params.row.repayDate;
+						repayDate = repayDate
+							? this.$options.filters['formatDate'](repayDate, 'YYYY-MM-DD HH:mm:ss')
+							: repayDate;
+						return h('span', repayDate);
 					}
 				},
 				{
-					title: '催收电话',
+					title: '还款金额',
 					align: 'center',
 					width: 150,
-					key: 'mblNoHid'
+					key: 'repayAmt',
+					render: (h, params) => {
+						let repayAmt = params.row.repayAmt;
+						repayAmt = repayAmt ? this.$options.filters['money'](repayAmt) : repayAmt;
+						return h('span', repayAmt);
+					}
 				},
 				{
-					title: '催收姓名',
+					title: '还款状态',
 					align: 'center',
 					width: 100,
-					key: 'opUserName'
+					key: 'repayOrdStsName'
 				},
 				{
-					title: '催收对象',
+					title: '还款方式',
+					align: 'center',
+					width: 100,
+					key: 'repayOrdTypName'
+				},
+				{
+					title: '还款银行',
+					align: 'center',
+					width: 100,
+					key: 'crdCorpOrgName'
+				},
+				{
+					title: '还款账号',
+					align: 'center',
+					width: 100,
+					key: 'crdNoHid'
+				},
+				{
+					title: '实际还款人',
 					align: 'center',
 					width: 100,
 					key: 'userNmHid'
 				},
 				{
-					title: '拨打状态',
+					title: '还款人关系',
 					align: 'center',
 					width: 100,
-					key: 'collectResult'
-				},
-				{
-					title: '沟通状态',
-					align: 'center',
-					width: 100,
-					key: 'communicateResult'
-				},
-				{
-					title: 'PTP时间',
-					align: 'center',
-					width: 200,
-					key: 'promiseRepayDate',
-					render: (h, params) => {
-						let promiseRepayDate = params.row.promiseRepayDate;
-						promiseRepayDate = promiseRepayDate
-							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
-							: promiseRepayDate;
-						return h('span', promiseRepayDate);
-					}
-				},
-				{
-					title: '备注',
-					align: 'center',
-					minWidth: 400,
-					key: 'collectRmk',
-					render: (h, params) => {
-						let collectRmk = params.row.collectRmk;
-						return h(
-							'Tooltip',
-							{
-								style: {
-									margin: '0 5px'
-								},
-								props: {
-									content: params.row.collectRmk,
-									placement: 'top'
-								}
-							},
-							[ h('div', {}, params.row.collectRmk) ]
-						);
-					}
+					key: ''
 				}
 			],
 
@@ -356,68 +361,29 @@ export default {
 					sortable: true
 				},
 				{
-					title: '催收时间',
-					align: 'center',
-					key: 'remarkDate',
-					width: 200,
-					render: (h, params) => {
-						let remarkDate = params.row.remarkDate;
-						remarkDate = remarkDate
-							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
-							: remarkDate;
-						return h('span', remarkDate);
-					}
-				},
-				{
-					title: '催收电话',
+					title: '还款金额',
 					align: 'center',
 					width: 150,
-					key: 'mblNoHid'
-				},
-				{
-					title: '催收姓名',
-					align: 'center',
-					width: 100,
-					key: 'opUserName'
-				},
-				{
-					title: '催收对象',
-					align: 'center',
-					width: 100,
-					key: 'userNmHid'
-				},
-				{
-					title: '拨打状态',
-					align: 'center',
-					width: 100,
-					key: 'collectResult'
-				},
-				{
-					title: '沟通状态',
-					align: 'center',
-					width: 100,
-					key: 'communicateResult'
-				},
-				{
-					title: 'PTP时间',
-					align: 'center',
-					width: 200,
-					key: 'promiseRepayDate',
+					key: 'repayOrdAmt',
 					render: (h, params) => {
-						let promiseRepayDate = params.row.promiseRepayDate;
-						promiseRepayDate = promiseRepayDate
-							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
-							: promiseRepayDate;
-						return h('span', promiseRepayDate);
+						let repayOrdAmt = params.row.repayOrdAmt;
+						repayOrdAmt = repayOrdAmt ? this.$options.filters['money'](repayOrdAmt) : repayOrdAmt;
+						return h('span', repayOrdAmt);
 					}
 				},
 				{
-					title: '备注',
+					title: '订单状态',
+					align: 'center',
+					width: 100,
+					key: 'ordSts'
+				},
+				{
+					title: '失败原因',
 					align: 'center',
 					minWidth: 400,
-					key: 'collectRmk',
+					key: 'orgFnlMsg',
 					render: (h, params) => {
-						let collectRmk = params.row.collectRmk;
+						let orgFnlMsg = params.row.orgFnlMsg;
 						return h(
 							'Tooltip',
 							{
@@ -425,12 +391,53 @@ export default {
 									margin: '0 5px'
 								},
 								props: {
-									content: params.row.collectRmk,
+									content: params.row.orgFnlMsg,
 									placement: 'top'
 								}
 							},
-							[ h('div', {}, params.row.collectRmk) ]
+							[ h('div', {}, params.row.orgFnlMsg) ]
 						);
+					}
+				},
+				{
+					title: '还款日期',
+					align: 'center',
+					width: 100,
+					key: 'ordDt',
+					render: (h, params) => {
+						let ordDt = params.row.ordDt;
+						ordDt = ordDt ? this.$options.filters['formatDate'](ordDt, 'YYYY-MM-DD') : ordDt;
+						return h('span', ordDt);
+					}
+				},
+				{
+					title: '卡类型',
+					align: 'center',
+					width: 100,
+					key: 'crdAcTyp'
+				},
+				{
+					title: '还款银行',
+					align: 'center',
+					width: 100,
+					key: 'crdCorpOrg'
+				},
+				{
+					title: '还款银行卡后四位',
+					align: 'center',
+					width: 150,
+					key: 'crdNoLast'
+				},
+
+				{
+					title: '已还本金',
+					align: 'center',
+					width: 100,
+					key: 'repayOrdPrcp',
+					render: (h, params) => {
+						let repayOrdPrcp = params.row.repayOrdPrcp;
+						repayOrdPrcp = repayOrdPrcp ? this.$options.filters['money'](repayOrdPrcp) : repayOrdPrcp;
+						return h('span', repayOrdPrcp);
 					}
 				}
 			],
@@ -449,68 +456,29 @@ export default {
 					sortable: true
 				},
 				{
-					title: '催收时间',
-					align: 'center',
-					key: 'remarkDate',
-					width: 200,
-					render: (h, params) => {
-						let remarkDate = params.row.remarkDate;
-						remarkDate = remarkDate
-							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
-							: remarkDate;
-						return h('span', remarkDate);
-					}
-				},
-				{
-					title: '催收电话',
+					title: '还款金额',
 					align: 'center',
 					width: 150,
-					key: 'mblNoHid'
-				},
-				{
-					title: '催收姓名',
-					align: 'center',
-					width: 100,
-					key: 'opUserName'
-				},
-				{
-					title: '催收对象',
-					align: 'center',
-					width: 100,
-					key: 'userNmHid'
-				},
-				{
-					title: '拨打状态',
-					align: 'center',
-					width: 100,
-					key: 'collectResult'
-				},
-				{
-					title: '沟通状态',
-					align: 'center',
-					width: 100,
-					key: 'communicateResult'
-				},
-				{
-					title: 'PTP时间',
-					align: 'center',
-					width: 200,
-					key: 'promiseRepayDate',
+					key: 'repayOrdAmt',
 					render: (h, params) => {
-						let promiseRepayDate = params.row.promiseRepayDate;
-						promiseRepayDate = promiseRepayDate
-							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
-							: promiseRepayDate;
-						return h('span', promiseRepayDate);
+						let repayOrdAmt = params.row.repayOrdAmt;
+						repayOrdAmt = repayOrdAmt ? this.$options.filters['money'](repayOrdAmt) : repayOrdAmt;
+						return h('span', repayOrdAmt);
 					}
 				},
 				{
-					title: '备注',
+					title: '订单状态',
+					align: 'center',
+					width: 100,
+					key: 'ordSts'
+				},
+				{
+					title: '失败原因',
 					align: 'center',
 					minWidth: 400,
-					key: 'collectRmk',
+					key: 'orgFnlMsg',
 					render: (h, params) => {
-						let collectRmk = params.row.collectRmk;
+						let orgFnlMsg = params.row.orgFnlMsg;
 						return h(
 							'Tooltip',
 							{
@@ -518,12 +486,53 @@ export default {
 									margin: '0 5px'
 								},
 								props: {
-									content: params.row.collectRmk,
+									content: params.row.orgFnlMsg,
 									placement: 'top'
 								}
 							},
-							[ h('div', {}, params.row.collectRmk) ]
+							[ h('div', {}, params.row.orgFnlMsg) ]
 						);
+					}
+				},
+				{
+					title: '还款日期',
+					align: 'center',
+					width: 100,
+					key: 'ordDt',
+					render: (h, params) => {
+						let ordDt = params.row.ordDt;
+						ordDt = ordDt ? this.$options.filters['formatDate'](ordDt, 'YYYY-MM-DD') : ordDt;
+						return h('span', ordDt);
+					}
+				},
+				{
+					title: '卡类型',
+					align: 'center',
+					width: 100,
+					key: 'crdAcTyp'
+				},
+				{
+					title: '还款银行',
+					align: 'center',
+					width: 100,
+					key: 'crdCorpOrg'
+				},
+				{
+					title: '还款银行卡后四位',
+					align: 'center',
+					width: 150,
+					key: 'crdNoLast'
+				},
+
+				{
+					title: '已还本金',
+					align: 'center',
+					width: 100,
+					key: 'repayOrdPrcp',
+					render: (h, params) => {
+						let repayOrdPrcp = params.row.repayOrdPrcp;
+						repayOrdPrcp = repayOrdPrcp ? this.$options.filters['money'](repayOrdPrcp) : repayOrdPrcp;
+						return h('span', repayOrdPrcp);
 					}
 				}
 			],
@@ -542,82 +551,92 @@ export default {
 					sortable: true
 				},
 				{
-					title: '催收时间',
-					align: 'center',
-					key: 'remarkDate',
-					width: 200,
-					render: (h, params) => {
-						let remarkDate = params.row.remarkDate;
-						remarkDate = remarkDate
-							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
-							: remarkDate;
-						return h('span', remarkDate);
-					}
-				},
-				{
-					title: '催收电话',
+					title: '用户姓名',
 					align: 'center',
 					width: 150,
-					key: 'mblNoHid'
+					key: 'usrNmHid'
 				},
 				{
-					title: '催收姓名',
+					title: '卡类型',
 					align: 'center',
-					width: 100,
-					key: 'opUserName'
+					width: 150,
+					key: 'crdAcTypName'
 				},
 				{
-					title: '催收对象',
+					title: '银行',
 					align: 'center',
-					width: 100,
-					key: 'userNmHid'
+					width: 150,
+					key: 'corpOrgNm'
 				},
 				{
-					title: '拨打状态',
+					title: '银行卡号',
 					align: 'center',
-					width: 100,
-					key: 'collectResult'
+					width: 150,
+					key: 'crdNoHid'
 				},
 				{
-					title: '沟通状态',
+					title: '银行卡后四位',
 					align: 'center',
-					width: 100,
-					key: 'communicateResult'
+					width: 150,
+					key: 'crdNoLast'
 				},
 				{
-					title: 'PTP时间',
+					title: '绑卡时间',
 					align: 'center',
-					width: 200,
-					key: 'promiseRepayDate',
+					width: 150,
+					key: 'signDt',
 					render: (h, params) => {
-						let promiseRepayDate = params.row.promiseRepayDate;
-						promiseRepayDate = promiseRepayDate
-							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
-							: promiseRepayDate;
-						return h('span', promiseRepayDate);
+						let signDt = params.row.signDt;
+						let signTm = params.row.signTm;
+						signDt = signDt
+							? this.$options.filters['formatDate'](signDt, 'YYYY-MM-DD') +
+								' ' +
+								signTm.slice(0, 2) +
+								':' +
+								signTm.slice(2, 4) +
+								':' +
+								signTm.slice(4, 6)
+							: signDt;
+						return h('span', signDt);
 					}
 				},
 				{
-					title: '备注',
+					title: '身份证号',
 					align: 'center',
-					minWidth: 400,
-					key: 'collectRmk',
+					width: 150,
+					key: 'idNoHid'
+				},
+				{
+					title: '状态',
+					align: 'center',
+					width: 150,
+					key: 'agrEffFlgName'
+				},
+				{
+					title: '解绑时间',
+					align: 'center',
+					width: 150,
+					key: 'unsignTm',
 					render: (h, params) => {
-						let collectRmk = params.row.collectRmk;
-						return h(
-							'Tooltip',
-							{
-								style: {
-									margin: '0 5px'
-								},
-								props: {
-									content: params.row.collectRmk,
-									placement: 'top'
-								}
-							},
-							[ h('div', {}, params.row.collectRmk) ]
-						);
+						let unsignDt = params.row.unsignDt;
+						let unsignTm = params.row.unsignTm;
+						unsignDt = unsignDt
+							? this.$options.filters['formatDate'](unsignDt, 'YYYY-MM-DD') +
+								' ' +
+								unsignTm.slice(0, 2) +
+								':' +
+								unsignTm.slice(2, 4) +
+								':' +
+								unsignTm.slice(4, 6)
+							: unsignDt;
+						return h('span', unsignDt);
 					}
+				},
+				{
+					title: '业务类型',
+					align: 'center',
+					width: 150,
+					key: 'businessName'
 				}
 			],
 
@@ -635,68 +654,43 @@ export default {
 					sortable: true
 				},
 				{
-					title: '催收时间',
+					title: '分配时间',
 					align: 'center',
-					key: 'remarkDate',
+					key: 'allotDate',
 					width: 200,
 					render: (h, params) => {
-						let remarkDate = params.row.remarkDate;
-						remarkDate = remarkDate
-							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
-							: remarkDate;
-						return h('span', remarkDate);
+						let allotDate = params.row.allotDate;
+						allotDate = allotDate
+							? this.$options.filters['formatDate'](allotDate, 'YYYY-MM-DD HH:mm:ss')
+							: allotDate;
+						return h('span', allotDate);
 					}
 				},
 				{
-					title: '催收电话',
+					title: '操作人',
 					align: 'center',
 					width: 150,
-					key: 'mblNoHid'
+					key: 'allotUserName'
 				},
 				{
-					title: '催收姓名',
+					title: '分配前经办人',
 					align: 'center',
 					width: 100,
-					key: 'opUserName'
+					key: 'opUserNameOld'
 				},
 				{
-					title: '催收对象',
+					title: '分配后经办人',
 					align: 'center',
 					width: 100,
-					key: 'userNmHid'
-				},
-				{
-					title: '拨打状态',
-					align: 'center',
-					width: 100,
-					key: 'collectResult'
-				},
-				{
-					title: '沟通状态',
-					align: 'center',
-					width: 100,
-					key: 'communicateResult'
-				},
-				{
-					title: 'PTP时间',
-					align: 'center',
-					width: 200,
-					key: 'promiseRepayDate',
-					render: (h, params) => {
-						let promiseRepayDate = params.row.promiseRepayDate;
-						promiseRepayDate = promiseRepayDate
-							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
-							: promiseRepayDate;
-						return h('span', promiseRepayDate);
-					}
+					key: 'opUserNameNew'
 				},
 				{
 					title: '备注',
 					align: 'center',
 					minWidth: 400,
-					key: 'collectRmk',
+					key: 'rmk',
 					render: (h, params) => {
-						let collectRmk = params.row.collectRmk;
+						let rmk = params.row.rmk;
 						return h(
 							'Tooltip',
 							{
@@ -704,11 +698,11 @@ export default {
 									margin: '0 5px'
 								},
 								props: {
-									content: params.row.collectRmk,
+									content: params.row.rmk,
 									placement: 'top'
 								}
 							},
-							[ h('div', {}, params.row.collectRmk) ]
+							[ h('div', {}, params.row.rmk) ]
 						);
 					}
 				}
@@ -771,7 +765,7 @@ export default {
 					key: 'communicateResult'
 				},
 				{
-					title: 'PTP时间',
+					title: '承诺还款时间',
 					align: 'center',
 					width: 200,
 					key: 'promiseRepayDate',
@@ -864,7 +858,7 @@ export default {
 					key: 'communicateResult'
 				},
 				{
-					title: 'PTP时间',
+					title: '承诺还款时间',
 					align: 'center',
 					width: 200,
 					key: 'promiseRepayDate',
@@ -957,7 +951,7 @@ export default {
 					key: 'communicateResult'
 				},
 				{
-					title: 'PTP时间',
+					title: '承诺还款时间',
 					align: 'center',
 					width: 200,
 					key: 'promiseRepayDate',
@@ -1050,7 +1044,7 @@ export default {
 					key: 'communicateResult'
 				},
 				{
-					title: 'PTP时间',
+					title: '承诺还款时间',
 					align: 'center',
 					width: 200,
 					key: 'promiseRepayDate',
@@ -1143,7 +1137,7 @@ export default {
 					key: 'communicateResult'
 				},
 				{
-					title: 'PTP时间',
+					title: '承诺还款时间',
 					align: 'center',
 					width: 200,
 					key: 'promiseRepayDate',
@@ -1194,6 +1188,34 @@ export default {
 		this.case_detail_case_base_info(); // 基本信息
 	},
 	methods: {
+		saveTxl() {
+			this.$refs.formItem2.validate((valid) => {
+				if (valid) {
+					this.mail_list_add();
+				}
+			});
+		},
+		async mail_list_add() {
+			// 新增通讯录
+			const res = await mail_list_add({
+				...this.formItem2,
+				caseNo: this.caseNo,
+				userId: this.userId
+			});
+			if (res.code === 1) {
+				// 更新list
+				this.case_detail_mail_list_appended();
+				this.modal7 = false;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+		closeTxl() {
+			this.modal7 = false;
+		},
+		addtxl() {
+			this.modal7 = true;
+		},
 		// 催收信息
 		async case_detail_remark_list() {
 			console.log(this.caseNo);
@@ -1214,7 +1236,6 @@ export default {
 		// 回款信息
 		async case_detail_repay_ord_list() {
 			const res = await case_detail_repay_ord_list({
-				caseNo: this.caseNo,
 				userId: this.userId,
 				pageNum: this.case_detail_repay_ord_list_pageNo,
 				pageSize: this.case_detail_repay_ord_list_pageSize
@@ -1386,7 +1407,20 @@ export default {
 				userId: this.userId
 			});
 			if (res.code === 1) {
-				this.case_detail_urgent_contact_Data = res.data.content;
+				this.case_detail_urgent_contact_Data = res.data;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+
+		// 地址信息
+		async case_detail_address_info() {
+			const res = await case_detail_address_info({
+				caseNo: this.caseNo,
+				userId: this.userId
+			});
+			if (res.code === 1) {
+				this.case_detail_address_info_Data = res.data;
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -1440,8 +1474,8 @@ export default {
 			// this.getList();
 		},
 		// 切换每页条数时的回调
-		changeSize(pageSize) {
-			console.log(pageSize);
+		changeSize(pageSize, name) {
+			console.log(pageSize, name);
 			this.pageSize = pageSize;
 			this.pageNo = 1;
 			this.getList();
