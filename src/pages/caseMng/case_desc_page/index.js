@@ -17,8 +17,8 @@ import {
 	case_detail_urgent_contact, // 紧急联系人
 	case_detail_case_base_info, // 查询案件详情基础信息
 	case_detail_case_identity_info, // 查询案件详情身份信息
-    mail_list_add, // 新增通讯录
-    case_remark_his_add // 新增催记
+	mail_list_add, // 新增通讯录
+	case_remark_his_add // 新增催记
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
@@ -27,6 +27,7 @@ export default {
 	},
 	mixins: [ sysDictionary ],
 	data() {
+		const _this = this;
 		return {
 			formItem2: {},
 			tabName: '',
@@ -49,6 +50,7 @@ export default {
 
 			caseNo: '',
 			userId: '',
+			readType: 'edit',
 			showBtn: true,
 			showPanel: false,
 			showPanel2: false,
@@ -158,8 +160,7 @@ export default {
 					{ type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change' }
 				],
 				date: [ { required: true, type: 'date', message: 'Please select the date', trigger: 'change' } ],
-				time: [ { required: true, type: 'string', message: 'Please select time', trigger: 'change' } ],
-				
+				time: [ { required: true, type: 'string', message: 'Please select time', trigger: 'change' } ]
 			},
 			pageNo: 1,
 			pageSize: 10,
@@ -792,7 +793,7 @@ export default {
 
 						return h('div', [
 							h(
-								'a',
+								'span',
 								{
 									props: {
 										type: 'edit'
@@ -813,7 +814,7 @@ export default {
 						let mblNoHid = params.row.mblNoHid;
 						return h('div', [
 							h(
-								'span',
+								'a',
 								{
 									props: {
 										type: 'edit'
@@ -833,6 +834,9 @@ export default {
 							h(
 								'Icon',
 								{
+									style: {
+										display: _this.readType !== 'read' ? 'inline-block' : 'none'
+									},
 									class: 'edit-btn',
 									props: {
 										type: 'edit'
@@ -877,7 +881,7 @@ export default {
 										type: 'edit'
 									}
 								},
-								callTime?this.$options.filters['formatDate'](callTime, 'YYYY-MM-DD HH:mm:ss'):''
+								callTime ? this.$options.filters['formatDate'](callTime, 'YYYY-MM-DD HH:mm:ss') : ''
 							)
 						]);
 					}
@@ -892,13 +896,13 @@ export default {
 						let userNmHid = params.row.userNmHid;
 						return h('div', [
 							h(
-								'a',
+								'span',
 								{
 									props: {
 										type: 'edit'
 									}
 								},
-								`${userNmHid?userNmHid:''}(${callUserTypeName?callUserTypeName:''})`
+								`${userNmHid ? userNmHid : ''}(${callUserTypeName ? callUserTypeName : ''})`
 							)
 						]);
 					}
@@ -913,11 +917,11 @@ export default {
 						let mblNoHid = params.row.mblNoHid;
 						return h('div', [
 							h(
-								'span',
+								'a',
 								{
-									class: 'edit-btn',
+									class: 'edit-btn'
 								},
-								`${mblNoHid?mblNoHid:''}(${callStateName?callStateName:''})`
+								`${mblNoHid ? mblNoHid : ''}(${callStateName ? callStateName : ''})`
 							)
 						]);
 					}
@@ -928,15 +932,15 @@ export default {
 					key: 'edit',
 					render: (h, params) => {
 						return h('Icon', [
-							h(
-								'Icon',
-								{
-									class: 'edit-btn',
-									props: {
-										type: 'edit'
-									}
+							h('Icon', {
+								style: {
+									display: _this.readType !== 'read' ? 'inline-block' : 'none'
 								},
-							)
+								class: 'edit-btn',
+								props: {
+									type: 'edit'
+								}
+							})
 						]);
 					}
 				}
@@ -959,13 +963,13 @@ export default {
 
 						return h('div', [
 							h(
-								'a',
+								'span',
 								{
 									props: {
 										type: 'edit'
 									}
 								},
-								`${userNmHid?userNmHid:''}(${callUserTypeName?callUserTypeName:''})`
+								`${userNmHid ? userNmHid : ''}(${callUserTypeName ? callUserTypeName : ''})`
 							)
 						]);
 					}
@@ -980,11 +984,11 @@ export default {
 						let mblNoHid = params.row.mblNoHid;
 						return h('div', [
 							h(
-								'span',
+								'a',
 								{
-									class: 'edit-btn',
+									class: 'edit-btn'
 								},
-								`${mblNoHid?mblNoHid:''}(${callStateName?callStateName:''})`
+								`${mblNoHid ? mblNoHid : ''}(${callStateName ? callStateName : ''})`
 							)
 						]);
 					}
@@ -998,6 +1002,9 @@ export default {
 							h(
 								'Icon',
 								{
+									style: {
+										display: _this.readType !== 'read' ? 'inline-block' : 'none'
+									},
 									class: 'edit-btn',
 									props: {
 										type: 'edit'
@@ -1027,13 +1034,13 @@ export default {
 
 						return h('div', [
 							h(
-								'a',
+								'span',
 								{
 									props: {
 										type: 'edit'
 									}
 								},
-								`${userNmHid?userNmHid:''}(${callUserTypeName?callUserTypeName:''})`
+								`${userNmHid ? userNmHid : ''}(${callUserTypeName ? callUserTypeName : ''})`
 							)
 						]);
 					}
@@ -1055,7 +1062,7 @@ export default {
 										type: 'edit'
 									}
 								},
-								`${mblNoHid}(${callStateName?callStateName:''})`
+								`${mblNoHid}(${callStateName ? callStateName : ''})`
 							)
 						]);
 					}
@@ -1069,6 +1076,9 @@ export default {
 							h(
 								'Icon',
 								{
+									style: {
+										display: _this.readType !== 'read' ? 'inline-block' : 'none'
+									},
 									class: 'edit-btn',
 									props: {
 										type: 'edit'
@@ -1087,6 +1097,7 @@ export default {
 		const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
 		this.caseNo = queryData.caseNotest;
 		this.userId = queryData.userIdtest;
+		this.readType = queryData.readType;
 		delete queryData.caseNotest;
 		delete queryData.userIdtest;
 		this.queryData = queryData;
@@ -1363,7 +1374,11 @@ export default {
 			this.showBottom = false;
 		},
 		handCall() {
-			this.showBottom = true;
+			if (this.readType !== 'read') {
+				this.showBottom = true;
+			} else {
+				this.$Message.info('权限不足');
+			}
 		},
 		handOpen(type, title) {
 			this.modalTitle = title;
@@ -1386,19 +1401,18 @@ export default {
 		changeSize(pageSize, name) {
 			this.pageSize = pageSize;
 			this.pageNo = 1;
-        },
-        async case_remark_his_add(){
-            const res = await case_remark_his_add({})
-            if (res.code === 1) {
+		},
+		async case_remark_his_add() {
+			const res = await case_remark_his_add({});
+			if (res.code === 1) {
 			} else {
 				this.$Message.error(res.message);
 			}
-        },
+		},
 		case_detail_mail_list_changePage(pageSize) {},
 		handleSubmit(name) {
 			this.$refs[name].validate((valid) => {
 				if (valid) {
-                    
 				} else {
 					this.$Message.error('查询条件格式有误，请重新填写');
 				}

@@ -129,18 +129,21 @@
           <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
           张三（男/22）
           <Button
+            v-if="readType!=='read'"
             @click="handOpen('zhongcai','申请仲裁')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
           >申请仲裁</Button>
           <Button
+            v-if="readType!=='read'"
             @click="handOpen('huankuan','申请还款')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
           >申请还款</Button>
           <Button
+            v-if="readType!=='read'"
             @click="handOpen('huakou','申请划扣')"
             class="fr vue-back-btn header-btn"
             type="primary"
@@ -148,17 +151,20 @@
           >申请划扣</Button>
 
           <Button
+            v-if="readType!=='read'"
             @click="handOpen('jianmian','申请减免')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
           >申请减免</Button>
           <Button
+            v-if="readType!=='read'"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
           >下一个</Button>
           <Button
+            v-if="readType!=='read'"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
@@ -671,6 +677,7 @@
                     关机
                   </span>
                   <Tooltip
+                    v-if="readType!=='read'"
                     class="edit-hover"
                     content="编辑"
                     placement="left"
@@ -706,6 +713,7 @@
                     {{item.callStateName}}
                   </span>
                   <Tooltip
+                   v-if="readType!=='read'"
                     class="edit-hover"
                     content="编辑"
                     placement="left"
@@ -856,6 +864,7 @@
                   <Button
                     class="vue-back-btn header-btn mt5"
                     type="primary"
+                    v-if="readType!=='read'"
                     size="small"
                     slot="extra"
                     @click.stop="addtxl"
