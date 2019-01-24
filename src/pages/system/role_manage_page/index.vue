@@ -2,12 +2,8 @@
   <div class="panel_list">
     <!-- 检索条件 -->
     <Card class="vue-panel">
-      <p
-        slot="title"
-        @click="showPanel=!showPanel"
-      >
-        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
-        检索条件
+      <p slot="title" @click="showPanel=!showPanel">
+        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
       </p>
       <Form
         v-if="!showPanel"
@@ -17,38 +13,14 @@
         :rules="ruleValidate"
       >
         <Row>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="角色名称:"
-            >
-              <Input
-                size="small"
-                clearable
-                v-model="formValidate.usrNm"
-                placeholder="请输入角色名称"
-              ></Input>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="角色名称:">
+              <Input size="small" clearable v-model="formValidate.usrNm" placeholder="请输入角色名称"></Input>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="状态:"
-            >
-              <Select
-                size="small"
-                v-model="formValidate.Sts"
-              >
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="状态:">
+              <Select size="small" v-model="formValidate.Sts">
                 <Option
                   v-for="item in orderStsList"
                   :value="item.value"
@@ -59,9 +31,7 @@
           </Col>
         </Row>
         <Row>
-          <Col
-            span="12"
-          >
+          <Col span="12">
             <FormItem>
               <Button
                 type="primary"
@@ -89,26 +59,14 @@
       </Form>
     </Card>
     <Card class="vue-panel-table">
-      <p
-        slot="title"
-        @click="showPanel2=!showPanel2"
-      >
-        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
-        检索结果
+      <p slot="title" @click="showPanel2=!showPanel2">
+        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
       </p>
       <!-- 表格 -->
-
       <div v-if="!showPanel2">
-        <Table
-          border
-          :data="tableData"
-          :columns="tableColumns"
-          stripe
-          class="tableBox"
-        ></Table>
+        <Table border :data="tableData" :columns="tableColumns" stripe class="tableBox"></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
-
           <div style="float: right;">
             <Page
               :total="total"
@@ -123,14 +81,10 @@
               @on-change="changePage"
             ></Page>
           </div>
-
         </div>
       </div>
     </Card>
-    <Modal
-    v-model="modalSee"
-    title="基本信息"
-    @on-ok="ok">
+    <Modal v-model="modalSee" title="基本信息" @on-ok="ok">
       <p slot="header">
         <Icon type="filing"></Icon>
         <span>角色信息</span>
@@ -277,108 +231,102 @@
       </div>
     </Modal>
     <Modal
-      v-model="modalChange"
-      title="基本信息"
-      @on-ok=""
+    v-model="modalChange"
+    title="基本信息"
     >
-      <p slot="header">
-        <Icon type="filing"></Icon>
-        <span>角色信息</span>
+    <p slot="header">
+      <Icon type="filing"></Icon>
+      <span>角色信息</span>
+    </p>
+    <Card class="vue-panel">
+      <p
+        slot="title"
+      >
+        基本信息
       </p>
-      <Card class="vue-panel">
-        <p
-          slot="title"
-        >
-          基本信息
-        </p>
-        <Form
-          v-if="!showPanel"
-          ref="formValidateChange"
-          :model="formValidateChange"
-          :label-width="90"
-          :rules="ruleValidateChange"
-        >
-          <Row class="">
-            <Col
-              span="12"
+      <Form
+        v-if="!showPanel"
+        ref="formValidateChange"
+        :model="formValidateChange"
+        :label-width="90"
+        :rules="ruleValidateChange"
+      >
+        <Row class="">
+          <Col
+            span="12"
+          >
+            <FormItem
+              label="角色名称:"
+              prop="name"
             >
-              <FormItem
-                label="角色名称:"
-                prop="name"
-              >
-                <Input
-                  size="small"
-                  clearable
-                  v-model="formValidateChange.name"
-                  placeholder="催收经理"
-                ></Input>
-              </FormItem>
-            </Col>
-            <Col
-              span="12"
+              <Input
+                size="small"
+                clearable
+                v-model="formValidateChange.name"
+                placeholder="催收经理"
+              ></Input>
+            </FormItem>
+          </Col>
+          <Col
+            span="12"
+          >
+            <FormItem
+              label="描述:"
             >
-              <FormItem
-                label="账户状态:"
-                prop="roleStatus"
-              >
-                <Select
-                  size="small"
-                  v-model="formValidateChange.roleStatus"
-                >
-                  <Option
-                    v-for="item in orderStsList"
-                    :value="item.value"
-                    :key="item.value"
-                  >{{ item.label }}</Option>
-                </Select>
-              </FormItem>
-            </Col>
-          </Row>
-          <Row class="">
-            <Col
-              span="12"
+              <Input
+                size="small"
+                clearable
+                v-model="formValidateChange.description"
+              ></Input>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row class="">
+          <Col
+            span="12"
+          >
+            <FormItem
+              label="角色类型:"
+              prop="roleType"
             >
-              <FormItem
-                label="描述:"
+              <Select
+                size="small"
+                v-model="formValidateChange.roleType"
               >
-                <Input
-                  size="small"
-                  clearable
-                  v-model="formValidateChange.description"
-                ></Input>
-              </FormItem>
-            </Col>
-            <Col
-              span="12"
+                <Option
+                  v-for="item in orderStsList"
+                  :value="item.value"
+                  :key="item.value"
+                >{{ item.label }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col
+            span="12"
+          >
+            <FormItem
+              label="角色状态:"
+              prop="roleStatus"
             >
-              <FormItem
-                label="角色类型:"
-                prop="roleType"
+              <Select
+                size="small"
+                v-model="formValidateChange.roleStatus"
               >
-                <Select
-                  size="small"
-                  v-model="formValidateChange.roleType"
-                >
-                  <Option
-                    v-for="item in orderStsList"
-                    :value="item.value"
-                    :key="item.value"
-                  >{{ item.label }}</Option>
-                </Select>
-              </FormItem>
-            </Col>
-          </Row>
-        </Form>
-      </Card>
-      <p slot="footer">
-        <Button
-        @click="closeModal('2')"
-        >取消</Button>
-        <Button
-          type="primary"
-          @click="modalChangeOk('formValidateChange')"
-        >确定</Button>
-      </p>
+                <Option
+                  v-for="item in orderStsList"
+                  :value="item.value"
+                  :key="item.value"
+                >{{ item.label }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+        </Row>
+      </Form>
+    </Card>
+    <p slot="footer">
+      <Button @click="closeModal('2')">取消</Button>
+      <Button @click="modalChangeOk('formValidateChange')" type="primary">确定</Button>
+    </p>
     </Modal>
     <Modal
       v-model="modalAddRole"
@@ -478,20 +426,45 @@
         <Button @click="sureAddRole('formValidateAdd')" type="primary">确定</Button>
       </p>
     </Modal>
+    <!-- 菜单分配 -->
+    <div v-if="menuModal">
+      <Modal v-model="menuModal" title="菜单" @on-ok="ok">
+        <Row>
+          <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+            <label for="name">角色名称:</label>
+            <Input size="small" clearable v-model="name" disabled id="name" style="width: auto"></Input>
+          </Col>
+          <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
+            <Tree
+            :data="data5"
+            :render="renderContent"
+            multiple
+            show-checkbox
+            @on-select-change="selectNode"
+            @on-check-change="checkChange"
+          ></Tree>
+          </Col>
+        </Row>
+        <div slot="footer">
+          <Button size="small" @click="menuModalClose">关闭</Button>
+          <Button size="small" type="primary" @click="menuUpdate">保存</Button>
+        </div>
+      </Modal>
+    </div>
   </div>
 </template>
 <script src="./index.js"></script>
 <style lang="less">
-  .tableBox {
-    overflow-x: scroll ;
-    overflow-y: hidden;
-    .tableMainW {
-      min-width: 400px;
-    }
+.tableBox {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  .tableMainW {
+    min-width: 400px;
   }
-  .eachRow{
-    .ivu-form-item{
-      margin-bottom: 0;
-    }
+}
+.eachRow {
+  .ivu-form-item {
+    margin-bottom: 0;
   }
+}
 </style>

@@ -14,9 +14,9 @@
             <Col
               :xs="24"
               :sm="24"
-              :md="6"
-              :lg="6"
-              span="6"
+              :md="12"
+              :lg="12"
+              span="12"
             >
             <FormItem
               span="6"
@@ -33,11 +33,11 @@
             </Col>
 
             <Col
-              :xs="24"
+               :xs="24"
               :sm="24"
-              :md="6"
-              :lg="6"
-              span="6"
+              :md="12"
+              :lg="12"
+              span="12"
             >
             <FormItem
               label="驳回类型:"
@@ -58,11 +58,11 @@
             </FormItem>
             </Col>
             <Col
-              :xs="24"
+               :xs="24"
               :sm="24"
-              :md="6"
-              :lg="6"
-              span="6"
+              :md="12"
+              :lg="12"
+              span="12"
             >
             <FormItem
               label="工作流类型:"
@@ -82,11 +82,11 @@
             </FormItem>
             </Col>
             <Col
-              :xs="24"
+               :xs="24"
               :sm="24"
               :md="12"
               :lg="12"
-              span="6"
+              span="12"
             >
             <FormItem
               span="6"
@@ -102,11 +102,11 @@
             </FormItem>
             </Col>
             <Col
-              :xs="24"
+               :xs="24"
               :sm="24"
-              :md="6"
-              :lg="6"
-              span="6"
+              :md="12"
+              :lg="12"
+              span="12"
             >
             <FormItem
               span="6"
@@ -134,9 +134,9 @@
         justify="center"
       >
         <Col
-          span="12"
-          :md="14"
-          :lg="12"
+          span="24"
+          :md="24"
+          :lg="24"
           :xs="24"
           :sm="24"
         >
@@ -156,9 +156,9 @@
               type="close-circled border-sh-icon"
             ></Icon>
             <Col
-              span="6"
-              :md="6"
-              :lg="6"
+              span="12"
+              :md="12"
+              :lg="12"
               :xs="12"
               :sm="12"
             >
@@ -176,9 +176,9 @@
             </FormItem>
             </Col>
             <Col
-              span="6"
-              :md="6"
-              :lg="6"
+               span="12"
+              :md="12"
+              :lg="12"
               :xs="12"
               :sm="12"
             >
@@ -196,9 +196,9 @@
             </FormItem>
             </Col>
             <Col
-              span="6"
-              :md="6"
-              :lg="6"
+               span="12"
+              :md="12"
+              :lg="12"
               :xs="12"
               :sm="12"
             >
@@ -216,9 +216,9 @@
             </FormItem>
             </Col>
             <Col
-              span="6"
-              :md="6"
-              :lg="6"
+               span="12"
+              :md="12"
+              :lg="12"
               :xs="12"
               :sm="12"
             >
@@ -236,9 +236,9 @@
             </FormItem>
             </Col>
             <Col
-              span="6"
-              :md="6"
-              :lg="6"
+               span="12"
+              :md="12"
+              :lg="12"
               :xs="12"
               :sm="12"
             >
@@ -256,9 +256,9 @@
             </FormItem>
             </Col>
             <Col
-              span="6"
-              :md="6"
-              :lg="6"
+               span="12"
+              :md="12"
+              :lg="12"
               :xs="12"
               :sm="12"
             >

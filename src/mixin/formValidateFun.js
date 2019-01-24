@@ -1,15 +1,15 @@
 const mixin = {
 	methods: {
 		validate_yqts_start(rule, value, callback) {
-			if (value && this.formItem.overdueDaysBt && Number(value) > Number(this.formItem.overdueDaysBt)) {
+			if (value && this.formItem.maxOverdueDays && Number(value) > Number(this.formItem.maxOverdueDays)) {
 				callback(new Error('逾期开始天数不能大于逾期结束天数'));
 			} else {
 				callback();
 			}
 		},
 		validate_yqts_end(rule, value, callback) {
-			if (this.formItem.overdueDaysLt) {
-				this.$refs.formItem.validateField('overdueDaysLt');
+			if (this.formItem.minOverdueDays) {
+				this.$refs.formItem.validateField('minOverdueDays');
 			}
 			callback();
 		},

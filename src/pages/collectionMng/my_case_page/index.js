@@ -1,34 +1,36 @@
 import { case_collect_case_list } from '@/service/getData';
 import formValidateFun from '@/mixin/formValidateFun';
 import tablePage from '@/mixin/tablePage';
+import qs from 'qs';
 import sysDictionary from '@/mixin/sysDictionary';
 export default {
 	name: 'case_search_page',
 	mixins: [ formValidateFun, sysDictionary, tablePage ],
 	data() {
-		console.log(this.GLOBAL);
-
+        console.log(this.GLOBAL);
+        const _this =this
 		return {
 			getDirList: [ 'PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL' ],
 			getDirObj: {},
 			showPanel: false,
 			showPanel2: false,
+			summary: {},
 			ruleValidate: {
-				idNo: [
-					{
-						pattern: this.GLOBAL.idNo,
-						message: '请输入正确身份证号',
-						trigger: 'blur'
-					}
-				],
-				mblNo: [
-					{
-						pattern: this.GLOBAL.mblNo,
-						message: '请输入正确手机号',
-						trigger: 'blur'
-					}
-				],
-				overdueDaysLt: [
+				// idNo: [
+				// 	{
+				// 		pattern: this.GLOBAL.idNo,
+				// 		message: '请输入正确身份证号',
+				// 		trigger: 'blur'
+				// 	}
+				// ],
+				// mblNo: [
+				// 	{
+				// 		pattern: this.GLOBAL.mblNo,
+				// 		message: '请输入正确手机号',
+				// 		trigger: 'blur'
+				// 	}
+				// ],
+				minOverdueDays: [
 					{
 						pattern: this.GLOBAL.num,
 						message: '逾期天数为正整数',
@@ -39,7 +41,7 @@ export default {
 						trigger: 'blur'
 					}
 				],
-				overdueDaysBt: [
+				maxOverdueDays: [
 					{
 						pattern: this.GLOBAL.num,
 						message: '逾期天数为正整数',
@@ -50,7 +52,7 @@ export default {
 						trigger: 'blur'
 					}
 				],
-				billOvduAmtLt: [
+				minOverdueAmt: [
 					{
 						pattern: this.GLOBAL.money,
 						message: '金额格式不正确',
@@ -61,7 +63,7 @@ export default {
 						trigger: 'blur'
 					}
 				],
-				billOvduAmtBt: [
+				maxOverdueAmt: [
 					{
 						pattern: this.GLOBAL.money,
 						message: '金额格式不正确',
@@ -82,8 +84,8 @@ export default {
 				{
 					title: '案件编码',
 					minWidth: 150,
-                    key: 'id',
-                    align: 'center',
+					key: 'id',
+					align: 'center',
 					render(h, params) {
 						const id = params.row.id;
 						return h('div', [
@@ -105,7 +107,10 @@ export default {
 											class: 'edit-desc',
 											on: {
 												click: () => {
-													window.open(`${location.origin}/#/case_desc`);
+													window.open(
+														`${location.origin}/#/case_desc_page?caseNotest=${id}&userIdtest=${params
+															.row.userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(_this.formItem)}`
+													);
 												}
 											}
 										},
@@ -265,50 +270,13 @@ export default {
 					title: '是否提交仲裁',
 					minWidth: 120,
 					align: 'center',
-					key: 'isSubmit'
+					key: 'isSubmit',
+					render: (h, params) => {
+						let isSubmit = params.row.isSubmit;
+						isSubmit = isSubmit ? this.$options.filters['isSubmit'](isSubmit) : '否';
+						return h('span', isSubmit);
+					}
 				}
-				// {
-				// 	title: '操作',
-				// 	minWidth: 100,
-				// 	key: 'edit',
-				// 	render: (h, params) => {
-				// 		return h('div', [
-				// 			h(
-				// 				'Poptip',
-				// 				{
-				// 					props: {
-				// 						confirm: true,
-				// 						title: '您确定要删除这条数据吗?',
-				// 						transfer: true
-				// 					},
-				// 					on: {
-				// 						'on-ok': () => {
-				// 							this.deleteGoods(params.row.buffet_id);
-				// 						}
-				// 					}
-				// 				},
-				// 				[
-				// 					h(
-				// 						'a',
-				// 						{
-				// 							class: 'edit-btn',
-				// 							props: {}
-				// 						},
-				// 						'删除'
-				// 					),
-				// 					h(
-				// 						'a',
-				// 						{
-				// 							class: 'edit-btn',
-				// 							props: {}
-				// 						},
-				// 						'删除'
-				// 					)
-				// 				]
-				// 			)
-				// 		]);
-				// 	}
-				// }
 			]
 		};
 	},
@@ -318,11 +286,16 @@ export default {
 	methods: {
 		// 获取表格数据
 		async getList() {
-			const res = await case_collect_case_list();
+			const res = await case_collect_case_list({
+				...this.formItem,
+				pageSize: this.pageSize,
+				pageNum: this.pageNo
+			});
 			if (res.code === 1) {
 				this.tableData = res.data.page.content;
 				this.pageSize = res.data.page.size;
 				this.total = res.data.page.totalElements;
+				this.summary = res.data.summary;
 			} else {
 				this.$Message.error(res.message);
 			}

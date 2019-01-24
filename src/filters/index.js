@@ -6,14 +6,14 @@ exports.formatDate = (date, fmt) => {
 };
 exports.money = (val) => {
 	let valCopy = val;
-	valCopy = valCopy.toString().replace(/\$|\,/g, '');
+	valCopy = valCopy+''.replace(/\$|\,/g, '');
 	if (isNaN(valCopy)) {
 		valCopy = '0';
 	}
 	let sign = valCopy == (valCopy = Math.abs(valCopy));
 	valCopy = Math.floor(valCopy * 100 + 0.50000000001);
 	let cents = valCopy % 100;
-	valCopy = Math.floor(valCopy / 100).toString();
+	valCopy = Math.floor(valCopy / 100) + '';
 	if (cents < 10) {
 		cents = '0' + cents;
 	}
@@ -23,4 +23,13 @@ exports.money = (val) => {
 	}
 
 	return (sign ? '' : '-') + valCopy + '.' + cents;
+};
+exports.isSubmit = (val) => {
+    console.log(val,'---------------')
+	switch (val) {
+		case 0:
+			return '是';
+		default:
+			return '否';
+	}
 };

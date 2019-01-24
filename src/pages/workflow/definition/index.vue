@@ -5,6 +5,7 @@
     <Modal
       class="gongzuoliu"
       width="90%"
+      title="工作流定义"
       v-model="visible1"
     >
       <gongzuoliu

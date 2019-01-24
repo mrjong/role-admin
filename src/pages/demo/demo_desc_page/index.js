@@ -239,7 +239,7 @@ export default {
 		},
 		// 获取表格数据
 		async getList() {
-		
+
 		},
 		// 重置
 		clearForm(name) {

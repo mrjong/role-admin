@@ -10,8 +10,8 @@ export const loginRouter = {
 	component: () => import('@/pages/login/login.vue')
 };
 export const case_desc = {
-	path: '/case_desc',
-	name: 'case_desc',
+	path: '/case_desc_page',
+	name: 'case_desc_page',
 	meta: {
 		title: '案件详情'
 	},
@@ -64,16 +64,16 @@ export const otherRouter = {
 			name: 'home',
 			component: () => import('@/pages/common/home')
 		},
-		{
-			path: 'message',
-			title: '消息中心',
-			name: 'message_index',
-			component: () => import('@/pages/common/message/message.vue')
-		}
+		// {
+		// 	path: 'message',
+		// 	title: '消息中心',
+		// 	name: 'message_index',
+		// 	component: () => import('@/pages/common/message/message.vue')
+		// }
 	]
 };
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
-export const appRouter = [
+ const appRouter = [
 	{
 		path: '/demo',
 		icon: 'ios-grid-view',
@@ -125,7 +125,8 @@ export const appRouter = [
 	{
 		path: '/caseMng',
 		icon: 'ios-grid-view',
-		name: 'caseMng',
+    name: 'caseMng',
+    access: 1,
 		title: '案件管理',
 		component: Main,
 		children: [
@@ -135,21 +136,21 @@ export const appRouter = [
 				name: 'case_search_page',
 				title: '案件查询',
 				component: () => import('@/pages/caseMng/case_search_page')
+			},
+			{
+				path: 'case_distrubute_page',
+				icon: 'ios-list',
+				name: 'case_distrubute_page',
+				title: '案件分配',
+				component: () => import('@/pages/caseMng/case_distribute_page')
+			},
+			{
+				path: 'case_rule_page',
+				icon: 'ios-list',
+				name: 'case_rule_page',
+				title: '分案规则',
+				component: () => import('@/pages/caseMng/case_rule_page')
 			}
-			// {
-			// 	path: 'demo_desc',
-			// 	icon: 'ios-list',
-			// 	name: 'demo_desc',
-			// 	title: '案件分配',
-			// 	component: () => import('@/pages/demo/demo_desc.vue')
-			// },
-			// {
-			// 	path: 'demo_desc',
-			// 	icon: 'ios-list',
-			// 	name: 'demo_desc',
-			// 	title: '分案规则',
-			// 	component: () => import('@/pages/demo/demo_desc.vue')
-			// }
 		]
 	},
 	{
@@ -161,19 +162,12 @@ export const appRouter = [
 		component: Main,
 		children: [
 			{
-				path: 'my_arbitrament_page',
+				path: 'arbitrament_approve_page',
 				icon: 'ios-list',
-				name: 'my_arbitrament_page',
-				title: '我的仲裁',
-				component: () => import('@/pages/arbitramentMng/my_arbitrament_page')
-			},
-			// {
-			// 	path: 'arbitrament_approve_page',
-			// 	icon: 'ios-list',
-			// 	name: 'arbitrament_approve_page',
-			// 	title: '仲裁审批',
-			// 	component: () => import('@/pages/arbitramentMng/arbitrament_approve_page')
-			// }
+				name: 'arbitrament_approve_page',
+				title: '仲裁审批',
+				component: () => import('@/pages/arbitramentMng/arbitrament_approve_page')
+			}
 		]
 	},
 	{
@@ -352,7 +346,6 @@ export const routers = [
 	loginRouter,
 	otherRouter,
 	// preview,
-	...appRouter,
 	case_desc,
 	page500,
 	page403,

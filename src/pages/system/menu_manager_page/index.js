@@ -1,58 +1,14 @@
+import { stytem_menu_list, stytem_menu_update, stytem_menu_add } from '@/service/getData';
 export default {
   data() {
     return {
       showPanel: false,
       showPanel2: false,
       detailFlag: false,
-      data5: [
-        {
-          title: '大机构',
-          expand: true,
-          type: '1',
-          children: [
-            {
-              title: '催收公司',
-              expand: true,
-              type: '2',
-              children: [
-                {
-                  title: '催收人员',
-                  expand: true,
-                  type: '4',
-
-                },
-                {
-                  title: '催收部门',
-                  expand: true,
-                  type: '3',
-                }
-              ]
-            },
-            {
-              title: '催收公司',
-              type: '2',
-              expand: true,
-              children: [
-                {
-                  title: '催收人员',
-                  expand: true,
-                  type: '4',
-                },
-                {
-                  title: '催收人员',
-                  expand: true,
-                  type: '4',
-                }
-              ]
-            },
-            {
-              title: '催收人员',
-              type: '4',
-              expand: true,
-            }
-          ]
-        }
-      ],
+      modal: false,
+      itemName: '',
+      data: {},
+      data5: [],
       buttonProps: {
         type: 'primary',
         size: 'small',
@@ -62,6 +18,10 @@ export default {
         icon: '',
         url: '',
         sort: '',
+      },
+      newMenuItem: {
+        text: '',
+        parent: '',
       },
       ruleValidate1: {
         text: [
@@ -81,6 +41,9 @@ export default {
       }
     }
   },
+  created() {
+    this.getList()
+  },
   methods: {
     // 选中节点的回调函数
     selectNode(node) {
@@ -97,7 +60,7 @@ export default {
           h('span', [
             h('Icon', {
               props: {
-                type: '',
+                type: data.icon,
               },
               style: {
                 marginRight: '4px'
@@ -120,9 +83,16 @@ export default {
                     e.target.className = 'tree_title ivu-tree-title-selected';
                   };
                   this.detailFlag = true;
+                  this.menuFormItem = {
+                    id: data.id,
+                    text: data.text,
+                    icon: data.icon,
+                    url: data.url,
+                    sort: data.sort,
+                  }
                 }
               }
-            }, data.title)
+            }, data.text)
           ]),
           h('span', {
             style: {
@@ -140,7 +110,7 @@ export default {
                   // marginRight: data.type === '4' || data.type === '3' ? 0 : '4px'
                 },
                 on: {
-                  click: () => { this.addRole(data) }
+                  click: () => { this.addItem(data) }
                 }
               }, '添加'),
               h('Button', {
@@ -152,7 +122,9 @@ export default {
                   marginLeft: '4px'
                 },
                 on: {
-                  click: () => { }
+                  click: () => {
+                    this.menuUpdate({id: data.id, state: '00'});
+                  }
                 }
               }, '删除'),
             ])
@@ -163,11 +135,62 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           // this.getList();
-          this.$Message.success("ok");
+          // this.$Message.success("ok");
+          this.menuUpdate(this.menuFormItem)
         } else {
           this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
     },
+
+    // 添加菜单项
+    addItem(data) {
+      this.modal = true;
+      this.data = data;
+    },
+    ok() {
+      // const children = this.data.children || [];
+      // children.push({
+      //   text: this.itemName,
+      //   expand: true
+      // });
+      // this.$set(this.data, 'children', children);
+      this.newMenuItem.parent = this.data.id;
+      this.menuAdd(this.newMenuItem)
+      this.modal = false;
+    },
+    cancel() {
+      this.modal = false;
+    },
+    // 获取表格数据
+    async getList(params) {
+      const res = await stytem_menu_list({state: '01'});
+      console.log(res)
+      if (res.code) {
+        this.data5 = res.data;
+        this.data5[0].expand = true;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 修改菜单项
+    async menuUpdate(params) {
+      const res = await stytem_menu_update(params);
+      if (res.code === 1) {
+        this.getList();
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 新增菜单项
+    async menuAdd(params) {
+      const res = await stytem_menu_add(params);
+      if (res.code === 1) {
+        this.$Message.success('添加成功');
+        this.getList();
+      } else {
+        this.$Message.error(res.message);
+      }
+    }
   },
 }
