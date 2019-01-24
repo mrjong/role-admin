@@ -1,5 +1,6 @@
 <template>
   <div class="panel_list">
+    <!-- 检索条件 -->
     <Card class="vue-panel">
       <p slot="title" @click="showPanel=!showPanel">
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
@@ -13,12 +14,12 @@
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="案件状态:" prop="caseHandleStatus">
+            <FormItem span="6" label="案件状态:" prop="caseStatus">
               <Select
                 clearable
                 size="small"
                 placeholder="请选择案件状态"
-                v-model="formItem.caseHandleStatus"
+                v-model="formItem.caseStatus"
               >
                 <Option
                   v-for="item in getDirObj.CASE_HANDLE_STATUS"
@@ -29,8 +30,8 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="产品线:" prop="prdTyp">
-              <Select size="small" clearable placeholder="请选择产品线" v-model="formItem.prdTyp">
+            <FormItem span="6" label="产品线:" prop="prodTypes">
+              <Select size="small" multiple	 clearable placeholder="请选择产品线" v-model="formItem.prodTypes">
                 <Option
                   v-for="item in getDirObj.PROD_TYPE"
                   :value="item.itemCode"
@@ -40,8 +41,8 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="产品期数:" prop="perdCnt">
-              <Select size="small" clearable placeholder="请选择产品期数" v-model="formItem.perdCnt">
+            <FormItem span="6" label="产品期数:" prop="periodCounts">
+              <Select size="small" multiple	 clearable placeholder="请选择产品期数" v-model="formItem.periodCounts">
                 <Option
                   v-for="item in getDirObj.PROD_CNT"
                   :value="item.itemCode"
@@ -62,22 +63,22 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="手机号:" prop="mblNo">
-              <Input size="small" clearable v-model="formItem.mblNo" placeholder="请输入手机号"/>
+              <Input type="number" number size="small" clearable v-model="formItem.mblNo" placeholder="请输入手机号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="逾期天数:">
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
-                <FormItem prop="overdueDaysLt">
-                  <Input size="small" clearable v-model="formItem.overdueDaysLt"></Input>
+                <FormItem prop="minOverdueDays">
+                  <Input size="small" number type="number" clearable v-model="formItem.minOverdueDays"></Input>
                 </FormItem>
               </Col>
               <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
                 <div class="text-center">-</div>
               </Col>
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
-                <FormItem prop="overdueDaysBt">
-                  <Input size="small" clearable v-model="formItem.overdueDaysBt"></Input>
+                <FormItem prop="maxOverdueDays">
+                  <Input size="small" number type="number" clearable v-model="formItem.maxOverdueDays"></Input>
                 </FormItem>
               </Col>
             </FormItem>
@@ -85,28 +86,34 @@
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="逾期应还金额:">
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
-                <FormItem prop="billOvduAmtLt">
-                  <Input size="small" clearable v-model="formItem.billOvduAmtLt"></Input>
+                <FormItem prop="minOverdueAmt">
+                  <Input size="small" number clearable v-model="formItem.minOverdueAmt"></Input>
                 </FormItem>
               </Col>
               <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
                 <div class="text-center">-</div>
               </Col>
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
-                <FormItem prop="billOvduAmtBt">
-                  <Input size="small" clearable v-model="formItem.billOvduAmtBt"></Input>
+                <FormItem prop="maxOverdueAmt">
+                  <Input size="small" number clearable v-model="formItem.maxOverdueAmt"></Input>
                 </FormItem>
               </Col>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="还款日期:" prop="caseNo">
-              <Input size="small" clearable v-model="formItem.caseNo" placeholder="请输入案件编号"/>
+            <FormItem label="还款日期:" prop="billDate">
+              <DatePicker
+                type="daterange"
+                @on-change='dateChange'
+                :editable='false'
+                placeholder="请选择还款日期"
+                style="width: 100%"
+              ></DatePicker>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="案件编号:" prop="caseNo">
-              <Input size="small" clearable v-model="formItem.caseNo" placeholder="请输入案件编号"/>
+            <FormItem label="案件编号:" prop="id">
+              <Input size="small" clearable v-model="formItem.id" placeholder="请输入案件编号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -115,14 +122,30 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="信用级别:" prop="creditLevel">
-              <Select size="small" clearable placeholder="请选择信用级别" v-model="formItem.creditLevel">
+            <FormItem span="6" label="信用级别:" prop="creditLevels">
+              <Select size="small" multiple clearable placeholder="请选择信用级别" v-model="formItem.creditLevels">
                 <Option
                   v-for="item in getDirObj.CREDIT_LEVEL"
                   :value="item.itemCode"
                   :key="item.itemName"
                 >{{ item.itemName }}</Option>
               </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="电催中心:" prop="opCompayName">
+              <Select size="small" clearable placeholder="请选择电催中心" v-model="formItem.opCompayName">
+                <Option
+                  v-for="item in getDirObj.CREDIT_LEVEL"
+                  :value="item.itemCode"
+                  :key="item.itemName"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="经办人:" prop="opUserName">
+              <Input size="small" clearable v-model="formItem.opUserName" placeholder="请输入经办人"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
@@ -145,6 +168,129 @@
         </Row>
       </Form>
     </Card>
+    <!-- 检索结果 -->
+    <Card class="vue-panel-table">
+      <p slot="title">
+        <Icon :type="!showPanel2?'chevron-down':'chevron-up'" @click="showPanel2=!showPanel2"></Icon>检索结果
+        <Button class="fr vue-back-btn header-btn" type="primary" size="small" @click.stop="handeldBtnClick('4')">恢复催收</Button>
+        <Button class="fr vue-back-btn header-btn" type="primary" size="small" @click.stop="handeldBtnClick('3')">停催</Button>
+        <Button class="fr vue-back-btn header-btn" type="primary" size="small" @click.stop="handeldBtnClick('2')">批量回收</Button>
+        <Button
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+          @click.stop="handeldBtnClick('1')"
+        >批量分配</Button>
+      </p>
+      <!-- 表格 -->
+      <div v-if="!showPanel2">
+        <Table :data="tableData" border :columns="tableColumns" stripe></Table>
+        <!-- 分页 -->
+        <div class="vue-panel-page">
+          <div style="float: right;">
+            <Page
+              :total="total"
+              show-total
+              size="small"
+              :page-size-opts="[10, 20, 50, 100]"
+              show-elevator
+              show-sizer
+              :page-size="pageSize"
+              :current="pageNo"
+              @on-page-size-change="changeSize"
+              @on-change="changePage"
+            ></Page>
+          </div>
+        </div>
+      </div>
+    </Card>
+    <!-- 批量分配的modal -->
+    <div v-if="distributeFlag">
+      <Modal
+        v-model="distributeFlag"
+        width="800"
+        class-name="user_info_form_modal"
+        :mask-closable="false"
+      >
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+          <span>提示</span>
+        </p>
+        <Alert show-icon type="warning">
+          <template
+            slot="desc"
+          >该操作将分配所有查询出的结果,共1519户，您确认要全部分配么?</template>
+        </Alert>
+        <div slot="footer">
+          <Button type="ghost" size="small" @click="cancel('1')">取消</Button>
+          <Button type="primary" size="small" @click="ok('1')">确定</Button>
+        </div>
+      </Modal>
+    </div>
+    <!-- 分配成员modal -->
+    <div v-if="distributeRoleFlag">
+      <Modal
+        v-model="distributeRoleFlag"
+        width="800"
+        class-name="user_info_form_modal"
+        :mask-closable="false"
+      >
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+          <span>分配</span>
+        </p>
+        <Tree
+            :data="data5"
+            :render="renderContent"
+            multiple
+            show-checkbox
+            @on-select-change="selectNode"
+            @on-check-change="checkChange"
+          ></Tree>
+        <div slot="footer">
+          <Button type="ghost" size="small" @click="cancel('2')">取消</Button>
+          <Button type="primary" size="small" @click="ok('2')">确定</Button>
+        </div>
+      </Modal>
+    </div>
+    <!-- 批量回收的modal -->
+    <div v-if="recycleFlag">
+      <Modal
+        v-model="recycleFlag"
+        width="800"
+        class-name="user_info_form_modal"
+        :mask-closable="false"
+      >
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+          <span>批量回收</span>
+        </p>
+        <Alert show-icon type="warning">
+          <template
+            slot="desc"
+          >共查询出1条案件,确定要回收吗？</template>
+        </Alert>
+        <div slot="footer">
+          <Button type="ghost" size="small" @click="cancel('3')">取消</Button>
+          <Button type="primary" size="small" @click="ok('3')">确定</Button>
+        </div>
+      </Modal>
+    </div>
+    <!-- 批量停催的modal -->
+    <div v-if="stopCollectionFlag">
+      <Modal
+        v-model="stopCollectionFlag"
+        width="800"
+        class-name="user_info_form_modal"
+        :mask-closable="false"
+      >
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+          <span>批量回收</span>
+        </p>
+        <!-- <Form ref="menuFormItem" :model="menuFormItem" :label-width="90" :rules="ruleValidate1"></Form> -->
+        <div slot="footer">
+          <Button type="ghost" size="small" @click="cancel('3')">取消</Button>
+          <Button type="primary" size="small" @click="ok('3')">确定</Button>
+        </div>
+      </Modal>
+    </div>
   </div>
 </template>
 <script src='./index.js'></script>
