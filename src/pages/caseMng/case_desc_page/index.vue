@@ -175,7 +175,7 @@
             >
             <div class="panel-desc-title">
               身份证号：<span>
-                  {{99956789876545678}}
+                {{99956789876545678}}
               </span>
             </div>
             </Col>
@@ -187,7 +187,7 @@
             >
             <div class="panel-desc-title">
               逾期应还金额：<span>
-                  {{999|| money}}
+                {{999|| money}}
               </span>
             </div>
             </Col>
@@ -199,7 +199,7 @@
             >
             <div class="panel-desc-title">
               总逾期期数：<span>
-                  甘肃省兰州市兰州市城关区南昌路1852号703室
+                甘肃省兰州市兰州市城关区南昌路1852号703室
               </span>
             </div>
             </Col>
@@ -211,7 +211,7 @@
             >
             <div class="panel-desc-title">
               家庭住址：<span>
-                  甘肃省兰州市兰州市城关区南昌路1852号703室
+                甘肃省兰州市兰州市城关区南昌路1852号703室
               </span>
             </div>
             </Col>
@@ -813,8 +813,8 @@
                             show-sizer
                             :page-size="case_detail_mail_list_pageSize"
                             :current="case_detail_mail_list_pageNo"
-                            @on-page-size-change="changeSize('case_detail_mail_list')"
-                            @on-change="changePage('case_detail_mail_list')"
+                            @on-page-size-change="case_detail_mail_list_changeSize"
+                            @on-change="case_detail_mail_list_changePage"
                           ></Page>
                         </div>
 
@@ -880,7 +880,6 @@
                 >
                   <Input
                     size="small"
-                    disabled
                     v-model="formValidate.name"
                     placeholder="请输入沟通对象"
                   ></Input>
@@ -891,12 +890,14 @@
                 >
                   <Select
                     size="small"
-                    v-model="formValidate.city"
+                    v-model="formValidate.CNT_REL_TYP"
                     placeholder="请输入选择关系"
                   >
-                    <Option value="beijing">New York</Option>
-                    <Option value="shanghai">London</Option>
-                    <Option value="shenzhen">Sydney</Option>
+                    <Option
+                      v-for="item in getDirObj.CNT_REL_TYP"
+                      :value="item.itemCode"
+                      :key="item.itemCode"
+                    >{{ item.itemName }}</Option>
                   </Select>
                 </FormItem>
 

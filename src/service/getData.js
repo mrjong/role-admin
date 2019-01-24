@@ -629,3 +629,56 @@ fetch({
   options
 });
 
+/*
+*
+*
+催收记录列表
+* */
+export const case_collect_collect_list = (obj, options) =>
+fetch({
+  url: '/case/collect/collect_list',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options
+});
+
+/*
+*
+*
+催收记录列表导出
+* */
+export const case_collect_tape_download = (obj, options) =>
+fetch({
+  url: '/case/collect/tape_download',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+  responseType: 'blob',
+});
+
+/*
+*
+*
+催记管理相关接口
+* */
+export const case_remark_his_add = (obj, options) =>
+fetch({
+  url: '/case_remark_his/add',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
+/*
+*
+*
+沟通状态
+* */
+export const collectcode_getListByCodeType = (obj, options) =>
+fetch({
+  url: '/collectcode/getListByCodeType',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+

@@ -17,7 +17,8 @@ import {
 	case_detail_urgent_contact, // 紧急联系人
 	case_detail_case_base_info, // 查询案件详情基础信息
 	case_detail_case_identity_info, // 查询案件详情身份信息
-	mail_list_add // 新增通讯录
+    mail_list_add, // 新增通讯录
+    case_remark_his_add // 新增催记
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
@@ -28,14 +29,15 @@ export default {
 	data() {
 		return {
 			formItem2: {},
+			tabName: '',
 			ruleValidate2: {
 				mblNo: [
 					{
 						required: true,
 						message: '请输入手机号码',
 						trigger: 'blur'
-                    },
-                    {
+					},
+					{
 						pattern: this.GLOBAL.mblNo,
 						message: '请输入正确手机号',
 						trigger: 'blur'
@@ -157,10 +159,7 @@ export default {
 				],
 				date: [ { required: true, type: 'date', message: 'Please select the date', trigger: 'change' } ],
 				time: [ { required: true, type: 'string', message: 'Please select time', trigger: 'change' } ],
-				desc: [
-					{ required: true, message: 'Please enter a personal introduction', trigger: 'blur' },
-					{ type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
-				]
+				
 			},
 			pageNo: 1,
 			pageSize: 10,
@@ -722,68 +721,37 @@ export default {
 					sortable: true
 				},
 				{
-					title: '催收时间',
+					title: '发送时间',
 					align: 'center',
-					key: 'remarkDate',
+					key: 'sendTime',
 					width: 200,
 					render: (h, params) => {
-						let remarkDate = params.row.remarkDate;
-						remarkDate = remarkDate
-							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
-							: remarkDate;
-						return h('span', remarkDate);
+						let sendTime = params.row.sendTime;
+						sendTime = sendTime
+							? this.$options.filters['formatDate'](sendTime, 'YYYY-MM-DD HH:mm:ss')
+							: sendTime;
+						return h('span', sendTime);
 					}
 				},
 				{
-					title: '催收电话',
+					title: '发送人',
 					align: 'center',
 					width: 150,
-					key: 'mblNoHid'
+					key: 'userName'
 				},
 				{
-					title: '催收姓名',
+					title: '发送结果',
 					align: 'center',
 					width: 100,
-					key: 'opUserName'
+					key: 'sendStatus'
 				},
 				{
-					title: '催收对象',
-					align: 'center',
-					width: 100,
-					key: 'userNmHid'
-				},
-				{
-					title: '拨打状态',
-					align: 'center',
-					width: 100,
-					key: 'collectResult'
-				},
-				{
-					title: '沟通状态',
-					align: 'center',
-					width: 100,
-					key: 'communicateResult'
-				},
-				{
-					title: '承诺还款时间',
-					align: 'center',
-					width: 200,
-					key: 'promiseRepayDate',
-					render: (h, params) => {
-						let promiseRepayDate = params.row.promiseRepayDate;
-						promiseRepayDate = promiseRepayDate
-							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
-							: promiseRepayDate;
-						return h('span', promiseRepayDate);
-					}
-				},
-				{
-					title: '备注',
+					title: '发送内容',
 					align: 'center',
 					minWidth: 400,
-					key: 'collectRmk',
+					key: 'sendContent',
 					render: (h, params) => {
-						let collectRmk = params.row.collectRmk;
+						let sendContent = params.row.sendContent;
 						return h(
 							'Tooltip',
 							{
@@ -791,11 +759,11 @@ export default {
 									margin: '0 5px'
 								},
 								props: {
-									content: params.row.collectRmk,
+									content: sendContent,
 									placement: 'top'
 								}
 							},
-							[ h('div', {}, params.row.collectRmk) ]
+							[ h('div', {}, sendContent) ]
 						);
 					}
 				}
@@ -808,88 +776,71 @@ export default {
 			case_detail_mail_statistics_list_tableData: [],
 			case_detail_mail_statistics_list_tableColumns: [
 				{
-					title: '序号',
-					width: 100,
+					title: '通话次数',
 					align: 'center',
-					type: 'index',
-					sortable: true
+					key: 'count',
+					width: 60
 				},
 				{
-					title: '催收时间',
-					align: 'center',
-					key: 'remarkDate',
-					width: 200,
-					render: (h, params) => {
-						let remarkDate = params.row.remarkDate;
-						remarkDate = remarkDate
-							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
-							: remarkDate;
-						return h('span', remarkDate);
-					}
-				},
-				{
-					title: '催收电话',
+					title: '姓名（关系）',
 					align: 'center',
 					width: 150,
-					key: 'mblNoHid'
-				},
-				{
-					title: '催收姓名',
-					align: 'center',
-					width: 100,
-					key: 'opUserName'
-				},
-				{
-					title: '催收对象',
-					align: 'center',
-					width: 100,
-					key: 'userNmHid'
-				},
-				{
-					title: '拨打状态',
-					align: 'center',
-					width: 100,
-					key: 'collectResult'
-				},
-				{
-					title: '沟通状态',
-					align: 'center',
-					width: 100,
-					key: 'communicateResult'
-				},
-				{
-					title: '承诺还款时间',
-					align: 'center',
-					width: 200,
-					key: 'promiseRepayDate',
+					key: 'userNmHid',
 					render: (h, params) => {
-						let promiseRepayDate = params.row.promiseRepayDate;
-						promiseRepayDate = promiseRepayDate
-							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
-							: promiseRepayDate;
-						return h('span', promiseRepayDate);
+						let callUserTypeName = params.row.callUserTypeName;
+						let userNmHid = params.row.userNmHid;
+
+						return h('div', [
+							h(
+								'a',
+								{
+									props: {
+										type: 'edit'
+									}
+								},
+								`${userNmHid}(${callUserTypeName})`
+							)
+						]);
 					}
 				},
 				{
-					title: '备注',
+					title: '手机(状态)',
 					align: 'center',
-					minWidth: 400,
-					key: 'collectRmk',
+					width: 150,
+					key: 'opUserName',
 					render: (h, params) => {
-						let collectRmk = params.row.collectRmk;
-						return h(
-							'Tooltip',
-							{
-								style: {
-									margin: '0 5px'
+						let callStateName = params.row.callStateName;
+						let mblNoHid = params.row.mblNoHid;
+						return h('div', [
+							h(
+								'span',
+								{
+									props: {
+										type: 'edit'
+									}
 								},
-								props: {
-									content: params.row.collectRmk,
-									placement: 'top'
-								}
-							},
-							[ h('div', {}, params.row.collectRmk) ]
-						);
+								`${mblNoHid}(${callStateName})`
+							)
+						]);
+					}
+				},
+				{
+					title: '操作',
+					width: 100,
+					key: 'edit',
+					render: (h, params) => {
+						return h('Icon', [
+							h(
+								'Icon',
+								{
+									class: 'edit-btn',
+									props: {
+										type: 'edit'
+									}
+								},
+								'删除'
+							)
+						]);
 					}
 				}
 			],
@@ -901,88 +852,92 @@ export default {
 			case_detail_mail_detail_list_tableData: [],
 			case_detail_mail_detail_list_tableColumns: [
 				{
-					title: '序号',
-					width: 100,
+					title: '通话时长(时间)',
 					align: 'center',
-					type: 'index',
-					sortable: true
-				},
-				{
-					title: '催收时间',
-					align: 'center',
-					key: 'remarkDate',
-					width: 200,
+					key: 'count',
+					width: 130,
 					render: (h, params) => {
-						let remarkDate = params.row.remarkDate;
-						remarkDate = remarkDate
-							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
-							: remarkDate;
-						return h('span', remarkDate);
+						let callTime = params.row.callTime;
+						let callDuration = params.row.callDuration;
+
+						return h('div', [
+							h(
+								'span',
+								{
+									props: {
+										type: 'edit'
+									}
+								},
+								callDuration
+							),
+							h(
+								'div',
+								{
+									props: {
+										type: 'edit'
+									}
+								},
+								callTime?this.$options.filters['formatDate'](callTime, 'YYYY-MM-DD HH:mm:ss'):''
+							)
+						]);
 					}
 				},
 				{
-					title: '催收电话',
+					title: '姓名（关系）',
 					align: 'center',
 					width: 150,
-					key: 'mblNoHid'
-				},
-				{
-					title: '催收姓名',
-					align: 'center',
-					width: 100,
-					key: 'opUserName'
-				},
-				{
-					title: '催收对象',
-					align: 'center',
-					width: 100,
-					key: 'userNmHid'
-				},
-				{
-					title: '拨打状态',
-					align: 'center',
-					width: 100,
-					key: 'collectResult'
-				},
-				{
-					title: '沟通状态',
-					align: 'center',
-					width: 100,
-					key: 'communicateResult'
-				},
-				{
-					title: '承诺还款时间',
-					align: 'center',
-					width: 200,
-					key: 'promiseRepayDate',
+					key: 'userNmHid',
 					render: (h, params) => {
-						let promiseRepayDate = params.row.promiseRepayDate;
-						promiseRepayDate = promiseRepayDate
-							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
-							: promiseRepayDate;
-						return h('span', promiseRepayDate);
+						let callUserTypeName = params.row.callUserTypeName;
+						let userNmHid = params.row.userNmHid;
+						return h('div', [
+							h(
+								'a',
+								{
+									props: {
+										type: 'edit'
+									}
+								},
+								`${userNmHid?userNmHid:''}(${callUserTypeName?callUserTypeName:''})`
+							)
+						]);
 					}
 				},
 				{
-					title: '备注',
+					title: '手机(状态)',
 					align: 'center',
-					minWidth: 400,
-					key: 'collectRmk',
+					width: 150,
+					key: 'mblNoHid',
 					render: (h, params) => {
-						let collectRmk = params.row.collectRmk;
-						return h(
-							'Tooltip',
-							{
-								style: {
-									margin: '0 5px'
+						let callStateName = params.row.callStateName;
+						let mblNoHid = params.row.mblNoHid;
+						return h('div', [
+							h(
+								'span',
+								{
+									class: 'edit-btn',
 								},
-								props: {
-									content: params.row.collectRmk,
-									placement: 'top'
-								}
-							},
-							[ h('div', {}, params.row.collectRmk) ]
-						);
+								`${mblNoHid?mblNoHid:''}(${callStateName?callStateName:''})`
+							)
+						]);
+					}
+				},
+				{
+					title: '操作',
+					width: 100,
+					key: 'edit',
+					render: (h, params) => {
+						return h('Icon', [
+							h(
+								'Icon',
+								{
+									class: 'edit-btn',
+									props: {
+										type: 'edit'
+									}
+								},
+							)
+						]);
 					}
 				}
 			],
@@ -994,88 +949,63 @@ export default {
 			case_detail_mail_list_tableData: [],
 			case_detail_mail_list_tableColumns: [
 				{
-					title: '序号',
-					width: 100,
-					align: 'center',
-					type: 'index',
-					sortable: true
-				},
-				{
-					title: '催收时间',
-					align: 'center',
-					key: 'remarkDate',
-					width: 200,
-					render: (h, params) => {
-						let remarkDate = params.row.remarkDate;
-						remarkDate = remarkDate
-							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
-							: remarkDate;
-						return h('span', remarkDate);
-					}
-				},
-				{
-					title: '催收电话',
+					title: '姓名（关系）',
 					align: 'center',
 					width: 150,
-					key: 'mblNoHid'
-				},
-				{
-					title: '催收姓名',
-					align: 'center',
-					width: 100,
-					key: 'opUserName'
-				},
-				{
-					title: '催收对象',
-					align: 'center',
-					width: 100,
-					key: 'userNmHid'
-				},
-				{
-					title: '拨打状态',
-					align: 'center',
-					width: 100,
-					key: 'collectResult'
-				},
-				{
-					title: '沟通状态',
-					align: 'center',
-					width: 100,
-					key: 'communicateResult'
-				},
-				{
-					title: '承诺还款时间',
-					align: 'center',
-					width: 200,
-					key: 'promiseRepayDate',
+					key: 'userNmHid',
 					render: (h, params) => {
-						let promiseRepayDate = params.row.promiseRepayDate;
-						promiseRepayDate = promiseRepayDate
-							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
-							: promiseRepayDate;
-						return h('span', promiseRepayDate);
+						let callUserTypeName = params.row.callUserTypeName;
+						let userNmHid = params.row.userNmHid;
+
+						return h('div', [
+							h(
+								'a',
+								{
+									props: {
+										type: 'edit'
+									}
+								},
+								`${userNmHid?userNmHid:''}(${callUserTypeName?callUserTypeName:''})`
+							)
+						]);
 					}
 				},
 				{
-					title: '备注',
+					title: '手机(状态)',
 					align: 'center',
-					minWidth: 400,
-					key: 'collectRmk',
+					width: 150,
+					key: 'mblNoHid',
 					render: (h, params) => {
-						let collectRmk = params.row.collectRmk;
-						return h(
-							'Tooltip',
-							{
-								style: {
-									margin: '0 5px'
+						let callStateName = params.row.callStateName;
+						let mblNoHid = params.row.mblNoHid;
+						return h('div', [
+							h(
+								'span',
+								{
+									class: 'edit-btn',
 								},
-								props: {
-									content: params.row.collectRmk,
-									placement: 'top'
-								}
-							},
-							[ h('div', {}, params.row.collectRmk) ]
-						);
+								`${mblNoHid?mblNoHid:''}(${callStateName?callStateName:''})`
+							)
+						]);
+					}
+				},
+				{
+					title: '操作',
+					width: 100,
+					key: 'edit',
+					render: (h, params) => {
+						return h('div', [
+							h(
+								'Icon',
+								{
+									class: 'edit-btn',
+									props: {
+										type: 'edit'
+									}
+								},
+								'编辑'
+							)
+						]);
 					}
 				}
 			],
@@ -1087,88 +1017,66 @@ export default {
 			case_detail_mail_list_appended_tableData: [],
 			case_detail_mail_list_appended_tableColumns: [
 				{
-					title: '序号',
-					width: 100,
-					align: 'center',
-					type: 'index',
-					sortable: true
-				},
-				{
-					title: '催收时间',
-					align: 'center',
-					key: 'remarkDate',
-					width: 200,
-					render: (h, params) => {
-						let remarkDate = params.row.remarkDate;
-						remarkDate = remarkDate
-							? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
-							: remarkDate;
-						return h('span', remarkDate);
-					}
-				},
-				{
-					title: '催收电话',
+					title: '姓名（关系）',
 					align: 'center',
 					width: 150,
-					key: 'mblNoHid'
-				},
-				{
-					title: '催收姓名',
-					align: 'center',
-					width: 100,
-					key: 'opUserName'
-				},
-				{
-					title: '催收对象',
-					align: 'center',
-					width: 100,
-					key: 'userNmHid'
-				},
-				{
-					title: '拨打状态',
-					align: 'center',
-					width: 100,
-					key: 'collectResult'
-				},
-				{
-					title: '沟通状态',
-					align: 'center',
-					width: 100,
-					key: 'communicateResult'
-				},
-				{
-					title: '承诺还款时间',
-					align: 'center',
-					width: 200,
-					key: 'promiseRepayDate',
+					key: 'userNmHid',
 					render: (h, params) => {
-						let promiseRepayDate = params.row.promiseRepayDate;
-						promiseRepayDate = promiseRepayDate
-							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD')
-							: promiseRepayDate;
-						return h('span', promiseRepayDate);
+						let callUserTypeName = params.row.callUserTypeName;
+						let userNmHid = params.row.userNmHid;
+
+						return h('div', [
+							h(
+								'a',
+								{
+									props: {
+										type: 'edit'
+									}
+								},
+								`${userNmHid?userNmHid:''}(${callUserTypeName?callUserTypeName:''})`
+							)
+						]);
 					}
 				},
 				{
-					title: '备注',
+					title: '手机(状态)',
 					align: 'center',
-					minWidth: 400,
-					key: 'collectRmk',
+					width: 150,
+					key: 'mblNoHid',
 					render: (h, params) => {
-						let collectRmk = params.row.collectRmk;
-						return h(
-							'Tooltip',
-							{
-								style: {
-									margin: '0 5px'
+						let callStateName = params.row.callStateName;
+						let mblNoHid = params.row.mblNoHid;
+						return h('div', [
+							h(
+								'span',
+								{
+									class: 'edit-btn',
+									props: {
+										type: 'edit'
+									}
 								},
-								props: {
-									content: params.row.collectRmk,
-									placement: 'top'
-								}
-							},
-							[ h('div', {}, params.row.collectRmk) ]
-						);
+								`${mblNoHid}(${callStateName?callStateName:''})`
+							)
+						]);
+					}
+				},
+				{
+					title: '操作',
+					width: 100,
+					key: 'edit',
+					render: (h, params) => {
+						return h('div', [
+							h(
+								'Icon',
+								{
+									class: 'edit-btn',
+									props: {
+										type: 'edit'
+									}
+								},
+								'编辑'
+							)
+						]);
 					}
 				}
 			]
@@ -1186,6 +1094,7 @@ export default {
 		this.case_detail_remark_list(); // 催收信息
 		this.case_detail_urgent_contact(); // 紧急联系人
 		this.case_detail_case_base_info(); // 基本信息
+		this.case_detail_bindcard_list(); // 绑卡信息
 	},
 	methods: {
 		saveTxl() {
@@ -1475,27 +1384,26 @@ export default {
 		},
 		// 切换每页条数时的回调
 		changeSize(pageSize, name) {
-			console.log(pageSize, name);
 			this.pageSize = pageSize;
 			this.pageNo = 1;
-			this.getList();
-		},
+        },
+        async case_remark_his_add(){
+            const res = await case_remark_his_add({})
+            if (res.code === 1) {
+			} else {
+				this.$Message.error(res.message);
+			}
+        },
+		case_detail_mail_list_changePage(pageSize) {},
 		handleSubmit(name) {
 			this.$refs[name].validate((valid) => {
 				if (valid) {
-					// this.getList();
+                    
 				} else {
 					this.$Message.error('查询条件格式有误，请重新填写');
 				}
 			});
-		},
-		// 获取表格数据
-		async getList() {},
-		// 重置
-		clearForm(name) {
-			this.pageNo = 1;
-			this.formItem = {};
-			this.$refs[name].resetFields();
 		}
+		// 获取表格数据
 	}
 };
