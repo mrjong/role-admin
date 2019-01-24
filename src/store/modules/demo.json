@@ -22,6 +22,33 @@
 					"template": "/demo/demo_list_page"
 				}
 			]
+    },
+    {
+			"id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+			"text": "案件管理",
+			"url": "/caseMng",
+			"icon": "ionic",
+			"template": null,
+			"childrens": [
+				{
+					"text": "案件查询",
+					"url": "/caseMng/case_search_page",
+					"icon": "arrow-up-c",
+					"template": "/caseMng/case_search_page"
+				},
+				{
+					"text": "案件分配",
+					"url": "/caseMng/case_distribute_page",
+					"icon": "arrow-up-c",
+					"template": "/caseMng/case_distribute_page"
+				},
+				{
+					"text": "案件规则",
+					"url": "/caseMng/case_rule_page",
+					"icon": "arrow-up-c",
+					"template": "/caseMng/case_rule_page"
+				}
+			]
 		},
 		{
 			"id": "4e0b269e185b48f598e6fa0cce8ce2ee",

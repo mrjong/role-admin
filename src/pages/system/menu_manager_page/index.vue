@@ -99,10 +99,6 @@
   position: relative;
 }
 .tree-col {
-  .ivu-card-body {
-    // position: relative;
-    // overflow: hidden;
-  }
   .ivu-tree {
     height: 620px;
     overflow-y: auto;

@@ -1,5 +1,7 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
+import { case_list } from '@/service/getData';
+
 export default {
   name: 'case_distribute_page',
   mixins: [formValidateFun, sysDictionary],
@@ -11,6 +13,12 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      distributeFlag: false,
+      distributeRoleFlag: false,
+      recycleFlag: false,
+      stopCollectionFlag: false,
+      recoverCollectionFlag: false,
+      data5: [],
       phoneCallList: [
         {
           value: 'New York',
@@ -104,7 +112,7 @@ export default {
             trigger: 'blur'
           }
         ],
-        overdueDaysLt: [
+        minOverdueDays: [
           {
             pattern: this.GLOBAL.num,
             message: '逾期天数为正整数',
@@ -115,7 +123,7 @@ export default {
             trigger: 'blur'
           }
         ],
-        overdueDaysBt: [
+        maxOverdueDays: [
           {
             pattern: this.GLOBAL.num,
             message: '逾期天数为正整数',
@@ -126,7 +134,7 @@ export default {
             trigger: 'blur'
           }
         ],
-        billOvduAmtLt: [
+        minOverdueAmt: [
           {
             pattern: this.GLOBAL.money,
             message: '金额格式不正确',
@@ -137,7 +145,7 @@ export default {
             trigger: 'blur'
           }
         ],
-        billOvduAmtBt: [
+        maxOverdueAmt: [
           {
             pattern: this.GLOBAL.money,
             message: '金额格式不正确',
@@ -152,82 +160,162 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      formValidate3: {
-        items: [
-          {
-            value: '',
-            index: 1,
-            status: 1
-          }
-        ]
+      billDate: [],
+      formItem: {
+        caseStatus: '',
+        prodTypes: [],
+        periodCounts: [],
+        userNm: '',
+        idNo: '',
+        mblNo: '',
+        minOverdueDays: '',
+        maxOverdueDays: '',
+        minOverdueAmt: '',
+        maxOverdueAmt: '',
+        beginDueDate: '',
+        endDueDate: '',
+        billNo: '',
+        id: '',
+        creditLevels: [],
+        opCompayName: '',
+        opUserName: '',
       },
-      formItem: {},
-      tableData: [],
+      tableData: [
+        {
+          caseNo: '1231312312313123',
+          userNm: '二维码',
+          idNoHid: '110123199808082229',
+          mblNoHid: '188866668888',
+          prdTyp: '商户贷',
+          billNo: 'BL091837478596599387',
+          overdueAmt: '9000'
+        },
+      ],
       tableColumns: [
         {
-          title: '餐柜ID',
-          width: 100,
-          searchOperator: '=',
-          sortable: true,
-          key: 'buffet_id'
+          type: 'selection',
+          width: 60,
+          align: 'center',
+          fixed: 'left'
         },
         {
-          title: '餐柜编码',
+          title: '序号',
+          width: 80,
+          searchOperator: '=',
+          sortable: true,
+          type: 'index',
+          align: 'center',
+        },
+        {
+          title: '案件编码',
+          width: 150,
+          searchOperator: '=',
+          key: 'caseNo',
+          align: 'center',
+        },
+        {
+          title: '客户姓名',
           width: 120,
           searchOperator: '=',
-          key: 'buffet_code'
+          key: 'userNm',
+          align: 'center',
         },
         {
-          title: '设备ID',
-          searchOperator: '=',
-          key: 'device_id'
+          title: '身份证号',
+          width: 200,
+          searchOperator: 'like',
+          key: 'idNoHid',
+          align: 'center',
         },
         {
-          title: '餐柜添加时间',
-          key: 'addtime',
-          width: 3000,
+          title: '手机号',
+          searchOperator: 'like',
+          width: 150,
+          key: 'mblNoHid',
+          align: 'center',
+        },
+        {
+          title: '产品线',
+          searchOperator: 'like',
+          width: 100,
+          align: 'center',
+          key: 'prdTyp',
+        },
+        {
+          title: '账单号',
+          searchOperator: 'like',
+          width: 200,
+          key: 'billNo',
+          align: 'center',
+        },
+        {
+          title: '逾期金额',
+          searchOperator: 'like',
+          width: 150,
+          key: 'overdueAmt',
+          align: 'center',
+        },
+        {
+          title: '逾期天数',
+          searchOperator: 'like',
+          width: 150,
+          key: 'overdueDays',
+          align: 'center',
+        },
+        {
+          title: '到期期数',
+          searchOperator: 'like',
+          width: 150,
+          key: 'maxPerdCnt',
+          align: 'center',
+        },
+        {
+          title: '信用级别',
+          searchOperator: 'like',
+          width: 150,
+          key: 'creditLevel',
+          align: 'center',
+        },
+        {
+          title: '分配时间',
+          key: 'allotDate',
+          width: 200,
           sortable: true,
+          align: 'center',
           render: (h, params) => {
             const row = params.row;
-            const addtime = row.addtime
-              ? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-              : row.addtime;
-            return h('span', addtime);
+            const allotDate = row.allotDate
+              ? this.$options.filters['formatDate'](new Date(row.allotDate * 1000), 'yyyy-MM-dd hh:mm:ss')
+              : row.allotDate;
+            return h('span', allotDate);
           }
         },
         {
-          title: '餐柜名称',
-          width: 120,
+          title: '电催公司',
           searchOperator: 'like',
-          key: 'buffet_name',
-          sortable: true
+          width: 180,
+          key: 'opCompayName',
+          align: 'center',
         },
         {
-          title: '餐柜详细地址',
+          title: '经办人',
           searchOperator: 'like',
-          key: 'address',
-          render: (h, params) => {
-            return h('div', [
-              h(
-                'Tooltip',
-                {
-                  style: {
-                    margin: '0 5px'
-                  },
-                  props: {
-                    content: params.row.address,
-                    placement: 'top'
-                  }
-                },
-                [h('div', {}, params.row.address)]
-              )
-            ]);
-          }
+          width: 150,
+          key: 'opUserName',
+          align: 'center',
+        },
+        {
+          title: '案件状态',
+          searchOperator: 'like',
+          width: 150,
+          key: 'caseStatus',
+          align: 'center',
         },
         {
           title: '操作',
-          width: 100,
+          width: 150,
           key: 'edit',
+          align: 'center',
           render: (h, params) => {
             return h('div', [
               h(
@@ -273,6 +361,47 @@ export default {
     this.getList();
   },
   methods: {
+    renderContent(h, { root, node, data }) {
+      return h('span', {
+        style: {
+          display: 'inline-block',
+          width: '94%',
+          boxSizing: 'border-box',
+        }
+      }, [
+          h('span', [
+            h('Icon', {
+              props: {
+                type: '',
+              },
+              style: {
+                marginRight: '4px'
+              }
+            }),
+            h('span', {
+              props: {
+              },
+              style: {
+                cursor: 'pointer'
+              },
+              class: 'tree_title',
+              on: {
+                'click': (e) => {
+
+                }
+              }
+            }, data.text)
+          ]),
+        ]);
+    },
+    // 勾选节点的回调函数
+    checkChange(arr) {
+      console.log(this.arr);
+    },
+    // 选中节点的回调函数
+    selectNode(node) {
+      console.log(node)
+    },
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
@@ -293,14 +422,73 @@ export default {
         }
       });
     },
+    // 日期变更回调
+    dateChange(arr,date) {
+      console.log(arr, date);
+      this.formItem.beginDueDate = arr[0];
+      this.formItem.endDueDate = arr[1];
+    },
     // 获取表格数据
     async getList() {
+      const res = await case_list(JSON.stringify(this.formItem));
+      if (res.code === 1) {
+        console.log(res);
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     // 重置
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {};
       this.$refs[name].resetFields();
+    },
+    // 批量分配弹窗
+    handeldBtnClick(type) {
+      switch (type) {
+        case '1':
+          this.distributeFlag = true;
+          break;
+        case '2': this.recycleFlag = true;
+          break;
+        case '3': this.stopCollectionFlag = true;
+          break;
+        case '4': this.recoverCollectionFlag = true;
+          break;
+        default:
+          break;
+      }
+    },
+    // 关闭modal
+    cancel(type) {
+      switch (type) {
+        case '1': this.distributeFlag = false;
+          break;
+        case '2': this.distributeRoleFlag = false;
+          break;
+        case '3': this.recycleFlag = false;
+          break;
+        case '4': this.stopCollectionFlag = false;
+          break;
+        case '5': this.recoverCollectionFlag = false;
+          break;
+      }
+    },
+    // modal确定回调
+    ok(type) {
+      switch (type) {
+        case '1': this.distributeFlag = false;
+          this.distributeRoleFlag = true;
+          break;
+        case '2': this.distributeRoleFlag = false;
+          break;
+        case '3': this.recycleFlag = false;
+          break;
+        case '4': this.stopCollectionFlag = false;
+          break;
+        case '5': this.recoverCollectionFlag = false;
+          break;
+      }
     }
   }
 };
