@@ -1,14 +1,15 @@
-import { case_collect_case_list } from '@/service/getData';
+import { case_collect_case_list, case_collect_case_list_export } from '@/service/getData';
 import formValidateFun from '@/mixin/formValidateFun';
 import tablePage from '@/mixin/tablePage';
 import qs from 'qs';
 import sysDictionary from '@/mixin/sysDictionary';
+import util from '../../../libs/util';
 export default {
 	name: 'case_search_page',
 	mixins: [ formValidateFun, sysDictionary, tablePage ],
 	data() {
-        console.log(this.GLOBAL);
-        const _this =this
+		console.log(this.GLOBAL);
+		const _this = this;
 		return {
 			getDirList: [ 'PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL' ],
 			getDirObj: {},
@@ -109,7 +110,10 @@ export default {
 												click: () => {
 													window.open(
 														`${location.origin}/#/case_desc_page?caseNotest=${id}&userIdtest=${params
-															.row.userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(_this.formItem)}`
+															.row
+															.userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+															_this.formItem
+														)}`
 													);
 												}
 											}
@@ -299,6 +303,18 @@ export default {
 			} else {
 				this.$Message.error(res.message);
 			}
+		},
+		// 获取表格数据
+		async case_collect_case_list_export() {
+			const res = await case_collect_case_list_export(
+				{
+					...this.formItem
+				},
+				{
+					responseType: 'blob'
+				}
+			);
+			util.dowloadfile('我的案件', res);
 		}
 	}
 };

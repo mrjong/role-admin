@@ -357,6 +357,12 @@
       >
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
         检索结果
+        <Button
+        @click.stop="case_collect_case_list_export"
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+        >导出数据</Button>
       </p>
       <!-- 表格 -->
 

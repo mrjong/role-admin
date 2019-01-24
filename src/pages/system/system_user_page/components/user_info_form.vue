@@ -267,7 +267,8 @@ export default {
       },
     };
   },
-  props: {    model: {},
+  props: {   
+       model: {},
     getDirObj: {}
   },
   watch: {
