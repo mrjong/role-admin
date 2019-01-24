@@ -117,13 +117,12 @@
       >
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
         检索结果
-        <router-link to="/buffet/buffet_add">
           <Button
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
+            @click.stop="exportData"
           >导出数据</Button>
-        </router-link>
       </p>
       <!-- 表格 -->
 
@@ -160,6 +159,7 @@
 </template>
 <script>
   import { monitor_agentState_list, monitor_agentState_exportDown } from '@/service/getData';
+  import util from '@/libs/util';
   export default {
     name: 'seatTable',
     data() {
@@ -405,6 +405,12 @@
       },
       handleSubmit(name) {
         this.getList();
+      },
+      async exportData(){
+        let res = await monitor_agentState_exportDown({
+          ...this.formValidate
+        });
+        util.dowloadfile('seatTable',res);
       },
       // 获取表格数据
       async getList() {

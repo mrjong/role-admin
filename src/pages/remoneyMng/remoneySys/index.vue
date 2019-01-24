@@ -8,13 +8,6 @@
       >
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
         检索条件
-        <router-link to="/demo/demo_desc">
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >详情</Button>
-        </router-link>
       </p>
       <Form
         v-if="!showPanel"
@@ -118,10 +111,10 @@
                 v-model="formValidate.ordSts"
               >
                 <Option
-                  v-for="item in orderStsList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
+                  v-for="item in getDirObj.ORD_STS"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -140,32 +133,10 @@
                 v-model="formValidate.prdTyp"
               >
                 <Option
-                  v-for="item in productTypeList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
-              </Select>
-            </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="代扣通道:"
-            >
-              <Select
-                size="small"
-                v-model="formValidate.rutCopyOrg">
-                <Option
-                  v-for="item in rutTypeList"
-                  :value="item.value"
-                  :key="item.value">
-                  {{ item.label }}
-                </Option>
+                  v-for="item in getDirObj.PROD_TYPE"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -220,13 +191,6 @@
       >
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
         检索结果
-        <router-link to="/buffet/buffet_add">
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >导出数据</Button>
-        </router-link>
       </p>
       <!-- 表格 -->
 

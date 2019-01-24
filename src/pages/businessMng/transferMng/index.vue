@@ -29,13 +29,13 @@
             >
               <Select
                 size="small"
-                v-model="formValidate.acTyp"
+                v-model="formValidate.prdTyp"
               >
                 <Option
-                  v-for="item in productTypeList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
+                  v-for="item in getDirObj.PROD_TYPE"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -47,12 +47,12 @@
             span="6"
           >
             <FormItem
-              label="案件编号:"
+              label="案件号:"
             >
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.casebillNo"
+                v-model="formValidate.caseNo"
                 placeholder="请输入账单号"
               ></Input>
             </FormItem>
@@ -84,39 +84,17 @@
             span="6"
           >
             <FormItem
-              label="审核状态:"
-            >
-              <Select
-                size="small"
-                v-model="formValidate.checkSts">
-                <Option
-                  v-for="item in checkStsList"
-                  :value="item.value"
-                  :key="item.value">
-                  {{ item.label }}
-                </Option>
-              </Select>
-            </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
               label="订单状态:"
             >
               <Select
                 size="small"
-                v-model="formValidate.orderSts"
+                v-model="formValidate.repayOrdSts"
               >
                 <Option
-                  v-for="item in orderStsList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
+                  v-for="item in getDirObj.REPAY_ORD_STS"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -150,18 +128,14 @@
             span="6"
           >
             <FormItem
-              label="审核日期:"
+              label="申请流水号:"
             >
-              <DatePicker
+              <Input
                 size="small"
-                style="width:100%"
-                v-model="checkStartAndEnd"
-                format="yyyy-MM-dd"
-                type="datetimerange"
-                placement="bottom-start"
-                placeholder="请选择还款时间区间"
-                @on-change="changeShouldDate"
-              ></DatePicker>
+                clearable
+                v-model="formValidate.applayNo"
+                placeholder="请输入账单号"
+              ></Input>
             </FormItem>
           </Col>
           <Col

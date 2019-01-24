@@ -171,19 +171,20 @@ export const repay_repayUserOrSystem_exportDown = (obj) =>
 
 // 回款明细列表查询接口
 
-export const repay_repayDetail_list = (obj) =>
+export const repay_repayDetail_list = (obj, options) =>
 	fetch({
 		url: '/repay/repayDetail/list',
 		method: 'POST',
-		data: qs.stringify(obj)
+		data: qs.stringify(obj),
 	});
 
 // 回款明细导出接口
-export const repay_repayDetail_exportDown = (obj) =>
+export const repay_repayDetail_exportDown = (obj, options) =>
 	fetch({
 		url: '/repay/repayDetail/exportDown',
 		method: 'POST',
-		data: qs.stringify(obj)
+		data: qs.stringify(obj),
+    responseType: 'blob',
 	});
 
 // 日常监控的坐席报表
@@ -198,7 +199,8 @@ export const monitor_agentState_exportDown = (obj) =>
 	fetch({
 		url: '/monitor/agentState/exportDown',
 		method: 'POST',
-		data: qs.stringify(obj)
+		data: qs.stringify(obj),
+    responseType: 'blob',
 	});
 // 日常监控的逾期日志列表请求
 export const monitor_overdueReports_list = (obj) =>
@@ -213,7 +215,8 @@ export const monitor_overDueReports_exportDown = (obj) =>
 	fetch({
 		url: '/monitor/overDueReports/exportDown',
 		method: 'POST',
-		data: qs.stringify(obj)
+		data: qs.stringify(obj),
+    responseType: 'blob',
 	});
 
 // 呼叫明细列表接口查询
@@ -228,7 +231,8 @@ export const monitor_callDetail_exportDown = (obj) =>
 	fetch({
 		url: '/monitor/callDetail/exportDown',
 		method: 'POST',
-		data: qs.stringify(obj)
+		data: qs.stringify(obj),
+    responseType: 'blob',
 	});
 
 // 催收回收率列表导出
@@ -236,7 +240,8 @@ export const monitor_collectRate_exportDown = (obj) =>
 	fetch({
 		url: '/monitor/collectRate/exportDown',
 		method: 'POST',
-		data: qs.stringify(obj)
+		data: qs.stringify(obj),
+    responseType: 'blob',
 	});
 // 催收回收列表查询
 export const monitor_collectRate_list = (obj) =>
