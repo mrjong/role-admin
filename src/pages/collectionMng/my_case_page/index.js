@@ -15,7 +15,7 @@ export default {
 		console.log(this.GLOBAL);
 		const _this = this;
 		return {
-            getDirObj2:{},
+			getDirObj2: {},
 			getDirList: [ 'PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'TALK_RESULT' ],
 			getDirObj: {},
 			showPanel: false,
@@ -94,6 +94,8 @@ export default {
 					align: 'center',
 					render(h, params) {
 						const id = params.row.id;
+						const prdTyp = params.row.prdTyp;
+						const userId = params.row.userId;
 						return h('div', [
 							h(
 								'Tooltip',
@@ -114,9 +116,7 @@ export default {
 											on: {
 												click: () => {
 													window.open(
-														`${location.origin}/#/case_desc_page?caseNotest=${id}&userIdtest=${params
-															.row
-															.userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+														`${location.origin}/#/case_desc_page?caseNotest=${id}&prdTyptest=${prdTyp}&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
 															_this.formItem
 														)}`
 													);

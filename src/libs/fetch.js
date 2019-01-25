@@ -54,15 +54,14 @@ axios.interceptors.response.use(
 				setTimeout(() => {
 					iView.Message.destroy();
 				}, 2);
-			} else {
-				iView.Message.loading({
-					content: '数据加载中...',
-					duration: 10
-				});
-			}
+            }
+            //  else {
+			// 	iView.Message.loading({
+			// 		content: '数据加载中...',
+			// 		duration: 10
+			// 	});
+			// }
 		}
-		console.log(num, '-------------');
-		console.log(response, '00000000000');
 		return response.data;
 	},
 	(error) => {
@@ -70,7 +69,6 @@ axios.interceptors.response.use(
 		for (let i = 0; i < timerList.length; i++) {
 			clearTimeout(timerList[i]);
 		}
-		console.log(num, '-----------------====');
 		timer = '';
 		timerList = [];
 		iView.Message.destroy();

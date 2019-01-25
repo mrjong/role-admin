@@ -1,5 +1,7 @@
 import jianmian from '@/components/caseDesc/jianmian.vue';
+import huakou from '@/components/caseDesc/huakou.vue';
 import qs from 'qs';
+import dayjs from 'dayjs';
 import sysDictionary from '@/mixin/sysDictionary';
 import {
 	case_detail_remark_list, // 催收
@@ -18,19 +20,26 @@ import {
 	case_detail_case_base_info, // 查询案件详情基础信息
 	case_detail_case_identity_info, // 查询案件详情身份信息
 	mail_list_add, // 新增通讯录
-	case_remark_his_add // 新增催记
+	case_remark_his_add, // 新增催记
+	collectcode_getCollectRelate //
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
 	components: {
-		jianmian
+		jianmian,
+		huakou
 	},
 	mixins: [ sysDictionary ],
 	data() {
 		const _this = this;
 		return {
+			parentData: {},
+			prdTyp: '',
+            userNm: '',
+            modal:false,
 			formItem2: {},
 			tabName: '',
+			callUserTypeLevel: '',
 			ruleValidate2: {
 				mblNo: [
 					{
@@ -47,7 +56,8 @@ export default {
 			},
 			getDirList: [ 'CNT_REL_TYP' ],
 			getDirObj: {},
-
+			userNmHidCopy: '',
+			mblNo: '',
 			caseNo: '',
 			userId: '',
 			readType: 'edit',
@@ -62,84 +72,8 @@ export default {
 			visible1: false,
 			modal7: false,
 			queryData: {},
-			phoneCallList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
-			productTimeList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
-			productLineList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
+			collectcode_getCollectRelate_Data: [],
+			collectcode_getCollectRelate_childItem: [],
 			modal12: false,
 			inputGrid: '',
 			modal11: false,
@@ -148,37 +82,27 @@ export default {
 			case_detail_case_identity_info_Data: {},
 			case_detail_urgent_contact_Data: {},
 			ruleValidate: {
-				name: [ { required: true, message: 'The name cannot be empty', trigger: 'blur' } ],
-				mail: [
-					{ required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
-					{ type: 'email', message: 'Incorrect email format', trigger: 'blur' }
-				],
-				city: [ { required: true, message: 'Please select the city', trigger: 'change' } ],
-				gender: [ { required: true, message: 'Please select gender', trigger: 'change' } ],
-				interest: [
-					{ required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change' },
-					{ type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change' }
-				],
-				date: [ { required: true, type: 'date', message: 'Please select the date', trigger: 'change' } ],
-				time: [ { required: true, type: 'string', message: 'Please select time', trigger: 'change' } ]
-			},
-			pageNo: 1,
-			pageSize: 10,
-			total: 0,
-			formValidate3: {
-				items: [
+				collectResult: [
 					{
-						value: '',
-						index: 1,
-						status: 1
+						required: true,
+						message: '请选择拨打状态',
+						trigger: 'change'
+					}
+				],
+				communicateResult: [
+					{
+						required: true,
+						message: '请选择沟通状态',
+						trigger: 'change'
 					}
 				]
 			},
+
 			formItem: {},
 			tableColumns: [],
+			case_detail_address_info_Data: {},
 			// 催收信息
 			tableData: [],
-			case_detail_address_info_Data: {},
 			case_detail_remark_list_pageNo: 1,
 			case_detail_remark_list_pageSize: 10,
 			case_detail_remark_list_total: 0,
@@ -818,6 +742,11 @@ export default {
 								{
 									props: {
 										type: 'edit'
+									},
+									on: {
+										click: () => {
+											_this.handCall(params.row);
+										}
 									}
 								},
 								`${mblNoHid}(${callStateName})`
@@ -827,10 +756,11 @@ export default {
 				},
 				{
 					title: '操作',
+					align: 'center',
 					width: 100,
 					key: 'edit',
 					render: (h, params) => {
-						return h('Icon', [
+						return h('div', [
 							h(
 								'Icon',
 								{
@@ -840,6 +770,11 @@ export default {
 									class: 'edit-btn',
 									props: {
 										type: 'edit'
+									},
+									on: {
+										click: () => {
+											_this.handCall(params.row);
+										}
 									}
 								},
 								'删除'
@@ -919,7 +854,12 @@ export default {
 							h(
 								'a',
 								{
-									class: 'edit-btn'
+									class: 'edit-btn',
+									on: {
+										click: () => {
+											_this.handCall(params.row, 'call');
+										}
+									}
 								},
 								`${mblNoHid ? mblNoHid : ''}(${callStateName ? callStateName : ''})`
 							)
@@ -927,11 +867,18 @@ export default {
 					}
 				},
 				{
+					title: '呼叫类型',
+					align: 'center',
+					key: 'callType',
+					width: 100
+				},
+				{
 					title: '操作',
+					align: 'center',
 					width: 100,
 					key: 'edit',
 					render: (h, params) => {
-						return h('Icon', [
+						return h('div', [
 							h('Icon', {
 								style: {
 									display: _this.readType !== 'read' ? 'inline-block' : 'none'
@@ -939,6 +886,11 @@ export default {
 								class: 'edit-btn',
 								props: {
 									type: 'edit'
+								},
+								on: {
+									click: () => {
+										_this.handCall(params.row);
+									}
 								}
 							})
 						]);
@@ -986,7 +938,12 @@ export default {
 							h(
 								'a',
 								{
-									class: 'edit-btn'
+									class: 'edit-btn',
+									on: {
+										click: () => {
+											_this.handCall(params.row, 'call');
+										}
+									}
 								},
 								`${mblNoHid ? mblNoHid : ''}(${callStateName ? callStateName : ''})`
 							)
@@ -995,6 +952,7 @@ export default {
 				},
 				{
 					title: '操作',
+					align: 'center',
 					width: 100,
 					key: 'edit',
 					render: (h, params) => {
@@ -1008,6 +966,11 @@ export default {
 									class: 'edit-btn',
 									props: {
 										type: 'edit'
+									},
+									on: {
+										click: () => {
+											_this.handCall(params.row);
+										}
 									}
 								},
 								'编辑'
@@ -1055,7 +1018,7 @@ export default {
 						let mblNoHid = params.row.mblNoHid;
 						return h('div', [
 							h(
-								'span',
+								'a',
 								{
 									class: 'edit-btn',
 									props: {
@@ -1069,6 +1032,7 @@ export default {
 				},
 				{
 					title: '操作',
+					align: 'center',
 					width: 100,
 					key: 'edit',
 					render: (h, params) => {
@@ -1096,9 +1060,11 @@ export default {
 		let params = location.hash.split('?');
 		const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
 		this.caseNo = queryData.caseNotest;
+		this.prdTyp = queryData.prdTyptest;
 		this.userId = queryData.userIdtest;
 		this.readType = queryData.readType;
-		delete queryData.caseNotest;
+        delete queryData.caseNotest;
+        delete queryData.prdTyptest;
 		delete queryData.userIdtest;
 		this.queryData = queryData;
 		// 催收信息
@@ -1106,8 +1072,11 @@ export default {
 		this.case_detail_urgent_contact(); // 紧急联系人
 		this.case_detail_case_base_info(); // 基本信息
 		this.case_detail_bindcard_list(); // 绑卡信息
+		this.collectcode_getCollectRelate(); // 获取沟通状态
+		this.case_detail_mail_statistics_list(); // 通话统计
 	},
 	methods: {
+		// 保存通讯录
 		saveTxl() {
 			this.$refs.formItem2.validate((valid) => {
 				if (valid) {
@@ -1115,8 +1084,8 @@ export default {
 				}
 			});
 		},
+		// 新增通讯录
 		async mail_list_add() {
-			// 新增通讯录
 			const res = await mail_list_add({
 				...this.formItem2,
 				caseNo: this.caseNo,
@@ -1146,7 +1115,7 @@ export default {
 				pageSize: this.case_detail_remark_list_pageSize
 			});
 			if (res.code === 1) {
-				this.case_detail_remark_list_tableData = res.data.content;
+				this.case_detail_remark_list_tableData = res.data && res.data.content;
 				this.case_detail_remark_list_pageSize = res.data.size;
 				this.case_detail_remark_list_total = res.data.totalElements;
 			} else {
@@ -1161,7 +1130,7 @@ export default {
 				pageSize: this.case_detail_repay_ord_list_pageSize
 			});
 			if (res.code === 1) {
-				this.case_detail_repay_ord_list_tableData = res.data.content;
+				this.case_detail_repay_ord_list_tableData = res.data && res.data.content;
 				this.case_detail_repay_ord_list_pageSize = res.data.size;
 				this.case_detail_repay_ord_list_total = res.data.totalElements;
 			} else {
@@ -1177,7 +1146,7 @@ export default {
 				pageSize: this.case_detail_user_repay_list_pageSize
 			});
 			if (res.code === 1) {
-				this.case_detail_user_repay_list_tableData = res.data.content;
+				this.case_detail_user_repay_list_tableData = res.data && res.data.content;
 				this.case_detail_user_repay_list_pageSize = res.data.size;
 				this.case_detail_user_repay_list_total = res.data.totalElements;
 			} else {
@@ -1193,7 +1162,7 @@ export default {
 				pageSize: this.case_detail_system_repay_list_pageSize
 			});
 			if (res.code === 1) {
-				this.case_detail_system_repay_list_tableData = res.data.content;
+				this.case_detail_system_repay_list_tableData = res.data && res.data.content;
 				this.case_detail_system_repay_list_pageSize = res.data.size;
 				this.case_detail_system_repay_list_total = res.data.totalElements;
 			} else {
@@ -1210,7 +1179,7 @@ export default {
 				pageSize: this.case_detail_bindcard_list_pageSize
 			});
 			if (res.code === 1) {
-				this.case_detail_bindcard_list_tableData = res.data.content;
+				this.case_detail_bindcard_list_tableData = res.data && res.data.content;
 				this.case_detail_bindcard_list_pageSize = res.data.size;
 				this.case_detail_bindcard_list_total = res.data.totalElements;
 			} else {
@@ -1227,7 +1196,7 @@ export default {
 				pageSize: this.case_detail_allot_list_pageSize
 			});
 			if (res.code === 1) {
-				this.case_detail_allot_list_tableData = res.data.content;
+				this.case_detail_allot_list_tableData = res.data && res.data.content;
 				this.case_detail_allot_list_pageSize = res.data.size;
 				this.case_detail_allot_list_total = res.data.totalElements;
 			} else {
@@ -1244,7 +1213,7 @@ export default {
 				pageSize: this.case_detail_siteletter_list_pageSize
 			});
 			if (res.code === 1) {
-				this.case_detail_siteletter_list_tableData = res.data.content;
+				this.case_detail_siteletter_list_tableData = res.data && res.data.content;
 				this.case_detail_siteletter_list_pageSize = res.data.size;
 				this.case_detail_siteletter_list_total = res.data.totalElements;
 			} else {
@@ -1261,7 +1230,7 @@ export default {
 				pageSize: this.case_detail_mail_statistics_list_pageSize
 			});
 			if (res.code === 1) {
-				this.case_detail_mail_statistics_list_tableData = res.data.content;
+				this.case_detail_mail_statistics_list_tableData = res.data && res.data.content;
 				this.case_detail_mail_statistics_list_pageSize = res.data.size;
 				this.case_detail_mail_statistics_list_total = res.data.totalElements;
 			} else {
@@ -1278,7 +1247,7 @@ export default {
 				pageSize: this.case_detail_mail_detail_list_pageSize
 			});
 			if (res.code === 1) {
-				this.case_detail_mail_detail_list_tableData = res.data.content;
+				this.case_detail_mail_detail_list_tableData = res.data && res.data.content;
 				this.case_detail_mail_detail_list_pageSize = res.data.size;
 				this.case_detail_mail_detail_list_total = res.data.totalElements;
 			} else {
@@ -1295,7 +1264,7 @@ export default {
 				pageSize: this.case_detail_mail_list_pageSize
 			});
 			if (res.code === 1) {
-				this.case_detail_mail_list_tableData = res.data.content;
+				this.case_detail_mail_list_tableData = res.data && res.data.content;
 				this.case_detail_mail_list_pageSize = res.data.size;
 				this.case_detail_mail_list_total = res.data.totalElements;
 			} else {
@@ -1312,7 +1281,7 @@ export default {
 				pageSize: this.case_detail_mail_list_appended_pageSize
 			});
 			if (res.code === 1) {
-				this.case_detail_mail_list_appended_tableData = res.data.content;
+				this.case_detail_mail_list_appended_tableData = res.data && res.data.content;
 				this.case_detail_mail_list_appended_pageSize = res.data.size;
 				this.case_detail_mail_list_appended_total = res.data.totalElements;
 			} else {
@@ -1350,7 +1319,7 @@ export default {
 		async case_detail_case_base_info() {
 			const res = await case_detail_case_base_info(this.queryData);
 			if (res.code === 1) {
-				this.case_detail_case_base_info_Data = res.data.content;
+				this.case_detail_case_base_info_Data = res.data && res.data.content;
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -1360,29 +1329,55 @@ export default {
 		async case_detail_case_identity_info() {
 			const res = await case_detail_case_identity_info(this.queryData);
 			if (res.code === 1) {
-				this.case_detail_case_identity_info_Data = res.data.content;
+				this.case_detail_case_identity_info_Data = res.data && res.data.content;
 			} else {
 				this.$Message.error(res.message);
 			}
 		},
-
+		// tab 所有点击
 		tabClick(name) {
 			this[`${name}_pageNo`] = 1;
 			this[name]();
 		},
+
+		// 取消催记
 		handleCancle() {
+			// 重置初始化数据
+			this.mblNo = '';
+			this.userNmHidCopy = '';
+			this.mblNoHid = '';
+			this.userNm = '';
+			this.formValidate = {};
 			this.showBottom = false;
+			this.callUserTypeLevel = '';
 		},
-		handCall() {
+
+		// 点击电话
+		handCall(obj, type, tag) {
+			this.handleCancle();
+			console.log(obj, type);
+			// type ['call] 拨打电话
+			if (type === 'call') {
+			}
 			if (this.readType !== 'read') {
+				this.callUserTypeLevel = tag;
+				this.formValidate.userNmHid = obj.userNmHid || obj.cntUserNameHid;
+				this.userNmHidCopy = obj.userNmHid || obj.cntUserNameHid;
+				this.mblNoHid = obj.mblNoHid || obj.cntUserMblNoHid;
+				this.userNm = obj.userNm || obj.cntUserName;
+				this.mblNo = obj.mblNo || obj.cntUserMblNo;
 				this.showBottom = true;
 			} else {
 				this.$Message.info('权限不足');
 			}
 		},
-		handOpen(type, title) {
-			this.modalTitle = title;
-			this.visible1 = true;
+		passBack(name) {
+            this.modal =false
+			// this.getList();
+		},
+		handOpen(type) {
+            this.modal = true;
+			// this.parentData[type] = true;
 		},
 		handleView(name) {
 			this.imgName = name;
@@ -1390,34 +1385,67 @@ export default {
 		},
 		isShow() {
 			this.showBtn = !this.showBtn;
-			console.log('00000');
 		},
 		// 页码改变的回调
-		changePage(pageNo) {
-			this.pageNo = pageNo;
-			// this.getList();
+		changePage(name) {
+			this[name]();
 		},
 		// 切换每页条数时的回调
 		changeSize(pageSize, name) {
+			console.log(this.case_detail_allot_list_pageSize);
+			console.log(pageSize, name);
 			this.pageSize = pageSize;
 			this.pageNo = 1;
 		},
+		// 新增催记
 		async case_remark_his_add() {
-			const res = await case_remark_his_add({});
+			const res = await case_remark_his_add({
+				...this.formValidate,
+				promiseRepayDate: dayjs(this.formValidate.promiseRepayDate).format('YYYY-MM-DD HH:mm'),
+				userId: this.userId,
+				userNm: this.userNm,
+				mblNo: this.mblNo,
+				mblNoHid: this.mblNoHid,
+				caseNo: this.caseNo,
+				callUserTypeLevel: this.callUserTypeLevel,
+				userNmHid: this.userNmHidCopy,
+				userNmNew: this.formValidate.userNmHid === this.userNmHidCopy ? '' : this.formValidate.userNmHid
+			});
 			if (res.code === 1) {
+				this.$Message.success('添加成功');
+				setTimeout(() => {
+					this.case_detail_remark_list_pageNo = 1;
+					this.case_detail_remark_list();
+					this.handleCancle();
+				}, 2000);
 			} else {
 				this.$Message.error(res.message);
 			}
 		},
-		case_detail_mail_list_changePage(pageSize) {},
+		case_detail_mail_list_changeSize() {},
+		// 获取沟通状态
+		async collectcode_getCollectRelate() {
+			const res = await collectcode_getCollectRelate({});
+			if (res.code === 1) {
+				this.collectcode_getCollectRelate_Data = res.data;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+		SelectChange(code) {
+			this.collectcode_getCollectRelate_Data.forEach((element) => {
+				if (element.code === code) {
+					this.collectcode_getCollectRelate_childItem = element.codeRelateDomains;
+				}
+			});
+		},
+		// 新增催记按钮
 		handleSubmit(name) {
 			this.$refs[name].validate((valid) => {
 				if (valid) {
-				} else {
-					this.$Message.error('查询条件格式有误，请重新填写');
+					this.case_remark_his_add();
 				}
 			});
 		}
-		// 获取表格数据
 	}
 };

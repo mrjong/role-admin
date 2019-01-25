@@ -682,3 +682,51 @@ fetch({
   options,
 });
 
+/*
+*
+获取code关系
+* */
+export const collectcode_getCollectRelate = (obj, options) =>
+fetch({
+  url: '/collectcode/getCollectRelate',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
+/*
+*
+根据案件号获取申请代扣信息
+* */
+export const repayinfo_getApplyInfo = (obj, options) =>
+fetch({
+  url: '/repayinfo/getApplyInfo',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
+/*
+*
+根据用户ID和产品线查询绑卡信息
+* */
+export const repayinfo_getCardNos = (obj, options) =>
+fetch({
+  url: '/repayinfo/getCardNos',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
+/*
+*
+调用代扣
+* */
+export const repayinfo_applayRepay = (obj, options) =>
+fetch({
+  url: '/repayinfo/applayRepay',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
