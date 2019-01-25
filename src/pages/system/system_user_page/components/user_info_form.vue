@@ -193,7 +193,7 @@
   </div>
 </template>
  <script>
-import { system_user_add, system_user_roles } from "@/service/getData";
+import { system_user_add, system_role_list, system_user_update } from "@/service/getData";
 export default {
   model: {
     prop: "model",
@@ -238,13 +238,6 @@ export default {
             trigger: 'blur'
           }
         ],
-        mobile: [
-          {
-            pattern: this.GLOBAL.mblNo,
-            message: '请输入正确手机号',
-            trigger: 'blur'
-          }
-        ],
         state: [
           {
             required: true,
@@ -267,9 +260,11 @@ export default {
       },
     };
   },
-  props: {   
-       model: {},
-    getDirObj: {}
+  props: {
+    model: {},
+    getDirObj: {},
+    parentData: {}
+
   },
   watch: {
     model: function () {
@@ -279,14 +274,25 @@ export default {
   },
   created() {
     console.log(this.model);
-    this.system_user_roles()
+    this.system_role_list()
+
   },
   methods: {
     // 获取表格数据
-    async system_user_roles() {
-      const res = await system_user_roles();
+    async system_role_list() {
+      const res = await system_role_list({
+        roleType: '01',
+        status: '1'
+      });
       if (res.code === 1) {
-        this.rolesData = res.data
+        this.rolesData = res.data.content
+        setTimeout(() => {
+          this.formItem = {
+            ...this.parentData.userData,
+            state: this.parentData.userData.roleStatus
+          }
+
+        }, 500)
       } else {
         this.$Message.error(res.message);
       }
@@ -294,26 +300,40 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.system_user_add()
+          if (this.parentData.type != '0') {
+            this.system_user_update()
+          } else {
+            this.system_user_add()
+          }
         }
       });
     },
-    async system_user_add() {
-      let roleIds = ''
-      if (this.formItem && this.formItem.roleIds && this.formItem.roleIds.length > 0) {
-        this.formItem.roleIds.forEach(element => {
-          roleIds = roleIds + element + ','
-        });
 
-        delete (this.formItem.roleIds)
-        console.log(roleIds, this.formItem)
+    async system_user_update() {
+      const res = await system_user_update({
+        ...this.formItem,
+        userType: '01'
+      })
+      if (res.code === 1) {
+        this.$Message.success('修改成功');
+        setTimeout(() => {
+          this.del()
+        })
+      } else {
+        this.$Message.error(res.message);
       }
+
+    },
+    async system_user_add() {
       const res = await system_user_add({
         ...this.formItem,
-        roleIds
+        userType: '01'
       })
       if (res.code === 1) {
         this.$Message.success('添加成功');
+        setTimeout(() => {
+          this.del()
+        })
       } else {
         this.$Message.error(res.message);
       }
@@ -326,29 +346,6 @@ export default {
       this.$emit("passBack", this.childrenData);
       // this.$emit("getChildrenStatus", this.childrenData);
     },
-    // // 获取表格数据
-    // async getList() {
-    //   const searchParam = [];
-    //   const res = await buffet_list({
-    //     searchParam:
-    //       this.formItem &&
-    //       JSON.stringify(this.formItem) !== "{}" &&
-    //     page: this.pageNo,
-    //     perPage: this.pageSize,
-    //     config: {
-    //       hideMessage: true
-    //     }
-    //   });
-    //   if (res.data && res.data.data) {
-    //     this.tableData = res.data.data;
-    //     this.total = res.data.total;
-    //     this.pageNo = res.data.current_page;
-    //   } else {
-    //     this.tableData = [];
-    //     this.total = 0;
-    //     this.pageNo = 1;
-    //   }
-    // },
     // 重置
     clearForm(name) {
       this.pageNo = 1;

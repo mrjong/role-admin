@@ -21,7 +21,7 @@ import {
 	case_detail_case_identity_info, // 查询案件详情身份信息
 	mail_list_add, // 新增通讯录
 	case_remark_his_add, // 新增催记
-	collectcode_getCollectRelate //
+	collectcode_getCollectRelate // 获取沟通状态
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
@@ -35,8 +35,8 @@ export default {
 		return {
 			parentData: {},
 			prdTyp: '',
-            userNm: '',
-            modal:false,
+			userNm: '',
+			modal: false,
 			formItem2: {},
 			tabName: '',
 			callUserTypeLevel: '',
@@ -1063,8 +1063,8 @@ export default {
 		this.prdTyp = queryData.prdTyptest;
 		this.userId = queryData.userIdtest;
 		this.readType = queryData.readType;
-        delete queryData.caseNotest;
-        delete queryData.prdTyptest;
+		delete queryData.caseNotest;
+		delete queryData.prdTyptest;
 		delete queryData.userIdtest;
 		this.queryData = queryData;
 		// 催收信息
@@ -1074,6 +1074,7 @@ export default {
 		this.case_detail_bindcard_list(); // 绑卡信息
 		this.collectcode_getCollectRelate(); // 获取沟通状态
 		this.case_detail_mail_statistics_list(); // 通话统计
+		this.case_detail_case_identity_info(); // 查询案件详情身份信息
 	},
 	methods: {
 		// 保存通讯录
@@ -1317,7 +1318,10 @@ export default {
 
 		// 查询案件详情基础信息
 		async case_detail_case_base_info() {
-			const res = await case_detail_case_base_info(this.queryData);
+			const res = await case_detail_case_base_info({
+				...this.queryData,
+				id: this.caseNo
+			});
 			if (res.code === 1) {
 				this.case_detail_case_base_info_Data = res.data && res.data.content;
 			} else {
@@ -1327,9 +1331,12 @@ export default {
 
 		// 查询案件详情身份信息
 		async case_detail_case_identity_info() {
-			const res = await case_detail_case_identity_info(this.queryData);
+			const res = await case_detail_case_identity_info({
+				...this.queryData,
+				id: this.caseNo
+			});
 			if (res.code === 1) {
-				this.case_detail_case_identity_info_Data = res.data && res.data.content;
+				this.case_detail_case_identity_info_Data = res.data;
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -1372,11 +1379,11 @@ export default {
 			}
 		},
 		passBack(name) {
-            this.modal =false
+			this.modal = false;
 			// this.getList();
 		},
 		handOpen(type) {
-            this.modal = true;
+			this.modal = true;
 			// this.parentData[type] = true;
 		},
 		handleView(name) {

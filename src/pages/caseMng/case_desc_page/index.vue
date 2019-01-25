@@ -109,7 +109,7 @@
           @click="showPanel=!showPanel"
         >
           <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
-          张三（男/22）
+          {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm}}（{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
           <Button
             v-if="readType!=='read'"
             @click="handOpen('zhongcai','申请仲裁')"
@@ -163,7 +163,7 @@
             >
             <div class="panel-desc-title">
               身份证号：<span>
-                {{99956789876545678}}
+                {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNo}}
               </span>
             </div>
             </Col>
@@ -175,7 +175,7 @@
             >
             <div class="panel-desc-title">
               逾期应还金额：<span>
-                {{999 | money}}
+                {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.overdueAmt | money}}
               </span>
             </div>
             </Col>
@@ -187,7 +187,7 @@
             >
             <div class="panel-desc-title">
               总逾期期数：<span>
-                甘肃省兰州市兰州市城关区南昌路1852号703室
+                {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.overduePerdCount}}
               </span>
             </div>
             </Col>
@@ -199,7 +199,7 @@
             >
             <div class="panel-desc-title">
               家庭住址：<span>
-                甘肃省兰州市兰州市城关区南昌路1852号703室
+                {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.address}}
               </span>
             </div>
             </Col>
@@ -996,7 +996,7 @@
     <huakou
       v-on:passBack="passBack"
       v-model="modal"
-       v-if="modal"
+      v-if="modal"
       :prdTyp="prdTyp"
       :caseNo="caseNo"
       :userId="userId"

@@ -730,3 +730,17 @@ fetch({
   options,
 });
 
+/*
+*
+系统用户密码重置接口
+* */
+export const system_user_reset = (obj, options) =>
+fetch({
+  url: '/system/user/reset',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
+
+
