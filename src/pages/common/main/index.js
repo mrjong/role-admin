@@ -120,6 +120,7 @@ export default {
 					this.$store.commit('logout', this);
 					this.$store.commit('clearOpenedSubmenu');
 				} else {
+                    location.replace('/')
 					this.$Message.error(res.message);
 				}
 			}

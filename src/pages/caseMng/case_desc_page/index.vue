@@ -1,24 +1,102 @@
 <template>
 
   <div class="panel_list p5">
-    <!-- 弹层 -->
+
     <Modal
-      title="查看图片"
-      v-model="visible"
+      title="新增通讯录"
+      v-model="modal7"
     >
-      <img
-        :src="imgName"
-        v-if="visible"
-        style="width: 100%"
+      <Form
+        ref="formItem2"
+        :model="formItem2"
+        :label-width="100"
+        class="panel_list"
+        :rules="ruleValidate2"
       >
+        <Row>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="12"
+            :lg="12"
+            span="12"
+          >
+          <FormItem
+            span="6"
+            label="手机号码:"
+            prop="mblNo"
+          >
+            <Input
+              size="small"
+              clearable
+              v-model="formItem2.mblNo"
+              placeholder="请输入手机号码"
+            ></Input>
+          </FormItem>
+          </Col>
+
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="12"
+            :lg="12"
+            span="12"
+          >
+          <FormItem
+            span="6"
+            label="姓名:"
+            prop="userNm"
+          >
+            <Input
+              size="small"
+              clearable
+              v-model="formItem2.userNm"
+              placeholder="请输入姓名"
+            ></Input>
+          </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="12"
+            :lg="12"
+            span="12"
+          >
+          <FormItem
+            label="关系:"
+            prop="callUserType"
+          >
+            <Select
+              size="small"
+              placeholder="请选择关系"
+              v-model="formItem2.callUserType"
+            >
+              <Option
+                v-for="item in getDirObj.CNT_REL_TYP"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+
+        </Row>
+
+      </Form>
+      <div slot="footer">
+        <Button
+          type="ghost"
+          size="small"
+          @click="closeTxl"
+        >关闭</Button>
+        <Button
+          type="primary"
+          size="small"
+          @click="saveTxl"
+        >提交</Button>
+      </div>
     </Modal>
-    <Modal
-      class="jianmian"
-      width="90%"
-      v-model="visible1"
-    >
-      <jianmian></jianmian>
-    </Modal>
+
     <!-- 弹层 -->
     <div
       class="case-left-container"
@@ -31,38 +109,44 @@
           @click="showPanel=!showPanel"
         >
           <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
-          张三（男/22）
+          {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm}}（{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
           <Button
+            v-if="readType!=='read'"
             @click="handOpen('zhongcai','申请仲裁')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
           >申请仲裁</Button>
           <Button
+            v-if="readType!=='read'"
             @click="handOpen('huankuan','申请还款')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
           >申请还款</Button>
           <Button
-            @click="handOpen('huakou','申请划扣')"
+            v-if="readType!=='read'"
+            @click.stop="handOpen('huakou')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
           >申请划扣</Button>
 
           <Button
+            v-if="readType!=='read'"
             @click="handOpen('jianmian','申请减免')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
           >申请减免</Button>
           <Button
+            v-if="readType!=='read'"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
           >下一个</Button>
           <Button
+            v-if="readType!=='read'"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
@@ -78,7 +162,9 @@
               :lg="24"
             >
             <div class="panel-desc-title">
-              身份证号：<span>360732199105251538</span>
+              身份证号：<span>
+                {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNo}}
+              </span>
             </div>
             </Col>
             <Col
@@ -88,7 +174,9 @@
               :lg="24"
             >
             <div class="panel-desc-title">
-              逾期应还金额：<span>675.00</span>
+              逾期应还金额：<span>
+                {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.overdueAmt | money}}
+              </span>
             </div>
             </Col>
             <Col
@@ -98,7 +186,9 @@
               :lg="24"
             >
             <div class="panel-desc-title">
-              总逾期期数：<span>2018-09-10 15:25:16</span>
+              总逾期期数：<span>
+                {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.overduePerdCount}}
+              </span>
             </div>
             </Col>
             <Col
@@ -108,7 +198,9 @@
               :lg="24"
             >
             <div class="panel-desc-title">
-              家庭住址：<span>甘肃省兰州市兰州市城关区南昌路1852号703室</span>
+              家庭住址：<span>
+                {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.address}}
+              </span>
             </div>
             </Col>
             </Col>
@@ -245,16 +337,15 @@
                 <!-- 分页 -->
                 <div class="vue-panel-page">
 
-                  <div style="float: right;">
+                  <div class="fr">
                     <Page
                       :total="case_detail_remark_list_total"
                       show-total
                       size="small"
                       :page-size-opts="[10, 20, 50, 100]"
                       show-elevator
-                      show-sizer
                       :page-size="case_detail_remark_list_pageSize"
-                      :current="case_detail_remark_list_pageNo"
+                      :current.sync="case_detail_remark_list_pageNo"
                       @on-page-size-change="changeSize('case_detail_remark_list')"
                       @on-change="changePage('case_detail_remark_list')"
                     ></Page>
@@ -277,17 +368,16 @@
                 <!-- 分页 -->
                 <div class="vue-panel-page">
 
-                  <div style="float: right;">
+                  <div class="fr">
                     <Page
                       :total="case_detail_repay_ord_list_total"
                       show-total
                       size="small"
                       :page-size-opts="[10, 20, 50, 100]"
                       show-elevator
-                      show-sizer
                       :page-size="case_detail_repay_ord_list_pageSize"
-                      :current="case_detail_repay_ord_list_pageNo"
-                      @on-page-size-change="changeSize('case_detail_repay_ord_list')"
+                      :current.sync="case_detail_repay_ord_list_pageNo"
+                      @on-page-size-change="changeSize(null,'case_detail_repay_ord_list')"
                       @on-change="changePage('case_detail_repay_ord_list')"
                     ></Page>
                   </div>
@@ -309,16 +399,15 @@
                 <!-- 分页 -->
                 <div class="vue-panel-page">
 
-                  <div style="float: right;">
+                  <div class="fr">
                     <Page
                       :total="case_detail_user_repay_list_total"
                       show-total
                       size="small"
                       :page-size-opts="[10, 20, 50, 100]"
                       show-elevator
-                      show-sizer
                       :page-size="case_detail_user_repay_list_pageSize"
-                      :current="case_detail_user_repay_list_pageNo"
+                      :current.sync="case_detail_user_repay_list_pageNo"
                       @on-page-size-change="changeSize('case_detail_user_repay_list')"
                       @on-change="changePage('case_detail_user_repay_list')"
                     ></Page>
@@ -341,16 +430,15 @@
                 <!-- 分页 -->
                 <div class="vue-panel-page">
 
-                  <div style="float: right;">
+                  <div class="fr">
                     <Page
                       :total="case_detail_system_repay_list_total"
                       show-total
                       size="small"
                       :page-size-opts="[10, 20, 50, 100]"
                       show-elevator
-                      show-sizer
                       :page-size="case_detail_system_repay_list_pageSize"
-                      :current="case_detail_system_repay_list_pageNo"
+                      :current.sync="case_detail_system_repay_list_pageNo"
                       @on-page-size-change="changeSize('case_detail_system_repay_list')"
                       @on-change="changePage('case_detail_system_repay_list')"
                     ></Page>
@@ -387,16 +475,15 @@
                 <!-- 分页 -->
                 <div class="vue-panel-page">
 
-                  <div style="float: right;">
+                  <div class="fr">
                     <Page
                       :total="case_detail_bindcard_list_total"
                       show-total
                       size="small"
                       :page-size-opts="[10, 20, 50, 100]"
                       show-elevator
-                      show-sizer
                       :page-size="case_detail_bindcard_list_pageSize"
-                      :current="case_detail_bindcard_list_pageNo"
+                      :current.sync="case_detail_bindcard_list_pageNo"
                       @on-page-size-change="changeSize('case_detail_bindcard_list')"
                       @on-change="changePage('case_detail_bindcard_list')"
                     ></Page>
@@ -419,16 +506,15 @@
                 <!-- 分页 -->
                 <div class="vue-panel-page">
 
-                  <div style="float: right;">
+                  <div class="fr">
                     <Page
                       :total="case_detail_allot_list_total"
                       show-total
                       size="small"
-                      :page-size-opts="[10, 20, 50, 100]"
+                      :page-size-opts="[10, 20, 30, 40]"
                       show-elevator
-                      show-sizer
                       :page-size="case_detail_allot_list_pageSize"
-                      :current="case_detail_allot_list_pageNo"
+                      :current.sync="case_detail_allot_list_pageNo"
                       @on-page-size-change="changeSize('case_detail_allot_list')"
                       @on-change="changePage('case_detail_allot_list')"
                     ></Page>
@@ -451,16 +537,15 @@
                 <!-- 分页 -->
                 <div class="vue-panel-page">
 
-                  <div style="float: right;">
+                  <div class="fr">
                     <Page
                       :total="case_detail_siteletter_list_total"
                       show-total
                       size="small"
                       :page-size-opts="[10, 20, 50, 100]"
                       show-elevator
-                      show-sizer
                       :page-size="case_detail_siteletter_list_pageSize"
-                      :current="case_detail_siteletter_list_pageNo"
+                      :current.sync="case_detail_siteletter_list_pageNo"
                       @on-page-size-change="changeSize('case_detail_siteletter_list')"
                       @on-change="changePage('case_detail_siteletter_list')"
                     ></Page>
@@ -472,7 +557,37 @@
             <TabPane
               label="地址信息"
               name="case_detail_address_info"
-            >系统代扣还款</TabPane>
+            >
+              <div class="panel-desc">
+                <Row :gutter="10">
+                  <Col
+                    :xs="24"
+                    :sm="24"
+                    :md="24"
+                    :lg="24"
+                  >
+                  <div class="panel-desc-title">
+                    家庭住址：<span>
+                      {{case_detail_address_info_Data&&case_detail_address_info_Data.usrProvAddr}}{{case_detail_address_info_Data&&case_detail_address_info_Data.usrCityAddr}}{{case_detail_address_info_Data&&case_detail_address_info_Data.usrDtlAddr}}
+                    </span>
+                  </div>
+                  </Col>
+
+                  <Col
+                    :xs="24"
+                    :sm="24"
+                    :md="24"
+                    :lg="24"
+                  >
+                  <div class="panel-desc-title">
+                    工作地址：<span>
+                      {{case_detail_address_info_Data&&case_detail_address_info_Data.workProvAddr}}{{case_detail_address_info_Data&&case_detail_address_info_Data.workCityAddr}}{{case_detail_address_info_Data&&case_detail_address_info_Data.workDtlAddr}}
+                    </span>
+                  </div>
+                  </Col>
+                </Row>
+              </div>
+            </TabPane>
           </Tabs>
         </p>
       </Card>
@@ -524,7 +639,12 @@
                   </span>
                   <span
                     class="tel"
-                    @click="handCall"
+                    @click="handCall({
+                        userNmHid:'*峰',
+                        userNm:'谢晓峰',
+                           mblNoHid:'222',
+                        mblNo:'22222'
+                    },'call','01')"
                   >
                     <Tooltip
                       content="拨打"
@@ -537,80 +657,64 @@
                     关机
                   </span>
                   <Tooltip
+                    v-if="readType!=='read'"
                     class="edit-hover"
                     content="编辑"
                     placement="left"
                   >
                     <Icon
+                      @click="handCall({
+                        userNmHid:'*峰',
+                        mblNoHid:'222',
+                        userNm:'谢晓峰',
+                        mblNo:'22222'
+                    },null,'01')"
                       class="edit"
                       type="edit"
                     ></Icon>
                   </Tooltip>
                 </div>
-                <div class="ivu-alert-copy ivu-alert-error">
+                <div
+                  class="ivu-alert-copy ivu-alert-error"
+                  v-for="(item,index) in case_detail_urgent_contact_Data"
+                >
                   <span class="state-name">
                     紧急联系人
                   </span>
                   <span class="name">
-                    谢晓峰<span>（配偶）</span>
+                    {{item.cntUserNameHid}}<span>（{{item.cntRelTypName}}）</span>
                   </span>
                   <span
                     class="tel"
-                    @click="handCall"
+                    @click="handCall(item,'call','02')"
                   >
                     <Tooltip
                       content="拨打"
                       placement="left"
                     >
-                      138900000000
+                      {{item.cntUserMblNoHid}}
                     </Tooltip>
-                  </span>
-                  <span class="state">
-                    关机
-                  </span>
-                  <Tooltip
-                    class="edit-hover"
-                    content="编辑"
-                    placement="left"
-                  >
-                    <Icon
-                      class="edit"
-                      type="edit"
-                    ></Icon>
-                  </Tooltip>
-                </div>
-                <div class="ivu-alert-copy ivu-alert-error">
-                  <span class="state-name">
-                    紧急联系人
-                  </span>
-                  <span class="name">
-                    谢晓峰<span>（同学）</span>
                   </span>
                   <span
-                    class="tel"
-                    @click="handCall"
+                    class="state"
+                    v-if="item.callStateName"
                   >
-                    <Tooltip
-                      content="拨打"
-                      placement="left"
-                    >
-                      138900000000
-                    </Tooltip>
-                  </span>
-                  <span class="state">
-                    关机
+                    {{item.callStateName}}
                   </span>
                   <Tooltip
+                    v-if="readType!=='read'"
                     class="edit-hover"
                     content="编辑"
                     placement="left"
                   >
                     <Icon
+                      @click="handCall(item,null,'02')"
                       class="edit"
                       type="edit"
                     ></Icon>
                   </Tooltip>
                 </div>
+
               </div>
               <div class="heighti">
 
@@ -633,16 +737,15 @@
                       <!-- 分页 -->
                       <div class="vue-panel-page">
 
-                        <div style="float: right;">
+                        <div class="fr">
                           <Page
                             :total="case_detail_mail_statistics_list_total"
                             show-total
                             size="small"
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
-                            show-sizer
                             :page-size="case_detail_mail_statistics_list_pageSize"
-                            :current="case_detail_mail_statistics_list_pageNo"
+                            :current.sync="case_detail_mail_statistics_list_pageNo"
                             @on-page-size-change="changeSize('case_detail_mail_statistics_list')"
                             @on-change="changePage('case_detail_mail_statistics_list')"
                           ></Page>
@@ -665,16 +768,15 @@
                       <!-- 分页 -->
                       <div class="vue-panel-page">
 
-                        <div style="float: right;">
+                        <div class="fr">
                           <Page
                             :total="case_detail_mail_detail_list_total"
                             show-total
                             size="small"
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
-                            show-sizer
                             :page-size="case_detail_mail_detail_list_pageSize"
-                            :current="case_detail_mail_detail_list_pageNo"
+                            :current.sync="case_detail_mail_detail_list_pageNo"
                             @on-page-size-change="changeSize('case_detail_mail_detail_list')"
                             @on-change="changePage('case_detail_mail_detail_list')"
                           ></Page>
@@ -697,16 +799,15 @@
                       <!-- 分页 -->
                       <div class="vue-panel-page">
 
-                        <div style="float: right;">
+                        <div class="fr">
                           <Page
                             :total="case_detail_mail_list_total"
                             show-total
                             size="small"
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
-                            show-sizer
                             :page-size="case_detail_mail_list_pageSize"
-                            :current="case_detail_mail_list_pageNo"
+                            :current.sync="case_detail_mail_list_pageNo"
                             @on-page-size-change="changeSize('case_detail_mail_list')"
                             @on-change="changePage('case_detail_mail_list')"
                           ></Page>
@@ -729,16 +830,15 @@
                       <!-- 分页 -->
                       <div class="vue-panel-page">
 
-                        <div style="float: right;">
+                        <div class="fr">
                           <Page
                             :total="case_detail_mail_list_appended_total"
                             show-total
                             size="small"
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
-                            show-sizer
                             :page-size="case_detail_mail_list_appended_pageSize"
-                            :current="case_detail_mail_list_appended_pageNo"
+                            :current.sync="case_detail_mail_list_appended_pageNo"
                             @on-page-size-change="changeSize('case_detail_mail_list_appended')"
                             @on-change="changePage('case_detail_mail_list_appended')"
                           ></Page>
@@ -748,11 +848,13 @@
                     </div>
                   </TabPane>
                   <Button
-                    class="fr vue-back-btn header-btn"
+                    class="vue-back-btn header-btn mt5"
                     type="primary"
+                    v-if="readType!=='read'"
                     size="small"
                     slot="extra"
-                  >增加</Button>
+                    @click.stop="addtxl"
+                  >新增</Button>
                 </Tabs>
               </div>
             </Card>
@@ -769,57 +871,63 @@
               >
                 <FormItem
                   label="沟通对象"
-                  prop="name"
+                  prop="userNmHid"
                 >
                   <Input
                     size="small"
-                    disabled
-                    v-model="formValidate.name"
+                    v-model="formValidate.userNmHid"
                     placeholder="请输入沟通对象"
                   ></Input>
                 </FormItem>
                 <FormItem
                   label="关系"
-                  prop="city"
+                  prop="callUserType"
                 >
                   <Select
                     size="small"
-                    v-model="formValidate.city"
+                    v-model="formValidate.callUserType"
                     placeholder="请输入选择关系"
                   >
-                    <Option value="beijing">New York</Option>
-                    <Option value="shanghai">London</Option>
-                    <Option value="shenzhen">Sydney</Option>
+                    <Option
+                      v-for="item in getDirObj.CNT_REL_TYP"
+                      :value="item.itemCode"
+                      :key="item.itemCode"
+                    >{{ item.itemName }}</Option>
                   </Select>
                 </FormItem>
 
                 <FormItem
                   label="拨打状态"
-                  prop="city"
+                  prop="collectResult"
                 >
                   <Select
                     size="small"
-                    v-model="formValidate.city"
+                    v-model="formValidate.collectResult"
+                    @on-change="SelectChange"
                     placeholder="请输入选择拨打状态"
                   >
-                    <Option value="beijing">New York</Option>
-                    <Option value="shanghai">London</Option>
-                    <Option value="shenzhen">Sydney</Option>
+                    <Option
+                      v-for="item in collectcode_getCollectRelate_Data"
+                      :value="item.code"
+                      :key="item.code"
+                    >{{ item.codeName }}</Option>
                   </Select>
                 </FormItem>
 
                 <FormItem
                   label="沟通状态"
-                  prop="collectSts"
+                  prop="communicateResult"
                 >
                   <Select
                     size="small"
-                    v-model="formValidate.collectSts"
+                    v-model="formValidate.communicateResult"
                     placeholder="请输入选择沟通状态"
                   >
-                    <Option value="beijing">New York</Option>
-                    <Option value="shanghai">London</Option>
-                    <Option value="shenzhen">Sydney</Option>
+                    <Option
+                      v-for="item in collectcode_getCollectRelate_childItem"
+                      :value="item.codeKeyResult"
+                      :key="item.codeKeyResult"
+                    >{{ item.codeNameResult }}</Option>
                   </Select>
                 </FormItem>
 
@@ -830,17 +938,18 @@
                   <DatePicker
                     style="width:100%;"
                     size="small"
-                    type="date"
+                    type="datetime"
+                    format="yyyy-MM-dd HH:mm"
                     placeholder="请选择承诺还款时间"
-                    v-model="formValidate.date"
+                    v-model="formValidate.promiseRepayDate"
                   ></DatePicker>
                 </FormItem>
                 <FormItem
                   label="备注"
-                  prop="desc"
+                  prop="collectRmk"
                 >
                   <Input
-                    v-model="formValidate.desc"
+                    v-model="formValidate.collectRmk"
                     type="textarea"
                     :autosize="{minRows: 2,maxRows: 5}"
                     placeholder="请输入备注"
@@ -865,6 +974,34 @@
         </transition>
       </div>
     </div>
+    <!-- 弹层 -->
+    <Modal
+      title="查看图片"
+      v-model="visible"
+    >
+      <img
+        :src="imgName"
+        v-if="visible"
+        style="width: 100%"
+      >
+    </Modal>
+    <Modal
+      v-if="modalTitle==='申请减免'"
+      class="jianmian"
+      width="90%"
+      v-model="visible1"
+    >
+      <jianmian></jianmian>
+    </Modal>
+    <huakou
+      v-on:passBack="passBack"
+      v-model="modal"
+      v-if="modal"
+      :prdTyp="prdTyp"
+      :caseNo="caseNo"
+      :userId="userId"
+    ></huakou>
+
   </div>
 </template>
 <script src="./index.js"></script>

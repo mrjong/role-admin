@@ -1,9 +1,9 @@
 import axios from 'axios';
 import iView from 'iview';
-import qs from 'qs';
-import Vue from 'vue';
 import Cookie from 'js-cookie';
 import util from './util';
+import store from '@/store';
+import storage from '@/libs/storage';
 axios.defaults.baseURL = '/admin';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 let timer;
@@ -29,7 +29,7 @@ axios.interceptors.request.use(
 				}
 				iView.Message.loading({
 					content: '数据加载中...',
-					duration: 10000
+					duration: 10
 				});
 			}, 500);
 			timerList.push(timer);
@@ -44,7 +44,6 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
 	(response) => {
 		num--;
-		console.log('tag', num, timer);
 		if (num <= 0) {
 			if (timer) {
 				for (let i = 0; i < timerList.length; i++) {
@@ -52,15 +51,17 @@ axios.interceptors.response.use(
 				}
 				timer = '';
 				timerList = [];
-				iView.Message.destroy();
-			}
-		} else {
-			iView.Message.loading({
-				content: '数据加载中...',
-				duration: 10000
-			});
+				setTimeout(() => {
+					iView.Message.destroy();
+				}, 2);
+            }
+            //  else {
+			// 	iView.Message.loading({
+			// 		content: '数据加载中...',
+			// 		duration: 10
+			// 	});
+			// }
 		}
-		console.log(response, '00000000000');
 		return response.data;
 	},
 	(error) => {
@@ -75,12 +76,19 @@ axios.interceptors.response.use(
 			case 401:
 				iView.Message.error((error && error.response && error.response.data) || '服务器繁忙,稍后重试');
 				util.clearAllCookie();
-				console.log(Vue);
+				store.commit('logout', this);
+				store.commit('clearOpenedSubmenu');
 				setTimeout(() => {
-					window.$router.push({
-						name: 'login'
-					});
+					location.replace('/');
 				}, 3000);
+				break;
+
+			case 400:
+			case 404:
+			case 501:
+			case 500:
+			case 503:
+				iView.Message.error('服务器繁忙,稍后重试');
 				break;
 
 			default:

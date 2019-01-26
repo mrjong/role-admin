@@ -85,29 +85,16 @@ export default {
       },
       pageNo: 1,
       pageSize: 10,
-      total: 100,
+      total: 0,
       formValidateInfo: {
 
       },
-      tableData: [
-        {
-          createUser: "超级管理员",
-          createtime: 1545635436000,
-          description: "测试系统管理员",
-          id: "5bdb56ec980e4b998ac372af9a6dcad0",
-          name: "测试2",
-          roleCode: null,
-          roleStatus: 1,
-          roleType: "01",
-          updateUser: "超级管理员",
-          updatetime: 1545635436000,
-        },
-      ],
+      tableData: [],
       tableColumns: [
         {
           title: '序号',
           type: 'index',
-          width: 60,
+          minWidth: 60,
           searchOperator: '=',
           align: alignCenter,
           key: 'buffet_id'
@@ -118,7 +105,7 @@ export default {
           key: 'name',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          minWidth: widthVal
         },
         {
           title: '角色状态',
@@ -126,7 +113,7 @@ export default {
           key: 'roleStatus',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          minWidth: widthVal
         },
         {
           title: '角色类型',
@@ -134,7 +121,7 @@ export default {
           key: 'roleType',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          minWidth: widthMidVal
         },
         {
           title: '创建时间',
@@ -142,7 +129,7 @@ export default {
           key: 'createtime',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal,
+          minWidth: widthVal,
           render: (h, params) => {
             let createDate = params.row.createtime;
             createDate = createDate
@@ -158,7 +145,7 @@ export default {
           key: 'updatetime',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal,
+          minWidth: widthMidVal,
           render: (h, params) => {
             let createDate = params.row.updatetime;
             createDate = createDate

@@ -1,5 +1,6 @@
 import { repay_repayDetail_list, repay_repayDetail_exportDown } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
+import util from '@/libs/util';
 export default {
   name: 'remoney_detail',
   mixins: [sysDictionary],
@@ -8,7 +9,8 @@ export default {
     var widthVal = 180;
     var widthMidVal = 100;
     return {
-
+      getDirList: ['PAY_OFF_STS' ],
+      getDirObj: {},
       showPanel: false,
       showPanel2: false,
       opCompanyNameList: [
@@ -191,7 +193,7 @@ export default {
           key: 'repayDate',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal,
+          width: widthVal,
           render: (h, params) => {
             let lastDate = params.row.repayDate;
             lastDate = lastDate
@@ -206,7 +208,7 @@ export default {
           key: 'dueDate',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal,
+          width: widthVal,
           render: (h, params) => {
             let lastDate = params.row.dueDate;
             lastDate = lastDate
@@ -221,7 +223,7 @@ export default {
           key: 'allotDate',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal,
+          width: widthVal,
           render: (h, params) => {
             let lastDate = params.row.allotDate;
             lastDate = lastDate
@@ -236,7 +238,7 @@ export default {
           key: 'opCompayName',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthMidVal
         },
         {
           title: '经办人',
@@ -244,7 +246,7 @@ export default {
           key: 'opUserName',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthMidVal
         },
       ]
     };
@@ -254,15 +256,11 @@ export default {
   },
   methods: {
     // 导出数据
-    exportData(){
-      this.$Modal.confirm({
-        content:'确认要导出数据',
-        onOk:function(){
-          let res= repay_repayDetail_exportDown({
-            ...this.formValidate
-          })
-        },
-      })
+    async exportData(){
+      const res= await repay_repayDetail_exportDown({
+        ...this.formValidate
+      });
+      util.dowloadfile('回款明细', res);
     },
     // 改变日期区间的格式之后进行处理
     changeActDate(val1, val2) {
@@ -302,7 +300,7 @@ export default {
         pageSize: this.pageSize,
         ...this.formValidate
       })
-      console.log(res)
+      console.log(res,'明细列表');
       if(res && res.code === 1){
         this.$Message.success('请求成功!');
         let data = res.data;

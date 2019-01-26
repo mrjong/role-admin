@@ -3,7 +3,7 @@
     <!-- 检索条件 -->
     <Card class="vue-panel">
       <p slot="title" @click="showPanel=!showPanel">
-        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
+        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon> 检索条件
       </p>
       <Form
         v-if="!showPanel"
@@ -40,13 +40,7 @@
                 long
                 size="small"
               >检索</Button>
-              <Button
-                type="primary"
-                @click="addRole"
-                style="width:80px;margin-left: 8px"
-                long
-                size="small"
-              >添加</Button>
+            
               <Button
                 size="small"
                 type="ghost"
@@ -60,7 +54,14 @@
     </Card>
     <Card class="vue-panel-table">
       <p slot="title" @click="showPanel2=!showPanel2">
-        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
+        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon> 检索结果
+          <Button
+                type="primary"
+                @click="addRole"
+                class="fr header-btn"
+                style="width:80px"
+                size="small"
+              >添加</Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
@@ -84,17 +85,7 @@
         </div>
       </div>
     </Card>
-    <Modal v-model="modalSee" title="基本信息" @on-ok="ok">
-      <p slot="header">
-        <Icon type="filing"></Icon>
-        <span>角色信息</span>
-      </p>
-        <Card class="vue-panel">
-          <p
-            slot="title"
-          >
-            基本信息
-          </p>
+    <Modal v-model="modalSee" title="角色信息" @on-ok="ok">
           <Form
             v-if="!showPanel"
             ref="formValidate"
@@ -225,9 +216,8 @@
               </Col>
             </Row>
           </Form>
-        </Card>
       <div slot="footer">
-        <Button  size="large" long :loading="modal_loading" @click="closeModal('1')">关闭</Button>
+        <Button :loading="modal_loading" size="small" @click="closeModal('1')">关闭</Button>
       </div>
     </Modal>
     <Modal

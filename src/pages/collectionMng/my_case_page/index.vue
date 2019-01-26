@@ -9,13 +9,6 @@
       >
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
         检索条件
-        <router-link to="/demo/demo_desc">
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >详情</Button>
-        </router-link>
       </p>
       <Form
         v-if="!showPanel"
@@ -35,12 +28,15 @@
           >
           <FormItem
             span="6"
+           
             label="产品线:"
             prop="prdTyp"
           >
             <Select
               size="small"
               clearable
+               multiple
+            filterable
               placeholder="请选择产品线"
               v-model="formItem.prdTyp"
             >
@@ -66,6 +62,8 @@
           >
             <Select
               size="small"
+                 multiple
+            filterable
               clearable
               placeholder="请选择产品期数"
               v-model="formItem.perdCnt"
@@ -286,6 +284,8 @@
             <Select
               size="small"
               clearable
+                 multiple
+            filterable
               placeholder="请选择信用级别"
               v-model="formItem.creditLevel"
             >
@@ -307,19 +307,19 @@
           <FormItem
             span="6"
             label="沟通状态:"
-            prop="creditLevel"
+            prop="collectSts"
           >
             <Select
               size="small"
               clearable
               placeholder="请选择沟通状态"
-              v-model="formItem.creditLevel"
+              v-model="formItem.collectSts"
             >
               <Option
-                v-for="item in getDirObj.CREDIT_LEVEL"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
+                v-for="item in getDirObj2"
+                :value="item.codeKey"
+                :key="item.codeKey"
+              >{{ item.codeName }}</Option>
             </Select>
           </FormItem>
           </Col>

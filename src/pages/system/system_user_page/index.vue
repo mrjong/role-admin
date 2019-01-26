@@ -66,6 +66,14 @@
         <Button
           class="fr header-btn"
           type="primary"
+          @click="handleDelAll"
+          style="width:80px"
+          long
+          size="small"
+        >重置密码</Button>
+        <Button
+          class="fr header-btn"
+          type="primary"
           @click="handleAdd('0')"
           style="width:80px"
           long
@@ -74,11 +82,19 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-        <Table :data="tableData" :columns="tableColumns" stripe border></Table>
+        <Table
+          :data="tableData"
+           @on-selection-change="selectOne"
+              @on-select-all="selectOne"
+          :columns="tableColumns"
+          stripe
+          border
+        ></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div class="fr">
             <Page
+
               :total="total"
               show-total
               size="small"
@@ -94,7 +110,12 @@
         </div>
       </div>
     </Card>
-    <Remodal v-model="parentData" :getDirObj="getDirObj" v-if="parentData.modal"></Remodal>
+    <Remodal
+      v-model="parentData"
+      :parentData="parentData"
+      :getDirObj="getDirObj"
+      v-if="parentData.modal"
+    ></Remodal>
   </div>
 </template>
 <script src="./index.js"></script>

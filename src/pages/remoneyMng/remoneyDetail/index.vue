@@ -78,10 +78,10 @@
                 v-model="formValidate.payOffSts"
               >
                 <Option
-                  v-for="item in payOffStsList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
+                  v-for="item in getDirObj.PAY_OFF_STS"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemDesc }}</Option>
               </Select>
             </FormItem>
           </Col>

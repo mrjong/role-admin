@@ -122,13 +122,13 @@
       >
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
         检索结果
-        <router-link to="/buffet/buffet_add">
           <Button
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
+            @click.stop="exportData"
           >导出数据</Button>
-        </router-link>
+
       </p>
       <!-- 表格 -->
 
@@ -166,6 +166,7 @@
 <script>
   import sysDictionary from '@/mixin/sysDictionary';
   import formValidateFun from '@/mixin/formValidateFun';
+  import util from '@/libs/util';
   import { monitor_overdueReports_list, monitor_overDuereports_exportDown } from '@/service/getData';
   export default {
     name: 'overduePayment',
@@ -651,6 +652,12 @@
       },
       handleSubmit(name) {
         this.getList();
+      },
+      async exportData(){
+        let res = monitor_overDuereports_exportDown({
+          ...this.formItem
+        });
+        util.dowloadfile('逾期报表',res);
       },
       // 获取表格数据
       async getList() {

@@ -1,11 +1,15 @@
 import { deduct_list } from '@/service/getData';
+import sysDictionary from '@/mixin/sysDictionary';
 export default {
   name: 'transferMng',
+  mixins: [sysDictionary],
   data() {
     var alignCenter = 'center';
     var widthVal = 180;
     var widthMidVal = 100;
     return {
+      getDirList: ['REPAY_ORD_STS', 'PROD_TYPE'],
+      getDirObj: {},
       showPanel: false,
       showPanel2: false,
       productTypeList: [
@@ -54,72 +58,13 @@ export default {
       checkStartAndEnd:[],
       tableData: [
         {
+          prdTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
+          caseNo:'',// 案件号
           billNo: '1', //账单号
-          dkorgOrdNo: '2', // string 代扣订单号
-          userNm: '3', // 用户姓名
-          idNoHid: '4', // 身份证号
-          mblNoHid: '5', // 手机号
-          repayOrdAmt: '6', //还款金额
-          ordSts: '7', // 订单状态 借口中取
-          orgFnlMsg: '8', //失败原因,
-          ordDt: '9', // 还款时间,
-          crdAcTyp: '10', //卡类型
-          crdCorpOrg: '11', // 还款银行
-          crdNoLast: '12', //还款银行四位
-          repayOrdPrcp: '13', // 已还本金
-          acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
-          rutCopyOrg: '15' // 代扣类型
-        },
-        {
-          billNo: '1', //账单号
-          dkorgOrdNo: '2', // string 代扣订单号
-          userNm: '3', // 用户姓名
-          idNoHid: '4', // 身份证号
-          mblNoHid: '5', // 手机号
-          repayOrdAmt: '6', //还款金额
-          ordSts: '7', // 订单状态 借口中取
-          orgFnlMsg: '8', //失败原因,
-          ordDt: '9', // 还款时间,
-          crdAcTyp: '10', //卡类型
-          crdCorpOrg: '11', // 还款银行
-          crdNoLast: '12', //还款银行四位
-          repayOrdPrcp: '13', // 已还本金
-          acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
-          rutCopyOrg: '15' // 代扣类型
-        },
-        {
-          billNo: '1', //账单号
-          dkorgOrdNo: '2', // string 代扣订单号
-          userNm: '3', // 用户姓名
-          idNoHid: '4', // 身份证号
-          mblNoHid: '5', // 手机号
-          repayOrdAmt: '6', //还款金额
-          ordSts: '7', // 订单状态 借口中取
-          orgFnlMsg: '8', //失败原因,
-          ordDt: '9', // 还款时间,
-          crdAcTyp: '10', //卡类型
-          crdCorpOrg: '11', // 还款银行
-          crdNoLast: '12', //还款银行四位
-          repayOrdPrcp: '13', // 已还本金
-          acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
-          rutCopyOrg: '15' // 代扣类型
-        },
-        {
-          billNo: '1', //账单号
-          dkorgOrdNo: '2', // string 代扣订单号
-          userNm: '3', // 用户姓名
-          idNoHid: '4', // 身份证号
-          mblNoHid: '5', // 手机号
-          repayOrdAmt: '6', //还款金额
-          ordSts: '7', // 订单状态 借口中取
-          orgFnlMsg: '8', //失败原因,
-          ordDt: '9', // 还款时间,
-          crdAcTyp: '10', //卡类型
-          crdCorpOrg: '11', // 还款银行
-          crdNoLast: '12', //还款银行四位
-          repayOrdPrcp: '13', // 已还本金
-          acTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
-          rutCopyOrg: '15' // 代扣类型
+          repayOrdSts: '7', // 订单状态 借口中取
+          applayDateLt:'',// 申请日期开始
+          applayDateBt:'',// 申请日期结束
+          applayNo: '',//申请流水号
         }
       ],
       tableColumns: [
@@ -405,7 +350,7 @@ export default {
         pageNo: this.pageNo,
         pageSize: this.pageSize,
         //repayOrdTyp: this.repayOrdTyp,
-        //...this.formValidate
+        ...this.formValidate
       })
       console.log(res)
       // 请求成功之后需要做分页处理，然后将拿到的数据进行数据处理，总数目和展示条数

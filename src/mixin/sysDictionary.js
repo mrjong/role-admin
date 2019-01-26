@@ -1,25 +1,24 @@
 const mixin = {
-	created() {
-		if (this.getDirList && this.getDirList.length > 0) {
-			this.getDir(this.getDirList);
-		}
-	},
-	methods: {
-		getDir(arg) {
-			if (arg && arg.length > 0) {
-				arg.forEach((element) => {
-					console.log(element);
-					if (this.$store.state[arg]) {
-						this.$set(this.getDirObj, element, this.$store.state[element]);
-					} else {
-						this.$store.dispatch('getDictionary', element).then((res) => {
-							this.$set(this.getDirObj, element, res);
-						});
-					}
-				});
-			}
-		}
-	}
+  created() {
+    if (this.getDirList && this.getDirList.length > 0) {
+      this.getDir(this.getDirList);
+    }
+  },
+  methods: {
+    getDir(arg) {
+      if (arg && arg.length > 0) {
+        arg.forEach((element) => {
+          if (JSON.stringify(this.$store.state['sysDictionary']) !== "{}") {
+            this.$set(this.getDirObj, element, this.$store.state['sysDictionary'][element]);
+          } else {
+            this.$store.dispatch('getDictionary', element).then((res) => {
+              this.$set(this.getDirObj, element, res);
+            });
+          }
+        });
+      }
+    }
+  }
 };
 // EXTEN_TYPE	接听方式	坐席关系维护
 // PROD_TYPE	产品线	公司的产品类型
@@ -50,6 +49,10 @@ const mixin = {
 // 01_02_EFFECT_INVAL	01-02有效无效	01:有效 02:无效
 // 01_02_NO_YES	01-02否是	01:否 02:是
 // 1_0_AVAILABLE_DISABLE	1-0可用停用	1:可用 0:停用
-// 1_0_EFFECT_INVAL	1-0有效无效	1:有效 0:无效
+// 1_0_EFFECT_INVAL	1-0有效无效	1:有效 0:无效 角色状态
+// 还款状态  PAY_OFF_STS
+//ORD_STS //用户系统订单状态
+// 划扣订单状态  REPAY_ORD_STS
 
+// 代扣通道干掉
 export default mixin;

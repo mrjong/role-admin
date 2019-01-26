@@ -171,20 +171,21 @@ export const repay_repayUserOrSystem_exportDown = (obj) =>
 
 // 回款明细列表查询接口
 
-export const repay_repayDetail_list = (obj) =>
-  fetch({
-    url: '/repay/repayDetail/list',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+export const repay_repayDetail_list = (obj, options) =>
+	fetch({
+		url: '/repay/repayDetail/list',
+		method: 'POST',
+		data: qs.stringify(obj),
+	});
 
 // 回款明细导出接口
-export const repay_repayDetail_exportDown = (obj) =>
-  fetch({
-    url: '/repay/repayDetail/exportDown',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+export const repay_repayDetail_exportDown = (obj, options) =>
+	fetch({
+		url: '/repay/repayDetail/exportDown',
+		method: 'POST',
+		data: qs.stringify(obj),
+    responseType: 'blob',
+	});
 
 // 日常监控的坐席报表
 export const monitor_agentState_list = (obj) =>
@@ -195,11 +196,12 @@ export const monitor_agentState_list = (obj) =>
   });
 // 日常监控的坐席报表导出
 export const monitor_agentState_exportDown = (obj) =>
-  fetch({
-    url: '/monitor/agentState/exportDown',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/monitor/agentState/exportDown',
+		method: 'POST',
+		data: qs.stringify(obj),
+    responseType: 'blob',
+	});
 // 日常监控的逾期日志列表请求
 export const monitor_overdueReports_list = (obj) =>
   fetch({
@@ -210,11 +212,12 @@ export const monitor_overdueReports_list = (obj) =>
 
 // 日常监控逾期报表导出接口
 export const monitor_overDueReports_exportDown = (obj) =>
-  fetch({
-    url: '/monitor/overDueReports/exportDown',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/monitor/overDueReports/exportDown',
+		method: 'POST',
+		data: qs.stringify(obj),
+    responseType: 'blob',
+	});
 
 // 呼叫明细列表接口查询
 export const monitor_callDetail_list = (obj) =>
@@ -225,19 +228,22 @@ export const monitor_callDetail_list = (obj) =>
   });
 // 呼叫明细导出
 export const monitor_callDetail_exportDown = (obj) =>
-  fetch({
-    url: '/monitor/callDetail/exportDown',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/monitor/callDetail/exportDown',
+		method: 'POST',
+		data: qs.stringify(obj),
+    responseType: 'blob',
+	});
 
 // 催收回收率列表导出
 export const monitor_collectRate_exportDown = (obj) =>
-  fetch({
-    url: '/monitor/collectRate/exportDown',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
+	fetch({
+		url: '/monitor/collectRate/exportDown',
+		method: 'POST',
+		data: qs.stringify(obj),
+    responseType: 'blob',
+	});
+
 // 催收回收列表查询
 export const monitor_collectRate_list = (obj) =>
   fetch({
@@ -320,7 +326,6 @@ export const system_user_update = (obj, options) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-
 
 // 业务管理的划扣管理
 export const deduct_list = (obj) =>
@@ -701,3 +706,132 @@ export const case_collect_case_list_export = (obj, options) =>
     responseType: 'blob',
     options
   });
+
+  /*
+*
+*
+导出我的案件
+* */
+export const mail_list_add = (obj, options) =>
+fetch({
+  url: '/mail_list/add',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options
+});
+
+/*
+*
+*
+催收记录列表
+* */
+export const case_collect_collect_list = (obj, options) =>
+fetch({
+  url: '/case/collect/collect_list',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options
+});
+
+/*
+*
+*
+催收记录列表导出
+* */
+export const case_collect_tape_download = (obj, options) =>
+fetch({
+  url: '/case/collect/tape_download',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+  responseType: 'blob',
+});
+
+/*
+*
+*
+催记管理相关接口
+* */
+export const case_remark_his_add = (obj, options) =>
+fetch({
+  url: '/case_remark_his/add',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
+/*
+*
+*
+沟通状态
+* */
+export const collectcode_getListByCodeType = (obj, options) =>
+fetch({
+  url: '/collectcode/getListByCodeType',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
+/*
+*
+获取code关系
+* */
+export const collectcode_getCollectRelate = (obj, options) =>
+fetch({
+  url: '/collectcode/getCollectRelate',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
+/*
+*
+根据案件号获取申请代扣信息
+* */
+export const repayinfo_getApplyInfo = (obj, options) =>
+fetch({
+  url: '/repayinfo/getApplyInfo',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
+/*
+*
+根据用户ID和产品线查询绑卡信息
+* */
+export const repayinfo_getCardNos = (obj, options) =>
+fetch({
+  url: '/repayinfo/getCardNos',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
+/*
+*
+调用代扣
+* */
+export const repayinfo_applayRepay = (obj, options) =>
+fetch({
+  url: '/repayinfo/applayRepay',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
+/*
+*
+系统用户密码重置接口
+* */
+export const system_user_reset = (obj, options) =>
+fetch({
+  url: '/system/user/reset',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
+
+
+

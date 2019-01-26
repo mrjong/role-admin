@@ -1,11 +1,15 @@
 import { repay_repayUserOrSystem_list } from '@/service/getData';
+import sysDictionary from '@/mixin/sysDictionary';
 export default {
 	name: 'remoney_user',
+  mixins: [sysDictionary],
 	data() {
 		var alignCenter = 'center';
 		var widthVal = 180;
 		var widthMidVal = 100;
 		return {
+      getDirList: ['ORD_STS', 'PROD_TYPE'],
+      getDirObj: {},
 			showPanel: false,
 			showPanel2: false,
 			productTypeList: [
