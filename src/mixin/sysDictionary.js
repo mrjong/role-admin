@@ -52,6 +52,5 @@ const mixin = {
 // 还款状态  PAY_OFF_STS
 //ORD_STS //用户系统订单状态
 // 划扣订单状态  REPAY_ORD_STS
-
 // 代扣通道干掉
 export default mixin;

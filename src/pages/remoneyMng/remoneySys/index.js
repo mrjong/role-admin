@@ -87,14 +87,14 @@ export default {
         //   idNoHid: '4', // 身份证号
         //   mblNoHid: '5', // 手机号
         //   repayOrdAmt: '6', //还款金额
-        //   ordSts: '7', // 订单状态 借口中取
+        //   ordStsName: '7', // 订单状态 借口中取
         //   orgFnlMsg: '8', //失败原因,
         //   ordDt: '9', // 还款时间,
-        //   crdAcTyp: '10', //卡类型
+        //   crdAcTypName: '10', //卡类型
         //   crdCorpOrg: '11', // 还款银行
         //   crdNoLast: '12', //还款银行四位
         //   repayOrdPrcp: '13', // 已还本金
-        //   prdTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
+        //   prdTypName: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
         //   rutCopyOrg: '15' // 代扣类型
         // },
       ],
@@ -171,7 +171,7 @@ export default {
         {
           title: '订单状态',
           searchOperator: 'like',
-          key: 'ordSts',
+          key: 'ordStsName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal,
@@ -202,7 +202,7 @@ export default {
         {
           title: '卡类型',
           searchOperator: 'like',
-          key: 'crdAcTyp',
+          key: 'crdAcTypName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal
@@ -234,7 +234,7 @@ export default {
         {
           title: '产品类型',
           searchOperator: 'like',
-          key: 'prdTyp',
+          key: 'prdTypName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
@@ -279,6 +279,7 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          this.pageNo = 1;
           this.getList();
         }
       });

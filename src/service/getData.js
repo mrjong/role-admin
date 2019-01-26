@@ -330,7 +330,7 @@ export const system_user_update = (obj, options) =>
 // 业务管理的划扣管理
 export const deduct_list = (obj) =>
   fetch({
-    url: '/deduct/list',
+    url: '/repayinfo/list',
     method: 'POST',
     data: qs.stringify(obj)
   });

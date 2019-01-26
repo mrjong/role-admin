@@ -131,6 +131,8 @@
               <Select
                 size="small"
                 v-model="formValidate.prdTyp"
+                multiple
+                filterable
               >
                 <Option
                   v-for="item in getDirObj.PROD_TYPE"

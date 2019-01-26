@@ -16,8 +16,12 @@ export default {
       data5: [],
       orderStsList: [
         {
-          value: '1',
-          label: 'New York'
+          value: 'zero',
+          label: '无效'
+        },
+        {
+          value: 'one',
+          label: '有效'
         }
       ],
       modalSee: false,
@@ -368,7 +372,7 @@ export default {
     },
     // 提交修改角色的接口
     async toChangeRole() {
-      this.formValidateChange.roleStatus = 1;
+      this.formValidateChange.roleStatus = this.formValidateChange.roleStatus == 'one' ? 1:0;
       let res = system_role_update({id: sessionStorage.getItem('updateId'), ...this.formValidateChange});
       if (res && res.code == 1) {
         this.$Messagel.success('修改成功');
@@ -378,7 +382,7 @@ export default {
       }
     },
     async toAddRole() {
-      this.formValidateAdd.roleStatus = 1;
+      this.formValidateAdd.roleStatus = this.formValidateAdd.roleStatus == 'one' ? 1 : 0;
       let res = await
         system_role_add({...this.formValidateAdd});
       if (res && res.code === 1) {

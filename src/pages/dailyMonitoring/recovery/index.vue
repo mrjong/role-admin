@@ -133,15 +133,15 @@
         total: 10,
         tableData: [
           {
-            upRoleName_upUserName:'',//所属组别
+            upRoleName:'',//所属组别 upUserName
             opUserName: '', //处理人
             allotCaseCount:'', // 当月分配案件数量
             repayCount:'', //当月还款笔数
-            repayCountRate:'',// 当月笔数回收率
+            repayCountRate:'',// 当月笔数回收率  %
             allotCaseAmt:'', //当月分配案件金额
             repayAmt:'',//当月回款金额
-            collectRate:'',//当月金额回收率
-            lastCollectRate:'',//上月金额回收率
+            collectRate:'',//当月金额回收率 %
+            lastCollectRate:'',//上月金额回收率 %
           },
         ],
         tableColumns: [
@@ -156,7 +156,7 @@
           {
             title: '所属组别',
             searchOperator: '=',
-            key: 'upRoleName_upUserName',
+            key: 'upRoleName',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal

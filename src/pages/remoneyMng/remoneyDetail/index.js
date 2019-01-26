@@ -68,11 +68,11 @@ export default {
         //   caseNo:'', //案件编号
         //   billNo: '', // 账单号
         //   repayAmt:'', // 还款金额
-        //   repayOrdTyp: '', // 还款方式
-        //   payOffSts:'', // 还款状态
+        //   repayOrdTypName: '', // 还款方式
+        //   payOffStsName:'', // 还款状态
         //   overdueDays: '',//逾期天数
         //   perdCnt: '',// 还款期数
-        //   prdTyp:'',//产品线
+        //   prdTypName:'',//产品线
         //   userNmHid:'',//客户姓名
         //   idNoHid:'',//身份证号
         //   mblNoHid:'',//手机号
@@ -123,13 +123,26 @@ export default {
         },
         {
           title: '还款方式',
-          key: 'repayOrdTyp',
+          key: 'repayOrdTypName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal,
           render(h,params){
             const row = params.row;
-            const res = row.repayOrdTyp === 'UR' ? '用户主动还款': '系统代扣';
+            const res = row.repayOrdTypName === 'UR' ? '用户主动还款': '系统代扣';
+            console.log(row,'nmnnmnmnm');
+            return h('span',res);
+          }
+        },
+        {
+          title: '还款状态',
+          key: 'payOffStsName',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal,
+          render(h,params){
+            const row = params.row;
+            const res = row.payOffStsName === 'UR' ? '用户主动还款': row.payOffStsName;
             console.log(row,'nmnnmnmnm');
             return h('span',res);
           }
@@ -153,13 +166,13 @@ export default {
         {
           title: '产品线',
           searchOperator: 'like',
-          key: 'prdTyp',
+          key: 'prdTypName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal,
           render(h,params){
             const row = params.row;
-            const prdTyp = row.prdTyp === '01' ? '还到': row.prdTyp === '02' ? '随行付钱包': '商户贷';
+            const prdTyp = row.prdTypName === '01' ? '还到': row.prdTypName === '02' ? '随行付钱包': '商户贷';
             return h('span', prdTyp);
           }
         },
