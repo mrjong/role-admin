@@ -4,6 +4,9 @@ import dayjs from 'dayjs';
 exports.formatDate = (date, fmt) => {
 	return dayjs(date).format(fmt);
 };
+exports.tableDate = (date) => {
+  return `${date.substring(0,4)}-${date.substring(4,6)}-${date.substring(6,8)}`;
+};
 exports.money = (val) => {
 	let valCopy = val;
 	valCopy = valCopy+''.replace(/\$|\,/g, '');

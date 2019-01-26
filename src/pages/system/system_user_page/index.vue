@@ -1,14 +1,10 @@
 <template>
   <div class="panel_list">
     <!-- 检索条件 -->
-   <!-- 检索条件 -->
+    <!-- 检索条件 -->
     <Card class="vue-panel">
-      <p
-        slot="title"
-        @click="showPanel=!showPanel"
-      >
-        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
-        检索条件
+      <p slot="title" @click="showPanel=!showPanel">
+        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
       </p>
       <Form
         v-if="!showPanel"
@@ -18,100 +14,52 @@
         :rules="ruleValidate"
       >
         <Row>
-         
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            label="姓名:"
-            prop="name"
-          >
-            <Input
-              size="small"
-              clearable
-              v-model="formItem.name"
-              placeholder="请输入姓名"
-            />
-          </FormItem>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="姓名:" prop="name">
+              <Input size="small" clearable v-model="formItem.name" placeholder="请输入姓名"/>
+            </FormItem>
           </Col>
-           <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            label="账号:"
-            prop="loginName"
-          >
-            <Input
-              size="small"
-              clearable
-              v-model="formItem.loginName"
-              placeholder="请输入账号"
-            />
-          </FormItem>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="账号:" prop="loginName">
+              <Input size="small" clearable v-model="formItem.loginName" placeholder="请输入账号"/>
+            </FormItem>
           </Col>
 
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            label="状态:"
-            prop="state"
-          >
-            <Select
-              size="small"
-              placeholder="请选择状态"
-              v-model="formItem.state"
-            >
-              <Option
-                v-for="item in getDirObj['1_0_AVAILABLE_DISABLE']"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
-            </Select>
-          </FormItem>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="状态:" prop="state">
+              <Select size="small" placeholder="请选择状态" v-model="formItem.state">
+                <Option
+                  v-for="item in getDirObj['1_0_AVAILABLE_DISABLE']"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="24"
-            :lg="24"
-            span="6"
-          >
-          <FormItem>
-            <Button
-              type="primary"
-              @click="handleSubmit('formItem')"
-              style="width:80px"
-              long
-              size="small"
-            >检索</Button>
-            <Button
-              size="small"
-              type="ghost"
-              style="width:80px;margin-left: 8px"
-              @click="clearForm('formItem')"
-            >重置</Button>
-          </FormItem>
+          <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
+            <FormItem>
+              <Button
+                type="primary"
+                @click="handleSubmit('formItem')"
+                style="width:80px"
+                long
+                size="small"
+              >检索</Button>
+              <Button
+                size="small"
+                type="ghost"
+                style="width:80px;margin-left: 8px"
+                @click="clearForm('formItem')"
+              >重置</Button>
+            </FormItem>
           </Col>
         </Row>
       </Form>
     </Card>
     <!-- 检索结果 -->
     <Card class="vue-panel-table collection_recording">
-      <p slot="title" >
-        <Icon :type="!showPanel2?'chevron-down':'chevron-up'" @click="showPanel2=!showPanel2"></Icon> 检索结果
+      <p slot="title">
+        <Icon :type="!showPanel2?'chevron-down':'chevron-up'" @click="showPanel2=!showPanel2"></Icon>检索结果
         <!-- <router-link to="/buffet/buffet_add">
           <Button class="fr vue-back-btn header-btn" type="primary" size="small">导出数据</Button>
         </router-link>-->
@@ -126,17 +74,12 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-         <Table
-          :data="tableData"
-          :columns="tableColumns"
-          stripe
-          border
-        ></Table>
+        <Table :data="tableData" :columns="tableColumns" stripe border></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div class="fr">
             <Page
-               :total="total"
+              :total="total"
               show-total
               size="small"
               :page-size-opts="[10, 20, 50, 100]"

@@ -4,187 +4,187 @@ import qs from 'qs';
  * 登录
  */
 export const login = (obj = {}) =>
-	fetch({
-		url: '/login',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/login',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /**
  * 退出
  */
 export const logout = (obj = {}) =>
-	fetch({
-		url: '/logout',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/logout',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /**
  * 重置密码
  */
 export const reset_passWord = (obj = {}) =>
-	fetch({
-		url: '/reset/passWord',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/reset/passWord',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 /**
  * 工作流定义列表
  */
 export const wkProcessDef_list = (obj = {}) =>
-	fetch({
-		url: '/wkProcessDef/list',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/wkProcessDef/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /**
  * 工作流定义列表-禁用
  */
 export const wkProcessDef_forbid = (obj = {}) =>
-	fetch({
-		url: '/wkProcessDef/forbid',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/wkProcessDef/forbid',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /**
  * 工作流定义列表-复制
  */
 export const wkProcessDef_copy = (obj = {}) =>
-	fetch({
-		url: '/wkProcessDef/copy',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/wkProcessDef/copy',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /**
  * 工作流定义列表-发布
  */
 export const wkProcessDef_release = (obj = {}) =>
-	fetch({
-		url: '/wkProcessDef/release',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/wkProcessDef/release',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 /**
  * 工作流保存
  */
 export const wkProcessDef_save = (obj = {}) =>
-	fetch({
-		url: '/wkProcessDef/save',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/wkProcessDef/save',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /**
  * 任务详情
  */
 export const wkProcessTask_detail = (obj = {}) =>
-	fetch({
-		url: `/wkProcessTask/detail/${obj.id}`,
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: `/wkProcessTask/detail/${obj.id}`,
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /**
  * 任务列表
  */
 export const wkProcessTask_list = (obj = {}) =>
-	fetch({
-		url: '/wkProcessTask/list',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/wkProcessTask/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /**
  * 菜单权限
  */
 export const findTreeByCurrentUser = (obj = {}) =>
-	fetch({
-		url: '/findTreeByCurrentUser',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/findTreeByCurrentUser',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /**
  * 公告添加
  */
 export const announcement_add = (obj = {}) =>
-	fetch({
-		url: '/announcement/add',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/announcement/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /**
  * 公告修改
  */
 export const announcement_delete = (obj = {}) =>
-	fetch({
-		url: '/announcement/delete',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/announcement/delete',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /**
  * 公告修改
  */
 export const announcement_update = (obj = {}) =>
-	fetch({
-		url: '/announcement/update',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/announcement/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /**
  * 公告信息
  */
 export const announcement_list = (obj = {}) =>
-	fetch({
-		url: '/announcement/list',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/announcement/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 /*
 *
 * 查询用户主动还款&系统代扣的列表
 * */
 export const repay_repayUserOrSystem_list = (obj = {}) =>
-	fetch({
-		url: '/repay/repayUserOrSystem/list',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/repay/repayUserOrSystem/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /*
 *
 * 用户主动还款&系统代扣还款列表导出
 * */
 export const repay_repayUserOrSystem_exportDown = (obj) =>
-	fetch({
-		url: '/repay/repayUserOrSystem/exportDown',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/repay/repayUserOrSystem/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 // 回款明细列表查询接口
 
 export const repay_repayDetail_list = (obj) =>
-	fetch({
-		url: '/repay/repayDetail/list',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/repay/repayDetail/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 // 回款明细导出接口
 export const repay_repayDetail_exportDown = (obj) =>
-	fetch({
-		url: '/repay/repayDetail/exportDown',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/repay/repayDetail/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 // 日常监控的坐席报表
 export const monitor_agentState_list = (obj) =>
@@ -250,65 +250,65 @@ export const monitor_collectRate_list = (obj) =>
 * 根据父级id获取相应字典数据
 * */
 export const sysDictionary_getListByParentId = (obj, options) =>
-	fetch({
-		url: '/sysDictionary/getListByParentId',
-		method: 'POST',
-		data: qs.stringify(obj),
-		options
-	});
+  fetch({
+    url: '/sysDictionary/getListByParentId',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options
+  });
 
 /*
 *
 * 催收管理 我的案件
 * */
 export const case_collect_case_list = (obj, options) =>
-	fetch({
-		url: '/case/collect/case_list',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/case/collect/case_list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /*
 *
 * 系统用户查看用户列表接口
 * */
 export const system_user_list = (obj, options) =>
-	fetch({
-		url: '/system/user/list',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/system/user/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /*
 *
 * 系统用户查看用户详情
 * */
 export const system_user_info = (obj, options) =>
-	fetch({
-		url: '/system/user/info',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/system/user/info',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /*
 * 新增系统用户
 * */
 export const system_user_add = (obj, options) =>
-	fetch({
-		url: '/system/user/add',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/system/user/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /*
 * 查看所有用户角色
 * */
 export const system_user_roles = (obj, options) =>
-	fetch({
-		url: '/system/user/roles',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/system/user/roles',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /*
 *
@@ -354,35 +354,35 @@ export const system_role_info = (obj) =>
   });
 // 角色更新接口
 export const system_role_update = (obj) =>
-	fetch({
-		url: '/system/role/update',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/system/role/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 // 菜单管理的相关接口
 export const stytem_menu_list = (obj) =>
-	fetch({
-		url: '/system/menu/list',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/system/menu/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 // 修改菜单项接口
 export const stytem_menu_update = (obj) =>
-	fetch({
-		url: '/system/menu/update',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/system/menu/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 // 新增菜单项接口
 export const stytem_menu_add = (obj) =>
-	fetch({
-		url: '/system/menu/add',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/system/menu/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 // 查询菜单分配的接口
 export const system_role_menu_list = (obj) =>
@@ -394,11 +394,42 @@ export const system_role_menu_list = (obj) =>
 
 // 菜单分配的接口
 export const stytem_menu_opration = (obj) =>
-	fetch({
-		url: '/system/menu/opration',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/system/menu/opration',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+  // 坐席关系维护列表
+  export const call_employee_list = (obj) =>
+  fetch({
+    url: '/call/employee/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+  // 坐席列表删除
+  export const call_employee_del = (obj) =>
+  fetch({
+    url: '/call/employee/del',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+  // 坐席管理更新
+  export const call_employee_update = (obj) =>
+  fetch({
+    url: '/call/employee/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+  // 坐席列表添加
+  export const call_employee_add = (obj) =>
+  fetch({
+    url: '/call/employee/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 
 /*
 *
@@ -448,12 +479,12 @@ export const case_detail_system_repay_list = (obj, options) =>
 * 绑卡信息（指定案件、用户）
 * */
 export const case_detail_bindcard_list = (obj, options) =>
-	fetch({
-		url: '/case/detail/bindcard_list',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
- /*
+  fetch({
+    url: '/case/detail/bindcard_list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+/*
 * 新增系统用户
 /*
 * 新增系统用户* */
@@ -499,11 +530,11 @@ export const case_detail_address_info = (obj, options) =>
 通信录明细（指定案件）
 * */
 export const case_detail_mail_detail_list = (obj, options) =>
-	fetch({
-		url: '/case/detail/mail_detail_list',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/case/detail/mail_detail_list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 /*
 *
 *
@@ -560,18 +591,79 @@ export const case_list = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+// 案件分配列表
+export const divide_rules_list = (obj) =>
+  fetch({
+    url: '/divide/rules/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
+// 添加案件接口
+export const divide_rules_add = (obj) =>
+  fetch({
+    url: '/divide/rules/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 一键分配接口
+export const divide_allot_manual = (obj) =>
+  fetch({
+    url: '/divide/allot/manual',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 案件状态启用，停用
+export const divide_rules_changeStatus = (obj) =>
+  fetch({
+    url: '/divide/rules/changeStatus',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 分案规则顺序
+export const divide_rules_order = (obj) =>
+  fetch({
+    url: '/divide/rules/order',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 查询分案规则详情
+export const divide_rules_edit = (obj) =>
+  fetch({
+    url: '/divide/rules/edit',
+    method: 'GET',
+    data: qs.stringify(obj)
+  })
+
+  // 修改分案规则
+export const divide_rules_save = (obj) =>
+  fetch({
+    url: '/divide/rules/save',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+  // 查看分案规则修改历史记录
+  export const divide_rules_his = (obj) =>
+  fetch({
+    url: '/divide/rules/his',
+    method: 'GET',
+    data: qs.stringify(obj)
+  })
 /*
 *
 *
 查询案件详情基础信息
 * */
 export const case_detail_case_base_info = (obj, options) =>
-	fetch({
-		url: '/case/detail/case_base_info',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/case/detail/case_base_info',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /*
 *
@@ -579,11 +671,11 @@ export const case_detail_case_base_info = (obj, options) =>
 查询案件详情身份信息
 * */
 export const case_detail_case_identity_info = (obj, options) =>
-	fetch({
-		url: '/case/detail/case_identity_info',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/case/detail/case_identity_info',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
 /*
 *
@@ -591,21 +683,21 @@ export const case_detail_case_identity_info = (obj, options) =>
 添加工作流
 * */
 export const wkProcessDef_add = (obj, options) =>
-	fetch({
-		url: '/wkProcessDef/add',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
+  fetch({
+    url: '/wkProcessDef/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 /*
 *
 *
 导出我的案件
 * */
 export const case_collect_case_list_export = (obj, options) =>
-	fetch({
-		url: '/case/collect/case_list_export',
-		method: 'POST',
-		data: qs.stringify(obj),
-		responseType: 'blob',
-		options
-	});
+  fetch({
+    url: '/case/collect/case_list_export',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
+  });

@@ -18,12 +18,12 @@
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="坐席编号:">
-              <Input size="small" clearable v-model="formItem.uuid" placeholder="请输入坐席编号"></Input>
+              <Input size="small" clearable v-model="formItem.callno" placeholder="请输入坐席编号"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="员工姓名:">
-              <Input size="small" clearable v-model="formItem.empno" placeholder="请输入员工姓名"></Input>
+            <FormItem span="6" label="登陆账号:">
+              <Input size="small" clearable v-model="formItem.loginId" placeholder="请输入登陆账号"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
@@ -56,7 +56,7 @@
         <Button
           class="fr header-btn"
           type="primary"
-          @click="handleAdd('formItem')"
+          @click="handleAdd('1')"
           style="width:80px"
           long
           size="small"
@@ -84,8 +84,8 @@
         </div>
       </div>
     </Card>
-    <Addform v-model="modal" v-if="modal"></Addform>
-    <Reviseform v-model="modal2" v-if="modal2"></Reviseform>
+    <Addform v-model="parentData" v-if="parentData.modal" @passBack='passBack'></Addform>
+    <Reviseform v-model="parentData2" v-if="parentData2.modal" @childPassBack='childPassBack'></Reviseform>
   </div>
 </template>
 <script src="./index.js"></script>

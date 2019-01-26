@@ -7,7 +7,7 @@ export default {
     Remodal
   },
   mixins: [sysDictionary, tablePage],
-  name: 'demo_list',
+  name: 'system_user_page',
   data() {
     return {
       getDirList: ['1_0_AVAILABLE_DISABLE'],
