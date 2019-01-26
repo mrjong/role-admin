@@ -58,7 +58,7 @@ const app = {
 		},
 		async generateRoutes({ state, commit, dispatch }) {
 			await dispatch('getMenuTreeOriginal');
-			const menuTreeList = state.menuTreeOriginal.map((item) => ({
+			const menuTreeList = state.menuTreeOriginal.map((item,i) => ({
 				path: item.url,
 				icon: item.icon,
 				name: item.url,

@@ -1,11 +1,16 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
+import 'video.js/dist/video-js.css'
+import { videoPlayer } from 'vue-video-player'
 import { case_collect_collect_list, case_collect_tape_download } from '@/service/getData';
 import tablePage from '@/mixin/tablePage';
 
 export default {
 	name: 'case_search_page',
-	mixins: [ tablePage, formValidateFun, sysDictionary ],
+    mixins: [ tablePage, formValidateFun, sysDictionary ],
+    components: {
+        videoPlayer,
+      },
 	data() {
 		console.log(this.GLOBAL);
 		return {
@@ -57,8 +62,8 @@ export default {
 					searchOperator: '=',
 					key: 'buffet_code',
 					render: (h, params) => {
-						const uuid = params.row.uuid;
-						return h('span', uuid ? '播放' : '');
+						const soundUuid = params.row.soundUuid;
+						return h('span', soundUuid ? '播放' : '');
 					}
 				},
 				{
@@ -79,7 +84,8 @@ export default {
 					key: 'userNmHid'
 				},
 				{
-					title: '关系',
+                    title: '关系',
+                    width: 100,
 					key: 'callUserTypeName'
 				},
 				{
@@ -93,12 +99,14 @@ export default {
 					key: 'collectResultName'
 				},
 				{
-					title: '沟通结果',
+                    title: '沟通结果',
+                    width: 100,
 					key: 'communicateResultName'
 				},
 
 				{
-					title: '承诺还款时间',
+                    title: '承诺还款时间',
+                    width: 150,
 					key: 'promiseRepayDate',
 					render: (h, params) => {
 						let promiseRepayDate = params.row.promiseRepayDate;
@@ -114,7 +122,8 @@ export default {
 					key: 'opUserName'
 				},
 				{
-					title: '案件编码',
+                    title: '案件编码',
+                    width: 180,
 					searchOperator: '=',
 					key: 'caseNo'
 				},
@@ -131,7 +140,8 @@ export default {
 				},
 		
 				{
-					title: '客户身份证号',
+                    title: '客户身份证号',
+                    width: 180,
 					key: 'idNoHid'
 				},
 
@@ -159,11 +169,36 @@ export default {
 				}
 			]
 		};
-	},
+    },
+    computed: {
+        player() {
+          return this.$refs.videoPlayer.player
+        }
+      },
 	created() {
 		this.getList();
 	},
 	methods: {
+         // listen event
+    onPlayerPlay(player) {
+        // console.log('player play!', player)
+      },
+      onPlayerPause(player) {
+        // console.log('player pause!', player)
+      },
+      // ...player event
+  
+      // or listen state event
+      playerStateChanged(playerCurrentState) {
+        // console.log('player current update state', playerCurrentState)
+      },
+  
+      // player is ready
+      playerReadied(player) {
+        console.log('the player is readied', player)
+        // you can use it to do something...
+        // player.[methods]
+      },
 		// 获取表格数据
 		async case_collect_tape_download() {
 			const res = await case_collect_tape_download(
@@ -179,7 +214,8 @@ export default {
 		async getList() {
 			const res = await case_collect_collect_list();
 			if (res.code === 1) {
-				this.tableData = res.data.content;
+                this.tableData = res.data.content;
+                this.total = res.data.totalElements;
 				console.log(res);
 			} else {
 				this.$Message.error(res.message);

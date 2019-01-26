@@ -1,5 +1,11 @@
 import gongzuoliu from '@/components/workflow/gongzuoliu';
-import { wkProcessDef_list, wkProcessDef_forbid, wkProcessDef_release, wkProcessDef_copy } from '@/service/getData';
+import {
+	wkProcessDef_list,
+	wkProcessDef_forbid,
+	wkProcessDef_release,
+	wkProcessDef_copy,
+	wkProcessDef_detail
+} from '@/service/getData';
 import tablePage from '@/mixin/tablePage';
 export default {
 	name: 'case_search_page',
@@ -8,6 +14,7 @@ export default {
 	},
 	mixins: [ tablePage ],
 	data() {
+		const _this = this;
 		return {
 			visible1: false,
 			showPanel: false,
@@ -180,6 +187,11 @@ export default {
 									props: {},
 									style: {
 										display: params.row.status === '01' ? 'inline-block' : 'none'
+									},
+									on: {
+										click: () => {
+											_this.wkProcessDef_detail(params.row.id, 'edit');
+										}
 									}
 								},
 								'修改'
@@ -188,7 +200,12 @@ export default {
 								'a',
 								{
 									class: 'edit-btn',
-									props: {}
+									props: {},
+									on: {
+										click: () => {
+											_this.wkProcessDef_detail(params.row.id,'read');
+										}
+									}
 								},
 								'详情'
 							)
@@ -203,8 +220,17 @@ export default {
 		this.getList();
 	},
 	methods: {
+		async wkProcessDef_detail(id, type) {
+			const res = await wkProcessDef_detail({ id });
+			if (res.code === 1) {
+				this.handView(type, res.data);
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
 		passBack(name) {
-            this.getList()
+            this.visible1 =false
+			this.getList();
 		},
 		handleSubmit() {
 			this.$refs.mychild.handleSubmit();
@@ -246,9 +272,12 @@ export default {
 			}
 		},
 
-		handView() {
+		handView(type, workData) {
+            this.visible1 =true
 			this.parentData = {
-				modal: true
+				modal: true,
+				type,
+				workData
 			};
 		},
 		// 获取表格数据

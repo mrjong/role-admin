@@ -254,7 +254,6 @@
           :data="tableData"
           :columns="tableColumns"
           stripe
-          width="1200"
           size="small"
           align="center"
         ></Table>

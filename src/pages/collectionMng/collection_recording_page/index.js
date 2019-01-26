@@ -1,9 +1,10 @@
-import { buffet_list } from '@/service/getData';
+import { case_collect_collect_list } from '@/service/getData';
 import 'video.js/dist/video-js.css'
 import { videoPlayer } from 'vue-video-player'
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import tablePage from '@/mixin/tablePage';
+
 export default {
   name: 'demo_list',
   components: {
@@ -197,6 +198,7 @@ export default {
         },
         {
             title: '关系',
+            width: 100,
             key: 'callUserTypeName'
         },
         {
@@ -206,6 +208,7 @@ export default {
         },
         {
             title: '案件编码',
+            width: 180,
             searchOperator: '=',
             key: 'caseNo'
         },
@@ -217,6 +220,7 @@ export default {
         },
         {
             title: '客户身份证号',
+            width: 180,
             key: 'idNoHid'
         },
     ]
@@ -251,51 +255,15 @@ export default {
       // you can use it to do something...
       // player.[methods]
     },
-    // 页码改变的回调
-    changePage(pageNo) {
-      this.pageNo = pageNo;
-      this.getList();
-    },
-    // 切换每页条数时的回调
-    changeSize(pageSize) {
-      this.pageSize = pageSize;
-      this.pageNo = 1;
-      this.getList();
-    },
-    handleSubmit(name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.getList();
-        } else {
-          this.$Message.error('查询条件格式有误，请重新填写');
-        }
-      });
-    },
-    // 获取表格数据
     async getList() {
-      const res = await buffet_list({
-        searchParam: this.formItem && JSON.stringify(this.formItem) !== '{}' && this.getParam(),
-        page: this.pageNo,
-        perPage: this.pageSize,
-        config: {
-          hideMessage: true
+        const res = await case_collect_collect_list();
+        if (res.code === 1) {
+            this.tableData = res.data.content;
+            this.total = res.data.totalElements;
+            console.log(res);
+        } else {
+            this.$Message.error(res.message);
         }
-      });
-      if (res.data && res.data.data) {
-        this.tableData = res.data.data;
-        this.total = res.data.total;
-        this.pageNo = res.data.current_page;
-      } else {
-        this.tableData = [];
-        this.total = 0;
-        this.pageNo = 1;
-      }
-    },
-    // 重置
-    clearForm(name) {
-      this.pageNo = 1;
-      this.formItem = {};
-      this.$refs[name].resetFields();
     },
     ok() {
       this.$Message.info('Clicked ok');
