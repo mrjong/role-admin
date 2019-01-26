@@ -52,6 +52,17 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="到期期数:" prop="periodCounts">
+              <Select size="small" multiple	 clearable placeholder="请选择到期期数" v-model="formItem.periodCounts">
+                <Option
+                  v-for="item in getDirObj.PROD_CNT"
+                  :value="item.itemCode"
+                  :key="item.itemName"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="客户姓名:" prop="userNm">
               <Input size="small" clearable v-model="formItem.userNm" placeholder="请输入客户姓名"/>
             </FormItem>
@@ -133,8 +144,8 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="电催中心:" prop="opCompayName">
-              <Select size="small" clearable placeholder="请选择电催中心" v-model="formItem.opCompayName">
+            <FormItem span="6" label="电催中心:" prop="opCompayNames">
+              <Select size="small" clearable placeholder="请选择电催中心" v-model="formItem.opCompayNames">
                 <Option
                   v-for="item in getDirObj.CREDIT_LEVEL"
                   :value="item.itemCode"

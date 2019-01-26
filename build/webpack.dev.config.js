@@ -71,8 +71,8 @@ module.exports = merge(webpackBaseConfig, {
                 // target: 'http://shopadmin.e-blive.com/', //目标接口域名
                 // target: 'http://172.16.151.158:8080', //测试
                 // target: 'http://172.18.40.181:8080', //志壮
+                 //target: 'http://172.18.40.245:8080', //志壮
                 // target: 'http://172.18.40.219:8080', //志壮
-                //target: 'http://172.18.30.201:8050', //本地
                 // target: 'http://172.18.40.100:8080', //jiaqi
                 pathRewrite: { '^/admin': '' }, //重写接口
                 changeOrigin: true, //是否跨域

@@ -20,6 +20,7 @@ const mixin = {
     }
   }
 };
+// EXTEN_TYPE	接听方式	坐席关系维护
 // PROD_TYPE	产品线	公司的产品类型
 // GENDER	性别	性别：男，女
 // PROD_CNT	产品期数	公司产品期数类型

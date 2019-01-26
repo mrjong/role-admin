@@ -12,85 +12,8 @@ export default {
 			getDirList: [ 'PROD_TYPE' ],
 			getDirObj: {},
 			showPanel: false,
+			productLineList: [],
 			showPanel2: false,
-			phoneCallList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
-			productTimeList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
-			productLineList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
 			ruleValidate: {
 				idNo: [
 					{
@@ -125,57 +48,58 @@ export default {
 				{
 					title: '序号',
 					width: 80,
-					searchOperator: '=',
 					type: 'index',
 					align: 'center'
+                },
+                {
+					title: '关联录音',
+					width: 120,
+					searchOperator: '=',
+					key: 'buffet_code',
+					render: (h, params) => {
+						const uuid = params.row.uuid;
+						return h('span', uuid ? '播放' : '');
+					}
 				},
 				{
 					title: '催收时间',
-					width: 100,
-					searchOperator: '=',
-                    key: 'buffet_id',
-                    render: (h, params) => {
-						let promiseRepayDate = params.row.promiseRepayDate;
-						promiseRepayDate = promiseRepayDate
-							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD HH:mm:ss')
-							: promiseRepayDate;
-						return h('span', promiseRepayDate);
+					width: 150,
+					key: 'createTime',
+					render: (h, params) => {
+						let createTime = params.row.createTime;
+						createTime = createTime
+							? this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
+							: createTime;
+						return h('span', createTime);
 					}
 				},
 				{
 					title: '客户姓名',
 					width: 120,
-					searchOperator: '=',
-					key: 'buffet_code'
+					key: 'userNmHid'
 				},
 				{
 					title: '关系',
-					searchOperator: '=',
-					key: 'device_id'
+					key: 'callUserTypeName'
 				},
 				{
 					title: '催收电话',
-					width: 100,
-					searchOperator: '=',
-					sortable: true,
-					key: 'buffet_id'
+					width: 150,
+					key: 'mblNoHid'
 				},
 				{
 					title: '拨打状态',
 					width: 120,
-					searchOperator: '=',
-					key: 'buffet_code'
+					key: 'collectResultName'
 				},
 				{
 					title: '沟通结果',
-					searchOperator: '=',
-					key: 'device_id'
+					key: 'communicateResultName'
 				},
 
 				{
 					title: '承诺还款时间',
-					searchOperator: '=',
-					key: 'device_id',
+					key: 'promiseRepayDate',
 					render: (h, params) => {
 						let promiseRepayDate = params.row.promiseRepayDate;
 						promiseRepayDate = promiseRepayDate
@@ -187,37 +111,30 @@ export default {
 				{
 					title: '经办人',
 					width: 120,
-					searchOperator: '=',
-					key: 'buffet_code'
+					key: 'opUserName'
 				},
 				{
 					title: '案件编码',
 					searchOperator: '=',
-					key: 'device_id'
+					key: 'caseNo'
 				},
 				{
 					title: '账单号',
-					width: 100,
-					searchOperator: '=',
+					width: 180,
 					sortable: true,
-					key: 'buffet_id'
+					key: 'billNo'
 				},
 				{
 					title: '催收期数',
 					width: 120,
-					searchOperator: '=',
-					key: 'buffet_code'
+					key: 'perdCount'
 				},
+		
 				{
 					title: '客户身份证号',
-					searchOperator: '=',
-					key: 'device_id'
+					key: 'idNoHid'
 				},
-				{
-					title: '关联录音',
-					searchOperator: '=',
-					key: 'device_id'
-				},
+
 				{
 					title: '备注',
 					align: 'center',
@@ -262,6 +179,7 @@ export default {
 		async getList() {
 			const res = await case_collect_collect_list();
 			if (res.code === 1) {
+				this.tableData = res.data.content;
 				console.log(res);
 			} else {
 				this.$Message.error(res.message);

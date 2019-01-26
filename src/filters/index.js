@@ -1,8 +1,15 @@
 import dayjs from 'dayjs';
 // <!-- value 格式为13位unix时间戳 -->
 // <!-- 10位unix时间戳可通过value*1000转换为13位格式 -->
-exports.formatDate = (date, fmt) => {
+exports.formatDate = (date, fmt = 'YYYY-MM-DD HH:mm:ss') => {
+    console.log(date)
   return dayjs(date).format(fmt);
+};
+exports.tableDate = (date) => {
+  return `${date.substring(0,4)}-${date.substring(4,6)}-${date.substring(6,8)}`;
+}
+exports.formatDatetime = (date) => {
+  return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
 };
 exports.money = (val) => {
   let valCopy = val;

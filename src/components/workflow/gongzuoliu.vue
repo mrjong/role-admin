@@ -116,6 +116,7 @@
                 span="12"
               >
               <FormItem
+                class="mt5"
                 span="6"
                 label="描述:"
                 prop="defDesc"

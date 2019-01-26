@@ -177,24 +177,14 @@ export default {
         billNo: '',
         id: '',
         creditLevels: [],
-        opCompayName: '',
+        opCompayNames: '',
         opUserName: '',
       },
-      tableData: [
-        {
-          caseNo: '1231312312313123',
-          userNm: '二维码',
-          idNoHid: '110123199808082229',
-          mblNoHid: '188866668888',
-          prdTyp: '商户贷',
-          billNo: 'BL091837478596599387',
-          overdueAmt: '9000'
-        },
-      ],
+      tableData: [],
       tableColumns: [
         {
           type: 'selection',
-          width: 60,
+          width: 40,
           align: 'center',
           fixed: 'left'
         },
@@ -205,19 +195,47 @@ export default {
           sortable: true,
           type: 'index',
           align: 'center',
+          fixed: 'left'
+        },
+        {
+          title: '操作',
+          width: 150,
+          key: 'edit',
+          align: 'center',
+          fixed: 'left',
+          render: (h, params) => {
+            return h('div', [
+              h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {}
+                },
+                '删除'
+              ),
+              h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {}
+                },
+                '删除'
+              )
+            ]);
+          }
         },
         {
           title: '案件编码',
           width: 150,
           searchOperator: '=',
-          key: 'caseNo',
+          key: 'id',
           align: 'center',
         },
         {
           title: '客户姓名',
           width: 120,
           searchOperator: '=',
-          key: 'userNm',
+          key: 'userNmHid',
           align: 'center',
         },
         {
@@ -239,7 +257,7 @@ export default {
           searchOperator: 'like',
           width: 100,
           align: 'center',
-          key: 'prdTyp',
+          key: 'prdName',
         },
         {
           title: '账单号',
@@ -294,7 +312,7 @@ export default {
           title: '电催公司',
           searchOperator: 'like',
           width: 180,
-          key: 'opCompayName',
+          key: 'opCompayNames',
           align: 'center',
         },
         {
@@ -308,52 +326,10 @@ export default {
           title: '案件状态',
           searchOperator: 'like',
           width: 150,
-          key: 'caseStatus',
+          key: 'caseHandleStatusName',
           align: 'center',
         },
-        {
-          title: '操作',
-          width: 150,
-          key: 'edit',
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h(
-                'Poptip',
-                {
-                  props: {
-                    confirm: true,
-                    title: '您确定要删除这条数据吗?',
-                    transfer: true
-                  },
-                  on: {
-                    'on-ok': () => {
-                      this.deleteGoods(params.row.buffet_id);
-                    }
-                  }
-                },
-                [
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {}
-                    },
-                    '删除'
-                  ),
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {}
-                    },
-                    '删除'
-                  )
-                ]
-              )
-            ]);
-          }
-        }
+
       ]
     };
   },
@@ -423,7 +399,7 @@ export default {
       });
     },
     // 日期变更回调
-    dateChange(arr,date) {
+    dateChange(arr, date) {
       console.log(arr, date);
       this.formItem.beginDueDate = arr[0];
       this.formItem.endDueDate = arr[1];
@@ -433,6 +409,7 @@ export default {
       const res = await case_list(JSON.stringify(this.formItem));
       if (res.code === 1) {
         console.log(res);
+        this.tableData = res.data.page.content;
       } else {
         this.$Message.error(res.message);
       }

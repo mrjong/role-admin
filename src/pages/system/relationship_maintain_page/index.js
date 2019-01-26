@@ -1,8 +1,8 @@
-import { buffet_list } from '@/service/getData';
+import { call_employee_list, call_employee_del } from '@/service/getData';
 import Addform from './components/add_role_page'
 import Reviseform from './components/revise_role_page'
 export default {
-  name: 'demo_list',
+  name: 'relationship_maintain_page',
   components: {
     Addform,
     Reviseform,
@@ -11,39 +11,15 @@ export default {
     return {
       showPanel: false,
       showPanel2: false,
-      modal: false,
-      modal2: false,
-      phoneCallList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
-
-      modal12: false,
-      inputGrid: '',
-      modal11: false,
-      formValidate2: {},
+      parentData: {
+        modal: false,
+        type: null,
+      },
+      parentData2: {
+        modal: false,
+        data: {},
+        type: null,
+      },
       ruleValidate: {
         buffet_id: [
           {
@@ -56,21 +32,11 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      formValidate3: {
-        items: [
-          {
-            value: '',
-            index: 1,
-            status: 1
-          }
-        ]
+      formItem: {
+        loginId: '',
+        callno: ''
       },
-      formItem: {},
       tableData: [
-        {
-          recording_id: 1,
-          operate: '操作'
-        }
       ],
       tableColumns: [
         {
@@ -78,43 +44,32 @@ export default {
           width: 80,
           searchOperator: '=',
           sortable: true,
-          key: 'recording_id',
+          type: 'index',
           fixed: 'left',
           align: 'center'
         },
         {
           title: '坐席编号',
-          width: 100,
+          width: 150,
           searchOperator: '=',
-          key: 'uuid',
+          key: 'callno',
           align: 'center'
         },
-        // {
-        //   title: '餐柜添加时间',
-        //   key: 'addtime',
-        //   sortable: true,
-        //   width: 160,
-        //   render: (h, params) => {
-        //     const row = params.row;
-        //     const addtime = row.addtime
-        //       ? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-        //       : row.addtime;
-        //     return h('span', addtime);
-        //   }
-        // },
         {
           title: '登录账号',
           searchOperator: 'like',
           key: 'loginId',
           sortable: true,
-          align: 'center'
+          align: 'center',
+          width: 150,
         },
         {
           title: '员工姓名',
           searchOperator: 'like',
           key: 'empno',
           sortable: true,
-          align: 'center'
+          align: 'center',
+          width: 120,
         },
         {
           title: '接听方式',
@@ -150,14 +105,30 @@ export default {
           searchOperator: '=',
           key: 'createTime',
           ellipsis: true,
-          align: 'center'
+          align: 'center',
+          width: 180,
+          render: (h, params) => {
+            const row = params.row;
+            const createTime = row.createTime
+              ? this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
+              : row.createTime;
+            return h('span', createTime);
+          }
         },
         {
           title: '修改时间',
           searchOperator: '=',
           key: 'updateTime',
           ellipsis: true,
-          align: 'center'
+          align: 'center',
+          width: 180,
+          render: (h, params) => {
+            const row = params.row;
+            const updateTime = row.updateTime
+              ? this.$options.filters['formatDate'](updateTime, 'YYYY-MM-DD HH:mm:ss')
+              : row.updateTime;
+            return h('span', updateTime);
+          }
         },
         {
           title: '创建人',
@@ -187,14 +158,14 @@ export default {
                 },
                 on: {
                   'on-ok': () => {
-                    this.deleteGoods(params.row.recording_id);
+                    this.call_employee_del(params.row.loginId);
                   }
                 }
               },
                 [
                   h('a', {
                     class: 'del-btn',
-                    props: {}
+                    props: {},
                   },
                     '删除'
                   )
@@ -206,7 +177,11 @@ export default {
                   props: {},
                   on: {
                     'click': () => {
-                      this.modal2 = true;
+                      this.parentData2 = {
+                        modal: true,
+                        data: params.row,
+                        type: null,
+                      }
                     }
                   }
                 }
@@ -222,8 +197,11 @@ export default {
   },
   methods: {
     // 添加列表新数据按钮
-    handleAdd(form) {
-      this.modal = true;
+    handleAdd(type) {
+      this.parentData = {
+        modal: true,
+        type: type,
+      };
     },
     // 页码改变的回调
     changePage(pageNo) {
@@ -247,14 +225,13 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      const res = await buffet_list({
-        searchParam: this.formItem && JSON.stringify(this.formItem) !== '{}' && this.getParam(),
+      const res = await call_employee_list({
+        loginId: this.formItem.loginId,
+        callno: this.formItem.callno,
         page: this.pageNo,
         perPage: this.pageSize,
-        config: {
-          hideMessage: true
-        }
       });
+      console.log(res);
       if (res.data && res.data.data) {
         this.tableData = res.data.data;
         this.total = res.data.total;
@@ -265,6 +242,32 @@ export default {
         this.pageNo = 1;
       }
     },
+    // 删除坐席
+    async call_employee_del(id) {
+      const res = await call_employee_del({
+        loginId: id,
+      });
+      console.log(res);
+      if (res.code === 1) {
+        this.getList();
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 子组件回调函数
+    passBack() {
+      console.log(this.parentData);
+      if (this.parentData.type === 'ok') {
+        this.getList();
+      };
+    },
+    //
+    childPassBack() {
+      console.log(this.parentData2);
+      if (this.parentData2.type === 'ok') {
+        this.getList();
+      };
+    },
     // 重置
     clearForm(name) {
       this.pageNo = 1;
@@ -273,3 +276,4 @@ export default {
     }
   }
 };
+

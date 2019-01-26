@@ -75,7 +75,7 @@ export const wkProcessDef_save = (obj = {}) =>
   fetch({
     url: '/wkProcessDef/save',
     method: 'POST',
-    data: qs.stringify(obj)
+    data: obj
   });
 
 /**
@@ -419,6 +419,37 @@ export const stytem_menu_opration = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+  // 坐席关系维护列表
+  export const call_employee_list = (obj) =>
+  fetch({
+    url: '/call/employee/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+  // 坐席列表删除
+  export const call_employee_del = (obj) =>
+  fetch({
+    url: '/call/employee/del',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+  // 坐席管理更新
+  export const call_employee_update = (obj) =>
+  fetch({
+    url: '/call/employee/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+  // 坐席列表添加
+  export const call_employee_add = (obj) =>
+  fetch({
+    url: '/call/employee/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 
 /*
 *
@@ -468,12 +499,12 @@ export const case_detail_system_repay_list = (obj, options) =>
 * 绑卡信息（指定案件、用户）
 * */
 export const case_detail_bindcard_list = (obj, options) =>
-	fetch({
-		url: '/case/detail/bindcard_list',
-		method: 'POST',
-		data: qs.stringify(obj)
-	});
- /*
+  fetch({
+    url: '/case/detail/bindcard_list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+/*
 * 新增系统用户
 /*
 * 新增系统用户* */
@@ -524,7 +555,6 @@ export const case_detail_mail_detail_list = (obj, options) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-
 /*
 *
 *
@@ -581,7 +611,68 @@ export const case_list = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+// 案件分配列表
+export const divide_rules_list = (obj) =>
+  fetch({
+    url: '/divide/rules/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 
+// 添加案件接口
+export const divide_rules_add = (obj) =>
+  fetch({
+    url: '/divide/rules/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 一键分配接口
+export const divide_allot_manual = (obj) =>
+  fetch({
+    url: '/divide/allot/manual',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 案件状态启用，停用
+export const divide_rules_changeStatus = (obj) =>
+  fetch({
+    url: '/divide/rules/changeStatus',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 分案规则顺序
+export const divide_rules_order = (obj) =>
+  fetch({
+    url: '/divide/rules/order',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 查询分案规则详情
+export const divide_rules_edit = (obj) =>
+  fetch({
+    url: '/divide/rules/edit',
+    method: 'GET',
+    data: qs.stringify(obj)
+  })
+
+  // 修改分案规则
+export const divide_rules_save = (obj) =>
+  fetch({
+    url: '/divide/rules/save',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+  // 查看分案规则修改历史记录
+  export const divide_rules_his = (obj) =>
+  fetch({
+    url: '/divide/rules/his',
+    method: 'GET',
+    data: qs.stringify(obj)
+  })
 /*
 *
 *
@@ -606,17 +697,6 @@ export const case_detail_case_identity_info = (obj, options) =>
     data: qs.stringify(obj)
   });
 
-/*
-*
-*
-添加工作流
-* */
-export const wkProcessDef_add = (obj, options) =>
-  fetch({
-    url: '/wkProcessDef/add',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
 /*
 *
 *

@@ -1,4 +1,4 @@
-import { wkProcessDef_add } from '@/service/getData';
+import { wkProcessDef_save } from '@/service/getData';
 export default {
 	data() {
 		return {
@@ -136,14 +136,15 @@ export default {
 		handleSubmit() {
 			this.$refs.formItem.validate((valid) => {
 				if (valid) {
-					this.wkProcessDef_add();
+					this.wkProcessDef_save();
 				} else {
 					this.visible1 = true;
 				}
 			});
 		},
-		async wkProcessDef_add() {
-			const res = await wkProcessDef_add({
+		async wkProcessDef_save() {
+            console.log( this.defNodeList)
+			const res = await wkProcessDef_save({
 				domain: this.formItem,
 				nodeList: this.defNodeList
 			});

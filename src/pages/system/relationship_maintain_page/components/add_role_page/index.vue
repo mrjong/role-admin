@@ -1,9 +1,8 @@
 <template>
   <div>
     <Modal
-      v-model="model"
+      v-model="model.modal"
       width="800"
-      :transfer="false"
       class-name="add_role_form_modal"
       :mask-closable="false"
       @on-visible-change="del"
@@ -34,26 +33,26 @@
                     placeholder="请选择坐席类型"
                   >
                     <Option
-                      v-for="item in productTimeList"
-                      :value="item.value"
-                      :key="item.value"
-                    >{{ item.label }}</Option>
+                      v-for="item in getDirObj['SEAT_TYPE']"
+                      :value="item.itemCode"
+                      :key="item.itemCode"
+                    >{{ item.itemName }}</Option>
                   </Select>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem span="4" label="坐席编号:" prop="uuid">
-                  <Input size="small" clearable v-model="formItem.uuid" placeholder="请输入坐席编号"></Input>
+                <FormItem span="4" label="坐席编号:" prop="callno">
+                  <Input size="small" clearable v-model="formItem.callno" placeholder="请输入坐席编号"></Input>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem span="4" label="登录账号:" prop="loginId">
-                  <Input size="small" clearable v-model="formItem.loginId" placeholder="请输入登录账号"></Input>
+                <FormItem span="4" label="登陆账号:" prop="loginId">
+                  <Input size="small" clearable v-model="formItem.loginId" placeholder="请输入登陆账号"></Input>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem span="4" label="员工姓名:" prop="empno">
-                  <Input size="small" clearable v-model="formItem.empno" placeholder="请输入员工姓名"></Input>
+                <FormItem span="4" label="员工编号:" prop="empno">
+                  <Input size="small" clearable v-model="formItem.empno" placeholder="请输入员工编号"></Input>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -66,10 +65,10 @@
                     placeholder="请选择接听方式"
                   >
                     <Option
-                      v-for="item in extenTypeList"
-                      :value="item.value"
-                      :key="item.value"
-                    >{{ item.label }}</Option>
+                      v-for="item in getDirObj['EXTEN_TYPE']"
+                      :value="item.itemCode"
+                      :key="item.itemCode"
+                    >{{ item.itemName }}</Option>
                   </Select>
                 </FormItem>
               </Col>
@@ -83,10 +82,10 @@
                     placeholder="请选择状态"
                   >
                     <Option
-                      v-for="item in statusList"
-                      :value="item.value"
-                      :key="item.value"
-                    >{{ item.label }}</Option>
+                      v-for="item in getDirObj['0_1_EFFECT_INVAL']"
+                      :value="item.itemCode"
+                      :key="item.itemCode"
+                    >{{ item.itemName }}</Option>
                   </Select>
                 </FormItem>
               </Col>
@@ -96,19 +95,24 @@
       </div>
       <div slot="footer">
         <Button type="ghost" size="small" @click="del">关闭</Button>
-        <Button type="primary" size="small" @click="del">提交</Button>
+        <Button type="primary" size="small" @click="call_employee_add">提交</Button>
       </div>
     </Modal>
   </div>
 </template>
  <script>
-import { buffet_list } from "@/service/getData";
+import tablePage from "@/mixin/tablePage";
+import sysDictionary from "@/mixin/sysDictionary";
+import { call_employee_add } from "@/service/getData";
 export default {
-  // props: ["parentData"],
+  props: {
+    model: ""
+  },
   model: {
     prop: "model",
     event: "passBack"
   },
+  mixins: [sysDictionary, tablePage],
   data() {
     const validatePass = (rule, value, callback) => {
       if (value === "") {
@@ -122,83 +126,95 @@ export default {
       }
     };
     return {
+      getDirList: ["SEAT_TYPE", "0_1_EFFECT_INVAL", "EXTEN_TYPE"],
+      getDirObj: {},
       showPanel: false,
       childrenData: {},
       childrenModel: false,
       ruleValidate: {
-        name: [
+        callno: [
           {
             required: true,
-            message: "请输入姓名",
+            message: "请输入坐席编号",
             trigger: "blur"
+          }
+        ],
+        empno: [
+          {
+            required: true,
+            message: "请输入员工编号",
+            trigger: "blur"
+          }
+        ],
+        loginId: [
+          {
+            required: true,
+            message: "请输入登陆账号",
+            trigger: "blur"
+          }
+        ],
+        extenType: [
+          {
+            required: true,
+            message: "请选择接听方式",
+            trigger: "change"
+          }
+        ],
+        status: [
+          {
+            required: true,
+            message: "请选择状态",
+            trigger: "change"
+          }
+        ],
+        seatType: [
+          {
+            required: true,
+            message: "请选择坐席类型",
+            trigger: "change"
           }
         ]
       },
       formItem: {
-        name: "",
-        account_number: "",
+        callno: "",
+        empno: "",
+        loginId: "",
+        extenType: "sip",
         status: "",
-        role: "",
-        email: "",
-        mobile: ""
-      },
-      productTimeList: [
-        {
-          value: "0",
-          label: "容联"
-        },
-        {
-          value: "1",
-          label: "科天"
-        }
-      ],
-      statusList: [
-        {
-          value: "0",
-          label: "有效"
-        },
-        {
-          value: "1",
-          label: "无效"
-        }
-      ],
-      extenTypeList: [
-        {
-          value: "0",
-          label: "软电话"
-        },
-        {
-          value: "1",
-          label: "手机"
-        },
-        {
-          value: "2",
-          label: "网关"
-        }
-      ]
+        seatType: ""
+      }
     };
   },
-  props: { model: false },
   watch: {
-    parentData: function() {
+    model: function() {
       // 监听父组件的变化
-      this.childrenData = this.parentData;
+      this.childrenData = this.model;
     }
   },
   created() {
-    console.log(this.parentData);
+    console.log(this.model);
   },
   methods: {
-    del() {
-      this.childrenModel = !this.model;
-      this.$emit("passBack", this.childrenModel);
-      // this.$emit("getChildrenStatus", this.childrenData);
+    // 添加坐席关系
+    async call_employee_add() {
+      const res = await call_employee_add(this.formItem);
+      if (res.code === 1) {
+        this.childrenData = {
+          modal: false,
+          type: "ok"
+        };
+        this.$emit("passBack", this.childrenData);
+      } else {
+        this.$Message.error("查询条件格式有误，请重新填写");
+      }
     },
-    // 重置
-    clearForm(name) {
-      this.pageNo = 1;
-      this.formItem = {};
-      this.$refs[name].resetFields();
+    del() {
+      this.childrenData = {
+        modal: false,
+        type: "cloes"
+      };
+      this.$emit("passBack", this.childrenData);
+      // this.$emit("getChildrenStatus", this.childrenData);
     }
   }
 };
@@ -214,6 +230,9 @@ export default {
 .add_role_form_modal {
   .vue-panel {
     border: none;
+  }
+  .add_role_form {
+    min-height: 200px;
   }
 }
 </style>

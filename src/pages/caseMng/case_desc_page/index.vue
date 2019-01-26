@@ -152,7 +152,7 @@
             size="small"
           >上一个</Button>
         </p>
-        <div class="panel-desc">
+        <div class="panel-desc" v-if="!showPanel">
           <Row :gutter="10">
             <Col span="12">
             <Col
@@ -269,12 +269,11 @@
         >
           <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
           案件信息
-          <span class="qishu">还到（12期）</span>
+          <span class="qishu">{{case_detail_case_base_info_Data.prdTypName}}（{{case_detail_case_base_info_Data.perdCnt}}期）</span>
         </p>
         <!-- 表格 -->
         <div v-if="!showPanel2">
           <Form
-            v-if="!showPanel"
             ref="formItem"
             :model="formItem"
             :label-width="80"
@@ -284,29 +283,30 @@
               <Row :gutter="5">
 
                 <div class="panel-desc-title fl mr10">
-                  账单号：<span>BIL2018091015251600028780</span>
+                  账单号：<span>{{case_detail_case_base_info_Data.billNo}}</span>
                 </div>
 
                 <div class="panel-desc-title fl mr10">
-                  借款本金：<span>675.00</span>
+                  借款本金：<span>{{case_detail_case_base_info_Data.loanAmount}}</span>
                 </div>
 
                 <div class="panel-desc-title fl mr10">
-                  借款时间：<span>2018-09-10 15:25:16</span>
+                  借款时间：<span>{{case_detail_case_base_info_Data.loanTime | formatDatetime}}</span>
                 </div>
 
                 <div class="panel-desc-title fl mr10">
-                  银行卡号：<span>622253******6484</span>
+                  银行卡号：<span>{{case_detail_case_base_info_Data.bankNo}}</span>
                 </div>
 
                 <div class="panel-desc-title fl mr10">
-                  银行卡：<span>交通银行</span>
+                  银行卡：<span>{{case_detail_case_base_info_Data.bankNameHid}}</span>
                 </div>
 
               </Row>
             </div>
           </Form>
           <Table
+            :row-class-name="rowClassName"
             :data="tableData"
             :columns="tableColumns"
             stripe

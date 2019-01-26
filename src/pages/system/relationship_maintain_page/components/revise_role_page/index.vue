@@ -1,7 +1,7 @@
 <template>
   <div>
     <Modal
-      v-model="model"
+      v-model="model.modal"
       width="800"
       :transfer="false"
       class-name="add_role_form_modal"
@@ -26,12 +26,24 @@
             <Row>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
                 <FormItem span="4" label="员工姓名:" prop="empno">
-                  <Input size="small" clearable v-model="formItem.empno" placeholder="请输入员工姓名"></Input>
+                  <Select
+                    v-model="formItem.empno"
+                    filterable
+                    clearable
+                    placeholder="请选择员工"
+                    size="small"
+                  >
+                    <Option
+                      v-for="item in getDirObj['SEAT_TYPE']"
+                      :value="item.itemCode"
+                      :key="item.itemCode"
+                    >{{ item.itemName }}</Option>
+                  </Select>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
                 <FormItem span="4" label="登录账号:" prop="loginId">
-                  <Input size="small" clearable v-model="formItem.loginId" placeholder="请输入登录账号"></Input>
+                  <Input size="small" disabled v-model="formItem.loginId" placeholder="请输入登录账号"></Input>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -44,10 +56,10 @@
                     placeholder="请选择坐席类型"
                   >
                     <Option
-                      v-for="item in productTimeList"
-                      :value="item.value"
-                      :key="item.value"
-                    >{{ item.label }}</Option>
+                      v-for="item in getDirObj['SEAT_TYPE']"
+                      :value="item.itemCode"
+                      :key="item.itemCode"
+                    >{{ item.itemName }}</Option>
                   </Select>
                 </FormItem>
               </Col>
@@ -61,20 +73,23 @@
         </Card>
       </div>
       <div slot="footer">
-        <Button type="ghost" size="small" @click="del">关闭</Button>
-        <Button type="primary" size="small" @click="del">提交</Button>
+        <Button type="ghost" size="small" @click="del('1')">关闭</Button>
+        <Button type="primary" size="small" @click="call_employee_update('0')">提交</Button>
       </div>
     </Modal>
   </div>
 </template>
  <script>
-import { buffet_list } from "@/service/getData";
+import tablePage from "@/mixin/tablePage";
+import sysDictionary from "@/mixin/sysDictionary";
+import { call_employee_update } from "@/service/getData";
 export default {
-  // props: ["parentData"],
+  props: { model: {} },
   model: {
     prop: "model",
-    event: "passBack"
+    event: "childPassBack"
   },
+  mixins: [sysDictionary, tablePage],
   data() {
     const validatePass = (rule, value, callback) => {
       if (value === "") {
@@ -88,77 +103,80 @@ export default {
       }
     };
     return {
+      getDirList: ["SEAT_TYPE"],
+      getDirObj: {},
       showPanel: false,
       childrenData: {},
       childrenModel: false,
       ruleValidate: {
-        name: [
+        empno: [
           {
             required: true,
-            message: "请输入姓名",
+            message: "请选择员工",
+            trigger: "change"
+          }
+        ],
+        loginId: [
+          {
+            required: true,
+            message: "请输入登陆账号",
             trigger: "blur"
           }
         ]
       },
       formItem: {
-        name: "",
-        account_number: "",
+        uuid: "",
+        empno: "",
+        loginId: "",
         status: "",
-        role: "",
-        email: "",
-        mobile: ""
-      },
-      productTimeList: [
-        {
-          value: "0",
-          label: "容联"
-        },
-        {
-          value: "1",
-          label: "科天"
-        }
-      ],
-      statusList: [
-        {
-          value: "0",
-          label: "有效"
-        },
-        {
-          value: "1",
-          label: "无效"
-        }
-      ],
-      extenTypeList: [
-        {
-          value: "0",
-          label: "软电话"
-        },
-        {
-          value: "1",
-          label: "手机"
-        },
-        {
-          value: "2",
-          label: "网关"
-        }
-      ]
+        seatType: "",
+        id: ""
+      }
     };
   },
-  props: { model: false },
   watch: {
-    parentData: function() {
+    model: function() {
       // 监听父组件的变化
-      this.childrenData = this.parentData;
+      this.childrenData = this.parentData2;
     }
   },
   created() {
-    console.log(this.parentData);
+    console.log(this.model);
+    this.formItem = {
+      id: this.model.data.id,
+      callno: this.model.data.callno,
+      empno: this.model.data.empno,
+      loginId: this.model.data.loginId,
+      extenType: this.model.data.extenType,
+      status: this.model.data.status,
+      seatType: this.model.data.seatType
+    };
   },
   methods: {
-    del() {
-      this.childrenModel = false;
-      this.$emit("passBack", this.childrenModel);
-      // this.$emit("getChildrenStatus", this.childrenData);
+    // 添加坐席关系
+    async call_employee_update() {
+      const res = await call_employee_update(this.formItem);
+      console.log(res);
+      if (res.code==1) {
+        this.del("0");
+      } else {
+        this.$Message.error("查询条件格式有误，请重新填写");
+      }
+    },
+    // 关闭回调
+    del(type) {
+      if (type === "0") {
+        this.childrenData = {
+          modal: false,
+          type: "ok"
+        };
+      } else if (type === "1") {
+        this.childrenData = {
+          modal: false,
+          type: "close"
+        };
+      }
+      this.$emit("childPassBack", this.childrenData);
     },
     // 重置
     clearForm(name) {
@@ -180,6 +198,9 @@ export default {
 .add_role_form_modal {
   .vue-panel {
     border: none;
+  }
+  .add_role_form {
+    min-height: 200px;
   }
 }
 </style>
