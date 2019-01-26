@@ -304,14 +304,8 @@ export default {
     }
   },
   created() {
-<<<<<<< HEAD
-    console.log(this.model);
-    this.system_role_list();
-=======
     console.log(this.formItem);
     this.system_role_list()
-
->>>>>>> --
   },
   methods: {
     // 获取表格数据
