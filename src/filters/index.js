@@ -7,6 +7,7 @@ exports.formatDate = (date, fmt = 'YYYY-MM-DD HH:mm:ss') => {
 };
 exports.tableDate = (date) => {
   return `${date.substring(0,4)}-${date.substring(4,6)}-${date.substring(6,8)}`;
+}
 exports.formatDatetime = (date) => {
   return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
 };
