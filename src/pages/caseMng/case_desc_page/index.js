@@ -99,7 +99,149 @@ export default {
 			},
 
 			formItem: {},
-			tableColumns: [],
+			tableColumns: [
+                {
+					title: '序号',
+					width: 60,
+					align: 'center',
+					type: 'index',
+					sortable: true
+                },
+                {
+					title: '期数',
+					width: 60,
+					align: 'center',
+					key: 'perdNum',
+                },
+                {
+					title: '逾期天数',
+					width: 100,
+					align: 'center',
+					key: 'overdueDays',
+                },
+                {
+					title: '还款日',
+					width: 150,
+					align: 'center',
+					key: 'index',
+                },
+                {
+					title: '逾期状态',
+					width: 100,
+					align: 'center',
+					key: 'overdueFlgName',
+                },
+                {
+					title: '应还利息',
+					width: 150,
+					align: 'center',
+                    key: 'perdItrtAmt',
+                    render: (h, params) => {
+						let perdItrtAmt = params.row.perdItrtAmt;
+						perdItrtAmt = perdItrtAmt ? this.$options.filters['money'](perdItrtAmt) : perdItrtAmt;
+						return h('span', perdItrtAmt);
+					}
+                },
+                {
+					title: '应还服务费',
+					width: 150,
+					align: 'center',
+                    key: 'perdMngAmt',
+                    render: (h, params) => {
+						let perdMngAmt = params.row.perdMngAmt;
+						perdMngAmt = perdMngAmt ? this.$options.filters['money'](perdMngAmt) : perdMngAmt;
+						return h('span', perdMngAmt);
+					}
+                },
+                {
+					title: '应还罚息',
+					width: 150,
+					align: 'center',
+                    key: 'perdFineAmt',
+                    render: (h, params) => {
+						let perdFineAmt = params.row.perdFineAmt;
+						perdFineAmt = perdFineAmt ? this.$options.filters['money'](perdFineAmt) : perdFineAmt;
+						return h('span', perdFineAmt);
+					}
+                },
+                {
+					title: '应还滞纳金',
+					width: 150,
+					align: 'center',
+                    key: 'perdOvduAmt',
+                    render: (h, params) => {
+						let perdOvduAmt = params.row.perdOvduAmt;
+						perdOvduAmt = perdOvduAmt ? this.$options.filters['money'](perdOvduAmt) : perdOvduAmt;
+						return h('span', perdOvduAmt);
+					}
+                },
+                {
+					title: '应还总金额',
+					width: 100,
+					align: 'center',
+                    key: 'perdTotAmt',
+                    render: (h, params) => {
+						let perdTotAmt = params.row.perdTotAmt;
+						perdTotAmt = perdTotAmt ? this.$options.filters['money'](perdTotAmt) : perdTotAmt;
+						return h('span', perdTotAmt);
+					}
+                },
+                {
+					title: '已还总金额',
+					width: 150,
+					align: 'center',
+                    key: 'perdTotRep',
+                    render: (h, params) => {
+						let perdTotRep = params.row.perdTotRep;
+						perdTotRep = perdTotRep ? this.$options.filters['money'](perdTotRep) : perdTotRep;
+						return h('span', perdTotRep);
+					}
+                },
+                {
+					title: '未还总金额',
+					width: 150,
+					align: 'center',
+                    key: 'perdTotSur',
+                    render: (h, params) => {
+						let perdTotSur = params.row.perdTotSur;
+						perdTotSur = perdTotSur ? this.$options.filters['money'](perdTotSur) : perdTotSur;
+						return h('span', perdTotSur);
+					}
+                },
+                {
+					title: '已还本金',
+					width: 150,
+					align: 'center',
+                    key: 'perdPrcpRep',
+                    render: (h, params) => {
+						let perdPrcpRep = params.row.perdPrcpRep;
+						perdPrcpRep = perdPrcpRep ? this.$options.filters['money'](perdPrcpRep) : perdPrcpRep;
+						return h('span', perdPrcpRep);
+					}
+                },
+                {
+					title: '已还利息',
+					width: 150,
+					align: 'center',
+                    key: 'perdItrtRep',
+                    render: (h, params) => {
+						let perdItrtRep = params.row.perdItrtRep;
+						perdItrtRep = perdItrtRep ? this.$options.filters['money'](perdItrtRep) : perdItrtRep;
+						return h('span', perdItrtRep);
+					}
+                },
+                {
+					title: '已还服务费',
+					width: 150,
+					align: 'center',
+                    key: 'perdMngRep',
+                    render: (h, params) => {
+						let perdMngRep = params.row.perdMngRep;
+						perdMngRep = perdMngRep ? this.$options.filters['money'](perdMngRep) : perdMngRep;
+						return h('span', perdMngRep);
+					}
+				},
+            ],
 			case_detail_address_info_Data: {},
 			// 催收信息
 			tableData: [],
@@ -1077,6 +1219,14 @@ export default {
 		this.case_detail_case_identity_info(); // 查询案件详情身份信息
 	},
 	methods: {
+        rowClassName (row, index) {
+            if (index === 1) {
+                return 'demo-table-info-row';
+            } else if (index === 3) {
+                return 'demo-table-error-row';
+            }
+            return '';
+        },
 		// 保存通讯录
 		saveTxl() {
 			this.$refs.formItem2.validate((valid) => {
@@ -1323,7 +1473,8 @@ export default {
 				id: this.caseNo
 			});
 			if (res.code === 1) {
-				this.case_detail_case_base_info_Data = res.data && res.data.content;
+                this.case_detail_case_base_info_Data = res.data && res.data.content;
+                this.tableData = res.data && res.data.caseBasePerdVoList;
 			} else {
 				this.$Message.error(res.message);
 			}

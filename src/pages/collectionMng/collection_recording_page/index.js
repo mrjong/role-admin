@@ -1,13 +1,19 @@
 import { buffet_list } from '@/service/getData';
 import 'video.js/dist/video-js.css'
 import { videoPlayer } from 'vue-video-player'
+import formValidateFun from '@/mixin/formValidateFun';
+import sysDictionary from '@/mixin/sysDictionary';
+import tablePage from '@/mixin/tablePage';
 export default {
   name: 'demo_list',
   components: {
     videoPlayer,
   },
+	mixins: [ tablePage, formValidateFun, sysDictionary ],
   data() {
     return {
+        getDirList: [ 'PROD_TYPE' ],
+        getDirObj: {},
       showPanel: false,
       showPanel2: false,
       modal1: false,
@@ -134,137 +140,86 @@ export default {
       ],
       tableColumns: [
         {
-          title: '序号',
-          width: 80,
-          searchOperator: '=',
-          sortable: true,
-          key: 'recording_id',
-          fixed: 'left',
-          align: 'center'
+            title: '序号',
+            width: 80,
+            type: 'index',
+            align: 'center'
         },
         {
-          title: '操作',
-          width: 100,
-          key: 'edit',
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h(
-                'a',
-                {
-                  class: 'edit-btn',
-                  props: {
-                  },
-                  on: {
-                    click: () => {
-                      this.modal1 = true;
-                    }
-                  }
-                },
-                '播放'
-              )
-            ]);
-          }
+            title: '关联录音',
+            width: 120,
+            searchOperator: '=',
+            key: 'buffet_code',
+            render: (h, params) => {
+                const uuid = params.row.uuid;
+                return h('span', uuid ? '播放' : '');
+            }
         },
         {
-          title: '时长',
-          width: 100,
-          searchOperator: '=',
-          key: 'time_length',
-          align: 'center'
-        },
-        // {
-        //   title: '餐柜添加时间',
-        //   key: 'addtime',
-        //   sortable: true,
-        //   width: 160,
-        //   render: (h, params) => {
-        //     const row = params.row;
-        //     const addtime = row.addtime
-        //       ? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-        //       : row.addtime;
-        //     return h('span', addtime);
-        //   }
-        // },
-        {
-          title: '客户姓名',
-          searchOperator: 'like',
-          key: 'client_name',
-          sortable: true,
-          align: 'center'
+            title: '时长',
+            width: 80,
+            key: 'callTime',
+            align: 'center'
         },
         {
-          title: '关系',
-          width: 80,
-          searchOperator: 'like',
-          key: 'relation',
-          align: 'center'
-          // render: (h, params) => {
-          //   return h('div', [
-          //     h(
-          //       'Tooltip',
-          //       {
-          //         style: {
-          //           margin: '0 5px'
-          //         },
-          //         props: {
-          //           content: params.row.address,
-          //           placement: 'top'
-          //         }
-          //       },
-          //       [h('div', {}, params.row.address)]
-          //     )
-          //   ]);
-          // }
+            title: '呼叫电话',
+            width: 150,
+            key: 'mblNoHid'
         },
         {
-          title: '呼叫电话',
-          searchOperator: '=',
-          key: 'call_number',
-          align: 'center'
+            title: '呼叫开始时间',
+            width: 150,
+            key: 'startTime',
+            render: (h, params) => {
+                let startTime = params.row.startTime;
+                startTime = startTime
+                    ? this.$options.filters['formatDate'](startTime, 'YYYY-MM-DD HH:mm:ss')
+                    : startTime;
+                return h('span', startTime);
+            }
         },
         {
-          title: '呼叫开始时间',
-          searchOperator: '=',
-          key: 'call_begin_time',
-          ellipsis: true,
-          align: 'center'
+            title: '呼叫结束时间',
+            width: 150,
+            key: 'endTime',
+            render: (h, params) => {
+                let endTime = params.row.endTime;
+                endTime = endTime
+                    ? this.$options.filters['formatDate'](endTime, 'YYYY-MM-DD HH:mm:ss')
+                    : endTime;
+                return h('span', endTime);
+            }
         },
         {
-          title: '呼叫结束时间',
-          searchOperator: '=',
-          key: 'call_end_time',
-          ellipsis: true,
-          align: 'center'
+            title: '客户姓名',
+            width: 120,
+            key: 'userNmHid'
         },
         {
-          title: '经办人',
-          searchOperator: '=',
-          key: 'operator',
-          align: 'center'
+            title: '关系',
+            key: 'callUserTypeName'
         },
         {
-          title: '案件编码',
-          searchOperator: '=',
-          key: 'case_id',
-          ellipsis: true,
-          align: 'center'
+            title: '经办人',
+            width: 120,
+            key: 'opUserName'
         },
         {
-          title: '账单号',
-          searchOperator: '=',
-          key: 'bill_number',
-          ellipsis: true,
-          align: 'center'
+            title: '案件编码',
+            searchOperator: '=',
+            key: 'caseNo'
         },
         {
-          title: '客户身份证号',
-          searchOperator: '=',
-          key: 'id_card',
-          ellipsis: true,
-          align: 'center'
+            title: '账单号',
+            width: 180,
+            sortable: true,
+            key: 'billNo'
         },
-      ]
+        {
+            title: '客户身份证号',
+            key: 'idNoHid'
+        },
+    ]
     };
   },
   created() {

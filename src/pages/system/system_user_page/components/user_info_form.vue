@@ -86,24 +86,119 @@
                   ></Input>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="24" :lg="24" span="4">
-                <FormItem label="系统角色:" span="4" prop="roleIds">
-                  <Select
-                    size="small"
-                    v-model="formItem.roleIds"
-                    filterable
-                    multiple
-                    clearable
-                    placeholder="请选择系统角色"
-                    :disabled="model.type === '1'? true: false"
-                  >
-                    <Option
-                      v-for="item in rolesData"
-                      :value="item.id"
-                      :key="item.id"
-                    >{{ item.name }}</Option>
-                  </Select>
-                </FormItem>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="24"
+                :lg="24"
+                span="4"
+              >
+              <FormItem
+                label="系统角色:"
+                span="4"
+                prop="roleIds"
+              >
+                <Select
+                  size="small"
+                  v-model="formItem.roleIds"
+                  filterable
+                  multiple
+                  
+                  :clearable="model.type !== '1'? true: false"
+                  placeholder="请选择系统角色"
+                  :disabled="model.type === '1'? true: false"
+                >
+                  <Option
+                    v-for="item in rolesData"
+                    :value="item.id"
+                    :key="item.id"
+                  >{{ item.name }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="10"
+                :lg="10"
+                span="4"
+                v-if=""
+              >
+              <FormItem
+                span="4"
+                label="创建人:"
+                prop="createUser"
+              >
+                  <Input
+                  size="small"
+                  clearable
+                  v-model="formItem.createUser"
+                  placeholder="请输入创建人"
+                  :disabled="model.type === '1'? true: false"
+                ></Input>
+              </FormItem>
+              </Col>
+               <Col
+                :xs="24"
+                :sm="24"
+                :md="10"
+                :lg="10"
+                span="4"
+                v-if=""
+              >
+              <FormItem
+                span="4"
+                label="修改人:"
+                prop="updateUser"
+              >
+                  <Input
+                  size="small"
+                  clearable
+                  v-model="formItem.updateUser"
+                  placeholder="请输入修改人"
+                  :disabled="model.type === '1'? true: false"
+                ></Input>
+              </FormItem>
+              </Col>
+               <Col
+                :xs="24"
+                :sm="24"
+                :md="10"
+                :lg="10"
+                span="4"
+                v-if=""
+              >
+              <FormItem
+                span="4"
+                 v-if="model.type === '1'"
+                label="修改时间:"
+                prop="updateTime"
+                 class="text-left"
+              >
+                 <label for="" class="mt5">
+                     {{formItem.updateTime | formatDatetime}}
+                 </label>
+              </FormItem>
+              </Col>
+               <Col
+                :xs="24"
+                :sm="24"
+                :md="10"
+                :lg="10"
+                span="4"
+                v-if=""
+              >
+              <FormItem
+                span="4"
+                 v-if="model.type === '1'"
+                label="创建时间:"
+                prop="createtime"
+                 class="text-left"
+              >
+                 <label for="" class="mt5">
+                     {{formItem.createtime | formatDatetime}}
+                 </label>
+              </FormItem>
               </Col>
             </Row>
           </Form>
@@ -209,8 +304,14 @@ export default {
     }
   },
   created() {
+<<<<<<< HEAD
     console.log(this.model);
     this.system_role_list();
+=======
+    console.log(this.formItem);
+    this.system_role_list()
+
+>>>>>>> --
   },
   methods: {
     // 获取表格数据

@@ -75,7 +75,7 @@ export const wkProcessDef_save = (obj = {}) =>
   fetch({
     url: '/wkProcessDef/save',
     method: 'POST',
-    data: qs.stringify(obj)
+    data: obj
   });
 
 /**
@@ -682,17 +682,6 @@ export const case_detail_case_identity_info = (obj, options) =>
     data: qs.stringify(obj)
   });
 
-/*
-*
-*
-添加工作流
-* */
-export const wkProcessDef_add = (obj, options) =>
-  fetch({
-    url: '/wkProcessDef/add',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
 /*
 *
 *
