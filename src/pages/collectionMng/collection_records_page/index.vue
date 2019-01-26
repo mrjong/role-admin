@@ -45,10 +45,10 @@
               v-model="formItem.prdTyp"
             >
               <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in getDirObj.PROD_TYPE"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -249,13 +249,12 @@
       >
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
         检索结果
-        <router-link to="/buffet/buffet_add">
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >导出数据</Button>
-        </router-link>
+        <Button
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+          @click.stop="case_collect_tape_download"
+        >导出数据</Button>
       </p>
       <!-- 表格 -->
 

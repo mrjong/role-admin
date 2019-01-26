@@ -74,7 +74,6 @@
                 placement="bottom-start"
                 placeholder="请选择还款时间区间"
                 @on-change="changeDange"
-                @on-ok="changeDange"
               ></DatePicker>
             </FormItem>
           </Col>
@@ -130,7 +129,7 @@
             >
               <Select
                 size="small"
-                v-model="formValidate.prdTyp"
+                v-model="formValidate.prdTyps"
                 multiple
                 filterable
               >

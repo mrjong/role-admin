@@ -8,6 +8,7 @@ export default {
     var alignCenter = 'center';
     var widthVal = 180;
     var widthMidVal = 100;
+    let $this = this;
     return {
       getDirList: ['PAY_OFF_STS' ],
       getDirObj: {},
@@ -16,28 +17,20 @@ export default {
       opCompanyNameList: [
         {
           value: '01',
-          label: '还到'
+          label: '还到z中心'
         },
         {
           value: '02',
-          label: '随行付钱包'
+          label: '随行付钱包中心'
         },
         {
           value: '03',
-          label: '商户贷'
+          label: '商户贷中心'
         }
       ],
-      payOffStsList: [
-        {
-          value: 'gbbg',
-          label: 'New York'
-        }
-      ],
-      modal12: false,
-      inputGrid: '',
-      modal11: false,
-      startRepayDateRange: [], //实际还款日期区间
-      shouldRepayDate: [],
+      startRepayDateRange: '', //实际还款日期区间
+      shouldRepayDate: '',
+      summary:{},
       formValidate: {
         startRepayDate : '', // 实际还款起始日期
         endRepayDate: '', //实际还款结束日期
@@ -119,7 +112,12 @@ export default {
           key: 'repayAmt',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthVal,
+          render(h,params){
+            let res = params.row.repayAmt;
+            res = res ? $this.$options.filters['money'](res) : res;
+            return h('span',res);
+          }
         },
         {
           title: '还款方式',
@@ -153,7 +151,7 @@ export default {
           key: 'overdueDays',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthMidVal
         },
         {
           title: '还款期数',
@@ -182,7 +180,7 @@ export default {
           key: 'userNmHid',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthMidVal
         },
         {
           title: '身份证号',
@@ -277,6 +275,7 @@ export default {
     },
     // 改变日期区间的格式之后进行处理
     changeActDate(val1, val2) {
+      console.log(val1,val2);
       this.formValidate.startRepayDate = val1[0];
       this.formValidate.endRepayDate = val1[1];
       console.log('123', this.formValidate);
@@ -302,6 +301,7 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          this.pageNo = 1;
           this.getList();
         }
       });
@@ -313,12 +313,12 @@ export default {
         pageSize: this.pageSize,
         ...this.formValidate
       })
-      console.log(res,'明细列表');
       if(res && res.code === 1){
         this.$Message.success('请求成功!');
         let data = res.data;
         this.tableData = data.page.content;
         this.total = data.page.totalElements //接口中在该条件下取得的数据量
+        this.summary = data.summary;
         data.page.size // 数据的大小
         //data.page.numberOfElements  当前页面实际返回的数量
       } else{
@@ -330,6 +330,8 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formValidate = {};
+      this.startRepayDateRange = '';
+      this.shouldRepayDate = '';
       this.$refs[name].resetFields();
     }
   }

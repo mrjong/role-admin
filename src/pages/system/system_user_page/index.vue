@@ -1,7 +1,7 @@
 <template>
   <div class="panel_list">
     <!-- 检索条件 -->
-   <!-- 检索条件 -->
+    <!-- 检索条件 -->
     <Card class="vue-panel">
       <p
         slot="title"
@@ -18,7 +18,7 @@
         :rules="ruleValidate"
       >
         <Row>
-         
+
           <Col
             :xs="24"
             :sm="24"
@@ -38,7 +38,7 @@
             />
           </FormItem>
           </Col>
-           <Col
+          <Col
             :xs="24"
             :sm="24"
             :md="6"
@@ -110,11 +110,22 @@
     </Card>
     <!-- 检索结果 -->
     <Card class="vue-panel-table collection_recording">
-      <p slot="title" >
-        <Icon :type="!showPanel2?'chevron-down':'chevron-up'" @click="showPanel2=!showPanel2"></Icon> 检索结果
+      <p slot="title">
+        <Icon
+          :type="!showPanel2?'chevron-down':'chevron-up'"
+          @click="showPanel2=!showPanel2"
+        ></Icon> 检索结果
         <!-- <router-link to="/buffet/buffet_add">
           <Button class="fr vue-back-btn header-btn" type="primary" size="small">导出数据</Button>
         </router-link>-->
+        <Button
+          class="fr header-btn"
+          type="primary"
+          @click="handleDelAll"
+          style="width:80px"
+          long
+          size="small"
+        >重置密码</Button>
         <Button
           class="fr header-btn"
           type="primary"
@@ -126,8 +137,10 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-         <Table
+        <Table
           :data="tableData"
+           @on-selection-change="selectOne"
+              @on-select-all="selectOne"
           :columns="tableColumns"
           stripe
           border
@@ -136,7 +149,8 @@
         <div class="vue-panel-page">
           <div class="fr">
             <Page
-               :total="total"
+             
+              :total="total"
               show-total
               size="small"
               :page-size-opts="[10, 20, 50, 100]"
@@ -151,7 +165,12 @@
         </div>
       </div>
     </Card>
-    <Remodal v-model="parentData" :getDirObj="getDirObj" v-if="parentData.modal"></Remodal>
+    <Remodal
+      v-model="parentData"
+      :parentData="parentData"
+      :getDirObj="getDirObj"
+      v-if="parentData.modal"
+    ></Remodal>
   </div>
 </template>
 <script src="./index.js"></script>

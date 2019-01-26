@@ -1,4 +1,8 @@
-import { case_collect_case_list, case_collect_case_list_export } from '@/service/getData';
+import {
+	case_collect_case_list,
+	case_collect_case_list_export,
+	collectcode_getListByCodeType
+} from '@/service/getData';
 import formValidateFun from '@/mixin/formValidateFun';
 import tablePage from '@/mixin/tablePage';
 import qs from 'qs';
@@ -11,7 +15,8 @@ export default {
 		console.log(this.GLOBAL);
 		const _this = this;
 		return {
-			getDirList: [ 'PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL','TALK_RESULT' ],
+			getDirObj2: {},
+			getDirList: [ 'PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'TALK_RESULT' ],
 			getDirObj: {},
 			showPanel: false,
 			showPanel2: false,
@@ -89,6 +94,8 @@ export default {
 					align: 'center',
 					render(h, params) {
 						const id = params.row.id;
+						const prdTyp = params.row.prdTyp;
+						const userId = params.row.userId;
 						return h('div', [
 							h(
 								'Tooltip',
@@ -109,9 +116,7 @@ export default {
 											on: {
 												click: () => {
 													window.open(
-														`${location.origin}/#/case_desc_page?caseNotest=${id}&userIdtest=${params
-															.row
-															.userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+														`${location.origin}/#/case_desc_page?caseNotest=${id}&prdTyptest=${prdTyp}&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
 															_this.formItem
 														)}`
 													);
@@ -147,7 +152,7 @@ export default {
 					title: '产品线',
 					minWidth: 120,
 					align: 'center',
-					key: 'prdName',
+					key: 'prdName'
 				},
 				{
 					title: '账单号',
@@ -272,6 +277,8 @@ export default {
 	},
 	created() {
 		this.getList();
+		// 沟通状态
+		this.collectcode_getListByCodeType();
 	},
 	methods: {
 		// 获取表格数据
@@ -290,6 +297,18 @@ export default {
 				this.$Message.error(res.message);
 			}
 		},
+		// 沟通状态
+		async collectcode_getListByCodeType() {
+			const res = await collectcode_getListByCodeType({
+				codeType: 'TALK_RESULT'
+			});
+			if (res.code === 1) {
+				this.getDirObj2 = res.data;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+
 		// 获取表格数据
 		async case_collect_case_list_export() {
 			const res = await case_collect_case_list_export(

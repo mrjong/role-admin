@@ -1,11 +1,16 @@
 import formValidateFun from '@/mixin/formValidateFun';
+import sysDictionary from '@/mixin/sysDictionary';
+import { case_collect_collect_list, case_collect_tape_download } from '@/service/getData';
+import tablePage from '@/mixin/tablePage';
+
 export default {
 	name: 'case_search_page',
-	mixins: [ formValidateFun ],
+	mixins: [ tablePage, formValidateFun, sysDictionary ],
 	data() {
 		console.log(this.GLOBAL);
-
 		return {
+			getDirList: [ 'PROD_TYPE' ],
+			getDirObj: {},
 			showPanel: false,
 			showPanel2: false,
 			phoneCallList: [
@@ -100,50 +105,6 @@ export default {
 						message: '请输入正确手机号',
 						trigger: 'blur'
 					}
-				],
-				overdueDaysLt: [
-					{
-						pattern: this.GLOBAL.num,
-						message: '逾期天数为正整数',
-						trigger: 'blur'
-					},
-					{
-						validator: this.validate_yqts_start,
-						trigger: 'blur'
-					}
-				],
-				overdueDaysBt: [
-					{
-						pattern: this.GLOBAL.num,
-						message: '逾期天数为正整数',
-						trigger: 'blur'
-					},
-					{
-						validator: this.validate_yqts_end,
-						trigger: 'blur'
-					}
-				],
-				billOvduAmtLt: [
-					{
-						pattern: this.GLOBAL.money,
-						message: '金额格式不正确',
-						trigger: 'blur'
-					},
-					{
-						validator: this.validate_yqyhje_start,
-						trigger: 'blur'
-					}
-				],
-				billOvduAmtBt: [
-					{
-						pattern: this.GLOBAL.money,
-						message: '金额格式不正确',
-						trigger: 'blur'
-					},
-					{
-						validator: this.validate_yqyhje_end,
-						trigger: 'blur'
-					}
 				]
 			},
 			pageNo: 1,
@@ -162,105 +123,121 @@ export default {
 			tableData: [],
 			tableColumns: [
 				{
-					title: '餐柜ID',
+					title: '序号',
+					width: 80,
+					searchOperator: '=',
+					type: 'index',
+					align: 'center'
+				},
+				{
+					title: '催收时间',
+					width: 100,
+					searchOperator: '=',
+                    key: 'buffet_id',
+                    render: (h, params) => {
+						let promiseRepayDate = params.row.promiseRepayDate;
+						promiseRepayDate = promiseRepayDate
+							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD HH:mm:ss')
+							: promiseRepayDate;
+						return h('span', promiseRepayDate);
+					}
+				},
+				{
+					title: '客户姓名',
+					width: 120,
+					searchOperator: '=',
+					key: 'buffet_code'
+				},
+				{
+					title: '关系',
+					searchOperator: '=',
+					key: 'device_id'
+				},
+				{
+					title: '催收电话',
 					width: 100,
 					searchOperator: '=',
 					sortable: true,
 					key: 'buffet_id'
 				},
 				{
-					title: '餐柜编码',
+					title: '拨打状态',
 					width: 120,
 					searchOperator: '=',
 					key: 'buffet_code'
 				},
 				{
-					title: '设备ID',
+					title: '沟通结果',
+					searchOperator: '=',
+					key: 'device_id'
+				},
+
+				{
+					title: '承诺还款时间',
+					searchOperator: '=',
+					key: 'device_id',
+					render: (h, params) => {
+						let promiseRepayDate = params.row.promiseRepayDate;
+						promiseRepayDate = promiseRepayDate
+							? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD HH:mm:ss')
+							: promiseRepayDate;
+						return h('span', promiseRepayDate);
+					}
+				},
+				{
+					title: '经办人',
+					width: 120,
+					searchOperator: '=',
+					key: 'buffet_code'
+				},
+				{
+					title: '案件编码',
 					searchOperator: '=',
 					key: 'device_id'
 				},
 				{
-					title: '餐柜添加时间',
-					key: 'addtime',
-					width: 3000,
-					sortable: true,
-					render: (h, params) => {
-						const row = params.row;
-						const addtime = row.addtime
-							? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-							: row.addtime;
-						return h('span', addtime);
-					}
-				},
-				{
-					title: '餐柜名称',
-					width: 120,
-					searchOperator: 'like',
-					key: 'buffet_name',
-					sortable: true
-				},
-				{
-					title: '餐柜详细地址',
-					searchOperator: 'like',
-					key: 'address',
-					render: (h, params) => {
-						return h('div', [
-							h(
-								'Tooltip',
-								{
-									style: {
-										margin: '0 5px'
-									},
-									props: {
-										content: params.row.address,
-										placement: 'top'
-									}
-								},
-								[ h('div', {}, params.row.address) ]
-							)
-						]);
-					}
-				},
-				{
-					title: '操作',
+					title: '账单号',
 					width: 100,
-					key: 'edit',
+					searchOperator: '=',
+					sortable: true,
+					key: 'buffet_id'
+				},
+				{
+					title: '催收期数',
+					width: 120,
+					searchOperator: '=',
+					key: 'buffet_code'
+				},
+				{
+					title: '客户身份证号',
+					searchOperator: '=',
+					key: 'device_id'
+				},
+				{
+					title: '关联录音',
+					searchOperator: '=',
+					key: 'device_id'
+				},
+				{
+					title: '备注',
+					align: 'center',
+					minWidth: 400,
+					key: 'collectRmk',
 					render: (h, params) => {
-						return h('div', [
-							h(
-								'Poptip',
-								{
-									props: {
-										confirm: true,
-										title: '您确定要删除这条数据吗?',
-										transfer: true
-									},
-									on: {
-										'on-ok': () => {
-											this.deleteGoods(params.row.buffet_id);
-										}
-									}
+						let collectRmk = params.row.collectRmk;
+						return h(
+							'Tooltip',
+							{
+								style: {
+									margin: '0 5px'
 								},
-								[
-									h(
-										'a',
-										{
-											class: 'edit-btn',
-											props: {}
-										},
-										'删除'
-									),
-									h(
-										'a',
-										{
-											class: 'edit-btn',
-											props: {}
-										},
-										'删除'
-									)
-								]
-							)
-						]);
+								props: {
+									content: collectRmk,
+									placement: 'top'
+								}
+							},
+							[ h('div', {}, collectRmk) ]
+						);
 					}
 				}
 			]
@@ -270,34 +247,25 @@ export default {
 		this.getList();
 	},
 	methods: {
-		// 页码改变的回调
-		changePage(pageNo) {
-			this.pageNo = pageNo;
-			this.getList();
-		},
-		// 切换每页条数时的回调
-		changeSize(pageSize) {
-			this.pageSize = pageSize;
-			this.pageNo = 1;
-			this.getList();
-		},
-		handleSubmit(name) {
-			this.$refs[name].validate((valid) => {
-				if (valid) {
-					this.getList();
-				} else {
-					this.$Message.error('查询条件格式有误，请重新填写');
-				}
-			});
-		},
 		// 获取表格数据
-		async getList() {
+		async case_collect_tape_download() {
+			const res = await case_collect_tape_download(
+				{
+					...this.formItem
+				},
+				{
+					responseType: 'blob'
+				}
+			);
+			util.dowloadfile('催收记录', res);
 		},
-		// 重置
-		clearForm(name) {
-			this.pageNo = 1;
-			this.formItem = {};
-			this.$refs[name].resetFields();
+		async getList() {
+			const res = await case_collect_collect_list();
+			if (res.code === 1) {
+				console.log(res);
+			} else {
+				this.$Message.error(res.message);
+			}
 		}
 	}
 };

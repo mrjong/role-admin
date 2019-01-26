@@ -7,48 +7,13 @@ export default {
 		var alignCenter = 'center';
 		var widthVal = 180;
 		var widthMidVal = 100;
+		let $this = this;
 		return {
       getDirList: ['ORD_STS', 'PROD_TYPE'],
       getDirObj: {},
 			showPanel: false,
 			showPanel2: false,
-			productTypeList: [
-				{
-					value: '01',
-					label: '还到'
-				},
-				{
-					value: '02',
-					label: '随行付钱包'
-				},
-				{
-					value: '03',
-					label: '商户贷'
-				}
-			],
-			orderStsList: [
-				{
-					value: 'gbbg',
-					label: 'New York'
-				}
-			],
-			rutTypeList: [
-				{
-					value: '01',
-					label: '11'
-				},
-				{
-					value: '02',
-					label: '22'
-				},
-				{
-					value: '03',
-					label: '33'
-				}
-			], //代扣类型
-			modal12: false,
-			inputGrid: '',
-			modal11: false,
+			//代扣类型
 			startAndend: '', //还款日期区间
 			formValidate: {
 			},
@@ -67,23 +32,23 @@ export default {
 			total: 0,
       repayOrdTyp: 'UR', //区分用户主动还款、系统代扣还款，UR：用户主动还款，SR：系统代扣还款
       tableData: [
-				{
-          billNo: '1', //账单号
-          dkorgOrdNo: '2', // string 代扣订单号
-          usrNmHid: '3', // 用户姓名
-          idNoHid: '4', // 身份证号
-          mblNoHid: '5', // 手机号
-          repayOrdAmt: '6', //还款金额
-          ordSts: '7', // 订单状态 借口中取
-          orgFnlMsg: '8', //失败原因,
-          ordDt: '9', // 还款时间,
-          crdAcTyp: '10', //卡类型
-          crdCorpOrg: '11', // 还款银行
-          crdNoLast: '12', //还款银行四位
-          repayOrdPrcp: '13', // 已还本金
-          prdTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
-          rutCopyOrg: '15' // 代扣类型
-				},
+			// 	{
+          // billNo: '1', //账单号
+          // dkOrdNo: '2', // string 代扣订单号
+          // usrNmHid: '3', // 用户姓名
+          // idNoHid: '4', // 身份证号
+          // mblNoHid: '5', // 手机号
+          // repayOrdAmt: '6', //还款金额
+          // ordStsName: '7', // 订单状态 借口中取
+          // orgFnlMsg: '8', //失败原因,
+          // ordDt: '9', // 还款时间,
+          // crdAcTypName: '10', //卡类型
+          // crdCorpOrg: '11', // 还款银行
+          // crdNoLast: '12', //还款银行四位
+          // repayOrdPrcp: '13', // 已还本金
+          // prdTypName: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
+          // rutCopyOrg: '15' // 代扣类型
+			// 	},
 			],
 			tableColumns: [
 				{
@@ -110,7 +75,7 @@ export default {
 				{
 					title: '代扣订单号',
 					searchOperator: 'like',
-					key: 'dkorgOrdNo',
+					key: 'dkOrdNo',
 					className: 'tableMainW',
 					align: alignCenter,
 					width: widthVal
@@ -157,10 +122,10 @@ export default {
 				{
 					title: '订单状态',
 					searchOperator: 'like',
-					key: 'ordSts',
+					key: 'ordStsName',
 					className: 'tableMainW',
 					align: alignCenter,
-					width: widthVal
+					width: widthMidVal
 				},
 				{
 					title: '失败原因',
@@ -188,7 +153,7 @@ export default {
 				{
 					title: '卡类型',
 					searchOperator: 'like',
-					key: 'crdAcTyp',
+					key: 'crdAcTypName',
 					className: 'tableMainW',
 					align: alignCenter,
 					width: widthMidVal
@@ -207,7 +172,7 @@ export default {
 					key: 'crdNoLast',
 					className: 'tableMainW',
 					align: alignCenter,
-					width: widthMidVal
+					width: widthVal
 				},
 				{
 					title: '已还本金',
@@ -215,66 +180,21 @@ export default {
 					key: 'repayOrdPrcp',
 					className: 'tableMainW',
 					align: alignCenter,
-					width: widthVal
+					width: widthMidVal,
+          render(h,params){
+					  let res = params.row.repayOrdPrcp;
+					  res = res ? $this.$options.filters['money'](res) : res;
+					  return h('span', res);
+          }
 				},
 				{
 					title: '产品类型',
 					searchOperator: 'like',
-					key: 'prdTyp',
-					className: 'tableMainW',
-					align: alignCenter,
-					width: widthVal
-				},
-				{
-					title: '代扣通道',
-					searchOperator: 'like',
-					key: 'rutCopyOrg',
+					key: 'prdTypName',
 					className: 'tableMainW',
 					align: alignCenter,
 					width: widthVal
 				}
-				// {
-				//   title: '操作',
-				//   width: 100,
-				//   key: 'edit',
-				//   render: (h, params) => {
-				//     return h('div', [
-				//       h(
-				//         'Poptip',
-				//         {
-				//           props: {
-				//             confirm: true,
-				//             title: '您确定要删除这条数据吗?',
-				//             transfer: true
-				//           },
-				//           on: {
-				//             'on-ok': () => {
-				//               this.deleteGoods(params.row.buffet_id);
-				//             }
-				//           }
-				//         },
-				//         [
-				//           h(
-				//             'a',
-				//             {
-				//               class: 'edit-btn',
-				//               props: {}
-				//             },
-				//             '删除'
-				//           ),
-				//           h(
-				//             'a',
-				//             {
-				//               class: 'edit-btn',
-				//               props: {}
-				//             },
-				//             '删除'
-				//           )
-				//         ]
-				//       )
-				//     ]);
-				//   }
-				// }
 			]
 		};
 	},
@@ -288,7 +208,6 @@ export default {
 			this.formValidate.endRepayDate = val1[1];
 			console.log('123', this.formValidate);
 
-			//this.formValidate.startAndend[1].Date('yyyy-MM-dd');
 		},
 		// 页码改变的回调
 		changePage(pageNo) {
@@ -302,8 +221,10 @@ export default {
 			this.getList();
 		},
 		handleSubmit(name) {
+		  console.log('参数',this.formValidate);
 			this.$refs[name].validate((valid) => {
 				if (valid) {
+				  this.pageNo = 1;
 					this.getList();
 				}
 			});
@@ -314,7 +235,7 @@ export default {
              pageNum: this.pageNo,
              pageSize: this.pageSize,
              repayOrdTyp: this.repayOrdTyp,
-             ...this.formValidate
+             ...this.formValidate,
            })
     console.log(res)
     // 请求成功之后需要做分页处理，然后将拿到的数据进行数据处理，总数目和展示条数
@@ -329,6 +250,7 @@ export default {
 		clearForm(name) {
 			this.pageNo = 1;
 			this.formValidate = {};
+			this.startAndend = '';
 			this.$refs[name].resetFields();
 		}
 	}

@@ -27,11 +27,7 @@ const mixin = {
         pageNum: pageNo,
         pageSize: this.pageSize
       });
-      this.getList({
-        ...this.formItem,
-        pageNum: pageNo,
-        pageSize: this.pageSize
-      });
+      this.getList();
     },
     // 切换每页条数时的回调
     changeSize(pageSize) {
@@ -42,11 +38,7 @@ const mixin = {
         pageNum: pageNo,
         pageSize: this.pageSize
       });
-      this.getList({
-        ...this.formItem,
-        pageNum: pageNo,
-        pageSize: this.pageSize
-      });
+      this.getList();
     }
   }
 };

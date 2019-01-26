@@ -36,14 +36,14 @@
                   <Input
                     size="small"
                     clearable
-                    v-model="formItem.overDueDaysLt"
+                    v-model="formItem.overdueDaysLt"
                   ></Input>
                 </FormItem>
               </Col>
               <Col
                 :xs="2"
                 :sm="2"
-                :md="2"
+                :md="2"d
                 :lg="2"
                 span="2"
               >
@@ -60,7 +60,7 @@
                   <Input
                     size="small"
                     clearable
-                    v-model="formItem.overDueDaysBt"
+                    v-model="formItem.overdueDaysBt"
                   ></Input>
                 </FormItem>
               </Col>
@@ -178,9 +178,6 @@
       return {
         showPanel: false,
         showPanel2: false,
-        modal12: false,
-        inputGrid: '',
-        modal11: false,
         formItem: {
           createDate: new Date(), //默认获取当前的日期时间
           overdueDaysLt:'',
@@ -194,7 +191,7 @@
               trigger: 'blur'
             },
             {
-              validator: this.validate_yqts_start,
+              validator: this.validate_yqts_start_two,
               trigger: 'blur'
             }
           ],
@@ -205,7 +202,7 @@
               trigger: 'blur'
             },
             {
-              validator: this.validate_yqts_end,
+              validator: this.validate_yqts_end_two,
               trigger: 'blur'
             }
           ],
@@ -682,7 +679,7 @@
       // 重置
       clearForm(name) {
         this.pageNo = 1;
-        this.formValidate = {};
+        this.formItem = {};
         this.$refs[name].resetFields();
       }
     }

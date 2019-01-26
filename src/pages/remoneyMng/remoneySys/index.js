@@ -7,48 +7,12 @@ export default {
     var alignCenter = 'center';
     var widthVal = 180;
     var widthMidVal = 100;
+    let $this = this;
     return {
       getDirList: ['ORD_STS', 'PROD_TYPE'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      productTypeList: [
-        {
-          value: '01',
-          label: '还到'
-        },
-        {
-          value: '02',
-          label: '随行付钱包'
-        },
-        {
-          value: '03',
-          label: '商户贷'
-        }
-      ],
-      orderStsList: [
-        {
-          value: 'gbbg',
-          label: 'New York'
-        }
-      ],
-      rutTypeList: [
-        {
-          value: '01',
-          label: '11'
-        },
-        {
-          value: '02',
-          label: '22'
-        },
-        {
-          value: '03',
-          label: '33'
-        }
-      ], //代扣类型
-      modal12: false,
-      inputGrid: '',
-      modal11: false,
       startAndend: '', //还款日期区间
       formValidate: {
         // 查询接口时候所需的参数值传递
@@ -63,7 +27,6 @@ export default {
         rutCopyOrg: '', // 代扣通道,
         startRepayDate: '', //起始时间段
         endRepayDate: '', // 结束时间段
-        //nametwo: '', //此处的名称必须要与 ruleValidate的里面具体的校验规则名称完全的保持一致性，不然会出现校验bug
       },
       ruleValidate: {
         //ruleValidate添加表单的校验规则，用来提示用户的输入法则，具体使用在表单里面 ：rule='ruleValidate'直接使用即可
@@ -123,7 +86,7 @@ export default {
         {
           title: '代扣订单号',
           searchOperator: 'like',
-          key: 'dkorgOrdNo',
+          key: 'dkOrdNo',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
@@ -221,7 +184,7 @@ export default {
           key: 'crdNoLast',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: widthVal
         },
         {
           title: '已还本金',
@@ -229,7 +192,12 @@ export default {
           key: 'repayOrdPrcp',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthMidVal,
+          render(h,params){
+            let res = params.row.repayOrdPrcp;
+            res = res ? $this.$options.filters['money'](res) : res;
+            return h('span', res);
+          }
         },
         {
           title: '产品类型',
@@ -238,16 +206,7 @@ export default {
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
-        },
-        {
-          title: '代扣通道',
-          searchOperator: 'like',
-          key: 'rutCopyOrg',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
         }
-
       ]
     };
   },
@@ -267,8 +226,7 @@ export default {
     changePage(pageNo) { //默认带入一个参数是当前的页码数
       console.log(pageNo,'当前的页码数量值');
       this.pageNo = pageNo;
-
-      //this.getList();
+      this.getList();
     },
     // 切换每页条数时的回调
     changeSize(pageSize) {
@@ -305,6 +263,7 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formValidate = {};
+      this.startAndend='';
       this.$refs[name].resetFields();
     }
   }
