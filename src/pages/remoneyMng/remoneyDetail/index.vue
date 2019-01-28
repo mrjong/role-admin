@@ -150,12 +150,16 @@
               span="6"
               label="电催中心:"
             >
-              <Input
+              <Select
                 size="small"
-                clearable
-                v-model="formValidate.opCompanyName"
-                placeholder="请输入"
-              ></Input>
+                v-model="formValidate.opCompanyName">
+                <Option
+                v-for="item in []"
+                :value="item.value"
+                :key="item.value"
+                >{{item.label}}
+                </Option>
+              </Select>
             </FormItem>
           </Col>
           <Col

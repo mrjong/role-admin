@@ -220,14 +220,11 @@
       };
     },
     created() {
-      //this.getList();
+      this.getList();
     },
     methods: {
       // 改变日期区间的格式之后进行处理
       changeDate(val1, val2) {
-        console.log(val1, typeof val1)
-        console.log(val2, typeof val2)
-
         this.formItem.defaultDate = val1;
         // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
       },
@@ -244,6 +241,7 @@
         this.getList();
       },
       handleSubmit(name) {
+        this.pageNo = 1;
         this.getList();
       },
       async exportData(){
@@ -257,9 +255,7 @@
         let res= await monitor_collectRate_list({
           pageNum: this.pageNo,
           pageSize: this.pageSize,
-         // ...this.formItem
         })
-        console.log(res)
         if(res && res.code === 1){
           this.$Message.success('请求成功!');
           let data = res.data;
@@ -272,7 +268,6 @@
       },
       // 重置
       clearForm(name) {
-        this.pageNo = 1;
         this.formValidate = {};
         this.$refs[name].resetFields();
       }
@@ -287,8 +282,5 @@
     .tableMainW {
       min-width: 400px;
     }
-  }
-  .ivu-form-item-content{
-    margin-left: 0 !important;
   }
 </style>

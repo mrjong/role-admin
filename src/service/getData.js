@@ -83,7 +83,7 @@ export const wkProcessDef_save = (obj = {}) =>
  */
 export const wkProcessTask_detail = (obj = {}) =>
   fetch({
-    url: `/wkProcessTask/detail/${obj.id}`,
+    url: `/wkProcessTask/detail`,
     method: 'POST',
     data: qs.stringify(obj)
   });
@@ -837,4 +837,51 @@ fetch({
   options,
 });
 
+/*
+*
+工作流
+详情
+* */
+export const wkProcessDef_detail = (obj, options) =>
+fetch({
+  url: '/wkProcessDef/detail',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
 
+/*
+*
+工作流
+修改
+* */
+export const wkProcessDef_update = (obj, options) =>
+fetch({
+  url: '/wkProcessDef/update',
+  method: 'POST',
+  data: obj,
+  options,
+});
+
+
+/*
+*
+工作流任务审核
+* */
+export const wkProcessTask_approval_list = (obj, options) =>
+fetch({
+  url: '/wkProcessTask/approval_list',
+  method: 'POST',
+  data: obj,
+  options,
+});
+/*
+* 经办人 04 催收中心 02
+* */
+export const getLeafTypeList = (obj, options) =>
+fetch({
+  url: '/getLeafTypeList',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});

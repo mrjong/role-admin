@@ -3,6 +3,17 @@ let isClick = false;
 
 export default {
 	data() {
+		const validate_yqyhje_start = (rule, value, callback) => {
+			if (
+				!this.repayinfo_getApplyInfo_data ||
+				this.repayinfo_getApplyInfo_data.overdueAmt ||
+				Number(value) > Number(this.repayinfo_getApplyInfo_data.overdueAmt)
+			) {
+				callback(new Error('还款金额不能超过逾期应还金额'));
+			} else {
+				callback();
+			}
+		};
 		return {
 			repayinfo_getCardNos_data: [],
 			repayinfo_getApplyInfo_data: {},
@@ -14,17 +25,21 @@ export default {
 						required: true,
 						message: '请输入还款金额',
 						trigger: 'blur'
-                    },
-                    {
-                        pattern: this.GLOBAL.money,
-                        message: '金额格式不正确',
-                        trigger: 'blur'
 					},
-                    {
-                        pattern: this.GLOBAL.moneymin10,
-                        message: '还款金额大于等于10元',
-                        trigger: 'blur'
+					{
+						pattern: this.GLOBAL.money,
+						message: '金额格式不正确',
+						trigger: 'blur'
 					},
+					{
+						pattern: this.GLOBAL.moneymin10,
+						message: '还款金额大于等于10元',
+						trigger: 'blur'
+					},
+					{
+						validator: validate_yqyhje_start,
+						trigger: 'blur'
+					}
 				],
 				agrNo: [
 					{

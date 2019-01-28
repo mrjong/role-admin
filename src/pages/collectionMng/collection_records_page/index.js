@@ -1,14 +1,34 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { case_collect_collect_list, case_collect_tape_download } from '@/service/getData';
+import 'video.js/dist/video-js.css'
+import { videoPlayer } from 'vue-video-player'
+import { case_collect_collect_list, case_collect_tape_download,getLeafTypeList } from '@/service/getData';
 import tablePage from '@/mixin/tablePage';
 
 export default {
 	name: 'case_search_page',
-	mixins: [ tablePage, formValidateFun, sysDictionary ],
+    mixins: [ tablePage, formValidateFun, sysDictionary ],
+    components: {
+        videoPlayer,
+      },
 	data() {
-		console.log(this.GLOBAL);
+        console.log(this.GLOBAL);
+        const _this = this
 		return {
+            playerOptions: {
+				// videojs options
+				muted: false,
+				language: 'en',
+				playbackRates: [ 0.7, 1.0, 1.5, 2.0 ],
+				sources: [
+					{
+						type: 'video/mp4',
+						src: 'https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm'
+					}
+				],
+				poster: '/static/images/author.jpg'
+			},
+            modal1:false,
 			getDirList: [ 'PROD_TYPE' ],
 			getDirObj: {},
 			showPanel: false,
@@ -43,7 +63,9 @@ export default {
 				]
 			},
 			formItem: {},
-			tableData: [],
+            tableData: [],
+            getLeafTypeList_data:[],
+            getLeafTypeList2_data:[],
 			tableColumns: [
 				{
 					title: '序号',
@@ -56,9 +78,25 @@ export default {
 					width: 120,
 					searchOperator: '=',
 					key: 'buffet_code',
-					render: (h, params) => {
-						const uuid = params.row.uuid;
-						return h('span', uuid ? '播放' : '');
+                    render: (h, params) => {
+						const soundUuid = params.row.soundUuid;
+						return h('div', [
+							h(
+								'a',
+								{
+									props: {},
+									style: {
+										display: soundUuid ? 'inline-block' : 'none'
+                                    },
+                                    on: {
+										click: () => {
+											_this.modal1 = true;
+										}
+									}
+								},
+								'播放'
+							)
+						]);
 					}
 				},
 				{
@@ -79,7 +117,8 @@ export default {
 					key: 'userNmHid'
 				},
 				{
-					title: '关系',
+                    title: '关系',
+                    width: 100,
 					key: 'callUserTypeName'
 				},
 				{
@@ -93,12 +132,14 @@ export default {
 					key: 'collectResultName'
 				},
 				{
-					title: '沟通结果',
+                    title: '沟通结果',
+                    width: 100,
 					key: 'communicateResultName'
 				},
 
 				{
-					title: '承诺还款时间',
+                    title: '承诺还款时间',
+                    width: 150,
 					key: 'promiseRepayDate',
 					render: (h, params) => {
 						let promiseRepayDate = params.row.promiseRepayDate;
@@ -114,7 +155,8 @@ export default {
 					key: 'opUserName'
 				},
 				{
-					title: '案件编码',
+                    title: '案件编码',
+                    width: 180,
 					searchOperator: '=',
 					key: 'caseNo'
 				},
@@ -131,7 +173,8 @@ export default {
 				},
 		
 				{
-					title: '客户身份证号',
+                    title: '客户身份证号',
+                    width: 180,
 					key: 'idNoHid'
 				},
 
@@ -159,11 +202,38 @@ export default {
 				}
 			]
 		};
-	},
+    },
+    computed: {
+        player() {
+          return this.$refs.videoPlayer.player
+        }
+      },
 	created() {
-		this.getList();
+        this.getList();
+        this.getLeafTypeList()
+        this.getLeafTypeList2()
 	},
 	methods: {
+         // listen event
+    onPlayerPlay(player) {
+        // console.log('player play!', player)
+      },
+      onPlayerPause(player) {
+        // console.log('player pause!', player)
+      },
+      // ...player event
+  
+      // or listen state event
+      playerStateChanged(playerCurrentState) {
+        // console.log('player current update state', playerCurrentState)
+      },
+  
+      // player is ready
+      playerReadied(player) {
+        console.log('the player is readied', player)
+        // you can use it to do something...
+        // player.[methods]
+      },
 		// 获取表格数据
 		async case_collect_tape_download() {
 			const res = await case_collect_tape_download(
@@ -175,11 +245,45 @@ export default {
 				}
 			);
 			util.dowloadfile('催收记录', res);
+        },
+        ok() {
+			this.$Message.info('Clicked ok');
+		},
+		cancel() {
+			this.$Message.info('Clicked cancel');
+			console.log(this.$Modal);
+			this.$Modal.remove();
+        },
+        
+        async getLeafTypeList() {
+			const res = await getLeafTypeList({
+                leafType:'04'
+            });
+			if (res.code === 1) {
+				this.getLeafTypeList_data = res.data
+			} else {
+				this.$Message.error(res.message);
+			}
+        },
+        async getLeafTypeList2() {
+			const res = await getLeafTypeList({
+                leafType:'02'
+            });
+			if (res.code === 1) {
+				this.getLeafTypeList2_data = res.data
+			} else {
+				this.$Message.error(res.message);
+			}
 		},
 		async getList() {
-			const res = await case_collect_collect_list();
+			const res = await case_collect_collect_list({
+                ...this.formItem,
+				pageSize: this.pageSize,
+				pageNum: this.pageNo
+            });
 			if (res.code === 1) {
-				this.tableData = res.data.content;
+                this.tableData = res.data.content;
+                this.total = res.data.totalElements;
 				console.log(res);
 			} else {
 				this.$Message.error(res.message);

@@ -21,7 +21,7 @@
         v-if="!showPanel"
         ref="formItem"
         :model="formItem"
-        :label-width="95"
+        :label-width="80"
         :rules="ruleValidate"
       >
         <Row>
@@ -181,12 +181,18 @@
             label="经办人:"
             prop="opUserName"
           >
-            <Input
+            <Select
               size="small"
-              clearable
+              filterable
               v-model="formItem.opUserName"
-              placeholder="请输入经办人"
-            />
+              placeholder="请选择经办人"
+            >
+              <Option
+                v-for="item in getLeafTypeList_data"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.name }}</Option>
+            </Select>
           </FormItem>
           </Col>
           <Col
@@ -203,15 +209,15 @@
           >
             <Select
               size="small"
-              clearable
-              placeholder="请选择电催中心"
+              filterable
               v-model="formItem.opCompayName"
+              placeholder="请选择电催中心"
             >
               <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in getLeafTypeList2_data"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -285,6 +291,31 @@
         </div>
       </div>
     </Card>
+    <div
+      v-if="modal1"
+      class="modal_wrap"
+    >
+      <Modal
+        v-model="modal1"
+        title="录音播放"
+        @on-ok="ok"
+        @on-cancel="cancel"
+      >
+        <video-player
+          class="video-player-box"
+          ref="videoPlayer"
+          :options="playerOptions"
+          :playsinline="true"
+          customEventName="customstatechangedeventname"
+          @play="onPlayerPlay($event)"
+          @pause="onPlayerPause($event)"
+          @ended="onPlayerEnded($event)"
+          @waiting="onPlayerWaiting($event)"
+          @statechanged="playerStateChanged($event)"
+          @ready="playerReadied"
+        ></video-player>
+      </Modal>
+    </div>
   </div>
 </template>
 <script src="./index.js"></script>

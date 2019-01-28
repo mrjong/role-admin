@@ -254,7 +254,6 @@
           :data="tableData"
           :columns="tableColumns"
           stripe
-          width="1200"
           size="small"
           align="center"
         ></Table>
@@ -279,7 +278,7 @@
     </Card>
     <!-- modal -->
     <div v-if="modal1" class="modal_wrap">
-      <Modal v-model="modal1" title="录音播放" @on-ok="ok" @on-cancel="cancel" :transfer='false'>
+      <Modal v-model="modal1" title="录音播放" @on-ok="ok" @on-cancel="cancel">
         <video-player
           class="video-player-box"
           ref="videoPlayer"

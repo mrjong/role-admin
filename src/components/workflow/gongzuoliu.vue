@@ -6,13 +6,14 @@
       v-model="model.modal"
       @on-ok="handleSubmit"
       title="工作流定义"
+      @on-visible-change="closeModal"
     >
       <div class="alert-title">基本信息</div>
       <div class="alert-desc">
         <div class="panel-desc">
           <Form
-            ref="formItem"
-            :model="formItem"
+            ref="domain"
+            :model="domain"
             :label-width="100"
             class="panel_list"
             :rules="ruleValidate"
@@ -33,7 +34,7 @@
                 <Input
                   size="small"
                   clearable
-                  v-model="formItem.defName"
+                  v-model="domain.defName"
                   placeholder="请输入工作流名称"
                 ></Input>
               </FormItem>
@@ -53,7 +54,7 @@
                 <Select
                   size="small"
                   placeholder="请选择驳回类型"
-                  v-model="formItem.backType"
+                  v-model="domain.backType"
                 >
                   <Option
                     v-for="item in backTypeList"
@@ -78,7 +79,7 @@
                 <Select
                   size="small"
                   placeholder="请选择工作流类型"
-                  v-model="formItem.defType"
+                  v-model="domain.defType"
                 >
                   <Option
                     v-for="item in defTypeList"
@@ -103,7 +104,7 @@
                 <Input
                   size="small"
                   clearable
-                  v-model="formItem.defCode"
+                  v-model="domain.defCode"
                   placeholder="请输入工作流编号"
                 ></Input>
               </FormItem>
@@ -125,7 +126,7 @@
                   size="small"
                   clearable
                   type="textarea"
-                  v-model="formItem.defDesc"
+                  v-model="domain.defDesc"
                   placeholder="请输入描述"
                 ></Input>
               </FormItem>
@@ -151,15 +152,16 @@
           <Form
             ref="goodsAddForm"
             :rules="rules"
+            :model="formData"
             :label-width="120"
           >
             <Row
               class="panel_list border-sh"
               :key="index"
-              v-for="(item,index) in defNodeList"
+              v-for="(item,index) in formData.items"
             >
               <Icon
-                v-if="item.nodeSort!==51&&item.nodeSort!==0"
+                v-if="item.nodeSort!=='51'&&item.nodeSort!=='0'"
                 @click="handleDel(index)"
                 type="close-circled border-sh-icon"
               ></Icon>
@@ -274,12 +276,13 @@
                 label="节点顺序"
                 :prop="`items.${index}.nodeSort`"
               >
-                <InputNumber
+                <Input
+                  style="width:100%"
                   v-model="item.nodeSort"
-                  :disabled="item.nodeSort===51||item.nodeSort===0"
+                  :disabled="item.nodeSort==='51'||item.nodeSort==='0'"
                   placeholder="请输入节点顺序"
                   size="small"
-                ></InputNumber>
+                ></Input>
                 <!-- <Input
                   type="text"
                   clearable

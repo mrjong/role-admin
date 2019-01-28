@@ -54,7 +54,7 @@ export default {
         //   orgFnlMsg: '8', //失败原因,
         //   ordDt: '9', // 还款时间,
         //   crdAcTypName: '10', //卡类型
-        //   crdCorpOrg: '11', // 还款银行
+        //   crdCorpOrgName: '11', // 还款银行
         //   crdNoLast: '12', //还款银行四位
         //   repayOrdPrcp: '13', // 已还本金
         //   prdTypName: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
@@ -173,7 +173,7 @@ export default {
         {
           title: '还款银行',
           searchOperator: 'like',
-          key: 'crdCorpOrg',
+          key: 'crdCorpOrgName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal

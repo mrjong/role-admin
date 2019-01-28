@@ -9,7 +9,7 @@
       <Form
         ref="formItem2"
         :model="formItem2"
-        :label-width="100"
+        :label-width="80"
         class="panel_list"
         :rules="ruleValidate2"
       >
@@ -17,9 +17,9 @@
           <Col
             :xs="24"
             :sm="24"
-            :md="12"
-            :lg="12"
-            span="12"
+            :md="24"
+            :lg="24"
+            span="24"
           >
           <FormItem
             span="6"
@@ -38,9 +38,9 @@
           <Col
             :xs="24"
             :sm="24"
-            :md="12"
-            :lg="12"
-            span="12"
+            :md="24"
+            :lg="24"
+            span="24"
           >
           <FormItem
             span="6"
@@ -58,9 +58,9 @@
           <Col
             :xs="24"
             :sm="24"
-            :md="12"
-            :lg="12"
-            span="12"
+            :md="24"
+            :lg="24"
+            span="24"
           >
           <FormItem
             label="关系:"
@@ -109,10 +109,10 @@
           @click="showPanel=!showPanel"
         >
           <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
-          {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm}}（{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
+          {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}（{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
           <Button
             v-if="readType!=='read'"
-            @click="handOpen('zhongcai','申请仲裁')"
+            @click.stop="handOpen('zhongcai')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
@@ -143,16 +143,23 @@
             v-if="readType!=='read'"
             class="fr vue-back-btn header-btn"
             type="primary"
+            @click.stop="nextCase(case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.downCaseNo)"
+            :disabled="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.downCaseNo"
             size="small"
           >下一个</Button>
           <Button
             v-if="readType!=='read'"
             class="fr vue-back-btn header-btn"
             type="primary"
+            @click.stop="nextCase(case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.upCaseNo)"
+            :disabled="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.upCaseNo"
             size="small"
           >上一个</Button>
         </p>
-        <div class="panel-desc" v-if="!showPanel">
+        <div
+          class="panel-desc"
+          v-if="!showPanel"
+        >
           <Row :gutter="10">
             <Col span="12">
             <Col
@@ -163,7 +170,7 @@
             >
             <div class="panel-desc-title">
               身份证号：<span>
-                {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNo}}
+                {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNoHid}}
               </span>
             </div>
             </Col>
@@ -287,7 +294,7 @@
                 </div>
 
                 <div class="panel-desc-title fl mr10">
-                  借款本金：<span>{{case_detail_case_base_info_Data.loanAmount}}</span>
+                  借款本金：<span>{{case_detail_case_base_info_Data.loanAmount | money}}</span>
                 </div>
 
                 <div class="panel-desc-title fl mr10">
@@ -295,11 +302,11 @@
                 </div>
 
                 <div class="panel-desc-title fl mr10">
-                  银行卡号：<span>{{case_detail_case_base_info_Data.bankNo}}</span>
+                  银行卡号：<span>{{case_detail_case_base_info_Data.crdNoHid}}</span>
                 </div>
 
                 <div class="panel-desc-title fl mr10">
-                  银行卡：<span>{{case_detail_case_base_info_Data.bankNameHid}}</span>
+                  银行卡：<span>{{case_detail_case_base_info_Data.corgName}}</span>
                 </div>
 
               </Row>
@@ -635,22 +642,22 @@
                     <span class="state-name">
                       本人
                     </span>
-                    谢晓峰<span>（本人）</span>
+                    {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}<span>（本人）</span>
                   </span>
                   <span
                     class="tel"
                     @click="handCall({
-                        userNmHid:'*峰',
-                        userNm:'谢晓峰',
-                           mblNoHid:'222',
-                        mblNo:'22222'
+                        userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
+                        userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
+                           mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
+                        mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
                     },'call','01')"
                   >
                     <Tooltip
                       content="拨打"
                       placement="left"
                     >
-                      138900000000
+                      {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid}}
                     </Tooltip>
                   </span>
                   <span class="state">
@@ -664,10 +671,10 @@
                   >
                     <Icon
                       @click="handCall({
-                        userNmHid:'*峰',
-                        mblNoHid:'222',
-                        userNm:'谢晓峰',
-                        mblNo:'22222'
+                        userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
+                        userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
+                           mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
+                        mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
                     },null,'01')"
                       class="edit"
                       type="edit"
@@ -986,21 +993,28 @@
       >
     </Modal>
     <Modal
-      v-if="modalTitle==='申请减免'"
       class="jianmian"
       width="90%"
-      v-model="visible1"
+      v-model="modal.jianmian"
     >
       <jianmian></jianmian>
     </Modal>
+    <zhongcai
+      :getDirObj="getDirObj"
+      v-on:passBack="passBack('zhongcai')"
+      v-model="modal.zhongcai"
+      v-if="modal.zhongcai"
+    >
+    </zhongcai>
     <huakou
-      v-on:passBack="passBack"
-      v-model="modal"
-      v-if="modal"
+      v-on:passBack="passBack('huakou')"
+      v-model="modal.huakou"
+      v-if="modal.huakou"
       :prdTyp="prdTyp"
       :caseNo="caseNo"
       :userId="userId"
-    ></huakou>
+    >
+    </huakou>
 
   </div>
 </template>

@@ -5,6 +5,8 @@
     <gongzuoliu
     v-on:passBack="passBack"
       v-model="parentData"
+      v-if="visible1"
+      :parentData="parentData"
       :backTypeList="backTypeList"
       :defTypeList="defTypeList"
     ></gongzuoliu>
