@@ -201,7 +201,7 @@ export const monitor_agentState_exportDown = (obj) =>
     method: 'POST',
     data: qs.stringify(obj),
     responseType: 'blob',
-	});
+  });
 // 坐席报表的组织查询接口
 export const monitor_groupList = (obj) =>
   fetch({
@@ -683,7 +683,14 @@ export const case_list = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-// 案件分配列表
+// 案件分配接口
+export const cases_allot_list = (obj) =>
+  fetch({
+    url: '/cases/allot/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 分案规则列表
 export const divide_rules_list = (obj) =>
   fetch({
     url: '/divide/rules/list',
@@ -915,12 +922,12 @@ export const system_user_reset = (obj, options) =>
 详情
 * */
 export const wkProcessDef_detail = (obj, options) =>
-fetch({
-  url: '/wkProcessDef/detail',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options,
-});
+  fetch({
+    url: '/wkProcessDef/detail',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+  });
 
 
 /*
@@ -929,12 +936,12 @@ fetch({
 修改
 * */
 export const wkProcessDef_update = (obj, options) =>
-fetch({
-  url: '/wkProcessDef/update',
-  method: 'POST',
-  data: obj,
-  options,
-});
+  fetch({
+    url: '/wkProcessDef/update',
+    method: 'POST',
+    data: obj,
+    options,
+  });
 
 
 /*
@@ -942,19 +949,19 @@ fetch({
 工作流任务审核
 * */
 export const wkProcessTask_approval_list = (obj, options) =>
-fetch({
-  url: '/wkProcessTask/approval_list',
-  method: 'POST',
-  data: obj,
-  options,
-});
+  fetch({
+    url: '/wkProcessTask/approval_list',
+    method: 'POST',
+    data: obj,
+    options,
+  });
 /*
 * 经办人 04 催收中心 02
 * */
 export const getLeafTypeList = (obj, options) =>
-fetch({
-  url: '/getLeafTypeList',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options,
-});
+  fetch({
+    url: '/getLeafTypeList',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+  });

@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { case_list } from '@/service/getData';
+import { cases_allot_list, getLeafTypeList } from '@/service/getData';
 
 export default {
   name: 'case_distribute_page',
@@ -18,6 +18,8 @@ export default {
       recycleFlag: false,
       stopCollectionFlag: false,
       recoverCollectionFlag: false,
+      getLeafTypeList2_data: [],
+      getLeafTypeList_data: [],
       data5: [],
       phoneCallList: [
         {
@@ -335,6 +337,8 @@ export default {
   },
   created() {
     this.getList();
+    this.getLeafTypeList()
+    this.getLeafTypeList2()
   },
   methods: {
     renderContent(h, { root, node, data }) {
@@ -406,10 +410,30 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      const res = await case_list(JSON.stringify(this.formItem));
+      const res = await cases_allot_list(JSON.stringify(this.formItem));
       if (res.code === 1) {
         console.log(res);
         this.tableData = res.data.page.content;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    async getLeafTypeList() {
+      const res = await getLeafTypeList({
+        leafType: '04'
+      });
+      if (res.code === 1) {
+        this.getLeafTypeList_data = res.data
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    async getLeafTypeList2() {
+      const res = await getLeafTypeList({
+        leafType: '02'
+      });
+      if (res.code === 1) {
+        this.getLeafTypeList2_data = res.data
       } else {
         this.$Message.error(res.message);
       }
