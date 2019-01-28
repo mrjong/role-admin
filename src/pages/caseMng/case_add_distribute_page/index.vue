@@ -72,8 +72,7 @@
                     <FormItem prop="ovdudaysMin">
                       <Input
                         size="small"
-                        number
-                        type="number"
+                        type="text"
                         clearable
                         v-model="formItem.ovdudaysMin"
                       ></Input>
@@ -87,7 +86,7 @@
                       <Input
                         size="small"
                         number
-                        type="number"
+                        type="text"
                         clearable
                         v-model="formItem.ovdudaysMax"
                       ></Input>
@@ -227,6 +226,7 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      submitType: 1,//提交类型 1添加，2修改
       ruleValidate: {
         prodTypeList: [
           {
@@ -239,7 +239,8 @@ export default {
           {
             required: true,
             message: "请选择分配方式",
-            trigger: "change"
+            trigger: "change",
+            type: 'string'
           }
         ],
         date: [
@@ -261,7 +262,7 @@ export default {
           {
             pattern: this.GLOBAL.num,
             message: "逾期天数为正整数",
-            trigger: "blur"
+            type: 'string',
           },
           {
             validator: this.validate_yqts_start,
@@ -272,7 +273,7 @@ export default {
           {
             pattern: this.GLOBAL.num,
             message: "逾期天数为正整数",
-            trigger: "blur"
+            type: 'string'
           },
           {
             validator: this.validate_yqts_end,
@@ -283,7 +284,7 @@ export default {
           {
             pattern: this.GLOBAL.money,
             message: "金额格式不正确",
-            trigger: "blur"
+            type: 'string'
           },
           {
             validator: this.validate_yqyhje_start,
@@ -294,7 +295,7 @@ export default {
           {
             pattern: this.GLOBAL.money,
             message: "金额格式不正确",
-            trigger: "blur"
+            type: 'string'
           },
           {
             validator: this.validate_yqyhje_end,
@@ -319,6 +320,14 @@ export default {
       },
       data5: []
     };
+  },
+  created () {
+    console.log(this.$route.name);
+    if (this.$route.name === 'case_update_distribute_page') {
+      this.submitType = 2;
+      this.formItem = JSON.parse(window.sessionStorage.getItem('case_rule_item'));
+      console.log(this.formItem);
+    }
   },
   methods: {
     renderContent(h, { root, node, data }) {

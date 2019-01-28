@@ -1,7 +1,7 @@
 <template>
   <div class="panel_list">
     <Card class="vue-panel detail-card">
-      <p slot="title">催收人员
+      <p slot="title">催收机构
         <Button
           class="fr header-btn"
           type="primary"

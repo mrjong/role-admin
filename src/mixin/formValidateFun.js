@@ -2,6 +2,7 @@ const mixin = {
   methods: {
     validate_yqts_start(rule, value, callback) {
       if (value && this.formItem.maxOverdueDays && Number(value) > Number(this.formItem.maxOverdueDays)) {
+        console.log(this.formItem.maxOverdueDays)
         callback(new Error('逾期开始天数不能大于逾期结束天数'));
       } else {
         callback();

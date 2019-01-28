@@ -100,8 +100,7 @@
         v-model="recycleFlag"
         width="800"
         class-name="user_info_form_modal"
-        :mask-closable="false"
-      >
+        :mask-closable="false">
         <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
           <span>启用</span>
         </p>
@@ -151,6 +150,10 @@
           <Button type="primary" size="small" @click="ok('2', 'startFormItem')">确定</Button>
         </div>
       </Modal>
+    </div>
+    <!-- 查看分案规则修改记录 -->
+    <div v-if="updateRecordFlag">
+      <caseUpdateRecord v-if="updateRecordFlag" v-model="updateRecordFlag" :updateRecordFlag="updateRecordFlag"></caseUpdateRecord>
     </div>
   </div>
 </template>

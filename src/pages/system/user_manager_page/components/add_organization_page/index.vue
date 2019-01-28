@@ -1,37 +1,36 @@
 <template>
   <div class="panel_list">
     <Card class="vue-panel detail-card">
-      <p slot="title" v-if="type === '0'">新增机构</p>
-      <p slot="title" v-if="type === '1'">新增公司</p>
-      <p slot="title" v-if="type === '2'">新增部门</p>
+      <p slot="title" v-if="parentData.type === '0'">新增机构</p>
+      <p slot="title" v-if="parentData.type === '01'">新增公司</p>
+      <p slot="title" v-if="parentData.type === '02'">新增部门</p>
       <!-- 新增机构表单 -->
       <Form
         ref="organizationFormItem"
         :model="organizationFormItem"
         :label-width="90"
         :rules="ruleValidate"
-        v-show="type === '0'"
-      >
+        v-show="parentData.type === '0'">
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="机构名称:" prop="name">
             <Input size="small" clearable v-model="organizationFormItem.name" placeholder="请输入机构名称"></Input>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem label="机构负责人:" span="4" prop="person">
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="6">
+          <FormItem label="机构负责人:" span="6">
             <Select
               size="small"
-              v-model="organizationFormItem.person"
+              v-model="organizationFormItem.userIds"
               filterable
               clearable
               multiple
               placeholder="请选择机构负责人"
             >
               <Option
-                v-for="item in phoneCallList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in bossList"
+                :value="item.loginName"
+                :key="item.loginName"
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -41,7 +40,7 @@
               type="textarea"
               size="small"
               :maxlength="100"
-              v-model="organizationFormItem.updateTime"
+              v-model="organizationFormItem.remark"
               placeholder="请输入100字以内"
             ></Input>
           </FormItem>
@@ -56,7 +55,7 @@
             >取消</Button>
             <Button
               type="primary"
-              @click="handleSubmit('formItem')"
+              @click="handleSubmit(parentData.type,'organizationFormItem')"
               style="width:80px"
               long
               size="small"
@@ -71,7 +70,7 @@
         :model="componeyFormItem"
         :label-width="90"
         :rules="ruleValidate2"
-        v-show="type === '1'"
+        v-show="parentData.type === '01'"
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="公司名称:" prop="name">
@@ -83,33 +82,20 @@
             <Select
               size="small"
               v-model="componeyFormItem.collectType"
-              filterable
               clearable
               placeholder="请选择类型"
             >
               <Option
-                v-for="item in phoneCallList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in getDirObj['COLLECT_TYPE']"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem label="上级机构:" span="4" prop="organization">
-            <Select
-              size="small"
-              v-model="componeyFormItem.organization"
-              filterable
-              clearable
-              placeholder="请选择上级机构"
-            >
-              <Option
-                v-for="item in phoneCallList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
-            </Select>
+          <FormItem label="上级机构:" span="4" prop="parentUuid">
+            <Input size="small" v-model="componeyFormItem.parentName" disabled></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -138,7 +124,7 @@
             >取消</Button>
             <Button
               type="primary"
-              @click="handleSubmit('componeyFormItem')"
+              @click="handleSubmit(parentData.type,'componeyFormItem')"
               style="width:80px"
               long
               size="small"
@@ -153,7 +139,7 @@
         :model="departmentFormItem"
         :label-width="90"
         :rules="ruleValidate3"
-        v-show="type === '2'"
+        v-show="parentData.type === '02'"
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="部门名称:" prop="name">
@@ -161,20 +147,8 @@
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem label="上级机构:" span="4" prop="organization">
-            <Select
-              size="small"
-              v-model="departmentFormItem.organization"
-              filterable
-              clearable
-              placeholder="请选择上级机构"
-            >
-              <Option
-                v-for="item in phoneCallList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
-            </Select>
+          <FormItem label="上级机构:" span="4" prop="parentUuid">
+            <Input size="small" v-model="departmentFormItem.parentUuid" disabled></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
@@ -198,7 +172,7 @@
             >取消</Button>
             <Button
               type="primary"
-              @click="handleSubmit('departmentFormItem')"
+              @click="handleSubmit(parentData.type,'departmentFormItem')"
               style="width:80px"
               long
               size="small"
@@ -211,10 +185,25 @@
 </template>
 
 <script>
+import tablePage from "@/mixin/tablePage";
+import sysDictionary from "@/mixin/sysDictionary";
+import {
+  collect_section_add,
+  collect_outfit_add,
+  collect_company_add,
+  collect_list_leader
+} from "@/service/getData";
 export default {
-  props: ["type"],
+  // data: {
+  //   prop: "parentData",
+  //   event: "passBack"
+  // },
+  props: ['parentData'],
+  mixins: [sysDictionary, tablePage],
   data() {
     return {
+      getDirList: ["COLLECT_TYPE"],
+      getDirObj: {},
       data: [
         {
           value: "beijing",
@@ -267,15 +256,21 @@ export default {
       ],
       organizationFormItem: {
         name: "",
-        person: "",
-        remark: ""
+        userIds: [],
+        remark: "",
+        status: "1"
       },
       componeyFormItem: {
+        leafType: "02",
         name: "",
         area: [],
-        collectType: "",
+        areaProvince: "",
+        areaCity: "",
+        collectType: "1",
         remark: "",
-        organization: ""
+        parentUuid: "",
+        parentName: '',
+        status: '1'
       },
       departmentFormItem: {
         name: "",
@@ -306,11 +301,11 @@ export default {
             trigger: "blur"
           }
         ],
-        person: [
+        userIds: [
           {
             required: true,
             message: "请选择机构负责人",
-            trigger: "change"
+            type: "array"
           }
         ]
       },
@@ -337,21 +332,19 @@ export default {
           }
         ]
       },
-      phoneCallList: [
-        {
-          value: "1",
-          label: "测试1"
-        },
-        {
-          value: "2",
-          label: "测试2"
-        },
-        {
-          value: "3",
-          label: "测试3"
-        }
-      ]
+      bossList: []
     };
+  },
+  created() {
+    this.collect_list_leader();
+    console.log(this.parentData);
+    switch(this.parentData.type) {
+      case '01':
+      this.componeyFormItem = {
+        parentUuid: this.parentData.nodeData.id,
+        parentName: this.parentData.nodeData.name
+      };
+    }
   },
   methods: {
     cancelStatus() {
@@ -359,15 +352,74 @@ export default {
       this.$parent.roleModal = false;
     },
     // 提交保存修改
-    handleSubmit(name) {
+    handleSubmit(type, name) {
+      console.log(type)
       this.$refs[name].validate(valid => {
         if (valid) {
           // this.getList();
-          this.$Message.success("ok");
+          // this.$Message.success("ok");
+          switch (type) {
+            case "0":
+              this.collect_section_add();
+              break;
+            case "01":
+              this.collect_company_add();
+              break;
+            case "02":
+              this.collect_outfit_add();
+              break;
+          }
         } else {
           this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
+    },
+    // 添加机构
+    async collect_section_add() {
+      this.organizationFormItem.userIds = JSON.stringify(
+        this.organizationFormItem.userIds
+      );
+      const res = await collect_section_add(this.organizationFormItem);
+      if (res.code === 1) {
+        this.$Message.success("添加成功");
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 添加公司
+    async collect_company_add(id, type) {
+      const res = await collect_company_add(this.componeyFormItem);
+      if (res.code === 1) {
+        this.$Message.success("添加成功");
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 添加部门
+    async collect_outfit_add(id, type) {
+      const res = await collect_outfit_add({
+        parentId: id,
+        status: "1",
+        leafType: type
+      });
+      if (res.code === 1) {
+        this.data5 = res.data;
+        return this.data5;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 查询所有人员接口
+    async collect_list_leader(id, type) {
+      const res = await collect_list_leader({
+        status: "1",
+        lcollectType: ""
+      });
+      if (res.code === 1) {
+        this.bossList = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
     }
   }
 };
@@ -375,5 +427,10 @@ export default {
 <style lang="less">
 .ivu-col {
   margin-bottom: 5px;
+  .detail-card {
+    .ivu-form {
+      min-height: 200px;
+    }
+  }
 }
 </style>

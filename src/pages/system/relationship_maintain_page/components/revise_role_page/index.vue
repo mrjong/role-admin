@@ -32,12 +32,13 @@
                     clearable
                     placeholder="请选择员工"
                     size="small"
+                    @on-change='changeUser'
                   >
                     <Option
-                      v-for="item in getDirObj['SEAT_TYPE']"
-                      :value="item.itemCode"
-                      :key="item.itemCode"
-                    >{{ item.itemName }}</Option>
+                      v-for="item in userList"
+                      :value="item.loginName"
+                      :key="item.loginName"
+                    >{{ item.name }}</Option>
                   </Select>
                 </FormItem>
               </Col>
@@ -65,7 +66,7 @@
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
                 <FormItem span="4" label="坐席编号:">
-                  <Input size="small" clearable v-model="formItem.uuid" placeholder="请输入坐席编号"></Input>
+                  <Input size="small" clearable v-model="formItem.callno" placeholder="请输入坐席编号"></Input>
                 </FormItem>
               </Col>
             </Row>
@@ -82,7 +83,7 @@
  <script>
 import tablePage from "@/mixin/tablePage";
 import sysDictionary from "@/mixin/sysDictionary";
-import { call_employee_update } from "@/service/getData";
+import { call_employee_update, call_employee_user } from "@/service/getData";
 export default {
   props: { model: {} },
   model: {
@@ -108,6 +109,7 @@ export default {
       showPanel: false,
       childrenData: {},
       childrenModel: false,
+      userList: [],
       ruleValidate: {
         empno: [
           {
@@ -125,7 +127,7 @@ export default {
         ]
       },
       formItem: {
-        uuid: "",
+        callno: "",
         empno: "",
         loginId: "",
         status: "",
@@ -145,12 +147,12 @@ export default {
     this.formItem = {
       id: this.model.data.id,
       callno: this.model.data.callno,
-      empno: this.model.data.empno,
       loginId: this.model.data.loginId,
-      extenType: this.model.data.extenType,
       status: this.model.data.status,
-      seatType: this.model.data.seatType
+      seatType: this.model.data.seatType,
+      empno: this.model.data.loginId,
     };
+    this.call_employee_user();
   },
   methods: {
     // 添加坐席关系
@@ -161,6 +163,15 @@ export default {
         this.del("0");
       } else {
         this.$Message.error("查询条件格式有误，请重新填写");
+      }
+    },
+    // 查询关联人员
+    async call_employee_user() {
+      const res = await call_employee_user({userType: ''});
+      if (res.code === 1) {
+        this.userList = res.data;
+      } else {
+         this.$Message.error(res.message);
       }
     },
     // 关闭回调
@@ -177,6 +188,11 @@ export default {
         };
       }
       this.$emit("childPassBack", this.childrenData);
+    },
+    // 配置人员的回调
+    changeUser(value) {
+      console.log(value);
+      this.formItem.loginId = value;
     },
     // 重置
     clearForm(name) {

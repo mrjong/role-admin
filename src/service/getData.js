@@ -172,20 +172,20 @@ export const repay_repayUserOrSystem_exportDown = (obj) =>
 // 回款明细列表查询接口
 
 export const repay_repayDetail_list = (obj, options) =>
-	fetch({
-		url: '/repay/repayDetail/list',
-		method: 'POST',
-		data: qs.stringify(obj),
-	});
+  fetch({
+    url: '/repay/repayDetail/list',
+    method: 'POST',
+    data: qs.stringify(obj),
+  });
 
 // 回款明细导出接口
 export const repay_repayDetail_exportDown = (obj, options) =>
-	fetch({
-		url: '/repay/repayDetail/exportDown',
-		method: 'POST',
-		data: qs.stringify(obj),
+  fetch({
+    url: '/repay/repayDetail/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj),
     responseType: 'blob',
-	});
+  });
 
 // 日常监控的坐席报表
 export const monitor_agentState_list = (obj) =>
@@ -196,12 +196,12 @@ export const monitor_agentState_list = (obj) =>
   });
 // 日常监控的坐席报表导出
 export const monitor_agentState_exportDown = (obj) =>
-	fetch({
-		url: '/monitor/agentState/exportDown',
-		method: 'POST',
-		data: qs.stringify(obj),
+  fetch({
+    url: '/monitor/agentState/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj),
     responseType: 'blob',
-	});
+  });
 // 日常监控的逾期日志列表请求
 export const monitor_overdueReports_list = (obj) =>
   fetch({
@@ -212,12 +212,12 @@ export const monitor_overdueReports_list = (obj) =>
 
 // 日常监控逾期报表导出接口
 export const monitor_overDueReports_exportDown = (obj) =>
-	fetch({
-		url: '/monitor/overDueReports/exportDown',
-		method: 'POST',
-		data: qs.stringify(obj),
+  fetch({
+    url: '/monitor/overDueReports/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj),
     responseType: 'blob',
-	});
+  });
 
 // 呼叫明细列表接口查询
 export const monitor_callDetail_list = (obj) =>
@@ -228,21 +228,21 @@ export const monitor_callDetail_list = (obj) =>
   });
 // 呼叫明细导出
 export const monitor_callDetail_exportDown = (obj) =>
-	fetch({
-		url: '/monitor/callDetail/exportDown',
-		method: 'POST',
-		data: qs.stringify(obj),
+  fetch({
+    url: '/monitor/callDetail/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj),
     responseType: 'blob',
-	});
+  });
 
 // 催收回收率列表导出
 export const monitor_collectRate_exportDown = (obj) =>
-	fetch({
-		url: '/monitor/collectRate/exportDown',
-		method: 'POST',
-		data: qs.stringify(obj),
+  fetch({
+    url: '/monitor/collectRate/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj),
     responseType: 'blob',
-	});
+  });
 
 // 催收回收列表查询
 export const monitor_collectRate_list = (obj) =>
@@ -270,6 +270,70 @@ export const sysDictionary_getListByParentId = (obj, options) =>
 export const case_collect_case_list = (obj, options) =>
   fetch({
     url: '/case/collect/case_list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 催收人员管理列表
+export const collect_user_list = (obj) =>
+  fetch({
+    url: '/collect/user/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 催收人员管理列表(动态)
+export const collect_parent_children = (obj) =>
+  fetch({
+    url: '/collect/parent/children',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 添加催收部门领导
+export const collect_user_leader_add = (obj) =>
+  fetch({
+    url: '/collect/user/leader/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 添加催收普通员工
+export const collect_user_clerk_add = (obj) =>
+  fetch({
+    url: '/collect/user/clerk/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 用户信息校验
+export const collect_user_check = (obj) =>
+  fetch({
+    url: '/collect/user/check',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 添加催收机构
+export const collect_section_add = (obj) =>
+  fetch({
+    url: '/collect/section/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 添加部门信息
+export const collect_outfit_add = (obj) =>
+  fetch({
+    url: '/collect/outfit/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 添加催收公司
+export const collect_company_add = (obj) =>
+  fetch({
+    url: '/collect/company/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 查询所有人员接口
+export const collect_list_leader = (obj) =>
+  fetch({
+    url: '/collect/list/leader',
     method: 'POST',
     data: qs.stringify(obj)
   });
@@ -404,34 +468,42 @@ export const stytem_menu_opration = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-  // 坐席关系维护列表
-  export const call_employee_list = (obj) =>
+// 坐席关系维护列表
+export const call_employee_list = (obj) =>
   fetch({
     url: '/call/employee/list',
     method: 'POST',
     data: qs.stringify(obj)
   });
 
-  // 坐席列表删除
-  export const call_employee_del = (obj) =>
+// 坐席列表删除
+export const call_employee_del = (obj) =>
   fetch({
     url: '/call/employee/del',
     method: 'POST',
     data: qs.stringify(obj)
   });
 
-  // 坐席管理更新
-  export const call_employee_update = (obj) =>
+// 坐席管理更新
+export const call_employee_update = (obj) =>
   fetch({
     url: '/call/employee/update',
     method: 'POST',
     data: qs.stringify(obj)
   });
 
-  // 坐席列表添加
-  export const call_employee_add = (obj) =>
+// 坐席列表添加
+export const call_employee_add = (obj) =>
   fetch({
     url: '/call/employee/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 查询未配置坐席的人员
+export const call_employee_user = (obj) =>
+  fetch({
+    url: '/call/employee/user',
     method: 'POST',
     data: qs.stringify(obj)
   })
@@ -643,7 +715,7 @@ export const divide_rules_edit = (obj) =>
     data: qs.stringify(obj)
   })
 
-  // 修改分案规则
+// 修改分案规则
 export const divide_rules_save = (obj) =>
   fetch({
     url: '/divide/rules/save',
@@ -651,8 +723,8 @@ export const divide_rules_save = (obj) =>
     data: qs.stringify(obj)
   });
 
-  // 查看分案规则修改历史记录
-  export const divide_rules_his = (obj) =>
+// 查看分案规则修改历史记录
+export const divide_rules_his = (obj) =>
   fetch({
     url: '/divide/rules/his',
     method: 'GET',
@@ -707,18 +779,18 @@ export const case_collect_case_list_export = (obj, options) =>
     options
   });
 
-  /*
+/*
 *
 *
 导出我的案件
 * */
 export const mail_list_add = (obj, options) =>
-fetch({
-  url: '/mail_list/add',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options
-});
+  fetch({
+    url: '/mail_list/add',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options
+  });
 
 /*
 *
@@ -726,12 +798,12 @@ fetch({
 催收记录列表
 * */
 export const case_collect_collect_list = (obj, options) =>
-fetch({
-  url: '/case/collect/collect_list',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options
-});
+  fetch({
+    url: '/case/collect/collect_list',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options
+  });
 
 /*
 *
@@ -739,13 +811,13 @@ fetch({
 催收记录列表导出
 * */
 export const case_collect_tape_download = (obj, options) =>
-fetch({
-  url: '/case/collect/tape_download',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options,
-  responseType: 'blob',
-});
+  fetch({
+    url: '/case/collect/tape_download',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+    responseType: 'blob',
+  });
 
 /*
 *
@@ -753,12 +825,12 @@ fetch({
 催记管理相关接口
 * */
 export const case_remark_his_add = (obj, options) =>
-fetch({
-  url: '/case_remark_his/add',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options,
-});
+  fetch({
+    url: '/case_remark_his/add',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+  });
 
 /*
 *
@@ -766,72 +838,72 @@ fetch({
 沟通状态
 * */
 export const collectcode_getListByCodeType = (obj, options) =>
-fetch({
-  url: '/collectcode/getListByCodeType',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options,
-});
+  fetch({
+    url: '/collectcode/getListByCodeType',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+  });
 
 /*
 *
 获取code关系
 * */
 export const collectcode_getCollectRelate = (obj, options) =>
-fetch({
-  url: '/collectcode/getCollectRelate',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options,
-});
+  fetch({
+    url: '/collectcode/getCollectRelate',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+  });
 
 /*
 *
 根据案件号获取申请代扣信息
 * */
 export const repayinfo_getApplyInfo = (obj, options) =>
-fetch({
-  url: '/repayinfo/getApplyInfo',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options,
-});
+  fetch({
+    url: '/repayinfo/getApplyInfo',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+  });
 
 /*
 *
 根据用户ID和产品线查询绑卡信息
 * */
 export const repayinfo_getCardNos = (obj, options) =>
-fetch({
-  url: '/repayinfo/getCardNos',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options,
-});
+  fetch({
+    url: '/repayinfo/getCardNos',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+  });
 
 /*
 *
 调用代扣
 * */
 export const repayinfo_applayRepay = (obj, options) =>
-fetch({
-  url: '/repayinfo/applayRepay',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options,
-});
+  fetch({
+    url: '/repayinfo/applayRepay',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+  });
 
 /*
 *
 系统用户密码重置接口
 * */
 export const system_user_reset = (obj, options) =>
-fetch({
-  url: '/system/user/reset',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options,
-});
+  fetch({
+    url: '/system/user/reset',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+  });
 
 
 
