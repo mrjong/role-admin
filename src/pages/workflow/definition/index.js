@@ -101,7 +101,10 @@ export default {
 										'on-ok': () => {
 											this.forbid(params.row.id);
 										}
-									}
+                                    },
+                                    style: {
+                                        display: params.row.status === '02' ? 'inline-block' : 'none'
+                                    }
 								},
 								[
 									h(
@@ -109,9 +112,7 @@ export default {
 										{
 											class: 'edit-btn',
 											props: {},
-											style: {
-												display: params.row.status === '02' ? 'inline-block' : 'none'
-											}
+											
 										},
 										'禁用'
 									)
@@ -120,13 +121,14 @@ export default {
 							h(
 								'Poptip',
 								{
-									class: 'edit-btn',
 									props: {
 										confirm: true,
 										title: '您确定要发布这条数据吗?',
 										transfer: true
-									},
-
+                                    },
+                                    style: {
+                                        display: params.row.status === '01' ? 'inline-block' : 'none'
+                                    },
 									on: {
 										'on-ok': () => {
 											this.release(params.row.id);
@@ -139,9 +141,7 @@ export default {
 										{
 											class: 'edit-btn',
 											props: {},
-											style: {
-												display: params.row.status === '01' ? 'inline-block' : 'none'
-											}
+											
 										},
 										'发布'
 									)
@@ -160,7 +160,13 @@ export default {
 										'on-ok': () => {
 											this.copy(params.row.id);
 										}
-									}
+                                    },
+                                    style: {
+                                        display:
+                                            params.row.status === '02' || params.row.status === '03'
+                                                ? 'inline-block'
+                                                : 'none'
+                                    }
 								},
 								[
 									h(
@@ -168,12 +174,7 @@ export default {
 										{
 											class: 'edit-btn',
 											props: {},
-											style: {
-												display:
-													params.row.status === '02' || params.row.status === '03'
-														? 'inline-block'
-														: 'none'
-											}
+											
 										},
 										'复制'
 									)

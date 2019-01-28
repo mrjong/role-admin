@@ -276,7 +276,11 @@ export default {
 			// player.[methods]
 		},
 		async getList() {
-			const res = await case_collect_collect_list();
+			const res = await case_collect_collect_list({
+                ...this.formItem,
+				pageSize: this.pageSize,
+				pageNum: this.pageNo
+            });
 			if (res.code === 1) {
 				this.tableData = res.data.content;
 				this.total = res.data.totalElements;
