@@ -958,3 +958,17 @@ fetch({
   data: qs.stringify(obj),
   options,
 });
+
+
+/*
+*
+*
+数据字典查询
+* */
+export const sysDictionary_list = (obj, options) =>
+  fetch({
+    url: '/sysDictionary/list',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+  });

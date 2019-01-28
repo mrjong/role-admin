@@ -1,315 +1,197 @@
-import { buffet_list } from '@/service/getData';
+import { sysDictionary_list } from '@/service/getData';
 export default {
-  name: 'demo_list',
   data() {
     return {
       showPanel: false,
       showPanel2: false,
-      phoneCallList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
-      productTimeList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
-      productLineList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
-      modal12: false,
-      inputGrid: '',
-      modal11: false,
-      formValidate2: {},
-      ruleValidate: {
-        buffet_id: [
+      detailFlag: false,
+      modal: false,
+      itemName: '',
+      data: {},
+      data5: [],
+      buttonProps: {
+        type: 'primary',
+        size: 'small',
+      },
+      menuFormItem: {
+        itemName: '',
+        itemCode: '',
+        itemDesc: '',
+        sort: '',
+      },
+      newMenuItem: {
+        text: '',
+        parent: '',
+      },
+      ruleValidate1: {
+        text: [
           {
             required: true,
-            message: '请输入网格编号',
-            trigger: 'blur'
+            message: "请输入菜单名称",
+            trigger: "blur"
           }
-        ]
-      },
-      pageNo: 1,
-      pageSize: 10,
-      total: 0,
-      formValidate3: {
-        items: [
+        ],
+        sort: [
           {
-            value: '',
-            index: 1,
-            status: 1
+            required: true,
+            message: "请输入位置",
+            trigger: "blur"
           }
-        ]
-      },
-      formItem: {},
-      tableData: [
-        {
-          recording_id: 1,
-          operate: '操作'
-        }
-      ],
-      tableColumns: [
-        {
-          title: '序号',
-          width: 80,
-          searchOperator: '=',
-          sortable: true,
-          key: 'recording_id',
-          fixed: 'left',
-          align: 'center'
-        },
-        {
-          title: '操作',
-          width: 100,
-          key: 'edit',
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h(
-                'Poptip',
-                {
-                  props: {
-                    confirm: true,
-                    title: '您确定要删除这条数据吗?',
-                    transfer: true
-                  },
-                  on: {
-                    'on-ok': () => {
-                      this.deleteGoods(params.row.recording_id);
-                    }
-                  }
-                },
-                [
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {}
-                    },
-                    '播放'
-                  )
-                ]
-              )
-            ]);
-          }
-        },
-        {
-          title: '时长',
-          width: 100,
-          searchOperator: '=',
-          key: 'time_length',
-          align: 'center'
-        },
-        // {
-        //   title: '餐柜添加时间',
-        //   key: 'addtime',
-        //   sortable: true,
-        //   width: 160,
-        //   render: (h, params) => {
-        //     const row = params.row;
-        //     const addtime = row.addtime
-        //       ? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-        //       : row.addtime;
-        //     return h('span', addtime);
-        //   }
-        // },
-        {
-          title: '客户姓名',
-          searchOperator: 'like',
-          key: 'client_name',
-          sortable: true,
-          align: 'center'
-        },
-        {
-          title: '关系',
-          width: 80,
-          searchOperator: 'like',
-          key: 'relation',
-          align: 'center'
-          // render: (h, params) => {
-          //   return h('div', [
-          //     h(
-          //       'Tooltip',
-          //       {
-          //         style: {
-          //           margin: '0 5px'
-          //         },
-          //         props: {
-          //           content: params.row.address,
-          //           placement: 'top'
-          //         }
-          //       },
-          //       [h('div', {}, params.row.address)]
-          //     )
-          //   ]);
-          // }
-        },
-        {
-          title: '呼叫电话',
-          searchOperator: '=',
-          key: 'call_number',
-          align: 'center'
-        },
-        {
-          title: '呼叫开始时间',
-          searchOperator: '=',
-          key: 'call_begin_time',
-          ellipsis: true,
-          align: 'center'
-        },
-        {
-          title: '呼叫结束时间',
-          searchOperator: '=',
-          key: 'call_end_time',
-          ellipsis: true,
-          align: 'center'
-        },
-        {
-          title: '经办人',
-          searchOperator: '=',
-          key: 'operator',
-          align: 'center'
-        },
-        {
-          title: '案件编码',
-          searchOperator: '=',
-          key: 'case_id',
-          ellipsis: true,
-          align: 'center'
-        },
-        {
-          title: '账单号',
-          searchOperator: '=',
-          key: 'bill_number',
-          ellipsis: true,
-          align: 'center'
-        },
-        {
-          title: '客户身份证号',
-          searchOperator: '=',
-          key: 'id_card',
-          ellipsis: true,
-          align: 'center'
-        },
-      ]
-    };
+        ],
+      }
+    }
   },
   created() {
-    this.getList();
+    this.getList()
   },
   methods: {
-    // 页码改变的回调
-    changePage(pageNo) {
-      this.pageNo = pageNo;
-      this.getList();
+    // 选中节点的回调函数
+    selectNode(node) {
+      console.log(node)
     },
-    // 切换每页条数时的回调
-    changeSize(pageSize) {
-      this.pageSize = pageSize;
-      this.pageNo = 1;
-      this.getList();
+    renderContent(h, { root, node, data }) {
+      console.log(data )
+
+      return h('span', {
+        style: {
+          display: 'inline-block',
+          width: '94%',
+          boxSizing: 'border-box',
+        }
+      }, [
+        h('span', [
+          h('Icon', {
+            props: {
+              type: 'ios-paper-outline',
+            },
+            style: {
+              marginRight: '4px'
+            }
+          }),
+          h('span', {
+            props: {
+            },
+            style: {
+              cursor: 'pointer'
+            },
+            class: 'tree_title',
+            on: {
+              'click': (e) => {
+                let titleSpan = document.querySelectorAll('.tree_title');
+                titleSpan.forEach(item => {
+                  item.className = 'tree_title';
+                });
+                if (e.target.className.indexOf('ivu-tree-title-selected') === -1) {
+                  e.target.className = 'tree_title ivu-tree-title-selected';
+                };
+                this.detailFlag = true;
+                this.menuFormItem = {
+                  itemName: data.itemName,
+                  itemCode: data.itemCode,
+                  itemDesc: data.itemDesc,
+                  sort: data.sort,
+                }
+              }
+            }
+          }, data.itemName)
+        ]),
+        h('span', {
+          style: {
+            display: 'inline-block',
+            float: 'right',
+            marginRight: '20px'
+          }
+        }, [
+          h('Button', {
+            props: Object.assign({}, this.buttonProps, {
+              // icon: 'ios-plus-empty'
+              type: 'primary'
+            }),
+            style: {
+              // marginRight: data.type === '4' || data.type === '3' ? 0 : '4px'
+            },
+            on: {
+              click: () => { this.addItem(data) }
+            }
+          }, '添加'),
+          h('Button', {
+            props: Object.assign({}, this.buttonProps, {
+              // icon: 'ios-plus-empty'
+              type: 'error'
+            }),
+            style: {
+              marginLeft: '4px'
+            },
+            on: {
+              click: () => {
+                this.menuUpdate({id: data.id, state: '00'});
+              }
+            }
+          }, '删除'),
+        ])
+      ]);
     },
+    // 提交保存修改
     handleSubmit(name) {
-      this.$refs[name].validate((valid) => {
+      this.$refs[name].validate(valid => {
         if (valid) {
-          this.getList();
+          // this.getList();
+          // this.$Message.success("ok");
+          this.menuUpdate(this.menuFormItem)
         } else {
-          this.$Message.error('查询条件格式有误，请重新填写');
+          this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
+    },
+
+    // 添加菜单项
+    addItem(data) {
+      this.modal = true;
+      this.data = data;
+    },
+    ok() {
+      // const children = this.data.children || [];
+      // children.push({
+      //   text: this.itemName,
+      //   expand: true
+      // });
+      // this.$set(this.data, 'children', children);
+      this.newMenuItem.parent = this.data.id;
+      this.menuAdd(this.newMenuItem)
+      this.modal = false;
+    },
+    cancel() {
+      this.modal = false;
     },
     // 获取表格数据
-    async getList() {
-      const res = await buffet_list({
-        searchParam: this.formItem && JSON.stringify(this.formItem) !== '{}' && this.getParam(),
-        page: this.pageNo,
-        perPage: this.pageSize,
-        config: {
-          hideMessage: true
-        }
-      });
-      if (res.data && res.data.data) {
-        this.tableData = res.data.data;
-        this.total = res.data.total;
-        this.pageNo = res.data.current_page;
+    async getList(params) {
+      const res = await sysDictionary_list();
+      console.log(res)
+      if (res.code) {
+        this.data5 = res.data;
+        this.data5[0].expand = true;
       } else {
-        this.tableData = [];
-        this.total = 0;
-        this.pageNo = 1;
+        this.$Message.error(res.message);
       }
     },
-    // 重置
-    clearForm(name) {
-      this.pageNo = 1;
-      this.formItem = {};
-      this.$refs[name].resetFields();
+    // 修改菜单项
+    async menuUpdate(params) {
+      const res = await stytem_menu_update(params);
+      if (res.code === 1) {
+        this.getList();
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 新增菜单项
+    async menuAdd(params) {
+      const res = await stytem_menu_add(params);
+      if (res.code === 1) {
+        this.$Message.success('添加成功');
+        this.getList();
+      } else {
+        this.$Message.error(res.message);
+      }
     }
-  }
-};
+  },
+}
