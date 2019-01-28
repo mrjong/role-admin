@@ -1,4 +1,4 @@
-import { wkProcessTask_detail, wkProcessTask_list } from '@/service/getData';
+import { wkProcessTask_detail, wkProcessTask_list, wkProcessTask_approval_list } from '@/service/getData';
 import tablePage from '@/mixin/tablePage';
 export default {
 	name: 'case_search_page',
@@ -115,51 +115,64 @@ export default {
 			tableColumns: [
 				{
 					title: '定义ID',
-					width: 100,
+					minWidth: 100,
 					sortable: true,
-					key: 'defId'
+                    align:'center',
+                    key: 'defId'
 				},
 				{
 					title: '定义名称',
-					width: 120,
-					key: 'defName'
+					minWidth: 120,
+                    align:'center',
+                    key: 'defName'
 				},
 				{
 					title: '业务标识',
-					width: 120,
-					key: 'busiKey'
+					minWidth: 120,
+                    align:'center',
+                    key: 'busiKey'
 				},
 				{
 					title: '节点名称',
-					width: 120,
-					key: 'taskNodeName'
+					minWidth: 120,
+                    align:'center',
+                    key: 'taskNodeName'
 				},
 				{
 					title: '节点顺序',
-					width: 120,
-					key: 'taskNodeSort'
+					minWidth: 120,
+                    align:'center',
+                    key: 'taskNodeSort'
 				},
 				{
 					title: '处理人',
-					width: 120,
-					key: 'waitDealName'
+					minWidth: 120,
+                    align:'center',
+                    key: 'waitDealName'
 				},
 				{
 					title: '申请人',
-					width: 120,
-					key: 'applyName'
+					minWidth: 120,
+                    align:'center',
+                    key: 'applyName'
 				},
 				{
 					title: '操作',
-					width: 100,
-					key: 'edit',
+					minWidth: 100,
+                    align:'center',
+                    key: 'edit',
 					render: (h, params) => {
 						return h('div', [
 							h(
 								'a',
 								{
 									class: 'edit-btn',
-									props: {}
+									props: {},
+									on: {
+										click: () => {
+											this.wkProcessTask_detail(params.row.id);
+										}
+									}
 								},
 								'详情'
 							),
@@ -167,7 +180,12 @@ export default {
 								'a',
 								{
 									class: 'edit-btn',
-									props: {}
+									props: {},
+									on: {
+										click: () => {
+											this.wkProcessTask_approval_list(params.row.id);
+										}
+									}
 								},
 								'审核'
 							)
@@ -181,6 +199,28 @@ export default {
 		this.getList();
 	},
 	methods: {
+		// 详情
+		async wkProcessTask_detail(id) {
+			const res = await wkProcessTask_detail({
+				id
+			});
+			if (res.code === 1) {
+				this.show2(res.data);
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+		// 审核
+		async wkProcessTask_approval_list(id) {
+			const res = await wkProcessTask_approval_list({
+				id
+			});
+			if (res.code === 1) {
+				this.show(res.data.content);
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
 		async getList() {
 			const res = await wkProcessTask_list({
 				...this.formItem,
@@ -194,6 +234,40 @@ export default {
 			} else {
 				this.$Message.error(res.message);
 			}
+		},
+		show(obj) {
+			let str = '';
+			obj.forEach((ele) => {
+				str += `
+                定义ID：${ele.defId}<br>
+                定义名称：${ele.defName}<br>
+                业务标示：${ele.busiKey}<br>
+                当前任务节点名称：${ele.taskNodeName}<br>
+                当前任务顺序号：${ele.taskNodeSort}<br>
+                当前任务节点待处理人名称：${ele.waitDealName}<br>
+                申请人名称：${ele.applyName}<br><br><br><br>
+                `;
+			});
+			this.$Modal.info({
+				// closable: true,
+				title: '任务详情',
+				content: str
+			});
+		},
+		show2(obj) {
+			this.$Modal.info({
+				// closable: true,
+				title: '任务详情',
+				content: `
+              定义ID：${obj.defId}<br>
+              定义名称：${obj.defName}<br>
+              业务标示：${obj.busiKey}<br>
+              当前任务节点名称：${obj.taskNodeName}<br>
+              当前任务顺序号：${obj.taskNodeSort}<br>
+              当前任务节点待处理人名称：${obj.waitDealName}<br>
+              申请人名称：${obj.applyName}<br><br><br>
+              `
+			});
 		}
 	}
 };

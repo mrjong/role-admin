@@ -97,7 +97,7 @@
           <Form
             ref="formItem"
             :model="formItem"
-            :label-width="100"
+            :label-width="90"
             class="panel_list"
             :rules="ruleValidate"
           >
@@ -153,8 +153,8 @@
               <Col
                 :xs="24"
                 :sm="24"
-                :md="6"
-                :lg="6"
+                :md="12"
+                :lg="12"
                 span="6"
                 class="mt5"
               >

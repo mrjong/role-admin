@@ -30,6 +30,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
+                v-model="dealTime"
                 format="yyyy-MM-dd"
                 type="datetimerange"
                 placement="bottom-start"
@@ -57,7 +58,7 @@
                 size="small"
                 type="ghost"
                 style="width:80px;margin-left: 8px"
-                @click="clearForm('formValidate')"
+                @click="clearForm('formItem')"
               >重置</Button>
             </FormItem>
           </Col>
@@ -124,9 +125,7 @@
       return {
         showPanel: false,
         showPanel2: false,
-        modal12: false,
-        inputGrid: '',
-        modal11: false,
+        dealTime:'',
         formItem: {
          startDate: '',
           endDate: ''
@@ -237,14 +236,13 @@
       };
     },
     created() {
-      //this.getList();
+      this.getList();
     },
     methods: {
       // 改变日期区间的格式之后进行处理
       changeDate(val1, val2) {
         console.log(val1, typeof val1)
         console.log(val2, typeof val2)
-
         this.formItem.startDate = val1[0];
         this.formItem.endDate = val1[1];
         // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
@@ -291,7 +289,8 @@
       // 重置
       clearForm(name) {
         this.pageNo = 1;
-        this.formValidate = {};
+        this.formItem = {};
+        this.dealTime='',
         this.$refs[name].resetFields();
       }
     }

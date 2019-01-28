@@ -7,6 +7,7 @@ export default {
     var alignCenter = 'center';
     var widthVal = 180;
     var widthMidVal = 100;
+    var _this = this;
     return {
       getDirList: ['REPAY_ORD_STS', 'PROD_TYPE'],
       getDirObj: {},
@@ -76,15 +77,7 @@ export default {
         {
           title: '申请流水号',
           searchOperator: '=',
-          key: 'billNo',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '代扣订单号',
-          searchOperator: 'like',
-          key: 'dkorgOrdNo',
+          key: 'applyNo',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
@@ -92,7 +85,7 @@ export default {
         {
           title: '案件编号',
           searchOperator: 'like',
-          key: 'userNm',
+          key: 'caseNo',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal
@@ -100,7 +93,7 @@ export default {
         {
           title: '账单号',
           searchOperator: 'like',
-          key: 'idNoHid',
+          key: 'billNo',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
@@ -108,7 +101,7 @@ export default {
         {
           title: '还款金额',
           searchOperator: 'like',
-          key: 'repayOrdAmt',
+          key: 'repayAmount',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal
@@ -116,55 +109,15 @@ export default {
         {
           title: '还款账户',
           searchOperator: 'like',
-          key: 'mblNoHid',
+          key: 'crdNoHid',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal
-        },
-        {
-          title: '审核状态',
-          searchOperator: 'like',
-          key: 'mblNoHid',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthMidVal
-        },
-        {
-          title: '审核备注',
-          searchOperator: 'like',
-          key: 'mblNoHid',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthMidVal
-        },
-        {
-          title: '订单状态',
-          searchOperator: 'like',
-          key: 'ordSts',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
         },
         {
           title: '代扣订单信息',
           searchOperator: 'like',
-          key: 'orgFnlMsg',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '代扣通道',
-          searchOperator: 'like',
-          key: 'rutCopyOrg',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '失败原因',
-          searchOperator: 'like',
-          key: 'rutCopyOrg',
+          key: 'responseMessage',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
@@ -172,47 +125,43 @@ export default {
         {
           title: '产品名称',
           searchOperator: 'like',
-          key: 'rutCopyOrg',
+          key: 'prdTyp',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthMidVal,
+          render(h,params){
+            console.log(_this.getDirObj.PROD_TYPE,'产品数据');
+            const prdTyp = params.row.prdTyp;
+            let result = '';
+            if(_this.getDirObj && _this.getDirObj.PROD_TYPE){
+             result = _this.getDirObj.PROD_TYPE.filter(item => {
+                return item.itemCode == prdTyp
+              });
+            }
+            console.log(result,'resressrsrsr');
+            return h('span', result[0].itemName);
+          }
         },
         {
           title: '借款期限',
           searchOperator: 'like',
-          key: 'ordDt',
+          key: 'loanNum',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '最后还款日期',
-          searchOperator: 'like',
-          key: 'ordDt',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '逾期应还金额',
-          searchOperator: 'like',
-          key: 'ordDt',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
+          width: widthMidVal
         },
         {
           title: '客户姓名',
           searchOperator: 'like',
-          key: 'ordDt',
+          key: 'userNmHid',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthMidVal
         },
         {
           title: '身份证号',
           searchOperator: 'like',
-          key: 'crdAcTyp',
+          key: 'idNoHid',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal
@@ -220,7 +169,7 @@ export default {
         {
           title: '手机号',
           searchOperator: 'like',
-          key: 'crdCorpOrg',
+          key: 'mblNoHid',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal
@@ -228,15 +177,22 @@ export default {
         {
           title: '申请时间',
           searchOperator: 'like',
-          key: 'crdNoLast',
+          key: 'applayTime',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: widthVal,
+          render(h, params){
+            console.log(_this.$options,'opopopopo');
+            let res = params.row.applayTime;
+            res = res ? _this.$options.filters['formatDate'](res,'YYYY-MM-DD HH:mm:ss')
+              : res;
+            return h('span',res);
+          }
         },
         {
           title: '申请人',
           searchOperator: 'like',
-          key: 'repayOrdPrcp',
+          key: 'opUserName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
@@ -244,28 +200,19 @@ export default {
         {
           title: '电催中心',
           searchOperator: 'like',
-          key: 'acTyp',
+          key: 'compayName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
         },
         {
-          title: '审核人',
+          title: '申请备注',
           searchOperator: 'like',
-          key: 'ordDt',
+          key: 'applayRemarks',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthMidVal
         },
-        {
-          title: '审核日期',
-          searchOperator: 'like',
-          key: 'ordDt',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-
         // {
         //   title: '操作',
         //   width: 100,
@@ -354,7 +301,9 @@ export default {
       })
       console.log(res)
       // 请求成功之后需要做分页处理，然后将拿到的数据进行数据处理，总数目和展示条数
-
+      if(res && res.code === 1){
+        this.tableData = res.data;
+      }
     },
     // 重置
     clearForm(name) {

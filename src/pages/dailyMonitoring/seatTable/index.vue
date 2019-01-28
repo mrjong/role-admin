@@ -55,10 +55,10 @@
                 v-model="formValidate.agent"
               >
                 <Option
-                  v-for="item in payOffStsList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
+                  v-for="item in groupSeatList"
+                  :value="item.agent"
+                  :key="item.agent"
+                >{{ item.name }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -75,12 +75,13 @@
               <Select
                 size="small"
                 v-model="formValidate.parentRoleId"
+                @on-change="toGetSeat"
               >
                 <Option
-                  v-for="item in opCompanyNameList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
+                  v-for="item in groupList"
+                  :value="item.id"
+                  :key="item.id"
+                >{{ item.name }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -158,7 +159,7 @@
   </div>
 </template>
 <script>
-  import { monitor_agentState_list, monitor_agentState_exportDown } from '@/service/getData';
+  import { monitor_agentState_list, monitor_agentState_exportDown, monitor_groupList, monitor_getAgentList } from '@/service/getData';
   import util from '@/libs/util';
   export default {
     name: 'seatTable',
@@ -169,28 +170,9 @@
       return {
         showPanel: false,
         showPanel2: false,
-        opCompanyNameList: [
-          {
-            value: '01',
-            label: '还到'
-          },
-          {
-            value: '02',
-            label: '随行付钱包'
-          },
-          {
-            value: '03',
-            label: '商户贷'
-          }
-        ],
-        payOffStsList: [
-          {
-            value: 'gbbg',
-            label: 'New York'
-          }
-        ],
+        groupSeatList:[],
+        groupList:[],
         modal12: false,
-        inputGrid: '',
         modal11: false,
         startRepayDateRange: [], //实际还款日期区间
         shouldRepayDate: [],
@@ -292,7 +274,7 @@
           {
             title: '在案量',
             searchOperator: 'like',
-            key: 'userNmHid',
+            key: 'caseCount',
             className: 'caseCount',
             align: alignCenter,
             width: widthVal
@@ -381,6 +363,9 @@
       };
     },
     created() {
+      // 此处注意刁颖顺序，因为是两级联动关系，必须等到拿到组别之后，在进行坐席接口调用
+      //this.getSeatTableList();
+      this.groupListArr();
       //this.getList();
     },
     methods: {
@@ -404,7 +389,27 @@
         this.getList();
       },
       handleSubmit(name) {
+        this.pageNo = 1;
         this.getList();
+      },
+      toGetSeat(val){
+        this.getSeatTableList(val);
+      },
+      async groupListArr(){
+        let res = await monitor_groupList({})
+        if(res && res.code === 1){
+          this.groupList = res.data;
+          console.log(this.groupList)
+        };
+      },
+      async getSeatTableList(id){
+        console.log(id,'idiiidiididdiidi');
+        let res = await  monitor_getAgentList({
+          parentRoleId: id
+        });
+        if(res && res.code === 1){
+          this.groupSeatList = res.data;
+        }
       },
       async exportData(){
         let res = await monitor_agentState_exportDown({
@@ -435,6 +440,7 @@
       clearForm(name) {
         this.pageNo = 1;
         this.formValidate = {};
+        this.startRepayDateRange = '';
         this.$refs[name].resetFields();
       }
     }

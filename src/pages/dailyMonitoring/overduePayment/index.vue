@@ -43,7 +43,7 @@
               <Col
                 :xs="2"
                 :sm="2"
-                :md="2"
+                :md="2"d
                 :lg="2"
                 span="2"
               >
@@ -79,7 +79,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="formItem.defaultDate"
+                v-model="formItem.createDate"
                 format="yyyy-MM-dd"
                 type="date"
                 placement="bottom-start"
@@ -167,7 +167,7 @@
   import sysDictionary from '@/mixin/sysDictionary';
   import formValidateFun from '@/mixin/formValidateFun';
   import util from '@/libs/util';
-  import { monitor_overdueReports_list, monitor_overDuereports_exportDown } from '@/service/getData';
+  import { monitor_overdueReports_list, monitor_overDueReports_exportDown } from '@/service/getData';
   export default {
     name: 'overduePayment',
     mixins: [sysDictionary, formValidateFun],
@@ -178,11 +178,8 @@
       return {
         showPanel: false,
         showPanel2: false,
-        modal12: false,
-        inputGrid: '',
-        modal11: false,
         formItem: {
-          defaultDate: new Date(), //默认获取当前的日期时间
+          createDate: new Date(), //默认获取当前的日期时间
           overdueDaysLt:'',
           overdueDaysBt: '',
         },
@@ -194,7 +191,7 @@
               trigger: 'blur'
             },
             {
-              validator: this.validate_yqts_start,
+              validator: this.validate_yqts_start_two,
               trigger: 'blur'
             }
           ],
@@ -205,7 +202,7 @@
               trigger: 'blur'
             },
             {
-              validator: this.validate_yqts_end,
+              validator: this.validate_yqts_end_two,
               trigger: 'blur'
             }
           ],
@@ -299,7 +296,7 @@
           },
           {
             title: '账单号',
-            key: 'linkRate',
+            key: 'billNo',
             className: 'billNo',
             align: alignCenter,
             width: widthMidVal,
@@ -442,8 +439,8 @@
           },
           {
             title: '用户名',
-            key: 'linkRate',
-            className: 'usrNm',
+            key: 'usrNm',
+            className: '',
             align: alignCenter,
             width: widthMidVal,
           },
@@ -594,7 +591,7 @@
           {
             title: '逾期天数',
             searchOperator: 'like',
-            key: 'overDueDays',
+            key: 'overdueDays',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
@@ -635,7 +632,8 @@
         console.log(val1, typeof val1)
         console.log(val2, typeof val2)
 
-        this.formItem.defaultDate = val1;
+        this.formItem.createDate = val1;
+        this.pageNo = 1;
         // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
       },
       // 页码改变的回调
@@ -654,7 +652,8 @@
         this.getList();
       },
       async exportData(){
-        let res = monitor_overDuereports_exportDown({
+        console.log('逾期导出')
+        let res = await monitor_overDueReports_exportDown({
           ...this.formItem
         });
         util.dowloadfile('逾期报表',res);
@@ -680,7 +679,7 @@
       // 重置
       clearForm(name) {
         this.pageNo = 1;
-        this.formValidate = {};
+        this.formItem = {};
         this.$refs[name].resetFields();
       }
     }

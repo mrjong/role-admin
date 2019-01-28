@@ -75,7 +75,7 @@ export const wkProcessDef_save = (obj = {}) =>
   fetch({
     url: '/wkProcessDef/save',
     method: 'POST',
-    data: qs.stringify(obj)
+    data: obj
   });
 
 /**
@@ -83,7 +83,7 @@ export const wkProcessDef_save = (obj = {}) =>
  */
 export const wkProcessTask_detail = (obj = {}) =>
   fetch({
-    url: `/wkProcessTask/detail/${obj.id}`,
+    url: `/wkProcessTask/detail`,
     method: 'POST',
     data: qs.stringify(obj)
   });
@@ -201,6 +201,21 @@ export const monitor_agentState_exportDown = (obj) =>
     method: 'POST',
     data: qs.stringify(obj),
     responseType: 'blob',
+	});
+// 坐席报表的组织查询接口
+export const monitor_groupList = (obj) =>
+  fetch({
+    url: '/monitor/groupList',
+    method: 'POST',
+    data: qs.stringify(obj),
+  });
+
+// 坐席数据查询接口
+export const monitor_getAgentList = (obj) =>
+  fetch({
+    url: '/monitor/getAgentList',
+    method: 'POST',
+    data: qs.stringify(obj),
   });
 // 日常监控的逾期日志列表请求
 export const monitor_overdueReports_list = (obj) =>
@@ -394,7 +409,7 @@ export const system_user_update = (obj, options) =>
 // 业务管理的划扣管理
 export const deduct_list = (obj) =>
   fetch({
-    url: '/deduct/list',
+    url: '/repayinfo/list',
     method: 'POST',
     data: qs.stringify(obj)
   });
@@ -757,17 +772,6 @@ export const case_detail_case_identity_info = (obj, options) =>
 /*
 *
 *
-添加工作流
-* */
-export const wkProcessDef_add = (obj, options) =>
-  fetch({
-    url: '/wkProcessDef/add',
-    method: 'POST',
-    data: qs.stringify(obj)
-  });
-/*
-*
-*
 导出我的案件
 * */
 export const case_collect_case_list_export = (obj, options) =>
@@ -905,5 +909,52 @@ export const system_user_reset = (obj, options) =>
     options,
   });
 
+/*
+*
+工作流
+详情
+* */
+export const wkProcessDef_detail = (obj, options) =>
+fetch({
+  url: '/wkProcessDef/detail',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
 
 
+/*
+*
+工作流
+修改
+* */
+export const wkProcessDef_update = (obj, options) =>
+fetch({
+  url: '/wkProcessDef/update',
+  method: 'POST',
+  data: obj,
+  options,
+});
+
+
+/*
+*
+工作流任务审核
+* */
+export const wkProcessTask_approval_list = (obj, options) =>
+fetch({
+  url: '/wkProcessTask/approval_list',
+  method: 'POST',
+  data: obj,
+  options,
+});
+/*
+* 经办人 04 催收中心 02
+* */
+export const getLeafTypeList = (obj, options) =>
+fetch({
+  url: '/getLeafTypeList',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});

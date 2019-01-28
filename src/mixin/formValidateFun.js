@@ -26,7 +26,20 @@ const mixin = {
         this.$refs.formItem.validateField('billOvduAmtLt');
       }
       callback();
-    }
+    },
+    validate_yqts_start_two(rule, value, callback) {
+      if (value && this.formItem.overdueDaysBt && Number(value) > Number(this.formItem.overdueDaysBt)) {
+        callback(new Error('逾期开始天数不能大于逾期结束天数'));
+      } else {
+        callback();
+      }
+    },
+    validate_yqts_end_two(rule, value, callback) {
+      if (this.formItem.overdueDaysLt) {
+        this.$refs.formItem.validateField('overdueDaysLt');
+      }
+      callback();
+    },
   }
 };
 export default mixin;

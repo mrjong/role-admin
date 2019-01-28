@@ -2,27 +2,6 @@
 	"code": 1,
 	"message": "OK",
 	"data": [
-		{
-			"id": "4e0b269e185b48f598e6fa0cce8ce2ee",
-			"text": "demo",
-			"url": "/demo",
-			"icon": "ionic",
-			"template": null,
-			"childrens": [
-				{
-					"text": "demo详情",
-					"url": "/demo/demo_desc_page",
-					"icon": "arrow-return-left",
-					"template": "/demo/demo_desc_page"
-				},
-				{
-					"text": "demo列表",
-					"url": "/demo/demo_list_page",
-					"icon": "arrow-up-c",
-					"template": "/demo/demo_list_page"
-				}
-			]
-    },
     {
 			"id": "4e0b269e185b48f598e6fa0cce8ce2ee",
 			"text": "案件管理",

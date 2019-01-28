@@ -74,7 +74,6 @@
                 placement="bottom-start"
                 placeholder="请选择还款时间区间"
                 @on-change="changeDange"
-                @on-ok="changeDange"
               ></DatePicker>
             </FormItem>
           </Col>
@@ -130,7 +129,9 @@
             >
               <Select
                 size="small"
-                v-model="formValidate.prdTyp"
+                v-model="formValidate.prdTyps"
+                multiple
+                filterable
               >
                 <Option
                   v-for="item in getDirObj.PROD_TYPE"
@@ -140,28 +141,6 @@
               </Select>
             </FormItem>
           </Col>
-          <!--<Col-->
-            <!--:xs="24"-->
-            <!--:sm="24"-->
-            <!--:md="6"-->
-            <!--:lg="6"-->
-            <!--span="6"-->
-          <!--&gt;-->
-            <!--<FormItem-->
-              <!--label="代扣通道:"-->
-            <!--&gt;-->
-              <!--<Select-->
-              <!--size="small"-->
-              <!--v-model="formValidate.rutCopyOrg">-->
-                <!--<Option-->
-                <!--v-for="item in rutTypeList"-->
-                <!--:value="item.value"-->
-                <!--:key="item.value">-->
-                  <!--{{ item.label }}-->
-                <!--</Option>-->
-              <!--</Select>-->
-            <!--</FormItem>-->
-          <!--</Col>-->
           <Col
             :xs="24"
             :sm="24"

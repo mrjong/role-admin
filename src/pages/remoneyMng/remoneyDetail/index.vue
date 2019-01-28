@@ -36,7 +36,6 @@
                 placement="bottom-start"
                 placeholder="请选择实际还款时间区间"
                 @on-change="changeActDate"
-                @on-ok="changeActDate"
               ></DatePicker>
             </FormItem>
           </Col>
@@ -59,7 +58,6 @@
                 placement="bottom-start"
                 placeholder="请选择应还款时间区间"
                 @on-change="changeDueDate"
-                @on-ok="changeDueDate"
               ></DatePicker>
             </FormItem>
           </Col>
@@ -149,18 +147,15 @@
             span="6"
           >
             <FormItem
+              span="6"
               label="电催中心:"
             >
-              <Select
+              <Input
                 size="small"
+                clearable
                 v-model="formValidate.opCompanyName"
-              >
-                <Option
-                  v-for="item in opCompanyNameList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
-              </Select>
+                placeholder="请输入"
+              ></Input>
             </FormItem>
           </Col>
           <Col
@@ -224,6 +219,17 @@
       <!-- 表格 -->
 
       <div v-if="!showPanel2">
+        <div class="panel-desc">
+          <Row :gutter="5">
+
+            <div class="panel-desc-title fl mr10">
+              案件数(笔)：<span>{{summary.repayOrdDetailCount||0}}</span>
+            </div>
+            <div class="panel-desc-title fl mr10">
+              逾期金额(元)：<span>{{summary.sumRepayAmt||0.00}}</span>
+            </div>
+          </Row>
+        </div>
         <Table
           border
           :data="tableData"
