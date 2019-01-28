@@ -2,7 +2,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import 'video.js/dist/video-js.css'
 import { videoPlayer } from 'vue-video-player'
-import { case_collect_collect_list, case_collect_tape_download } from '@/service/getData';
+import { case_collect_collect_list, case_collect_tape_download,getLeafTypeList } from '@/service/getData';
 import tablePage from '@/mixin/tablePage';
 
 export default {
@@ -63,7 +63,9 @@ export default {
 				]
 			},
 			formItem: {},
-			tableData: [],
+            tableData: [],
+            getLeafTypeList_data:[],
+            getLeafTypeList2_data:[],
 			tableColumns: [
 				{
 					title: '序号',
@@ -82,7 +84,6 @@ export default {
 							h(
 								'a',
 								{
-									class: 'edit-btn',
 									props: {},
 									style: {
 										display: soundUuid ? 'inline-block' : 'none'
@@ -208,7 +209,9 @@ export default {
         }
       },
 	created() {
-		this.getList();
+        this.getList();
+        this.getLeafTypeList()
+        this.getLeafTypeList2()
 	},
 	methods: {
          // listen event
@@ -250,6 +253,27 @@ export default {
 			this.$Message.info('Clicked cancel');
 			console.log(this.$Modal);
 			this.$Modal.remove();
+        },
+        
+        async getLeafTypeList() {
+			const res = await getLeafTypeList({
+                leafType:'04'
+            });
+			if (res.code === 1) {
+				this.getLeafTypeList_data = res.data
+			} else {
+				this.$Message.error(res.message);
+			}
+        },
+        async getLeafTypeList2() {
+			const res = await getLeafTypeList({
+                leafType:'02'
+            });
+			if (res.code === 1) {
+				this.getLeafTypeList2_data = res.data
+			} else {
+				this.$Message.error(res.message);
+			}
 		},
 		async getList() {
 			const res = await case_collect_collect_list({

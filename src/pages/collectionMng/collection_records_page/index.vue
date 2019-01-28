@@ -181,12 +181,18 @@
             label="经办人:"
             prop="opUserName"
           >
-            <Input
+            <Select
               size="small"
-              clearable
+              filterable
               v-model="formItem.opUserName"
-              placeholder="请输入经办人"
-            />
+              placeholder="请选择经办人"
+            >
+              <Option
+                v-for="item in getLeafTypeList_data"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.name }}</Option>
+            </Select>
           </FormItem>
           </Col>
           <Col
@@ -203,15 +209,15 @@
           >
             <Select
               size="small"
-              clearable
-              placeholder="请选择电催中心"
+              filterable
               v-model="formItem.opCompayName"
+              placeholder="请选择电催中心"
             >
               <Option
-                v-for="item in productLineList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in getLeafTypeList2_data"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
           </Col>

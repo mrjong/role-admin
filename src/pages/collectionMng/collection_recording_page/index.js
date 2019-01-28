@@ -160,7 +160,6 @@ export default {
 							h(
 								'a',
 								{
-									class: 'edit-btn',
 									props: {},
 									style: {
 										display: soundUuid ? 'inline-block' : 'none'

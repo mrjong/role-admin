@@ -876,3 +876,13 @@ fetch({
   data: obj,
   options,
 });
+/*
+* 经办人 04 催收中心 02
+* */
+export const getLeafTypeList = (obj, options) =>
+fetch({
+  url: '/getLeafTypeList',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options,
+});
