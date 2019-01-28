@@ -2,36 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ea12dd2-4ac8-4c30-bf35-835ba6cad9c5" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/caseDesc/zhongcai.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/caseDesc/zhongcai.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/caseMng/case_rule_page/components/case_update_record/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/webpack.dev.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/webpack.dev.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/styles/components/panel.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/styles/components/panel.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/breadcrumb-nav.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/breadcrumb-nav.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/caseDesc/huakou.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/caseDesc/huakou.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/caseDesc/huakou.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/caseDesc/huakou.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/theme-switch/theme/y.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/theme-switch/theme/y.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/workflow/gongzuoliu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/workflow/gongzuoliu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/workflow/gongzuoliu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/workflow/gongzuoliu.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/filters/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/filters/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mixin/tablePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mixin/tablePage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/caseMng/case_desc_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/caseMng/case_desc_page/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/caseMng/case_desc_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/caseMng/case_desc_page/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/collectionMng/collection_recording_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/collectionMng/collection_recording_page/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/collectionMng/collection_recording_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/collectionMng/collection_recording_page/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/collectionMng/collection_records_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/collectionMng/collection_records_page/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/collectionMng/collection_records_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/collectionMng/collection_records_page/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/common/main/index.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/common/main/index.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dailyMonitoring/recovery/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dailyMonitoring/recovery/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyUser/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyUser/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/workflow/definition/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/workflow/definition/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/workflow/definition/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/workflow/definition/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/workflow/task/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/workflow/task/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/workflow/task/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/workflow/task/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/router.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mixin/formValidateFun.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mixin/formValidateFun.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/caseMng/case_add_distribute_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/caseMng/case_add_distribute_page/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/caseMng/case_rule_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/caseMng/case_rule_page/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/caseMng/case_rule_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/caseMng/case_rule_page/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/system/data_dictionary_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/data_dictionary_page/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/system/data_dictionary_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/data_dictionary_page/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/system/relationship_maintain_page/components/revise_role_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/relationship_maintain_page/components/revise_role_page/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/system/relationship_maintain_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/relationship_maintain_page/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/system/user_manager_page/components/add_organization_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/user_manager_page/components/add_organization_page/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/system/user_manager_page/components/add_staff_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/user_manager_page/components/add_staff_page/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/system/user_manager_page/components/organization_form_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/user_manager_page/components/organization_form_page/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/system/user_manager_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/user_manager_page/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/system/user_manager_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/user_manager_page/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/getData.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/getData.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -45,7 +30,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.44208494">
+    <splitter split-orientation="horizontal" split-proportion="0.37451738">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="sysDictionary.js" pinned="false" current-in-tab="false">
@@ -77,8 +62,8 @@
           <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="120">
-                  <caret line="265" column="23" selection-start-line="265" selection-start-column="23" selection-end-line="265" selection-end-column="23" />
+                <state relative-caret-position="230">
+                  <caret line="328" column="10" selection-start-line="328" selection-start-column="10" selection-end-line="328" selection-end-column="10" />
                   <folding>
                     <element signature="e#0#89#0" expanded="true" />
                     <element signature="e#252#7297#0" />
@@ -106,8 +91,8 @@
           <file leaf-file-name="webpack.dev.config.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/build/webpack.dev.config.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="273">
-                  <caret line="67" column="16" selection-start-line="67" selection-start-column="16" selection-end-line="67" selection-end-column="16" />
+                <state relative-caret-position="242">
+                  <caret line="74" column="61" selection-start-line="74" selection-start-column="61" selection-end-line="74" selection-end-column="61" />
                 </state>
               </provider>
             </entry>
@@ -127,8 +112,8 @@
           <file leaf-file-name="getData.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/service/getData.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="380">
-                  <caret line="880" column="29" selection-start-line="880" selection-start-column="29" selection-end-line="880" selection-end-column="29" />
+                <state relative-caret-position="1460">
+                  <caret line="952" column="29" selection-start-line="952" selection-start-column="29" selection-end-line="952" selection-end-column="29" />
                   <folding>
                     <element signature="e#0#33#0" expanded="true" />
                   </folding>
@@ -176,7 +161,7 @@
             <entry file="file://$PROJECT_DIR$/src/mixin/formValidateFun.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="600">
-                  <caret line="40" column="6" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
+                  <caret line="41" column="6" selection-start-line="41" selection-start-column="6" selection-end-line="41" selection-end-column="6" />
                 </state>
               </provider>
             </entry>
@@ -251,12 +236,12 @@
         <option value="$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue" />
         <option value="$PROJECT_DIR$/src/pages/system/role_manage_page/index.js" />
         <option value="$PROJECT_DIR$/src/service/getData.js" />
-        <option value="$PROJECT_DIR$/build/webpack.dev.config.js" />
         <option value="$PROJECT_DIR$/src/pages/dailyMonitoring/recovery/index.vue" />
         <option value="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.vue" />
         <option value="$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.js" />
         <option value="$PROJECT_DIR$/src/pages/remoneyMng/remoneyUser/index.js" />
         <option value="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js" />
+        <option value="$PROJECT_DIR$/build/webpack.dev.config.js" />
       </list>
     </option>
   </component>
@@ -276,9 +261,9 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="49" />
-    <option name="y" value="35" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="30" />
+    <option name="y" value="23" />
     <option name="width" value="1391" />
     <option name="height" value="877" />
   </component>
@@ -395,16 +380,15 @@
       <workItem from="1548381101778" duration="14564000" />
       <workItem from="1548470854846" duration="16310000" />
       <workItem from="1548641306387" duration="12312000" />
-      <workItem from="1548664357946" duration="1131000" />
+      <workItem from="1548664357946" duration="1488000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="215202000" />
+    <option name="totallyTimeSpent" value="215559000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="49" y="23" width="1391" height="877" extended-state="6" />
-    <editor active="true" />
+    <frame x="30" y="23" width="1391" height="877" extended-state="0" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7763158" visible="true" weight="0.24379562" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -414,7 +398,7 @@
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Structure" order="1" sideWeight="0.2236842" side_tool="true" weight="0.17829457" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49927008" visible="true" weight="0.2025641" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49927008" visible="true" weight="0.26410258" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -849,7 +833,7 @@
     <entry file="file://$PROJECT_DIR$/src/mixin/formValidateFun.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
-          <caret line="40" column="6" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
+          <caret line="41" column="6" selection-start-line="41" selection-start-column="6" selection-end-line="41" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -1006,8 +990,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/service/getData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="880" column="29" selection-start-line="880" selection-start-column="29" selection-end-line="880" selection-end-column="29" />
+        <state relative-caret-position="1460">
+          <caret line="952" column="29" selection-start-line="952" selection-start-column="29" selection-end-line="952" selection-end-column="29" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
@@ -1016,8 +1000,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="265" column="23" selection-start-line="265" selection-start-column="23" selection-end-line="265" selection-end-column="23" />
+        <state relative-caret-position="230">
+          <caret line="328" column="10" selection-start-line="328" selection-start-column="10" selection-end-line="328" selection-end-column="10" />
           <folding>
             <element signature="e#0#89#0" expanded="true" />
             <element signature="e#252#7297#0" />
@@ -1027,8 +1011,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build/webpack.dev.config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="67" column="16" selection-start-line="67" selection-start-column="16" selection-end-line="67" selection-end-column="16" />
+        <state relative-caret-position="242">
+          <caret line="74" column="61" selection-start-line="74" selection-start-column="61" selection-end-line="74" selection-end-column="61" />
         </state>
       </provider>
     </entry>
