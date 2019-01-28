@@ -31,13 +31,9 @@ const mixin = {
     },
     // 切换每页条数时的回调
     changeSize(pageSize) {
+        console.log(pageSize)
       this.pageSize = pageSize;
       this.pageNo = 1;
-      console.log({
-        ...this.formItem,
-        pageNum: pageNo,
-        pageSize: this.pageSize
-      });
       this.getList();
     }
   }

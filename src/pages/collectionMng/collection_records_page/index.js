@@ -12,8 +12,23 @@ export default {
         videoPlayer,
       },
 	data() {
-		console.log(this.GLOBAL);
+        console.log(this.GLOBAL);
+        const _this = this
 		return {
+            playerOptions: {
+				// videojs options
+				muted: false,
+				language: 'en',
+				playbackRates: [ 0.7, 1.0, 1.5, 2.0 ],
+				sources: [
+					{
+						type: 'video/mp4',
+						src: 'https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm'
+					}
+				],
+				poster: '/static/images/author.jpg'
+			},
+            modal1:false,
 			getDirList: [ 'PROD_TYPE' ],
 			getDirObj: {},
 			showPanel: false,
@@ -61,9 +76,26 @@ export default {
 					width: 120,
 					searchOperator: '=',
 					key: 'buffet_code',
-					render: (h, params) => {
+                    render: (h, params) => {
 						const soundUuid = params.row.soundUuid;
-						return h('span', soundUuid ? '播放' : '');
+						return h('div', [
+							h(
+								'a',
+								{
+									class: 'edit-btn',
+									props: {},
+									style: {
+										display: soundUuid ? 'inline-block' : 'none'
+                                    },
+                                    on: {
+										click: () => {
+											_this.modal1 = true;
+										}
+									}
+								},
+								'播放'
+							)
+						]);
 					}
 				},
 				{
@@ -210,6 +242,14 @@ export default {
 				}
 			);
 			util.dowloadfile('催收记录', res);
+        },
+        ok() {
+			this.$Message.info('Clicked ok');
+		},
+		cancel() {
+			this.$Message.info('Clicked cancel');
+			console.log(this.$Modal);
+			this.$Modal.remove();
 		},
 		async getList() {
 			const res = await case_collect_collect_list();

@@ -294,7 +294,6 @@
         title="录音播放"
         @on-ok="ok"
         @on-cancel="cancel"
-        :transfer='false'
       >
         <video-player
           class="video-player-box"

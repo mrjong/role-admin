@@ -9,7 +9,7 @@
       <Form
         ref="formItem2"
         :model="formItem2"
-        :label-width="100"
+        :label-width="80"
         class="panel_list"
         :rules="ruleValidate2"
       >
@@ -17,9 +17,9 @@
           <Col
             :xs="24"
             :sm="24"
-            :md="12"
-            :lg="12"
-            span="12"
+            :md="24"
+            :lg="24"
+            span="24"
           >
           <FormItem
             span="6"
@@ -38,9 +38,9 @@
           <Col
             :xs="24"
             :sm="24"
-            :md="12"
-            :lg="12"
-            span="12"
+            :md="24"
+            :lg="24"
+            span="24"
           >
           <FormItem
             span="6"
@@ -58,9 +58,9 @@
           <Col
             :xs="24"
             :sm="24"
-            :md="12"
-            :lg="12"
-            span="12"
+            :md="24"
+            :lg="24"
+            span="24"
           >
           <FormItem
             label="关系:"
@@ -112,7 +112,7 @@
           {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}（{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
           <Button
             v-if="readType!=='read'"
-            @click="handOpen('zhongcai','申请仲裁')"
+            @click.stop="handOpen('zhongcai')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
@@ -143,7 +143,7 @@
             v-if="readType!=='read'"
             class="fr vue-back-btn header-btn"
             type="primary"
-              @click.stop="nextCase(case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.downCaseNo)"
+            @click.stop="nextCase(case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.downCaseNo)"
             :disabled="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.downCaseNo"
             size="small"
           >下一个</Button>
@@ -156,7 +156,10 @@
             size="small"
           >上一个</Button>
         </p>
-        <div class="panel-desc" v-if="!showPanel">
+        <div
+          class="panel-desc"
+          v-if="!showPanel"
+        >
           <Row :gutter="10">
             <Col span="12">
             <Col
@@ -667,7 +670,7 @@
                     placement="left"
                   >
                     <Icon
-                     @click="handCall({
+                      @click="handCall({
                         userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
                         userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
                            mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
@@ -990,21 +993,28 @@
       >
     </Modal>
     <Modal
-      v-if="modalTitle==='申请减免'"
       class="jianmian"
       width="90%"
-      v-model="visible1"
+      v-model="modal.jianmian"
     >
       <jianmian></jianmian>
     </Modal>
+    <zhongcai
+      :getDirObj="getDirObj"
+      v-on:passBack="passBack('zhongcai')"
+      v-model="modal.zhongcai"
+      v-if="modal.zhongcai"
+    >
+    </zhongcai>
     <huakou
-      v-on:passBack="passBack"
-      v-model="modal"
-      v-if="modal"
+      v-on:passBack="passBack('huakou')"
+      v-model="modal.huakou"
+      v-if="modal.huakou"
       :prdTyp="prdTyp"
       :caseNo="caseNo"
       :userId="userId"
-    ></huakou>
+    >
+    </huakou>
 
   </div>
 </template>

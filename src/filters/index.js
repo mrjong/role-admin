@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 // <!-- value 格式为13位unix时间戳 -->
 // <!-- 10位unix时间戳可通过value*1000转换为13位格式 -->
 exports.formatDate = (date, fmt = 'YYYY-MM-DD HH:mm:ss') => {
-	console.log(date);
 	return dayjs(date).format(fmt);
 };
 exports.tableDate = (date) => {
@@ -32,7 +31,6 @@ exports.money = (val) => {
 	return (sign ? '' : '-') + valCopy + '.' + cents;
 };
 exports.isSubmit = (val) => {
-	console.log(val, '---------------');
 	switch (val) {
 		case 0:
 			return '是';

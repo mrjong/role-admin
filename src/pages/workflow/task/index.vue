@@ -105,6 +105,7 @@
           :data="tableData"
           :columns="tableColumns"
           stripe
+          border
         ></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">

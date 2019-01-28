@@ -1,5 +1,6 @@
 import jianmian from '@/components/caseDesc/jianmian.vue';
 import huakou from '@/components/caseDesc/huakou.vue';
+import zhongcai from '@/components/caseDesc/zhongcai.vue';
 import qs from 'qs';
 import dayjs from 'dayjs';
 import sysDictionary from '@/mixin/sysDictionary';
@@ -27,7 +28,8 @@ export default {
 	name: 'case_desc',
 	components: {
 		jianmian,
-		huakou
+        huakou,
+        zhongcai
 	},
 	mixins: [ sysDictionary ],
 	data() {
@@ -36,7 +38,11 @@ export default {
 			parentData: {},
 			prdTyp: '',
 			userNm: '',
-			modal: false,
+			modal: {
+                huakou:false,
+                jianmian:false,
+                zhongcai:false
+            },
 			formItem2: {},
 			tabName: '',
 			callUserTypeLevel: '',
@@ -54,7 +60,7 @@ export default {
 					}
 				]
 			},
-			getDirList: [ 'CNT_REL_TYP' ],
+			getDirList: [ 'CNT_REL_TYP','GENDER' ],
 			getDirObj: {},
 			userNmHidCopy: '',
 			mblNo: '',
@@ -1528,13 +1534,12 @@ export default {
 				this.$Message.info('权限不足');
 			}
 		},
-		passBack(name) {
-			this.modal = false;
-			// this.getList();
+		passBack(type) {
+			this.modal[type] = false;
 		},
 		handOpen(type) {
-			this.modal = true;
-			// this.parentData[type] = true;
+            console.log(this.modal)
+			this.modal[type] = true;
 		},
 		handleView(name) {
 			this.imgName = name;
