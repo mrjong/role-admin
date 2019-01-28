@@ -2,35 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ea12dd2-4ac8-4c30-bf35-835ba6cad9c5" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/caseDesc/huakou.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/caseDesc/huakou.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/webpack.dev.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/webpack.dev.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/libs/fetch.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/libs/fetch.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/libs/validate.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/libs/validate.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mixin/formValidateFun.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mixin/formValidateFun.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mixin/tablePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mixin/tablePage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/caseMng/case_desc_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/caseMng/case_desc_page/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/caseMng/case_desc_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/caseMng/case_desc_page/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/collectionMng/collection_records_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/collectionMng/collection_records_page/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/collectionMng/collection_records_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/collectionMng/collection_records_page/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/collectionMng/my_case_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/collectionMng/my_case_page/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/collectionMng/my_case_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/collectionMng/my_case_page/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dailyMonitoring/callDetail/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dailyMonitoring/callDetail/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dailyMonitoring/overduePayment/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dailyMonitoring/overduePayment/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/businessMng/transferMng/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/businessMng/transferMng/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/businessMng/transferMng/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/businessMng/transferMng/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dailyMonitoring/seatTable/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dailyMonitoring/seatTable/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/login/login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/login.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyUser/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyUser/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyUser/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyUser/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/system/role_manage_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/role_manage_page/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/system/system_user_page/components/user_info_form.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/system_user_page/components/user_info_form.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/system/system_user_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/system_user_page/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/system/system_user_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/system_user_page/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/service/getData.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/getData.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -44,53 +23,47 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.59554416">
+    <splitter split-orientation="horizontal" split-proportion="0.44596913">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="sysDictionary.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="sysDictionary.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/mixin/sysDictionary.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="840">
-                  <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="webpack.dev.config.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/build/webpack.dev.config.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="296">
-                  <caret line="68" column="49" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="49" />
+                <state relative-caret-position="300">
+                  <caret line="40" column="30" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
                 </state>
               </provider>
             </entry>
           </file>
           <file leaf-file-name="index.vue" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/pages/dailyMonitoring/overduePayment/index.vue">
+            <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="243">
-                  <caret line="65" column="20" lean-forward="true" selection-start-line="65" selection-start-column="20" selection-end-line="65" selection-end-column="20" />
+                <state relative-caret-position="45">
+                  <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
                   <folding>
-                    <element signature="n#style#0;n#DatePicker#0;n#FormItem#0;n#Col#1;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="n#Col#2;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
-                    <element signature="n#style#0;n#!!top" />
+                    <element signature="n#Card#0;n#div#0;n#template#0;n#!!top" />
+                    <element signature="n#Card#1;n#div#0;n#template#0;n#!!top" />
+                    <element signature="n#Modal#0;n#div#0;n#template#0;n#!!top" />
+                    <element signature="n#Modal#1;n#div#0;n#template#0;n#!!top" />
+                    <element signature="n#Modal#2;n#div#0;n#template#0;n#!!top" />
+                    <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="index.vue" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/pages/dailyMonitoring/seatTable/index.vue">
+          <file leaf-file-name="index.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/pages/businessMng/transferMng/index.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="156">
-                  <caret line="394" column="21" lean-forward="true" selection-start-line="394" selection-start-column="21" selection-end-line="394" selection-end-column="21" />
+                <state relative-caret-position="345">
+                  <caret line="112" column="35" selection-start-line="112" selection-start-column="35" selection-end-line="112" selection-end-column="35" />
                   <folding>
-                    <element signature="n#style#0;n#DatePicker#0;n#FormItem#0;n#Col#0;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                    <element signature="e#4007#4098#0" expanded="true" />
-                    <element signature="e#5154#5809#0" />
-                    <element signature="e#5844#9979#0" />
-                    <element signature="e#10909#11460#0" />
-                    <element signature="n#style#0;n#!!top" />
+                    <element signature="n#Col#0;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
+                    <element signature="n#Col#1;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
+                    <element signature="n#FormItem#0;n#Col#1;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
+                    <element signature="n#Col#2;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
+                    <element signature="n#Col#3;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
+                    <element signature="n#Col#5;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
                   </folding>
                 </state>
               </provider>
@@ -99,7 +72,7 @@
           <file leaf-file-name="index.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="259">
+                <state relative-caret-position="15">
                   <caret line="160" selection-start-line="160" selection-end-line="160" />
                   <folding>
                     <element signature="n#Col#0;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
@@ -115,8 +88,8 @@
           <file leaf-file-name="index.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="347">
-                  <caret line="157" column="23" lean-forward="true" selection-start-line="157" selection-start-column="23" selection-end-line="157" selection-end-column="23" />
+                <state relative-caret-position="2070">
+                  <caret line="157" column="23" selection-start-line="157" selection-start-column="23" selection-end-line="157" selection-end-column="23" />
                   <folding>
                     <element signature="n#style#0;n#DatePicker#0;n#FormItem#0;n#Col#0;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                     <element signature="n#style#0;n#DatePicker#0;n#FormItem#0;n#Col#1;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -131,11 +104,49 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="getData.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="180">
+                  <caret line="12" column="46" selection-start-line="12" selection-start-column="46" selection-end-line="12" selection-end-column="46" />
+                  <folding>
+                    <element signature="e#0#89#0" expanded="true" />
+                    <element signature="e#2102#7275#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="383">
+                  <caret line="413" column="30" selection-start-line="413" selection-start-column="30" selection-end-line="413" selection-end-column="30" />
+                  <folding>
+                    <element signature="e#300#5780#0" />
+                    <element signature="e#832#1074#0" />
+                    <element signature="e#1102#1544#0" />
+                    <element signature="e#1569#2011#0" />
+                    <element signature="e#2143#5627#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="webpack.dev.config.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/build/webpack.dev.config.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="403">
+                  <caret line="67" column="16" selection-start-line="67" selection-start-column="16" selection-end-line="67" selection-end-column="16" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="getData.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/service/getData.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="251">
-                  <caret line="213" column="33" selection-start-line="213" selection-start-column="13" selection-end-line="213" selection-end-column="33" />
+                <state relative-caret-position="1285">
+                  <caret line="830" column="4" selection-start-line="830" selection-start-column="4" selection-end-line="830" selection-end-column="4" />
                   <folding>
                     <element signature="e#0#33#0" expanded="true" />
                   </folding>
@@ -146,10 +157,22 @@
           <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneyUser/index.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="3555">
-                  <caret line="237" column="34" selection-start-line="237" selection-start-column="34" selection-end-line="237" selection-end-column="34" />
+                <state relative-caret-position="142">
+                  <caret line="186" column="34" selection-start-line="184" selection-start-column="12" selection-end-line="186" selection-end-column="34" />
                   <folding>
                     <element signature="e#0#65#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="index.vue" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/pages/dailyMonitoring/seatTable/index.vue">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1292">
+                  <caret line="404" column="32" selection-start-line="404" selection-start-column="32" selection-end-line="404" selection-end-column="32" />
+                  <folding>
+                    <element signature="n#Card#1;n#div#0;n#template#0;n#!!top" />
                   </folding>
                 </state>
               </provider>
@@ -158,8 +181,8 @@
           <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="244">
-                  <caret line="232" column="31" lean-forward="true" selection-start-line="232" selection-start-column="31" selection-end-line="232" selection-end-column="31" />
+                <state relative-caret-position="3465">
+                  <caret line="232" column="31" selection-start-line="232" selection-start-column="31" selection-end-line="232" selection-end-column="31" />
                   <folding>
                     <element signature="e#0#65#0" expanded="true" />
                   </folding>
@@ -170,8 +193,8 @@
           <file leaf-file-name="formValidateFun.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/mixin/formValidateFun.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="455">
-                  <caret line="40" column="6" lean-forward="true" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
+                <state relative-caret-position="600">
+                  <caret line="40" column="6" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
                 </state>
               </provider>
             </entry>
@@ -182,12 +205,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>startRepayDateRange</find>
-      <find>overdueDaysLt</find>
-      <find>ruleValidate</find>
-      <find>modalChange</find>
-      <find>testClick</find>
-      <find>tota</find>
       <find>changeRole</find>
       <find>Modal</find>
       <find>system_user_update</find>
@@ -212,6 +229,12 @@
       <find>groupList</find>
       <find>groupSeatList</find>
       <find>getSeatTableList</find>
+      <find>startRepayDateRange</find>
+      <find>productTypeList</find>
+      <find>orderStsList</find>
+      <find>checkStsList</find>
+      <find>applyDate</find>
+      <find>createtime</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -227,7 +250,6 @@
         <option value="$PROJECT_DIR$/src/router/index.js" />
         <option value="$PROJECT_DIR$/src/pages/login/login.vue" />
         <option value="$PROJECT_DIR$/src/pages/caseMng/case_search_page/index.vue" />
-        <option value="$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue" />
         <option value="$PROJECT_DIR$/src/pages/remoneyMng/router.js" />
         <option value="$PROJECT_DIR$/src/pages/dailyMonitoring/router.js" />
         <option value="$PROJECT_DIR$/src/router/router.js" />
@@ -235,23 +257,24 @@
         <option value="$PROJECT_DIR$/src/router/routers.js" />
         <option value="$PROJECT_DIR$/src/store/modules/demo.json" />
         <option value="$PROJECT_DIR$/src/pages/collectionMng/my_case_page/index.js" />
-        <option value="$PROJECT_DIR$/src/pages/businessMng/transferMng/index.vue" />
-        <option value="$PROJECT_DIR$/src/pages/system/role_manage_page/index.js" />
         <option value="$PROJECT_DIR$/src/mixin/sysDictionary.js" />
-        <option value="$PROJECT_DIR$/src/pages/businessMng/transferMng/index.js" />
         <option value="$PROJECT_DIR$/src/pages/dailyMonitoring/recovery/index.vue" />
-        <option value="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js" />
         <option value="$PROJECT_DIR$/src/pages/dailyMonitoring/callDetail/index.vue" />
         <option value="$PROJECT_DIR$/src/mixin/formValidateFun.js" />
-        <option value="$PROJECT_DIR$/build/webpack.dev.config.js" />
         <option value="$PROJECT_DIR$/src/pages/remoneyMng/remoneyUser/index.js" />
         <option value="$PROJECT_DIR$/src/pages/remoneyMng/remoneyUser/index.vue" />
         <option value="$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.vue" />
         <option value="$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.js" />
         <option value="$PROJECT_DIR$/src/pages/dailyMonitoring/overduePayment/index.vue" />
-        <option value="$PROJECT_DIR$/src/service/getData.js" />
         <option value="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.vue" />
+        <option value="$PROJECT_DIR$/src/service/getData.js" />
+        <option value="$PROJECT_DIR$/src/pages/businessMng/transferMng/index.vue" />
+        <option value="$PROJECT_DIR$/src/pages/businessMng/transferMng/index.js" />
         <option value="$PROJECT_DIR$/src/pages/dailyMonitoring/seatTable/index.vue" />
+        <option value="$PROJECT_DIR$/build/webpack.dev.config.js" />
+        <option value="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js" />
+        <option value="$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue" />
+        <option value="$PROJECT_DIR$/src/pages/system/role_manage_page/index.js" />
       </list>
     </option>
   </component>
@@ -272,9 +295,9 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="526" />
+    <option name="x" value="45" />
     <option name="y" value="23" />
-    <option name="width" value="1393" />
+    <option name="width" value="1391" />
     <option name="height" value="877" />
   </component>
   <component name="ProjectLevelVcsManager">
@@ -285,6 +308,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -313,13 +337,6 @@
               <item name="fcs-front" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="dailyMonitoring" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="fcs-front" type="b2602c69:ProjectViewProjectNode" />
-              <item name="fcs-front" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
               <item name="remoneyMng" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -329,6 +346,21 @@
               <item name="pages" type="462c0819:PsiDirectoryNode" />
               <item name="remoneyMng" type="462c0819:PsiDirectoryNode" />
               <item name="remoneyDetail" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fcs-front" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fcs-front" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="system" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fcs-front" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fcs-front" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="system" type="462c0819:PsiDirectoryNode" />
+              <item name="role_manage_page" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="fcs-front" type="b2602c69:ProjectViewProjectNode" />
@@ -346,7 +378,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -395,26 +426,27 @@
       <workItem from="1548207895521" duration="26487000" />
       <workItem from="1548294619888" duration="25853000" />
       <workItem from="1548381101778" duration="14564000" />
-      <workItem from="1548470854846" duration="15962000" />
+      <workItem from="1548470854846" duration="16310000" />
+      <workItem from="1548641306387" duration="9625000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="201411000" />
+    <option name="totallyTimeSpent" value="211384000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="526" y="23" width="1393" height="877" extended-state="0" />
+    <frame x="45" y="23" width="1391" height="877" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7763158" visible="true" weight="0.14941691" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7763158" visible="true" weight="0.1408759" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.10128205" />
-      <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="npm" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" sideWeight="0.2236842" side_tool="true" weight="0.17829457" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.1948718" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.20641026" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -430,19 +462,19 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7763158" visible="true" weight="0.22986823" />
       <window_info id="Structure" order="1" sideWeight="0.2236842" side_tool="true" weight="0.17829457" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.10128205" />
+      <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.28333333" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.10128205" />
-      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
       <window_info id="Favorites" order="3" side_tool="true" />
     </layout-to-restore>
   </component>
@@ -503,7 +535,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/pages/dailyMonitoring/seatTable/index.vue</url>
-          <line>281</line>
+          <line>280</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -518,7 +550,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/pages/collectionMng/collection_recording_page/index.js</url>
-          <line>76</line>
+          <line>82</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -533,7 +565,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/mixin/sysDictionary.js</url>
-          <line>55</line>
+          <line>56</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -551,11 +583,24 @@
           <line>2</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/pages/dailyMonitoring/seatTable/index.vue</url>
+          <line>335</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="24" />
+      <option name="time" value="25" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/mixin/formValidateFun.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="40" column="6" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/common/main/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
@@ -778,35 +823,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/businessMng/transferMng/index.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="80" column="20" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="20" />
-          <folding>
-            <element signature="n#Col#1;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#FormItem#0;n#Col#1;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#Col#2;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#Col#5;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#Card#1;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#Button#0;n#router-link#0;n#p#0;n#Card#1;n#div#0;n#template#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5655">
-          <caret line="377" column="39" selection-start-line="377" selection-start-column="39" selection-end-line="377" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/libs/fetch.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="7" lean-forward="true" selection-start-column="7" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -827,23 +847,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/businessMng/transferMng/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1485">
-          <caret line="100" column="8" lean-forward="true" selection-start-line="100" selection-start-column="8" selection-end-line="100" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#48#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/router/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="7" lean-forward="true" selection-start-column="7" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -851,26 +858,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="28" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1409">
-          <caret line="268" column="56" lean-forward="true" selection-start-line="268" selection-start-column="56" selection-end-line="268" selection-end-column="56" />
-          <folding>
-            <element signature="n#Card#1;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#Modal#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#Modal#2;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/mixin/sysDictionary.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
         </state>
       </provider>
     </entry>
@@ -884,26 +871,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="320" column="36" selection-start-line="320" selection-start-column="36" selection-end-line="320" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#89#0" expanded="true" />
-            <element signature="e#481#691#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/dailyMonitoring/recovery/index.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="143" column="42" lean-forward="true" selection-start-line="143" selection-start-column="42" selection-end-line="143" selection-end-column="42" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/router/routerDemo.js">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/dailyMonitoring/callDetail/index.vue">
       <provider selected="true" editor-type-id="text-editor">
@@ -918,8 +891,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/mixin/formValidateFun.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="455">
-          <caret line="40" column="6" lean-forward="true" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
+        <state relative-caret-position="600">
+          <caret line="40" column="6" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -940,26 +913,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneyUser/index.js">
+    <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3555">
-          <caret line="237" column="34" selection-start-line="237" selection-start-column="34" selection-end-line="237" selection-end-column="34" />
+        <state relative-caret-position="3465">
+          <caret line="232" column="31" selection-start-line="232" selection-start-column="31" selection-end-line="232" selection-end-column="31" />
           <folding>
             <element signature="e#0#65#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/webpack.dev.config.js">
+    <entry file="file://$PROJECT_DIR$/src/pages/dailyMonitoring/overduePayment/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="68" column="49" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="49" />
+        <state relative-caret-position="975">
+          <caret line="65" column="20" selection-start-line="65" selection-start-column="20" selection-end-line="65" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2070">
+          <caret line="157" column="23" selection-start-line="157" selection-start-column="23" selection-end-line="157" selection-end-column="23" />
+          <folding>
+            <element signature="n#style#0;n#DatePicker#0;n#FormItem#0;n#Col#0;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#DatePicker#0;n#FormItem#0;n#Col#1;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#Col#5;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#Col#8;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/service/getData.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1285">
+          <caret line="830" column="4" selection-start-line="830" selection-start-column="4" selection-end-line="830" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#33#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
+        <state relative-caret-position="15">
           <caret line="160" selection-start-line="160" selection-end-line="160" />
           <folding>
             <element signature="n#Col#0;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
@@ -971,63 +967,103 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneySys/index.js">
+    <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneyUser/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="232" column="31" lean-forward="true" selection-start-line="232" selection-start-column="31" selection-end-line="232" selection-end-column="31" />
+        <state relative-caret-position="142">
+          <caret line="186" column="34" selection-start-line="184" selection-start-column="12" selection-end-line="186" selection-end-column="34" />
           <folding>
             <element signature="e#0#65#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/dailyMonitoring/overduePayment/index.vue">
+    <entry file="file://$PROJECT_DIR$/src/pages/businessMng/transferMng/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="65" column="20" lean-forward="true" selection-start-line="65" selection-start-column="20" selection-end-line="65" selection-end-column="20" />
+        <state relative-caret-position="35">
+          <caret line="112" column="10" lean-forward="true" selection-start-line="112" selection-start-column="10" selection-end-line="112" selection-end-column="10" />
           <folding>
-            <element signature="n#style#0;n#DatePicker#0;n#FormItem#0;n#Col#1;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#0#48#0" expanded="true" />
+            <element signature="e#5455#5459#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/businessMng/transferMng/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="112" column="35" selection-start-line="112" selection-start-column="35" selection-end-line="112" selection-end-column="35" />
+          <folding>
+            <element signature="n#Col#0;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#Col#1;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#FormItem#0;n#Col#1;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
             <element signature="n#Col#2;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#style#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/service/getData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="213" column="33" selection-start-line="213" selection-start-column="13" selection-end-line="213" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="157" column="23" lean-forward="true" selection-start-line="157" selection-start-column="23" selection-end-line="157" selection-end-column="23" />
-          <folding>
-            <element signature="n#style#0;n#DatePicker#0;n#FormItem#0;n#Col#0;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#DatePicker#0;n#FormItem#0;n#Col#1;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#Col#3;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
             <element signature="n#Col#5;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#Col#8;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/dailyMonitoring/seatTable/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="394" column="21" lean-forward="true" selection-start-line="394" selection-start-column="21" selection-end-line="394" selection-end-column="21" />
+        <state relative-caret-position="1292">
+          <caret line="404" column="32" selection-start-line="404" selection-start-column="32" selection-end-line="404" selection-end-column="32" />
           <folding>
-            <element signature="n#style#0;n#DatePicker#0;n#FormItem#0;n#Col#0;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#4007#4098#0" expanded="true" />
-            <element signature="e#5154#5809#0" />
-            <element signature="e#5844#9979#0" />
-            <element signature="e#10909#11460#0" />
-            <element signature="n#style#0;n#!!top" />
+            <element signature="n#Card#1;n#div#0;n#template#0;n#!!top" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/webpack.dev.config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="67" column="16" selection-start-line="67" selection-start-column="16" selection-end-line="67" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="46" selection-start-line="12" selection-start-column="46" selection-end-line="12" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#89#0" expanded="true" />
+            <element signature="e#2102#7275#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="383">
+          <caret line="413" column="30" selection-start-line="413" selection-start-column="30" selection-end-line="413" selection-end-column="30" />
+          <folding>
+            <element signature="e#300#5780#0" />
+            <element signature="e#832#1074#0" />
+            <element signature="e#1102#1544#0" />
+            <element signature="e#1569#2011#0" />
+            <element signature="e#2143#5627#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+          <folding>
+            <element signature="n#Card#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#Card#1;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#Modal#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#Modal#1;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#Modal#2;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mixin/sysDictionary.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="40" column="30" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
         </state>
       </provider>
     </entry>

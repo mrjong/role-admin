@@ -36,7 +36,6 @@
                 placement="bottom-start"
                 placeholder="请选择处理时间"
                 @on-change="changeActDate"
-                @on-ok="changeActDate"
               ></DatePicker>
             </FormItem>
           </Col>
@@ -58,7 +57,7 @@
                   v-for="item in groupSeatList"
                   :value="item.agent"
                   :key="item.agent"
-                >{{ item.name }}</Option>
+                >{{ item.agentName }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -185,27 +184,27 @@
         ruleValidate:{},
         pageNo: 1,
         pageSize: 10,
-        total: 10,
+        total: 0,
         tableData: [
-          {
-            agentName:'', //催收员
-            dialout: '', // 外呼数
-            effectiveLink:'', // 有效接通数
-            linkRate: '', // 接通率
-            onlineTimeStr:'', // 在线总时长
-            effectiveTalkTimeStr: '',//有效接通总时长
-            caseCount: '',// 在案量
-            caseAmountCount:'',//载案金
-            memberProcessRate:'',//用户处理率
-            dialoutMemberRate:'',//外呼覆盖率
-            linkMemberRate:'',//接通覆盖率
-            repayOrderCount:'',//还款笔数
-            linkRepayRate:'',//接通还款率
-            avgProcessCount:'',//每1H处理量
-            repayAmountCount:'',//还款本金
-            repayCountRate:'',//笔数还款率
-            repayAmountRate:''//金额还款率
-          },
+          // {
+          //   agentName:'', //催收员
+          //   dialout: '', // 外呼数
+          //   effectiveLink:'', // 有效接通数
+          //   linkRate: '', // 接通率
+          //   onlineTimeStr:'', // 在线总时长
+          //   effectiveTalkTimeStr: '',//有效接通总时长
+          //   caseCount: '',// 在案量
+          //   caseAmountCount:'',//载案金
+          //   memberProcessRate:'',//用户处理率
+          //   dialoutMemberRate:'',//外呼覆盖率
+          //   linkMemberRate:'',//接通覆盖率
+          //   repayOrderCount:'',//还款笔数
+          //   linkRepayRate:'',//接通还款率
+          //   avgProcessCount:'',//每1H处理量
+          //   repayAmountCount:'',//还款本金
+          //   repayCountRate:'',//笔数还款率
+          //   repayAmountRate:''//金额还款率
+          // },
         ],
         tableColumns: [
           {
@@ -403,6 +402,7 @@
         };
       },
       async getSeatTableList(id){
+        this.groupSeatList = [];
         console.log(id,'idiiidiididdiidi');
         let res = await  monitor_getAgentList({
           parentRoleId: id

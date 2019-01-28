@@ -10,7 +10,7 @@ export default {
     var widthMidVal = 100;
     let $this = this;
     return {
-      getDirList: ['PAY_OFF_STS' ],
+      getDirList: ['PAY_OFF_STS','ROLE_TYPE'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,

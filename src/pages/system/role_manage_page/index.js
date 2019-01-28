@@ -14,7 +14,7 @@ export default {
       roleId: '',
       menuIds: [],
       data5: [],
-      orderStsList: [
+      roleStsList: [
         {
           value: 'zero',
           label: '无效'
@@ -22,6 +22,16 @@ export default {
         {
           value: 'one',
           label: '有效'
+        }
+      ],
+      roleTypList:[
+        {
+        value:'01',
+        label:'催收'
+        },
+        {
+        value:'02',
+        label:'系统'
         }
       ],
       modalSee: false,
@@ -316,6 +326,7 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          this.pageNo = 1;
           this.getList();
         }
       });
@@ -352,10 +363,9 @@ export default {
     async getInfo(id) {
       let res = await system_role_info({id})
       this.formValidateInfo = res.data;
+      this.formValidateInfo.roleStatus = this.formValidateInfo.roleStatus == '1' ?'有效' : '无效';
       this.formValidateInfo.updatetime = this.$options.filters['formatDate'](this.formValidateInfo.updatetime, 'YYYY-MM-DD HH:mm:ss')
       this.formValidateInfo.createtime = this.$options.filters['formatDate'](this.formValidateInfo.createtime, 'YYYY-MM-DD HH:mm:ss')
-
-      console.log(res, '查看角色信息');
     },
     // 提交修改角色的接口
     async toChangeRole() {
@@ -401,7 +411,7 @@ export default {
     },
     // 重置
     clearForm(name) {
-      this.pageNo = 1;
+      //这里可以不用改变当前的分页组件之中的页码数值
       this.formValidate = {};
       this.$refs[name].resetFields();
     }

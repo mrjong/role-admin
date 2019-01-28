@@ -5,7 +5,7 @@ export default {
   mixins: [sysDictionary],
   data() {
     var alignCenter = 'center';
-    var widthVal = 180;
+    var widthVal = 200;
     var widthMidVal = 100;
     var _this = this;
     return {
@@ -13,60 +13,24 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      productTypeList: [
-        {
-          value: '01',
-          label: '还到'
-        },
-        {
-          value: '02',
-          label: '随行付钱包'
-        },
-        {
-          value: '03',
-          label: '商户贷'
-        }
-      ],
-      orderStsList: [
-        {
-          value: 'gbbg',
-          label: 'New York'
-        }
-      ],
-      checkStsList:[
-        {
-          value: '01',
-          label: '审核中'
-        },
-        {
-          value: '02',
-          label:'审核通过'
-        },
-        {
-          value: '03',
-          label:'审核拒绝'
-        }
-      ],
       modal12: false,
-      inputGrid: '',
       modal11: false,
       applyDate: '', //申请日期区间
-      formValidate: {},
+      formValidate: {
+        // prdTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
+        // caseNo:'',// 案件号
+        // billNo: '1', //账单号
+        // repayOrdSts: '7', // 订单状态 借口中取
+        // applayDateLt:'',// 申请日期开始
+        // applayDateBt:'',// 申请日期结束
+        // applayNo: '',//申请流水号
+      },
       ruleValidate: {},
       pageNo: 1,
       pageSize: 10,
       total: 0,
       checkStartAndEnd:[],
       tableData: [
-        {
-          prdTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
-          caseNo:'',// 案件号
-          billNo: '1', //账单号
-          repayOrdSts: '7', // 订单状态 借口中取
-          applayDateLt:'',// 申请日期开始
-          applayDateBt:'',// 申请日期结束
-          applayNo: '',//申请流水号
-        }
       ],
       tableColumns: [
         {
@@ -80,7 +44,7 @@ export default {
           key: 'applyNo',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: 220
         },
         {
           title: '案件编号',
@@ -88,7 +52,7 @@ export default {
           key: 'caseNo',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: widthVal
         },
         {
           title: '账单号',
@@ -104,7 +68,12 @@ export default {
           key: 'repayAmount',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: widthMidVal,
+          render(h,params){
+            let res = params.row.repayAmount;
+            res = res ? _this.$options.filters['money'](res) : res;
+            return h('span', res);
+          }
         },
         {
           title: '还款账户',
@@ -112,7 +81,7 @@ export default {
           key: 'crdNoHid',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: widthVal
         },
         {
           title: '代扣订单信息',
@@ -164,7 +133,7 @@ export default {
           key: 'idNoHid',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: widthVal
         },
         {
           title: '手机号',
@@ -287,6 +256,7 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          this.pageNo = 1;
           this.getList();
         }
       });
@@ -302,12 +272,15 @@ export default {
       console.log(res)
       // 请求成功之后需要做分页处理，然后将拿到的数据进行数据处理，总数目和展示条数
       if(res && res.code === 1){
-        this.tableData = res.data;
+        this.tableData = res.data.content;
+        this.total = res.data.totalElements;
+      } else{
+        this.$Message.error(res.message);
       }
     },
     // 重置
     clearForm(name) {
-      this.pageNo = 1;
+      this.applyDate = '';
       this.formValidate = {};
       this.$refs[name].resetFields();
     }

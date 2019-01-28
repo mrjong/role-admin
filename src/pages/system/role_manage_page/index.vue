@@ -22,7 +22,7 @@
             <FormItem label="状态:">
               <Select size="small" v-model="formValidate.Sts">
                 <Option
-                  v-for="item in orderStsList"
+                  v-for="item in roleStsList"
                   :value="item.value"
                   :key="item.value"
                 >{{ item.label }}</Option>
@@ -40,7 +40,7 @@
                 long
                 size="small"
               >检索</Button>
-            
+
               <Button
                 size="small"
                 type="ghost"
@@ -57,7 +57,7 @@
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon> 检索结果
           <Button
                 type="primary"
-                @click="addRole"
+                @click.stop="addRole"
                 class="fr header-btn"
                 style="width:80px"
                 size="small"
@@ -103,7 +103,7 @@
                   <Input
                     size="small"
                     v-model="formValidateInfo.name"
-                    placeholder="催收经理"
+                    placeholder=""
                     disabled
                   ></Input>
                 </FormItem>
@@ -118,7 +118,7 @@
                     disabled
                     size="small"
                     v-model="formValidateInfo.desciption"
-                    placeholder="催收经理"
+                    placeholder=""
                   ></Input>
                 </FormItem>
               </Col>
@@ -134,7 +134,7 @@
                     disabled
                     size="small"
                     v-model="formValidateInfo.createtime"
-                    placeholder="2018-09-08"
+                    placeholder=""
                   ></Input>
                 </FormItem>
               </Col>
@@ -148,7 +148,7 @@
                     disabled
                     size="small"
                     v-model="formValidateInfo.createUser"
-                    placeholder="超级管理员"
+                    placeholder=""
                   ></Input>
                 </FormItem>
               </Col>
@@ -164,7 +164,7 @@
                     disabled
                     size="small"
                     v-model="formValidateInfo.updatetime"
-                    placeholder="2018-09-08"
+                    placeholder=""
                   ></Input>
                 </FormItem>
               </Col>
@@ -178,7 +178,7 @@
                     disabled
                     size="small"
                     v-model="formValidateInfo.updateUser"
-                    placeholder="催收经理"
+                    placeholder=""
                   ></Input>
                 </FormItem>
               </Col>
@@ -196,7 +196,7 @@
                     disabled
                     size="small"
                     v-model="formValidateInfo.roleStatus"
-                    placeholder="有效"
+                    placeholder=""
                   ></Input>
                 </FormItem>
               </Col>
@@ -210,7 +210,7 @@
                     disabled
                     size="small"
                     v-model="formValidateInfo.roleType"
-                    placeholder="超级管理员"
+                    placeholder=""
                   ></Input>
                 </FormItem>
               </Col>
@@ -229,11 +229,6 @@
       <span>角色信息</span>
     </p>
     <Card class="vue-panel">
-      <p
-        slot="title"
-      >
-        基本信息
-      </p>
       <Form
         v-if="!showPanel"
         ref="formValidateChange"
@@ -253,7 +248,7 @@
                 size="small"
                 clearable
                 v-model="formValidateChange.name"
-                placeholder="催收经理"
+                placeholder=""
               ></Input>
             </FormItem>
           </Col>
@@ -284,7 +279,7 @@
                 v-model="formValidateChange.roleType"
               >
                 <Option
-                  v-for="item in orderStsList"
+                  v-for="item in roleTypList"
                   :value="item.value"
                   :key="item.value"
                 >{{ item.label }}</Option>
@@ -303,7 +298,7 @@
                 v-model="formValidateChange.roleStatus"
               >
                 <Option
-                  v-for="item in orderStsList"
+                  v-for="item in roleStsList"
                   :value="item.value"
                   :key="item.value"
                 >{{ item.label }}</Option>
@@ -327,11 +322,6 @@
         <span>角色信息</span>
       </p>
       <Card class="vue-panel">
-        <p
-          slot="title"
-        >
-          基本信息
-        </p>
         <Form
           v-if="!showPanel"
           ref="formValidateAdd"
@@ -351,7 +341,7 @@
                   size="small"
                   clearable
                   v-model="formValidateAdd.name"
-                  placeholder="催收经理"
+                  placeholder=""
                 ></Input>
               </FormItem>
             </Col>
