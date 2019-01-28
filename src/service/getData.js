@@ -929,7 +929,6 @@ export const wkProcessDef_detail = (obj, options) =>
     options,
   });
 
-
 /*
 *
 工作流
@@ -961,6 +960,20 @@ export const wkProcessTask_approval_list = (obj, options) =>
 export const getLeafTypeList = (obj, options) =>
   fetch({
     url: '/getLeafTypeList',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+  });
+
+
+/*
+*
+*
+数据字典查询
+* */
+export const sysDictionary_list = (obj, options) =>
+  fetch({
+    url: '/sysDictionary/list',
     method: 'POST',
     data: qs.stringify(obj),
     options,

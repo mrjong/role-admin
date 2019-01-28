@@ -43,7 +43,7 @@
           >
           <FormItem
             span="6"
-            label="编号:"
+            label="工作流编号:"
             prop="defCode"
           >
             <Input

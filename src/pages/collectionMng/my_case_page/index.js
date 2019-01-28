@@ -276,7 +276,7 @@ export default {
 		};
 	},
 	created() {
-		this.getList();
+		// this.getList();
 		// 沟通状态
 		this.collectcode_getListByCodeType();
 	},

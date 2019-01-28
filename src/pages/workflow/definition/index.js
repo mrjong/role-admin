@@ -40,7 +40,7 @@ export default {
 					title: '类型',
 					minWidth: 150,
 					align: 'center',
-					key: 'defType'
+					key: 'defTypeName'
 				},
 				{
 					title: '编号',
@@ -58,7 +58,7 @@ export default {
 					title: '状态',
 					align: 'center',
 					minWidth: 100,
-					key: 'status'
+					key: 'statusName'
 				},
 				{
 					title: '创建时间',
@@ -101,18 +101,17 @@ export default {
 										'on-ok': () => {
 											this.forbid(params.row.id);
 										}
-                                    },
-                                    style: {
-                                        display: params.row.status === '02' ? 'inline-block' : 'none'
-                                    }
+									},
+									style: {
+										display: params.row.status === '02' ? 'inline-block' : 'none'
+									}
 								},
 								[
 									h(
 										'a',
 										{
 											class: 'edit-btn',
-											props: {},
-											
+											props: {}
 										},
 										'禁用'
 									)
@@ -125,10 +124,10 @@ export default {
 										confirm: true,
 										title: '您确定要发布这条数据吗?',
 										transfer: true
-                                    },
-                                    style: {
-                                        display: params.row.status === '01' ? 'inline-block' : 'none'
-                                    },
+									},
+									style: {
+										display: params.row.status === '01' ? 'inline-block' : 'none'
+									},
 									on: {
 										'on-ok': () => {
 											this.release(params.row.id);
@@ -140,8 +139,7 @@ export default {
 										'a',
 										{
 											class: 'edit-btn',
-											props: {},
-											
+											props: {}
 										},
 										'发布'
 									)
@@ -160,21 +158,20 @@ export default {
 										'on-ok': () => {
 											this.copy(params.row.id);
 										}
-                                    },
-                                    style: {
-                                        display:
-                                            params.row.status === '02' || params.row.status === '03'
-                                                ? 'inline-block'
-                                                : 'none'
-                                    }
+									},
+									style: {
+										display:
+											params.row.status === '02' || params.row.status === '03'
+												? 'inline-block'
+												: 'none'
+									}
 								},
 								[
 									h(
 										'a',
 										{
 											class: 'edit-btn',
-											props: {},
-											
+											props: {}
 										},
 										'复制'
 									)
@@ -204,7 +201,7 @@ export default {
 									props: {},
 									on: {
 										click: () => {
-											_this.wkProcessDef_detail(params.row.id,'read');
+											_this.wkProcessDef_detail(params.row.id, 'read');
 										}
 									}
 								},
@@ -218,7 +215,7 @@ export default {
 	},
 
 	created() {
-		this.getList();
+		// this.getList();
 	},
 	methods: {
 		async wkProcessDef_detail(id, type) {
@@ -230,11 +227,15 @@ export default {
 			}
 		},
 		passBack(name) {
-            this.visible1 =false
+			this.visible1 = false;
 			this.getList();
 		},
-		handleSubmit() {
-			this.$refs.mychild.handleSubmit();
+		handleSubmit(name) {
+			this.$refs[name].validate((valid) => {
+				if (valid) {
+					this.getList();
+				}
+			});
 		},
 		async forbid(id) {
 			const res = await wkProcessDef_forbid({ id });
@@ -274,7 +275,7 @@ export default {
 		},
 
 		handView(type, workData) {
-            this.visible1 =true
+			this.visible1 = true;
 			this.parentData = {
 				modal: true,
 				type,

@@ -209,7 +209,7 @@ export default {
         }
       },
 	created() {
-        this.getList();
+        // this.getList();
         this.getLeafTypeList()
         this.getLeafTypeList2()
 	},

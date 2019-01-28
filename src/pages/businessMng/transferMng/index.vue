@@ -75,7 +75,6 @@
               ></Input>
             </FormItem>
           </Col>
-
           <Col
             :xs="24"
             :sm="24"
@@ -171,13 +170,6 @@
       >
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
         检索结果
-        <router-link to="/buffet/buffet_add">
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >导出数据</Button>
-        </router-link>
       </p>
       <!-- 表格 -->
 

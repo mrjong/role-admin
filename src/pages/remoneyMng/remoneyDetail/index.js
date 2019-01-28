@@ -1,4 +1,4 @@
-import { repay_repayDetail_list, repay_repayDetail_exportDown } from '@/service/getData';
+import { repay_repayDetail_list, repay_repayDetail_exportDown, getLeafTypeList } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 import util from '@/libs/util';
 export default {
@@ -10,7 +10,7 @@ export default {
     var widthMidVal = 100;
     let $this = this;
     return {
-      getDirList: ['PAY_OFF_STS' ],
+      getDirList: ['PAY_OFF_STS','ROLE_TYPE'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -263,7 +263,8 @@ export default {
     };
   },
   created() {
-    //this.getList();
+    this.getLeafList();
+    this.getList();
   },
   methods: {
     // 导出数据
@@ -272,6 +273,12 @@ export default {
         ...this.formValidate
       });
       util.dowloadfile('回款明细', res);
+    },
+    async getLeafList(){
+      let res = await getLeafTypeList({});
+      if(res && res.code === 1){
+        console.log(res,'电催中心的接口结果');
+      }
     },
     // 改变日期区间的格式之后进行处理
     changeActDate(val1, val2) {
@@ -319,7 +326,7 @@ export default {
         this.tableData = data.page.content;
         this.total = data.page.totalElements //接口中在该条件下取得的数据量
         this.summary = data.summary;
-        data.page.size // 数据的大小
+        //data.page.size  数据的大小
         //data.page.numberOfElements  当前页面实际返回的数量
       } else{
         this.$Message.error(res.message);

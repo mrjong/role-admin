@@ -196,9 +196,16 @@ export default {
 		};
 	},
 	created() {
-		this.getList();
+		// this.getList();
 	},
 	methods: {
+        handleSubmit(name) {
+			this.$refs[name].validate((valid) => {
+				if (valid) {
+					this.getList();
+				}
+			});
+		},
 		// 详情
 		async wkProcessTask_detail(id) {
 			const res = await wkProcessTask_detail({

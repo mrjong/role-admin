@@ -1,112 +1,117 @@
 <template>
-  <div>
-    <!-- 检索条件 -->
-    <Card class="vue-panel">
-      <p slot="title" @click="showPanel=!showPanel">
-        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
-        <router-link to="/demo/demo_desc">
-          <Button class="fr vue-back-btn header-btn" type="primary" size="small">详情</Button>
-        </router-link>
-      </p>
-      <Form
-        v-if="!showPanel"
-        ref="formItem"
-        :model="formItem"
-        :label-width="90"
-        :rules="ruleValidate"
-      >
-        <Row>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="产品线:" prop="buffet_id">
-              <Select size="small" v-model="formItem.productLine">
-                <Option
-                  v-for="item in productLineList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
-              </Select>
-              <!-- <Input size="small" clearable v-model="formItem.buffet_name" placeholder="请输入餐柜名称"></Input> -->
-            </FormItem>
+  <div class="panel_list">
+    <Row :gutter="8" class="detail-row">
+      <!-- 左侧树结构 -->
+      <Col span="8" class="tree-col">
+      <Card class="vue-panel tree-card">
+        <p slot="title">
+          <Icon :type="!showPanel?'chevron-down':'chevron-up'" @click="showPanel=!showPanel"></Icon>菜单
+          <Button
+            class="fr header-btn"
+            type="primary"
+            @click="getList()"
+            style="width:80px"
+            long
+            size="small"
+          >刷新</Button>
+        </p>
+        <Tree
+          :data="data5"
+          :render="renderContent"
+          v-if="!showPanel"
+          multiple
+          @on-select-change="selectNode"
+        ></Tree>
+      </Card>
+      </Col>
+      <Col span="16" class="detail-col">
+      <Card class="vue-panel detail-card" v-if="detailFlag">
+        <p slot="title">基本信息</p>
+        <!-- 菜单项详情 -->
+        <Form ref="menuFormItem" :model="menuFormItem" :label-width="90" :rules="ruleValidate1">
+          <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+          <FormItem span="4" label="字典项名称:" prop="text">
+            <Input size="small" clearable v-model="menuFormItem.itemName" placeholder="请输入字典项名称"></Input>
+          </FormItem>
           </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="案件编号:" prop="buffet_id">
-              <Input size="small" clearable v-model="formItem.case_id" placeholder="请输入案件编号"></Input>
-            </FormItem>
+          <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
+          <FormItem span="4" label="字典项代码:" prop="sort">
+            <Input size="small" v-model="menuFormItem.itemCode" placeholder="请输入字典项代码"></Input>
+          </FormItem>
           </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="账单号:" prop="buffet_id">
-              <Input size="small" clearable v-model="formItem.bill_number" placeholder="请输入账单号"></Input>
-            </FormItem>
+          <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
+          <FormItem span="4" label="字典项描述:">
+            <Input size="small" v-model="menuFormItem.itemDesc" placeholder="请输入字典项描述"></Input>
+          </FormItem>
           </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="客户姓名:" prop="device_id">
-              <Input size="small" clearable v-model="formItem.client_name" placeholder="请输入客户姓名"/>
-            </FormItem>
-          </Col>
-
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="身份证号:" prop="buffet_id">
-              <Input size="small" clearable v-model="formItem.id_card" placeholder="请输入身份证号"></Input>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="催收员:" prop="buffet_id">
-              <Select size="small" v-model="formItem.debt_collector" filterable clearable>
-                <Option
-                  v-for="item in productTimeList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
-              </Select>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="呼叫电话:" prop="address">
-              <Input size="small" clearable v-model="formItem.call_number" placeholder="请输入呼叫电话"></Input>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="催收时间:" prop="addtime">
-              <!-- <DatePicker
-                size="small"
-                style="width:100%"
-                v-model="formItem.addtime"
-                format="yyyy-MM-dd HH:mm:ss"
-                type="datetimerange"
-                placement="bottom-start"
-                placeholder="请选择催收时间"
-              ></DatePicker>-->
-              <DatePicker
-                size="small"
-                type="daterange"
-                :start-date="new Date(1991, 4, 14)"
-                placement="bottom-start"
-                placeholder="请选择催收时间"
-                style="width: 100%"
-                v-model="formItem.addtime"
-              ></DatePicker>
-            </FormItem>
+          <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
+          <FormItem span="4" label="排序号:">
+            <Input size="small" v-model="menuFormItem.sort" placeholder="请输入排序号"></Input>
+          </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
-            <FormItem>
-              <Button
-                type="primary"
-                @click="handleSubmit('formItem')"
-                style="width:80px"
-                long
-                size="small"
-              >检索</Button>
-              <Button
-                size="small"
-                type="ghost"
-                style="width:80px;margin-left: 8px"
-                @click="clearForm('formItem')"
-              >重置</Button>
-            </FormItem>
+          <FormItem>
+            <Button
+              type="primary"
+              @click="handleSubmit('menuFormItem')"
+              style="width:80px"
+              long
+              size="small"
+            >确定</Button>
+          </FormItem>
           </Col>
-        </Row>
-      </Form>
-    </Card>
+        </Form>
+      </Card>
+      </Col>
+      <!-- 新建模态框 -->
+      <div v-if="modal">
+        <Modal
+          v-model="modal"
+          @on-ok="ok"
+          @on-cancel="cancel"
+          width="500"
+          :transfer="false"
+          :mask-closable="false"
+        >
+          <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+            <span>新建节点</span>
+          </p>
+          <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
+          <label for="acount">节点名称：</label>
+          <Input size="small" v-model="newMenuItem.text" id="acount" style="width: auto"></Input>
+          </Col>
+          <div slot="footer">
+            <Button type="ghost" size="small" @click="cancel">取消</Button>
+            <Button type="primary" size="small" @click="ok">确定</Button>
+          </div>
+        </Modal>
+      </div>
+    </Row>
   </div>
 </template>
 <script src="./index.js"></script>
+<style lang="less">
+  .tdetail-row,
+  .detail-col {
+    position: relative;
+  }
+  .tree-col {
+    .ivu-tree {
+      height: 620px;
+      overflow-y: auto;
+    }
+  }
+  .ivu-modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .detail-col {
+    position: relative;
+    .ivu-form {
+      overflow: hidden;
+    }
+  }
+</style>
+
