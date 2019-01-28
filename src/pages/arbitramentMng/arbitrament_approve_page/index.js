@@ -165,106 +165,107 @@ export default {
 			tableData: [],
 			tableColumns: [
 				{
-					title: '餐柜ID',
-					width: 100,
-					searchOperator: '=',
-					sortable: true,
-					key: 'buffet_id'
+					title: '案件状态',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
 				},
 				{
-					title: '餐柜编码',
-					width: 120,
-					searchOperator: '=',
-					key: 'buffet_code'
+					title: '案件编号',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
 				},
 				{
-					title: '设备ID',
-					searchOperator: '=',
-					key: 'device_id'
+					title: '账单号',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
 				},
 				{
-					title: '餐柜添加时间',
-					key: 'addtime',
-					width: 3000,
-					sortable: true,
-					render: (h, params) => {
-						const row = params.row;
-						const addtime = row.addtime
-							? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-							: row.addtime;
-						return h('span', addtime);
-					}
+					title: '产品名称',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
+				},
+
+				{
+					title: '借款期限',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
 				},
 				{
-					title: '餐柜名称',
-					width: 120,
-					searchOperator: 'like',
-					key: 'buffet_name',
-					sortable: true
+					title: '客户姓名',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
 				},
 				{
-					title: '餐柜详细地址',
-					searchOperator: 'like',
-					key: 'address',
-					render: (h, params) => {
-						return h('div', [
-							h(
-								'Tooltip',
-								{
-									style: {
-										margin: '0 5px'
-									},
-									props: {
-										content: params.row.address,
-										placement: 'top'
-									}
-								},
-								[ h('div', {}, params.row.address) ]
-							)
-						]);
-					}
+					title: '身份证号',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
 				},
 				{
-					title: '操作',
-					width: 100,
-					key: 'edit',
-					render: (h, params) => {
-						return h('div', [
-							h(
-								'Poptip',
-								{
-									props: {
-										confirm: true,
-										title: '您确定要删除这条数据吗?',
-										transfer: true
-									},
-									on: {
-										'on-ok': () => {
-											this.deleteGoods(params.row.buffet_id);
-										}
-									}
-								},
-								[
-									h(
-										'a',
-										{
-											class: 'edit-btn',
-											props: {}
-										},
-										'删除'
-									),
-									h(
-										'a',
-										{
-											class: 'edit-btn',
-											props: {}
-										},
-										'删除'
-									)
-								]
-							)
-						]);
-					}
+					title: '手机号',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
+				},
+				{
+					title: '逾期天数',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
+				},
+				{
+					title: '逾期应还金额',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
+				},
+				{
+					title: '已还罚息',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
+				},
+				{
+					title: '已还滞纳金',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
+				},
+				{
+					title: '申请时间',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
+				},
+				{
+					title: '申请人',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
+				},
+				{
+					title: '电催中心',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
+				},
+				{
+					title: '审核人',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
+				},
+				{
+					title: '审核时间',
+					minWidth: 120,
+					align: 'center',
+					key: 'lastCurrentCollectResultName'
 				}
 			]
 		};
@@ -294,8 +295,7 @@ export default {
 			});
 		},
 		// 获取表格数据
-		async getList() {
-		},
+		async getList() {},
 		// 重置
 		clearForm(name) {
 			this.pageNo = 1;
