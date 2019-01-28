@@ -66,7 +66,7 @@ export default {
         {
           title: '员工姓名',
           searchOperator: 'like',
-          key: 'empno',
+          key: 'userName',
           sortable: true,
           align: 'center',
           width: 120,

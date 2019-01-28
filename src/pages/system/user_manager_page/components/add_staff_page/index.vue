@@ -1,8 +1,8 @@
 <template>
   <div class="panel_list">
     <Card class="vue-panel detail-card">
-      <p slot="title" v-if="type === '1'">机构负责人</p>
-      <p slot="title" v-if="type === '2' || type === '3'">员工信息</p>
+      <p slot="title" v-if="type === '01'">机构负责人</p>
+      <p slot="title" v-if="type === '02' || type === '03'">员工信息</p>
 
       <!-- 机构负责人 -->
       <Form
@@ -10,7 +10,7 @@
         :model="addLeaderFormItem"
         :label-width="90"
         :rules="ruleValidate1"
-        v-if="type === '1'">
+        v-if="type === '01'">
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="机构名称:">
             <Input
@@ -75,7 +75,7 @@
         :model="addStaffFormItem"
         :label-width="90"
         :rules="ruleValidate2"
-         v-if="type === '2' || type === '3'"
+         v-if="type === '02' || type === '03'"
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="账号:" prop="loginName">
@@ -126,7 +126,7 @@
             </Select>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="type === '3'">
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="type === '03'">
           <FormItem label="部门:" span="4" prop="departName">
             <Select
               size="small"

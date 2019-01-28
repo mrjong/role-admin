@@ -1,9 +1,13 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
+import caseUpdateRecord from './components/case_update_record';
 import { divide_rules_list, divide_rules_changeStatus, divide_rules_order, divide_rules_his } from '@/service/getData';
 export default {
   name: 'case_rule_page',
   mixins: [formValidateFun, sysDictionary],
+  components: {
+    caseUpdateRecord,
+  },
   data() {
     return {
       getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS'],
@@ -12,6 +16,7 @@ export default {
       showPanel2: false,
       recycleFlag: false,
       stopFlag: false,
+      updateRecordFlag: false,
       startFormItem: {
         date: '',
         effectMinDt: '',
@@ -20,7 +25,7 @@ export default {
         status: '',
       },
       formItem: {
-        prodTypeList: '01',
+        prodTypeList: '',
         status: ''
       },
       ruleValidate: {
@@ -222,14 +227,14 @@ export default {
         },
         {
           title: '创建时间',
-          width: 100,
+          width: 150,
           searchOperator: '=',
           key: 'createTime',
           align: 'center',
           render: (h, params) => {
             const row = params.row;
             const createTime = row.createTime
-              ? this.$options.filters['formatDate'](new Date(row.createTime * 1000), 'yyyy-MM-dd hh:mm:ss')
+              ? this.$options.filters['formatDate'](row.createTime , 'YYYY-MM-DD hh:mm:ss')
               : row.createTime;
             return h('span', createTime);
           }
@@ -246,7 +251,13 @@ export default {
                 'a',
                 {
                   class: 'edit-btn',
-                  props: {}
+                  props: {},
+                  on: {
+                    click: () => {
+                      window.sessionStorage.setItem('case_rule_item', JSON.stringify(params.row));
+                      this.$router.push({ name: 'case_update_distribute_page' });
+                    }
+                  }
                 },
                 '修改'
               ),
@@ -273,7 +284,12 @@ export default {
                 'a',
                 {
                   class: 'edit-btn',
-                  props: {}
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.updateRecordFlag = true;
+                    }
+                  }
                 },
                 '查看'
               ),
@@ -303,7 +319,7 @@ export default {
   methods: {
     // 添加案件或者修改案件入口
     handeldBtnClick(type) {
-      this.$router.push({ path: '/caseMng/case_add_distribute_page' });
+      this.$router.push({ name: 'case_add_distribute_page' });
     },
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
@@ -358,10 +374,16 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      const res = await divide_rules_list(this.formItem);
+      const res = await divide_rules_list({
+        ...this.formItem,
+        pageNum: this.pageNo,
+        pageSize: this.pageSize
+      });
       console.log(res);
       if (res.code === 1) {
         this.tableData = res.data.content;
+        this.total = res.data.totalElements;
+        this.pageNo = res.data.number;
       } else {
         this.$Message.error(res.message);
       }

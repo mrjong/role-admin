@@ -20,7 +20,7 @@
             <Button
               class="fr header-btn"
               type="primary"
-              @click="addOrganization({'type': '0'})"
+              @click="addOrganization({'leafType': '0'})"
               style="width:64px"
               long
               size="small"
@@ -30,6 +30,7 @@
             :data="data5"
             :render="renderContent"
             v-if="!showPanel"
+            :load-data="loadData"
             @on-select-change="selectNode"
           ></Tree>
         </Card>
@@ -39,19 +40,19 @@
         <invalidEmployees></invalidEmployees>
       </Col>
       <!-- 查看机构详情 -->
-      <Col span="16" class="detail-col" v-if="modalType === '1'">
+      <Col span="16" class="detail-col" v-if="modalType === '01'">
         <organizationForm></organizationForm>
       </Col>
       <!-- 查看公司详情 -->
-      <Col span="16" class="detail-col" v-if="modalType === '2'">
+      <Col span="16" class="detail-col" v-if="modalType === '02'">
         <componeyForm></componeyForm>
       </Col>
       <!-- 查看部门详情 -->
-      <Col span="16" class="detail-col" v-if="modalType === '3'">
+      <Col span="16" class="detail-col" v-if="modalType === '03'">
         <departmentForm></departmentForm>
       </Col>
       <!-- 查看员工详情 -->
-      <Col span="16" class="detail-col" v-if="modalType === '4'">
+      <Col span="16" class="detail-col" v-if="modalType === '04'">
         <staffForm></staffForm>
       </Col>
       <!-- 新增员工 -->
@@ -60,7 +61,7 @@
       </Col>
       <!-- 新增机构 -->
       <Col span="16" class="detail-col" v-if="organizationModal">
-        <addOrganization :type='organizationType'></addOrganization>
+        <addOrganization :parentData="parentData"></addOrganization>
       </Col>
     </Row>
   </div>
