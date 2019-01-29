@@ -22,14 +22,15 @@ import {
 	case_detail_case_identity_info, // 查询案件详情身份信息
 	mail_list_add, // 新增通讯录
 	case_remark_his_add, // 新增催记
-	collectcode_getCollectRelate // 获取沟通状态
+	collectcode_getCollectRelate, // 获取沟通状态
+	call_kt_hung_on // 外拨
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
 	components: {
 		jianmian,
-        huakou,
-        zhongcai
+		huakou,
+		zhongcai
 	},
 	mixins: [ sysDictionary ],
 	data() {
@@ -39,10 +40,10 @@ export default {
 			prdTyp: '',
 			userNm: '',
 			modal: {
-                huakou:false,
-                jianmian:false,
-                zhongcai:false
-            },
+				huakou: false,
+				jianmian: false,
+				zhongcai: false
+			},
 			formItem2: {},
 			tabName: '',
 			callUserTypeLevel: '',
@@ -60,7 +61,7 @@ export default {
 					}
 				]
 			},
-			getDirList: [ 'CNT_REL_TYP','GENDER' ],
+			getDirList: [ 'CNT_REL_TYP', 'GENDER' ],
 			getDirObj: {},
 			userNmHidCopy: '',
 			mblNo: '',
@@ -1223,6 +1224,22 @@ export default {
 		this.case_detail_case_identity_info(); // 查询案件详情身份信息
 	},
 	methods: {
+		async call_kt_hung_on(obj) {
+			const res = await call_kt_hung_on({
+				callno: obj.callno,
+				caseNo: this.caseNo,
+				callUserType: obj.callUserType,
+				toCallUser: obj.ToCallUser,
+				userId: obj.userId
+			});
+			if (res.code === 1) {
+				// 更新list
+				this.case_detail_mail_list_appended();
+				this.modal7 = false;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
 		rowClassName(row, index) {
 			if (row.overdueFlg === 'Y') {
 				return 'demo-table-info-row';
@@ -1519,7 +1536,14 @@ export default {
 			console.log('obj', obj);
 			this.handleCancle();
 			console.log(obj, type);
-			// type ['call] 拨打电话
+            // type ['call] 拨打电话
+            let callData=JSON.parse(sessionStorage.getItem('callData'));
+			this.call_kt_hung_on({
+				callno: callData.k,
+				callUserType: obj.callUserType,
+				toCallUser: obj.ToCallUser,
+				userId: obj.userId
+			});
 			if (type === 'call') {
 			}
 			if (this.readType !== 'read') {
@@ -1538,7 +1562,7 @@ export default {
 			this.modal[type] = false;
 		},
 		handOpen(type) {
-            console.log(this.modal)
+			console.log(this.modal);
 			this.modal[type] = true;
 		},
 		handleView(name) {
@@ -1556,8 +1580,8 @@ export default {
 			let params = location.hash.split('?');
 			const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
 			queryData.caseNotest = caseNo;
-            location.href = params[0] + '?' + qs.stringify(queryData);
-            location.reload()
+			location.href = params[0] + '?' + qs.stringify(queryData);
+			location.reload();
 		},
 		// 切换每页条数时的回调
 		changeSize(pageSize, name) {

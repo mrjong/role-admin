@@ -1020,4 +1020,15 @@ export const call_kt_get_seat = (obj, options) =>
 		method: 'POST',
 		data: qs.stringify(obj),
 		options
-	});
+    });
+    
+    /*
+    客天外拨
+* */
+export const call_kt_hung_on = (obj, options) =>
+fetch({
+    url: '/call/kt/hung_on',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options
+});
