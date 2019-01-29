@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5ea12dd2-4ac8-4c30-bf35-835ba6cad9c5" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/system/role_manage_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/role_manage_page/index.js" afterDir="false" />
-    </list>
+    <list default="true" id="5ea12dd2-4ac8-4c30-bf35-835ba6cad9c5" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -16,28 +13,28 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.3465251">
+    <splitter split-orientation="horizontal" split-proportion="0.34518647">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="sysDictionary.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="sysDictionary.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/mixin/sysDictionary.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state>
-                  <caret line="57" selection-start-line="57" selection-end-line="57" />
+                <state relative-caret-position="844">
+                  <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="index.vue" pinned="false" current-in-tab="true">
+          <file leaf-file-name="index.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="405">
-                  <caret line="450" lean-forward="true" selection-start-line="450" selection-end-line="450" />
+                <state relative-caret-position="390">
+                  <caret line="436" column="19" selection-start-line="436" selection-start-column="19" selection-end-line="436" selection-end-column="19" />
                   <folding>
                     <element signature="n#Card#0;n#div#0;n#template#0;n#!!top" />
                     <element signature="n#Card#1;n#div#0;n#template#0;n#!!top" />
                     <element signature="n#Modal#0;n#div#0;n#template#0;n#!!top" />
-                    <element signature="n#Modal#1;n#div#0;n#template#0;n#!!top" />
+                    <element signature="n#Card#0;n#Modal#1;n#div#0;n#template#0;n#!!top" />
                     <element signature="n#Modal#2;n#div#0;n#template#0;n#!!top" />
                     <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
                   </folding>
@@ -53,7 +50,7 @@
             <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="814">
-                  <caret line="285" column="52" lean-forward="true" selection-start-line="285" selection-start-column="52" selection-end-line="285" selection-end-column="52" />
+                  <caret line="285" column="52" selection-start-line="285" selection-start-column="52" selection-end-line="285" selection-end-column="52" />
                   <folding>
                     <element signature="e#300#5780#0" />
                     <element signature="e#4080#5766#0" />
@@ -65,8 +62,8 @@
           <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/router/index.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-75">
-                  <caret line="40" column="5" lean-forward="true" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
+                <state relative-caret-position="109">
+                  <caret line="40" column="5" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
                 </state>
               </provider>
             </entry>
@@ -75,7 +72,7 @@
             <entry file="file://$PROJECT_DIR$/build/webpack.dev.config.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="438">
-                  <caret line="79" column="16" selection-start-line="79" selection-start-column="16" selection-end-line="79" selection-end-column="16" />
+                  <caret line="80" column="19" selection-start-line="80" selection-start-column="19" selection-end-line="80" selection-end-column="19" />
                 </state>
               </provider>
             </entry>
@@ -95,8 +92,8 @@
           <file leaf-file-name="getData.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/service/getData.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1460">
-                  <caret line="952" column="29" selection-start-line="952" selection-start-column="29" selection-end-line="952" selection-end-column="29" />
+                <state relative-caret-position="1550">
+                  <caret line="958" column="29" selection-start-line="958" selection-start-column="29" selection-end-line="958" selection-end-column="29" />
                   <folding>
                     <element signature="e#0#33#0" expanded="true" />
                   </folding>
@@ -244,9 +241,8 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="10" />
-    <option name="y" value="23" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="28" />
     <option name="width" value="1508" />
     <option name="height" value="877" />
   </component>
@@ -349,25 +345,26 @@
       <workItem from="1548381101778" duration="14564000" />
       <workItem from="1548470854846" duration="16310000" />
       <workItem from="1548641306387" duration="12312000" />
-      <workItem from="1548664357946" duration="8194000" />
+      <workItem from="1548664357946" duration="9769000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="222265000" />
+    <option name="totallyTimeSpent" value="223840000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="10" y="23" width="1508" height="877" extended-state="0" />
+    <frame x="0" y="28" width="1508" height="877" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7763158" visible="true" weight="0.22461331" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7763158" visible="true" weight="0.22461331" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007299" side_tool="true" weight="0.3602564" />
-      <window_info anchor="bottom" id="Version Control" order="9" visible="true" weight="0.10128205" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.33076924" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Structure" order="1" sideWeight="0.2236842" side_tool="true" weight="0.17829457" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49927008" weight="0.21666667" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49927008" visible="true" weight="0.18205129" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -461,17 +458,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/pages/caseMng/case_search_page/index.js</url>
-          <line>19</line>
+          <line>256</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/pages/caseMng/case_search_page/index.js</url>
-          <line>14</line>
+          <line>251</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/pages/collectionMng/collection_recording_page/index.js</url>
-          <line>83</line>
+          <line>85</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -872,13 +869,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/mixin/sysDictionary.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="57" selection-start-line="57" selection-end-line="57" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/remoneyMng/remoneyDetail/index.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1590">
@@ -930,8 +920,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/service/getData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1460">
-          <caret line="952" column="29" selection-start-line="952" selection-start-column="29" selection-end-line="952" selection-end-column="29" />
+        <state relative-caret-position="1550">
+          <caret line="958" column="29" selection-start-line="958" selection-start-column="29" selection-end-line="958" selection-end-column="29" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
@@ -941,7 +931,7 @@
     <entry file="file://$PROJECT_DIR$/build/webpack.dev.config.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="438">
-          <caret line="79" column="16" selection-start-line="79" selection-start-column="16" selection-end-line="79" selection-end-column="16" />
+          <caret line="80" column="19" selection-start-line="80" selection-start-column="19" selection-end-line="80" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -958,7 +948,7 @@
     <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="814">
-          <caret line="285" column="52" lean-forward="true" selection-start-line="285" selection-start-column="52" selection-end-line="285" selection-end-column="52" />
+          <caret line="285" column="52" selection-start-line="285" selection-start-column="52" selection-end-line="285" selection-end-column="52" />
           <folding>
             <element signature="e#300#5780#0" />
             <element signature="e#4080#5766#0" />
@@ -966,25 +956,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/router/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="109">
+          <caret line="40" column="5" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="450" lean-forward="true" selection-start-line="450" selection-end-line="450" />
+        <state relative-caret-position="390">
+          <caret line="436" column="19" selection-start-line="436" selection-start-column="19" selection-end-line="436" selection-end-column="19" />
           <folding>
             <element signature="n#Card#0;n#div#0;n#template#0;n#!!top" />
             <element signature="n#Card#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#Modal#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#Modal#1;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#Card#0;n#Modal#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#Modal#2;n#div#0;n#template#0;n#!!top" />
             <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/router/index.js">
+    <entry file="file://$PROJECT_DIR$/src/mixin/sysDictionary.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-75">
-          <caret line="40" column="5" lean-forward="true" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
+        <state relative-caret-position="844">
+          <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
         </state>
       </provider>
     </entry>

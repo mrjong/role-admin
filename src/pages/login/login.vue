@@ -147,7 +147,6 @@ export default {
 
     },
     handleSubmit() {
-<<<<<<< HEAD
       // this.$Message.success('登录成功!');
       // Cookies.set("user", '22222222222')
       // Cookies.set("loginPwd", '22222222')
@@ -163,8 +162,6 @@ export default {
       //   name: "home"
       // })
       // return
-=======
->>>>>>> 5cd67655c05f1656fad9678f46af6a4997d0e91f
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
           const res = await login({
