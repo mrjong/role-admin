@@ -6,9 +6,7 @@ import store from '@/store';
 import storage from '@/libs/storage';
 axios.defaults.baseURL = '/admin';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-let timer;
-let timerList = [];
-let num = 0;
+let reqList = [];
 axios.interceptors.request.use(
 	(config, options) => {
 		const TOKEN = Cookie.get('SXF-TOKEN');
@@ -17,22 +15,13 @@ axios.interceptors.request.use(
 		} else {
 			config.headers['SXF-TOKEN'] = '';
 		}
-		num++;
 
-		if (!config.hideLoading) {
-			// 防止时间短，出现loading 导致闪烁
-			timer = setTimeout(() => {
-				console.log(timerList);
-				// 处理多个请求，只要一个loading
-				if (timerList.length > 1) {
-					return;
-				}
-				iView.Message.loading({
-					content: '数据加载中...',
-					duration: 10
-				});
-			}, 500);
-			timerList.push(timer);
+		reqList.push(config.baseURL + config.url);
+		if (reqList.length === 1) {
+			iView.Message.loading({
+				content: '数据加载中...',
+				duration: 10
+			});
 		}
 		return config;
 	},
@@ -43,34 +32,28 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
 	(response) => {
-		num--;
-		if (num <= 0) {
-			if (timer) {
-				for (let i = 0; i < timerList.length; i++) {
-					clearTimeout(timerList[i]);
-				}
-				timer = '';
-				timerList = [];
-				setTimeout(() => {
-					iView.Message.destroy();
-				}, 2);
-            }
-            //  else {
-			// 	iView.Message.loading({
-			// 		content: '数据加载中...',
-			// 		duration: 10
-			// 	});
-			// }
+		console.log(response);
+		reqList.forEach((element, index) => {
+			console.log(element, response.config.url);
+			if (element === response.config.url) {
+				reqList.splice(index, 1);
+			}
+		});
+		console.log(reqList);
+		if (reqList.length === 0) {
+			iView.Message.destroy();
 		}
 		return response.data;
 	},
 	(error) => {
-		num--;
-		for (let i = 0; i < timerList.length; i++) {
-			clearTimeout(timerList[i]);
-		}
-		timer = '';
-		timerList = [];
+		// reqList.forEach((element, index) => {
+		// 	console.log(element, error.response.config.url);
+		// 	if (element === response.config.url) {
+		// 		iView.Message.destroy();
+		// 		reqList.splice(index, 1);
+		// 	}
+		// });
+		reqList = [];
 		iView.Message.destroy();
 		switch (error && error.response.status) {
 			case 401:
@@ -94,7 +77,6 @@ axios.interceptors.response.use(
 			default:
 				break;
 		}
-
 		return Promise.resolve(error.response);
 	}
 );

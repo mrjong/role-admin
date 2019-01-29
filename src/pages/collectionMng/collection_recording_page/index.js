@@ -1,4 +1,4 @@
-import { case_collect_collect_list } from '@/service/getData';
+import { case_collect_collect_list,getLeafTypeList } from '@/service/getData';
 import 'video.js/dist/video-js.css';
 import { videoPlayer } from 'vue-video-player';
 import formValidateFun from '@/mixin/formValidateFun';
@@ -17,7 +17,9 @@ export default {
 			getDirList: [ 'PROD_TYPE' ],
 			getDirObj: {},
 			showPanel: false,
-			showPanel2: false,
+            showPanel2: false,
+            getLeafTypeList_data:[],
+            getLeafTypeList2_data:[],
 			modal1: false,
 			playerOptions: {
 				// videojs options
@@ -246,7 +248,9 @@ export default {
 		};
 	},
 	created() {
-		this.getList();
+        // this.getList();
+        this.getLeafTypeList()
+        this.getLeafTypeList2()
 	},
 	computed: {
 		player() {
@@ -273,6 +277,26 @@ export default {
 			console.log('the player is readied', player);
 			// you can use it to do something...
 			// player.[methods]
+        },
+        async getLeafTypeList() {
+			const res = await getLeafTypeList({
+                leafType:'04'
+            });
+			if (res.code === 1) {
+				this.getLeafTypeList_data = res.data
+			} else {
+				this.$Message.error(res.message);
+			}
+        },
+        async getLeafTypeList2() {
+			const res = await getLeafTypeList({
+                leafType:'02'
+            });
+			if (res.code === 1) {
+				this.getLeafTypeList2_data = res.data
+			} else {
+				this.$Message.error(res.message);
+			}
 		},
 		async getList() {
 			const res = await case_collect_collect_list({

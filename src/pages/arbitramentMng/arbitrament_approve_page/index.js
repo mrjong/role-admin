@@ -1,5 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
+import { arb_apply } from '@/service/getData';
 export default {
 	name: 'case_search_page',
 	mixins: [ formValidateFun, sysDictionary ],
@@ -165,112 +166,164 @@ export default {
 			tableData: [],
 			tableColumns: [
 				{
-					title: '餐柜ID',
-					width: 100,
-					searchOperator: '=',
-					sortable: true,
-					key: 'buffet_id'
+					title: '案件状态',
+					minWidth: 120,
+					align: 'center',
+					key: 'approvalState'
 				},
 				{
-					title: '餐柜编码',
-					width: 120,
-					searchOperator: '=',
-					key: 'buffet_code'
+					title: '案件编号',
+					minWidth: 120,
+					align: 'center',
+					key: 'caseNo'
 				},
 				{
-					title: '设备ID',
-					searchOperator: '=',
-					key: 'device_id'
+					title: '账单号',
+					minWidth: 120,
+					align: 'center',
+					key: 'billNo'
 				},
 				{
-					title: '餐柜添加时间',
-					key: 'addtime',
-					width: 3000,
-					sortable: true,
+					title: '产品名称',
+					minWidth: 120,
+					align: 'center',
+					key: 'productType'
+				},
+
+				{
+					title: '借款期限',
+					minWidth: 120,
+					align: 'center',
+					key: 'perdCnt'
+				},
+				{
+					title: '客户姓名',
+					minWidth: 120,
+					align: 'center',
+					key: 'userName'
+				},
+				{
+					title: '身份证号',
+					minWidth: 120,
+					align: 'center',
+					key: 'idCardNo'
+				},
+				{
+					title: '手机号',
+					minWidth: 120,
+					align: 'center',
+					key: 'mblNo'
+				},
+				{
+					title: '逾期天数',
+					minWidth: 120,
+					align: 'center',
+					key: 'overdueDays'
+				},
+				{
+					title: '逾期应还金额',
+					minWidth: 120,
+					align: 'center',
+					key: 'overdueAmt',
 					render: (h, params) => {
-						const row = params.row;
-						const addtime = row.addtime
-							? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-							: row.addtime;
-						return h('span', addtime);
+						let overdueAmt = params.row.overdueAmt;
+						overdueAmt = overdueAmt ? this.$options.filters['money'](overdueAmt) : overdueAmt;
+						return h('span', overdueAmt);
 					}
 				},
 				{
-					title: '餐柜名称',
-					width: 120,
-					searchOperator: 'like',
-					key: 'buffet_name',
-					sortable: true
-				},
-				{
-					title: '餐柜详细地址',
-					searchOperator: 'like',
-					key: 'address',
+					title: '已还罚息',
+					minWidth: 120,
+					align: 'center',
+					key: 'perdFineRep',
 					render: (h, params) => {
-						return h('div', [
-							h(
-								'Tooltip',
-								{
-									style: {
-										margin: '0 5px'
-									},
-									props: {
-										content: params.row.address,
-										placement: 'top'
-									}
-								},
-								[ h('div', {}, params.row.address) ]
-							)
-						]);
+						let perdFineRep = params.row.perdFineRep;
+						perdFineRep = perdFineRep ? this.$options.filters['money'](perdFineRep) : perdFineRep;
+						return h('span', perdFineRep);
 					}
 				},
 				{
-					title: '操作',
-					width: 100,
-					key: 'edit',
+					title: '已还滞纳金',
+					minWidth: 120,
+					align: 'center',
+					key: 'perdOvduRep',
 					render: (h, params) => {
-						return h('div', [
-							h(
-								'Poptip',
-								{
-									props: {
-										confirm: true,
-										title: '您确定要删除这条数据吗?',
-										transfer: true
-									},
-									on: {
-										'on-ok': () => {
-											this.deleteGoods(params.row.buffet_id);
-										}
-									}
+						let perdOvduRep = params.row.perdOvduRep;
+						perdOvduRep = perdOvduRep ? this.$options.filters['money'](perdOvduRep) : perdOvduRep;
+						return h('span', perdOvduRep);
+					}
+				},
+				{
+					title: '申请时间',
+					minWidth: 120,
+					align: 'center',
+					key: 'createTime',
+					render: (h, params) => {
+						let createTime = params.row.createTime;
+						createTime = createTime
+							? this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
+							: createTime;
+						return h('span', createTime);
+					}
+				},
+				{
+					title: '申请人',
+					minWidth: 120,
+					align: 'center',
+					key: 'createUser'
+				},
+				{
+					title: '电催中心',
+					minWidth: 120,
+					align: 'center',
+					key: 'opCompayName'
+				},
+				{
+					title: '审核人',
+					minWidth: 120,
+					align: 'center',
+					key: 'approvalUser'
+				},
+				{
+					title: '审核时间',
+					minWidth: 120,
+					align: 'center',
+					key: 'approvalTime',
+					render: (h, params) => {
+						let approvalTime = params.row.approvalTime;
+						approvalTime = approvalTime
+							? this.$options.filters['formatDate'](approvalTime, 'YYYY-MM-DD HH:mm:ss')
+							: approvalTime;
+						return h('span', approvalTime);
+					}
+				},
+				{
+					title: '审核备注',
+					minWidth: 120,
+					align: 'center',
+					key: 'approvalRemark',
+					render: (h, params) => {
+						let approvalRemark = params.row.approvalRemark;
+						return h(
+							'Tooltip',
+							{
+								style: {
+									margin: '0 5px'
 								},
-								[
-									h(
-										'a',
-										{
-											class: 'edit-btn',
-											props: {}
-										},
-										'删除'
-									),
-									h(
-										'a',
-										{
-											class: 'edit-btn',
-											props: {}
-										},
-										'删除'
-									)
-								]
-							)
-						]);
+								props: {
+									content: approvalRemark,
+									placement: 'top'
+								}
+							},
+							[ h('div', {}, approvalRemark) ]
+						);
 					}
 				}
 			]
 		};
 	},
 	created() {
-		this.getList();
+		// this.getList();
 	},
 	methods: {
 		// 页码改变的回调
@@ -295,6 +348,16 @@ export default {
 		},
 		// 获取表格数据
 		async getList() {
+			const res = await arb_apply({
+				pageNum: this.pageNo,
+				pageSize: this.pageSize,
+				...this.formItem
+			});
+			if (res.code === 1) {
+				this.tableData = res.data;
+			} else {
+				this.$Message.error(res.message);
+			}
 		},
 		// 重置
 		clearForm(name) {

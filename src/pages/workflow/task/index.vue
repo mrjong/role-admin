@@ -33,12 +33,12 @@
           <FormItem
             span="6"
             label="任务ID:"
-            prop="defCode"
+            prop="id"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.defCode"
+              v-model="formItem.id"
               placeholder="请输入任务ID"
             ></Input>
           </FormItem>
@@ -53,12 +53,12 @@
           <FormItem
             span="6"
             label="业务标识:"
-            prop="defCode"
+            prop="busiKey"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.defCode"
+              v-model="formItem.busiKey"
               placeholder="请输入业务标识"
             ></Input>
           </FormItem>

@@ -12,6 +12,33 @@ export default {
 	name: 'case_search_page',
 	mixins: [ formValidateFun, sysDictionary, tablePage ],
 	data() {
+		const validate_yqts_start = (rule, value, callback) => {
+			if (value && this.formItem.maxOverdueDays && Number(value) > Number(this.formItem.maxOverdueDays)) {
+				console.log(this.formItem.maxOverdueDays);
+				callback(new Error('逾期开始天数不能大于逾期结束天数'));
+			} else {
+				callback();
+			}
+		};
+		const validate_yqts_end = (rule, value, callback) => {
+			if (this.formItem.minOverdueDays) {
+				this.$refs.formItem.validateField('minOverdueDays');
+			}
+			callback();
+		};
+		const validate_yqyhje_start = (rule, value, callback) => {
+			if (value && this.formItem.maxOverdueAmt && Number(value) > Number(this.formItem.maxOverdueAmt)) {
+				callback(new Error('开始金额不能大于结束金额'));
+			} else {
+				callback();
+			}
+		};
+		const validate_yqyhje_end = (rule, value, callback) => {
+			if (this.formItem.minOverdueAmt) {
+				this.$refs.formItem.validateField('minOverdueAmt');
+			}
+			callback();
+		};
 		console.log(this.GLOBAL);
 		const _this = this;
 		return {
@@ -43,7 +70,7 @@ export default {
 						trigger: 'blur'
 					},
 					{
-						validator: this.validate_yqts_start,
+						validator: validate_yqts_start,
 						trigger: 'blur'
 					}
 				],
@@ -54,7 +81,7 @@ export default {
 						trigger: 'blur'
 					},
 					{
-						validator: this.validate_yqts_end,
+						validator: validate_yqts_end,
 						trigger: 'blur'
 					}
 				],
@@ -65,7 +92,7 @@ export default {
 						trigger: 'blur'
 					},
 					{
-						validator: this.validate_yqyhje_start,
+						validator: validate_yqyhje_start,
 						trigger: 'blur'
 					}
 				],
@@ -76,7 +103,7 @@ export default {
 						trigger: 'blur'
 					},
 					{
-						validator: this.validate_yqyhje_end,
+						validator: validate_yqyhje_end,
 						trigger: 'blur'
 					}
 				]
@@ -276,7 +303,7 @@ export default {
 		};
 	},
 	created() {
-		this.getList();
+		// this.getList();
 		// 沟通状态
 		this.collectcode_getListByCodeType();
 	},
