@@ -168,104 +168,140 @@ export default {
 					title: '案件状态',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'approvalState'
 				},
 				{
 					title: '案件编号',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'caseNo'
 				},
 				{
 					title: '账单号',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'billNo'
 				},
 				{
 					title: '产品名称',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'productType'
 				},
 
 				{
 					title: '借款期限',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'perdCnt'
 				},
 				{
 					title: '客户姓名',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'userName'
 				},
 				{
 					title: '身份证号',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'idCardNo'
 				},
 				{
 					title: '手机号',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'mblNo'
 				},
 				{
 					title: '逾期天数',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'overdueDays'
 				},
 				{
 					title: '逾期应还金额',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'overdueAmt'
 				},
 				{
 					title: '已还罚息',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'perdFineRep'
 				},
 				{
 					title: '已还滞纳金',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'perdOvduRep'
 				},
 				{
 					title: '申请时间',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'createTime',
+					render: (h, params) => {
+						let createTime = params.row.createTime;
+						createTime = createTime
+							? this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
+							: createTime;
+						return h('span', createTime);
+					}
 				},
 				{
 					title: '申请人',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'createUser'
 				},
 				{
 					title: '电催中心',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'opCompayName'
 				},
 				{
 					title: '审核人',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+					key: 'approvalUser'
 				},
 				{
 					title: '审核时间',
 					minWidth: 120,
 					align: 'center',
-					key: 'lastCurrentCollectResultName'
+                    key: 'approvalTime',
+                    render: (h, params) => {
+						let approvalTime = params.row.approvalTime;
+						approvalTime = approvalTime
+							? this.$options.filters['formatDate'](approvalTime, 'YYYY-MM-DD HH:mm:ss')
+							: approvalTime;
+						return h('span', approvalTime);
+					}
+				},
+				{
+					title: '审核备注',
+					minWidth: 120,
+					align: 'center',
+					key: 'approvalRemark',
+					render: (h, params) => {
+						let approvalRemark = params.row.approvalRemark;
+						return h(
+							'Tooltip',
+							{
+								style: {
+									margin: '0 5px'
+								},
+								props: {
+									content: approvalRemark,
+									placement: 'top'
+								}
+							},
+							[ h('div', {}, approvalRemark) ]
+						);
+					}
 				}
 			]
 		};

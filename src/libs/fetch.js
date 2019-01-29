@@ -18,12 +18,10 @@ axios.interceptors.request.use(
 
 		reqList.push(config.baseURL + config.url);
 		if (reqList.length === 1) {
-			setTimeout(() => {
-				iView.Message.loading({
-					content: '数据加载中...',
-					duration: 10
-				});
-			}, 600);
+			iView.Message.loading({
+				content: '数据加载中...',
+				duration: 10
+			});
 		}
 		return config;
 	},
@@ -41,23 +39,31 @@ axios.interceptors.response.use(
 				reqList.splice(index, 1);
 			}
 		});
+		console.log(reqList);
 		if (reqList.length === 0) {
 			iView.Message.destroy();
 		}
 		return response.data;
 	},
 	(error) => {
+		// reqList.forEach((element, index) => {
+		// 	console.log(element, error.response.config.url);
+		// 	if (element === response.config.url) {
+		// 		iView.Message.destroy();
+		// 		reqList.splice(index, 1);
+		// 	}
+		// });
 		reqList = [];
 		iView.Message.destroy();
 		switch (error && error.response.status) {
 			case 401:
 				iView.Message.error((error && error.response && error.response.data) || '服务器繁忙,稍后重试');
-				// util.clearAllCookie();
-				// store.commit('logout', this);
-				// store.commit('clearOpenedSubmenu');
-				// setTimeout(() => {
-				// 	location.replace('/');
-				// }, 3000);
+				util.clearAllCookie();
+				store.commit('logout', this);
+				store.commit('clearOpenedSubmenu');
+				setTimeout(() => {
+					location.replace('/');
+				}, 3000);
 				break;
 
 			case 400:
