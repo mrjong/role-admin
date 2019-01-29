@@ -335,7 +335,6 @@ export default {
     },
     // 重置
     clearForm(name) {
-      this.pageNo = 1;
       this.formValidate = {};
       this.startRepayDateRange = '';
       this.shouldRepayDate = '';
