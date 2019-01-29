@@ -28,7 +28,7 @@
                 label="身份证号:"
                 prop="defType"
               >
-                <span class="desc-label">360732199105251538</span>
+                <span class="desc-label">{{zhongcai_data.idCardNo}}</span>
               </FormItem>
               </Col>
               <Col
@@ -41,7 +41,7 @@
                 label="案件编号:"
                 prop="defType"
               >
-                <span class="desc-label">360732199105251538</span>
+                <span class="desc-label">{{zhongcai_data.caseNo}}</span>
               </FormItem>
               </Col>
 
@@ -55,7 +55,7 @@
                 label="身份证号:"
                 prop="defType"
               >
-                <span class="desc-label">360732199105251538</span>
+                <span class="desc-label">{{zhongcai_data.idCardNo}}</span>
               </FormItem>
               </Col>
 
@@ -69,7 +69,7 @@
                 label="客户姓名:"
                 prop="defType"
               >
-                <span class="desc-label">360732199105251538</span>
+                <span class="desc-label">{{zhongcai_data.idCardNo}}</span>
               </FormItem>
               </Col>
               <Col

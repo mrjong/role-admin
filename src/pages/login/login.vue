@@ -65,7 +65,7 @@
 <script>
 import Cookies from "js-cookie"
 import md5 from "js-md5"
-import { login } from "@/service/getData"
+import { login, call_kt_get_seat } from "@/service/getData"
 
 export default {
   data() {
@@ -85,22 +85,33 @@ export default {
   created() {
   },
   methods: {
-    call() {
 
-      // 初始化打电话
-      let url = 'https://zx.ketianyun.com'
-      let loginName = '01@suixingfu.com'
-      let password = '123456'
+    async call_kt_get_seat() {
+      const res = await call_kt_get_seat({
+        loginName: this.form.loginName
+      })
+      if (res.code === 1) {
+        this.call(res.data)
+        this.$router.push({
+          name: "home"
+        })
+      } else {
+        this.$Message.error(res.message)
+      }
+    },
+    call(obj) {
+      sessionStorage.setItem('callData', JSON.stringify(obj))
       var config = {
-        uname: loginName,
-        pwd: password,
+        uname: obj.loginName,
+        pwd: obj.password,
         debug: true,
         isAutoAnswer: true,
         stateListenerCallBack: stateCallback,
         forceAnswerWhenRing: false,
         autoReady: true,
-        url: url
+        url: obj.url
       };
+      CallHelper.init(config, initCallback);
       /**
 * 设置状态监听回调
 */
@@ -119,8 +130,8 @@ export default {
         }
       }
       /**
-* 初始化方法回调是否成功
-*/
+      * 初始化方法回调是否成功
+      */
       function initCallback(data) {
         console.info('---------------------');
         if (data.successChange) {
@@ -134,7 +145,6 @@ export default {
         }
       }
 
-      CallHelper.init(config, initCallback);
     },
     handleSubmit() {
 <<<<<<< HEAD
@@ -170,12 +180,11 @@ export default {
               "setAvator",
               "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
             )
-            this.call()
+
+            this.call_kt_get_seat()
             Cookies.set("access", 1)
             window.$router = this.$router
-            this.$router.push({
-              name: "home"
-            })
+
           } else {
             this.$Message.error(res.message);
           }
@@ -184,6 +193,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style>
