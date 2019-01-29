@@ -167,7 +167,7 @@ export default {
           key: 'userNmHid',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: widthMidVal,
         },
         {
           title: '身份证号',
