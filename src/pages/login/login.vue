@@ -10,8 +10,8 @@
     <div class="login-con">
       <Card :bordered="false">
         <p slot="title">
-          <!-- <Icon type="log-in"></Icon> -->
-          贷后管理系统
+          <Icon type="log-in"></Icon>
+          欢迎登录
         </p>
         <div class="form-con">
           <Form
@@ -83,11 +83,6 @@ export default {
     }
   },
   created() {
-    localStorage.clear()
-    sessionStorage.clear()
-    Cookies.remove('user');
-    Cookies.remove('password');
-    Cookies.remove('access');
   },
   methods: {
     call() {
@@ -142,6 +137,7 @@ export default {
       CallHelper.init(config, initCallback);
     },
     handleSubmit() {
+<<<<<<< HEAD
       // this.$Message.success('登录成功!');
       // Cookies.set("user", '22222222222')
       // Cookies.set("loginPwd", '22222222')
@@ -157,6 +153,8 @@ export default {
       //   name: "home"
       // })
       // return
+=======
+>>>>>>> 5cd67655c05f1656fad9678f46af6a4997d0e91f
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
           const res = await login({

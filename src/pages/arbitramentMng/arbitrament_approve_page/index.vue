@@ -25,7 +25,7 @@
         :rules="ruleValidate"
       >
         <Row>
-          
+
           <Col
             :xs="24"
             :sm="24"
@@ -52,6 +52,7 @@
             </Select>
           </FormItem>
           </Col>
+
           <Col
             :xs="24"
             :sm="24"
@@ -60,40 +61,14 @@
             span="6"
           >
           <FormItem
-            span="6"
-            label="性别:"
-            prop="userGender"
-          >
-            <Select
-              size="small"
-              clearable
-              placeholder="请选择性别"
-              v-model="formItem.userGender"
-            >
-             <Option
-                v-for="item in getDirObj.GENDER"
-                :value="item.itemCode"
-                :key="item.itemName"
-              >{{ item.itemName }}</Option>
-            </Select>
-          </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            label="客户姓名:"
+            label="案件编号:"
             prop="userNm"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.userNm"
-              placeholder="请输入客户姓名"
+              v-model="formItem.caseNo"
+              placeholder="请输入案件编号"
             />
           </FormItem>
           </Col>
@@ -105,14 +80,14 @@
             span="6"
           >
           <FormItem
-            label="身份证号:"
-            prop="idNo"
+            label="账单号:"
+            prop="billNo"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.idNo"
-              placeholder="请输入身份证号"
+              v-model="formItem.billNo"
+              placeholder="请输入账单号"
             />
           </FormItem>
           </Col>
@@ -124,17 +99,18 @@
             span="6"
           >
           <FormItem
-            label="手机号:"
-            prop="mblNo"
+            label="申请人:"
+            prop="applyUserName"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.mblNo"
-              placeholder="请输入手机号"
+              v-model="formItem.applyUserName"
+              placeholder="请输入申请人"
             />
           </FormItem>
           </Col>
+
           <Col
             :xs="24"
             :sm="24"
@@ -142,91 +118,19 @@
             :lg="6"
             span="6"
           >
-          <FormItem label="逾期天数:">
-            <Col
-              :xs="11"
-              :sm="11"
-              :md="11"
-              :lg="11"
-              span="11"
-            >
-            <FormItem prop="overdueDaysLt">
-              <Input
-                size="small"
-                clearable
-                v-model="formItem.overdueDaysLt"
-              ></Input>
-            </FormItem>
-            </Col>
-            <Col
-              :xs="2"
-              :sm="2"
-              :md="2"
-              :lg="2"
-              span="2"
-            >
-            <div class="text-center">-</div>
-            </Col>
-            <Col
-              :xs="11"
-              :sm="11"
-              :md="11"
-              :lg="11"
-              span="11"
-            >
-            <FormItem prop="overdueDaysBt">
-              <Input
-                size="small"
-                clearable
-                v-model="formItem.overdueDaysBt"
-              ></Input>
-            </FormItem>
-            </Col>
-          </FormItem>
-          </Col>
-              <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <!-- dueDateLt & dueDateBt -->
+          <!-- applyTimeLt & applyTimeGt -->
           <FormItem
-            label="应还款日期:"
+            label="申请日期:"
             prop="mblNo"
           >
             <DatePicker
               size="small"
               style="width:100%"
-              v-model="formItem.csDate"
+              v-model="formItem.applyTimeLt"
               format="yyyy-MM-dd"
               type="datetimerange"
               placement="bottom-start"
-              placeholder="请选择应还款日期"
-            ></DatePicker>
-          </FormItem>
-          </Col>
-              <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <!-- allotDateLt & allotDateBt -->
-          <FormItem
-            label="分配日期:"
-            prop="mblNo"
-          >
-            <DatePicker
-              size="small"
-              style="width:100%"
-              v-model="formItem.csDate"
-              format="yyyy-MM-dd"
-              type="datetimerange"
-              placement="bottom-start"
-              placeholder="请选择分配日期"
+              placeholder="请选择申请日期"
             ></DatePicker>
           </FormItem>
           </Col>
@@ -237,65 +141,20 @@
             :lg="6"
             span="6"
           >
+          <!-- approvalTimeLt && approvalTimeBt -->
           <FormItem
-            label="经办人:"
-            prop="opUserName"
+            label="审核日期:"
+            prop="mblNo"
           >
-            <Input
+            <DatePicker
               size="small"
-              clearable
-              v-model="formItem.opUserName"
-              placeholder="请输入经办人"
-            />
-          </FormItem>
-          </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem label="逾期金额:">
-            <Col
-              :xs="11"
-              :sm="11"
-              :md="11"
-              :lg="11"
-              span="11"
-            >
-            <FormItem prop="billOvduAmtLt">
-              <Input
-                size="small"
-                clearable
-                v-model="formItem.billOvduAmtLt"
-              ></Input>
-            </FormItem>
-            </Col>
-            <Col
-              :xs="2"
-              :sm="2"
-              :md="2"
-              :lg="2"
-              span="2"
-            >
-            <div class="text-center">-</div>
-            </Col>
-            <Col
-              :xs="11"
-              :sm="11"
-              :md="11"
-              :lg="11"
-              span="11"
-            >
-            <FormItem prop="billOvduAmtBt">
-              <Input
-                size="small"
-                clearable
-                v-model="formItem.billOvduAmtBt"
-              ></Input>
-            </FormItem>
-            </Col>
+              style="width:100%"
+              v-model="formItem.csDate"
+              format="yyyy-MM-dd"
+              type="datetimerange"
+              placement="bottom-start"
+              placeholder="请选择审核日期"
+            ></DatePicker>
           </FormItem>
           </Col>
           <Col
@@ -316,7 +175,7 @@
               placeholder="请选择审核状态"
               v-model="formItem.approvalState"
             >
-                 <Option
+              <Option
                 v-for="item in getDirObj.APPROVAL_STATE"
                 :value="item.itemCode"
                 :key="item.itemName"
