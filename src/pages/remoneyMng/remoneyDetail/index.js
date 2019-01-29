@@ -14,20 +14,7 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      opCompanyNameList: [
-        {
-          value: '01',
-          label: '还到z中心'
-        },
-        {
-          value: '02',
-          label: '随行付钱包中心'
-        },
-        {
-          value: '03',
-          label: '商户贷中心'
-        }
-      ],
+      opCompanyNameList: [],
       startRepayDateRange: '', //实际还款日期区间
       shouldRepayDate: '',
       summary:{},
@@ -39,7 +26,7 @@ export default {
         caseNo:'', // 案件编码
         billNo: '', //账单号
         opUserName: '', //经办人
-        opCompanyName: '', // 电催中心,
+        opCompayName: '', // 电催中心,
         userNm: '', //客户姓名
         payOffSts: '',// 还款状态
       },
@@ -275,9 +262,12 @@ export default {
       util.dowloadfile('回款明细', res);
     },
     async getLeafList(){
-      let res = await getLeafTypeList({});
+      let res = await getLeafTypeList({
+        leafType: '02',
+      });
       if(res && res.code === 1){
         console.log(res,'电催中心的接口结果');
+        this.opCompanyNameList = res.data;
       }
     },
     // 改变日期区间的格式之后进行处理
