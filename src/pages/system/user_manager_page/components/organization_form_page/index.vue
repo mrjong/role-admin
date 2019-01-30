@@ -29,7 +29,6 @@
           <FormItem span="4" label="机构名称:" prop="name">
             <Input
               size="small"
-              clearable
               v-model="organizationFormItem.name"
               placeholder="请输入机构名称"
               :disabled="!formDisabled"
@@ -37,21 +36,20 @@
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem label="机构负责人:" span="4" prop="person">
+          <FormItem label="机构负责人:" span="4" prop="userIds">
             <Select
               size="small"
-              v-model="organizationFormItem.person"
+              v-model="organizationFormItem.userIds"
               filterable
-              clearable
               multiple
               placeholder="请选择机构负责人"
               :disabled="!formDisabled"
             >
               <Option
-                v-for="item in phoneCallList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in bossList"
+                :value="item.uuid"
+                :key="item.uuid"
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -81,7 +79,7 @@
               type="textarea"
               size="small"
               :maxlength="100"
-              v-model="organizationFormItem.updateTime"
+              v-model="organizationFormItem.remark"
               :disabled="!formDisabled"
               placeholder="请输入100字以内"
             ></Input>
@@ -97,7 +95,7 @@
             >取消</Button>
             <Button
               type="primary"
-              @click="handleSubmit('formItem')"
+              @click="handleSubmit('organizationFormItem')"
               style="width:80px"
               long
               size="small"
@@ -110,18 +108,21 @@
 </template>
 
 <script>
+import { collect_section_update, collect_list_leader } from "@/service/getData";
 export default {
+  props: ["parentData"],
   data() {
     return {
       formDisabled: "",
       organizationFormItem: {
         name: "",
-        person: "",
+        userIds: "",
         createUser: "",
         createTime: "",
         updateUser: "",
         updateTime: "",
-        remark: ""
+        remark: "",
+        status: "1"
       },
       ruleValidate: {
         name: [
@@ -131,29 +132,30 @@ export default {
             trigger: "blur"
           }
         ],
-        person: [
+        userIds: [
           {
             required: true,
             message: "请选择机构负责人",
-            trigger: "change"
+            trigger: "change",
+            type: "array"
           }
         ]
       },
-      phoneCallList: [
-        {
-          value: "New York",
-          label: "New York"
-        },
-        {
-          value: "London",
-          label: "London"
-        },
-        {
-          value: "Sydney",
-          label: "Sydney"
-        }
-      ]
+      bossList: []
     };
+  },
+  created() {
+    console.log(this.parentData);
+    this.organizationFormItem = this.parentData.nodeData;
+    // this.organizationFormItem.userIds = [];
+    this.collect_list_leader();
+  },
+  watch: {
+    parentData() {
+      this.organizationFormItem = this.parentData.nodeData;
+      this.organizationFormItem.userIds = [];
+      console.log(this.parentData);
+    }
   },
   methods: {
     // 设置表单编辑状态
@@ -165,7 +167,44 @@ export default {
       this.formDisabled = false;
     },
     // 提交保存修改
-    handleSubmit() {}
+    handleSubmit(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          console.log(this.organizationFormItem);
+          this.collect_section_update();
+        } else {
+          this.$Message.error("查询条件格式有误，请重新填写");
+        }
+      });
+    },
+    // 查询所有人员接口
+    async collect_list_leader(id, type) {
+      const res = await collect_list_leader({
+        status: "1",
+        lcollectType: ""
+      });
+      if (res.code === 1) {
+        this.bossList = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 更新机构信息接口
+    async collect_section_update(id, type) {
+      // this.organizationFormItem.userIds = JSON.stringify(
+      //   this.organizationFormItem.userIds
+      // );
+      const res = await collect_section_update({
+        ...this.organizationFormItem,
+        status: '1',
+      });
+      if (res.code === 1) {
+        this.$Message.success("修改成功");
+        this.$parent.$parent.$parent.getList("#", "01");
+      } else {
+        this.$Message.error(res.message);
+      }
+    }
   }
 };
 </script>

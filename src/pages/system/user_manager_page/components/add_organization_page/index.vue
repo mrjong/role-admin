@@ -10,7 +10,8 @@
         :model="organizationFormItem"
         :label-width="90"
         :rules="ruleValidate"
-        v-show="parentData.type === '0'">
+        v-show="parentData.type === '0'"
+      >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="机构名称:" prop="name">
             <Input size="small" clearable v-model="organizationFormItem.name" placeholder="请输入机构名称"></Input>
@@ -28,8 +29,8 @@
             >
               <Option
                 v-for="item in bossList"
-                :value="item.loginName"
-                :key="item.loginName"
+                :value="item.uuid"
+                :key="item.uuid"
               >{{ item.name }}</Option>
             </Select>
           </FormItem>
@@ -100,7 +101,7 @@
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="地区:">
-            <Cascader :data="data" trigger="hover" v-model="componeyFormItem.area" size="small"></Cascader>
+            <Cascader :data="data" trigger="hover" v-model="componeyFormItem.area" size="small" :load-data="loadData"></Cascader>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
@@ -147,8 +148,8 @@
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem label="上级机构:" span="4" prop="parentUuid">
-            <Input size="small" v-model="departmentFormItem.parentUuid" disabled></Input>
+          <FormItem label="上级机构:" span="4" prop="organization">
+            <Input size="small" v-model="departmentFormItem.organization" disabled></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
@@ -191,14 +192,15 @@ import {
   collect_section_add,
   collect_outfit_add,
   collect_company_add,
-  collect_list_leader
+  collect_list_leader,
+  sysarea_getAreaByParentId
 } from "@/service/getData";
 export default {
   // data: {
   //   prop: "parentData",
   //   event: "passBack"
   // },
-  props: ['parentData'],
+  props: ["parentData"],
   mixins: [sysDictionary, tablePage],
   data() {
     return {
@@ -269,13 +271,14 @@ export default {
         collectType: "1",
         remark: "",
         parentUuid: "",
-        parentName: '',
-        status: '1'
+        parentName: "",
+        status: "1"
       },
       departmentFormItem: {
         name: "",
         organization: "",
-        remark: ""
+        remark: "",
+        parentUuid: ""
       },
       ruleValidate3: {
         name: [
@@ -332,28 +335,58 @@ export default {
           }
         ]
       },
-      bossList: []
+      bossList: [],
+      areaList: [],
     };
   },
   created() {
     this.collect_list_leader();
+    this.sysarea_getAreaByParentId('0');
     console.log(this.parentData);
-    switch(this.parentData.type) {
-      case '01':
-      this.componeyFormItem = {
-        parentUuid: this.parentData.nodeData.id,
-        parentName: this.parentData.nodeData.name
-      };
+    console.log(this.$parent.$parent.$parent.getList("#", "01"));
+    switch (this.parentData.type) {
+      case "01":
+        this.componeyFormItem = {
+          parentUuid: this.parentData.nodeData.id,
+          parentName: this.parentData.nodeData.name
+        };
+        break;
+      case "02":
+        this.departmentFormItem = {
+          organization: this.parentData.nodeData.name,
+          parentUuid: this.parentData.nodeData.id
+        };
+    }
+  },
+  watch: {
+    parentData() {
+      console.log(this.parentData);
+      switch (this.parentData.type) {
+        case "01":
+          this.componeyFormItem = {
+            parentUuid: this.parentData.nodeData.id,
+            parentName: this.parentData.nodeData.name
+          };
+          break;
+        case "02":
+          this.departmentFormItem = {
+            organization: this.parentData.nodeData.name,
+            parentUuid: this.parentData.nodeData.id
+          };
+      }
     }
   },
   methods: {
+    loadData (item, callback) {
+      item.loading = true;
+    },
     cancelStatus() {
       console.log(this.$parent);
       this.$parent.roleModal = false;
     },
     // 提交保存修改
     handleSubmit(type, name) {
-      console.log(type)
+      console.log(type);
       this.$refs[name].validate(valid => {
         if (valid) {
           // this.getList();
@@ -376,9 +409,9 @@ export default {
     },
     // 添加机构
     async collect_section_add() {
-      this.organizationFormItem.userIds = JSON.stringify(
-        this.organizationFormItem.userIds
-      );
+      // this.organizationFormItem.userIds = JSON.stringify(
+      //   this.organizationFormItem.userIds
+      // );
       const res = await collect_section_add(this.organizationFormItem);
       if (res.code === 1) {
         this.$Message.success("添加成功");
@@ -388,9 +421,13 @@ export default {
     },
     // 添加公司
     async collect_company_add(id, type) {
-      const res = await collect_company_add(this.componeyFormItem);
+      const res = await collect_company_add({
+        ...this.componeyFormItem,
+        status: "1"
+      });
       if (res.code === 1) {
         this.$Message.success("添加成功");
+        this.$parent.$parent.$parent.getList("#", "01");
       } else {
         this.$Message.error(res.message);
       }
@@ -398,13 +435,12 @@ export default {
     // 添加部门
     async collect_outfit_add(id, type) {
       const res = await collect_outfit_add({
-        parentId: id,
+        ...this.departmentFormItem,
         status: "1",
-        leafType: type
       });
       if (res.code === 1) {
-        this.data5 = res.data;
-        return this.data5;
+        this.$Message.success("添加成功");
+        this.$parent.$parent.$parent.getList("#", "01");
       } else {
         this.$Message.error(res.message);
       }
@@ -420,7 +456,18 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
-    }
+    },
+    // 获取地区接口
+    async sysarea_getAreaByParentId(id) {
+      const res = await sysarea_getAreaByParentId({
+        parentId: id,
+      });
+      if (res.code === 1) {
+        this.areaList = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
   }
 };
 </script>

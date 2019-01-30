@@ -164,7 +164,7 @@ export default {
 		};
 	},
 	created() {
-		// this.getList();
+		this.getList();
 	},
 	methods: {
 		selectOne(selection) {
@@ -203,7 +203,7 @@ export default {
 
 		// 获取表格数据
 		async system_user_reset(ids) {
-			const res = await system_user_reset({ ids: JSON.stringify(ids) });
+			const res = await system_user_reset({ ids: ids});
 			if (res.code === 1) {
 				this.$Message.success('重置密码成功');
 			} else {

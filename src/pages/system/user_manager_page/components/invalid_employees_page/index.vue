@@ -8,22 +8,24 @@
               <Button class="fr vue-back-btn header-btn" type="primary" size="small">详情</Button>
         </router-link>-->
       </p>
-      <Form
-        v-if="!showPanel2"
-        ref="formItem"
-        :model="formItem"
-        :label-width="90"
-        :rules="ruleValidate"
-      >
+      <Form v-if="!showPanel2" ref="formItem" :model="formItem" :label-width="90">
         <Row>
           <Col :xs="24" :sm="24" :md="8" :lg="8" span="4">
-            <FormItem label="公司名称:" prop="device_id">
-              <Input size="small" clearable v-model="formItem.componey_name" placeholder="请输入公司名称"/>
+            <FormItem label="公司名称:" prop="parentId">
+              <Select
+                size="small"
+                v-model="formItem.parentId"
+                filterable
+                clearable
+                placeholder="请选择公司"
+              >
+                <Option v-for="item in companyList" :value="item.id" :key="item.id">{{ item.text }}</Option>
+              </Select>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="8" :lg="8" span="4">
             <FormItem label="用户名称:">
-              <Input size="small" clearable v-model="formItem.name" placeholder="请输入用户名称"></Input>
+              <Input size="small" clearable v-model="formItem.userName" placeholder="请输入用户名称"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
@@ -95,13 +97,13 @@
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" style="margin-left: 20px;">
           <label for="radio">状态：</label>
           <RadioGroup v-model="status" id="radio" span="4">
-            <Radio label="0">可用</Radio>
-            <Radio label="1">冻结</Radio>
+            <Radio :label="1">可用</Radio>
+            <Radio :label="0">冻结</Radio>
           </RadioGroup>
         </Col>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="ok">取消</Button>
-          <Button type="primary" size="small" @click="cancel">确定</Button>
+          <Button type="ghost" size="small" @click="cancel">取消</Button>
+          <Button type="primary" size="small" @click="ok">确定</Button>
         </div>
       </Modal>
     </div>
@@ -109,157 +111,185 @@
 </template>
 
 <script>
+import {
+  collect_user_list,
+  collect_status_change,
+  collect_local_list
+} from "@/service/getData";
 export default {
-  data () {
+  data() {
     return {
       showPanel: false,
       showPanel2: false,
       showPanel3: false,
       modal1: false,
-      status: '0',
-      acount: '123123',
+      status: "",
       pageNo: 1,
       pageSize: 10,
       total: 0,
+      acount: "",
+      id: "",
       tableData: [
         {
           recording_id: 1,
-          operate: '操作'
+          operate: "操作"
         }
       ],
       tableColumns: [
         {
-          title: '序号',
+          title: "序号",
           width: 80,
-          searchOperator: '=',
+          searchOperator: "=",
           sortable: true,
-          key: 'recording_id',
-          fixed: 'left',
-          align: 'center'
+          type: "index",
+          fixed: "left",
+          align: "center"
         },
         {
-          title: '账号',
+          title: "账号",
           width: 100,
-          searchOperator: '=',
-          key: 'loginCount',
-          align: 'center'
+          searchOperator: "=",
+          key: "loginName",
+          align: "center"
         },
-        // {
-        //   title: '餐柜添加时间',
-        //   key: 'addtime',
-        //   sortable: true,
-        //   width: 160,
-        //   render: (h, params) => {
-        //     const row = params.row;
-        //     const addtime = row.addtime
-        //       ? this.$options.filters['formatDate'](new Date(row.addtime * 1000), 'yyyy-MM-dd hh:mm:ss')
-        //       : row.addtime;
-        //     return h('span', addtime);
-        //   }
-        // },
         {
-          title: '用户名称',
-          searchOperator: 'like',
+          title: "用户名称",
+          searchOperator: "like",
           width: 120,
-          key: 'userName',
+          key: "userName",
           sortable: true,
-          align: 'center',
+          align: "center",
           ellipsis: true
         },
         {
-          title: '公司名称',
+          title: "公司名称",
           width: 150,
-          searchOperator: 'like',
-          key: 'relation',
-          align: 'center',
+          searchOperator: "like",
+          key: "companyName",
+          align: "center",
           ellipsis: true
-          // render: (h, params) => {
-          //   return h('div', [
-          //     h(
-          //       'Tooltip',
-          //       {
-          //         style: {
-          //           margin: '0 5px'
-          //         },
-          //         props: {
-          //           content: params.row.address,
-          //           placement: 'top'
-          //         }
-          //       },
-          //       [h('div', {}, params.row.address)]
-          //     )
-          //   ]);
-          // }
         },
         {
-          title: '部门',
-          searchOperator: '=',
-          key: 'department',
-          align: 'center',
+          title: "部门",
+          searchOperator: "=",
+          key: "outfitName",
+          align: "center",
           width: 120
         },
         {
-          title: '角色',
-          searchOperator: '=',
-          key: 'role',
-          align: 'center',
+          title: "角色",
+          searchOperator: "=",
+          key: "roleName",
+          align: "center",
           ellipsis: true,
           width: 120
         },
         {
-          title: '创建时间',
-          searchOperator: '=',
-          key: 'createTime',
+          title: "创建时间",
+          searchOperator: "=",
+          key: "createTime",
           ellipsis: true,
           width: 200,
-          align: 'center'
+          align: "center",
+          render: (h, params) => {
+            let createTime = params.row.createTime;
+            createTime = createTime
+              ? this.$options.filters["formatDate"](
+                  createTime,
+                  "YYYY-MM-DD HH:mm:ss"
+                )
+              : createTime;
+            return h("span", createTime);
+          }
         },
         {
-          title: '操作',
+          title: "操作",
           width: 100,
-          key: 'edit',
-          align: 'center',
-          fixed: 'right',
+          key: "edit",
+          align: "center",
+          fixed: "right",
           render: (h, params) => {
-            return h('div', [
-              h('a',
+            return h("div", [
+              h(
+                "a",
                 {
-                  class: 'edit-btn',
+                  class: "edit-btn",
                   props: {},
                   on: {
                     click: () => {
+                      this.acount = params.row.loginName;
+                      this.id = params.row.id;
+                      this.status = params.row.status;
                       this.modal1 = true;
                     }
                   }
-                }, '状态')
+                },
+                "状态"
+              )
             ]);
           }
         }
       ],
-      formItem: {
-        componey_name: '',
-        name: ''
-      },
-      ruleValidate: {
-        buffet_id: [
-          {
-            required: true,
-            message: '请输入网格编号',
-            trigger: 'blur'
-          }
-        ]
-      }
-    }
+      formItem: {},
+      companyList: []
+    };
+  },
+  created() {
+    this.collect_local_list();
+    this.collect_user_list("02");
   },
   methods: {
     handleSubmit(name) {
-      this.$refs[name].validate((valid) => {
+      this.$refs[name].validate(valid => {
         if (valid) {
           this.getList();
         } else {
-          this.$Message.error('查询条件格式有误，请重新填写');
+          this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
+    },
+    // 查询公司
+    async collect_user_list(type) {
+      const res = await collect_user_list({
+        status: "1",
+        leafType: type
+      });
+      console.log(res);
+      if (res.code === 1) {
+        this.companyList = res.data.data;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 获取无效员工列表
+    async collect_local_list() {
+      const res = await collect_local_list({
+        ...this.formItem,
+        pageNum: this.pageNo,
+        pageSize: this.pageSize
+      });
+      if (res.code === 1) {
+        this.tableData = res.data.data.data;
+        this.total = res.data.data.totalElements;
+        this.pageNo = res.data.data.number;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 状态变更接口
+    async collect_status_change() {
+      const res = await collect_status_change({
+        id: this.id,
+        status: Number(this.status)
+      });
+      if (res.code === 1) {
+        this.$Message.success("变更成功");
+        this.modal1 = false;
+        // this.$parent.$parent.$parent.getList("#", "01");
+        this.collect_local_list();
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     // 重置
     clearForm(name) {
@@ -276,17 +306,17 @@ export default {
     changeSize(pageSize) {
       this.pageSize = pageSize;
       this.pageNo = 1;
-      this.getList();
+      this.collect_local_list();
     },
     ok() {
       // this.$Message.info('Clicked ok');
-      this.modal1 = false;
+      this.collect_status_change();
     },
     cancel() {
       this.modal1 = false;
     }
   }
-}
+};
 </script>
 <style lang="less">
 .ivu-col {

@@ -410,7 +410,7 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      const res = await cases_allot_list(JSON.stringify(this.formItem));
+      const res = await cases_allot_list(this.formItem);
       if (res.code === 1) {
         console.log(res);
         this.tableData = res.data.page.content;

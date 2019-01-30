@@ -1,8 +1,8 @@
 <template>
   <div class="panel_list">
     <Card class="vue-panel detail-card">
-      <p slot="title" v-if="type === '01'">机构负责人</p>
-      <p slot="title" v-if="type === '02' || type === '03'">员工信息</p>
+      <p slot="title" v-if="parentData.type === '01'">机构负责人</p>
+      <p slot="title" v-if="parentData.type === '02' || parentData.type === '03'">员工信息</p>
 
       <!-- 机构负责人 -->
       <Form
@@ -10,32 +10,40 @@
         :model="addLeaderFormItem"
         :label-width="90"
         :rules="ruleValidate1"
-        v-if="type === '01'">
+        v-if="parentData.type === '01'"
+      >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem span="4" label="机构名称:">
-            <Input
-              size="small"
-              clearable
-              v-model="addLeaderFormItem.name"
-              placeholder="请输入机构名称"
-              disabled
-            ></Input>
-          </FormItem>
-        </Col>
-        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem label="机构负责人:" span="4" prop="person">
+          <FormItem label="机构负责人:" span="4" prop="userIds">
             <Select
               size="small"
-              v-model="addLeaderFormItem.person"
+              v-model="addLeaderFormItem.userIds"
               filterable
               clearable
+              multiple
               placeholder="请选择机构负责人"
             >
               <Option
-                v-for="item in phoneCallList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+                v-for="item in bossList"
+                :value="item.uuid"
+                :key="item.uuid"
+              >{{ item.name }}</Option>
+            </Select>
+          </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+          <FormItem label="上级机构:" span="4" prop="parentUuid">
+            <Select
+              size="small"
+              v-model="addLeaderFormItem.parentUuid"
+              filterable
+              clearable
+              placeholder="请选择上级机构"
+            >
+              <Option
+                v-for="item in organizationList"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.text }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -60,7 +68,7 @@
             >取消</Button>
             <Button
               type="primary"
-              @click="handleSubmit('addLeaderFormItem')"
+              @click="handleSubmit(parentData.type,'addLeaderFormItem')"
               style="width:80px"
               long
               size="small"
@@ -75,16 +83,11 @@
         :model="addStaffFormItem"
         :label-width="90"
         :rules="ruleValidate2"
-         v-if="type === '02' || type === '03'"
+        v-if="parentData.type === '02' || parentData.type === '03'"
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="账号:" prop="loginName">
-            <Input
-              size="small"
-              clearable
-              v-model="addStaffFormItem.loginName"
-              placeholder="请输入公司名称"
-            ></Input>
+            <Input size="small" clearable v-model="addStaffFormItem.loginName" placeholder="请输入账号"></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -93,59 +96,59 @@
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem label="角色:" span="4" prop="roleName">
+          <FormItem label="角色:" span="4" prop="roleId">
             <Select
               size="small"
-              v-model="addStaffFormItem.roleName"
+              v-model="addStaffFormItem.roleId"
               filterable
               clearable
               placeholder="请选择角色"
             >
-              <Option
-                v-for="item in phoneCallList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+              <Option v-for="item in roleList" :value="item.id" :key="item.id">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem label="公司:" span="4" prop="companyName">
+          <FormItem label="公司:" span="4" prop="companyId">
             <Select
               size="small"
-              v-model="addStaffFormItem.companyName"
+              v-model="addStaffFormItem.companyId"
               filterable
               clearable
               placeholder="请选择公司"
             >
-              <Option
-                v-for="item in phoneCallList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+              <Option v-for="item in companyList" :value="item.id" :key="item.id">{{ item.text }}</Option>
             </Select>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="type === '03'">
-          <FormItem label="部门:" span="4" prop="departName">
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="parentData.type === '03'">
+          <FormItem label="部门:" span="4" prop="outfitId">
             <Select
               size="small"
-              v-model="addStaffFormItem.departName"
+              v-model="addStaffFormItem.outfitId"
               filterable
               clearable
               placeholder="请选择部门"
             >
-              <Option
-                v-for="item in phoneCallList"
-                :value="item.value"
-                :key="item.value"
-              >{{ item.label }}</Option>
+              <Option v-for="item in departmentList" :value="item.id" :key="item.id">{{ item.text }}</Option>
             </Select>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem span="4" label="坐席名称:">
-            <Input size="small" v-model="addStaffFormItem.seatType"></Input>
+          <FormItem label="坐席类型:" span="4" prop="seatType">
+            <Select
+              size="small"
+              v-model="addStaffFormItem.seatType"
+              filterable
+              clearable
+              placeholder="请选择坐席类型"
+            >
+              <Option
+                v-for="item in getDirObj['SEAT_TYPE']"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -173,7 +176,7 @@
             >取消</Button>
             <Button
               type="primary"
-              @click="handleSubmit('addStaffFormItem')"
+              @click="handleSubmit(parentData.type, 'addStaffFormItem')"
               style="width:80px"
               long
               size="small"
@@ -184,33 +187,58 @@
     </Card>
   </div>
 </template>
- <script>
+
+<script>
+import {
+  collect_user_clerk_add,
+  collect_user_leader_add,
+  collect_list_leader,
+  collect_user_list,
+  system_role_list,
+  collect_user_check
+} from "@/service/getData";
+import tablePage from "@/mixin/tablePage";
+import sysDictionary from "@/mixin/sysDictionary";
 export default {
-  props: ['type'],
+  props: ["parentData"],
+  mixins: [sysDictionary, tablePage],
   data() {
     return {
+      getDirList: ["SEAT_TYPE"],
+      getDirObj: {},
       addLeaderFormItem: {
         name: "",
-        person: "",
-        remark: ""
+        userIds: [],
+        remark: "",
+        parentUuid: ""
       },
       addStaffFormItem: {
         name: "",
         loginName: "",
-        companyName: "",
-        departName: "",
-        roleName: "",
+        companyId: "",
+        outfitId: "",
+        roleId: "",
         seatType: "",
         mobile: "",
         callno: "",
         email: "",
-        remark: ""
+        remark: "",
+        status: "1",
+        parentUuid: ""
       },
       ruleValidate1: {
-        person: [
+        userIds: [
           {
             required: true,
             message: "请选择机构负责人",
+            trigger: "change",
+            type: "array"
+          }
+        ],
+        parentUuid: [
+          {
+            required: true,
+            message: "请选择上级机构",
             trigger: "change"
           }
         ]
@@ -230,21 +258,21 @@ export default {
             trigger: "blur"
           }
         ],
-        roleName: [
+        roleId: [
           {
             required: true,
             message: "请选择角色类型",
             trigger: "change"
           }
         ],
-        companyName: [
+        companyId: [
           {
             required: true,
             message: "请选择公司",
             trigger: "change"
           }
         ],
-        departName: [
+        outfitId: [
           {
             required: true,
             message: "请选择部门",
@@ -252,42 +280,192 @@ export default {
           }
         ]
       },
-      phoneCallList: [
-        {
-          value: "1",
-          label: "测试1"
-        },
-        {
-          value: "2",
-          label: "测试2"
-        },
-        {
-          value: "3",
-          label: "测试3"
-        }
-      ]
+      organizationList: [],
+      companyList: [],
+      departmentList: [],
+      bossList: [],
+      roleList: []
     };
   },
+  created() {
+    this.collect_list_leader();
+    // this.collect_user_list(this.parentData.nodeData.leafType);
+    console.log(this.parentData);
+    switch (this.parentData.type) {
+      case "01":
+        this.collect_user_list("01");
+        this.addLeaderFormItem = {
+          parentUuid: this.parentData.nodeData.id,
+          name: this.parentData.nodeData.name
+        };
+        break;
+      case "02":
+        this.collect_user_list("02");
+        this.system_role_list();
+        this.addStaffFormItem = {
+          parentUuid: this.parentData.nodeData.id
+        };
+        break;
+      case "03":
+        this.collect_user_list("03");
+        this.collect_user_list("02");
+        this.system_role_list();
+        this.addStaffFormItem = {
+          parentUuid: this.parentData.nodeData.id
+        };
+        break;
+    }
+  },
+  watch: {
+    parentData() {
+      console.log(this.parentData);
+      switch (this.parentData.type) {
+        case "01":
+          this.collect_user_list("01");
+          this.addLeaderFormItem = {
+            parentUuid: this.parentData.nodeData.id
+          };
+          break;
+        case "02":
+          this.collect_user_list("02");
+          this.system_role_list();
+          this.addStaffFormItem = {
+            parentUuid: this.parentData.nodeData.id
+          };
+          break;
+        case "03":
+          this.system_role_list();
+          this.collect_user_list("02");
+          this.collect_user_list("03");
+          this.addStaffFormItem = {
+            parentUuid: this.parentData.nodeData.id
+          };
+          break;
+      }
+    }
+  },
   methods: {
-    cancelStatus () {
-      console.log(this.$parent)
+    cancelStatus() {
+      console.log(this.$parent);
       this.$parent.roleModal = false;
     },
     // 提交保存修改
-    handleSubmit(name) {
+    handleSubmit(type, name) {
       this.$refs[name].validate(valid => {
         if (valid) {
           // this.getList();
-          this.$Message.success("ok");
+          switch (type) {
+            case "01":
+              this.collect_user_leader_add();
+              break;
+            case "02":
+              this.collect_user_clerk_add();
+              break;
+            case "03":
+              this.collect_user_clerk_add();
+              break;
+          }
         } else {
           this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
+    },
+    // 查询所有人员接口
+    async collect_list_leader(id, type) {
+      const res = await collect_list_leader({
+        status: "1",
+        lcollectType: ""
+      });
+      if (res.code === 1) {
+        this.bossList = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 查询上级机构
+    async collect_user_list(type) {
+      const res = await collect_user_list({
+        status: "1",
+        leafType: type
+      });
+      console.log(res);
+      if (res.code === 1) {
+        switch (type) {
+          case "01":
+            this.organizationList = res.data.data;
+            break;
+          case "02":
+            this.companyList = res.data.data;
+            break;
+          case "03":
+            this.departmentList = res.data.data;
+            break;
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 新增普通员工的时候获取角色list
+    async system_role_list() {
+      const res = await system_role_list({
+        roleType: "02",
+        status: "1",
+        pageSize: 10000
+      });
+      console.log(res);
+      if (res.code === 1) {
+        this.roleList = res.data.content;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 添加领导
+    async collect_user_leader_add() {
+      const res = await collect_user_leader_add({
+        status: "1",
+        ...this.addLeaderFormItem
+      });
+      console.log(res);
+      if (res.code === 1) {
+        this.$Message.success("添加成功");
+        this.$parent.$parent.$parent.getList("#", "01");
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 添加普通员工
+    async collect_user_clerk_add() {
+      const res = await collect_user_clerk_add({
+        status: "1",
+        ...this.addStaffFormItem
+      });
+      console.log(res);
+      if (res.code === 1) {
+        this.$Message.success("添加成功");
+        this.$parent.$parent.$parent.getList("#", "01");
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 信息校验
+    async collect_user_check(value, type) {
+      const res = await collect_user_check({
+        content: value,
+        type: type
+      });
+      if (res.code === 1) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
+.ivu-form {
+  min-height: 250px;
+}
 .ivu-col {
   margin-bottom: 5px;
 }

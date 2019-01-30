@@ -137,24 +137,6 @@ export default {
       CallHelper.init(config, initCallback);
     },
     handleSubmit() {
-<<<<<<< HEAD
-      // this.$Message.success('登录成功!');
-      // Cookies.set("user", '22222222222')
-      // Cookies.set("loginPwd", '22222222')
-      // Cookies.set("SXF-TOKEN", '22222222222222222')
-      // this.$store.commit(
-      //   "setAvator",
-      //   "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
-      // )
-      // this.call()
-      // Cookies.set("access", 1)
-      // window.$router = this.$router
-      // this.$router.push({
-      //   name: "home"
-      // })
-      // return
-=======
->>>>>>> 5cd67655c05f1656fad9678f46af6a4997d0e91f
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
           const res = await login({

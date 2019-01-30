@@ -151,6 +151,7 @@ export default {
                   on: {
                     click: (e) => {
                       e.stopPropagation();
+                      this.nodeData = data;
                       this.addRole(data)
                     }
                   }
@@ -167,7 +168,10 @@ export default {
       // this.$set(data, 'children', children);
       this.modalType = '';
       this.roleModal = true;
-      this.roleType = data.leafType;
+      this.parentData = {
+        type: data.leafType,
+        nodeData: data,
+      };
       this.organizationModal = false;
     },
     // 新增机构
@@ -186,6 +190,10 @@ export default {
     selectNode(node) {
       console.log(node)
     },
+    // 展开折叠tree回调
+    expandNode(node) {
+      console.log(node)
+    },
     // 控制右侧几个卡片的显隐
     setModalType(type) {
       console.log(13123213);
@@ -199,32 +207,60 @@ export default {
     },
     // 获取表格数据
     async getList(id, type) {
-      const res = await collect_parent_children({parentId: id, status: '1', leafType: type});
+      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
       console.log()
       if (res.code === 1) {
         this.data5 = res.data;
-        this.data5.forEach(item => {
-          item.loading = false;
-          item.children = [];
-        });
+        // this.data5.forEach(item => {
+        //   item.loading = false;
+        //   item.children = [];
+        // });
       } else {
         this.$Message.error(res.message)
       }
     },
     // 动态获取表格数据
-    async collect_parent_children(id,type) {
-      const res = await collect_parent_children({parentId: id, status: '1', leafType: type});
+    async collect_parent_children(id, type, callBack) {
+      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
       if (res.code === 1) {
-        this.data5 = res.data;
-        return this.data5;
+        callBack(res.data)
       } else {
         this.$Message.error(res.message)
       }
     },
     // 异步加载tree数据
     loadData(item, callBack) {
-      console.log('异步')
-      callBack(this.collect_parent_children(this.parentId, this.leafType))
+      console.log(item, '----------------------')
+      this.nodeData = item;
+      let leafType;
+      if (item.leafType === '01') {
+        leafType = '02';
+      } else if (item.leafType === '02') {
+        leafType = '03';
+      } else if (item.leafType === '03') {
+        leafType = '04';
+      } else {
+        return;
+      };
+      this.collect_parent_children(item.id, leafType, callBack);
+    },
+    // 递归处理tree数据
+    treeNodeDeal(data) {
+      for (var i = 0; this.data5 && i < this.data5.length; i++) {
+        // this.$set(treeData[i],'expand',flag); //重要！用set方法
+        if (this.data5[i].nodeKey == this.nodeData.nodeKey) {
+          this.data5[i].children = data;
+          this.data5[i].expand = true;
+          return this.data5;
+        };
+      };
+    },
+    treeNodeChildren (data) {
+      for (let i = 0; i < this.data5.length; i++) {
+        if (this.data5[i].children.length === 0) {
+          this.data5[i].children = data;
+        }
+      }
     }
   }
 };

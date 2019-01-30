@@ -331,6 +331,13 @@ export const collect_section_add = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+// 更改催收机构
+export const collect_section_update = (obj) =>
+  fetch({
+    url: '/collect/section/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 // 添加部门信息
 export const collect_outfit_add = (obj) =>
   fetch({
@@ -338,10 +345,40 @@ export const collect_outfit_add = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+// 修改部门信息
+export const collect_outfit_update = (obj) =>
+  fetch({
+    url: '/collect/outfit/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 // 添加催收公司
 export const collect_company_add = (obj) =>
   fetch({
     url: '/collect/company/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 修改公司信息
+export const collect_company_update = (obj) =>
+  fetch({
+    url: '/collect/company/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 更新催收部门领导
+export const collect_user_leader_update = (obj) =>
+  fetch({
+    url: '/collect/user/leader/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 更新催收部门普通员工
+export const collect_user_clerk_update = (obj) =>
+  fetch({
+    url: '/collect/user/clerk/update',
     method: 'POST',
     data: qs.stringify(obj)
   });
@@ -352,6 +389,22 @@ export const collect_list_leader = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+
+// 变更催收人员状态
+export const collect_status_change = (obj) =>
+  fetch({
+    url: '/collect/status/change',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 查询无效员工list
+export const collect_local_list = (obj) =>
+  fetch({
+    url: '/collect/local/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 
 /*
 *
@@ -978,3 +1031,11 @@ export const sysDictionary_list = (obj, options) =>
     data: qs.stringify(obj),
     options,
   });
+
+// 地区接口
+export const sysarea_getAreaByParentId = (obj) =>
+  fetch({
+    url: '/sysarea/getAreaByParentId',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })

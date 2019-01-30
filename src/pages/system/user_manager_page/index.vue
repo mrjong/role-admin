@@ -32,6 +32,7 @@
             v-if="!showPanel"
             :load-data="loadData"
             @on-select-change="selectNode"
+            @on-toggle-expand='expandNode'
           ></Tree>
         </Card>
       </Col>
@@ -41,23 +42,23 @@
       </Col>
       <!-- 查看机构详情 -->
       <Col span="16" class="detail-col" v-if="modalType === '01'">
-        <organizationForm></organizationForm>
+        <organizationForm :parentData='parentData'></organizationForm>
       </Col>
       <!-- 查看公司详情 -->
       <Col span="16" class="detail-col" v-if="modalType === '02'">
-        <componeyForm></componeyForm>
+        <componeyForm :parentData='parentData'></componeyForm>
       </Col>
       <!-- 查看部门详情 -->
       <Col span="16" class="detail-col" v-if="modalType === '03'">
-        <departmentForm></departmentForm>
+        <departmentForm :parentData='parentData'></departmentForm>
       </Col>
       <!-- 查看员工详情 -->
       <Col span="16" class="detail-col" v-if="modalType === '04'">
-        <staffForm></staffForm>
+        <staffForm :parentData='parentData'></staffForm>
       </Col>
       <!-- 新增员工 -->
       <Col span="16" class="detail-col" v-if="roleModal">
-        <addRole :type="roleType"></addRole>
+        <addRole :parentData="parentData"></addRole>
       </Col>
       <!-- 新增机构 -->
       <Col span="16" class="detail-col" v-if="organizationModal">
