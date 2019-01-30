@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { arb_apply } from '@/service/getData';
+import { arb_apply,arb_list } from '@/service/getData';
 export default {
 	name: 'case_search_page',
 	mixins: [ formValidateFun, sysDictionary ],
@@ -169,17 +169,17 @@ export default {
 					title: '案件状态',
 					minWidth: 120,
 					align: 'center',
-					key: 'approvalState'
+					key: 'approvalStateName'
 				},
 				{
 					title: '案件编号',
-					minWidth: 120,
+					minWidth: 180,
 					align: 'center',
 					key: 'caseNo'
 				},
 				{
 					title: '账单号',
-					minWidth: 120,
+					minWidth: 200,
 					align: 'center',
 					key: 'billNo'
 				},
@@ -187,7 +187,7 @@ export default {
 					title: '产品名称',
 					minWidth: 120,
 					align: 'center',
-					key: 'productType'
+					key: 'productName'
 				},
 
 				{
@@ -255,7 +255,7 @@ export default {
 				},
 				{
 					title: '申请时间',
-					minWidth: 120,
+					minWidth: 150,
 					align: 'center',
 					key: 'createTime',
 					render: (h, params) => {
@@ -286,7 +286,7 @@ export default {
 				},
 				{
 					title: '审核时间',
-					minWidth: 120,
+					minWidth: 150,
 					align: 'center',
 					key: 'approvalTime',
 					render: (h, params) => {
@@ -348,11 +348,7 @@ export default {
 		},
 		// 获取表格数据
 		async getList() {
-			const res = await arb_apply({
-				pageNum: this.pageNo,
-				pageSize: this.pageSize,
-				...this.formItem
-			});
+			const res = await arb_list();
 			if (res.code === 1) {
 				this.tableData = res.data;
 			} else {

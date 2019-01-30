@@ -217,50 +217,24 @@
               :md="12"
               :lg="12"
             >
-            <div class="fl">
+            <div
+              class="fl"
+              key=""
+              v-for="(item,index) in case_detail_case_identity_info_Data.userImgList"
+            >
               <div class="demo-upload-list">
                 <img
-                  src="http://www.pptok.com/wp-content/uploads/2012/08/xunguang-4.jpg"
-                  style="vertical-align: top;"
-                >
-                <div
-                  class="demo-upload-list-cover "
-                  @click="handleView('http://www.pptok.com/wp-content/uploads/2012/08/xunguang-4.jpg')"
-                >
-                  <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
-                </div>
-              </div>
-              <div class="text-center card-text">身份证正面</div>
-            </div>
-            <div class="fl">
-              <div class="demo-upload-list">
-                <img
-                  src="https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar"
+                  :src="item.imgPath"
                   style="vertical-align: top;"
                 >
                 <div
                   class="demo-upload-list-cover"
-                  @click="handleView('https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar')"
+                  @click="handleView(item.imgPath)"
                 >
                   <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
                 </div>
               </div>
-              <div class="text-center card-text">身份证反面</div>
-            </div>
-            <div class="fl">
-              <div class="demo-upload-list">
-                <img
-                  src="https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar"
-                  style="vertical-align: top;"
-                >
-                <div
-                  class="demo-upload-list-cover"
-                  @click="handleView('https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar')"
-                >
-                  <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
-                </div>
-              </div>
-              <div class="text-center card-text">活体认证照片</div>
+              <div class="text-center card-text">{{item.imgTypeName}}</div>
             </div>
 
             </Col>
@@ -642,22 +616,32 @@
                     <span class="state-name">
                       本人
                     </span>
-                    {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}<span>（本人）</span>
+                    {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}
+                    <span>（本人）</span>
                   </span>
+                  <!-- @click="handCall({
+                        userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
+                        userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
+                        mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
+                        mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
+                    },'call','01')" -->
                   <span
                     class="tel"
                     @click="handCall({
-                        userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
-                        userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
-                           mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
-                        mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
+                         callUserType:'01',
+                         userId:'22222222',
+                        userNmHid:'2222',
+                        userNm:'22222222222222',
+                        mblNoHid:'2222222222222222',
+                        mblNo:'18500214323'
                     },'call','01')"
                   >
                     <Tooltip
                       content="拨打"
                       placement="left"
                     >
-                      {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid}}
+                      18888888
+                      <!-- {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid}} -->
                     </Tooltip>
                   </span>
                   <span class="state">
@@ -673,7 +657,7 @@
                       @click="handCall({
                         userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
                         userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
-                           mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
+                        mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
                         mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
                     },null,'01')"
                       class="edit"
@@ -1004,6 +988,7 @@
       v-on:passBack="passBack('zhongcai')"
       v-model="modal.zhongcai"
       v-if="modal.zhongcai"
+      :zhongcai_data="zhongcai_set_data"
     >
     </zhongcai>
     <huakou

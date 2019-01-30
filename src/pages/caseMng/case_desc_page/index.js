@@ -64,6 +64,7 @@ export default {
 			getDirList: [ 'CNT_REL_TYP', 'GENDER' ],
 			getDirObj: {},
 			userNmHidCopy: '',
+			telShow: false,
 			mblNo: '',
 			caseNo: '',
 			userId: '',
@@ -87,6 +88,7 @@ export default {
 			formValidate: {},
 			formValidate2: {},
 			case_detail_case_identity_info_Data: {},
+			zhongcai_set_data: {},
 			case_detail_urgent_contact_Data: {},
 			ruleValidate: {
 				collectResult: [
@@ -1225,17 +1227,21 @@ export default {
 	},
 	methods: {
 		async call_kt_hung_on(obj) {
+			this.telShow = true;
+			let callData = JSON.parse(sessionStorage.getItem('callData'));
 			const res = await call_kt_hung_on({
 				callno: obj.callno,
+				actionId: callData.id,
 				caseNo: this.caseNo,
+				toCallUser: obj.toCallUser,
+				toCallUserHid: obj.toCallUserHid,
+				toCallMbl: obj.toCallMbl,
+				toCallMblHid: obj.toCallMblHid,
 				callUserType: obj.callUserType,
-				toCallUser: obj.ToCallUser,
-				userId: obj.userId
+				userId: this.userId
 			});
 			if (res.code === 1) {
-				// 更新list
-				this.case_detail_mail_list_appended();
-				this.modal7 = false;
+				console.log('呼出成功！');
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -1536,13 +1542,14 @@ export default {
 			console.log('obj', obj);
 			this.handleCancle();
 			console.log(obj, type);
-            // type ['call] 拨打电话
-            let callData=JSON.parse(sessionStorage.getItem('callData'));
+			// type ['call] 拨打电话
 			this.call_kt_hung_on({
-				callno: callData.k,
+				callno: obj.mblNo,
 				callUserType: obj.callUserType,
-				toCallUser: obj.ToCallUser,
-				userId: obj.userId
+				toCallUser: obj.userNm,
+				toCallUserHid: obj.mblNoHid,
+				toCallMbl: obj.mblNo,
+				toCallMblHid: obj.mblNoHid
 			});
 			if (type === 'call') {
 			}
@@ -1563,6 +1570,15 @@ export default {
 		},
 		handOpen(type) {
 			console.log(this.modal);
+			if (type === 'zhongcai') {
+				this.zhongcai_set_data = {
+					idNoHid: '22222222222', // case_detail_case_identity_info_Data.idNoHid
+					billNo: '9999999999', // case_detail_case_base_info_Data.billNo
+					userNmHid: '2222222', // case_detail_case_identity_info_Data.userNmHid
+					caseNo: '2222222222', // this.caseNo,
+                    userGender: '01', //this.prdTyp
+				};
+			}
 			this.modal[type] = true;
 		},
 		handleView(name) {

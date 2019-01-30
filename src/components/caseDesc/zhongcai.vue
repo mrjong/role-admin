@@ -25,10 +25,10 @@
                 :lg="8"
               >
               <FormItem
-                label="身份证号:"
+                label="订单号:"
                 prop="defType"
               >
-                <span class="desc-label">{{zhongcai_data.idCardNo}}</span>
+                <span class="desc-label">{{zhongcai_data.billNo}}</span>
               </FormItem>
               </Col>
               <Col
@@ -55,7 +55,7 @@
                 label="身份证号:"
                 prop="defType"
               >
-                <span class="desc-label">{{zhongcai_data.idCardNo}}</span>
+                <span class="desc-label">{{zhongcai_data.idNoHid}}</span>
               </FormItem>
               </Col>
 
@@ -69,7 +69,7 @@
                 label="客户姓名:"
                 prop="defType"
               >
-                <span class="desc-label">{{zhongcai_data.idCardNo}}</span>
+                <span class="desc-label">{{zhongcai_data.userNmHid}}</span>
               </FormItem>
               </Col>
               <Col
@@ -80,7 +80,7 @@
               >
               <FormItem
                 label="性别:"
-                prop="defType"
+                prop="userGender"
               >
                 <Select
                   size="small"
@@ -105,17 +105,17 @@
               >
               <FormItem
                 label="民族:"
-                prop="defType"
+                prop="userNation"
               >
                 <Select
                   size="small"
                   placeholder="请选择民族"
-                  v-model="formItem.defType"
+                  v-model="formItem.userNation"
                 >
                   <Option
-                    v-for="item in defTypeList"
+                    v-for="item in getDirObj.NATION"
                     :value="item.itemCode"
-                    :key="item.itemCode"
+                    :key="item.itemName"
                   >{{ item.itemName }}</Option>
                 </Select>
               </FormItem>
@@ -128,12 +128,12 @@
               >
               <FormItem
                 label="提前到期日期:"
-                prop="defType"
+                prop="standAgreeDate"
               >
                 <DatePicker
                   size="small"
                   style="width:100%"
-                  v-model="formItem.addtime"
+                  v-model="formItem.standAgreeDate"
                   format="yyyy-MM-dd"
                   type="date"
                   placement="bottom-start"
@@ -150,12 +150,12 @@
               >
               <FormItem
                 label="打款凭证流水号:"
-                prop="defType"
+                prop="voucherNo"
               >
                 <Input
                   size="small"
                   clearable
-                  v-model="formItem.repayAmount"
+                  v-model="formItem.voucherNo"
                   placeholder="请输入打款凭证流水号"
                 ></Input>
               </FormItem>
@@ -169,13 +169,13 @@
               >
               <FormItem
                 label="身份证地址:"
-                prop="defType"
+                prop="idAddress"
               >
                 <Input
                   type="textarea"
                   size="small"
                   clearable
-                  v-model="formItem.repayAmount"
+                  v-model="formItem.idAddress"
                   placeholder="请输入身份证地址"
                 ></Input>
               </FormItem>
@@ -188,8 +188,8 @@
               >
               <FormItem
                 span="6"
-                label="还款凭证:"
-                prop="buffet_id"
+                label="身份证正面:"
+                prop="idCardFront"
               >
                 <template>
                   <div
@@ -200,12 +200,8 @@
                       <img :src="item.url">
                       <div class="demo-upload-list-cover">
                         <Icon
-                          type="ios-eye-outline"
-                          @click.native="handleView(item.name)"
-                        ></Icon>
-                        <Icon
                           type="ios-trash-outline"
-                          @click.native="handleRemove(item)"
+                          @click.native="handleRemove(item,'upload')"
                         ></Icon>
                       </div>
                     </template>
@@ -218,15 +214,77 @@
                     </template>
                   </div>
                   <Upload
+                    v-if="uploadList.length ===0 "
                     ref="upload"
                     :show-upload-list="false"
                     :default-file-list="defaultList"
                     :on-success="handleSuccess"
                     :format="['jpg','jpeg','png']"
+                    :on-format-error="handleFormatError"
+                    type="select"
+                    :data="{
+                    imgType: 'idCardFront',
+                    caseNo:zhongcai_data.caseNo
+                    }"
+                    :headers="headers"
+                    action="/admin/arb/upload"
+                    style="display: inline-block;width:58px;"
+                  >
+                    <div style="width: 58px;height:58px;line-height: 58px;">
+                      <Icon
+                        size="20"
+                        type="plus"
+                      ></Icon>
+                    </div>
+                  </Upload>
+                </template>
+              </FormItem>
+              </Col>
+
+              <!-- <Col
+                :xs="24"
+                :sm="24"
+                :md="24"
+                :lg="24"
+              >
+              <FormItem
+                span="6"
+                label="身份证反面:"
+                prop="buffet_id"
+              >
+                <template>
+                  <div
+                    class="demo-upload-list"
+                    v-for="item in uploadList1"
+                  >
+                    <template v-if="item.status === 'finished'">
+                      <img :src="item.url">
+                      <div class="demo-upload-list-cover">
+                        <Icon
+                          type="ios-trash-outline"
+                          @click.native="handleRemove(item,'upload1')"
+                        ></Icon>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <Progress
+                        v-if="item.showProgress"
+                        :percent="item.percentage"
+                        hide-info
+                      ></Progress>
+                    </template>
+                  </div>
+                  <Upload
+                    v-if="uploadList1.length ===0 "
+                    ref="upload1"
+                    :show-upload-list="false"
+                    :default-file-list="defaultList1"
+                    :on-success="handleSuccess"
+                    :format="['jpg','jpeg','png']"
                     :max-size="2048"
                     :on-format-error="handleFormatError"
                     :on-exceeded-size="handleMaxSize"
-                    :before-upload="handleBeforeUpload"
+                    :before-upload="handleBeforeUpload('upload1')"
                     multiple
                     type="drag"
                     action="//jsonplaceholder.typicode.com/posts/"
@@ -239,19 +297,126 @@
                       ></Icon>
                     </div>
                   </Upload>
-                  <Modal
-                    title="View Image"
-                    v-model="visible"
-                  >
-                    <img
-                      :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'"
-                      v-if="visible"
-                      style="width: 100%"
-                    >
-                  </Modal>
                 </template>
               </FormItem>
               </Col>
+
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="24"
+                :lg="24"
+              >
+              <FormItem
+                span="6"
+                label="打款凭证:"
+                prop="buffet_id"
+              >
+                <template>
+                  <div
+                    class="demo-upload-list"
+                    v-for="item in uploadList2"
+                  >
+                    <template v-if="item.status === 'finished'">
+                      <img :src="item.url">
+                      <div class="demo-upload-list-cover">
+                        <Icon
+                          type="ios-trash-outline"
+                          @click.native="handleRemove(item,'upload2')"
+                        ></Icon>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <Progress
+                        v-if="item.showProgress"
+                        :percent="item.percentage"
+                        hide-info
+                      ></Progress>
+                    </template>
+                  </div>
+                  <Upload
+                    v-if="uploadList2.length ===0 "
+                    ref="upload2"
+                    :show-upload-list="false"
+                    :default-file-list="defaultList2"
+                    :on-success="handleSuccess"
+                    :format="['jpg','jpeg','png']"
+                    :max-size="2048"
+                    :on-format-error="handleFormatError"
+                    :on-exceeded-size="handleMaxSize"
+                    :before-upload="handleBeforeUpload('upload2')"
+                    multiple
+                    type="drag"
+                    action="//jsonplaceholder.typicode.com/posts/"
+                    style="display: inline-block;width:58px;"
+                  >
+                    <div style="width: 58px;height:58px;line-height: 58px;">
+                      <Icon
+                        size="20"
+                        type="plus"
+                      ></Icon>
+                    </div>
+                  </Upload>
+                </template>
+              </FormItem>
+              </Col>
+
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="24"
+                :lg="24"
+              >
+              <FormItem
+                span="6"
+                label="提前到期通知:"
+                prop="buffet_id"
+              >
+                <template>
+                  <div
+                    class="demo-upload-list"
+                    v-for="item in uploadList3"
+                  >
+                    <template v-if="item.status === 'finished'">
+                      <img :src="item.url">
+                      <div class="demo-upload-list-cover">
+                        <Icon
+                          type="ios-trash-outline"
+                          @click.native="handleRemove(item,'upload3')"
+                        ></Icon>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <Progress
+                        v-if="item.showProgress"
+                        :percent="item.percentage"
+                        hide-info
+                      ></Progress>
+                    </template>
+                  </div>
+                  <Upload
+                    v-if="uploadList3.length ===0 "
+                    ref="upload3"
+                    :show-upload-list="false"
+                    :default-file-list="defaultList3"
+                    :on-success="handleSuccess"
+                    :format="['jpg','jpeg','png']"
+                    :on-format-error="handleFormatError"
+                    :before-upload="handleBeforeUpload('upload3')"
+                    type="select"
+                    action="//jsonplaceholder.typicode.com/posts/"
+                    style="display: inline-block;width:58px;"
+                  >
+                    <div style="width: 58px;height:58px;line-height: 58px;">
+                      <Icon
+                        size="20"
+                        type="plus"
+                      ></Icon>
+                    </div>
+                  </Upload>
+                </template>
+              </FormItem>
+              </Col> -->
             </Row>
 
           </Form>
