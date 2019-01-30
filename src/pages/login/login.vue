@@ -65,7 +65,7 @@
 <script>
 import Cookies from "js-cookie"
 import md5 from "js-md5"
-import { login } from "@/service/getData"
+import { login, call_kt_get_seat } from "@/service/getData"
 
 export default {
   data() {
@@ -85,56 +85,60 @@ export default {
   created() {
   },
   methods: {
-    call() {
-
-      // 初始化打电话
-      let url = 'https://zx.ketianyun.com'
-      let loginName = '01@suixingfu.com'
-      let password = '123456'
+    async call_kt_get_seat(data) {
+      const res = await call_kt_get_seat({
+        loginName: this.form.loginName
+      })
+      console.log(res)
+      if (res.code === 1) {
+        if (res.data.seatType === 'KT') {
+          this.call(res.data)
+          this.loginSuccess(data)
+        } else {
+          sessionStorage.setItem('seatType', 'RL')
+          this.loginSuccess(data)
+        }
+      } else {
+        this.$Message.error(res.message)
+      }
+    },
+    call(obj) {
+      sessionStorage.setItem('callData', JSON.stringify(obj))
       var config = {
-        uname: loginName,
-        pwd: password,
+        uname: obj.loginName,
+        pwd: obj.password,
         debug: true,
-        isAutoAnswer: true,
-        stateListenerCallBack: stateCallback,
-        forceAnswerWhenRing: false,
+        isAutoAnswer: false,
+        stateListenerCallBack: this.stateCallback,
+        forceAnswerWhenRing: false, // 是否振铃自动接通
         autoReady: true,
-        url: url
+        url: obj.url
       };
-      /**
+      CallHelper.init(config, this.initCallback);
+
+    },
+    /**
 * 设置状态监听回调
 */
-      function stateCallback(data) {
-        console.info(data);
-        if (data.msg === "READY") {
-
-        } else if (data.msg === "RINGING") {
-          console.log('振铃', data.data.phoneNum)
-          // document.getElementById('callnum').innerHTML = data.data.phoneNum;
-        } else if (data.msg === "HANGUP") {
-          console.log('挂断')
-          // document.getElementById('calluuid').innerHTML = '';
-          // document.getElementById('msg').innerHTML = '';
-          // document.getElementById('callnum').innerHTML = '';
-        }
+    stateCallback(data) {
+      this.$store.commit('changeCallData', data)
+    },
+    /**
+    * 初始化方法回调是否成功
+    */
+    initCallback(data) {
+      if (data.successChange) {
+        console.log('您已登录成功！');
+      } else {
+        console.log('登录失败，请联系管理员！');
       }
-      /**
-* 初始化方法回调是否成功
-*/
-      function initCallback(data) {
-        console.info('---------------------');
-        if (data.successChange) {
-          //显示本机号码
-          // document.getElementById('agentnum').innerHTML = data.data.agentnumber;
-          //电话条ready状态变更
-          //CallHelper.ready();
-          console.log('您已登录成功！');
-        } else {
-          console.log('登录失败，请联系管理员！');
-        }
-      }
-
-      CallHelper.init(config, initCallback);
+    },
+    loginSuccess(res) {
+      this.$Message.success('登录成功!');
+      window.$router = this.$router
+      this.$router.push({
+        name: "home"
+      })
     },
     handleSubmit() {
       this.$refs.loginForm.validate(async valid => {
@@ -144,7 +148,6 @@ export default {
             loginPwd: this.form.loginPwd
           })
           if (res && res.code === 1) {
-            this.$Message.success('登录成功!');
             Cookies.set("user", this.form.loginName)
             Cookies.set("loginPwd", this.form.loginPwd)
             Cookies.set("SXF-TOKEN", res.data)
@@ -152,12 +155,10 @@ export default {
               "setAvator",
               "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
             )
-            this.call()
+
+            // this.call_kt_get_seat()
             Cookies.set("access", 1)
-            window.$router = this.$router
-            this.$router.push({
-              name: "home"
-            })
+            this.call_kt_get_seat(res)
           } else {
             this.$Message.error(res.message);
           }
@@ -166,6 +167,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style>

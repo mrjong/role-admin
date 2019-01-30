@@ -1,5 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
+import { arb_apply,arb_list } from '@/service/getData';
 export default {
 	name: 'case_search_page',
 	mixins: [ formValidateFun, sysDictionary ],
@@ -168,17 +169,17 @@ export default {
 					title: '案件状态',
 					minWidth: 120,
 					align: 'center',
-					key: 'approvalState'
+					key: 'approvalStateName'
 				},
 				{
 					title: '案件编号',
-					minWidth: 120,
+					minWidth: 180,
 					align: 'center',
 					key: 'caseNo'
 				},
 				{
 					title: '账单号',
-					minWidth: 120,
+					minWidth: 200,
 					align: 'center',
 					key: 'billNo'
 				},
@@ -186,7 +187,7 @@ export default {
 					title: '产品名称',
 					minWidth: 120,
 					align: 'center',
-					key: 'productType'
+					key: 'productName'
 				},
 
 				{
@@ -223,23 +224,38 @@ export default {
 					title: '逾期应还金额',
 					minWidth: 120,
 					align: 'center',
-					key: 'overdueAmt'
+					key: 'overdueAmt',
+					render: (h, params) => {
+						let overdueAmt = params.row.overdueAmt;
+						overdueAmt = overdueAmt ? this.$options.filters['money'](overdueAmt) : overdueAmt;
+						return h('span', overdueAmt);
+					}
 				},
 				{
 					title: '已还罚息',
 					minWidth: 120,
 					align: 'center',
-					key: 'perdFineRep'
+					key: 'perdFineRep',
+					render: (h, params) => {
+						let perdFineRep = params.row.perdFineRep;
+						perdFineRep = perdFineRep ? this.$options.filters['money'](perdFineRep) : perdFineRep;
+						return h('span', perdFineRep);
+					}
 				},
 				{
 					title: '已还滞纳金',
 					minWidth: 120,
 					align: 'center',
-					key: 'perdOvduRep'
+					key: 'perdOvduRep',
+					render: (h, params) => {
+						let perdOvduRep = params.row.perdOvduRep;
+						perdOvduRep = perdOvduRep ? this.$options.filters['money'](perdOvduRep) : perdOvduRep;
+						return h('span', perdOvduRep);
+					}
 				},
 				{
 					title: '申请时间',
-					minWidth: 120,
+					minWidth: 150,
 					align: 'center',
 					key: 'createTime',
 					render: (h, params) => {
@@ -270,10 +286,10 @@ export default {
 				},
 				{
 					title: '审核时间',
-					minWidth: 120,
+					minWidth: 150,
 					align: 'center',
-                    key: 'approvalTime',
-                    render: (h, params) => {
+					key: 'approvalTime',
+					render: (h, params) => {
 						let approvalTime = params.row.approvalTime;
 						approvalTime = approvalTime
 							? this.$options.filters['formatDate'](approvalTime, 'YYYY-MM-DD HH:mm:ss')
@@ -307,7 +323,7 @@ export default {
 		};
 	},
 	created() {
-		this.getList();
+		// this.getList();
 	},
 	methods: {
 		// 页码改变的回调
@@ -331,7 +347,14 @@ export default {
 			});
 		},
 		// 获取表格数据
-		async getList() {},
+		async getList() {
+			const res = await arb_list();
+			if (res.code === 1) {
+				this.tableData = res.data;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
 		// 重置
 		clearForm(name) {
 			this.pageNo = 1;

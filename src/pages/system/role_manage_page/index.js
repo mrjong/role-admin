@@ -176,7 +176,7 @@ export default {
           width: widthMidVal,
           render: (h, params) => {
             console.log(params.row,'ccccccc');
-            let id = params.row.id;
+            let id = params.row;
             return h('div', [
                   h(
                     'a',
@@ -279,9 +279,11 @@ export default {
     ok() {
 
     },
-    changeRole(id) {
+    changeRole(parmId) {
       this.modalChange = true;
-      sessionStorage.setItem('updateId', id);
+      this.formValidateChange = parmId;
+      this.formValidateChange.roleStatus = parmId.roleStatus == 1 ? 'one':'zero';
+      sessionStorage.setItem('updateId', parmId.id);
     },
     // 确认修改信息
     modalChangeOk(name) {

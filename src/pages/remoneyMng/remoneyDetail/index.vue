@@ -152,12 +152,12 @@
             >
               <Select
                 size="small"
-                v-model="formValidate.opCompanyName">
+                v-model="formValidate.opCompayName">
                 <Option
-                v-for="item in []"
-                :value="item.value"
-                :key="item.value"
-                >{{item.label}}
+                v-for="item in opCompanyNameList"
+                :value="item.name"
+                :key="item.id"
+                >{{item.name}}
                 </Option>
               </Select>
             </FormItem>

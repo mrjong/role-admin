@@ -175,7 +175,7 @@ export const repay_repayDetail_list = (obj, options) =>
   fetch({
     url: '/repay/repayDetail/list',
     method: 'POST',
-    data: qs.stringify(obj),
+    data: qs.stringify(obj)
   });
 
 // 回款明细导出接口
@@ -184,7 +184,7 @@ export const repay_repayDetail_exportDown = (obj, options) =>
     url: '/repay/repayDetail/exportDown',
     method: 'POST',
     data: qs.stringify(obj),
-    responseType: 'blob',
+    responseType: 'blob'
   });
 
 // 日常监控的坐席报表
@@ -200,14 +200,14 @@ export const monitor_agentState_exportDown = (obj) =>
     url: '/monitor/agentState/exportDown',
     method: 'POST',
     data: qs.stringify(obj),
-    responseType: 'blob',
+    responseType: 'blob'
   });
 // 坐席报表的组织查询接口
 export const monitor_groupList = (obj) =>
   fetch({
     url: '/monitor/groupList',
     method: 'POST',
-    data: qs.stringify(obj),
+    data: qs.stringify(obj)
   });
 
 // 坐席数据查询接口
@@ -215,7 +215,7 @@ export const monitor_getAgentList = (obj) =>
   fetch({
     url: '/monitor/getAgentList',
     method: 'POST',
-    data: qs.stringify(obj),
+    data: qs.stringify(obj)
   });
 // 日常监控的逾期日志列表请求
 export const monitor_overdueReports_list = (obj) =>
@@ -231,7 +231,7 @@ export const monitor_overDueReports_exportDown = (obj) =>
     url: '/monitor/overDueReports/exportDown',
     method: 'POST',
     data: qs.stringify(obj),
-    responseType: 'blob',
+    responseType: 'blob'
   });
 
 // 呼叫明细列表接口查询
@@ -247,7 +247,7 @@ export const monitor_callDetail_exportDown = (obj) =>
     url: '/monitor/callDetail/exportDown',
     method: 'POST',
     data: qs.stringify(obj),
-    responseType: 'blob',
+    responseType: 'blob'
   });
 
 // 催收回收率列表导出
@@ -256,7 +256,7 @@ export const monitor_collectRate_exportDown = (obj) =>
     url: '/monitor/collectRate/exportDown',
     method: 'POST',
     data: qs.stringify(obj),
-    responseType: 'blob',
+    responseType: 'blob'
   });
 
 // 催收回收列表查询
@@ -527,7 +527,7 @@ export const system_role_menu_list = (obj) =>
     url: '/system/role/menu/list',
     method: 'POST',
     data: qs.stringify(obj)
-  })
+  });
 
 // 菜单分配的接口
 export const stytem_menu_opration = (obj) =>
@@ -574,7 +574,7 @@ export const call_employee_user = (obj) =>
     url: '/call/employee/user',
     method: 'POST',
     data: qs.stringify(obj)
-  })
+  });
 
 /*
 *
@@ -788,7 +788,7 @@ export const divide_rules_edit = (obj) =>
     url: '/divide/rules/edit',
     method: 'GET',
     data: qs.stringify(obj)
-  })
+  });
 
 // 修改分案规则
 export const divide_rules_save = (obj) =>
@@ -804,7 +804,7 @@ export const divide_rules_his = (obj) =>
     url: '/divide/rules/his',
     method: 'GET',
     data: qs.stringify(obj)
-  })
+  });
 /*
 *
 *
@@ -880,7 +880,7 @@ export const case_collect_tape_download = (obj, options) =>
     method: 'POST',
     data: qs.stringify(obj),
     options,
-    responseType: 'blob',
+    responseType: 'blob'
   });
 
 /*
@@ -893,7 +893,7 @@ export const case_remark_his_add = (obj, options) =>
     url: '/case_remark_his/add',
     method: 'POST',
     data: qs.stringify(obj),
-    options,
+    options
   });
 
 /*
@@ -906,7 +906,7 @@ export const collectcode_getListByCodeType = (obj, options) =>
     url: '/collectcode/getListByCodeType',
     method: 'POST',
     data: qs.stringify(obj),
-    options,
+    options
   });
 
 /*
@@ -918,7 +918,7 @@ export const collectcode_getCollectRelate = (obj, options) =>
     url: '/collectcode/getCollectRelate',
     method: 'POST',
     data: qs.stringify(obj),
-    options,
+    options
   });
 
 /*
@@ -930,7 +930,7 @@ export const repayinfo_getApplyInfo = (obj, options) =>
     url: '/repayinfo/getApplyInfo',
     method: 'POST',
     data: qs.stringify(obj),
-    options,
+    options
   });
 
 /*
@@ -942,7 +942,7 @@ export const repayinfo_getCardNos = (obj, options) =>
     url: '/repayinfo/getCardNos',
     method: 'POST',
     data: qs.stringify(obj),
-    options,
+    options
   });
 
 /*
@@ -954,7 +954,7 @@ export const repayinfo_applayRepay = (obj, options) =>
     url: '/repayinfo/applayRepay',
     method: 'POST',
     data: qs.stringify(obj),
-    options,
+    options
   });
 
 /*
@@ -966,7 +966,7 @@ export const system_user_reset = (obj, options) =>
     url: '/system/user/reset',
     method: 'POST',
     data: qs.stringify(obj),
-    options,
+    options
   });
 
 /*
@@ -979,7 +979,7 @@ export const wkProcessDef_detail = (obj, options) =>
     url: '/wkProcessDef/detail',
     method: 'POST',
     data: qs.stringify(obj),
-    options,
+    options
   });
 
 /*
@@ -992,9 +992,8 @@ export const wkProcessDef_update = (obj, options) =>
     url: '/wkProcessDef/update',
     method: 'POST',
     data: obj,
-    options,
+    options
   });
-
 
 /*
 *
@@ -1005,7 +1004,7 @@ export const wkProcessTask_approval_list = (obj, options) =>
     url: '/wkProcessTask/approval_list',
     method: 'POST',
     data: obj,
-    options,
+    options
   });
 /*
 * 经办人 04 催收中心 02
@@ -1015,9 +1014,8 @@ export const getLeafTypeList = (obj, options) =>
     url: '/getLeafTypeList',
     method: 'POST',
     data: qs.stringify(obj),
-    options,
+    options
   });
-
 
 /*
 *
@@ -1029,6 +1027,62 @@ export const sysDictionary_list = (obj, options) =>
     url: '/sysDictionary/list',
     method: 'POST',
     data: qs.stringify(obj),
+    options
+  });
+/*
+*
+仲裁查询操作
+* */
+export const arb_list = (obj, options) =>
+  fetch({
+    url: '/arb/list',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options
+  });
+
+/*
+*
+查看仲裁详情
+* */
+export const arb_detail = (obj, options) =>
+  fetch({
+    url: '/arb/detail',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options
+  });
+
+/*
+申请仲裁
+* */
+export const arb_apply = (obj, options) =>
+  fetch({
+    url: '/arb/apply',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options
+  });
+
+/*
+    客天登录
+* */
+export const call_kt_get_seat = (obj, options) =>
+  fetch({
+    url: '/call/kt/get_seat',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options
+  });
+
+/*
+客天外拨
+* */
+export const call_kt_hung_on = (obj, options) =>
+  fetch({
+    url: '/call/kt/hung_on',
+    method: 'POST',
+    data: qs.stringify(obj),
     options,
   });
 
@@ -1038,4 +1092,16 @@ export const sysarea_getAreaByParentId = (obj) =>
     url: '/sysarea/getAreaByParentId',
     method: 'POST',
     data: qs.stringify(obj),
+    options
   })
+
+/*
+容联
+* */
+export const call_moor_hung_on = (obj, options) =>
+  fetch({
+    url: '/call/moor/hung_on',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options
+  });

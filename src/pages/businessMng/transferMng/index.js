@@ -84,6 +84,14 @@ export default {
           width: widthVal
         },
         {
+          title: '订单状态',
+          searchOperator: 'like',
+          key: 'repayOrdStsName',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
+        {
           title: '代扣订单信息',
           searchOperator: 'like',
           key: 'responseMessage',
@@ -94,22 +102,22 @@ export default {
         {
           title: '产品名称',
           searchOperator: 'like',
-          key: 'prdTyp',
+          key: 'prdTypName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal,
-          render(h,params){
-            console.log(_this.getDirObj.PROD_TYPE,'产品数据');
-            const prdTyp = params.row.prdTyp;
-            let result = '';
-            if(_this.getDirObj && _this.getDirObj.PROD_TYPE){
-             result = _this.getDirObj.PROD_TYPE.filter(item => {
-                return item.itemCode == prdTyp
-              });
-            }
-            console.log(result,'resressrsrsr');
-            return h('span', result[0].itemName);
-          }
+          // render(h,params){
+          //   console.log(_this.getDirObj.PROD_TYPE,'产品数据');
+          //   const prdTyp = params.row.prdTyp;
+          //   let result = '';
+          //   if(_this.getDirObj && _this.getDirObj.PROD_TYPE){
+          //    result = _this.getDirObj.PROD_TYPE.filter(item => {
+          //       return item.itemCode == prdTyp
+          //     });
+          //   }
+          //   console.log(result,'resressrsrsr');
+          //   return h('span', result[0].itemName);
+          // }
         },
         {
           title: '借款期限',
@@ -254,12 +262,8 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.pageNo = 1;
-          this.getList();
-        }
-      });
+      this.pageNo = 1;
+      this.getList();
     },
     // 获取表格数据
     async getList() {

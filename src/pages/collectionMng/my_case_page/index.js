@@ -123,6 +123,7 @@ export default {
 						const id = params.row.id;
 						const prdTyp = params.row.prdTyp;
 						const userId = params.row.userId;
+						let seatType = sessionStorage.getItem('seatType');
 						return h('div', [
 							h(
 								'Tooltip',
@@ -143,7 +144,9 @@ export default {
 											on: {
 												click: () => {
 													window.open(
-														`${location.origin}/#/case_desc_page?caseNotest=${id}&prdTyptest=${prdTyp}&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+														`${location.origin}/#/case_desc_page?caseNotest=${id}&prdTyptest=${prdTyp}&userIdtest=${userId}&seatType=${seatType
+															? seatType
+															: 'KT'}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
 															_this.formItem
 														)}`
 													);
