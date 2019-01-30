@@ -1,5 +1,5 @@
 import { arb_apply } from '@/service/getData';
-import Cookie from "js-cookie"
+import Cookie from 'js-cookie';
 export default {
 	data() {
 		return {
@@ -7,7 +7,72 @@ export default {
 				'SXF-TOKEN': Cookie.get('SXF-TOKEN')
 			},
 			formItem: {},
-			ruleValidate: {},
+			ruleValidate: {
+				userGender: [
+					{
+						required: true,
+						message: '请选择性别',
+						trigger: 'change'
+					}
+				],
+				userNation: [
+					{
+						required: true,
+						message: '请选择民族',
+						trigger: 'change'
+					}
+				],
+				standAgreeDate: [
+					{
+						required: true,
+						message: '请选择提前到期日期',
+						trigger: 'change',
+						type: 'date'
+					}
+				],
+				voucherNo: [
+					{
+						required: true,
+						message: '请输入打款凭证流水号',
+						trigger: 'blur'
+					}
+				],
+				idAddress: [
+					{
+						required: true,
+						message: '请输入身份证地址',
+						trigger: 'blur'
+					}
+				],
+				idCardFront: [
+					{
+						required: true,
+						message: '请上传身份证正面',
+						trigger: 'blur'
+					}
+				],
+				idCardOpposite: [
+					{
+						required: true,
+						message: '请上传身份证反面',
+						trigger: 'blur'
+					}
+				],
+				voucherImg: [
+					{
+						required: true,
+						message: '请上传打款凭证',
+						trigger: 'blur'
+					}
+				],
+				standImg: [
+					{
+						required: true,
+						message: '请上传提前到期通知',
+						trigger: 'blur'
+					}
+				]
+			},
 			productTimeList: [],
 			defaultList: [],
 			defaultList1: [
@@ -43,11 +108,14 @@ export default {
 		getDirObj: {},
 		model: {}
 	},
+	created() {
+		this.formItem.userNation = this.zhongcai_data.userNation;
+		this.formItem.userGender = this.zhongcai_data.userGender;
+	},
 	methods: {
 		handleSubmit() {
-			console.log(this.formItem);
-			console.log(this.zhongcai_data);
 			this.$refs.formItem.validate((valid) => {
+				console.log(valid, '----------------');
 				if (valid) {
 					this.arb_apply();
 				} else {
@@ -62,14 +130,14 @@ export default {
 				caseNo: this.zhongcai_data.caseNo,
 				idCardNo: this.zhongcai_data.idNoHid,
 				userName: this.zhongcai_data.userName,
-				// userGender: this.zhongcai_data.userGender,
-				userNation: this.zhongcai_data.userNation,
+				userGender: this.formItem.userGender,
+				userNation: this.formItem.userNation,
 				voucherNo: this.formItem.voucherNo,
 				idAddress: this.formItem.idAddress,
-				idCardFront: this.formItem.upload[0].url,
-				idCardOpposite: this.formItem.upload1[0].url,
-				voucherImg: this.formItem.upload2[0].url,
-				standImg: this.formItem.upload3[0].url
+				idCardFront: this.uploadList[0].url,
+				idCardOpposite: this.uploadList1[0].url,
+				voucherImg: this.uploadList2[0].url,
+				standImg: this.uploadList3[0].url
 			};
 			if (this.formItem.standAgreeDate) {
 				obj.standAgreeDate = +new Date(this.formItem.standAgreeDate);
@@ -93,8 +161,14 @@ export default {
 		handleSuccess(res, file) {
 			console.log(res, '-----------------');
 			if (res.code === 1) {
-				file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-				file.name = '7eb99afb9d5f317c912f08b5212fd69a';
+				this.formItem.idCardFront = res.data.absolutePath;
+				this.uploadList = [
+					{
+						url: res.data.absolutePath,
+						status: 'finished'
+					}
+				];
+				this.$refs.formItem.validateField('idCardFront');
 			} else {
 				this.$Message.error(res.message);
 			}

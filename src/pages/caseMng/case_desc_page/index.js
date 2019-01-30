@@ -23,7 +23,8 @@ import {
 	mail_list_add, // 新增通讯录
 	case_remark_his_add, // 新增催记
 	collectcode_getCollectRelate, // 获取沟通状态
-	call_kt_hung_on // 外拨
+	call_kt_hung_on, // 外拨
+	call_moor_hung_on
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
@@ -61,7 +62,7 @@ export default {
 					}
 				]
 			},
-			getDirList: [ 'CNT_REL_TYP', 'GENDER' ],
+			getDirList: [ 'CNT_REL_TYP', 'GENDER', 'NATION' ],
 			getDirObj: {},
 			userNmHidCopy: '',
 			telShow: false,
@@ -1172,6 +1173,11 @@ export default {
 									class: 'edit-btn',
 									props: {
 										type: 'edit'
+									},
+									on: {
+										click: () => {
+											_this.handCall(params.row, 'call');
+										}
 									}
 								},
 								`${mblNoHid}(${callStateName ? callStateName : ''})`
@@ -1209,6 +1215,7 @@ export default {
 		let params = location.hash.split('?');
 		const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
 		this.caseNo = queryData.caseNotest;
+		this.seatType = queryData.seatType;
 		this.prdTyp = queryData.prdTyptest;
 		this.userId = queryData.userIdtest;
 		this.readType = queryData.readType;
@@ -1229,9 +1236,8 @@ export default {
 		async call_kt_hung_on(obj) {
 			this.telShow = true;
 			let callData = JSON.parse(sessionStorage.getItem('callData'));
-			const res = await call_kt_hung_on({
+			let obj2 = {
 				callno: obj.callno,
-				actionId: callData.id,
 				caseNo: this.caseNo,
 				toCallUser: obj.toCallUser,
 				toCallUserHid: obj.toCallUserHid,
@@ -1239,7 +1245,16 @@ export default {
 				toCallMblHid: obj.toCallMblHid,
 				callUserType: obj.callUserType,
 				userId: this.userId
-			});
+			};
+			if (this.seatType === 'KT') {
+				obj2.actionId = callData.id;
+			}
+			let res = {};
+			if (this.seatType === 'RL') {
+				res = await call_moor_hung_on(obj2);
+			} else {
+				res = await call_kt_hung_on(obj2);
+			}
 			if (res.code === 1) {
 				console.log('呼出成功！');
 			} else {
@@ -1544,12 +1559,12 @@ export default {
 			console.log(obj, type);
 			// type ['call] 拨打电话
 			this.call_kt_hung_on({
-				callno: obj.mblNo,
-				callUserType: obj.callUserType,
-				toCallUser: obj.userNm,
-				toCallUserHid: obj.mblNoHid,
-				toCallMbl: obj.mblNo,
-				toCallMblHid: obj.mblNoHid
+				callno: obj.mblNo || obj.cntUserMblNo,
+				callUserType: obj.callUserType || obj.cntRelTyp,
+				toCallUser: obj.userNm || obj.cntUserName,
+				toCallUserHid: obj.userNmHid || obj.cntUserNameHid,
+				toCallMbl: obj.mblNo || obj.cntUserMblNo,
+				toCallMblHid: obj.mblNoHid || obj.cntUserMblNoHid
 			});
 			if (type === 'call') {
 			}
@@ -1576,7 +1591,8 @@ export default {
 					billNo: '9999999999', // case_detail_case_base_info_Data.billNo
 					userNmHid: '2222222', // case_detail_case_identity_info_Data.userNmHid
 					caseNo: '2222222222', // this.caseNo,
-                    userGender: '01', //this.prdTyp
+					userGender: 'M', //this.prdTyp,
+					userNation: '汉族'
 				};
 			}
 			this.modal[type] = true;

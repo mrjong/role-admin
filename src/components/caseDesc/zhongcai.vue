@@ -13,7 +13,7 @@
           <Form
             ref="formItem"
             :model="formItem"
-            :label-width="100"
+            :label-width="120"
             class="panel_list"
             :rules="ruleValidate"
           >
@@ -168,6 +168,7 @@
                 :lg="24"
               >
               <FormItem
+              class="mt5"
                 label="身份证地址:"
                 prop="idAddress"
               >
@@ -188,6 +189,7 @@
               >
               <FormItem
                 span="6"
+                 class="mt15"
                 label="身份证正面:"
                 prop="idCardFront"
               >
@@ -221,7 +223,7 @@
                     :on-success="handleSuccess"
                     :format="['jpg','jpeg','png']"
                     :on-format-error="handleFormatError"
-                    type="select"
+                    type="drag"
                     :data="{
                     imgType: 'idCardFront',
                     caseNo:zhongcai_data.caseNo
@@ -241,7 +243,7 @@
               </FormItem>
               </Col>
 
-              <!-- <Col
+               <Col
                 :xs="24"
                 :sm="24"
                 :md="24"
@@ -249,8 +251,9 @@
               >
               <FormItem
                 span="6"
+                 class="mt15"
                 label="身份证反面:"
-                prop="buffet_id"
+                prop="idCardOpposite"
               >
                 <template>
                   <div
@@ -281,13 +284,14 @@
                     :default-file-list="defaultList1"
                     :on-success="handleSuccess"
                     :format="['jpg','jpeg','png']"
-                    :max-size="2048"
                     :on-format-error="handleFormatError"
-                    :on-exceeded-size="handleMaxSize"
-                    :before-upload="handleBeforeUpload('upload1')"
-                    multiple
                     type="drag"
-                    action="//jsonplaceholder.typicode.com/posts/"
+                    :data="{
+                    imgType: 'idCardOpposite',
+                    caseNo:zhongcai_data.caseNo
+                    }"
+                    :headers="headers"
+                    action="/admin/arb/upload"
                     style="display: inline-block;width:58px;"
                   >
                     <div style="width: 58px;height:58px;line-height: 58px;">
@@ -301,7 +305,7 @@
               </FormItem>
               </Col>
 
-              <Col
+               <Col
                 :xs="24"
                 :sm="24"
                 :md="24"
@@ -309,8 +313,9 @@
               >
               <FormItem
                 span="6"
+                 class="mt15"
                 label="打款凭证:"
-                prop="buffet_id"
+                prop="voucherImg"
               >
                 <template>
                   <div
@@ -339,15 +344,16 @@
                     ref="upload2"
                     :show-upload-list="false"
                     :default-file-list="defaultList2"
-                    :on-success="handleSuccess"
+                    :on-success="handleSuccess2"
                     :format="['jpg','jpeg','png']"
-                    :max-size="2048"
                     :on-format-error="handleFormatError"
-                    :on-exceeded-size="handleMaxSize"
-                    :before-upload="handleBeforeUpload('upload2')"
-                    multiple
                     type="drag"
-                    action="//jsonplaceholder.typicode.com/posts/"
+                    :data="{
+                    imgType: 'voucherImg',
+                    caseNo:zhongcai_data.caseNo
+                    }"
+                    :headers="headers"
+                    action="/admin/arb/upload"
                     style="display: inline-block;width:58px;"
                   >
                     <div style="width: 58px;height:58px;line-height: 58px;">
@@ -361,7 +367,7 @@
               </FormItem>
               </Col>
 
-              <Col
+               <Col
                 :xs="24"
                 :sm="24"
                 :md="24"
@@ -369,8 +375,9 @@
               >
               <FormItem
                 span="6"
+                 class="mt15"
                 label="提前到期通知:"
-                prop="buffet_id"
+                prop="standImg"
               >
                 <template>
                   <div
@@ -399,12 +406,16 @@
                     ref="upload3"
                     :show-upload-list="false"
                     :default-file-list="defaultList3"
-                    :on-success="handleSuccess"
+                    :on-success="handleSuccess3"
                     :format="['jpg','jpeg','png']"
                     :on-format-error="handleFormatError"
-                    :before-upload="handleBeforeUpload('upload3')"
-                    type="select"
-                    action="//jsonplaceholder.typicode.com/posts/"
+                    type="drag"
+                    :data="{
+                    imgType: 'standImg',
+                    caseNo:zhongcai_data.caseNo
+                    }"
+                    :headers="headers"
+                    action="/admin/arb/upload"
                     style="display: inline-block;width:58px;"
                   >
                     <div style="width: 58px;height:58px;line-height: 58px;">
@@ -416,7 +427,9 @@
                   </Upload>
                 </template>
               </FormItem>
-              </Col> -->
+              </Col>
+
+              
             </Row>
 
           </Form>

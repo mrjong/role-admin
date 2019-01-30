@@ -1032,3 +1032,14 @@ fetch({
     data: qs.stringify(obj),
     options
 });
+
+    /*
+    容联
+* */
+export const call_moor_hung_on = (obj, options) =>
+fetch({
+    url: '/call/moor/hung_on',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options
+});

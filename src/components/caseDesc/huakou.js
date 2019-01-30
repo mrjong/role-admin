@@ -4,9 +4,10 @@ let isClick = false;
 export default {
 	data() {
 		const validate_yqyhje_start = (rule, value, callback) => {
+            console.log(this.repayinfo_getApplyInfo_data)
 			if (
 				!this.repayinfo_getApplyInfo_data ||
-				this.repayinfo_getApplyInfo_data.overdueAmt ||
+				!this.repayinfo_getApplyInfo_data.overdueAmt ||
 				Number(value) > Number(this.repayinfo_getApplyInfo_data.overdueAmt)
 			) {
 				callback(new Error('还款金额不能超过逾期应还金额'));

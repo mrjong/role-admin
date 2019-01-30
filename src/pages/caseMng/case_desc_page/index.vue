@@ -619,29 +619,22 @@
                     {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}
                     <span>（本人）</span>
                   </span>
-                  <!-- @click="handCall({
-                        userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
-                        userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
-                        mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
-                        mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
-                    },'call','01')" -->
                   <span
                     class="tel"
                     @click="handCall({
                          callUserType:'01',
-                         userId:'22222222',
-                        userNmHid:'2222',
-                        userNm:'22222222222222',
-                        mblNoHid:'2222222222222222',
-                        mblNo:'18500214323'
+                         userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
+                        userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
+                        userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
+                        mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
+                        mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
                     },'call','01')"
                   >
                     <Tooltip
                       content="拨打"
                       placement="left"
                     >
-                      18888888
-                      <!-- {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid}} -->
+                      {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid}}
                     </Tooltip>
                   </span>
                   <span class="state">
@@ -655,6 +648,8 @@
                   >
                     <Icon
                       @click="handCall({
+                             callUserType:'01',
+                         userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
                         userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
                         userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
                         mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,

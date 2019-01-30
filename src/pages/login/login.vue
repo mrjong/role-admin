@@ -95,6 +95,7 @@ export default {
           this.call(res.data)
           this.loginSuccess(data)
         } else {
+          sessionStorage.setItem('seatType', 'RL')
           this.loginSuccess(data)
         }
       } else {
@@ -170,7 +171,7 @@ export default {
               "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
             )
 
-           // this.call_kt_get_seat()
+            // this.call_kt_get_seat()
             Cookies.set("access", 1)
             this.call_kt_get_seat(res)
           } else {
