@@ -167,7 +167,8 @@ export default {
 						url: res.data.absolutePath,
 						status: 'finished'
 					}
-				];
+                ];
+                file.url = res.data.absolutePath;
 				this.$refs.formItem.validateField('idCardFront');
 			} else {
 				this.$Message.error(res.message);

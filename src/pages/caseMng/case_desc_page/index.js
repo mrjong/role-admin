@@ -1256,7 +1256,7 @@ export default {
 				res = await call_kt_hung_on(obj2);
 			}
 			if (res.code === 1) {
-				console.log('呼出成功！');
+				this.$Message.success('呼出成功');
 			} else {
 				this.$Message.error(res.message);
 			}
