@@ -227,7 +227,9 @@
     <Card class="vue-panel-table">
       <p slot="title">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'" @click="showPanel2=!showPanel2"></Icon>检索结果
-        <Button
+        <span style="margin-left: 10px;">总共{{totalCase}}笔案件，</span>
+        <span>总共逾期金额{{totalOverdueAmt}}元</span>
+        <!-- <Button
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
@@ -238,7 +240,7 @@
           type="primary"
           size="small"
           @click.stop="handeldBtnClick('3')"
-        >停催</Button>
+        >停催</Button> -->
         <Button
           class="fr vue-back-btn header-btn"
           type="primary"
@@ -254,7 +256,7 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-        <Table :data="tableData" border :columns="tableColumns" stripe></Table>
+        <Table :data="tableData" border :columns="tableColumns" stripe @on-selection-change='changeSelect'></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div style="float: right;">
@@ -310,6 +312,7 @@
           :render="renderContent"
           multiple
           show-checkbox
+          :load-data="loadData"
           @on-select-change="selectNode"
           @on-check-change="checkChange"
         ></Tree>

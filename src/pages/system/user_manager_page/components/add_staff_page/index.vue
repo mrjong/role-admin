@@ -22,11 +22,7 @@
               multiple
               placeholder="请选择机构负责人"
             >
-              <Option
-                v-for="item in bossList"
-                :value="item.uuid"
-                :key="item.uuid"
-              >{{ item.name }}</Option>
+              <Option v-for="item in bossList" :value="item.uuid" :key="item.uuid">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -87,7 +83,7 @@
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="账号:" prop="loginName">
-            <Input size="small" clearable v-model="addStaffFormItem.loginName" placeholder="请输入账号"></Input>
+            <Input size="small" v-model="addStaffFormItem.loginName" placeholder="请输入账号"></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -117,7 +113,11 @@
               clearable
               placeholder="请选择公司"
             >
-              <Option v-for="item in companyList" :value="item.id" :key="item.id">{{ item.text }}</Option>
+              <Option
+                v-for="(item,index) in companyList"
+                :value="item.id"
+                :key="item"
+              >{{ item.text }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -388,7 +388,6 @@ export default {
         status: "1",
         leafType: type
       });
-      console.log(res);
       if (res.code === 1) {
         switch (type) {
           case "01":
@@ -464,7 +463,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .ivu-form {
-  min-height: 250px;
+  min-height: 400px;
 }
 .ivu-col {
   margin-bottom: 5px;

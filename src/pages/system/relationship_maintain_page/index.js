@@ -74,7 +74,7 @@ export default {
         {
           title: '接听方式',
           searchOperator: 'like',
-          key: 'extenType',
+          key: 'extenTypeName',
           align: 'center'
           // render: (h, params) => {
           //   return h('div', [
@@ -97,7 +97,7 @@ export default {
         {
           title: '状态',
           searchOperator: '=',
-          key: 'status',
+          key: 'statusName',
           align: 'center'
         },
         {

@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { cases_allot_list, getLeafTypeList } from '@/service/getData';
+import { cases_allot_list, getLeafTypeList, collect_parent_children, cases_batch_allot, cases_batch_recycle,cases_collect_recover, cases_collect_stop } from '@/service/getData';
 
 export default {
   name: 'case_distribute_page',
@@ -21,84 +21,10 @@ export default {
       getLeafTypeList2_data: [],
       getLeafTypeList_data: [],
       data5: [],
-      phoneCallList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
-      productTimeList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
-      productLineList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
+      collectRoleIds: [],
+      caseIds: [],
+      totalCase: '',
+      totalOverdueAmt: '',
       ruleValidate: {
         idNo: [
           {
@@ -164,23 +90,7 @@ export default {
       total: 0,
       billDate: [],
       formItem: {
-        caseStatus: '',
-        prodTypes: [],
-        periodCounts: [],
-        userNm: '',
-        idNo: '',
-        mblNo: '',
-        minOverdueDays: '',
-        maxOverdueDays: '',
-        minOverdueAmt: '',
-        maxOverdueAmt: '',
-        beginDueDate: '',
-        endDueDate: '',
-        billNo: '',
-        id: '',
-        creditLevels: [],
-        opCompayNames: '',
-        opUserName: '',
+
       },
       tableData: [],
       tableColumns: [
@@ -211,17 +121,27 @@ export default {
                 'a',
                 {
                   class: 'edit-btn',
-                  props: {}
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.cases_collect_stop(params.row.id);
+                    }
+                  }
                 },
-                '删除'
+                '停催'
               ),
               h(
                 'a',
                 {
                   class: 'edit-btn',
-                  props: {}
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.cases_collect_recover(params.row.id);
+                    }
+                  }
                 },
-                '删除'
+                '恢复催收'
               )
             ]);
           }
@@ -305,7 +225,7 @@ export default {
           render: (h, params) => {
             const row = params.row;
             const allotDate = row.allotDate
-              ? this.$options.filters['formatDate'](new Date(row.allotDate * 1000), 'yyyy-MM-dd hh:mm:ss')
+              ? this.$options.filters['formatDate'](row.allotDate, 'YYYY-MM-DD hh:mm:ss')
               : row.allotDate;
             return h('span', allotDate);
           }
@@ -314,7 +234,7 @@ export default {
           title: '电催公司',
           searchOperator: 'like',
           width: 180,
-          key: 'opCompayNames',
+          key: 'opCompayName',
           align: 'center',
         },
         {
@@ -370,13 +290,29 @@ export default {
 
                 }
               }
-            }, data.text)
+            }, data.name)
           ]),
         ]);
     },
     // 勾选节点的回调函数
     checkChange(arr) {
-      console.log(this.arr);
+      console.log(arr);
+      this.collectRoleIds = [];
+      arr.forEach(item => {
+        if (item.leafType === '04') {
+          this.collectRoleIds.push(item.id);
+        }
+      });
+    },
+    // table勾选回调
+    changeSelect(selection) {
+      console.log('---------');
+      this.caseIds = [];
+      selection &&
+        selection.forEach((element) => {
+          this.caseIds.push(element.id);
+        });
+      console.log(this.caseIds);
     },
     // 选中节点的回调函数
     selectNode(node) {
@@ -410,10 +346,18 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      const res = await cases_allot_list(this.formItem);
+      const res = await cases_allot_list({
+        ...this.formItem,
+        pageNum: this.pageNo,
+        pageSize: this.pageSize,
+      });
       if (res.code === 1) {
         console.log(res);
         this.tableData = res.data.page.content;
+        this.totalCase = res.data.summary.totalCount;
+        this.totalOverdueAmt = res.data.summary.totalOverdueAmt;
+        this.pageNo = res.data.page.number;
+        this.total = res.data.page.totalElements;
       } else {
         this.$Message.error(res.message);
       }
@@ -438,13 +382,109 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 获取init tree数据
+    async initTree(id, type) {
+      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
+      console.log()
+      if (res.code === 1) {
+        this.data5 = res.data;
+        this.data5.forEach(item => {
+          if (item.leafType != '04') {
+            item.disableCheckbox = true;
+          }
+        });
+      } else {
+        this.$Message.error(res.message)
+      }
+    },
+    // 动态获取表格数据
+    async collect_parent_children(id, type, callBack) {
+      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
+      if (res.code === 1) {
+        res.data.forEach(item => {
+          if (item.leafType != '04') {
+            item.disableCheckbox = true;
+          }
+        });
+        callBack(res.data)
+      } else {
+        this.$Message.error(res.message)
+      }
+    },
+    // 异步加载tree数据
+    loadData(item, callBack) {
+      console.log(item, '----------------------')
+      this.nodeData = item;
+      let leafType;
+      if (item.leafType === '01') {
+        leafType = '02';
+      } else if (item.leafType === '02') {
+        leafType = '03';
+      } else if (item.leafType === '03') {
+        leafType = '04';
+      } else {
+        return;
+      };
+      this.collect_parent_children(item.id, leafType, callBack);
+    },
     // 重置
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {};
       this.$refs[name].resetFields();
     },
-    // 批量分配弹窗
+    // 批量分配接口
+    async cases_batch_allot() {
+      const res = await cases_batch_allot({
+        ...this.formItem,
+        collectRoleIds: this.collectRoleIds,
+        caseIds: this.caseIds,
+      });
+      if (res.code === 1) {
+        this.$Message.success('分配成功');
+        this.distributeRoleFlag = false;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 批量回收接口
+    async cases_batch_recycle() {
+      const res = await cases_batch_recycle({
+        caseIds: this.caseIds,
+        ...this.formItem
+      });
+      if (res.code === 1) {
+        this.$Message.success('回收成功');
+        this.recycleFlag = false;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 案件停止催收接口
+    async cases_collect_stop(id) {
+      const res = await cases_collect_stop({
+        caseIds: id,
+      });
+      if (res.code === 1) {
+        this.getList();
+        this.$Message.success('操作成功');
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 案件恢复催收接口
+    async cases_collect_recover(id) {
+      const res = await cases_collect_recover({
+        caseIds: id,
+      });
+      if (res.code === 1) {
+        this.getList();
+        this.$Message.success('操作成功');
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 根据类型判断提交
     handeldBtnClick(type) {
       switch (type) {
         case '1':
@@ -480,10 +520,13 @@ export default {
       switch (type) {
         case '1': this.distributeFlag = false;
           this.distributeRoleFlag = true;
+          this.initTree('', '01')
           break;
-        case '2': this.distributeRoleFlag = false;
+        case '2':
+          this.cases_batch_allot();
           break;
-        case '3': this.recycleFlag = false;
+        case '3':
+          this.cases_batch_recycle();
           break;
         case '4': this.stopCollectionFlag = false;
           break;

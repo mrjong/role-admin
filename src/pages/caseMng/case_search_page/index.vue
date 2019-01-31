@@ -34,7 +34,13 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="产品线:">
-              <Select size="small" clearable placeholder="请选择产品线" multiple v-model="formItem.prodTypes">
+              <Select
+                size="small"
+                clearable
+                placeholder="请选择产品线"
+                multiple
+                v-model="formItem.prodTypes"
+              >
                 <Option
                   v-for="item in getDirObj.PROD_TYPE"
                   :value="item.itemCode"
@@ -45,7 +51,13 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="产品期数:">
-              <Select size="small" clearable placeholder="请选择产品期数" multiple v-model="formItem.periodCounts">
+              <Select
+                size="small"
+                clearable
+                placeholder="请选择产品期数"
+                multiple
+                v-model="formItem.periodCounts"
+              >
                 <Option
                   v-for="item in getDirObj.PROD_CNT"
                   :value="item.itemCode"
@@ -126,7 +138,13 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="信用级别:">
-              <Select size="small" clearable placeholder="请选择信用级别" multiple v-model="formItem.creditLevels">
+              <Select
+                size="small"
+                clearable
+                placeholder="请选择信用级别"
+                multiple
+                v-model="formItem.creditLevels"
+              >
                 <Option
                   v-for="item in getDirObj.CREDIT_LEVEL"
                   :value="item.itemCode"
@@ -158,14 +176,15 @@
     <!-- 检索结果 -->
     <Card class="vue-panel-table">
       <p slot="title" @click="showPanel2=!showPanel2">
-        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
-        <router-link to="/buffet/buffet_add">
-          <Button class="fr vue-back-btn header-btn" type="primary" size="small">导出数据</Button>
-        </router-link>
+        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
+        检索结果
+        <span style="margin-left: 10px;">总共{{totalCase}}笔案件，</span>
+        <span>总共逾期金额{{totalOverdueAmt}}元</span>
+        <Button class="fr vue-back-btn header-btn" type="primary" size="small">导出数据</Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-        <Table :data="tableData" :columns="tableColumns" stripe></Table>
+        <Table :data="tableData" :columns="tableColumns" stripe @on-selection-change='changeSelect'></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div style="float: right;">

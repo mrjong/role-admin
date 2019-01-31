@@ -6,7 +6,7 @@ import departmentForm from './components/department_form_page';
 import staffForm from './components/staff_form_page';
 import addRole from './components/add_staff_page';
 import addOrganization from './components/add_organization_page';
-import { collect_user_list, collect_user_leader_add, collect_user_clerk_add, collect_parent_children } from '@/service/getData';
+import {  collect_parent_children } from '@/service/getData';
 export default {
   components: {
     organizationForm,
@@ -35,6 +35,7 @@ export default {
       nodeId: '',
       nodeData: {},
       parentData: {},
+      dataContact: [],
       data5: [
         {
           title: '大机构',
@@ -223,7 +224,19 @@ export default {
     async collect_parent_children(id, type, callBack) {
       const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
       if (res.code === 1) {
-        callBack(res.data)
+        this.dataContact = res.data;
+        callBack(this.dataContact);
+        // return res.data;
+      } else {
+        this.$Message.error(res.message)
+      }
+    },
+    async collect_parent_children2(id, type, callBack) {
+      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
+      if (res.code === 1) {
+        this.dataContact = this.dataContact.concat(res.data);
+        callBack(this.dataContact);
+        // return res.data;
       } else {
         this.$Message.error(res.message)
       }
@@ -243,6 +256,9 @@ export default {
         return;
       };
       this.collect_parent_children(item.id, leafType, callBack);
+      setTimeout(() => {
+        this.collect_parent_children2(item.id, '04', callBack);
+      },0)
     },
     // 递归处理tree数据
     treeNodeDeal(data) {

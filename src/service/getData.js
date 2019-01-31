@@ -736,13 +736,49 @@ export const case_list = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-// 案件分配接口
+// 案件导出
+export const cases_export = (obj) =>
+  fetch({
+    url: '/cases/export',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+  })
+// 案件分配列表接口
 export const cases_allot_list = (obj) =>
   fetch({
     url: '/cases/allot/list',
     method: 'POST',
     data: qs.stringify(obj)
   });
+// 案件批量分配接口
+export const cases_batch_allot = (obj) =>
+  fetch({
+    url: '/cases/batch/allot',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 案件批量回收接口
+export const cases_batch_recycle = (obj) =>
+  fetch({
+    url: '/cases/batch/recycle',
+    method: 'POST',
+    data: qs.stringify(obj),
+  });
+  // 案件停止催收
+  export const cases_collect_stop = (obj) =>
+  fetch({
+    url: '/cases/collect/stop',
+    method: 'POST',
+    data: qs.stringify(obj),
+  });
+  // 案件恢复催收
+  export const cases_collect_recover = (obj) =>
+  fetch({
+    url: '/cases/collect/recover',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
 // 分案规则列表
 export const divide_rules_list = (obj) =>
   fetch({

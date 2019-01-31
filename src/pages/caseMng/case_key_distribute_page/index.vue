@@ -141,11 +141,11 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem span="6" label="接收人员:" prop="allotRoleIdList">
+                <FormItem span="6" label="接收人员:" prop="allotNameList">
                   <Input
                     size="small"
                     clearable
-                    v-model="formItem.allotRoleIdList"
+                    v-model="formItem.allotNameList"
                     placeholder="请选择接收人员"
                     disabled
                   ></Input>
@@ -180,8 +180,10 @@
           <Tree
             :data="data5"
             :render="renderContent"
+            ref='tree'
             multiple
             show-checkbox
+            :load-data="loadData"
             @on-select-change="selectNode"
             @on-check-change="checkChange"
           ></Tree>
@@ -198,7 +200,7 @@
 <script>
 import formValidateFun from "@/mixin/formValidateFun";
 import sysDictionary from "@/mixin/sysDictionary";
-import { divide_allot_manual } from "@/service/getData";
+import { divide_allot_manual, collect_parent_children } from "@/service/getData";
 export default {
   name: "case_key_distribute_page",
   mixins: [formValidateFun, sysDictionary],
@@ -214,6 +216,8 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      allotRoleIdList: [],
+      allotNameList: [],
       ruleValidate: {
         prodTypeList: [
           {
@@ -229,7 +233,7 @@ export default {
             trigger: "change"
           }
         ],
-        allotRoleIdList: [
+        allotNameList: [
           {
             required: false,
             message: "请选择接收人员",
@@ -292,10 +296,13 @@ export default {
         ovduamtMax: "",
         allotType: "",
         creditLevelList: [],
-        allotRoleIdList: [12]
+        allotNameList: []
       },
       data5: []
     };
+  },
+  created() {
+    this.initTree('', '01');
   },
   methods: {
     renderContent(h, { root, node, data }) {
@@ -327,13 +334,22 @@ export default {
 
                 }
               }
-            }, data.text)
+            }, data.name)
           ]),
         ]);
     },
     // 勾选节点的回调函数
     checkChange(arr) {
-      console.log(this.arr);
+      console.log(this.$refs.tree.getCheckedNodes());
+      let array = this.$refs.tree.getCheckedNodes();
+      this.allotRoleIdList = [];
+      this.formItem.allotNameList = [];
+      arr.forEach(item => {
+        if (item.leafType === '04') {
+          this.allotRoleIdList.push(item.id);
+          this.formItem.allotNameList.push(item.name);
+        }
+      });
     },
     // 选中节点的回调函数
     selectNode(node) {
@@ -355,12 +371,60 @@ export default {
         }
       });
     },
+    // 获取init tree数据
+    async initTree(id, type) {
+      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
+      console.log()
+      if (res.code === 1) {
+        this.data5 = res.data;
+        this.data5.forEach(item => {
+          if (item.leafType != '04') {
+            item.disableCheckbox = true;
+          }
+        });
+      } else {
+        this.$Message.error(res.message)
+      }
+    },
+    // 动态获取表格数据
+    async collect_parent_children(id, type, callBack) {
+      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
+      if (res.code === 1) {
+        res.data.forEach(item => {
+          if (item.leafType != '04') {
+            item.disableCheckbox = true;
+          }
+        });
+        callBack(res.data)
+      } else {
+        this.$Message.error(res.message)
+      }
+    },
+    // 异步加载tree数据
+    loadData(item, callBack) {
+      console.log(item, '----------------------')
+      this.nodeData = item;
+      let leafType;
+      if (item.leafType === '01') {
+        leafType = '02';
+      } else if (item.leafType === '02') {
+        leafType = '03';
+      } else if (item.leafType === '03') {
+        leafType = '04';
+      } else {
+        return;
+      };
+      this.collect_parent_children(item.id, leafType, callBack);
+    },
     // 一键分配接口
     async divide_allot_manual() {
-      const res = await divide_allot_manual(this.formItem);
+      const res = await divide_allot_manual({
+        ...this.formItem,
+        allotRoleIdList: this.allotRoleIdList,
+      });
       if (res.code === 1) {
         console.log(res);
-        this.$Message.success(res.message);
+        this.$Message.success('分配成功');
       } else {
         this.$Message.error(res.message);
       }

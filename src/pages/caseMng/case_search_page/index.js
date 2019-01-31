@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { case_list } from '@/service/getData';
+import { case_list, cases_export } from '@/service/getData';
 export default {
   name: 'case_search_page',
   mixins: [formValidateFun, sysDictionary],
@@ -10,6 +10,9 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      totalOverdueAmt: '',
+      totalCase: '',
+      caseIds: [],
       ruleValidate: {
         idNo: [
           {
@@ -256,6 +259,16 @@ export default {
     this.getList();
   },
   methods: {
+    // table选中
+    changeSelect(selection) {
+			console.log('---------');
+			this.caseIds = [];
+			selection &&
+				selection.forEach((element) => {
+					this.caseIds.push(element.uuid);
+				});
+			console.log(this.caseIds);
+		},
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
@@ -276,6 +289,18 @@ export default {
         }
       });
     },
+    // 案件导出
+    async cases_export() {
+      const res = await cases_export({
+        ...this.formItem,
+        caseIds: this.caseIds,
+      });
+      if (res.code) {
+        this.$Message.success('导出成功');
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
     // 获取表格数据
     async getList() {
       const res = await case_list({
@@ -285,7 +310,11 @@ export default {
       });
       console.log(res);
       if (res.code === 1) {
-        this.tableData = res.data;
+        this.tableData = res.data.page.content;
+        this.total = res.data.page.totalElements;
+        this.pageNo = res.data.page.number;
+        this.totalCase = res.data.summary.totalCount;
+        this.totalOverdueAmt = res.data.summary.totalOverdueAmt;
       } else {
         this.$Message.error(res.message);
       }
