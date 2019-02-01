@@ -85,7 +85,7 @@ export default function fetch({ url = '', method = 'GET', data = {}, options = {
 		method: method.toLocaleLowerCase(),
 		url,
 		data,
-		timeout: 10000,
+		timeout: 20000,
 		options,
 		responseType
 	})

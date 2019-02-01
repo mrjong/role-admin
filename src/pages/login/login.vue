@@ -92,8 +92,9 @@ export default {
       console.log(res)
       if (res.code === 1) {
         if (res.data.seatType === 'KT') {
-          this.call(res.data)
-          this.loginSuccess(data)
+          sessionStorage.setItem('seatType', 'KT');
+          this.call(res.data);
+          this.loginSuccess(data);
         } else {
           sessionStorage.setItem('seatType', 'RL')
           this.loginSuccess(data)

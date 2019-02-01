@@ -449,7 +449,7 @@ export default {
 					title: '订单状态',
 					align: 'center',
 					width: 100,
-					key: 'ordSts'
+					key: 'ordStsName'
 				},
 				{
 					title: '失败原因',
@@ -488,13 +488,13 @@ export default {
 					title: '卡类型',
 					align: 'center',
 					width: 100,
-					key: 'crdAcTyp'
+					key: 'crdAcTypName'
 				},
 				{
 					title: '还款银行',
 					align: 'center',
 					width: 100,
-					key: 'crdCorpOrg'
+					key: 'crdCorpOrgName'
 				},
 				{
 					title: '还款银行卡后四位',
@@ -1215,7 +1215,8 @@ export default {
 		let params = location.hash.split('?');
 		const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
 		this.caseNo = queryData.caseNotest;
-		this.seatType = queryData.seatType;
+    this.seatType = queryData.seatType;
+    console.log(this.seatType);
 		this.prdTyp = queryData.prdTyptest;
 		this.userId = queryData.userIdtest;
 		this.readType = queryData.readType;
@@ -1256,7 +1257,7 @@ export default {
 				res = await call_kt_hung_on(obj2);
 			}
 			if (res.code === 1) {
-				this.$Message.success('呼出成功');
+        this.$Message.success('呼出成功');
 			} else {
 				this.$Message.error(res.message);
 			}

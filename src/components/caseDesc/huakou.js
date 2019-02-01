@@ -114,7 +114,10 @@ export default {
 			}
 			isClick = true;
 			const res = await repayinfo_applayRepay({
-				...this.formItem
+        ...this.formItem,
+        caseNo: this.repayinfo_getApplyInfo_data.caseNo,
+        billNo: this.repayinfo_getApplyInfo_data.billNo,
+        overdueAmt:this.repayinfo_getApplyInfo_data.overdueAmt,
 			});
 			isClick = false;
 			if (res.code === 1) {

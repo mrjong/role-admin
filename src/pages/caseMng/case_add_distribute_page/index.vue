@@ -260,28 +260,28 @@ export default {
             type: 'array'
           }
         ],
-        ovdudaysMin: [
-          {
-            pattern: this.GLOBAL.num,
-            message: "逾期天数为正整数",
-            type: 'string',
-          },
-          {
-            validator: this.validate_yqts_start,
-            trigger: "blur"
-          }
-        ],
-        ovdudaysMax: [
-          {
-            pattern: this.GLOBAL.num,
-            message: "逾期天数为正整数",
-            type: 'string'
-          },
-          {
-            validator: this.validate_yqts_end,
-            trigger: "blur"
-          }
-        ],
+        // ovdudaysMin: [
+        //   {
+        //     // pattern: this.GLOBAL.num,
+        //     message: "逾期天数为正整数",
+        //     type: 'string',
+        //   },
+        //   {
+        //     validator: this.validate_yqts_start,
+        //     trigger: "blur"
+        //   }
+        // ],
+        // ovdudaysMax: [
+        //   {
+        //     // pattern: this.GLOBAL.num,
+        //     message: "逾期天数为正整数",
+        //     type: 'string'
+        //   },
+        //   {
+        //     validator: this.validate_yqts_end,
+        //     trigger: "blur"
+        //   }
+        // ],
         ovduamtMin: [
           {
             pattern: this.GLOBAL.money,
@@ -365,7 +365,7 @@ export default {
                   click: e => {}
                 }
               },
-              data.text
+              data.name
             )
           ])
         ]
