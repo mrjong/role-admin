@@ -175,11 +175,14 @@
       var alignCenter = 'center';
       var widthVal = 140;
       var widthMidVal = 100;
+      var createT = new Date();
+      var createDate = this.$options.filters['formatDate'](createT, 'YYYY-MM-DD')
+
       return {
         showPanel: false,
         showPanel2: false,
         formItem: {
-          createDate: new Date(), //默认获取当前的日期时间
+          createDate: createDate, //默认获取当前的日期时间需要进行转换
           overdueDaysLt:'',
           overdueDaysBt: '',
         },
@@ -624,7 +627,7 @@
       };
     },
     created() {
-      //this.getList();
+      this.getList();
     },
     methods: {
       // 改变日期区间的格式之后进行处理
@@ -680,6 +683,7 @@
       clearForm(name) {
         this.pageNo = 1;
         this.formItem = {};
+        this.formItem.createDate = this.$options.filters['formatDate'](new Date(), 'YYYY-MM-DD')
         this.$refs[name].resetFields();
       }
     }

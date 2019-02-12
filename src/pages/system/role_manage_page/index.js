@@ -379,6 +379,7 @@ export default {
       console.log(res, '刷新看结果');
       if (res && res.code === 1) {
         // this.$Message.success('修改成功');
+        this.$refs['formValidateChange'].resetFields();
         this.modalChange = false;
         // 刷新页面
         this.getList();
@@ -393,6 +394,7 @@ export default {
       if (res && res.code === 1) {
         this.$Message.success('添加成功');
         this.modalAddRole = false;
+        this.$refs['formValidateAdd'].resetFields();
         this.formValidateAdd = {};
        this.getList();
       } else {

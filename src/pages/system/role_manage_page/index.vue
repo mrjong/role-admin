@@ -217,7 +217,7 @@
             </Row>
           </Form>
       <div slot="footer">
-        <Button :loading="modal_loading" size="small" @click="closeModal('1')">关闭</Button>
+        <Button size="small" @click="closeModal('1')">关闭</Button>
       </div>
     </Modal>
     <Modal
