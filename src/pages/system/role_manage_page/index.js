@@ -27,11 +27,11 @@ export default {
       roleTypList:[
         {
         value:'01',
-        label:'催收'
+        label:'系统'
         },
         {
         value:'02',
-        label:'系统'
+        label:'催收'
         }
       ],
       modalSee: false,
@@ -124,7 +124,7 @@ export default {
         {
           title: '角色状态',
           searchOperator: 'like',
-          key: 'roleStatus',
+          key: 'roleStatusName',
           className: 'tableMainW',
           align: alignCenter,
           minWidth: widthVal
@@ -132,8 +132,8 @@ export default {
         {
           title: '角色类型',
           searchOperator: 'like',
-          key: 'roleType',
-          className: 'tableMainW',
+          key: 'roleTypeName',
+          className: 'tableMain',
           align: alignCenter,
           minWidth: widthMidVal
         },
@@ -176,7 +176,8 @@ export default {
           width: widthMidVal,
           render: (h, params) => {
             console.log(params.row,'ccccccc');
-            let id = params.row;
+            let id = params.row.id;
+            let changeInfo = params.row;
             return h('div', [
                   h(
                     'a',
@@ -198,7 +199,7 @@ export default {
                       props: {},
                       on: {
                         click: ()=> {
-                          this.changeRole(id);
+                          this.changeRole(changeInfo);
                         }
                       }
                     },
@@ -279,11 +280,11 @@ export default {
     ok() {
 
     },
-    changeRole(parmId) {
+    changeRole(parm) {
       this.modalChange = true;
-      this.formValidateChange = parmId;
-      this.formValidateChange.roleStatus = parmId.roleStatus == 1 ? 'one':'zero';
-      sessionStorage.setItem('updateId', parmId.id);
+      this.formValidateChange = parm;
+      this.formValidateChange.roleStatus = parm.roleStatus == 1 ? 'one':'zero';
+      sessionStorage.setItem('updateId', parm.id);
     },
     // 确认修改信息
     modalChangeOk(name) {
@@ -301,7 +302,6 @@ export default {
         if (valid) {
           this.toAddRole();
         } else {
-          console.log('twotwo')
         }
       })
     },
@@ -334,6 +334,7 @@ export default {
       });
     },
     checkSeeClick(id) {
+      console.log(id,'wo我是IDDDDD');
       this.getInfo(id);
       this.modalSee = true;
     },
@@ -353,9 +354,11 @@ export default {
     },
     // 获取表格数据
     async getList() {
+      this.formValidate.status = this.formValidate.status == 'one' ? 1:this.formValidate.status == 'zero' ? 0: '';
       let res = await system_role_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
+        ...this.formValidate
       })
       this.tableData = res.data.content;
       this.total = res.data.totalElements;
@@ -372,23 +375,28 @@ export default {
     // 提交修改角色的接口
     async toChangeRole() {
       this.formValidateChange.roleStatus = this.formValidateChange.roleStatus == 'one' ? 1:0;
-      let res = system_role_update({id: sessionStorage.getItem('updateId'), ...this.formValidateChange});
-      if (res && res.code == 1) {
-        this.$Messagel.success('修改成功');
+      let res = await system_role_update({id: sessionStorage.getItem('updateId'), ...this.formValidateChange});
+      console.log(res, '刷新看结果');
+      if (res && res.code === 1) {
+        // this.$Message.success('修改成功');
         this.modalChange = false;
+        // 刷新页面
+        this.getList();
       } else {
         this.$Message.error(res.message);
       }
     },
     async toAddRole() {
-      this.formValidateAdd.roleStatus = this.formValidateAdd.roleStatus == 'one' ? 1 : 0;
+      let roleStatus = this.formValidateAdd.roleStatus == 'one' ? 1 : 0;
       let res = await
-        system_role_add({...this.formValidateAdd});
+        system_role_add({...this.formValidateAdd,roleStatus});
       if (res && res.code === 1) {
         this.$Message.success('添加成功');
         this.modalAddRole = false;
-        console.log(res, '添加角色接口请求结果')
+        this.formValidateAdd = {};
+       this.getList();
       } else {
+        this.formValidateAdd = {};
         this.$Message.error(res.message);
       }
     },
