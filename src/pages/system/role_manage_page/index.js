@@ -374,8 +374,8 @@ export default {
     },
     // 提交修改角色的接口
     async toChangeRole() {
-      this.formValidateChange.roleStatus = this.formValidateChange.roleStatus == 'one' ? 1:0;
-      let res = await system_role_update({id: sessionStorage.getItem('updateId'), ...this.formValidateChange});
+      let roleStatus = this.formValidateChange.roleStatus == 'one' ? 1:0;
+      let res = await system_role_update({id: sessionStorage.getItem('updateId'), ...this.formValidateChange, roleStatus});
       console.log(res, '刷新看结果');
       if (res && res.code === 1) {
         // this.$Message.success('修改成功');
@@ -392,11 +392,11 @@ export default {
       let res = await
         system_role_add({...this.formValidateAdd,roleStatus});
       if (res && res.code === 1) {
-        this.$Message.success('添加成功');
+        //this.$Message.success('添加成功');
         this.modalAddRole = false;
         this.$refs['formValidateAdd'].resetFields();
         this.formValidateAdd = {};
-       this.getList();
+        this.getList();
       } else {
         this.formValidateAdd = {};
         this.$Message.error(res.message);
