@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ea12dd2-4ac8-4c30-bf35-835ba6cad9c5" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dailyMonitoring/overduePayment/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dailyMonitoring/overduePayment/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/system/role_manage_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/role_manage_page/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/system/system_user_page/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/system/system_user_page/index.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -24,36 +21,24 @@
           <file leaf-file-name="sysDictionary.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/mixin/sysDictionary.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="43">
-                  <caret line="25" selection-start-line="24" selection-end-line="25" />
+                <state relative-caret-position="600">
+                  <caret line="40" column="30" lean-forward="true" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
                 </state>
               </provider>
             </entry>
           </file>
           <file leaf-file-name="index.vue" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="226">
-                  <caret line="221" column="12" lean-forward="true" selection-start-line="221" selection-start-column="12" selection-end-line="221" selection-end-column="12" />
-                  <folding>
-                    <element signature="n#Card#0;n#div#0;n#template#0;n#!!top" />
-                    <element signature="n#p#0;n#Card#1;n#div#0;n#template#0;n#!!top" />
-                    <element signature="n#Card#0;n#Modal#1;n#div#0;n#template#0;n#!!top" />
-                    <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
-                  </folding>
-                </state>
-              </provider>
+            <entry file="file://$PROJECT_DIR$/src/pages/system/system_user_page/index.vue">
+              <provider selected="true" editor-type-id="text-editor" />
             </entry>
           </file>
-          <file leaf-file-name="index.vue" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/pages/dailyMonitoring/overduePayment/index.vue">
+          <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/pages/system/system_user_page/index.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="267">
-                  <caret line="687" column="7" lean-forward="true" selection-start-line="687" selection-start-column="7" selection-end-line="687" selection-end-column="7" />
+                <state relative-caret-position="486">
+                  <caret line="158" column="15" lean-forward="true" selection-start-line="158" selection-start-column="15" selection-end-line="158" selection-end-column="15" />
                   <folding>
-                    <element signature="n#Col#0;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
-                    <element signature="e#5465#7223#0" />
-                    <element signature="e#7247#16908#0" />
+                    <element signature="e#0#72#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -127,9 +112,9 @@
       <find>changeRole</find>
       <find>modalChange</find>
       <find>toChangeRole</find>
-      <find>loading</find>
       <find>createDate</find>
       <find>new</find>
+      <find>loading</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -170,6 +155,7 @@
         <option value="$PROJECT_DIR$/src/pages/system/role_manage_page/index.js" />
         <option value="$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue" />
         <option value="$PROJECT_DIR$/src/pages/dailyMonitoring/overduePayment/index.vue" />
+        <option value="$PROJECT_DIR$/src/pages/system/system_user_page/index.js" />
       </list>
     </option>
   </component>
@@ -190,7 +176,7 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="120" />
+    <option name="x" value="191" />
     <option name="y" value="23" />
     <option name="width" value="1393" />
     <option name="height" value="877" />
@@ -227,15 +213,15 @@
               <item name="fcs-front" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="dailyMonitoring" type="462c0819:PsiDirectoryNode" />
+              <item name="system" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="fcs-front" type="b2602c69:ProjectViewProjectNode" />
               <item name="fcs-front" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="dailyMonitoring" type="462c0819:PsiDirectoryNode" />
-              <item name="overduePayment" type="462c0819:PsiDirectoryNode" />
+              <item name="system" type="462c0819:PsiDirectoryNode" />
+              <item name="system_user_page" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -293,17 +279,18 @@
       <workItem from="1548641306387" duration="12312000" />
       <workItem from="1548664357946" duration="20365000" />
       <workItem from="1549849417425" duration="7684000" />
-      <workItem from="1549949171511" duration="8107000" />
+      <workItem from="1549949171511" duration="8744000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="250227000" />
+    <option name="totallyTimeSpent" value="250864000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="120" y="23" width="1393" height="877" extended-state="0" />
+    <frame x="191" y="23" width="1393" height="877" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7763158" visible="true" weight="0.20772594" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7763158" visible="true" weight="0.20772594" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007299" side_tool="true" weight="0.3602564" />
@@ -311,7 +298,7 @@
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Structure" order="1" sideWeight="0.2236842" side_tool="true" weight="0.17829457" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49927008" visible="true" weight="0.29871795" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49927008" visible="true" weight="0.21410257" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -444,20 +431,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.eslintignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="17" lean-forward="true" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/webpack.prod.config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1170">
-          <caret line="78" column="62" lean-forward="true" selection-start-line="78" selection-start-column="62" selection-end-line="78" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/mixin/tablePage.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
@@ -809,30 +782,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/mixin/sysDictionary.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="43">
-          <caret line="25" selection-start-line="24" selection-end-line="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build/webpack.dev.config.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="433">
           <caret line="75" column="57" lean-forward="true" selection-start-line="75" selection-start-column="57" selection-end-line="75" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="221" column="12" lean-forward="true" selection-start-line="221" selection-start-column="12" selection-end-line="221" selection-end-column="12" />
-          <folding>
-            <element signature="n#Card#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#p#0;n#Card#1;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#Card#0;n#Modal#1;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -849,12 +802,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/dailyMonitoring/overduePayment/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="687" column="7" lean-forward="true" selection-start-line="687" selection-start-column="7" selection-end-line="687" selection-end-column="7" />
+        <state relative-caret-position="3540">
+          <caret line="696" column="17" lean-forward="true" selection-start-line="696" selection-start-column="17" selection-end-line="696" selection-end-column="17" />
           <folding>
             <element signature="n#Col#0;n#Row#0;n#Form#0;n#Card#0;n#div#0;n#template#0;n#!!top" />
             <element signature="e#5465#7223#0" />
             <element signature="e#7247#16908#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/system/role_manage_page/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="221" column="12" lean-forward="true" selection-start-line="221" selection-start-column="12" selection-end-line="221" selection-end-column="12" />
+          <folding>
+            <element signature="n#Card#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#p#0;n#Card#1;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#Card#0;n#Modal#1;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mixin/sysDictionary.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="40" column="30" lean-forward="true" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/system/system_user_page/index.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/system/system_user_page/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="158" column="15" lean-forward="true" selection-start-line="158" selection-start-column="15" selection-end-line="158" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#72#0" expanded="true" />
           </folding>
         </state>
       </provider>
