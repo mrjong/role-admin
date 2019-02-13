@@ -3,7 +3,6 @@
     <Modal
       v-model="model.modal"
       width="800"
-      :transfer="false"
       class-name="add_role_form_modal"
       :mask-closable="false"
       @on-visible-change="del"

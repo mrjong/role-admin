@@ -234,11 +234,12 @@ export default {
   methods: {
     // 勾选节点的回调函数
     checkChange(arr) {
+      this.menuIds = [];
       arr.forEach(item => {
         this.menuIds.push(item.id)
         console.log(item.id.length)
       });
-      this.menuIds = this.menuIds.join(',');
+      // this.menuIds = this.menuIds.join(',');
       console.log(this.menuIds);
     },
     // 选中节点的回调函数
@@ -347,11 +348,6 @@ export default {
         this.modalAddRole = false;
       }
     },
-
-    // 保存更新的菜单分配
-    updateMenu() {
-
-    },
     // 获取表格数据
     async getList() {
       let status = this.formValidate.status == 'one' ? 1:this.formValidate.status == 'zero' ? 0: '';
@@ -405,7 +401,7 @@ export default {
     },
     // 获取菜单列表数据
     async getMenuList() {
-      let res = await system_role_menu_list({id: '5bdb56ec980e4b998ac372af9a6dcad0' });
+      let res = await system_role_menu_list({id: this.roleId });
       if (res.code === 1) {
         this.data5 = res.data.data;
         this.data5[0].expand = true;
@@ -415,7 +411,7 @@ export default {
     },
     // 菜单分配的接口
     async menuUpdate() {
-      let res = await stytem_menu_opration({ roleId: '5bdb56ec980e4b998ac372af9a6dcad0', menuIds: this.menuIds });
+      let res = await stytem_menu_opration({ roleId: this.roleId, menuIds: this.menuIds });
       if (res.code === 1) {
         this.menuModal = false;
       } else {

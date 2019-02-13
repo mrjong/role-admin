@@ -1,7 +1,7 @@
 <template>
   <div class="panel_list">
     <Card class="vue-panel detail-card">
-      <p slot="title">催收公司
+      <p slot="title">催收人员管理
         <Button
           class="fr header-btn"
           type="primary"
@@ -256,7 +256,8 @@ import {
   system_role_list,
   collect_user_clerk_update,
   collect_status_change,
-  system_user_reset
+  system_user_reset,
+  collect_user_clerk_info
 } from "@/service/getData";
 export default {
   props: ["parentData"],
@@ -343,9 +344,7 @@ export default {
       outfitId: this.parentData.nodeData.outfitId,
       roleId: this.parentData.nodeData.roleId,
       seatType: this.parentData.nodeData.seatType,
-      mobile: this.parentData.nodeData.mobile,
       callno: this.parentData.nodeData.callno,
-      email: this.parentData.nodeData.email,
       createUser: this.parentData.nodeData.createUser,
       createTime: this.parentData.nodeData.createTime,
       updateUser: this.parentData.nodeData.updateUser,
@@ -354,6 +353,7 @@ export default {
       parentUuid: this.parentData.nodeData.parentUuid,
       status: String(this.parentData.nodeData.status)
     };
+    this.collect_user_clerk_info(this.parentData.nodeData.name);
   },
   watch: {
     parentData() {
@@ -365,9 +365,7 @@ export default {
         outfitId: this.parentData.nodeData.outfitId,
         roleId: this.parentData.nodeData.roleId,
         seatType: this.parentData.nodeData.seatType,
-        mobile: this.parentData.nodeData.mobile,
         callno: this.parentData.nodeData.callno,
-        email: this.parentData.nodeData.email,
         createUser: this.parentData.nodeData.createUser,
         createTime: this.parentData.nodeData.createTime,
         updateUser: this.parentData.nodeData.updateUser,
@@ -474,6 +472,20 @@ export default {
       if (res.code === 1) {
         this.$Message.success("重置密码成功");
         this.modal2 = false;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 查询员工信息接口
+    async collect_user_clerk_info(name) {
+      const res = await collect_user_clerk_info({
+        loginName: this.parentData.nodeData.loginName,
+        parentUuid: this.parentData.nodeData.parentUuid,
+      });
+      if (res.code === 1) {
+        console.log(res);
+        this.staffFormItem.email = res.data.email;
+        this.staffFormItem.mobile = res.data.mobile;
       } else {
         this.$Message.error(res.message);
       }

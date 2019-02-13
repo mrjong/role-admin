@@ -21,13 +21,6 @@ export default {
         type: null,
       },
       ruleValidate: {
-        buffet_id: [
-          {
-            required: true,
-            message: '请输入网格编号',
-            trigger: 'blur'
-          }
-        ]
       },
       pageNo: 1,
       pageSize: 10,
@@ -214,12 +207,14 @@ export default {
       this.pageNo = 1;
       this.getList();
     },
-    handleSubmit(name) {
+    handleUpdate(name) {
+      console.log(name);
+      this.pageNo = 1;
+      this.getList();
       this.$refs[name].validate((valid) => {
         if (valid) {
+          this.pageNo = 1;
           this.getList();
-        } else {
-          this.$Message.error('查询条件格式有误，请重新填写');
         }
       });
     },
@@ -228,14 +223,14 @@ export default {
       const res = await call_employee_list({
         loginId: this.formItem.loginId,
         callno: this.formItem.callno,
-        page: this.pageNo,
-        perPage: this.pageSize,
+        pageNum: this.pageNo,
+        pageSize: this.pageSize,
       });
       console.log(res);
       if (res.data && res.data.data) {
         this.tableData = res.data.data;
-        this.total = res.data.total;
-        this.pageNo = res.data.current_page;
+        this.total = res.data.totalElements;
+        // this.pageNo = res.data.number;
       } else {
         this.tableData = [];
         this.total = 0;

@@ -13,7 +13,6 @@
         ref="formItem"
         :model="formItem"
         :label-width="90"
-        :rules="ruleValidate"
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -30,7 +29,7 @@
             <FormItem>
               <Button
                 type="primary"
-                @click="handleSubmit('formItem')"
+                @click="handleUpdate('formItem')"
                 style="width:80px"
                 long
                 size="small"

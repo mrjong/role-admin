@@ -317,6 +317,13 @@ export const collect_user_clerk_add = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+  // 查询催收人员信息
+  export const collect_user_clerk_info = (obj) =>
+  fetch({
+    url: '/collect/user/clerk/info',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
 // 用户信息校验
 export const collect_user_check = (obj) =>
   fetch({

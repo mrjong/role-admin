@@ -167,6 +167,18 @@ export default {
 		this.getList();
 	},
 	methods: {
+    // 切换每页条数时的回调
+    changeSize(pageSize) {
+      this.pageSize = pageSize;
+      this.pageNo = 1;
+      this.getList();
+    },
+     // 页码改变的回调
+     changePage(pageNo) { //默认带入一个参数是当前的页码数
+      console.log(pageNo, '当前的页码数量值');
+      this.pageNo = pageNo;
+      this.getList();
+    },
 		selectOne(selection) {
 			console.log('---------');
 			this.selectList = [];

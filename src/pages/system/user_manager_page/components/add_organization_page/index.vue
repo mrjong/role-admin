@@ -268,7 +268,7 @@ export default {
         area: [],
         areaProvince: "",
         areaCity: "",
-        collectType: "1",
+        collectType: "",
         remark: "",
         parentUuid: "",
         parentName: "",
