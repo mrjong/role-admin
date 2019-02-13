@@ -30,7 +30,7 @@
             <FormItem>
               <Button
                 type="primary"
-                @click="handleSubmit('formItem')"
+                @click="handleUpdate('formItem')"
                 style="width:80px"
                 long
                 size="small"

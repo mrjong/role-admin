@@ -89,8 +89,8 @@
               <Col
                 :xs="24"
                 :sm="24"
-                :md="24"
-                :lg="24"
+                :md="12"
+                :lg="12"
                 span="4"
               >
               <FormItem
@@ -103,7 +103,6 @@
                   v-model="formItem.roleIds"
                   filterable
                   multiple
-                  
                   :clearable="model.type !== '1'? true: false"
                   placeholder="请选择系统角色"
                   :disabled="model.type === '1'? true: false"
@@ -399,16 +398,19 @@ export default {
 };
 </script>
 
- <style lang="less">
-.ivu-modal {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
+ <style lang="less" scoped>
+// .ivu-modal {
+//   position: absolute;
+//   left: 50%;
+//   top: 50%;
+//   transform: translate(-50%, -50%);
+// }
 .user_info_form_modal {
   .vue-panel {
     border: none;
+  }
+  .ivu-form {
+    min-height: 250px;
   }
 }
 </style>

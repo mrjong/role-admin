@@ -373,7 +373,6 @@ export default {
     },
     // 勾选节点的回调函数
     checkChange(arr) {
-      console.log(this.$refs.tree.getCheckedNodes());
       this.allotRoleIdList = [];
       this.formItem.allotNameList = [];
       arr.forEach(item => {
