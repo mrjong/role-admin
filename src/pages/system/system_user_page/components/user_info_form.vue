@@ -93,7 +93,6 @@
                     v-model="formItem.roleIds"
                     filterable
                     multiple
-                    @on-change='roleSelect'
                     :clearable="model.type !== '1'? true: false"
                     placeholder="请选择系统角色"
                     :disabled="model.type === '1'? true: false"
