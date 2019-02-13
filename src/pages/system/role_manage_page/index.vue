@@ -15,12 +15,12 @@
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="角色名称:">
-              <Input size="small" clearable v-model="formValidate.usrNm" placeholder="请输入角色名称"></Input>
+              <Input size="small" clearable v-model="formValidate.name" placeholder="请输入角色名称"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="状态:">
-              <Select size="small" v-model="formValidate.Sts">
+              <Select size="small" v-model="formValidate.status">
                 <Option
                   v-for="item in roleStsList"
                   :value="item.value"
@@ -195,7 +195,7 @@
                   <Input
                     disabled
                     size="small"
-                    v-model="formValidateInfo.roleStatus"
+                    v-model="formValidateInfo.roleStatusName"
                     placeholder=""
                   ></Input>
                 </FormItem>
@@ -209,7 +209,7 @@
                   <Input
                     disabled
                     size="small"
-                    v-model="formValidateInfo.roleType"
+                    v-model="formValidateInfo.roleTypeName"
                     placeholder=""
                   ></Input>
                 </FormItem>
@@ -217,7 +217,7 @@
             </Row>
           </Form>
       <div slot="footer">
-        <Button :loading="modal_loading" size="small" @click="closeModal('1')">关闭</Button>
+        <Button size="small" @click="closeModal('1')">关闭</Button>
       </div>
     </Modal>
     <Modal
@@ -372,7 +372,7 @@
                   v-model="formValidateAdd.roleType"
                 >
                   <Option
-                    v-for="item in orderStsList"
+                    v-for="item in roleTypList"
                     :value="item.value"
                     :key="item.value"
                   >{{ item.label }}</Option>
@@ -391,7 +391,7 @@
                   v-model="formValidateAdd.roleStatus"
                 >
                   <Option
-                    v-for="item in orderStsList"
+                    v-for="item in roleStsList"
                     :value="item.value"
                     :key="item.value"
                   >{{ item.label }}</Option>

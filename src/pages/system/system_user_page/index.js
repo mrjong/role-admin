@@ -56,7 +56,7 @@ export default {
 				{
 					title: '状态',
 					searchOperator: '=',
-					key: 'state',
+					key: 'stateName',
 					ellipsis: true,
 					minWidth: 150,
 					align: 'center'
