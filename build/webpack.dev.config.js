@@ -71,13 +71,19 @@ module.exports = merge(webpackBaseConfig, {
                 // target: 'http://172.18.40.22:8080', // 胥尹辉后台本地
                 // target: 'http://172.16.154.239:8080', //目标接口域名
                 // target: 'http://shopadmin.e-blive.com/', //目标接口域名
+<<<<<<< HEAD
                 //target: 'http://172.18.40.116:8080', //测试
                 //  target: 'http://172.16.151.158:8080', //测试
                 target: 'http://172.18.40.181:8080', //清泉
+=======
+                // target: 'http://172.18.40.116:8080', //测试
+                // target: 'http://172.16.151.158:8080', //测试
+                // target: 'http://172.18.40.181:8080', //清泉
+>>>>>>> ed769946690717fac0b91d65d46c04b0d4c54cc4
                  //target: 'http://172.18.40.245:8080', //志壮
                 // target: 'http://172.18.40.219:8080', //志壮
-                // target: 'http://172.18.30.201:8050', //本地
-               //target: 'http://172.18.40.100:8080', //jiaqi
+                //target: 'http://172.18.30.201:8050', //本地
+                target: 'http://172.18.40.100:8080', //jiaqi
                 // target: 'http://172.18.40.220:8080', //李鹏飞
                 // target: 'http://172.18.40.116:8080', //郭西勇
                 pathRewrite: { '^/admin': '' }, //重写接口
