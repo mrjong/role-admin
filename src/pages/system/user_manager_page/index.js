@@ -37,12 +37,6 @@ export default {
       parentData: {},
       dataContact: [],
       data5: [
-        {
-          title: '大机构',
-          expand: true,
-          loading: false,
-          children: []
-        }
       ],
       buttonProps: {
         type: 'primary',
@@ -125,7 +119,7 @@ export default {
               marginRight: '20px'
             }
           }, [
-              data.leafType === '04' || data.leafType === '03' ? null :
+              data.leafType !== '04' && data.leafType !== '03' ?
                 h('Button', {
                   props: Object.assign({}, this.buttonProps, {
                     // icon: 'ios-plus-empty'
@@ -140,7 +134,7 @@ export default {
                       this.addOrganization(data);
                     }
                   }
-                }, this.getOrganization(data.leafType)),
+                }, this.getOrganization(data.leafType)) : null,
               data.leafType === '04' ? null :
                 h('Button', {
                   props: Object.assign({}, this.buttonProps, {
