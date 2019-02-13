@@ -240,6 +240,8 @@ export default {
   },
   methods: {
     handleSubmit(name) {
+      this.pageNo = 1;
+      this.collect_local_list();
       this.$refs[name].validate(valid => {
         if (valid) {
           this.getList();
