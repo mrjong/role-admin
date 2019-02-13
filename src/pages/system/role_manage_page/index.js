@@ -354,11 +354,12 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      this.formValidate.status = this.formValidate.status == 'one' ? 1:this.formValidate.status == 'zero' ? 0: '';
+      let status = this.formValidate.status == 'one' ? 1:this.formValidate.status == 'zero' ? 0: '';
       let res = await system_role_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
-        ...this.formValidate
+        ...this.formValidate,
+        status
       })
       this.tableData = res.data.content;
       this.total = res.data.totalElements;
