@@ -158,15 +158,15 @@
         pageSize: 10,
         total: 10,
         tableData: [
-          {
-            handleDate:'',//处理日期
-            calledNo: '', //外呼手机号
-            calledUserId:'', // 用户ID
-            callState:'', //通话结果
-            talkTime:'',// 通话时长
-            agentName:'', //坐席姓名
-            agent:'',//坐席工号
-          },
+          // {
+          //   handleDate:'',//处理日期
+          //   calledNo: '', //外呼手机号
+          //   calledUserId:'', // 用户ID
+          //   callState:'', //通话结果
+          //   talkTime:'',// 通话时长
+          //   agentName:'', //坐席姓名
+          //   agent:'',//坐席工号
+          // },
         ],
         tableColumns: [
           {
@@ -263,6 +263,10 @@
         this.getList();
       },
       async exportData(){
+        if(this.tableData.length === 0){
+          this.$Message.info('当前无数据，无法导入');
+          return ;
+        }
         let res = await monitor_callDetail_exportDown({
           ...this.formItem
         });

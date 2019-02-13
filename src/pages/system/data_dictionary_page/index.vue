@@ -78,7 +78,23 @@
           </p>
           <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
           <label for="acount">节点名称：</label>
-          <Input size="small" v-model="newMenuItem.text" id="acount" style="width: auto"></Input>
+          <Input size="small" v-model="newMenuItem.itemName" id="acount" style="width: auto;margin-bottom: 10px"></Input>
+          </Col>
+          <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
+            <label for="acount">级别：</label>
+            <Input size="small" v-model="newMenuItem.depth"  style="width: auto;margin-bottom: 10px;"></Input>
+          </Col>
+          <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
+            <label for="acount">字典描述：</label>
+            <Input size="small" v-model="newMenuItem.depth"  style="width: auto;margin-bottom: 10px;"></Input>
+          </Col>
+          <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
+            <label for="acount">字典代码：</label>
+            <Input size="small" v-model="newMenuItem.depth"  style="width: auto;margin-bottom: 10px;"></Input>
+          </Col>
+          <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
+            <label for="acount">排序号：</label>
+            <Input size="small" v-model="newMenuItem.sort"  style="width: auto"></Input>
           </Col>
           <div slot="footer">
             <Button type="ghost" size="small" @click="cancel">取消</Button>

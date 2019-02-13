@@ -1,4 +1,4 @@
-import { sysDictionary_list } from '@/service/getData';
+import { sysDictionary_list, sysDictionary_save, sysDictionary_delete, sysDictionary_update } from '@/service/getData';
 export default {
   data() {
     return {
@@ -90,6 +90,7 @@ export default {
                   itemCode: data.itemCode,
                   itemDesc: data.itemDesc,
                   sort: data.sort,
+                  id: data.id,
                 }
               }
             }
@@ -124,7 +125,7 @@ export default {
             },
             on: {
               click: () => {
-                this.menuUpdate({id: data.id, state: '00'});
+                this.deleteItem({id: data.id});
               }
             }
           }, '删除'),
@@ -133,32 +134,31 @@ export default {
     },
     // 提交保存修改
     handleSubmit(name) {
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          // this.getList();
-          // this.$Message.success("ok");
-          this.menuUpdate(this.menuFormItem)
-        } else {
-          this.$Message.error("查询条件格式有误，请重新填写");
-        }
-      });
+      this.menuUpdate(this.menuFormItem)
+      // this.$refs[name].validate(valid => {
+      //   if (valid) {
+      //     // this.getList();
+      //     // this.$Message.success("ok");
+      //     this.menuUpdate(this.menuFormItem)
+      //   } else {
+      //     this.$Message.error("查询条件格式有误，请重新填写");
+      //   }
+      // });
     },
-
+    // 删除菜单项
+    deleteItem(param){
+      this.menuDelete(param)
+    },
     // 添加菜单项
     addItem(data) {
       this.modal = true;
       this.data = data;
     },
     ok() {
-      // const children = this.data.children || [];
-      // children.push({
-      //   text: this.itemName,
-      //   expand: true
-      // });
-      // this.$set(this.data, 'children', children);
+     //校验代码表单校验
       this.newMenuItem.parent = this.data.id;
       this.menuAdd(this.newMenuItem)
-      this.modal = false;
+      //this.modal = false;
     },
     cancel() {
       this.modal = false;
@@ -176,7 +176,7 @@ export default {
     },
     // 修改菜单项
     async menuUpdate(params) {
-      const res = await stytem_menu_update(params);
+      const res = await sysDictionary_update(params);
       if (res.code === 1) {
         this.getList();
       } else {
@@ -185,11 +185,30 @@ export default {
     },
     // 新增菜单项
     async menuAdd(params) {
-      const res = await stytem_menu_add(params);
+      let parm = {
+        parentId:this.data.id,
+        itemName: '122', //节点名称
+        itemCode:'122',
+        itemDesc:'123',
+        depth: 1,
+        sort: 1
+      }
+      const res = await sysDictionary_save(parm);
       if (res.code === 1) {
         this.$Message.success('添加成功');
+        this.modal = false;
         this.getList();
       } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 删除菜单项
+    async menuDelete(params){
+      const res = await sysDictionary_delete(params);
+      if(res && res.code === 1){
+        this.$Message.success('删除成功');
+        this.getList();
+      } else{
         this.$Message.error(res.message);
       }
     }

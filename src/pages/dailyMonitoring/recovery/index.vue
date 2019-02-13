@@ -132,17 +132,17 @@
         pageSize: 10,
         total: 10,
         tableData: [
-          {
-            upRoleName:'',//所属组别 upUserName
-            opUserName: '', //处理人
-            allotCaseCount:'', // 当月分配案件数量
-            repayCount:'', //当月还款笔数
-            repayCountRate:'',// 当月笔数回收率  %
-            allotCaseAmt:'', //当月分配案件金额
-            repayAmt:'',//当月回款金额
-            collectRate:'',//当月金额回收率 %
-            lastCollectRate:'',//上月金额回收率 %
-          },
+          // {
+          //   upRoleName:'',//所属组别 upUserName
+          //   opUserName: '', //处理人
+          //   allotCaseCount:'', // 当月分配案件数量
+          //   repayCount:'', //当月还款笔数
+          //   repayCountRate:'',// 当月笔数回收率  %
+          //   allotCaseAmt:'', //当月分配案件金额
+          //   repayAmt:'',//当月回款金额
+          //   collectRate:'',//当月金额回收率 %
+          //   lastCollectRate:'',//上月金额回收率 %
+          // },
         ],
         tableColumns: [
           {
@@ -245,8 +245,11 @@
         this.getList();
       },
       async exportData(){
+        if(this.tableData.length === 0){
+          this.$Message.info('当前无数据，无法导入');
+          return ;
+        }
         let res = await monitor_collectRate_exportDown({
-
         });
         util.dowloadfile('催款回收',res);
       },

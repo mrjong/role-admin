@@ -365,7 +365,7 @@
       // 此处注意刁颖顺序，因为是两级联动关系，必须等到拿到组别之后，在进行坐席接口调用
       //this.getSeatTableList();
       this.groupListArr();
-      //this.getList();
+      this.getList();
     },
     methods: {
       // 改变日期区间的格式之后进行处理
@@ -412,6 +412,10 @@
         }
       },
       async exportData(){
+        if(this.tableData.length === 0){
+          this.$Message.info('当前无数据，无法导入');
+          return ;
+        }
         let res = await monitor_agentState_exportDown({
           ...this.formValidate
         });

@@ -175,14 +175,11 @@
       var alignCenter = 'center';
       var widthVal = 140;
       var widthMidVal = 100;
-      var createT = new Date();
-      var createDate = this.$options.filters['formatDate'](createT, 'YYYY-MM-DD')
-
       return {
         showPanel: false,
         showPanel2: false,
         formItem: {
-          createDate: createDate, //默认获取当前的日期时间需要进行转换
+          createDate:'', //默认获取当前的日期时间需要进行转换
           overdueDaysLt:'',
           overdueDaysBt: '',
         },
@@ -627,6 +624,9 @@
       };
     },
     created() {
+      var createT = new Date();
+      this.formItem.createDate = this.$options.filters['formatDate'](createT, 'YYYY-MM-DD')
+      console.log(this.formItem,'qqqqqqqqqqqqqqqmmmmm');
       this.getList();
     },
     methods: {
@@ -655,7 +655,12 @@
         this.getList();
       },
       async exportData(){
+        if(this.tableData.length === 0){
+          this.$Message.info('当前无数据，无法导入');
+          return ;
+        }
         console.log('逾期导出')
+        this.formItem.createDate = this.$options.filters['formatDate'](this.formItem.createDate, 'YYYY-MM-DD')
         let res = await monitor_overDueReports_exportDown({
           ...this.formItem
         });
@@ -663,6 +668,8 @@
       },
       // 获取表格数据
       async getList() {
+        this.formItem.createDate = this.$options.filters['formatDate'](this.formItem.createDate, 'YYYY-MM-DD')
+        console.log(this.formItem,'qqqqqqqqqqqqqqq');
         let res= await monitor_overdueReports_list({
           pageNum: this.pageNo,
           pageSize: this.pageSize,

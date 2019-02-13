@@ -1141,3 +1141,25 @@ export const call_moor_hung_on = (obj, options) =>
     data: qs.stringify(obj),
     options
   });
+
+// 数据字典添加
+export const sysDictionary_save = (obj) =>
+  fetch({
+    url: '/sysDictionary/save',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 数据字典删除
+export const sysDictionary_delete = (obj) =>
+  fetch({
+    url: '/sysDictionary/delete',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 数据字典删除
+export const sysDictionary_update = (obj) =>
+  fetch({
+    url: '/sysDictionary/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
