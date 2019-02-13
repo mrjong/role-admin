@@ -25,7 +25,7 @@
                     v-model="formItem.prodTypeList"
                   >
                     <Option
-                      v-for="item in getDirObj.PROD_TYPE"
+                      v-for="item in getDirObj.DIVIDE_PROD_TYPE"
                       :value="item.itemCode"
                       :key="item.itemName"
                     >{{ item.itemName }}</Option>
@@ -42,7 +42,7 @@
                     v-model="formItem.perdCountList"
                   >
                     <Option
-                      v-for="item in getDirObj.PROD_CNT"
+                      v-for="item in getDirObj.DIVIDE_PROD_CNT"
                       :value="item.itemCode"
                       :key="item.itemName"
                     >{{ item.itemName }}</Option>
@@ -59,7 +59,7 @@
                     v-model="formItem.perdThisCountList"
                   >
                     <Option
-                      v-for="item in getDirObj.PROD_CNT"
+                      v-for="item in getDirObj.DIVIDE_PROD_NUM"
                       :value="item.itemCode"
                       :key="item.itemName"
                     >{{ item.itemName }}</Option>
@@ -121,7 +121,7 @@
                     v-model="formItem.creditLevelList"
                   >
                     <Option
-                      v-for="item in getDirObj.CREDIT_LEVEL"
+                      v-for="item in getDirObj.DIVIDE_CREDIT_LEVEL"
                       :value="item.itemCode"
                       :key="item.itemName"
                     >{{ item.itemName }}</Option>
@@ -218,9 +218,10 @@ export default {
   data() {
     return {
       getDirList: [
-        "PROD_TYPE",
-        "PROD_CNT",
-        "CREDIT_LEVEL",
+        "DIVIDE_PROD_NUM",
+        "DIVIDE_PROD_TYPE",
+        "DIVIDE_PROD_CNT",
+        "DIVIDE_CREDIT_LEVEL",
         "CASE_HANDLE_STATUS",
         "ALLOT_TYPE"
       ],
@@ -324,6 +325,7 @@ export default {
     };
   },
   created () {
+    // var selAddEle = {itemName: '全部',itemCode: '99'};
     this.initTree('', '01');
     console.log(this.$route.name);
     if (this.$route.name === 'case_update_distribute_page') {
