@@ -70,12 +70,7 @@
                 <FormItem label="逾期天数:">
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovdudaysMin">
-                      <Input
-                        size="small"
-                        type="text"
-                        clearable
-                        v-model="formItem.ovdudaysMin"
-                      ></Input>
+                      <Input size="small" type="text" clearable v-model="formItem.ovdudaysMin"></Input>
                     </FormItem>
                   </Col>
                   <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -148,18 +143,25 @@
                     placeholder="请选择接收人员"
                     disabled
                   ></Input>
+                  <Button
+                    type="primary"
+                    @click="selectTreeNode"
+                    style="width:80px"
+                    long
+                    size="small"
+                  >选择</Button>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
                 <FormItem span="6" label="有效时间:" prop="date">
                   <DatePicker
-                    v-model='formItem.date'
+                    v-model="formItem.date"
                     format="yyyy-MM-dd"
                     type="daterange"
                     placeholder="请选择有效时间"
-                    size='small'
+                    size="small"
                     style="width: 300px"
-                    @on-change='dateChange'
+                    @on-change="dateChange"
                   ></DatePicker>
                 </FormItem>
               </Col>
@@ -184,7 +186,7 @@
           </Form>
         </Card>
       </Col>
-      <Col span="12" class="tree-col">
+      <Col span="12" class="tree-col" v-if="treeFlag">
         <Card class="vue-panel">
           <p slot="title" @click="showPanel2=!showPanel2">
             <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>树结构
@@ -199,8 +201,8 @@
             @on-check-change="checkChange"
           ></Tree>
           <div>
-            <Button type="ghost" size="small" @click="cancel('2')">取消</Button>
-            <Button type="primary" size="small" @click="ok('2')">确定</Button>
+            <Button type="ghost" size="small" @click="cancel()">取消</Button>
+            <Button type="primary" size="small" @click="ok()">确定</Button>
           </div>
         </Card>
       </Col>
@@ -211,7 +213,12 @@
 <script>
 import formValidateFun from "@/mixin/formValidateFun";
 import sysDictionary from "@/mixin/sysDictionary";
-import { divide_rules_add, divide_rules_edit, divide_rules_save, collect_parent_children } from "@/service/getData";
+import {
+  divide_rules_add,
+  divide_rules_edit,
+  divide_rules_save,
+  collect_parent_children
+} from "@/service/getData";
 export default {
   name: "case_add_distribute_page",
   mixins: [formValidateFun, sysDictionary],
@@ -228,7 +235,8 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      submitType: 1,//提交类型 1添加，2修改
+      treeFlag: false,
+      submitType: 1, //提交类型 1添加，2修改
       allotRoleIdList: [],
       ruleValidate: {
         prodTypeList: [
@@ -243,14 +251,14 @@ export default {
             required: true,
             message: "请选择分配方式",
             trigger: "change",
-            type: 'string'
+            type: "string"
           }
         ],
         date: [
           {
             required: true,
             message: "请选择有效时间",
-            type: 'array'
+            type: "array"
           }
         ],
         allotNameList: [
@@ -258,7 +266,7 @@ export default {
             required: false,
             message: "请选择接收人员",
             trigger: "blur",
-            type: 'array'
+            type: "array"
           }
         ],
         // ovdudaysMin: [
@@ -287,7 +295,7 @@ export default {
           {
             pattern: this.GLOBAL.money,
             message: "金额格式不正确",
-            type: 'string'
+            type: "string"
           },
           {
             validator: this.validate_yqyhje_start,
@@ -298,7 +306,7 @@ export default {
           {
             pattern: this.GLOBAL.money,
             message: "金额格式不正确",
-            type: 'string'
+            type: "string"
           },
           {
             validator: this.validate_yqyhje_end,
@@ -317,20 +325,23 @@ export default {
         allotType: "",
         creditLevelList: [],
         allotNameList: [],
-        effectMinDt: '',
-        effectMaxDt: '',
-        date: [],
+        effectMinDt: "",
+        effectMaxDt: "",
+        date: []
       },
       data5: []
     };
   },
-  created () {
+  created() {
     // var selAddEle = {itemName: '全部',itemCode: '99'};
-    this.initTree('', '01');
+    this.initTree("", "01");
     console.log(this.$route.name);
-    if (this.$route.name === 'case_update_distribute_page') {
+    if (this.$route.name === "case_update_distribute_page") {
       this.submitType = 2;
-      this.formItem = JSON.parse(window.sessionStorage.getItem('case_rule_item'));
+      let itemNode = JSON.parse(
+        window.sessionStorage.getItem("case_rule_item")
+      );
+      this.formItem.prodTypeList = itemNode.prodType;
       console.log(this.formItem);
     }
   },
@@ -378,7 +389,7 @@ export default {
       this.allotRoleIdList = [];
       this.formItem.allotNameList = [];
       arr.forEach(item => {
-        if (item.leafType === '04') {
+        if (item.leafType === "04") {
           this.allotRoleIdList.push(item.id);
           this.formItem.allotNameList.push(item.name);
         }
@@ -398,12 +409,25 @@ export default {
         if (valid) {
           // this.getList();
           console.log(this.formItem);
-          this.$Message.success("ok");
           this.divide_rules_add();
         } else {
           this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
+    },
+    // 点击出现tree
+    selectTreeNode() {
+      console.log(12313)
+      this.treeFlag = true;
+    },
+    // tree取消回调
+    cancel() {
+      this.treeFlag = false;
+      this.formItem.allotNameList = [];
+    },
+    // tree确定回调
+    ok() {
+      this.treeFlag = false;
     },
     // 选择日期回调
     dateChange(arr) {
@@ -413,47 +437,55 @@ export default {
     },
     // 获取init tree数据
     async initTree(id, type) {
-      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
-      console.log()
+      const res = await collect_parent_children({
+        parentId: id,
+        status: "1",
+        leafType: type
+      });
+      console.log();
       if (res.code === 1) {
         this.data5 = res.data;
         this.data5.forEach(item => {
-          if (item.leafType != '04') {
+          if (item.leafType != "04") {
             item.disableCheckbox = true;
           }
         });
       } else {
-        this.$Message.error(res.message)
+        this.$Message.error(res.message);
       }
     },
     // 动态获取表格数据
     async collect_parent_children(id, type, callBack) {
-      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
+      const res = await collect_parent_children({
+        parentId: id,
+        status: "1",
+        leafType: type
+      });
       if (res.code === 1) {
         res.data.forEach(item => {
-          if (item.leafType != '04') {
+          if (item.leafType != "04") {
             item.disableCheckbox = true;
           }
         });
-        callBack(res.data)
+        callBack(res.data);
       } else {
-        this.$Message.error(res.message)
+        this.$Message.error(res.message);
       }
     },
     // 异步加载tree数据
     loadData(item, callBack) {
-      console.log(item, '----------------------')
+      console.log(item, "----------------------");
       this.nodeData = item;
       let leafType;
-      if (item.leafType === '01') {
-        leafType = '02';
-      } else if (item.leafType === '02') {
-        leafType = '03';
-      } else if (item.leafType === '03') {
-        leafType = '04';
+      if (item.leafType === "01") {
+        leafType = "02";
+      } else if (item.leafType === "02") {
+        leafType = "03";
+      } else if (item.leafType === "03") {
+        leafType = "04";
       } else {
         return;
-      };
+      }
       this.collect_parent_children(item.id, leafType, callBack);
     },
     // 添加案件接口
@@ -465,7 +497,7 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
-    },
+    }
   }
 };
 </script>

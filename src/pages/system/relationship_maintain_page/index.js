@@ -208,7 +208,9 @@ export default {
       this.getList();
     },
     handleUpdate(name) {
-      console.log(name)
+      console.log(name);
+      this.pageNo = 1;
+      this.getList();
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.pageNo = 1;

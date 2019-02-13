@@ -234,6 +234,7 @@ export default {
   methods: {
     // 勾选节点的回调函数
     checkChange(arr) {
+      this.menuIds = [];
       arr.forEach(item => {
         this.menuIds.push(item.id)
         console.log(item.id.length)

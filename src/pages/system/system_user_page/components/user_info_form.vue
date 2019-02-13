@@ -86,118 +86,69 @@
                   ></Input>
                 </FormItem>
               </Col>
-              <Col
-                :xs="24"
-                :sm="24"
-                :md="12"
-                :lg="12"
-                span="4"
-              >
-              <FormItem
-                label="系统角色:"
-                span="4"
-                prop="roleIds"
-              >
-                <Select
-                  size="small"
-                  v-model="formItem.roleIds"
-                  filterable
-                  multiple
-                  :clearable="model.type !== '1'? true: false"
-                  placeholder="请选择系统角色"
-                  :disabled="model.type === '1'? true: false"
+              <Col :xs="24" :sm="24" :md="12" :lg="12" span="4">
+                <FormItem label="系统角色:" span="4" prop="roleIds">
+                  <Select
+                    size="small"
+                    v-model="formItem.roleIds"
+                    filterable
+                    multiple
+                    @on-change='roleSelect'
+                    :clearable="model.type !== '1'? true: false"
+                    placeholder="请选择系统角色"
+                    :disabled="model.type === '1'? true: false"
+                  >
+                    <Option
+                      v-for="item in rolesData"
+                      :value="item.id"
+                      :key="item.id"
+                    >{{ item.name }}</Option>
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if>
+                <FormItem span="4" label="创建人:" prop="createUser">
+                  <Input
+                    size="small"
+                    clearable
+                    v-model="formItem.createUser"
+                    placeholder="请输入创建人"
+                    :disabled="model.type === '1'? true: false"
+                  ></Input>
+                </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if>
+                <FormItem span="4" label="修改人:" prop="updateUser">
+                  <Input
+                    size="small"
+                    clearable
+                    v-model="formItem.updateUser"
+                    placeholder="请输入修改人"
+                    :disabled="model.type === '1'? true: false"
+                  ></Input>
+                </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if>
+                <FormItem
+                  span="4"
+                  v-if="model.type === '1'"
+                  label="修改时间:"
+                  prop="updateTime"
+                  class="text-left"
                 >
-                  <Option
-                    v-for="item in rolesData"
-                    :value="item.id"
-                    :key="item.id"
-                  >{{ item.name }}</Option>
-                </Select>
-              </FormItem>
+                  <label for class="mt5">{{formItem.updateTime | formatDatetime}}</label>
+                </FormItem>
               </Col>
-              <Col
-                :xs="24"
-                :sm="24"
-                :md="10"
-                :lg="10"
-                span="4"
-                v-if=""
-              >
-              <FormItem
-                span="4"
-                label="创建人:"
-                prop="createUser"
-              >
-                  <Input
-                  size="small"
-                  clearable
-                  v-model="formItem.createUser"
-                  placeholder="请输入创建人"
-                  :disabled="model.type === '1'? true: false"
-                ></Input>
-              </FormItem>
-              </Col>
-               <Col
-                :xs="24"
-                :sm="24"
-                :md="10"
-                :lg="10"
-                span="4"
-                v-if=""
-              >
-              <FormItem
-                span="4"
-                label="修改人:"
-                prop="updateUser"
-              >
-                  <Input
-                  size="small"
-                  clearable
-                  v-model="formItem.updateUser"
-                  placeholder="请输入修改人"
-                  :disabled="model.type === '1'? true: false"
-                ></Input>
-              </FormItem>
-              </Col>
-               <Col
-                :xs="24"
-                :sm="24"
-                :md="10"
-                :lg="10"
-                span="4"
-                v-if=""
-              >
-              <FormItem
-                span="4"
-                 v-if="model.type === '1'"
-                label="修改时间:"
-                prop="updateTime"
-                 class="text-left"
-              >
-                 <label for="" class="mt5">
-                     {{formItem.updateTime | formatDatetime}}
-                 </label>
-              </FormItem>
-              </Col>
-               <Col
-                :xs="24"
-                :sm="24"
-                :md="10"
-                :lg="10"
-                span="4"
-                v-if=""
-              >
-              <FormItem
-                span="4"
-                 v-if="model.type === '1'"
-                label="创建时间:"
-                prop="createtime"
-                 class="text-left"
-              >
-                 <label for="" class="mt5">
-                     {{formItem.createtime | formatDatetime}}
-                 </label>
-              </FormItem>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if>
+                <FormItem
+                  span="4"
+                  v-if="model.type === '1'"
+                  label="创建时间:"
+                  prop="createtime"
+                  class="text-left"
+                >
+                  <label for class="mt5">{{formItem.createTime | formatDatetime}}</label>
+                </FormItem>
               </Col>
             </Row>
           </Form>
@@ -208,7 +159,7 @@
         <Button
           type="primary"
           size="small"
-          @click="handleSubmit('formItem')"
+          @click="handleSubmit('formItem', model.type)"
           v-if="model.type !== '1'"
         >保存</Button>
       </div>
@@ -304,9 +255,18 @@ export default {
   },
   created() {
     console.log(this.formItem);
-    this.system_role_list()
+    if (this.model.type === '1' || this.model.type === '2') {
+      this.formItem = this.model.userData;
+      this.formItem.state = String(this.formItem.state);
+    }
+    this.system_role_list();
   },
   methods: {
+    // 系统角色回调
+    roleSelect (arr) {
+      console.log(arr);
+      console.log(this.formItem.roleIds)
+    },
     // 获取表格数据
     async system_role_list() {
       const res = await system_role_list({
@@ -315,43 +275,47 @@ export default {
       });
       if (res.code === 1) {
         this.rolesData = res.data.content;
-        setTimeout(() => {
-          this.formItem = {
-            ...this.parentData.userData,
-            state: this.parentData.userData.roleStatus
-          };
-        }, 500);
+        // setTimeout(() => {
+        //   this.formItem = {
+        //     ...this.parentData.userData,
+        //     state: this.parentData.userData.roleStatus
+        //   };
+        // }, 500);
       } else {
         this.$Message.error(res.message);
       }
     },
-    handleSubmit(name) {
+    handleSubmit(name, type) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.system_user_add();
+          if (type === '0') {
+            this.system_user_add();
+          } else {
+            this.system_user_update();
+          }
         }
       });
     },
-    async system_user_add() {
-      let roleIds = "";
-      if (
-        this.formItem &&
-        this.formItem.roleIds &&
-        this.formItem.roleIds.length > 0
-      ) {
-        this.formItem.roleIds.forEach(element => {
-          roleIds = roleIds + element + ",";
-        });
+    // async system_user_add() {
+    //   let roleIds = "";
+    //   if (
+    //     this.formItem &&
+    //     this.formItem.roleIds &&
+    //     this.formItem.roleIds.length > 0
+    //   ) {
+    //     this.formItem.roleIds.forEach(element => {
+    //       roleIds = roleIds + element + ",";
+    //     });
 
-        delete this.formItem.roleIds;
-        console.log(roleIds, this.formItem);
-        if (this.parentData.type != "0") {
-          this.system_user_update();
-        } else {
-          this.system_user_add();
-        }
-      }
-    },
+    //     delete this.formItem.roleIds;
+    //     console.log(roleIds, this.formItem);
+    //     if (this.parentData.type != "0") {
+    //       this.system_user_update();
+    //     } else {
+    //       this.system_user_add();
+    //     }
+    //   }
+    // },
 
     async system_user_update() {
       const res = await system_user_update({
@@ -370,7 +334,7 @@ export default {
     async system_user_add() {
       const res = await system_user_add({
         ...this.formItem,
-        roleIds
+        userType: '01'
       });
       if (res.code === 1) {
         this.$Message.success("添加成功");
