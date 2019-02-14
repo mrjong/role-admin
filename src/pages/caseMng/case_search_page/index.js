@@ -141,6 +141,7 @@ export default {
                       class: 'edit-desc',
                       on: {
                         click: () => {
+                          let _this = this;
                           window.open(
                             `${location.origin}/#/case_desc_page?caseNotest=${id}&prdTyptest=${prdTyp}&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
                               _this.formItem
