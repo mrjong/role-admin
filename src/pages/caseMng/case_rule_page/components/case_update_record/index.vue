@@ -125,7 +125,14 @@ export default {
           width: 100,
           searchOperator: "=",
           key: "perdThisCounts",
-          align: "center"
+          align: "center",
+          render: (h, params) => {
+            return h("div", {
+              domProps: {
+                innerHTML: `${params.row.perdThisCounts}`
+              }
+            });
+          }
         },
         {
           title: "逾期天数",

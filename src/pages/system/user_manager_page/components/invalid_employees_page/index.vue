@@ -268,7 +268,8 @@ export default {
       const res = await collect_local_list({
         ...this.formItem,
         pageNum: this.pageNo,
-        pageSize: this.pageSize
+        pageSize: this.pageSize,
+        status: 0,
       });
       if (res.code === 1) {
         this.tableData = res.data.data.data;

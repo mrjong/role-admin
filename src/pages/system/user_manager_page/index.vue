@@ -30,7 +30,6 @@
             :data="data5"
             :render="renderContent"
             v-if="!showPanel"
-            :load-data="loadData"
             @on-select-change="selectNode"
             @on-toggle-expand='expandNode'
           ></Tree>
