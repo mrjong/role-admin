@@ -321,14 +321,14 @@ export default {
       },
       formItem: {
         prodTypeList: '',
-        perdCountList: '',
-        perdThisCountList: '',
+        perdCountList: [],
+        perdThisCountList: [],
         ovdudaysMin: "",
         ovdudaysMax: "",
         ovduamtMin: "",
         ovduamtMax: "",
         allotType: "",
-        creditLevelList: '',
+        creditLevelList: [],
         allotNameList: []
       },
       data5: []

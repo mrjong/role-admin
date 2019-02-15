@@ -1,11 +1,16 @@
 import { system_role_list, system_role_add, system_role_update, system_role_info, system_role_menu_list, stytem_menu_opration } from '@/service/getData';
+import tablePage from '@/mixin/tablePage';
+import sysDictionary from '@/mixin/sysDictionary';
 export default {
   name: 'remoney_user',
+	mixins: [ sysDictionary, tablePage ],
   data() {
     var alignCenter = 'center';
     var widthVal = 180;
     var widthMidVal = 180;
     return {
+      getDirList: [ 'ROLE_TYPE','1_0_EFFECT_INVAL'],
+			getDirObj: {},
       showPanel: false,
       showPanel2: false,
       menuModal: false,
@@ -14,33 +19,17 @@ export default {
       roleId: '',
       menuIds: [],
       data5: [],
-      roleStsList: [
-        {
-          value: 'zero',
-          label: '无效'
-        },
-        {
-          value: 'one',
-          label: '有效'
-        }
-      ],
-      roleTypList:[
-        {
-        value:'01',
-        label:'系统'
-        },
-        {
-        value:'02',
-        label:'催收'
-        }
-      ],
       modalSee: false,
       modalChange: false,
       modalAddRole: false,
       formValidate: {
       },
       formValidateChange:{roleCode:''},
-      formValidateAdd:{roleCode:''},
+      formValidateAdd:{
+        roleCode: '',
+        roleStatus: '0',
+        roleType: '01'
+      },
       ruleValidate: {
         //ruleValidate添加表单的校验规则，用来提示用户的输入法则，具体使用在表单里面 ：rule='ruleValidate'直接使用即可
         mblNo: [
@@ -138,6 +127,20 @@ export default {
           minWidth: widthMidVal
         },
         {
+          title: '角色描述',
+          searchOperator: 'like',
+          key: 'description',
+          minWidth: widthMidVal,
+          align: alignCenter,
+        },
+        {
+          title: '创建人',
+          searchOperator: 'like',
+          key: 'createUser',
+          minWidth: 100,
+          align: alignCenter,
+        },
+        {
           title: '创建时间',
           searchOperator: 'like',
           key: 'createtime',
@@ -151,7 +154,28 @@ export default {
               : createDate;
             return h('span', createDate);
           }
-
+        },
+        {
+          title: '修改人',
+          searchOperator: 'like',
+          key: 'updateUser',
+          minWidth: 100,
+          align: alignCenter,
+        },
+        {
+          title: '修改时间',
+          searchOperator: 'like',
+          key: 'updatetime',
+          className: 'tableMainW',
+          align: alignCenter,
+          minWidth: widthVal,
+          render: (h, params) => {
+            let createDate = params.row.updatetime;
+            createDate = createDate
+              ? this.$options.filters['formatDate'](createDate, 'YYYY-MM-DD HH:mm:ss')
+              : createDate;
+            return h('span', createDate);
+          }
         },
         {
           title: '最后操作时间',
@@ -161,7 +185,12 @@ export default {
           align: alignCenter,
           minWidth: widthMidVal,
           render: (h, params) => {
-            let createDate = params.row.updatetime;
+            let createDate;
+            if (params.row.updatetime) {
+              createDate = params.row.updatetime;
+            } else {
+              createDate = params.row.createtime;
+            }
             createDate = createDate
               ? this.$options.filters['formatDate'](createDate, 'YYYY-MM-DD HH:mm:ss')
               : createDate;
@@ -284,7 +313,6 @@ export default {
     changeRole(parm) {
       this.modalChange = true;
       this.formValidateChange = parm;
-      this.formValidateChange.roleStatus = parm.roleStatus == 1 ? 'one':'zero';
       sessionStorage.setItem('updateId', parm.id);
     },
     // 确认修改信息
@@ -355,7 +383,6 @@ export default {
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formValidate,
-        status
       })
       this.tableData = res.data.content;
       this.total = res.data.totalElements;
@@ -365,14 +392,13 @@ export default {
     async getInfo(id) {
       let res = await system_role_info({id})
       this.formValidateInfo = res.data;
-      this.formValidateInfo.roleStatus = this.formValidateInfo.roleStatus == '1' ?'有效' : '无效';
+      // this.formValidateInfo.roleStatus = this.formValidateInfo.roleStatus == '1' ?'有效' : '无效';
       this.formValidateInfo.updatetime = this.$options.filters['formatDate'](this.formValidateInfo.updatetime, 'YYYY-MM-DD HH:mm:ss')
       this.formValidateInfo.createtime = this.$options.filters['formatDate'](this.formValidateInfo.createtime, 'YYYY-MM-DD HH:mm:ss')
     },
     // 提交修改角色的接口
     async toChangeRole() {
-      let roleStatus = this.formValidateChange.roleStatus == 'one' ? 1:0;
-      let res = await system_role_update({id: sessionStorage.getItem('updateId'), ...this.formValidateChange, roleStatus});
+      let res = await system_role_update({id: sessionStorage.getItem('updateId'), ...this.formValidateChange});
       console.log(res, '刷新看结果');
       if (res && res.code === 1) {
         // this.$Message.success('修改成功');
@@ -385,9 +411,8 @@ export default {
       }
     },
     async toAddRole() {
-      let roleStatus = this.formValidateAdd.roleStatus == 'one' ? 1 : 0;
       let res = await
-        system_role_add({...this.formValidateAdd,roleStatus});
+        system_role_add({...this.formValidateAdd});
       if (res && res.code === 1) {
         //this.$Message.success('添加成功');
         this.modalAddRole = false;

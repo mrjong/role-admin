@@ -360,6 +360,13 @@ export default {
 					sortable: true
 				},
 				{
+					title: '账单号',
+					width: 200,
+					align: 'center',
+					key: 'billNo',
+					sortable: true
+				},
+				{
 					title: '还款时间',
 					align: 'center',
 					key: 'repayDate',

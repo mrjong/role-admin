@@ -4,9 +4,6 @@
     <Card class="vue-panel">
       <p slot="title">
         <Icon :type="!showPanel?'chevron-down':'chevron-up'" @click="showPanel=!showPanel"></Icon>检索条件
-        <router-link to="/demo/demo_desc">
-          <Button class="fr vue-back-btn header-btn" type="primary" size="small">详情</Button>
-        </router-link>
       </p>
       <Form
         v-if="!showPanel"

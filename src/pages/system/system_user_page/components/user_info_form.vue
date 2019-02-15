@@ -105,7 +105,7 @@
                   </Select>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="model.type !== '0'">
                 <FormItem span="4" label="创建人:" prop="createUser">
                   <Input
                     size="small"
@@ -117,7 +117,7 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if>
-                <FormItem span="4" label="修改人:" prop="updateUser">
+                <FormItem span="4" label="修改人:" prop="updateUser" v-if="model.type !== '0'">
                   <Input
                     size="small"
                     clearable
@@ -127,10 +127,9 @@
                   ></Input>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4"  v-if="model.type !== '0'">
                 <FormItem
                   span="4"
-                  v-if="model.type === '1'"
                   label="修改时间:"
                   prop="updateTime"
                   class="text-left"
@@ -138,10 +137,9 @@
                   <label for class="mt5">{{formItem.updateTime | formatDatetime}}</label>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="model.type !== '0'">
                 <FormItem
                   span="4"
-                  v-if="model.type === '1'"
                   label="创建时间:"
                   prop="createtime"
                   class="text-left"
@@ -238,7 +236,9 @@ export default {
           }
         ]
       },
-      formItem: {}
+      formItem: {
+        roleIds: []
+      }
     };
   },
   props: {
@@ -270,7 +270,9 @@ export default {
     async system_role_list() {
       const res = await system_role_list({
         roleType: "01",
-        status: "1"
+        status: "1",
+        pageNo: 1,
+        pageSize: 100000
       });
       if (res.code === 1) {
         this.rolesData = res.data.content;
@@ -324,7 +326,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success("修改成功");
         setTimeout(() => {
-          this.del();
+          this.del(1);
         });
       } else {
         this.$Message.error(res.message);
@@ -338,15 +340,19 @@ export default {
       if (res.code === 1) {
         this.$Message.success("添加成功");
         setTimeout(() => {
-          this.del();
+          this.del(1);
         });
       } else {
         this.$Message.error(res.message);
       }
     },
-    del() {
+    del(type) {
       this.childrenData = this.model;
       this.childrenData.modal = false;
+      if (type === 1) {
+        console.log(this.$parent.getList())
+        this.$parent.getList();
+      }
       console.log(this.childrenData);
       this.$emit("passBack", this.childrenData);
       // this.$emit("getChildrenStatus", this.childrenData);

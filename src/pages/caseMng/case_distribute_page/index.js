@@ -116,6 +116,11 @@ export default {
       total: 0,
       billDate: [],
       formItem: {
+        caseStatus: '',
+        prodTypes: [],
+        periodCounts: [],
+        periodCounts: [],
+        creditLevels: [],
       },
       tableData: [],
       tableColumns: [
@@ -456,7 +461,13 @@ export default {
     // 重置
     clearForm(name) {
       this.pageNo = 1;
-      this.formItem = {};
+      this.formItem = {
+        caseStatus: '',
+        prodTypes: [],
+        periodCounts: [],
+        periodCounts: [],
+        creditLevels: [],
+      };
       this.$refs[name].resetFields();
     },
     // 批量分配接口

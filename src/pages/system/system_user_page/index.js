@@ -27,10 +27,12 @@ export default {
 			selectList: [],
 			tableColumns: [
 				{
-					type: 'selection',
-					width: 60,
-					align: 'center'
-				},
+          title: '序号',
+          type: 'index',
+          minWidth: 60,
+          searchOperator: '=',
+          align: 'center',
+        },
 				{
 					title: '登录账号',
 					searchOperator: '=',
@@ -49,7 +51,7 @@ export default {
 				{
 					title: '系统角色名称',
 					searchOperator: 'like',
-					key: 'uapLoginName',
+					key: 'roleName',
 					minWidth: 150,
 					align: 'center'
 				},
@@ -75,7 +77,14 @@ export default {
 					ellipsis: true,
 					minWidth: 180,
 					align: 'center'
-				},
+        },
+        {
+          title: '创建人',
+          key: 'createUser',
+          ellipsis: true,
+					minWidth: 100,
+					align: 'center'
+        },
 				{
 					title: '创建时间',
 					searchOperator: '=',
@@ -217,7 +226,7 @@ export default {
 		async system_user_reset(ids) {
 			const res = await system_user_reset({ ids: ids});
 			if (res.code === 1) {
-				this.$Message.success('重置密码成功');
+        this.$Message.success('重置密码成功');
 			} else {
 				this.$Message.error(res.message);
 			}

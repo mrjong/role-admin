@@ -205,7 +205,7 @@ export default {
         };
         this.$emit("passBack", this.childrenData);
       } else {
-        this.$Message.error("查询条件格式有误，请重新填写");
+        this.$Message.error("添加内容信息校验不正确，请重新填写");
       }
     },
     del() {

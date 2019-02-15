@@ -20,12 +20,23 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="状态:">
-              <Select size="small" v-model="formValidate.status">
+              <Select size="small" v-model="formValidate.status" placeholder="请选择状态" >
                 <Option
-                  v-for="item in roleStsList"
-                  :value="item.value"
-                  :key="item.value"
-                >{{ item.label }}</Option>
+                  v-for="item in getDirObj['1_0_EFFECT_INVAL']"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="角色类型:">
+              <Select size="small" placeholder="请选择角色类型" v-model="formValidate.roleType">
+                <Option
+                  v-for="item in getDirObj['ROLE_TYPE']"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -96,12 +107,12 @@
         <Row class="eachRow">
           <Col span="12">
             <FormItem label="角色名称:">
-              <Input size="small" v-model="formValidateInfo.name" placeholder disabled></Input>
+              <Input size="small" v-model="formValidateInfo.name" placeholder="请选择角色名称"  disabled></Input>
             </FormItem>
           </Col>
           <Col span="12">
-            <FormItem label="描述:">
-              <Input disabled size="small" v-model="formValidateInfo.desciption" placeholder></Input>
+            <FormItem label="角色描述:">
+              <Input disabled size="small" v-model="formValidateInfo.description" placeholder="请选择角色描述" ></Input>
             </FormItem>
           </Col>
         </Row>
@@ -162,35 +173,35 @@
           <Row class>
             <Col span="12">
               <FormItem label="角色名称:" prop="name">
-                <Input size="small" clearable v-model="formValidateChange.name" placeholder></Input>
+                <Input size="small" clearable v-model="formValidateChange.name" placeholder="请选择角色名称" ></Input>
               </FormItem>
             </Col>
             <Col span="12">
-              <FormItem label="描述:">
-                <Input size="small" clearable v-model="formValidateChange.description"></Input>
+              <FormItem label="角色描述:">
+                <Input size="small" clearable v-model="formValidateChange.description" placeholder="请选择角色描述" ></Input>
               </FormItem>
             </Col>
           </Row>
           <Row class>
             <Col span="12">
               <FormItem label="角色类型:" prop="roleType">
-                <Select size="small" v-model="formValidateChange.roleType">
+                <Select size="small" v-model="formValidateChange.roleType" disabled placeholder="请选择角色类型" >
                   <Option
-                    v-for="item in roleTypList"
-                    :value="item.value"
-                    :key="item.value"
-                  >{{ item.label }}</Option>
+                  v-for="item in getDirObj['ROLE_TYPE']"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
                 </Select>
               </FormItem>
             </Col>
             <Col span="12">
               <FormItem label="角色状态:" prop="roleStatus">
-                <Select size="small" v-model="formValidateChange.roleStatus">
+                <Select size="small" v-model="formValidateChange.roleStatus" placeholder="请选择角色状态" >
                   <Option
-                    v-for="item in roleStsList"
-                    :value="item.value"
-                    :key="item.value"
-                  >{{ item.label }}</Option>
+                  v-for="item in getDirObj['1_0_EFFECT_INVAL']"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
                 </Select>
               </FormItem>
             </Col>
@@ -218,12 +229,12 @@
           <Row class>
             <Col span="12">
               <FormItem label="角色名称:" prop="name">
-                <Input size="small" clearable v-model="formValidateAdd.name" placeholder></Input>
+                <Input size="small" clearable v-model="formValidateAdd.name" placeholder="请选择角色名称" ></Input>
               </FormItem>
             </Col>
             <Col span="12">
-              <FormItem label="描述:">
-                <Input size="small" clearable v-model="formValidateAdd.description"></Input>
+              <FormItem label="角色描述:">
+                <Input size="small" clearable v-model="formValidateAdd.description" placeholder="请选择角色描述" ></Input>
               </FormItem>
             </Col>
           </Row>
@@ -232,10 +243,10 @@
               <FormItem label="角色类型:" prop="roleType">
                 <Select size="small" v-model="formValidateAdd.roleType">
                   <Option
-                    v-for="item in roleTypList"
-                    :value="item.value"
-                    :key="item.value"
-                  >{{ item.label }}</Option>
+                  v-for="item in getDirObj['ROLE_TYPE']"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
                 </Select>
               </FormItem>
             </Col>
@@ -243,10 +254,10 @@
               <FormItem label="角色状态:" prop="roleStatus">
                 <Select size="small" v-model="formValidateAdd.roleStatus">
                   <Option
-                    v-for="item in roleStsList"
-                    :value="item.value"
-                    :key="item.value"
-                  >{{ item.label }}</Option>
+                  v-for="item in getDirObj['1_0_EFFECT_INVAL']"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
                 </Select>
               </FormItem>
             </Col>

@@ -2,6 +2,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import { case_list, cases_export } from '@/service/getData';
 import util from '@/libs/util';
+import qs from 'qs';
 export default {
   name: 'case_search_page',
   mixins: [formValidateFun, sysDictionary],
@@ -346,7 +347,22 @@ export default {
     // 重置
     clearForm(name) {
       this.pageNo = 1;
-      this.formItem = {};
+      this.formItem = {
+        caseHandleStatus: '',
+        prodTypes: [],
+        periodCounts: [],
+        userNm: '',
+        idNo: '',
+        mblNo: '',
+        minOverdueDays: '',
+        maxOverdueDays: '',
+        minOverdueAmt: '',
+        maxOverdueAmt: '',
+        id: '',
+        billNo: '',
+        repayStatus: '',
+        creditLevels: [],
+      };
       this.$refs[name].resetFields();
     }
   }

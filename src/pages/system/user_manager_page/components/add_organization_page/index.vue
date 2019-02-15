@@ -18,7 +18,7 @@
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="6">
-          <FormItem label="机构负责人:" span="6">
+          <FormItem label="机构负责人:" span="6" prop='userIds'>
             <Select
               size="small"
               v-model="organizationFormItem.userIds"
