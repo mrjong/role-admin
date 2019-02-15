@@ -289,9 +289,8 @@ export default {
         prodTypeList: [
           {
             required: true,
-            type: "array",
+            type: "string",
             message: "请选择产品线",
-            validator: validator_array
           }
         ],
         allotType: [
@@ -307,7 +306,6 @@ export default {
             required: true,
             message: "请选择有效时间",
             type: "array",
-            validator: validator_array
           }
         ],
         allotNameList: [
@@ -364,18 +362,18 @@ export default {
         ]
       },
       formItem: {
-        // prodTypeList: [],
-        // perdCountList: [],
-        // perdThisCountList: [],
-        // ovdudaysMin: "",
-        // ovdudaysMax: "",
-        // ovduamtMin: "",
-        // ovduamtMax: "",
-        // allotType: "",
-        // creditLevelList: [],
-        // allotNameList: [],
-        // effectMinDt: "",
-        // effectMaxDt: "",
+        prodTypeList: '',
+        perdCountList: '',
+        perdThisCountList: '',
+        ovdudaysMin: "",
+        ovdudaysMax: "",
+        ovduamtMin: "",
+        ovduamtMax: "",
+        allotType: "",
+        creditLevelList: '',
+        allotNameList: [],
+        effectMinDt: "",
+        effectMaxDt: "",
         date: []
       },
       data5: []

@@ -1,11 +1,12 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import { case_list, cases_export } from '@/service/getData';
+import util from '@/libs/util';
 export default {
   name: 'case_search_page',
   mixins: [formValidateFun, sysDictionary],
   data() {
-    const validate_money_start = (rule, value, callback)=> {
+    const validate_money_start = (rule, value, callback) => {
       if (value && this.formItem.maxOverdueAmt && Number(value) > Number(this.formItem.maxOverdueAmt)) {
         callback(new Error('逾期应还开始金额不能大于逾期应还结束金额'));
       } else {
@@ -18,7 +19,7 @@ export default {
       }
       callback();
     };
-    const validate_day_start = (rule, value, callback) =>{
+    const validate_day_start = (rule, value, callback) => {
       if (value && this.formItem.maxOverdueDays && Number(value) > Number(this.formItem.maxOverdueDays)) {
         console.log(this.formItem.maxOverdueDays)
         callback(new Error('逾期开始天数不能大于逾期结束天数'));
@@ -283,14 +284,14 @@ export default {
   methods: {
     // table选中
     changeSelect(selection) {
-			console.log('---------');
-			this.caseIds = [];
-			selection &&
-				selection.forEach((element) => {
-					this.caseIds.push(element.uuid);
-				});
-			console.log(this.caseIds);
-		},
+      console.log('---------');
+      this.caseIds = [];
+      selection &&
+        selection.forEach((element) => {
+          this.caseIds.push(element.uuid);
+        });
+      console.log(this.caseIds);
+    },
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
@@ -313,15 +314,16 @@ export default {
     },
     // 案件导出
     async cases_export() {
-      const res = await cases_export({
-        ...this.formItem,
-        caseIds: this.caseIds,
-      });
-      if (res.code) {
-        this.$Message.success('导出成功');
-      } else {
-        this.$Message.error(res.message);
-      }
+      const res = await cases_export(
+        {
+          ...this.formItem,
+          caseIds: this.caseIds,
+        },
+        {
+          responseType: 'blob'
+        }
+      );
+      util.dowloadfile('案件查询', res);
     },
     // 获取表格数据
     async getList() {

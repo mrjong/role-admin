@@ -320,16 +320,16 @@ export default {
         ]
       },
       formItem: {
-        // prodTypeList: [],
-        // perdCountList: [],
-        // perdThisCountList: [],
-        // ovdudaysMin: "",
-        // ovdudaysMax: "",
-        // ovduamtMin: "",
-        // ovduamtMax: "",
-        // allotType: "",
-        // creditLevelList: [],
-        // allotNameList: []
+        prodTypeList: '',
+        perdCountList: '',
+        perdThisCountList: '',
+        ovdudaysMin: "",
+        ovdudaysMax: "",
+        ovduamtMin: "",
+        ovduamtMax: "",
+        allotType: "",
+        creditLevelList: '',
+        allotNameList: []
       },
       data5: []
     };
