@@ -19,7 +19,6 @@
                 <FormItem span="6" label="产品线:" prop="prodTypeList">
                   <Select
                     size="small"
-                    multiple
                     clearable
                     placeholder="请选择产品线"
                     v-model="formItem.prodTypeList"
@@ -33,7 +32,7 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem label="产品期数:" prop="perdCountList">
+                <FormItem label="产品期数:">
                   <Select
                     size="small"
                     multiple
@@ -50,7 +49,7 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem label="到期期数:" prop="perdThisCountList">
+                <FormItem label="到期期数:">
                   <Select
                     size="small"
                     multiple
@@ -113,7 +112,7 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem span="6" label="信用级别:" prop="creditLevelList">
+                <FormItem span="6" label="信用级别:">
                   <Select
                     size="small"
                     multiple

@@ -19,7 +19,6 @@
                 <FormItem span="6" label="产品线:" prop="prodTypeList">
                   <Select
                     size="small"
-                    multiple
                     clearable
                     placeholder="请选择产品线"
                     v-model="formItem.prodTypeList"
@@ -33,7 +32,7 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem label="产品期数:" prop="perdCountList">
+                <FormItem label="产品期数:">
                   <Select
                     size="small"
                     multiple
@@ -50,7 +49,7 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem label="到期期数:" prop="perdThisCountList">
+                <FormItem label="到期期数:">
                   <Select
                     size="small"
                     multiple
@@ -113,7 +112,7 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem span="6" label="信用级别:" prop="creditLevelList">
+                <FormItem span="6" label="信用级别:">
                   <Select
                     size="small"
                     multiple
@@ -264,6 +263,12 @@ export default {
       }
       callback();
     };
+    const validator_array = (rule, value, callback) => {
+      console.log(value)
+      if (value.length === 0) {
+        callback();
+      }
+    }
     return {
       getDirList: [
         "DIVIDE_PROD_NUM",
@@ -286,7 +291,7 @@ export default {
             required: true,
             type: "array",
             message: "请选择产品线",
-            trigger: "change"
+            validator: validator_array
           }
         ],
         allotType: [
@@ -301,7 +306,8 @@ export default {
           {
             required: true,
             message: "请选择有效时间",
-            type: "array"
+            type: "array",
+            validator: validator_array
           }
         ],
         allotNameList: [
@@ -314,7 +320,7 @@ export default {
         ],
         ovdudaysMin: [
           {
-            // pattern: this.GLOBAL.num,
+            pattern: this.GLOBAL.num,
             message: "逾期天数为正整数",
             type: "number"
           },
@@ -325,7 +331,7 @@ export default {
         ],
         ovdudaysMax: [
           {
-            // pattern: this.GLOBAL.num,
+            pattern: this.GLOBAL.num,
             message: "逾期天数为正整数",
             type: "number"
           },
@@ -389,8 +395,6 @@ export default {
       this.divide_rules_edit();
     }
     this.collect_show_children();
-  },
-  mounted () {
   },
   methods: {
     renderContent(h, { root, node, data }) {
@@ -544,7 +548,12 @@ export default {
         this.formItem.id = res.data.id;
         this.formItem.allotType = res.data.allotType;
         this.allotRoleIdList = res.data.allotRoleIdList;
-        // this.collect_show_children();
+        if (res.data.effectMaxDt && res.data.effectMinDt) {
+          this.formItem.date = [];
+          this.formItem.date.push(res.data.effectMinDt);
+          this.formItem.date.push(res.data.effectMaxDt);
+          console.log(this.formItem.date)
+        }
       } else {
         this.$Message.error(res.message);
       }
