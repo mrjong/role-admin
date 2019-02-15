@@ -423,6 +423,7 @@ export default {
       const res = await collect_section_add(this.organizationFormItem);
       if (res.code === 1) {
         this.$Message.success("添加成功");
+        this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
       }

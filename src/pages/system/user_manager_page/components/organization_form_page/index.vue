@@ -100,11 +100,38 @@
         </Col>
       </Form>
     </Card>
+    <div v-if="modal1">
+      <Modal
+        v-model="modal1"
+        @on-ok="ok"
+        @on-cancel="cancel"
+        :mask-closable="false"
+      >
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+          <span>状态变更</span>
+        </p>
+        <Col :xs="24" :sm="24" :md="12" :lg="12" span="4">
+          <label for="acount">机构名称：</label>
+          <Input size="small" v-model="organizationFormItem.name" disabled id="acount" style="width: auto"></Input>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" style="margin-left: 20px;">
+          <label for="radio">状态：</label>
+          <RadioGroup v-model="status" id="radio" span="4">
+            <Radio :label="1">可用</Radio>
+            <Radio :label="0">冻结</Radio>
+          </RadioGroup>
+        </Col>
+        <div slot="footer">
+          <Button type="ghost" size="small" @click="cancel">取消</Button>
+          <Button type="primary" size="small" @click="ok">确定</Button>
+        </div>
+      </Modal>
+    </div>
   </div>
 </template>
 
 <script>
-import { collect_section_update, collect_list_leader } from "@/service/getData";
+import { collect_section_update, collect_list_leader, collect_status_change } from "@/service/getData";
 export default {
   props: ["parentData"],
   data() {
@@ -114,6 +141,8 @@ export default {
       createTime: "",
       updateUser: "",
       updateTime: "",
+      modal1: false,
+      status: '',
       organizationFormItem: {
         name: "",
         userIds: [],
@@ -151,7 +180,8 @@ export default {
       createTime,
       createUser,
       updateTime,
-      updateUser
+      updateUser,
+      status
     } = this.parentData.nodeData;
     this.organizationFormItem.id = id;
     this.organizationFormItem.leafType = leafType;
@@ -163,6 +193,7 @@ export default {
     this.createTime = createTime;
     this.updateUser = updateUser;
     this.updateTime = updateTime;
+    this.status = status;
     // this.organizationFormItem.userIds = [];
     this.collect_list_leader();
   },
@@ -180,7 +211,8 @@ export default {
         createTime,
         createUser,
         updateTime,
-        updateUser
+        updateUser,
+        status
       } = this.parentData.nodeData;
       this.organizationFormItem.id = id;
       this.organizationFormItem.leafType = leafType;
@@ -192,6 +224,7 @@ export default {
       this.createTime = createTime;
       this.updateUser = updateUser;
       this.updateTime = updateTime;
+      this.status = status;
       console.log(this.parentData);
     }
   },
@@ -242,6 +275,29 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+    },
+    // 状态变更接口
+    async collect_status_change() {
+      const res = await collect_status_change({
+        id: this.organizationFormItem.id,
+        status: Number(this.status)
+      });
+      if (res.code === 1) {
+        this.$Message.success("变更成功");
+        this.modal = false;
+        this.$parent.$parent.$parent.collect_tree_children("#", "01");
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    ok() {
+      this.collect_status_change();
+    },
+    cancel() {
+      this.modal1 = false;
+    },
+    addOrganization() {
+      this.modal1 = true;
     }
   }
 };

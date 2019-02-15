@@ -140,7 +140,6 @@
         @on-ok="ok"
         @on-cancel="cancel"
         width="500"
-        :transfer="false"
         :mask-closable="false"
       >
         <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
