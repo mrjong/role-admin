@@ -86,6 +86,7 @@
                 placeholder="请选择日期"
                 @on-change="changeDate"
                 @on-ok="changeDate"
+                @on-clear="clearDate"
               ></DatePicker>
             </FormItem>
           </Col>
@@ -630,6 +631,12 @@
       this.getList();
     },
     methods: {
+      //清空时间日期
+      clearDate(){
+        this.formItem.createDate = '';
+        console.log(this.formItem.createDate);
+
+      },
       // 改变日期区间的格式之后进行处理
       changeDate(val1, val2) {
         console.log(val1, typeof val1)
@@ -660,7 +667,9 @@
           return ;
         }
         console.log('逾期导出')
-        this.formItem.createDate = this.$options.filters['formatDate'](this.formItem.createDate, 'YYYY-MM-DD')
+        if(this.formItem.createDate){
+          this.formItem.createDate = this.$options.filters['formatDate'](this.formItem.createDate, 'YYYY-MM-DD')
+        }
         let res = await monitor_overDueReports_exportDown({
           ...this.formItem
         });
@@ -668,7 +677,9 @@
       },
       // 获取表格数据
       async getList() {
-        this.formItem.createDate = this.$options.filters['formatDate'](this.formItem.createDate, 'YYYY-MM-DD')
+        if(this.formItem.createDate){
+          this.formItem.createDate = this.$options.filters['formatDate'](this.formItem.createDate, 'YYYY-MM-DD')
+        }
         console.log(this.formItem,'qqqqqqqqqqqqqqq');
         let res= await monitor_overdueReports_list({
           pageNum: this.pageNo,
