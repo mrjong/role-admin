@@ -392,7 +392,7 @@ export default {
     async divide_rules_changeStatus(params) {
       const res = await divide_rules_changeStatus(params);
       console.log(res);
-      if (res.code === 200) {
+      if (res.code === 1) {
         this.recycleFlag = false;
         this.stopFlag = false;
         this.getList();
@@ -404,7 +404,7 @@ export default {
     async divide_rules_order(params) {
       const res = await divide_rules_order(params);
       console.log(res);
-      if (res.code === 200) {
+      if (res.code === 1) {
         this.getList();
       } else {
         this.$Message.error(res.message);

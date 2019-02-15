@@ -19,7 +19,6 @@
                 <FormItem span="6" label="产品线:" prop="prodTypeList">
                   <Select
                     size="small"
-                    multiple
                     clearable
                     placeholder="请选择产品线"
                     v-model="formItem.prodTypeList"
@@ -33,7 +32,7 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem label="产品期数:" prop="perdCountList">
+                <FormItem label="产品期数:">
                   <Select
                     size="small"
                     multiple
@@ -50,7 +49,7 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem label="到期期数:" prop="perdThisCountList">
+                <FormItem label="到期期数:">
                   <Select
                     size="small"
                     multiple
@@ -99,7 +98,7 @@
                 <FormItem label="逾期应还金额:">
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovduamtMin">
-                      <Input size="small" clearable v-model="formItem.ovduamtMin"></Input>
+                      <Input size="small" clearable number v-model="formItem.ovduamtMin"></Input>
                     </FormItem>
                   </Col>
                   <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -107,13 +106,13 @@
                   </Col>
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovduamtMax">
-                      <Input size="small" clearable v-model="formItem.ovduamtMax"></Input>
+                      <Input size="small" clearable number v-model="formItem.ovduamtMax"></Input>
                     </FormItem>
                   </Col>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem span="6" label="信用级别:" prop="creditLevelList">
+                <FormItem span="6" label="信用级别:">
                   <Select
                     size="small"
                     multiple
@@ -183,7 +182,6 @@
             ref='tree'
             multiple
             show-checkbox
-            :load-data="loadData"
             @on-select-change="selectNode"
             @on-check-change="checkChange"
           ></Tree>
@@ -200,11 +198,46 @@
 <script>
 import formValidateFun from "@/mixin/formValidateFun";
 import sysDictionary from "@/mixin/sysDictionary";
-import { divide_allot_manual, collect_parent_children } from "@/service/getData";
+import { divide_allot_manual, collect_tree_children } from "@/service/getData";
 export default {
   name: "case_key_distribute_page",
   mixins: [formValidateFun, sysDictionary],
   data() {
+    const validate_money_start = (rule, value, callback) => {
+      if (
+        value &&
+        this.formItem.ovduamtMax &&
+        Number(value) > Number(this.formItem.ovduamtMax)
+      ) {
+        callback(new Error("逾期应还开始金额不能大于逾期应还结束金额"));
+      } else {
+        callback();
+      }
+    };
+    const validate_money_end = (rule, value, callback) => {
+      if (this.formItem.ovduamtMin) {
+        this.$refs.formItem.validateField("ovduamtMin");
+      }
+      callback();
+    };
+    const validate_day_start = (rule, value, callback) => {
+      if (
+        value &&
+        this.formItem.ovdudaysMax &&
+        Number(value) > Number(this.formItem.ovdudaysMax)
+      ) {
+        console.log(this.formItem.ovdudaysMax);
+        callback(new Error("逾期开始天数不能大于逾期结束天数"));
+      } else {
+        callback();
+      }
+    };
+    const validate_day_end = (rule, value, callback) => {
+      if (this.formItem.ovdudaysMin) {
+        this.$refs.formItem.validateField("ovdudaysMin");
+      }
+      callback();
+    };
     return {
       getDirList: [
         "PROD_TYPE",
@@ -248,7 +281,7 @@ export default {
             trigger: "blur"
           },
           {
-            validator: this.validate_yqts_start,
+            validator: validate_day_start,
             trigger: "blur"
           }
         ],
@@ -259,7 +292,7 @@ export default {
             trigger: "blur"
           },
           {
-            validator: this.validate_yqts_end,
+            validator: validate_day_end,
             trigger: "blur"
           }
         ],
@@ -270,7 +303,7 @@ export default {
             trigger: "blur"
           },
           {
-            validator: this.validate_yqyhje_start,
+            validator: validate_money_start,
             trigger: "blur"
           }
         ],
@@ -281,21 +314,21 @@ export default {
             trigger: "blur"
           },
           {
-            validator: this.validate_yqyhje_end,
+            validator: validate_money_end,
             trigger: "blur"
           }
         ]
       },
       formItem: {
-        prodTypeList: "",
-        perdCountList: [],
-        perdThisCountList: [],
+        prodTypeList: '',
+        perdCountList: '',
+        perdThisCountList: '',
         ovdudaysMin: "",
         ovdudaysMax: "",
         ovduamtMin: "",
         ovduamtMax: "",
         allotType: "",
-        creditLevelList: [],
+        creditLevelList: '',
         allotNameList: []
       },
       data5: []
@@ -373,22 +406,22 @@ export default {
     },
     // 获取init tree数据
     async initTree(id, type) {
-      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
+      const res = await collect_tree_children({status: '1' });
       console.log()
       if (res.code === 1) {
         this.data5 = res.data;
-        this.data5.forEach(item => {
-          if (item.leafType != '04') {
-            item.disableCheckbox = true;
-          }
-        });
+        // this.data5.forEach(item => {
+        //   if (item.leafType != '04') {
+        //     item.disableCheckbox = true;
+        //   }
+        // });
       } else {
         this.$Message.error(res.message)
       }
     },
     // 动态获取表格数据
-    async collect_parent_children(id, type, callBack) {
-      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
+    async collect_tree_children(id, type, callBack) {
+      const res = await collect_tree_children({ parentId: id, status: '1', leafType: type });
       if (res.code === 1) {
         res.data.forEach(item => {
           if (item.leafType != '04') {

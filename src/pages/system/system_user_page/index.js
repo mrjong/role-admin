@@ -231,8 +231,9 @@ export default {
 			});
 			if (res.code === 1) {
 				this.tableData = res.data.data;
-				this.pageSize = res.data.size;
-				this.total = res.data.total;
+				this.pageSize = res.data.pageSize;
+        this.total = res.data.total;
+        this.pageNo = res.data.pageNum;
 			} else {
 				this.$Message.error(res.message);
 			}

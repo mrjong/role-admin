@@ -303,6 +303,20 @@ export const collect_parent_children = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+// 催收人员管理列表
+export const collect_tree_children = (obj) =>
+  fetch({
+    url: '/collect/tree/children',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 案件规则分配人员列表
+export const collect_show_children = (obj) =>
+  fetch({
+    url: '/collect/show/children',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 // 添加催收部门领导
 export const collect_user_leader_add = (obj) =>
   fetch({
@@ -317,8 +331,8 @@ export const collect_user_clerk_add = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-  // 查询催收人员信息
-  export const collect_user_clerk_info = (obj) =>
+// 查询催收人员信息
+export const collect_user_clerk_info = (obj) =>
   fetch({
     url: '/collect/user/clerk/info',
     method: 'POST',
@@ -772,15 +786,15 @@ export const cases_batch_recycle = (obj) =>
     method: 'POST',
     data: qs.stringify(obj),
   });
-  // 案件停止催收
-  export const cases_collect_stop = (obj) =>
+// 案件停止催收
+export const cases_collect_stop = (obj) =>
   fetch({
     url: '/cases/collect/stop',
     method: 'POST',
     data: qs.stringify(obj),
   });
-  // 案件恢复催收
-  export const cases_collect_recover = (obj) =>
+// 案件恢复催收
+export const cases_collect_recover = (obj) =>
   fetch({
     url: '/cases/collect/recover',
     method: 'POST',
@@ -829,7 +843,7 @@ export const divide_rules_order = (obj) =>
 export const divide_rules_edit = (obj) =>
   fetch({
     url: '/divide/rules/edit',
-    method: 'GET',
+    method: 'POST',
     data: qs.stringify(obj)
   });
 

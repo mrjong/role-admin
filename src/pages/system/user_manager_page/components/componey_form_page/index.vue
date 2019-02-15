@@ -23,7 +23,8 @@
         ref="componeyFormItem"
         :model="componeyFormItem"
         :label-width="90"
-        :rules="ruleValidate">
+        :rules="ruleValidate"
+      >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="公司名称:" prop="name">
             <Input
@@ -77,22 +78,22 @@
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="创建人:">
-            <Input size="small" v-model="componeyFormItem.createUser" disabled></Input>
+            <Input size="small" v-model="createUser" disabled></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="创建时间:">
-            <Input size="small" v-model="componeyFormItem.createTime" disabled></Input>
+            <Input size="small" v-model="createTime" disabled></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="修改人:">
-            <Input size="small" v-model="componeyFormItem.updateUser" disabled></Input>
+            <Input size="small" v-model="updateUser" disabled></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="修改时间:">
-            <Input size="small" v-model="componeyFormItem.updateTime" disabled></Input>
+            <Input size="small" v-model="updateTime" disabled></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
@@ -165,11 +166,15 @@
 </template>
 
 <script>
-import { collect_company_update, collect_user_list, collect_status_change } from "@/service/getData";
+import {
+  collect_company_update,
+  collect_user_list,
+  collect_status_change
+} from "@/service/getData";
 import sysDictionary from "@/mixin/sysDictionary";
 export default {
   mixins: [sysDictionary],
-  props: ['parentData'],
+  props: ["parentData"],
   data() {
     return {
       getDirList: ["COLLECT_TYPE"],
@@ -177,19 +182,19 @@ export default {
       formDisabled: "",
       modal: false,
       status: "0",
+      createUser: "",
+      createTime: "",
+      updateUser: "",
+      updateTime: "",
       componeyFormItem: {
         name: "",
         area: "",
-        areaCity: '',
-        areaProvince:'',
+        areaCity: "",
+        areaProvince: "",
         collectType: "",
-        createUser: "",
-        createTime: "",
-        updateUser: "",
-        updateTime: "",
         remark: "",
         parentUuid: "",
-        status: 1,
+        status: 1
       },
       ruleValidate: {
         name: [
@@ -217,14 +222,68 @@ export default {
       organizationList: []
     };
   },
-  created () {
-    console.log(this.parentData)
+  created() {
+    console.log(this.parentData);
     this.collect_user_list();
-    this.componeyFormItem = this.parentData.nodeData;
+    const {
+      id,
+      name,
+      collectType,
+      parentUuid,
+      leafType,
+      loginName,
+      remark,
+      areaCity,
+      areaProvince,
+      createUser,
+      createTime,
+      updateUser,
+      updateTime
+    } = this.parentData.nodeData;
+    this.componeyFormItem.id = id;
+    this.componeyFormItem.name = name;
+    this.componeyFormItem.collectType = collectType;
+    this.componeyFormItem.parentUuid = parentUuid;
+    this.componeyFormItem.leafType = leafType;
+    this.componeyFormItem.loginName = loginName;
+    this.componeyFormItem.remark = remark;
+    this.componeyFormItem.areaCity = areaCity;
+    this.componeyFormItem.areaProvince = areaProvince;
+    this.createUser = createUser;
+    this.createTime = createTime;
+    this.updateUser = updateUser;
+    this.updateTime = updateTime;
   },
   watch: {
     parentData() {
-      this.componeyFormItem = this.parentData.nodeData;
+      const {
+        id,
+        name,
+        collectType,
+        parentUuid,
+        leafType,
+        loginName,
+        remark,
+        areaCity,
+        areaProvince,
+        createUser,
+        createTime,
+        updateUser,
+        updateTime
+      } = this.parentData.nodeData;
+      this.componeyFormItem.id = id;
+      this.componeyFormItem.name = name;
+      this.componeyFormItem.collectType = collectType;
+      this.componeyFormItem.parentUuid = parentUuid;
+      this.componeyFormItem.leafType = leafType;
+      this.componeyFormItem.loginName = loginName;
+      this.componeyFormItem.remark = remark;
+      this.componeyFormItem.areaCity = areaCity;
+      this.componeyFormItem.areaProvince = areaProvince;
+      this.createUser = createUser;
+      this.createTime = createTime;
+      this.updateUser = updateUser;
+      this.updateTime = updateTime;
     }
   },
   methods: {
@@ -265,10 +324,8 @@ export default {
     },
     // 更新公司信息接口
     async collect_company_update() {
-      this.componeyFormItem.createTime = null;
-      this.componeyFormItem.updateTime = null;
       const res = await collect_company_update({
-        ...this.componeyFormItem,
+        ...this.componeyFormItem
       });
       if (res.code === 1) {
         this.$Message.success("修改成功");

@@ -14,7 +14,7 @@
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="案件状态:" prop="caseStatus">
+            <FormItem span="6" label="案件状态:">
               <Select clearable size="small" placeholder="请选择案件状态" v-model="formItem.caseStatus">
                 <Option
                   v-for="item in getDirObj.CASE_HANDLE_STATUS"
@@ -25,7 +25,7 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="产品线:" prop="prodTypes">
+            <FormItem span="6" label="产品线:">
               <Select
                 size="small"
                 multiple
@@ -42,7 +42,7 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="产品期数:" prop="periodCounts">
+            <FormItem span="6" label="产品期数:">
               <Select
                 size="small"
                 multiple
@@ -59,7 +59,7 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="到期期数:" prop="periodCounts">
+            <FormItem span="6" label="到期期数:">
               <Select
                 size="small"
                 multiple
@@ -76,7 +76,7 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="客户姓名:" prop="userNm">
+            <FormItem label="客户姓名:">
               <Input size="small" clearable v-model="formItem.userNm" placeholder="请输入客户姓名"/>
             </FormItem>
           </Col>
@@ -144,7 +144,7 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="还款日期:" prop="billDate">
+            <FormItem label="还款日期:">
               <DatePicker
                 type="daterange"
                 @on-change="dateChange"
@@ -155,17 +155,17 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="案件编号:" prop="id">
+            <FormItem label="案件编号:">
               <Input size="small" clearable v-model="formItem.id" placeholder="请输入案件编号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="账单号:" prop="billNo">
+            <FormItem label="账单号:">
               <Input size="small" clearable v-model="formItem.billNo" placeholder="请输入账单号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="信用级别:" prop="creditLevels">
+            <FormItem span="6" label="信用级别:">
               <Select
                 size="small"
                 multiple
@@ -182,7 +182,7 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="电催中心:" prop="opCompayNames">
+            <FormItem span="6" label="电催中心:">
               <Select size="small" clearable placeholder="请选择电催中心" v-model="formItem.opCompayNames">
                 <Option
                   v-for="item in getLeafTypeList2_data"
@@ -193,7 +193,7 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="经办人:" prop="opUserName">
+            <FormItem label="经办人:">
               <Select size="small" clearable placeholder="请选择经办人" v-model="formItem.opUserName">
                 <Option
                   v-for="item in getLeafTypeList_data"

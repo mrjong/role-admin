@@ -6,8 +6,33 @@ export default {
   name: 'case_distribute_page',
   mixins: [formValidateFun, sysDictionary],
   data() {
-    console.log(this.GLOBAL);
-
+    const validate_money_start = (rule, value, callback)=> {
+      if (value && this.formItem.maxOverdueAmt && Number(value) > Number(this.formItem.maxOverdueAmt)) {
+        callback(new Error('逾期应还开始金额不能大于逾期应还结束金额'));
+      } else {
+        callback();
+      }
+    };
+    const validate_money_end = (rule, value, callback) => {
+      if (this.formItem.minOverdueAmt) {
+        this.$refs.formItem.validateField('minOverdueAmt');
+      }
+      callback();
+    };
+    const validate_day_start = (rule, value, callback) =>{
+      if (value && this.formItem.maxOverdueDays && Number(value) > Number(this.formItem.maxOverdueDays)) {
+        console.log(this.formItem.maxOverdueDays)
+        callback(new Error('逾期开始天数不能大于逾期结束天数'));
+      } else {
+        callback();
+      }
+    };
+    const validate_day_end = (rule, value, callback) => {
+      if (this.formItem.minOverdueDays) {
+        this.$refs.formItem.validateField('minOverdueDays');
+      }
+      callback();
+    };
     return {
       getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS'],
       getDirObj: {},
@@ -47,7 +72,7 @@ export default {
             trigger: 'blur'
           },
           {
-            validator: this.validate_yqts_start,
+            validator: validate_day_start,
             trigger: 'blur'
           }
         ],
@@ -58,7 +83,7 @@ export default {
             trigger: 'blur'
           },
           {
-            validator: this.validate_yqts_end,
+            validator: validate_day_end,
             trigger: 'blur'
           }
         ],
@@ -69,7 +94,7 @@ export default {
             trigger: 'blur'
           },
           {
-            validator: this.validate_yqyhje_start,
+            validator: validate_money_start,
             trigger: 'blur'
           }
         ],
@@ -80,7 +105,7 @@ export default {
             trigger: 'blur'
           },
           {
-            validator: this.validate_yqyhje_end,
+            validator: validate_money_end,
             trigger: 'blur'
           }
         ]
@@ -90,7 +115,6 @@ export default {
       total: 0,
       billDate: [],
       formItem: {
-
       },
       tableData: [],
       tableColumns: [

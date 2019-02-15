@@ -6,7 +6,7 @@ import departmentForm from './components/department_form_page';
 import staffForm from './components/staff_form_page';
 import addRole from './components/add_staff_page';
 import addOrganization from './components/add_organization_page';
-import {  collect_parent_children } from '@/service/getData';
+import {  collect_parent_children, collect_tree_children } from '@/service/getData';
 export default {
   components: {
     organizationForm,
@@ -61,7 +61,8 @@ export default {
   },
   created() {
     // this.getList();
-    this.getList('#', '01');
+    // this.getList('#', '01');
+    this.collect_tree_children();
   },
   methods: {
     // 判断添加的机构类别
@@ -235,6 +236,16 @@ export default {
         this.$Message.error(res.message)
       }
     },
+    // tree数据一步到位
+    async collect_tree_children() {
+      const res = await collect_tree_children({status: 1});
+      if (res.code === 1) {
+        console.log(res);
+        this.data5 = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
     // 异步加载tree数据
     loadData(item, callBack) {
       console.log(item, '----------------------')
@@ -254,23 +265,5 @@ export default {
         this.collect_parent_children2(item.id, '04', callBack);
       },0)
     },
-    // 递归处理tree数据
-    treeNodeDeal(data) {
-      for (var i = 0; this.data5 && i < this.data5.length; i++) {
-        // this.$set(treeData[i],'expand',flag); //重要！用set方法
-        if (this.data5[i].nodeKey == this.nodeData.nodeKey) {
-          this.data5[i].children = data;
-          this.data5[i].expand = true;
-          return this.data5;
-        };
-      };
-    },
-    treeNodeChildren (data) {
-      for (let i = 0; i < this.data5.length; i++) {
-        if (this.data5[i].children.length === 0) {
-          this.data5[i].children = data;
-        }
-      }
-    }
   }
 };

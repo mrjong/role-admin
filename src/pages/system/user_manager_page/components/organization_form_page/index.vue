@@ -45,32 +45,28 @@
               placeholder="请选择机构负责人"
               :disabled="!formDisabled"
             >
-              <Option
-                v-for="item in bossList"
-                :value="item.uuid"
-                :key="item.uuid"
-              >{{ item.name }}</Option>
+              <Option v-for="item in bossList" :value="item.uuid" :key="item.uuid">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="创建人:">
-            <Input size="small" v-model="organizationFormItem.createUser" disabled></Input>
+            <Input size="small" v-model="createUser" disabled></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="创建时间:">
-            <Input size="small" v-model="organizationFormItem.createTime" disabled></Input>
+            <Input size="small" v-model="createTime" disabled></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="修改人:">
-            <Input size="small" v-model="organizationFormItem.updateUser" disabled></Input>
+            <Input size="small" v-model="updateUser" disabled></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="修改时间:">
-            <Input size="small" v-model="organizationFormItem.updateTime" disabled></Input>
+            <Input size="small" v-model="updateTime" disabled></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
@@ -114,15 +110,14 @@ export default {
   data() {
     return {
       formDisabled: "",
+      createUser: "",
+      createTime: "",
+      updateUser: "",
+      updateTime: "",
       organizationFormItem: {
         name: "",
-        userIds: "",
-        createUser: "",
-        createTime: "",
-        updateUser: "",
-        updateTime: "",
-        remark: "",
-        status: "1"
+        userIds: [],
+        remark: ""
       },
       ruleValidate: {
         name: [
@@ -146,14 +141,57 @@ export default {
   },
   created() {
     console.log(this.parentData);
-    this.organizationFormItem = this.parentData.nodeData;
+    const {
+      id,
+      leafType,
+      name,
+      loginName,
+      userIds,
+      remark,
+      createTime,
+      createUser,
+      updateTime,
+      updateUser
+    } = this.parentData.nodeData;
+    this.organizationFormItem.id = id;
+    this.organizationFormItem.leafType = leafType;
+    this.organizationFormItem.name = name;
+    this.organizationFormItem.loginName = loginName;
+    this.organizationFormItem.userIds = userIds;
+    this.organizationFormItem.remark = remark;
+    this.createUser = createUser;
+    this.createTime = createTime;
+    this.updateUser = updateUser;
+    this.updateTime = updateTime;
     // this.organizationFormItem.userIds = [];
     this.collect_list_leader();
   },
   watch: {
     parentData() {
-      this.organizationFormItem = this.parentData.nodeData;
-      this.organizationFormItem.userIds = [];
+      // this.organizationFormItem = this.parentData.nodeData;
+      // this.organizationFormItem.userIds = [];
+      const {
+        id,
+        leafType,
+        name,
+        loginName,
+        userIds,
+        remark,
+        createTime,
+        createUser,
+        updateTime,
+        updateUser
+      } = this.parentData.nodeData;
+      this.organizationFormItem.id = id;
+      this.organizationFormItem.leafType = leafType;
+      this.organizationFormItem.name = name;
+      this.organizationFormItem.loginName = loginName;
+      this.organizationFormItem.userIds = userIds;
+      this.organizationFormItem.remark = remark;
+      this.createUser = createUser;
+      this.createTime = createTime;
+      this.updateUser = updateUser;
+      this.updateTime = updateTime;
       console.log(this.parentData);
     }
   },
@@ -196,7 +234,7 @@ export default {
       // );
       const res = await collect_section_update({
         ...this.organizationFormItem,
-        status: '1',
+        status: "1"
       });
       if (res.code === 1) {
         this.$Message.success("修改成功");

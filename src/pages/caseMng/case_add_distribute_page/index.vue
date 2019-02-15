@@ -19,7 +19,6 @@
                 <FormItem span="6" label="产品线:" prop="prodTypeList">
                   <Select
                     size="small"
-                    multiple
                     clearable
                     placeholder="请选择产品线"
                     v-model="formItem.prodTypeList"
@@ -33,7 +32,7 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem label="产品期数:" prop="perdCountList">
+                <FormItem label="产品期数:">
                   <Select
                     size="small"
                     multiple
@@ -50,7 +49,7 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem label="到期期数:" prop="perdThisCountList">
+                <FormItem label="到期期数:">
                   <Select
                     size="small"
                     multiple
@@ -70,7 +69,13 @@
                 <FormItem label="逾期天数:">
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovdudaysMin">
-                      <Input size="small" type="text" clearable v-model="formItem.ovdudaysMin"></Input>
+                      <Input
+                        size="small"
+                        type="text"
+                        number
+                        clearable
+                        v-model="formItem.ovdudaysMin"
+                      ></Input>
                     </FormItem>
                   </Col>
                   <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -93,7 +98,7 @@
                 <FormItem label="逾期应还金额:">
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovduamtMin">
-                      <Input size="small" clearable v-model="formItem.ovduamtMin"></Input>
+                      <Input size="small" clearable v-model="formItem.ovduamtMin" number></Input>
                     </FormItem>
                   </Col>
                   <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -101,13 +106,13 @@
                   </Col>
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovduamtMax">
-                      <Input size="small" clearable v-model="formItem.ovduamtMax"></Input>
+                      <Input size="small" clearable v-model="formItem.ovduamtMax" number></Input>
                     </FormItem>
                   </Col>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <FormItem span="6" label="信用级别:" prop="creditLevelList">
+                <FormItem span="6" label="信用级别:">
                   <Select
                     size="small"
                     multiple
@@ -124,7 +129,7 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="12" :lg="12" span="6">
-                <FormItem span="6" label="案件状态:" prop="allotType">
+                <FormItem span="6" label="分配方式:" prop="allotType">
                   <RadioGroup v-model="formItem.allotType">
                     <Radio
                       :label="item.itemCode"
@@ -169,7 +174,7 @@
                 <FormItem>
                   <Button
                     type="primary"
-                    @click="handleSubmit('formItem')"
+                    @click="handleSubmit('formItem', submitType)"
                     style="width:80px"
                     long
                     size="small"
@@ -196,7 +201,6 @@
             :render="renderContent"
             multiple
             show-checkbox
-            :load-data="loadData"
             @on-select-change="selectNode"
             @on-check-change="checkChange"
           ></Tree>
@@ -217,12 +221,54 @@ import {
   divide_rules_add,
   divide_rules_edit,
   divide_rules_save,
-  collect_parent_children
+  collect_tree_children,
+  collect_show_children
 } from "@/service/getData";
 export default {
   name: "case_add_distribute_page",
   mixins: [formValidateFun, sysDictionary],
   data() {
+    const validate_money_start = (rule, value, callback) => {
+      if (
+        value &&
+        this.formItem.ovduamtMax &&
+        Number(value) > Number(this.formItem.ovduamtMax)
+      ) {
+        callback(new Error("逾期应还开始金额不能大于逾期应还结束金额"));
+      } else {
+        callback();
+      }
+    };
+    const validate_money_end = (rule, value, callback) => {
+      if (this.formItem.ovduamtMin) {
+        this.$refs.formItem.validateField("ovduamtMin");
+      }
+      callback();
+    };
+    const validate_day_start = (rule, value, callback) => {
+      if (
+        value &&
+        this.formItem.ovdudaysMax &&
+        Number(value) > Number(this.formItem.ovdudaysMax)
+      ) {
+        console.log(this.formItem.ovdudaysMax);
+        callback(new Error("逾期开始天数不能大于逾期结束天数"));
+      } else {
+        callback();
+      }
+    };
+    const validate_day_end = (rule, value, callback) => {
+      if (this.formItem.ovdudaysMin) {
+        this.$refs.formItem.validateField("ovdudaysMin");
+      }
+      callback();
+    };
+    const validator_array = (rule, value, callback) => {
+      console.log(value)
+      if (value.length === 0) {
+        callback();
+      }
+    }
     return {
       getDirList: [
         "DIVIDE_PROD_NUM",
@@ -237,13 +283,14 @@ export default {
       showPanel2: false,
       treeFlag: false,
       submitType: 1, //提交类型 1添加，2修改
+      ruleId: "",
       allotRoleIdList: [],
       ruleValidate: {
         prodTypeList: [
           {
             required: true,
-            type: "array",
-            message: "请选择产品线"
+            type: "string",
+            message: "请选择产品线",
           }
         ],
         allotType: [
@@ -258,47 +305,47 @@ export default {
           {
             required: true,
             message: "请选择有效时间",
-            type: "array"
+            type: "array",
           }
         ],
         allotNameList: [
           {
-            required: false,
+            required: true,
             message: "请选择接收人员",
             trigger: "blur",
             type: "array"
           }
         ],
-        // ovdudaysMin: [
-        //   {
-        //     // pattern: this.GLOBAL.num,
-        //     message: "逾期天数为正整数",
-        //     type: 'string',
-        //   },
-        //   {
-        //     validator: this.validate_yqts_start,
-        //     trigger: "blur"
-        //   }
-        // ],
-        // ovdudaysMax: [
-        //   {
-        //     // pattern: this.GLOBAL.num,
-        //     message: "逾期天数为正整数",
-        //     type: 'string'
-        //   },
-        //   {
-        //     validator: this.validate_yqts_end,
-        //     trigger: "blur"
-        //   }
-        // ],
+        ovdudaysMin: [
+          {
+            pattern: this.GLOBAL.num,
+            message: "逾期天数为正整数",
+            type: "number"
+          },
+          {
+            validator: validate_day_start,
+            trigger: "blur"
+          }
+        ],
+        ovdudaysMax: [
+          {
+            pattern: this.GLOBAL.num,
+            message: "逾期天数为正整数",
+            type: "number"
+          },
+          {
+            validator: validate_day_end,
+            trigger: "blur"
+          }
+        ],
         ovduamtMin: [
           {
             pattern: this.GLOBAL.money,
             message: "金额格式不正确",
-            type: "string"
+            type: "number"
           },
           {
-            validator: this.validate_yqyhje_start,
+            validator: validate_money_start,
             trigger: "blur"
           }
         ],
@@ -306,24 +353,24 @@ export default {
           {
             pattern: this.GLOBAL.money,
             message: "金额格式不正确",
-            type: "string"
+            type: "number"
           },
           {
-            validator: this.validate_yqyhje_end,
+            validator: validate_money_end,
             trigger: "blur"
           }
         ]
       },
       formItem: {
-        prodTypeList: "",
-        perdCountList: [],
-        perdThisCountList: [],
+        prodTypeList: '',
+        perdCountList: '',
+        perdThisCountList: '',
         ovdudaysMin: "",
         ovdudaysMax: "",
         ovduamtMin: "",
         ovduamtMax: "",
         allotType: "",
-        creditLevelList: [],
+        creditLevelList: '',
         allotNameList: [],
         effectMinDt: "",
         effectMaxDt: "",
@@ -334,16 +381,18 @@ export default {
   },
   created() {
     // var selAddEle = {itemName: '全部',itemCode: '99'};
-    this.initTree("", "01");
-    console.log(this.$route.name);
+    // this.initTree("", "01");
     if (this.$route.name === "case_update_distribute_page") {
       this.submitType = 2;
       let itemNode = JSON.parse(
         window.sessionStorage.getItem("case_rule_item")
       );
-      this.formItem.prodTypeList = itemNode.prodType;
-      console.log(this.formItem);
+      // this.formItem.prodTypeList = itemNode.prodType;
+      this.ruleId = itemNode.id;
+      console.log(itemNode);
+      this.divide_rules_edit();
     }
+    this.collect_show_children();
   },
   methods: {
     renderContent(h, { root, node, data }) {
@@ -386,6 +435,7 @@ export default {
     },
     // 勾选节点的回调函数
     checkChange(arr) {
+      console.log(arr);
       this.allotRoleIdList = [];
       this.formItem.allotNameList = [];
       arr.forEach(item => {
@@ -394,6 +444,7 @@ export default {
           this.formItem.allotNameList.push(item.name);
         }
       });
+      console.log(this.formItem.allotNameList);
     },
     // 选中节点的回调函数
     selectNode(node) {
@@ -404,12 +455,16 @@ export default {
       window.history.go(-1);
     },
     // 分配提交
-    handleSubmit(name) {
+    handleSubmit(name, type) {
       this.$refs[name].validate(valid => {
         if (valid) {
           // this.getList();
+          if (type === 1) {
+            this.divide_rules_add();
+          } else {
+            this.divide_rules_save();
+          }
           console.log(this.formItem);
-          this.divide_rules_add();
         } else {
           this.$Message.error("查询条件格式有误，请重新填写");
         }
@@ -417,7 +472,7 @@ export default {
     },
     // 点击出现tree
     selectTreeNode() {
-      console.log(12313)
+      console.log(12313);
       this.treeFlag = true;
     },
     // tree取消回调
@@ -437,63 +492,78 @@ export default {
     },
     // 获取init tree数据
     async initTree(id, type) {
-      const res = await collect_parent_children({
-        parentId: id,
-        status: "1",
-        leafType: type
+      const res = await collect_tree_children({
+        status: "1"
       });
       console.log();
       if (res.code === 1) {
         this.data5 = res.data;
-        this.data5.forEach(item => {
-          if (item.leafType != "04") {
-            item.disableCheckbox = true;
-          }
-        });
       } else {
         this.$Message.error(res.message);
       }
     },
-    // 动态获取表格数据
-    async collect_parent_children(id, type, callBack) {
-      const res = await collect_parent_children({
-        parentId: id,
-        status: "1",
-        leafType: type
+    // 获取人员列表
+    async collect_show_children() {
+      const res = await collect_show_children({
+        status: 1,
+        ids: this.allotRoleIdList
       });
+      console.log(res);
       if (res.code === 1) {
-        res.data.forEach(item => {
-          if (item.leafType != "04") {
-            item.disableCheckbox = true;
-          }
-        });
-        callBack(res.data);
+        this.data5 = res.data;
       } else {
-        this.$Message.error(res.message);
       }
-    },
-    // 异步加载tree数据
-    loadData(item, callBack) {
-      console.log(item, "----------------------");
-      this.nodeData = item;
-      let leafType;
-      if (item.leafType === "01") {
-        leafType = "02";
-      } else if (item.leafType === "02") {
-        leafType = "03";
-      } else if (item.leafType === "03") {
-        leafType = "04";
-      } else {
-        return;
-      }
-      this.collect_parent_children(item.id, leafType, callBack);
     },
     // 添加案件接口
     async divide_rules_add() {
-      const res = await divide_rules_add(this.formItem);
-      if (res.code === 1) {
+      const res = await divide_rules_add({
+        ...this.formItem,
+        allotRoleIdList: this.allotRoleIdList
+      });
+      if (res.code === 200) {
         console.log(res);
         this.$Message.success(res.message);
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 查询当前分案规则详情接口
+    async divide_rules_edit() {
+      const res = await divide_rules_edit({ id: this.ruleId });
+      console.log(res);
+      if (res.code === 1) {
+        this.formItem.prodTypeList = res.data.prodTypeList;
+        this.formItem.perdCountList = res.data.perdCountList;
+        this.formItem.perdThisCountList = res.data.perdThisCountList;
+        this.formItem.creditLevelList = res.data.creditLevelList;
+        this.formItem.ovduamtMax = res.data.ovduamtMax;
+        this.formItem.ovduamtMin = res.data.ovduamtMin;
+        this.formItem.ovdudaysMax = res.data.ovdudaysMax;
+        this.formItem.ovdudaysMin = res.data.ovdudaysMin;
+        this.formItem.effectMaxDt = res.data.effectMaxDt;
+        this.formItem.effectMinDt = res.data.effectMinDt;
+        this.formItem.allotNameList = res.data.allotNameList;
+        this.formItem.id = res.data.id;
+        this.formItem.allotType = res.data.allotType;
+        this.allotRoleIdList = res.data.allotRoleIdList;
+        if (res.data.effectMaxDt && res.data.effectMinDt) {
+          this.formItem.date = [];
+          this.formItem.date.push(res.data.effectMinDt);
+          this.formItem.date.push(res.data.effectMaxDt);
+          console.log(this.formItem.date)
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 保存修改分案规则接口
+    async divide_rules_save() {
+      const res = await divide_rules_save({
+        ...this.formItem,
+        allotRoleIdList: this.allotRoleIdList
+      });
+      if (res.code === 1) {
+        this.$Message.success("修改成功");
       } else {
         this.$Message.error(res.message);
       }

@@ -4,9 +4,9 @@
     <Card class="vue-panel">
       <p slot="title" @click="showPanel=!showPanel">
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
-        <router-link to="/demo/demo_desc">
+        <!-- <router-link to="/demo/demo_desc">
           <Button class="fr vue-back-btn header-btn" type="primary" size="small">详情</Button>
-        </router-link>
+        </router-link> -->
       </p>
       <Form
         v-if="!showPanel"
@@ -180,7 +180,7 @@
         检索结果
         <span style="margin-left: 10px;">总共{{totalCase}}笔案件，</span>
         <span>总共逾期金额{{totalOverdueAmt}}元</span>
-        <Button class="fr vue-back-btn header-btn" type="primary" size="small">导出数据</Button>
+        <Button class="fr vue-back-btn header-btn" type="primary" size="small" @click.stop="cases_export">导出数据</Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">

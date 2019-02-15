@@ -1,10 +1,38 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import { case_list, cases_export } from '@/service/getData';
+import util from '@/libs/util';
 export default {
   name: 'case_search_page',
   mixins: [formValidateFun, sysDictionary],
   data() {
+    const validate_money_start = (rule, value, callback) => {
+      if (value && this.formItem.maxOverdueAmt && Number(value) > Number(this.formItem.maxOverdueAmt)) {
+        callback(new Error('逾期应还开始金额不能大于逾期应还结束金额'));
+      } else {
+        callback();
+      }
+    };
+    const validate_money_end = (rule, value, callback) => {
+      if (this.formItem.minOverdueAmt) {
+        this.$refs.formItem.validateField('minOverdueAmt');
+      }
+      callback();
+    };
+    const validate_day_start = (rule, value, callback) => {
+      if (value && this.formItem.maxOverdueDays && Number(value) > Number(this.formItem.maxOverdueDays)) {
+        console.log(this.formItem.maxOverdueDays)
+        callback(new Error('逾期开始天数不能大于逾期结束天数'));
+      } else {
+        callback();
+      }
+    };
+    const validate_day_end = (rule, value, callback) => {
+      if (this.formItem.minOverdueDays) {
+        this.$refs.formItem.validateField('minOverdueDays');
+      }
+      callback();
+    };
     return {
       getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PAY_OFF_STS'],
       getDirObj: {},
@@ -35,7 +63,7 @@ export default {
             trigger: 'blur'
           },
           {
-            validator: this.validate_yqts_start,
+            validator: validate_day_start,
             trigger: 'blur'
           }
         ],
@@ -46,7 +74,7 @@ export default {
             trigger: 'blur'
           },
           {
-            validator: this.validate_yqts_end,
+            validator: validate_day_end,
             trigger: 'blur'
           }
         ],
@@ -57,7 +85,7 @@ export default {
             trigger: 'blur'
           },
           {
-            validator: this.validate_yqyhje_start,
+            validator: validate_money_start,
             trigger: 'blur'
           }
         ],
@@ -68,7 +96,7 @@ export default {
             trigger: 'blur'
           },
           {
-            validator: this.validate_yqyhje_end,
+            validator: validate_money_end,
             trigger: 'blur'
           }
         ]
@@ -96,13 +124,13 @@ export default {
       tableColumns: [
         {
           type: 'selection',
-          width: 60,
+          width: 50,
           align: 'center',
           fixed: 'left'
         },
         {
           title: '序号',
-          width: 80,
+          width: 60,
           align: 'center',
           type: 'index',
           fixed: 'left'
@@ -111,7 +139,7 @@ export default {
           title: '案件状态',
           width: 100,
           align: 'center',
-          key: 'caseHandleStatus'
+          key: 'caseHandleStatusName'
         },
         {
           title: '案件编码',
@@ -141,6 +169,7 @@ export default {
                       class: 'edit-desc',
                       on: {
                         click: () => {
+                          let _this = this;
                           window.open(
                             `${location.origin}/#/case_desc_page?caseNotest=${id}&prdTyptest=${prdTyp}&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
                               _this.formItem
@@ -160,7 +189,7 @@ export default {
           title: '客户姓名',
           minWidth: 60,
           align: 'center',
-          key: 'userNm'
+          key: 'userNmHid'
         },
         {
           title: '身份证号',
@@ -178,7 +207,7 @@ export default {
           title: '产品线',
           minWidth: 120,
           align: 'center',
-          key: 'prdTyp'
+          key: 'prdName'
         },
         {
           title: '账单号',
@@ -220,12 +249,6 @@ export default {
           key: 'creditLevel'
         },
         {
-          title: '案件状态',
-          minWidth: 100,
-          align: 'center',
-          key: 'caseStatus'
-        },
-        {
           title: '分配时间',
           minWidth: 150,
           sortable: true,
@@ -250,7 +273,7 @@ export default {
           title: '经办人',
           minWidth: 120,
           align: 'center',
-          key: 'opUserName'
+          key: 'cntUsrNm'
         },
       ]
     };
@@ -261,14 +284,14 @@ export default {
   methods: {
     // table选中
     changeSelect(selection) {
-			console.log('---------');
-			this.caseIds = [];
-			selection &&
-				selection.forEach((element) => {
-					this.caseIds.push(element.uuid);
-				});
-			console.log(this.caseIds);
-		},
+      console.log('---------');
+      this.caseIds = [];
+      selection &&
+        selection.forEach((element) => {
+          this.caseIds.push(element.uuid);
+        });
+      console.log(this.caseIds);
+    },
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
@@ -291,15 +314,16 @@ export default {
     },
     // 案件导出
     async cases_export() {
-      const res = await cases_export({
-        ...this.formItem,
-        caseIds: this.caseIds,
-      });
-      if (res.code) {
-        this.$Message.success('导出成功');
-      } else {
-        this.$Message.error(res.message);
-      }
+      const res = await cases_export(
+        {
+          ...this.formItem,
+          caseIds: this.caseIds,
+        },
+        {
+          responseType: 'blob'
+        }
+      );
+      util.dowloadfile('案件查询', res);
     },
     // 获取表格数据
     async getList() {
