@@ -101,7 +101,7 @@
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="地区:">
-            <Cascader :data="data" trigger="hover" v-model="componeyFormItem.area" size="small" :load-data="loadData"></Cascader>
+            <Cascader :data="areaList" v-model="componeyFormItem.area" size="small" :load-data="loadData" @on-change='areaSelect'></Cascader>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
@@ -193,7 +193,8 @@ import {
   collect_outfit_add,
   collect_company_add,
   collect_list_leader,
-  sysarea_getAreaByParentId
+  sysarea_getAreaByParentId,
+  sysarea_getAreaProvience
 } from "@/service/getData";
 export default {
   // data: {
@@ -341,9 +342,8 @@ export default {
   },
   created() {
     this.collect_list_leader();
-    this.sysarea_getAreaByParentId('0');
+    this.sysarea_getAreaProvience();
     console.log(this.parentData);
-    console.log(this.$parent.$parent.$parent.getList("#", "01"));
     switch (this.parentData.type) {
       case "01":
         this.componeyFormItem = {
@@ -378,7 +378,15 @@ export default {
   },
   methods: {
     loadData (item, callback) {
+      console.log(item)
       item.loading = true;
+      this.sysarea_getAreaByParentId(item,callback);
+    },
+    // 地区选择后的回调
+    areaSelect(value, selectedData) {
+      console.log(value, '-----', selectedData);
+      this.componeyFormItem.areaProvince = value[0];
+      this.componeyFormItem.areaCity = value[1];
     },
     cancelStatus() {
       console.log(this.$parent);
@@ -427,7 +435,7 @@ export default {
       });
       if (res.code === 1) {
         this.$Message.success("添加成功");
-        this.$parent.$parent.$parent.getList("#", "01");
+        this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
       }
@@ -440,7 +448,7 @@ export default {
       });
       if (res.code === 1) {
         this.$Message.success("添加成功");
-        this.$parent.$parent.$parent.getList("#", "01");
+        this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
       }
@@ -457,13 +465,36 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    // 获取地区接口
-    async sysarea_getAreaByParentId(id) {
+    // 获取地区市级接口
+    async sysarea_getAreaByParentId(item, callback) {
       const res = await sysarea_getAreaByParentId({
-        parentId: id,
+        parentId: item.id,
       });
       if (res.code === 1) {
+        // this.areaList = res.data;
+        item.children = res.data;
+        item.children.forEach(ele => {
+          ele.value = ele.id;
+          ele.label = ele.name;
+        });
+        item.loading = false;
+        callback();
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 获取地区省级接口
+    async sysarea_getAreaProvience() {
+      const res = await sysarea_getAreaProvience();
+      if (res.code === 1) {
         this.areaList = res.data;
+        this.areaList.forEach(item => {
+          item.value = item.id;
+          item.label = item.name;
+          item.loading = false;
+          item.children = [];
+        });
+        console.log(this.areaList);
       } else {
         this.$Message.error(res.message);
       }
@@ -471,12 +502,12 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .ivu-col {
   margin-bottom: 5px;
   .detail-card {
     .ivu-form {
-      min-height: 200px;
+      min-height: 250px;
     }
   }
 }

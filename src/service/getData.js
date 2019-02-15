@@ -1143,14 +1143,6 @@ export const call_kt_hung_on = (obj, options) =>
     options,
   });
 
-// 地区接口
-export const sysarea_getAreaByParentId = (obj) =>
-  fetch({
-    url: '/sysarea/getAreaByParentId',
-    method: 'POST',
-    data: qs.stringify(obj),
-    options
-  })
 
 /*
 容联
@@ -1181,6 +1173,22 @@ export const sysDictionary_delete = (obj) =>
 export const sysDictionary_update = (obj) =>
   fetch({
     url: '/sysDictionary/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+// 地区省份接口
+export const sysarea_getAreaProvience = (obj) =>
+  fetch({
+    url: '/sysarea/getAreaProvience',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+// 地区市级接口
+export const sysarea_getAreaByParentId = (obj) =>
+  fetch({
+    url: '/sysarea/getAreaByParentId',
     method: 'POST',
     data: qs.stringify(obj)
   })

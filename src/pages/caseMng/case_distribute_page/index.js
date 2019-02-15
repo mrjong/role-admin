@@ -1,12 +1,12 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { cases_allot_list, getLeafTypeList, collect_parent_children, cases_batch_allot, cases_batch_recycle,cases_collect_recover, cases_collect_stop } from '@/service/getData';
+import { cases_allot_list, getLeafTypeList, collect_parent_children, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop } from '@/service/getData';
 
 export default {
   name: 'case_distribute_page',
   mixins: [formValidateFun, sysDictionary],
   data() {
-    const validate_money_start = (rule, value, callback)=> {
+    const validate_money_start = (rule, value, callback) => {
       if (value && this.formItem.maxOverdueAmt && Number(value) > Number(this.formItem.maxOverdueAmt)) {
         callback(new Error('逾期应还开始金额不能大于逾期应还结束金额'));
       } else {
@@ -19,7 +19,7 @@ export default {
       }
       callback();
     };
-    const validate_day_start = (rule, value, callback) =>{
+    const validate_day_start = (rule, value, callback) => {
       if (value && this.formItem.maxOverdueDays && Number(value) > Number(this.formItem.maxOverdueDays)) {
         console.log(this.formItem.maxOverdueDays)
         callback(new Error('逾期开始天数不能大于逾期结束天数'));
@@ -48,6 +48,7 @@ export default {
       data5: [],
       collectRoleIds: [],
       caseIds: [],
+      caseMounts: 0,
       totalCase: '',
       totalOverdueAmt: '',
       ruleValidate: {
@@ -332,10 +333,10 @@ export default {
     changeSelect(selection) {
       console.log('---------');
       this.caseIds = [];
-      selection &&
-        selection.forEach((element) => {
-          this.caseIds.push(element.id);
-        });
+      selection.forEach((element) => {
+        this.caseIds.push(element.id);
+      });
+      this.caseMounts = this.caseIds.length;
       console.log(this.caseIds);
     },
     // 选中节点的回调函数
@@ -380,6 +381,7 @@ export default {
         this.tableData = res.data.page.content;
         this.totalCase = res.data.summary.totalCount;
         this.totalOverdueAmt = res.data.summary.totalOverdueAmt;
+        this.caseMounts = res.data.summary.totalCount;
         this.pageNo = res.data.page.number;
         this.total = res.data.page.totalElements;
       } else {

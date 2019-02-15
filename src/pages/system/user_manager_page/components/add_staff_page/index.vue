@@ -427,7 +427,7 @@ export default {
       console.log(res);
       if (res.code === 1) {
         this.$Message.success("添加成功");
-        this.$parent.$parent.$parent.getList("#", "01");
+        this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
       }
@@ -441,7 +441,7 @@ export default {
       console.log(res);
       if (res.code === 1) {
         this.$Message.success("添加成功");
-        this.$parent.$parent.$parent.getList("#", "01");
+        this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
       }

@@ -213,7 +213,7 @@ export default {
       });
       if (res.code === 1) {
         this.$Message.success("修改成功");
-        this.$parent.$parent.$parent.getList("#", "01");
+        this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
       }
@@ -227,7 +227,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success("变更成功");
         this.modal = false;
-        this.$parent.$parent.$parent.getList("#", "01");
+        this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
       }

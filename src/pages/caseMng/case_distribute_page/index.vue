@@ -288,7 +288,7 @@
           <span>提示</span>
         </p>
         <Alert show-icon type="warning">
-          <template slot="desc">该操作将分配所有查询出的结果,共1519户，您确认要全部分配么?</template>
+          <template slot="desc">该操作将分配所有查询出的结果,共{{caseMounts}}笔案件，您确认要全部分配么?</template>
         </Alert>
         <div slot="footer">
           <Button type="ghost" size="small" @click="cancel('1')">取消</Button>

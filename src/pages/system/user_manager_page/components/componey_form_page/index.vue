@@ -73,7 +73,14 @@
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="地区:">
-            <Input size="small" v-model="componeyFormItem.area" disabled></Input>
+            <Cascader
+              :data="areaList"
+              v-model="componeyFormItem.area"
+              size="small"
+              :load-data="loadData"
+              @on-change="areaSelect"
+              :disabled="!formDisabled"
+            ></Cascader>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -169,7 +176,9 @@
 import {
   collect_company_update,
   collect_user_list,
-  collect_status_change
+  collect_status_change,
+  sysarea_getAreaByParentId,
+  sysarea_getAreaProvience
 } from "@/service/getData";
 import sysDictionary from "@/mixin/sysDictionary";
 export default {
@@ -188,7 +197,7 @@ export default {
       updateTime: "",
       componeyFormItem: {
         name: "",
-        area: "",
+        area: [],
         areaCity: "",
         areaProvince: "",
         collectType: "",
@@ -219,12 +228,14 @@ export default {
           }
         ]
       },
-      organizationList: []
+      organizationList: [],
+      areaList: []
     };
   },
   created() {
     console.log(this.parentData);
     this.collect_user_list();
+    this.sysarea_getAreaProvience();
     const {
       id,
       name,
@@ -256,6 +267,7 @@ export default {
   },
   watch: {
     parentData() {
+      this.sysarea_getAreaProvience();
       const {
         id,
         name,
@@ -287,6 +299,17 @@ export default {
     }
   },
   methods: {
+    loadData(item, callback) {
+      console.log(item, callback);
+      item.loading = true;
+      this.sysarea_getAreaByParentId(item, callback);
+    },
+    // 地区选择后的回调
+    areaSelect(value, selectedData) {
+      console.log(value, "-----", selectedData);
+      this.componeyFormItem.areaProvince = value[0];
+      this.componeyFormItem.areaCity = value[1];
+    },
     // 设置表单编辑状态
     setFormStatus(type) {
       this.formDisabled = true;
@@ -329,7 +352,7 @@ export default {
       });
       if (res.code === 1) {
         this.$Message.success("修改成功");
-        this.$parent.$parent.$parent.getList("#", "01");
+        this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
       }
@@ -343,7 +366,51 @@ export default {
       if (res.code === 1) {
         this.$Message.success("变更成功");
         this.modal = false;
-        this.$parent.$parent.$parent.getList("#", "01");
+        this.$parent.$parent.$parent.collect_tree_children("#", "01");
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 获取地区市级接口
+    async sysarea_getAreaByParentId(item, callback) {
+      const res = await sysarea_getAreaByParentId({
+        parentId: item.id
+      });
+      if (res.code === 1) {
+        // this.areaList = res.data;
+        item.children = res.data;
+        item.children.forEach(ele => {
+          ele.value = ele.id;
+          ele.label = ele.name;
+          if (ele.id === this.componeyFormItem.areaCity) {
+            this.componeyFormItem.area.push(ele.id);
+          }
+        });
+        item.loading = false;
+        if (callback) {
+          callback();
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 获取地区省级接口
+    async sysarea_getAreaProvience() {
+      const res = await sysarea_getAreaProvience();
+      if (res.code === 1) {
+        this.areaList = res.data;
+        this.areaList.forEach(item => {
+          item.value = item.id;
+          item.label = item.name;
+          item.loading = false;
+          item.children = [];
+          if (item.id === this.componeyFormItem.areaProvince) {
+            console.log('-----------------------');
+            this.componeyFormItem.area.push(item.id);
+            this.sysarea_getAreaByParentId(item);
+          }
+        });
+        console.log(this.areaList);
       } else {
         this.$Message.error(res.message);
       }
