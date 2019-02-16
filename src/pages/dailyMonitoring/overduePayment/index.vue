@@ -271,22 +271,22 @@
             align: alignCenter,
             key: 'listIndex'
           },
-          {
-            title: '案件编码',
-            searchOperator: '=',
-            key: 'caseNo',
-            className: 'tableMainW',
-            align: alignCenter,
-            width: widthVal
-          },
-          {
-            title: '案件状态',
-            searchOperator: '=',
-            key: 'dialout',
-            className: 'caseHandleStatus',
-            align: alignCenter,
-            width: widthVal
-          },
+          // {
+          //   title: '案件编码',
+          //   searchOperator: '=',
+          //   key: 'caseNo',
+          //   className: 'tableMainW',
+          //   align: alignCenter,
+          //   width: widthVal
+          // },
+          // {
+          //   title: '案件状态',
+          //   searchOperator: '=',
+          //   key: 'dialout',
+          //   className: 'caseHandleStatus',
+          //   align: alignCenter,
+          //   width: widthVal
+          // },
           {
             title: '产品线',
             searchOperator: 'like',

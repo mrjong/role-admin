@@ -207,10 +207,7 @@ export default {
       getDirList: ["SEAT_TYPE"],
       getDirObj: {},
       addLeaderFormItem: {
-        name: "",
         userIds: [],
-        remark: "",
-        parentUuid: ""
       },
       addStaffFormItem: {
         name: "",
@@ -231,7 +228,6 @@ export default {
           {
             required: true,
             message: "请选择机构负责人",
-            trigger: "change",
             type: "array"
           }
         ],

@@ -288,7 +288,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success("变更成功");
         this.modal1 = false;
-        // this.$parent.$parent.$parent.collect_tree_children("#", "01");
+        this.$parent.$parent.$parent.collect_tree_children("#", "01");
         this.collect_local_list();
       } else {
         this.$Message.error(res.message);

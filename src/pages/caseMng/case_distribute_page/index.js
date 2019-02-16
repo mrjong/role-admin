@@ -34,7 +34,7 @@ export default {
       callback();
     };
     return {
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS'],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PROD_NUM'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -119,7 +119,7 @@ export default {
         caseStatus: '',
         prodTypes: [],
         periodCounts: [],
-        periodCounts: [],
+        maxPerdCnts: [],
         creditLevels: [],
       },
       tableData: [],
@@ -465,7 +465,7 @@ export default {
         caseStatus: '',
         prodTypes: [],
         periodCounts: [],
-        periodCounts: [],
+        maxPerdCnts: [],
         creditLevels: [],
       };
       this.$refs[name].resetFields();

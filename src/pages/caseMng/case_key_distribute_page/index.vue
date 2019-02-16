@@ -148,6 +148,20 @@
                     placeholder="请选择接收人员"
                     disabled
                   ></Input>
+                  <Button
+                    type="primary"
+                    @click="selectTreeNode(0)"
+                    style="width:80px"
+                    long
+                    size="small"
+                  >选择人员</Button>
+                  <Button
+                    type="primary"
+                    @click="selectTreeNode(1)"
+                    style="width:80px;margin-left: 10px;"
+                    long
+                    size="small"
+                  >选择公司</Button>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
@@ -171,23 +185,41 @@
           </Form>
         </Card>
       </Col>
-      <Col span="12" class="tree-col">
+      <Col span="12" class="tree-col" v-if="treeFlag === 0">
         <Card class="vue-panel">
           <p slot="title" @click="showPanel2=!showPanel2">
-            <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>树结构
+            <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>人员组织树
           </p>
           <Tree
             :data="data5"
             :render="renderContent"
-            ref='tree'
             multiple
             show-checkbox
             @on-select-change="selectNode"
-            @on-check-change="checkChange"
+            @on-check-change="checkChangePerson"
           ></Tree>
-          <div >
-            <Button type="ghost" size="small" @click="cancel('2')">取消</Button>
-            <Button type="primary" size="small" @click="ok('2')">确定</Button>
+          <div>
+            <Button type="ghost" size="small" @click="cancel()">取消</Button>
+            <Button type="primary" size="small" @click="ok()">确定</Button>
+          </div>
+        </Card>
+      </Col>
+      <Col span="12" class="tree-col" v-if="treeFlag === 1">
+        <Card class="vue-panel">
+          <p slot="title" @click="showPanel2=!showPanel2">
+            <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>公司组织树
+          </p>
+          <Tree
+            :data="data"
+            :render="renderContent2"
+            multiple
+            show-checkbox
+            @on-select-change="selectNode"
+            @on-check-change="checkChangeOrz"
+          ></Tree>
+          <div>
+            <Button type="ghost" size="small" @click="cancel()">取消</Button>
+            <Button type="primary" size="small" @click="ok()">确定</Button>
           </div>
         </Card>
       </Col>
@@ -198,7 +230,7 @@
 <script>
 import formValidateFun from "@/mixin/formValidateFun";
 import sysDictionary from "@/mixin/sysDictionary";
-import { divide_allot_manual, collect_tree_children } from "@/service/getData";
+import { divide_allot_manual, collect_tree_children, collect_show_children} from "@/service/getData";
 export default {
   name: "case_key_distribute_page",
   mixins: [formValidateFun, sysDictionary],
@@ -249,13 +281,14 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      treeFlag: '',
       allotRoleIdList: [],
       allotNameList: [],
       ruleValidate: {
         prodTypeList: [
           {
             required: true,
-            type: "array",
+            type: "string",
             message: "请选择产品线"
           }
         ],
@@ -268,7 +301,7 @@ export default {
         ],
         allotNameList: [
           {
-            required: false,
+            required: true,
             message: "请选择接收人员",
             trigger: "blur",
             type: 'array'
@@ -331,7 +364,9 @@ export default {
         creditLevelList: [],
         allotNameList: []
       },
-      data5: []
+      data5: [],
+      data: [],
+      dataContact: []
     };
   },
   created() {
@@ -371,22 +406,83 @@ export default {
           ]),
         ]);
     },
-    // 勾选节点的回调函数
-    checkChange(arr) {
-      console.log(this.$refs.tree.getCheckedNodes());
-      let array = this.$refs.tree.getCheckedNodes();
+    renderContent2(h, { root, node, data }) {
+      console.log(data);
+      return h(
+        "span",
+        {
+          style: {
+            display: "inline-block",
+            width: "94%",
+            boxSizing: "border-box"
+          }
+        },
+        [
+          h("span", [
+            h("Icon", {
+              props: {
+                type: ""
+              },
+              style: {
+                marginRight: "4px"
+              }
+            }),
+            h(
+              "span",
+              {
+                props: {},
+                style: {
+                  cursor: "pointer"
+                },
+                class: "tree_title",
+                on: {
+                  click: e => {}
+                }
+              },
+              data.name
+            )
+          ])
+        ]
+      );
+    },
+    // 勾选人组织树节点的回调函数
+    checkChangePerson(arr) {
+      console.log(arr);
       this.allotRoleIdList = [];
       this.formItem.allotNameList = [];
       arr.forEach(item => {
-        if (item.leafType === '04') {
+        if (item.leafType === "04") {
           this.allotRoleIdList.push(item.id);
           this.formItem.allotNameList.push(item.name);
         }
       });
+      console.log(this.formItem.allotNameList);
+    },
+    // 勾选公司组织树节点的回调函数
+    checkChangeOrz(arr) {
+      console.log(arr);
+      this.allotRoleIdList = [];
+      this.formItem.allotNameList = [];
+      arr.forEach(item => {
+        if (item.leafType === "02") {
+          this.allotRoleIdList.push(item.id);
+          this.formItem.allotNameList.push(item.name);
+        }
+      });
+      console.log(this.formItem.allotNameList);
     },
     // 选中节点的回调函数
     selectNode(node) {
       console.log(node)
+    },
+    // 点击出现tree
+    selectTreeNode(type) {
+      if (type === 0) {
+        this.collect_show_children();
+      } else {
+        this.initTree();
+      }
+      this.treeFlag = type;
     },
     // 取消回退
     handleCancel() {
@@ -404,19 +500,46 @@ export default {
         }
       });
     },
+     // tree取消回调
+    cancel() {
+      this.treeFlag = false;
+      this.formItem.allotNameList = [];
+    },
+    // tree确定回调
+    ok() {
+      this.treeFlag = false;
+    },
     // 获取init tree数据
     async initTree(id, type) {
-      const res = await collect_tree_children({status: '1' });
-      console.log()
+      const res = await collect_show_children({
+        status: 1,
+        ids: this.allotRoleIdList
+      });
+      if (res.code === 1) {
+        this.data = res.data;
+        this.data.forEach(item => {
+          item.disableCheckbox = true;
+          item.children.forEach(ele => {
+            if (ele.leafType !== '02') {
+              item.children = [];
+            }
+            ele.children = [];
+          })
+        })
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 获取人员列表
+    async collect_show_children() {
+      const res = await collect_show_children({
+        status: 1,
+        ids: this.allotRoleIdList
+      });
+      console.log(res);
       if (res.code === 1) {
         this.data5 = res.data;
-        // this.data5.forEach(item => {
-        //   if (item.leafType != '04') {
-        //     item.disableCheckbox = true;
-        //   }
-        // });
       } else {
-        this.$Message.error(res.message)
       }
     },
     // 动态获取表格数据
@@ -466,7 +589,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .ivu-col {
   margin-bottom: 5px;
 }

@@ -101,18 +101,19 @@
       </Form>
     </Card>
     <div v-if="modal1">
-      <Modal
-        v-model="modal1"
-        @on-ok="ok"
-        @on-cancel="cancel"
-        :mask-closable="false"
-      >
+      <Modal v-model="modal1" @on-ok="ok" @on-cancel="cancel" :mask-closable="false">
         <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
           <span>状态变更</span>
         </p>
         <Col :xs="24" :sm="24" :md="12" :lg="12" span="4">
           <label for="acount">机构名称：</label>
-          <Input size="small" v-model="organizationFormItem.name" disabled id="acount" style="width: auto"></Input>
+          <Input
+            size="small"
+            v-model="organizationFormItem.name"
+            disabled
+            id="acount"
+            style="width: auto"
+          ></Input>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" style="margin-left: 20px;">
           <label for="radio">状态：</label>
@@ -131,7 +132,11 @@
 </template>
 
 <script>
-import { collect_section_update, collect_list_leader, collect_status_change } from "@/service/getData";
+import {
+  collect_section_update,
+  collect_list_leader,
+  collect_status_change
+} from "@/service/getData";
 export default {
   props: ["parentData"],
   data() {
@@ -142,7 +147,7 @@ export default {
       updateUser: "",
       updateTime: "",
       modal1: false,
-      status: '',
+      status: "",
       organizationFormItem: {
         name: "",
         userIds: [],
@@ -235,6 +240,30 @@ export default {
     },
     // 恢复表单的不可用状态
     cancelStatus() {
+      const {
+        id,
+        leafType,
+        name,
+        loginName,
+        userIds,
+        remark,
+        createTime,
+        createUser,
+        updateTime,
+        updateUser,
+        status
+      } = this.parentData.nodeData;
+      this.organizationFormItem.id = id;
+      this.organizationFormItem.leafType = leafType;
+      this.organizationFormItem.name = name;
+      this.organizationFormItem.loginName = loginName;
+      this.organizationFormItem.userIds = userIds;
+      this.organizationFormItem.remark = remark;
+      this.createUser = createUser;
+      this.createTime = createTime;
+      this.updateUser = updateUser;
+      this.updateTime = updateTime;
+      this.status = status;
       this.formDisabled = false;
     },
     // 提交保存修改
@@ -271,6 +300,7 @@ export default {
       });
       if (res.code === 1) {
         this.$Message.success("修改成功");
+        this.formDisabled = false;
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);

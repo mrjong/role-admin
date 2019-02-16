@@ -150,11 +150,18 @@
                   ></Input>
                   <Button
                     type="primary"
-                    @click="selectTreeNode"
+                    @click="selectTreeNode(0)"
                     style="width:80px"
                     long
                     size="small"
-                  >选择</Button>
+                  >选择人员</Button>
+                  <Button
+                    type="primary"
+                    @click="selectTreeNode(1)"
+                    style="width:80px;margin-left: 10px;"
+                    long
+                    size="small"
+                  >选择公司</Button>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
@@ -191,10 +198,10 @@
           </Form>
         </Card>
       </Col>
-      <Col span="12" class="tree-col" v-if="treeFlag">
+      <Col span="12" class="tree-col" v-if="treeFlag === 0">
         <Card class="vue-panel">
           <p slot="title" @click="showPanel2=!showPanel2">
-            <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>树结构
+            <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>人员组织树
           </p>
           <Tree
             :data="data5"
@@ -202,7 +209,26 @@
             multiple
             show-checkbox
             @on-select-change="selectNode"
-            @on-check-change="checkChange"
+            @on-check-change="checkChangePerson"
+          ></Tree>
+          <div>
+            <Button type="ghost" size="small" @click="cancel()">取消</Button>
+            <Button type="primary" size="small" @click="ok()">确定</Button>
+          </div>
+        </Card>
+      </Col>
+      <Col span="12" class="tree-col" v-if="treeFlag === 1">
+        <Card class="vue-panel">
+          <p slot="title" @click="showPanel2=!showPanel2">
+            <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>公司组织树
+          </p>
+          <Tree
+            :data="data"
+            :render="renderContent2"
+            multiple
+            show-checkbox
+            @on-select-change="selectNode"
+            @on-check-change="checkChangeOrz"
           ></Tree>
           <div>
             <Button type="ghost" size="small" @click="cancel()">取消</Button>
@@ -222,7 +248,8 @@ import {
   divide_rules_edit,
   divide_rules_save,
   collect_tree_children,
-  collect_show_children
+  collect_show_children,
+  collect_parent_children
 } from "@/service/getData";
 export default {
   name: "case_add_distribute_page",
@@ -264,11 +291,11 @@ export default {
       callback();
     };
     const validator_array = (rule, value, callback) => {
-      console.log(value)
+      console.log(value);
       if (value.length === 0) {
         callback();
       }
-    }
+    };
     return {
       getDirList: [
         "DIVIDE_PROD_NUM",
@@ -281,7 +308,7 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      treeFlag: false,
+      treeFlag: "",
       submitType: 1, //提交类型 1添加，2修改
       ruleId: "",
       allotRoleIdList: [],
@@ -290,7 +317,7 @@ export default {
           {
             required: true,
             type: "string",
-            message: "请选择产品线",
+            message: "请选择产品线"
           }
         ],
         allotType: [
@@ -305,7 +332,7 @@ export default {
           {
             required: true,
             message: "请选择有效时间",
-            type: "array",
+            type: "array"
           }
         ],
         allotNameList: [
@@ -362,7 +389,7 @@ export default {
         ]
       },
       formItem: {
-        prodTypeList: '',
+        prodTypeList: "",
         perdCountList: [],
         perdThisCountList: [],
         ovdudaysMin: "",
@@ -376,7 +403,9 @@ export default {
         effectMaxDt: "",
         date: []
       },
-      data5: []
+      data5: [],
+      data: [],
+      dataContact: []
     };
   },
   created() {
@@ -392,7 +421,6 @@ export default {
       console.log(itemNode);
       this.divide_rules_edit();
     }
-    this.collect_show_children();
   },
   methods: {
     renderContent(h, { root, node, data }) {
@@ -433,13 +461,65 @@ export default {
         ]
       );
     },
-    // 勾选节点的回调函数
-    checkChange(arr) {
+    renderContent2(h, { root, node, data }) {
+      console.log(data);
+      return h(
+        "span",
+        {
+          style: {
+            display: "inline-block",
+            width: "94%",
+            boxSizing: "border-box"
+          }
+        },
+        [
+          h("span", [
+            h("Icon", {
+              props: {
+                type: ""
+              },
+              style: {
+                marginRight: "4px"
+              }
+            }),
+            h(
+              "span",
+              {
+                props: {},
+                style: {
+                  cursor: "pointer"
+                },
+                class: "tree_title",
+                on: {
+                  click: e => {}
+                }
+              },
+              data.name
+            )
+          ])
+        ]
+      );
+    },
+    // 勾选人组织树节点的回调函数
+    checkChangePerson(arr) {
       console.log(arr);
       this.allotRoleIdList = [];
       this.formItem.allotNameList = [];
       arr.forEach(item => {
         if (item.leafType === "04") {
+          this.allotRoleIdList.push(item.id);
+          this.formItem.allotNameList.push(item.name);
+        }
+      });
+      console.log(this.formItem.allotNameList);
+    },
+    // 勾选公司组织树节点的回调函数
+    checkChangeOrz(arr) {
+      console.log(arr);
+      this.allotRoleIdList = [];
+      this.formItem.allotNameList = [];
+      arr.forEach(item => {
+        if (item.leafType === "02") {
           this.allotRoleIdList.push(item.id);
           this.formItem.allotNameList.push(item.name);
         }
@@ -471,9 +551,14 @@ export default {
       });
     },
     // 点击出现tree
-    selectTreeNode() {
+    selectTreeNode(type) {
       console.log(12313);
-      this.treeFlag = true;
+      if (type === 0) {
+        this.collect_show_children();
+      } else {
+        this.initTree();
+      }
+      this.treeFlag = type;
     },
     // tree取消回调
     cancel() {
@@ -492,12 +577,21 @@ export default {
     },
     // 获取init tree数据
     async initTree(id, type) {
-      const res = await collect_tree_children({
-        status: "1"
+      const res = await collect_show_children({
+        status: 1,
+        ids: this.allotRoleIdList
       });
-      console.log();
       if (res.code === 1) {
-        this.data5 = res.data;
+        this.data = res.data;
+        this.data.forEach(item => {
+          item.disableCheckbox = true;
+          item.children.forEach(ele => {
+            if (ele.leafType !== '02') {
+              item.children = [];
+            }
+            ele.children = [];
+          })
+        })
       } else {
         this.$Message.error(res.message);
       }
@@ -513,6 +607,38 @@ export default {
         this.data5 = res.data;
       } else {
       }
+    },
+    // 动态获取tree数据
+    async collect_parent_children(id, type, callBack) {
+      const res = await collect_parent_children({
+        parentId: id,
+        status: "1",
+        leafType: type
+      });
+      if (res.code === 1) {
+        this.dataContact = res.data;
+        callBack(this.dataContact);
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 异步加载tree数据
+    loadData(item, callBack) {
+      console.log(item, "----------------------");
+      this.nodeData = item;
+      let leafType;
+      if (item.leafType === "01") {
+        leafType = "02";
+      } else if (item.leafType === "02") {
+        leafType = "03";
+      } else if (item.leafType === "03") {
+        item.loading = false;
+        return;
+      } else {
+        item.loading = false;
+        return;
+      }
+      this.collect_parent_children(item.id, leafType, callBack);
     },
     // 添加案件接口
     async divide_rules_add() {
@@ -550,7 +676,6 @@ export default {
           this.formItem.date = [];
           this.formItem.date.push(res.data.effectMinDt);
           this.formItem.date.push(res.data.effectMaxDt);
-          console.log(this.formItem.date)
         }
       } else {
         this.$Message.error(res.message);
@@ -572,7 +697,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .ivu-col {
   margin-bottom: 5px;
 }

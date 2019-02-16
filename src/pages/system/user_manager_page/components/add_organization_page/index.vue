@@ -411,7 +411,7 @@ export default {
               break;
           }
         } else {
-          this.$Message.error("查询条件格式有误，请重新填写");
+          this.$Message.error("校验条件不通过，请重新填写");
         }
       });
     },

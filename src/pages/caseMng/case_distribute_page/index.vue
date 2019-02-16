@@ -14,8 +14,8 @@
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="案件状态:">
-              <Select clearable size="small" placeholder="请选择案件状态" v-model="formItem.caseStatus">
+            <FormItem span="6" label="规则状态:">
+              <Select clearable size="small" placeholder="请选择规则状态" v-model="formItem.caseStatus">
                 <Option
                   v-for="item in getDirObj.CASE_HANDLE_STATUS"
                   :value="item.itemCode"
@@ -65,10 +65,10 @@
                 multiple
                 clearable
                 placeholder="请选择到期期数"
-                v-model="formItem.periodCounts"
+                v-model="formItem.maxPerdCnts"
               >
                 <Option
-                  v-for="item in getDirObj.PROD_CNT"
+                  v-for="item in getDirObj.PROD_NUM"
                   :value="item.itemCode"
                   :key="item.itemName"
                 >{{ item.itemName }}</Option>
@@ -334,7 +334,7 @@
           <span>批量回收</span>
         </p>
         <Alert show-icon type="warning">
-          <template slot="desc">共查询出1条案件,确定要回收吗？</template>
+          <template slot="desc">共查询出{{caseMounts}}条案件,确定要回收吗？</template>
         </Alert>
         <div slot="footer">
           <Button type="ghost" size="small" @click="cancel('3')">取消</Button>
