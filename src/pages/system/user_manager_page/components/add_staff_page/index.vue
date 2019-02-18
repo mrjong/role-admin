@@ -285,13 +285,13 @@ export default {
     };
   },
   created() {
-    this.collect_list_leader();
     // this.collect_user_list(this.parentData.nodeData.leafType);
     console.log(this.parentData);
     switch (this.parentData.type) {
       case "01":
         this.collect_user_list("01");
         this.addLeaderFormItem = {
+          userIds: [],
           parentUuid: this.parentData.nodeData.id,
           name: this.parentData.nodeData.name
         };
@@ -311,17 +311,19 @@ export default {
           parentUuid: this.parentData.nodeData.id
         };
         break;
-    }
+    };
+    this.collect_list_leader();
   },
   watch: {
     parentData() {
-      console.log(this.parentData);
       switch (this.parentData.type) {
         case "01":
-          this.collect_user_list("01");
           this.addLeaderFormItem = {
-            parentUuid: this.parentData.nodeData.id
+            parentUuid: this.parentData.nodeData.id,
+            name: this.parentData.nodeData.name,
+            userIds: [],
           };
+          this.collect_user_list("01");
           break;
         case "02":
           this.collect_user_list("02");
@@ -335,7 +337,8 @@ export default {
           this.collect_user_list("02");
           this.collect_user_list("03");
           this.addStaffFormItem = {
-            parentUuid: this.parentData.nodeData.id
+            parentUuid: this.parentData.nodeData.id,
+            name: this.parentData.nodeData.name
           };
           break;
       }
