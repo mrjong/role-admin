@@ -130,10 +130,6 @@ export default {
       acount: "",
       id: "",
       tableData: [
-        {
-          recording_id: 1,
-          operate: "操作"
-        }
       ],
       tableColumns: [
         {
@@ -185,6 +181,14 @@ export default {
           width: 120
         },
         {
+          title: "创建人",
+          searchOperator: "=",
+          key: "createUser",
+          align: "center",
+          ellipsis: true,
+          width: 120
+        },
+        {
           title: "创建时间",
           searchOperator: "=",
           key: "createTime",
@@ -193,6 +197,24 @@ export default {
           align: "center",
           render: (h, params) => {
             let createTime = params.row.createTime;
+            createTime = createTime
+              ? this.$options.filters["formatDate"](
+                  createTime,
+                  "YYYY-MM-DD HH:mm:ss"
+                )
+              : createTime;
+            return h("span", createTime);
+          }
+        },
+        {
+          title: "冻结时间",
+          searchOperator: "=",
+          key: "createTime",
+          ellipsis: true,
+          width: 200,
+          align: "center",
+          render: (h, params) => {
+            let createTime = params.row.updateTime;
             createTime = createTime
               ? this.$options.filters["formatDate"](
                   createTime,
@@ -303,7 +325,7 @@ export default {
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
-      this.getList();
+      this.collect_local_list();
     },
     // 切换每页条数时的回调
     changeSize(pageSize) {

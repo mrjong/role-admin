@@ -297,26 +297,6 @@ export default {
         }
       });
     },
-    // async system_user_add() {
-    //   let roleIds = "";
-    //   if (
-    //     this.formItem &&
-    //     this.formItem.roleIds &&
-    //     this.formItem.roleIds.length > 0
-    //   ) {
-    //     this.formItem.roleIds.forEach(element => {
-    //       roleIds = roleIds + element + ",";
-    //     });
-
-    //     delete this.formItem.roleIds;
-    //     console.log(roleIds, this.formItem);
-    //     if (this.parentData.type != "0") {
-    //       this.system_user_update();
-    //     } else {
-    //       this.system_user_add();
-    //     }
-    //   }
-    // },
 
     async system_user_update() {
       const res = await system_user_update({

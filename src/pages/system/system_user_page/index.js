@@ -220,8 +220,21 @@ export default {
 				userData: obj
 			};
 			console.log(this.parentData);
-		},
-
+    },
+    handleSubmit(name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.pageNo = 1;
+          this.getList();
+        }
+      });
+    },
+    // 重置
+    clearForm(name) {
+      //这里可以不用改变当前的分页组件之中的页码数值
+      this.formValidate = {};
+      this.$refs[name].resetFields();
+    },
 		// 获取表格数据
 		async system_user_reset(ids) {
 			const res = await system_user_reset({ ids: ids});

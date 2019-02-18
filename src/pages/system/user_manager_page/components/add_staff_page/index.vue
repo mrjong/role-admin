@@ -206,23 +206,6 @@ export default {
     return {
       getDirList: ["SEAT_TYPE"],
       getDirObj: {},
-      addLeaderFormItem: {
-        userIds: [],
-      },
-      addStaffFormItem: {
-        name: "",
-        loginName: "",
-        companyId: "",
-        outfitId: "",
-        roleId: "",
-        seatType: "",
-        mobile: "",
-        callno: "",
-        email: "",
-        remark: "",
-        status: "1",
-        parentUuid: ""
-      },
       ruleValidate1: {
         userIds: [
           {
@@ -275,6 +258,23 @@ export default {
             trigger: "change"
           }
         ]
+      },
+      addLeaderFormItem: {
+        userIds: [],
+      },
+      addStaffFormItem: {
+        name: "",
+        loginName: "",
+        companyId: "",
+        outfitId: "",
+        roleId: "",
+        seatType: "",
+        mobile: "",
+        callno: "",
+        email: "",
+        remark: "",
+        status: "1",
+        parentUuid: ""
       },
       organizationList: [],
       companyList: [],
