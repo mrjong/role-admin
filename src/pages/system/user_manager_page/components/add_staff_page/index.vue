@@ -211,6 +211,7 @@ export default {
           {
             required: true,
             message: "请选择机构负责人",
+            trigger: "change",
             type: "array"
           }
         ],
@@ -260,7 +261,7 @@ export default {
         ]
       },
       addLeaderFormItem: {
-        userIds: [],
+        userIds: []
       },
       addStaffFormItem: {
         name: "",

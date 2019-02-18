@@ -25,7 +25,7 @@ export default {
         status: '',
       },
       formItem: {
-        prodTypeList: '',
+        prodTypeList: [],
         status: ''
       },
       ruleValidate: {

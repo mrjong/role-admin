@@ -111,7 +111,11 @@ export default {
 			pageNo: 1,
 			pageSize: 10,
 			total: 0,
-			formItem: {},
+			formItem: {
+        prdTyp: [],
+        perdCnt: [],
+        creditLevel: [],
+      },
 			tableData: [],
 			tableColumns: [
 				{
