@@ -70,6 +70,7 @@ export default {
   },
   methods: {
     handleChange(name) {
+        console.log(name,'-------------------')
       let willpush = true;
       if (this.beforePush !== undefined) {
         if (!this.beforePush(name)) {

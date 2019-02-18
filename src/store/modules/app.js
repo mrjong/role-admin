@@ -2,10 +2,12 @@ import { otherRouter } from '@/router/router';
 import Util from '@/libs/util';
 import Cookies from 'js-cookie';
 import Vue from 'vue';
+import { system_menu_findTreeByCurrentUser } from '@/service/getData';
+
 import AllRouter from '@/router/routers';
 const LayoutMain = () => import('@/pages/common/main');
 
-import menuTree from './demo.json';
+// import menuTree2 from './demo.json';
 
 const app = {
 	state: {
@@ -49,24 +51,23 @@ const app = {
 	},
 	actions: {
 		getMenuTreeOriginal({ commit }) {
-			return new Promise((resolve, reject) => {
-				setTimeout(() => {
-					commit('changeMenuTreeOriginal', menuTree.data);
-					resolve(menuTree.data);
-				}, 1000);
+			return new Promise(async (resolve, reject) => {
+				const menuTree = await system_menu_findTreeByCurrentUser();
+				commit('changeMenuTreeOriginal', menuTree&&menuTree.data&&menuTree.data[0].children);
+				resolve(menuTree&&menuTree.data&&menuTree.data[0].children);
 			});
 		},
 		async generateRoutes({ state, commit, dispatch }) {
 			await dispatch('getMenuTreeOriginal');
-			const menuTreeList = state.menuTreeOriginal.map((item) => ({
+			const menuTreeList = state.menuTreeOriginal.map((item, index1) => ({
 				path: item.url,
 				icon: item.icon,
 				name: item.url,
 				title: item.text,
 				component: LayoutMain,
 				// 判断一级菜单是否有子菜单
-				children: item.childrens
-					? item.childrens.map((child) => ({
+				children: item.children
+					? item.children.map((child, index) => ({
 							path: item.url + child.url,
 							name: item.url + child.url,
 							icon: child.icon,
@@ -74,7 +75,7 @@ const app = {
 							component: AllRouter[`${child.template}`],
 							meta: {
 								// 判断子菜单是否有按钮级别的控制
-								btnPermissionsList: child.childrens ? child.childrens.map((btn) => btn) : []
+								btnPermissionsList: child.children ? child.children.map((btn) => btn) : []
 							}
 						}))
 					: []
