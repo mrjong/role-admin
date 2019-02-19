@@ -758,7 +758,8 @@ export default {
   },
   methods: {
     selectIcon(item) {
-      console.log(item)
+      console.log(item);
+      this.$emit('passBack', item);
     }
   }
 }

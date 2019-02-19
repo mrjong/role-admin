@@ -241,7 +241,19 @@ export default {
       const res = await collect_tree_children({status: 1});
       if (res.code === 1) {
         console.log(res);
+        // this.data5 = res.data;
+        // res.data.forEach(item => {
+        //   if (item.leafType === '04') {
+        //     delete item.children;
+        //   };
+        //   item.children.forEach(ele => {
+        //     if (ele.leafType === '04') {
+        //       delete ele.children;
+        //     };
+        //   })
+        // });
         this.data5 = res.data;
+        console.log(this.data5);
       } else {
         this.$Message.error(res.message);
       }

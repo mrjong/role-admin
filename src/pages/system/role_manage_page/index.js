@@ -27,7 +27,7 @@ export default {
       formValidateChange:{roleCode:''},
       formValidateAdd:{
         roleCode: '',
-        roleStatus: '0',
+        roleStatus: '1',
         roleType: '01'
       },
       ruleValidate: {

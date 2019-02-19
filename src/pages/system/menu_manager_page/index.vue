@@ -27,9 +27,10 @@
           ></Tree>
         </Card>
       </Col>
-      <Col span="16" class="detail-col">
-        <Card class="vue-panel detail-card" v-if="detailFlag">
-          <p slot="title">基本信息</p>
+      <!-- 修改菜单项 -->
+      <Col span="16" class="detail-col" v-if="modal === '1'">
+        <Card class="vue-panel detail-card">
+          <p slot="title">修改信息</p>
           <!-- 菜单项详情 -->
           <Form ref="menuFormItem" :model="menuFormItem" :label-width="90" :rules="ruleValidate1">
             <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -43,13 +44,14 @@
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
-              <FormItem span="4" label="URL:">
+              <FormItem span="4" label="URL:" prop="url">
                 <Input size="small" v-model="menuFormItem.url" placeholder="请输入url"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="图标:">
-                <Input size="small" v-model="menuFormItem.icon" placeholder="请输入图标"></Input>
+                <Input size="small" v-model="menuFormItem.icon" placeholder="请选择图标"></Input>
+                <Button type="primary" size="small" @click="showIconList">选择图标</Button>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
@@ -66,26 +68,66 @@
           </Form>
         </Card>
       </Col>
-      <!-- 新建模态框 -->
-      <div v-if="modal">
+      <!-- 新建菜单项 -->
+      <Col span="16" class="detail-col" v-if="modal === '0'">
+        <Card class="vue-panel detail-card">
+          <p slot="title">新建菜单项</p>
+          <!-- 菜单项详情 -->
+          <Form
+            ref="menuAddFormItem"
+            :model="menuAddFormItem"
+            :label-width="90"
+            :rules="ruleValidate2"
+          >
+            <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+              <FormItem span="4" label="菜单名称:" prop="text">
+                <Input size="small" clearable v-model="menuAddFormItem.text" placeholder="请输入菜单名称"></Input>
+              </FormItem>
+            </Col>
+            <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
+              <FormItem span="4" label="位置:" prop="sort">
+                <Input size="small" v-model="menuAddFormItem.sort" placeholder="请输入位置"></Input>
+              </FormItem>
+            </Col>
+            <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
+              <FormItem span="4" label="URL:" prop="url">
+                <Input size="small" v-model="menuAddFormItem.url" placeholder="请输入url"></Input>
+              </FormItem>
+            </Col>
+            <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
+              <FormItem span="4" label="图标:">
+                <Input size="small" v-model="menuAddFormItem.icon" placeholder="请选择图标"></Input>
+                <Button type="primary" size="small" @click="showIconList">选择图标</Button>
+              </FormItem>
+            </Col>
+            <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
+              <FormItem>
+                <Button type="ghost" size="small" @click="cancel">取消</Button>
+                <Button type="primary" size="small" @click="ok">确定</Button>
+              </FormItem>
+            </Col>
+          </Form>
+        </Card>
+      </Col>
+      <!-- 选择图标 -->
+      <div v-if="showIconFlag">
         <Modal
-          v-model="modal"
-          @on-ok="ok"
-          @on-cancel="cancel"
-          width="500"
-          :transfer="false"
+          v-model="showIconFlag"
+          width="800"
+          class-name="user_info_form_modal"
           :mask-closable="false"
         >
           <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
-            <span>新建节点</span>
+            <span>图标</span>
           </p>
-          <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
-            <label for="acount">节点名称：</label>
-            <Input size="small" v-model="newMenuItem.text" id="acount" style="width: auto"></Input>
-          </Col>
+          <IconList v-on:passBack="passBack"></IconList>
           <div slot="footer">
-            <Button type="ghost" size="small" @click="cancel">取消</Button>
-            <Button type="primary" size="small" @click="ok">确定</Button>
+            <Button type="ghost" size="small" @click="selectIcon">关闭</Button>
+            <Button
+              type="primary"
+              size="small"
+              @click="selectIcon"
+            >确定</Button>
           </div>
         </Modal>
       </div>
@@ -93,7 +135,7 @@
   </div>
 </template>
 <script src="./index.js"></script>
-<style lang="less">
+<style lang="less" scoped>
 .tdetail-row,
 .detail-col {
   position: relative;
@@ -103,12 +145,6 @@
     height: 620px;
     overflow-y: auto;
   }
-}
-.ivu-modal {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
 }
 .detail-col {
   position: relative;

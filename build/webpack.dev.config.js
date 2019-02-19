@@ -63,15 +63,15 @@ module.exports = merge(webpackBaseConfig, {
         proxy: {
             '/admin': {
                 //target:'http://172.18.40.100:8080',
-                // target: 'https://fcs-front-test.vbillbank.com/',  // 测试地址
-                target: 'http://172.18.40.181:8080', //清泉目标接口域名
+                //target: 'https://fcs-front-test.vbillbank.com',  // 测试地址
+                // target: 'http://172.18.40.181:8080', //清泉目标接口域名
                 // target: 'http://172.16.154.239:8080', //志祥目标接口域名
                 //target: 'http://172.18.40.22:8080', // 胥尹辉后台本地
                 //target: 'http://172.18.40.245:8080', //志祥目标接口域名
                 // target: 'http://172.18.40.151:8080', // 胥尹辉后台本地
                 // target: 'http://172.16.154.239:8080', //目标接口域名
                 // target: 'http://172.18.40.116:8080', //测试
-                //  target: 'http://172.18.40.245:8080', //志壮
+                 target: 'http://172.18.40.245:8080', //冯垚栋
                 // target: 'http://172.18.40.219:8080', //志壮
                 //target: 'http://172.18.30.201:8050', //本地
                 // target: 'http://172.18.40.100:8080', //jiaqi

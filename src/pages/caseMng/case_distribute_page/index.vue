@@ -14,8 +14,14 @@
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="规则状态:">
-              <Select clearable size="small" placeholder="请选择规则状态" v-model="formItem.caseStatus">
+            <FormItem span="6" label="案件处理状态:">
+              <Select
+                clearable
+                size="small"
+                placeholder="请选择规则状态"
+                v-model="formItem.caseHandleStatus"
+                @on-change='selectChange'
+              >
                 <Option
                   v-for="item in getDirObj.CASE_HANDLE_STATUS"
                   :value="item.itemCode"
@@ -147,6 +153,7 @@
             <FormItem label="还款日期:">
               <DatePicker
                 type="daterange"
+                v-model="date"
                 @on-change="dateChange"
                 :editable="false"
                 placeholder="请选择还款日期"
@@ -183,7 +190,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="电催中心:">
-              <Select size="small" clearable placeholder="请选择电催中心" v-model="formItem.opCompayNames">
+              <Select size="small" clearable multiple filterable placeholder="请选择电催中心" v-model="formItem.opCompayNames">
                 <Option
                   v-for="item in getLeafTypeList2_data"
                   :value="item.id"
@@ -194,7 +201,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="经办人:">
-              <Select size="small" clearable placeholder="请选择经办人" v-model="formItem.opUserName">
+              <Select size="small" clearable placeholder="请选择经办人" v-model="formItem.opUserUuid">
                 <Option
                   v-for="item in getLeafTypeList_data"
                   :value="item.id"
@@ -240,7 +247,7 @@
           type="primary"
           size="small"
           @click.stop="handeldBtnClick('3')"
-        >停催</Button> -->
+        >停催</Button>-->
         <Button
           class="fr vue-back-btn header-btn"
           type="primary"
@@ -256,7 +263,13 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-        <Table :data="tableData" border :columns="tableColumns" stripe @on-selection-change='changeSelect'></Table>
+        <Table
+          :data="tableData"
+          border
+          :columns="tableColumns"
+          stripe
+          @on-selection-change="changeSelect"
+        ></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div style="float: right;">
@@ -304,17 +317,41 @@
         class-name="user_info_form_modal"
         :mask-closable="false"
       >
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
-          <span>分配</span>
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; height: auto">
+          <Button
+            type="primary"
+            @click="selectTreeNode(0)"
+            style="width:80px"
+            long
+            size="small"
+          >选择人员</Button>
+          <Button
+            type="primary"
+            @click="selectTreeNode(1)"
+            style="width:80px;margin-left: 10px;"
+            long
+            size="small"
+          >选择公司</Button>
         </p>
+        <!-- <div v-if="treeFlag === 0"> -->
+          <Tree
+            :data="data5"
+            :render="renderContent"
+            multiple
+            show-checkbox
+            @on-select-change="selectNode"
+            @on-check-change="checkChange"
+            v-if="treeFlag === 0"
+          ></Tree>
+        <!-- </div> -->
         <Tree
-          :data="data5"
+          :data="data"
           :render="renderContent"
           multiple
           show-checkbox
-          :load-data="loadData"
           @on-select-change="selectNode"
           @on-check-change="checkChange"
+          v-if="treeFlag === 1"
         ></Tree>
         <div slot="footer">
           <Button type="ghost" size="small" @click="cancel('2')">取消</Button>
@@ -342,7 +379,7 @@
         </div>
       </Modal>
     </div>
-    <!-- 批量停催的modal -->
+    <!-- 停催的modal -->
     <div v-if="stopCollectionFlag">
       <Modal
         v-model="stopCollectionFlag"
@@ -351,12 +388,50 @@
         :mask-closable="false"
       >
         <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
-          <span>批量回收</span>
+          <span>案件停催</span>
         </p>
-        <!-- <Form ref="menuFormItem" :model="menuFormItem" :label-width="90" :rules="ruleValidate1"></Form> -->
+        <Form ref="stopFormItem" :model="stopFormItem" :label-width="90" :rules="ruleValidate1">
+          <FormItem span="4" label="停催原因:" prop='operRemark'>
+            <Input
+              type="textarea"
+              size="small"
+              :maxlength="100"
+              v-model="stopFormItem.operRemark"
+              placeholder="请输入100字以内"
+            ></Input>
+          </FormItem>
+        </Form>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel('3')">取消</Button>
-          <Button type="primary" size="small" @click="ok('3')">确定</Button>
+          <Button type="ghost" size="small" @click="cancel('4')">取消</Button>
+          <Button type="primary" size="small" @click="ok('4')">确定</Button>
+        </div>
+      </Modal>
+    </div>
+    <!-- 恢复催收的modal -->
+    <div v-if="recoverCollectionFlag">
+      <Modal
+        v-model="recoverCollectionFlag"
+        width="800"
+        class-name="user_info_form_modal"
+        :mask-closable="false"
+      >
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+          <span>恢复催收</span>
+        </p>
+        <Form ref="recoverFormItem" :model="recoverFormItem" :label-width="120" :rules="ruleValidate2">
+          <FormItem span="4" label="恢复催收原因:" prop='operRemark'>
+            <Input
+              type="textarea"
+              size="small"
+              :maxlength="100"
+              v-model="recoverFormItem.operRemark"
+              placeholder="请输入100字以内"
+            ></Input>
+          </FormItem>
+        </Form>
+        <div slot="footer">
+          <Button type="ghost" size="small" @click="cancel('5')">取消</Button>
+          <Button type="primary" size="small" @click="ok('5')">确定</Button>
         </div>
       </Modal>
     </div>
