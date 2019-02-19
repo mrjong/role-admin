@@ -16,6 +16,7 @@ export default {
 			//代扣类型
 			startAndend: '', //还款日期区间
 			formValidate: {
+        prdTyps:[]
 			},
 			ruleValidate: {
 				//ruleValidate添加表单的校验规则，用来提示用户的输入法则，具体使用在表单里面 ：rule='ruleValidate'直接使用即可
@@ -60,13 +61,11 @@ export default {
 					title: '序号',
           type:'index',
 					width: 60,
-					searchOperator: '=',
 					align: alignCenter,
 					key: 'buffet_id'
 				},
 				{
 					title: '账单号',
-					searchOperator: '=',
 					key: 'billNo',
 					className: 'tableMainW',
 					align: alignCenter,
@@ -74,7 +73,6 @@ export default {
 				},
 				{
 					title: '代扣订单号',
-					searchOperator: 'like',
 					key: 'dkOrdNo',
 					className: 'tableMainW',
 					align: alignCenter,
@@ -82,7 +80,6 @@ export default {
 				},
 				{
 					title: '客户姓名',
-					searchOperator: 'like',
 					key: 'usrNmHid',
 					className: 'tableMainW',
 					align: alignCenter,
@@ -90,7 +87,6 @@ export default {
 				},
 				{
 					title: '身份证号',
-					searchOperator: 'like',
 					key: 'idNoHid',
 					className: 'tableMainW',
 					align: alignCenter,
@@ -249,7 +245,9 @@ export default {
 		// 重置
 		clearForm(name) {
 			this.pageNo = 1;
-			this.formValidate = {};
+			this.formValidate = {
+        prdTyps:[]
+      };
 			this.startAndend = '';
 			this.$refs[name].resetFields();
 		}

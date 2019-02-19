@@ -114,7 +114,7 @@ export default {
           width: widthMidVal,
           render(h,params){
             const row = params.row;
-            const res = row.repayOrdTypName === 'UR' ? '用户主动还款': '系统代扣';
+            const res = row.repayOrdTypName;
             console.log(row,'nmnnmnmnm');
             return h('span',res);
           }
@@ -127,7 +127,7 @@ export default {
           width: widthMidVal,
           render(h,params){
             const row = params.row;
-            const res = row.payOffStsName === 'UR' ? '用户主动还款': row.payOffStsName;
+            const res = row.payOffStsName ;
             console.log(row,'nmnnmnmnm');
             return h('span',res);
           }
@@ -157,8 +157,8 @@ export default {
           width: widthMidVal,
           render(h,params){
             const row = params.row;
-            const prdTyp = row.prdTypName === '01' ? '还到': row.prdTypName === '02' ? '随行付钱包': '商户贷';
-            return h('span', prdTyp);
+            const prdTypName = row.prdTypName ;
+            return h('span', prdTypName);
           }
         },
         {

@@ -20,6 +20,7 @@ export default {
         dkorgOrdNo: '', // string 代扣订单号,
         usrNm: '', // 用户姓名,
         mblNo: '', // 手机号,
+        prdTyps:[],
         ordSts: '', // 订单状态 借口中取,
         orgFnlMsg: '', //失败原因,
         ordDt: '', // 还款时间,
@@ -262,7 +263,9 @@ export default {
     // 重置
     clearForm(name) {
       this.pageNo = 1;
-      this.formValidate = {};
+      this.formValidate = {
+        prdTyps:[]
+      };
       this.startAndend='';
       this.$refs[name].resetFields();
     }
