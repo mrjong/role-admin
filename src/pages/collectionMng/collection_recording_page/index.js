@@ -344,9 +344,9 @@ export default {
         {
           ids: id,
         },
-        {
-          responseType: 'blob'
-        }
+        // {
+        //   responseType: 'blob'
+        // }
         // util.dowloadfile('案件查询', res);
         )
         console.log(res);
