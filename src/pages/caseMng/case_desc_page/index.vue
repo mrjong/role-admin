@@ -104,12 +104,26 @@
     >
       <!-- 检索条件 -->
       <Card class="vue-panel case-desc">
-        <p
-          slot="title"
-          @click="showPanel=!showPanel"
-        >
-          <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
-          {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}（{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
+        <p slot="title">
+          <Icon
+            @click="showPanel=!showPanel"
+            :type="!showPanel?'chevron-down':'chevron-up'"
+          ></Icon>
+
+          {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}} <Poptip
+            :content="mingwenData"
+            v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
+          >
+            <Icon
+              class="eye-class"
+              title="显示明文"
+              type="eye"
+              @click="syscommon_decrypt({
+                type:'NAME',
+                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm
+            })"
+            ></Icon>
+          </Poptip>（{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
           <Button
             v-if="readType!=='read'"
             @click.stop="handOpen('zhongcai')"
@@ -171,6 +185,20 @@
             <div class="panel-desc-title">
               身份证号：<span>
                 {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNoHid}}
+                <Poptip
+                  :content="mingwenData"
+                  v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNoHid"
+                >
+                  <Icon
+                    class="eye-class"
+                    title="显示明文"
+                    type="eye"
+                    @click="syscommon_decrypt({
+                type:'ID_CARD',
+                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNo
+            })"
+                  ></Icon>
+                </Poptip>
               </span>
             </div>
             </Col>
@@ -276,7 +304,22 @@
                 </div>
 
                 <div class="panel-desc-title fl mr10">
-                  银行卡号：<span>{{case_detail_case_base_info_Data.crdNoHid}}</span>
+                  银行卡号：<span>{{case_detail_case_base_info_Data.crdNoHid}}
+                    <Poptip
+                      :content="mingwenData"
+                      v-if="case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNoHid"
+                    >
+                      <Icon
+                        class="eye-class"
+                        title="显示明文"
+                        type="eye"
+                        @click="syscommon_decrypt({
+                type:'BANK_CARD',
+                data:case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNo
+            })"
+                      ></Icon>
+                    </Poptip>
+                  </span>
                 </div>
 
                 <div class="panel-desc-title fl mr10">
@@ -648,7 +691,7 @@
                   >
                     <Icon
                       @click="handCall({
-                             callUserType:'01',
+                        callUserType:'01',
                          userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
                         userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
                         userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,

@@ -112,10 +112,10 @@ export default {
 			pageSize: 10,
 			total: 0,
 			formItem: {
-        prdTyp: [],
-        perdCnt: [],
-        creditLevel: [],
-      },
+				prodTypes: [],
+				periodCounts: [],
+				creditLevels: []
+			},
 			tableData: [],
 			tableColumns: [
 				{
@@ -125,7 +125,7 @@ export default {
 					align: 'center',
 					render(h, params) {
 						const id = params.row.id;
-						const prdTyp = params.row.prdTyp;
+						const prodTypes = params.row.prodTypes;
 						const userId = params.row.userId;
 						let seatType = sessionStorage.getItem('seatType');
 						return h('div', [
@@ -148,7 +148,7 @@ export default {
 											on: {
 												click: () => {
 													window.open(
-														`${location.origin}/#/case_desc_page?caseNotest=${id}&prdTyptest=${prdTyp}&userIdtest=${userId}&seatType=${seatType
+														`${location.origin}/#/case_desc_page?caseNotest=${id}&prodTypestest=${prodTypes}&userIdtest=${userId}&seatType=${seatType
 															? seatType
 															: 'KT'}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
 															_this.formItem
@@ -334,7 +334,7 @@ export default {
 		// 沟通状态
 		async collectcode_getListByCodeType() {
 			const res = await collectcode_getListByCodeType({
-				codeType: 'TALK_RESULT'
+				codeType: 'COLLECT_STS'
 			});
 			if (res.code === 1) {
 				this.getDirObj2 = res.data;

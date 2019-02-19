@@ -75,22 +75,9 @@ export default {
 			},
 			productTimeList: [],
 			defaultList: [],
-			defaultList1: [
-				{
-					name: 'a42bdcc1178e62b4694c830f028db5c0',
-					url: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
-				}
-			],
-			defaultList2: [
-				{
-					url: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
-				}
-			],
-			defaultList3: [
-				{
-					url: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
-				}
-			],
+			defaultList1: [],
+			defaultList2: [],
+			defaultList3: [],
 			imgName: '',
 			visible: false,
 			uploadList: [],

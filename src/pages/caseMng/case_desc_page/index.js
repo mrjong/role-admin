@@ -23,8 +23,9 @@ import {
 	mail_list_add, // 新增通讯录
 	case_remark_his_add, // 新增催记
 	collectcode_getCollectRelate, // 获取沟通状态
-	call_kt_hung_on, // 外拨
-	call_moor_hung_on
+	call_kt_hung_on, // 客天外拨
+	call_moor_hung_on, // 容联外拨
+	syscommon_decrypt // 明文展示
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
@@ -37,6 +38,7 @@ export default {
 	data() {
 		const _this = this;
 		return {
+			mingwenData: '',
 			parentData: {},
 			prdTyp: '',
 			userNm: '',
@@ -411,7 +413,7 @@ export default {
 				{
 					title: '还款账号',
 					align: 'center',
-					width: 100,
+					width: 180,
 					key: 'crdNoHid'
 				},
 				{
@@ -635,7 +637,24 @@ export default {
 					title: '用户姓名',
 					align: 'center',
 					width: 150,
-					key: 'usrNmHid'
+					key: 'usrNmHid',
+					render: (h, params) => {
+						return h('div', [
+							h('span', {}, params.row.usrNmHid),
+							h('Poptip',
+							{
+								content: '-------'
+							},
+							[h(
+								'Icon',
+								{
+                                    class:'eye-class',
+									type: 'eye'
+								},
+								''
+							)])
+						]);
+					}
 				},
 				{
 					title: '卡类型',
@@ -1222,8 +1241,8 @@ export default {
 		let params = location.hash.split('?');
 		const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
 		this.caseNo = queryData.caseNotest;
-    this.seatType = queryData.seatType;
-    console.log(this.seatType);
+		this.seatType = queryData.seatType;
+		console.log(this.seatType);
 		this.prdTyp = queryData.prdTyptest;
 		this.userId = queryData.userIdtest;
 		this.readType = queryData.readType;
@@ -1241,6 +1260,14 @@ export default {
 		this.case_detail_case_identity_info(); // 查询案件详情身份信息
 	},
 	methods: {
+		async syscommon_decrypt(obj) {
+			const res = await syscommon_decrypt(obj);
+			if (res.code === 1) {
+				this.mingwenData = res.data;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
 		async call_kt_hung_on(obj) {
 			this.telShow = true;
 			let callData = JSON.parse(sessionStorage.getItem('callData'));
@@ -1264,7 +1291,7 @@ export default {
 				res = await call_kt_hung_on(obj2);
 			}
 			if (res.code === 1) {
-        this.$Message.success('呼出成功');
+				this.$Message.success('呼出成功');
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -1562,19 +1589,17 @@ export default {
 
 		// 点击电话
 		handCall(obj, type, tag) {
-			console.log('obj', obj);
 			this.handleCancle();
-			console.log(obj, type);
-			// type ['call] 拨打电话
-			this.call_kt_hung_on({
-				callno: obj.mblNo || obj.cntUserMblNo,
-				callUserType: obj.callUserType || obj.cntRelTyp,
-				toCallUser: obj.userNm || obj.cntUserName,
-				toCallUserHid: obj.userNmHid || obj.cntUserNameHid,
-				toCallMbl: obj.mblNo || obj.cntUserMblNo,
-				toCallMblHid: obj.mblNoHid || obj.cntUserMblNoHid
-			});
 			if (type === 'call') {
+				// type ['call] 拨打电话
+				this.call_kt_hung_on({
+					callno: obj.mblNo || obj.cntUserMblNo,
+					callUserType: obj.callUserType || obj.cntRelTyp,
+					toCallUser: obj.userNm || obj.cntUserName,
+					toCallUserHid: obj.userNmHid || obj.cntUserNameHid,
+					toCallMbl: obj.mblNo || obj.cntUserMblNo,
+					toCallMblHid: obj.mblNoHid || obj.cntUserMblNoHid
+				});
 			}
 			if (this.readType !== 'read') {
 				this.callUserTypeLevel = tag;
@@ -1595,11 +1620,11 @@ export default {
 			console.log(this.modal);
 			if (type === 'zhongcai') {
 				this.zhongcai_set_data = {
-					idNoHid: '22222222222', // case_detail_case_identity_info_Data.idNoHid
-					billNo: '9999999999', // case_detail_case_base_info_Data.billNo
-					userNmHid: '2222222', // case_detail_case_identity_info_Data.userNmHid
-					caseNo: '2222222222', // this.caseNo,
-					userGender: 'M', //this.prdTyp,
+					idNoHid: this.case_detail_case_identity_info_Data.idNoHid,
+					billNo: this.case_detail_case_base_info_Data.billNo,
+					userNmHid: this.case_detail_case_identity_info_Data.userNmHid,
+					caseNo: this.caseNo,
+					userGender: this.case_detail_case_identity_info_Data.userGenderName,
 					userNation: '汉族'
 				};
 			}
@@ -1634,7 +1659,9 @@ export default {
 		async case_remark_his_add() {
 			const res = await case_remark_his_add({
 				...this.formValidate,
-				promiseRepayDate: this.formValidate.promiseRepayDate?dayjs(this.formValidate.promiseRepayDate).format('YYYY-MM-DD HH:mm'):'',
+				promiseRepayDate: this.formValidate.promiseRepayDate
+					? dayjs(this.formValidate.promiseRepayDate).format('YYYY-MM-DD HH:mm')
+					: '',
 				userId: this.userId,
 				userNm: this.userNm,
 				mblNo: this.mblNo,

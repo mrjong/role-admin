@@ -30,7 +30,7 @@
             span="6"
            
             label="产品线:"
-            prop="prdTyp"
+            prop="prodTypes"
           >
             <Select
               size="small"
@@ -38,7 +38,7 @@
                multiple
             filterable
               placeholder="请选择产品线"
-              v-model="formItem.prdTyp"
+              v-model="formItem.prodTypes"
             >
               <Option
                 v-for="item in getDirObj.PROD_TYPE"
@@ -58,7 +58,7 @@
           <FormItem
             span="6"
             label="产品期数:"
-            prop="perdCnt"
+            prop="periodCounts"
           >
             <Select
               size="small"
@@ -66,7 +66,7 @@
             filterable
               clearable
               placeholder="请选择产品期数"
-              v-model="formItem.perdCnt"
+              v-model="formItem.periodCounts"
             >
               <Option
                 v-for="item in getDirObj.PROD_CNT"
@@ -279,7 +279,7 @@
           <FormItem
             span="6"
             label="信用级别:"
-            prop="creditLevel"
+            prop="creditLevels"
           >
             <Select
               size="small"
@@ -287,7 +287,7 @@
                  multiple
             filterable
               placeholder="请选择信用级别"
-              v-model="formItem.creditLevel"
+              v-model="formItem.creditLevels"
             >
               <Option
                 v-for="item in getDirObj.CREDIT_LEVEL"
