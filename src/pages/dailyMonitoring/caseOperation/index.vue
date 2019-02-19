@@ -181,8 +181,7 @@
         showPanel2: false,
         dealTime:'',
         formItem: {
-         startDate: '',
-          endDate: ''
+
         },
         ruleValidate:{
 
@@ -285,11 +284,9 @@
     },
     methods: {
       // 改变日期区间的格式之后进行处理
-      changeDate(val1, val2) {
+      changeDate(val1) {
         console.log(val1, typeof val1)
-        console.log(val2, typeof val2)
-        this.formItem.startDate = val1[0];
-        this.formItem.endDate = val1[1];
+        this.formItem.operTime = val1[0];
         // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
       },
       // 页码改变的回调
