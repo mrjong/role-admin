@@ -2,6 +2,7 @@
   <div>
     <Row>
       <Col
+        :xs="24" :sm="24" :md="6" :lg="6"
         span="6"
         v-for="item in iconList"
         :key="item"

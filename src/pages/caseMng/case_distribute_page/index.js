@@ -560,6 +560,7 @@ export default {
       });
       if (res.code === 1) {
         this.$Message.success('分配成功');
+        this.getList();
         this.distributeRoleFlag = false;
       } else {
         this.$Message.error(res.message);
@@ -574,6 +575,7 @@ export default {
       });
       if (res.code === 1) {
         this.$Message.success('回收成功');
+        this.getList();
         this.recycleFlag = false;
       } else {
         this.$Message.error(res.message);

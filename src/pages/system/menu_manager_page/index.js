@@ -10,6 +10,7 @@ export default {
       showPanel2: false,
       detailFlag: false,
       showIconFlag: false,
+      iconType: '',
       modal: '',
       itemName: '',
       data: {},
@@ -168,22 +169,39 @@ export default {
             ])
         ]);
     },
-    showIconList () {
+    showIconList(type) {
+      this.iconType = type;
       this.showIconFlag = true;
     },
     // iconlist子组件回调
     passBack(icon) {
-      console.log(icon)
+      console.log(icon);
+      if (this.iconType === 0) {
+        this.menuAddFormItem.icon = icon;
+      } else {
+        this.menuFormItem.icon = icon;
+      };
     },
-    selectIcon () {
-
+    selectIcon(type) {
+      if (type === 1) {
+        if (this.iconType === 0) {
+          this.menuAddFormItem.icon = '';
+        } else {
+          this.menuFormItem.icon = '';
+        };
+      };
+      this.showIconFlag = false;
     },
     // 提交保存修改
-    handleSubmit(name) {
+    handleSubmit(name, type) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          // this.menuFormItem.parent = this.data.parent;
-          this.menuUpdate(this.menuFormItem)
+          if (type === 1) {
+            this.menuUpdate(this.menuFormItem);
+          } else {
+            this.menuAddFormItem.parent = this.data.id;
+            this.menuAdd(this.menuAddFormItem);
+          }
         } else {
           this.$Message.error("查询条件格式有误，请重新填写");
         }
@@ -200,16 +218,6 @@ export default {
       },
       this.modal = '0';
       this.data = data;
-    },
-    ok() {
-      // const children = this.data.children || [];
-      // children.push({
-      //   text: this.itemName,
-      //   expand: true
-      // });
-      // this.$set(this.data, 'children', children);
-      this.menuAddFormItem.parent = this.data.id;
-      this.menuAdd(this.menuAddFormItem);
     },
     cancel() {
       this.modal = '';

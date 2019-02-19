@@ -24,7 +24,7 @@
                     v-model="formItem.prodTypeList"
                   >
                     <Option
-                      v-for="item in getDirObj.PROD_TYPE"
+                      v-for="item in getDirObj.DIVIDE_PROD_TYPE"
                       :value="item.itemCode"
                       :key="item.itemName"
                     >{{ item.itemName }}</Option>
@@ -272,7 +272,7 @@ export default {
     };
     return {
       getDirList: [
-        "PROD_TYPE",
+        "DIVIDE_PROD_TYPE",
         "PROD_CNT",
         "CREDIT_LEVEL",
         "CASE_HANDLE_STATUS",

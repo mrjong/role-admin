@@ -41,6 +41,7 @@ export default {
       showPanel2: false,
       totalOverdueAmt: '',
       totalCase: '',
+      caseMounts: '',
       caseIds: [],
       ruleValidate: {
         idNo: [
@@ -206,7 +207,7 @@ export default {
         },
         {
           title: '产品线',
-          minWidth: 150,
+          minWidth: 120,
           align: 'center',
           key: 'prdName'
         },
@@ -230,35 +231,35 @@ export default {
         },
         {
           title: '逾期天数',
-          minWidth: 100,
+          width: 100,
           sortable: true,
           align: 'center',
           key: 'overdueDays'
         },
         {
           title: '到期期数',
-          minWidth: 150,
+          width: 120,
           sortable: true,
           align: 'center',
           key: 'maxPerdCnt'
         },
         {
           title: '信用级别',
-          minWidth: 150,
+          width: 150,
           sortable: true,
           align: 'center',
           key: 'creditLevel'
         },
         {
           title: '还款状态',
-          minWidth: 150,
+          width: 150,
           sortable: true,
           align: 'center',
           key: 'repayStatusName'
         },
         {
           title: '分配时间',
-          minWidth: 200,
+          width: 200,
           sortable: true,
           align: 'center',
           key: 'allotDate',
@@ -272,14 +273,14 @@ export default {
         },
         {
           title: '电催中心',
-          minWidth: 120,
+          width: 120,
           align: 'center',
           key: 'opCompayName'
         },
 
         {
           title: '经办人',
-          minWidth: 120,
+          width: 100,
           align: 'center',
           key: 'opUserName'
         },
@@ -298,6 +299,11 @@ export default {
         selection.forEach((element) => {
           this.caseIds.push(element.id);
         });
+        if (this.caseIds.length != 0) {
+          this.caseMounts = this.caseIds.length;
+        } else {
+          this.caseMounts = this.totalCase;
+        }
       console.log(this.caseIds);
     },
     // 页码改变的回调
@@ -326,6 +332,7 @@ export default {
         {
           ...this.formItem,
           caseIds: this.caseIds,
+          preTotalCases: this.caseMounts,
         },
         {
           responseType: 'blob'

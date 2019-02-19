@@ -50,19 +50,14 @@
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="图标:">
-                <Input size="small" v-model="menuFormItem.icon" placeholder="请选择图标"></Input>
-                <Button type="primary" size="small" @click="showIconList">选择图标</Button>
+                <Input size="small" v-model="menuFormItem.icon" disabled placeholder="请选择图标"></Input>
+                <Button type="primary" size="small" @click="showIconList(1)">选择图标</Button>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
               <FormItem>
-                <Button
-                  type="primary"
-                  @click="handleSubmit('menuFormItem')"
-                  style="width:80px"
-                  long
-                  size="small"
-                >确定</Button>
+                <Button type="ghost" size="small" @click="cancel">取消</Button>
+                <Button type="primary" size="small" @click="handleSubmit('menuFormItem',1)">确定</Button>
               </FormItem>
             </Col>
           </Form>
@@ -96,14 +91,14 @@
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="图标:">
-                <Input size="small" v-model="menuAddFormItem.icon" placeholder="请选择图标"></Input>
-                <Button type="primary" size="small" @click="showIconList">选择图标</Button>
+                <Input size="small" v-model="menuAddFormItem.icon" disabled placeholder="请选择图标"></Input>
+                <Button type="primary" size="small" @click="showIconList(0)">选择图标</Button>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
               <FormItem>
                 <Button type="ghost" size="small" @click="cancel">取消</Button>
-                <Button type="primary" size="small" @click="ok">确定</Button>
+                <Button type="primary" size="small" @click="handleSubmit('menuAddFormItem',0)">确定</Button>
               </FormItem>
             </Col>
           </Form>
@@ -122,11 +117,11 @@
           </p>
           <IconList v-on:passBack="passBack"></IconList>
           <div slot="footer">
-            <Button type="ghost" size="small" @click="selectIcon">关闭</Button>
+            <Button type="ghost" size="small" @click="selectIcon(1)">关闭</Button>
             <Button
               type="primary"
               size="small"
-              @click="selectIcon"
+              @click="selectIcon(0)"
             >确定</Button>
           </div>
         </Modal>
