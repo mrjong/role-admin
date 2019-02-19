@@ -209,15 +209,42 @@
           "url": "/dailyMonitoring/callDetail",
           "icon": "arrow-return-left",
           "template": "/dailyMonitoring/callDetail"
-        },
-        {
-          "text": "案件操作",
-          "url": "/dailyMonitoring/caseOperation",
-          "icon": "arrow-return-left",
-          "template": "/dailyMonitoring/caseOperation"
         }
       ]
-    }
+    },
+    {
+        "id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+        "text": "日志管理",
+        "url": "/logMng",
+        "icon": "ionic",
+        "template": null,
+        "children": [
+          {
+            "text": "案件操作",
+            "url": "/logMng/caseOperation",
+            "icon": "arrow-return-left",
+            "template": "/logMng/caseOperation"
+          },
+          {
+            "text": "系统操作",
+            "url": "/logMng/systemOperation",
+            "icon": "arrow-return-left",
+            "template": "/logMng/systemOperation"
+          },
+          {
+            "text": "定时任务管理",
+            "url": "/logMng/timedTask",
+            "icon": "arrow-return-left",
+            "template": "/logMng/timedTask"
+          },
+          {
+            "text": "消息管理",
+            "url": "/logMng/messageMng",
+            "icon": "arrow-return-left",
+            "template": "/logMng/messageMng"
+          }
+        ]
+      }
 	],
 	"extra": null,
 	"success": true
