@@ -1,4 +1,9 @@
-import { announcement_list, announcement_add, announcement_update, announcement_delete } from '@/service/getData';
+import {
+	announcement_list,
+	announcement_add,
+	announcement_update,
+	announcement_delete
+} from '@/service/getData';
 
 export default {
 	name: 'case_search_page',
@@ -115,10 +120,9 @@ export default {
 		};
 	},
 	created() {
-        console.log('---------')
-        window.$router = this.$router;
-        this.announcement_list_fun();
-     
+		console.log('---------');
+		window.$router = this.$router;
+		this.announcement_list_fun();
 	},
 	methods: {
 		showAlert(type, uuid, val) {
@@ -151,7 +155,7 @@ export default {
 			});
 		},
 		// 编辑公告
-		async editAnnouncement(uuid,content) {
+		async editAnnouncement(uuid, content) {
 			const res = await announcement_update({
 				uuid,
 				content

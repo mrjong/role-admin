@@ -8,7 +8,7 @@
 			"url": "/caseMng",
 			"icon": "ionic",
 			"template": null,
-			"childrens": [
+			"children": [
 				{
 					"text": "案件查询",
 					"url": "/caseMng/case_search_page",
@@ -35,7 +35,7 @@
 			"url": "/collectionMng",
 			"icon": "ionic",
 			"template": null,
-			"childrens": [
+			"children": [
 				{
 					"text": "我的案件",
 					"url": "/collectionMng/my_case_page",
@@ -62,7 +62,7 @@
 			"url": "/workflow",
 			"icon": "ionic",
 			"template": null,
-			"childrens": [
+			"children": [
 				{
 					"text": "工作流定义",
 					"url": "/workflow/definition",
@@ -83,7 +83,7 @@
 			"url": "/arbitramentMng",
 			"icon": "ionic",
 			"template": null,
-			"childrens": [
+			"children": [
 				{
 					"text": "仲裁审批",
 					"url": "/arbitramentMng/arbitrament_approve_page",
@@ -98,7 +98,7 @@
 			"url": "/system",
 			"icon": "ionic",
 			"template": null,
-			"childrens": [
+			"children": [
 				{
 					"text": "系统用户管理",
 					"url": "/system/system_user_page",
@@ -143,7 +143,7 @@
       "url": "/businessMng",
       "icon": "ionic",
       "template": null,
-      "childrens": [
+      "children": [
         {
           "text": "划扣管理",
           "url": "/businessMng/transferMng",
@@ -158,7 +158,7 @@
       "url": "/remoneyMng",
       "icon": "ionic",
       "template": null,
-      "childrens": [
+      "children": [
         {
           "text": "确认回款明细",
           "url": "/remoneyMng/remoney_detail",
@@ -185,7 +185,7 @@
       "url": "/dailyMonitoring",
       "icon": "ionic",
       "template": null,
-      "childrens": [
+      "children": [
         {
           "text": "逾期日报",
           "url": "/dailyMonitoring/overduePayment",

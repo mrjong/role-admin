@@ -101,9 +101,9 @@ export const wkProcessTask_list = (obj = {}) =>
 /**
  * 菜单权限
  */
-export const findTreeByCurrentUser = (obj = {}) =>
+export const system_menu_findTreeByCurrentUser = (obj = {}) =>
   fetch({
-    url: '/findTreeByCurrentUser',
+    url: '/system/menu/findTreeByCurrentUser',
     method: 'POST',
     data: qs.stringify(obj)
   });
