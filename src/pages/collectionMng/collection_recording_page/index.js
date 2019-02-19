@@ -1,4 +1,4 @@
-import { case_collect_collect_list, getLeafTypeList } from '@/service/getData';
+import { case_collect_collect_list, getLeafTypeList, case_collect_tape_download } from '@/service/getData';
 import 'video.js/dist/video-js.css';
 import { videoPlayer } from 'vue-video-player';
 import formValidateFun from '@/mixin/formValidateFun';
@@ -12,7 +12,7 @@ export default {
   },
   mixins: [tablePage, formValidateFun, sysDictionary],
   data() {
-    const _this = this
+
     return {
       getDirList: ['PROD_TYPE'],
       getDirObj: {},
@@ -159,7 +159,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      _this.modal1 = true;
+                      this.modal1 = true;
                     }
                   }
                 },
@@ -175,7 +175,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      _this.modal1 = true;
+                      this.case_collect_tape_download(soundUuid);
                     }
                   }
                 },
@@ -211,6 +211,7 @@ export default {
           title: '呼叫开始时间',
           width: 150,
           key: 'startTime',
+          align: 'center',
           render: (h, params) => {
             let startTime = params.row.startTime;
             startTime = startTime
@@ -223,6 +224,7 @@ export default {
           title: '呼叫结束时间',
           width: 150,
           key: 'endTime',
+          align: 'center',
           render: (h, params) => {
             let endTime = params.row.endTime;
             endTime = endTime
@@ -234,34 +236,40 @@ export default {
         {
           title: '客户姓名',
           width: 120,
-          key: 'userNmHid'
+          key: 'userNmHid',
+          align: 'center',
         },
         {
           title: '关系',
           width: 100,
-          key: 'callUserTypeName'
+          key: 'callUserTypeName',
+          align: 'center',
         },
         {
           title: '经办人',
           width: 120,
-          key: 'opUserName'
+          key: 'opUserName',
+          align: 'center',
         },
         {
           title: '案件编码',
           width: 180,
           searchOperator: '=',
-          key: 'caseNo'
+          key: 'caseNo',
+          align: 'center',
         },
         {
           title: '账单号',
           width: 180,
           sortable: true,
-          key: 'billNo'
+          key: 'billNo',
+          align: 'center',
         },
         {
           title: '客户身份证号',
           width: 180,
-          key: 'idNoHid'
+          key: 'idNoHid',
+          align: 'center',
         }
       ]
     };
@@ -330,6 +338,18 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+    },
+    async case_collect_tape_download (id) {
+      const res = await case_collect_tape_download(
+        {
+          ids: id,
+        },
+        {
+          responseType: 'blob'
+        }
+        // util.dowloadfile('案件查询', res);
+        )
+        console.log(res);
     },
     ok() {
       this.$Message.info('Clicked ok');

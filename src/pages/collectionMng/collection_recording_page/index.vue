@@ -112,9 +112,6 @@
     <Card class="vue-panel-table collection_recording">
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
-        <router-link to="/buffet/buffet_add">
-          <Button class="fr vue-back-btn header-btn" type="primary" size="small">导出数据</Button>
-        </router-link>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">

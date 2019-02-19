@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Row>
+    <Row  style="max-height: 500px; overflow: auto;">
       <Col
         :xs="24" :sm="24" :md="6" :lg="6"
         span="6"

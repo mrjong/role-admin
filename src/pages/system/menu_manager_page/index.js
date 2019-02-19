@@ -1,4 +1,4 @@
-import { stytem_menu_list, stytem_menu_update, stytem_menu_add } from '@/service/getData';
+import { stytem_menu_list, stytem_menu_update, stytem_menu_add, system_menu_del } from '@/service/getData';
 import IconList from '@/components/iconList'
 export default {
   components: {
@@ -162,7 +162,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.menuUpdate({ id: data.id, state: '00' });
+                    this.system_menu_del(data.id);
                   }
                 }
               }, '删除'),
@@ -254,6 +254,16 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
-    }
+    },
+    // 删除菜单项
+    async system_menu_del(id) {
+      const res = await system_menu_del({id: id});
+      if (res.code === 1) {
+        this.$Message.success('删除成功');
+        this.getList();
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
   },
 }
