@@ -1634,7 +1634,7 @@ export default {
 		async case_remark_his_add() {
 			const res = await case_remark_his_add({
 				...this.formValidate,
-				promiseRepayDate: dayjs(this.formValidate.promiseRepayDate).format('YYYY-MM-DD HH:mm'),
+				promiseRepayDate: this.formValidate.promiseRepayDate?dayjs(this.formValidate.promiseRepayDate).format('YYYY-MM-DD HH:mm'):'',
 				userId: this.userId,
 				userNm: this.userNm,
 				mblNo: this.mblNo,

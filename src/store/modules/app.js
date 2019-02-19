@@ -7,7 +7,7 @@ import { system_menu_findTreeByCurrentUser } from '@/service/getData';
 import AllRouter from '@/router/routers';
 const LayoutMain = () => import('@/pages/common/main');
 
-// import menuTree2 from './demo.json';
+import menuTree2 from './demo.json';
 
 const app = {
 	state: {
@@ -53,8 +53,8 @@ const app = {
 		getMenuTreeOriginal({ commit }) {
 			return new Promise(async (resolve, reject) => {
 				const menuTree = await system_menu_findTreeByCurrentUser();
-				commit('changeMenuTreeOriginal', menuTree&&menuTree.data&&menuTree.data[0].children);
-				resolve(menuTree&&menuTree.data&&menuTree.data[0].children);
+				commit('changeMenuTreeOriginal', menuTree2.data);
+				resolve(menuTree2.data);
 			});
 		},
 		async generateRoutes({ state, commit, dispatch }) {

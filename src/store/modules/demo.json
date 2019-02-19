@@ -209,6 +209,12 @@
           "url": "/dailyMonitoring/callDetail",
           "icon": "arrow-return-left",
           "template": "/dailyMonitoring/callDetail"
+        },
+        {
+          "text": "案件操作",
+          "url": "/dailyMonitoring/caseOperation",
+          "icon": "arrow-return-left",
+          "template": "/dailyMonitoring/caseOperation"
         }
       ]
     }
