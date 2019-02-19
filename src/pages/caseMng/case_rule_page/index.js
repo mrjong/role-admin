@@ -10,7 +10,7 @@ export default {
   },
   data() {
     return {
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS'],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', '01_02_EFFECT_INVAL'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -56,7 +56,7 @@ export default {
           title: '产品线',
           width: 80,
           searchOperator: '=',
-          key: 'prdName',
+          key: 'prodTypeName',
           align: 'center',
         },
         {
@@ -212,10 +212,10 @@ export default {
           }
         },
         {
-          title: '状态',
+          title: '规则状态',
           width: 100,
           searchOperator: '=',
-          key: 'status',
+          key: 'statusName',
           align: 'center',
         },
         {
@@ -322,13 +322,14 @@ export default {
       this.$router.push({ name: 'case_add_distribute_page' });
     },
     handleSubmit(name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.getList();
-        } else {
-          this.$Message.error('查询条件格式有误，请重新填写');
-        }
-      });
+      // this.$refs[name].validate((valid) => {
+      //   if (valid) {
+      //     this.getList();
+      //   } else {
+      //     this.$Message.error('查询条件格式有误，请重新填写');
+      //   }
+      // });
+      this.getList();
     },
     // 页码改变的回调
     changePage(pageNo) {
@@ -413,7 +414,10 @@ export default {
     // 重置
     clearForm(name) {
       this.pageNo = 1;
-      this.formItem = {};
+      this.formItem = {
+        prodTypeList: [],
+        status: ''
+      };
       this.$refs[name].resetFields();
     },
   },

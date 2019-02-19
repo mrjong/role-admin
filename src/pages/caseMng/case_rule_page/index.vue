@@ -8,7 +8,7 @@
       <Form v-if="!showPanel" ref="formItem" :model="formItem" :label-width="95">
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="产品线:">
+            <FormItem span="4" label="产品线:">
               <Select
                 size="small"
                 multiple
@@ -25,10 +25,10 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="案件状态:">
-              <Select clearable size="small" placeholder="请选择案件状态" v-model="formItem.status">
+            <FormItem span="6" label="规则状态:">
+              <Select clearable size="small" placeholder="请选择规则状态" v-model="formItem.status">
                 <Option
-                  v-for="item in getDirObj.CASE_HANDLE_STATUS"
+                  v-for="item in getDirObj['01_02_EFFECT_INVAL']"
                   :value="item.itemCode"
                   :key="item.itemCode"
                 >{{ item.itemName }}</Option>

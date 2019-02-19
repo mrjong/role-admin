@@ -167,7 +167,7 @@ export default {
         },
         {
           title: '操作',
-          width: 150,
+          width: 100,
           key: 'edit',
           align: 'center',
           fixed: 'left',
@@ -198,7 +198,7 @@ export default {
         },
         {
           title: '案件编码',
-          width: 150,
+          width: 180,
           searchOperator: '=',
           key: 'id',
           align: 'center',
@@ -241,28 +241,49 @@ export default {
         {
           title: '逾期金额',
           searchOperator: 'like',
-          width: 150,
+          width: 120,
           key: 'overdueAmt',
           align: 'center',
         },
         {
           title: '逾期天数',
           searchOperator: 'like',
-          width: 150,
+          width: 100,
           key: 'overdueDays',
           align: 'center',
         },
         {
           title: '到期期数',
           searchOperator: 'like',
-          width: 150,
+          width: 100,
           key: 'maxPerdCnt',
           align: 'center',
         },
         {
+          title: '产品期数',
+          searchOperator: 'like',
+          width: 100,
+          key: 'perdCnt',
+          align: 'center',
+        },
+        {
+          title: '应还款日期',
+          key: 'dueDate',
+          width: 150,
+          sortable: true,
+          align: 'center',
+          render: (h, params) => {
+            const row = params.row;
+            const dueDate = row.dueDate
+              ? this.$options.filters['formatDate'](row.dueDate, 'YYYY-MM-DD')
+              : row.dueDate;
+            return h('span', dueDate);
+          }
+        },
+        {
           title: '信用级别',
           searchOperator: 'like',
-          width: 150,
+          width: 120,
           key: 'creditLevel',
           align: 'center',
         },
@@ -283,7 +304,7 @@ export default {
         {
           title: '电催公司',
           searchOperator: 'like',
-          width: 180,
+          width: 150,
           key: 'opCompayName',
           align: 'center',
         },
@@ -297,7 +318,7 @@ export default {
         {
           title: '案件状态',
           searchOperator: 'like',
-          width: 150,
+          width: 100,
           key: 'caseHandleStatusName',
           align: 'center',
         },
@@ -363,7 +384,11 @@ export default {
       selection.forEach((element) => {
         this.caseIds.push(element.id);
       });
-      this.caseMounts = this.caseIds.length;
+      if (this.caseIds.length != 0) {
+        this.caseMounts = this.caseIds.length;
+      } else {
+        this.caseMounts = this.totalCase;
+      }
       console.log(this.caseIds);
     },
     // 选中节点的回调函数
@@ -391,7 +416,8 @@ export default {
       });
     },
     // 下拉框监听
-    selectChange (value) {
+    selectChange(value) {
+      this.pageNo = 1;
       this.getList();
     },
     // 日期变更回调
@@ -530,6 +556,7 @@ export default {
         ...this.formItem,
         collectRoleIds: this.collectRoleIds,
         caseIds: this.caseIds,
+        preTotalCases: this.total,
       });
       if (res.code === 1) {
         this.$Message.success('分配成功');
@@ -586,7 +613,12 @@ export default {
     handeldBtnClick(type) {
       switch (type) {
         case '1':
-          this.distributeFlag = true;
+          console.log(this.formItem.caseHandleStatus);
+          if (this.formItem.caseHandleStatus && this.formItem.caseHandleStatus != '') {
+            this.distributeFlag = true;
+          } else {
+            this.$Message.error('请选择案件处理状态再分配')
+          };
           break;
         case '2':
           console.log(this.formItem.caseHandleStatus);
@@ -620,7 +652,7 @@ export default {
       }
     },
     // modal确定回调
-    ok(type) {
+    ok(type, name) {
       switch (type) {
         case '1': this.distributeFlag = false;
           this.distributeRoleFlag = true;
@@ -632,10 +664,18 @@ export default {
           this.cases_batch_recycle();
           break;
         case '4':
-          this.cases_collect_stop(this.caseID);
+          this.$refs[name].validate((valid) => {
+            if (valid) {
+              this.cases_collect_stop(this.caseID);
+            }
+          });
           break;
         case '5':
-          this.cases_collect_recover(this.caseID);
+          this.$refs[name].validate((valid) => {
+            if (valid) {
+              this.cases_collect_recover(this.caseID);
+            }
+          });
           break;
       }
     }

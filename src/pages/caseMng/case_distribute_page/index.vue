@@ -403,7 +403,7 @@
         </Form>
         <div slot="footer">
           <Button type="ghost" size="small" @click="cancel('4')">取消</Button>
-          <Button type="primary" size="small" @click="ok('4')">确定</Button>
+          <Button type="primary" size="small" @click="ok('4', 'stopFormItem')">确定</Button>
         </div>
       </Modal>
     </div>
@@ -431,7 +431,7 @@
         </Form>
         <div slot="footer">
           <Button type="ghost" size="small" @click="cancel('5')">取消</Button>
-          <Button type="primary" size="small" @click="ok('5')">确定</Button>
+          <Button type="primary" size="small" @click="ok('5', 'recoverFormItem')">确定</Button>
         </div>
       </Modal>
     </div>

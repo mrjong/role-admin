@@ -58,7 +58,7 @@
                     v-model="formItem.perdThisCountList"
                   >
                     <Option
-                      v-for="item in getDirObj.PROD_CNT"
+                      v-for="item in getDirObj.PROD_NUM"
                       :value="item.itemCode"
                       :key="item.itemName"
                     >{{ item.itemName }}</Option>
@@ -276,7 +276,8 @@ export default {
         "PROD_CNT",
         "CREDIT_LEVEL",
         "CASE_HANDLE_STATUS",
-        "ALLOT_TYPE"
+        "ALLOT_TYPE",
+        'PROD_NUM'
       ],
       getDirObj: {},
       showPanel: false,
