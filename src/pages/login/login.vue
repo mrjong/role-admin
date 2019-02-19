@@ -131,7 +131,7 @@ export default {
       if (data.successChange) {
         console.log('您已登录成功！');
       } else {
-        console.log('登录失败，请联系管理员！');
+        this.$Message.error('登录失败，请联系管理员！');
       }
     },
     loginSuccess(res) {

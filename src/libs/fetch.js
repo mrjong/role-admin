@@ -70,7 +70,8 @@ axios.interceptors.response.use(
 			case 404:
 			case 501:
 			case 500:
-			case 503:
+            case 503:
+            case 504:
 				iView.Message.error('服务器繁忙,稍后重试');
 				break;
 

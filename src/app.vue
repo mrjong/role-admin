@@ -3,9 +3,8 @@
     id="main"
     class="app-main"
   >
-    <div
-      class="tel-box"
-      v-if="showTel"
+    <div class="tel-box"
+    v-if="showTel"
     >
       <div class="tel-box-desc">
         <div class="tel-num">{{telNo}}</div>
@@ -30,18 +29,36 @@
               class="icon-box"
               @click="hangup"
             >
-              <Icon type="ios-telephone"></Icon>
+              <Icon
+                class="fail-icon"
+                type="ios-telephone"
+              ></Icon>
             </div>
           </div>
         </div>
       </div>
+   
+      <!-- <video
+        src="@/libs/ring.wav"
+        controls="controls"
+      >
+        您的浏览器不支持 video 标签。
+      </video> -->
     </div>
     <router-view></router-view>
+       <video
+        loop
+        ref="ring"
+        preload="auto"
+        src="src/libs/ring.wav"
+      >
+      </video>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+// import ring from '@/libs/ring.wav'
 export default {
   data() {
     return {
@@ -54,7 +71,6 @@ export default {
     }
   },
   mounted() {
-
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
@@ -74,12 +90,19 @@ export default {
       CallHelper.hangup();
       this.fail = false
       this.success = false
+    },
+    play() {
+      this.$refs.ring.play()
+    },
+    pause1() {
+      this.$refs.ring.pause();
     }
   },
   watch: {
     changeCallData(res) {
       if (res.msg) {
         console.log('电话状态======>', res)
+        this.pause1()
         switch (res.msg) {
           case 'READY':
             // 坐席就绪
@@ -94,6 +117,7 @@ export default {
                 this.answer()
               } else if ("ib" == direction) {
                 // 呼入
+                this.play()
                 this.fail = true
                 this.success = true
               }
@@ -133,6 +157,9 @@ body {
   overflow: auto;
   width: 100%;
   height: 100%;
+}
+.fail-icon {
+  transform: rotate(132deg);
 }
 .tel-box {
   position: fixed;
