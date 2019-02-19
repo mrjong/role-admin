@@ -125,7 +125,7 @@ export default {
 					align: 'center',
 					render(h, params) {
 						const id = params.row.id;
-						const prodTypes = params.row.prodTypes;
+						const prdTyp = params.row.prdTyp;
 						const userId = params.row.userId;
 						let seatType = sessionStorage.getItem('seatType');
 						return h('div', [
@@ -148,7 +148,7 @@ export default {
 											on: {
 												click: () => {
 													window.open(
-														`${location.origin}/#/case_desc_page?caseNotest=${id}&prodTypestest=${prodTypes}&userIdtest=${userId}&seatType=${seatType
+														`${location.origin}/#/case_desc_page?caseNotest=${id}&prdTyptest=${prdTyp}&userIdtest=${userId}&seatType=${seatType
 															? seatType
 															: 'KT'}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
 															_this.formItem
