@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { cases_allot_list, getLeafTypeList, collect_parent_children, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop } from '@/service/getData';
+import { cases_allot_list, getLeafTypeList, collect_parent_children, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, collect_show_children } from '@/service/getData';
 
 export default {
   name: 'case_distribute_page',
@@ -48,6 +48,8 @@ export default {
       data5: [],
       collectRoleIds: [],
       caseIds: [],
+      caseID: '',
+      treeFlag: '',
       caseMounts: 0,
       totalCase: '',
       totalOverdueAmt: '',
@@ -116,11 +118,35 @@ export default {
       total: 0,
       billDate: [],
       formItem: {
-        caseStatus: '',
         prodTypes: [],
         periodCounts: [],
         maxPerdCnts: [],
         creditLevels: [],
+        opCompayNames: [],
+      },
+      ruleValidate1: {
+        operRemark: [
+          {
+            required: true,
+            message: '请输入停催原因',
+            trigger: 'blur'
+          }
+        ],
+      },
+      ruleValidate2: {
+        operRemark: [
+          {
+            required: true,
+            message: '请输入停催原因',
+            trigger: 'blur'
+          }
+        ],
+      },
+      stopFormItem: {
+        operRemark: ''
+      },
+      recoverFormItem: {
+        operRemark: ''
       },
       tableData: [],
       tableColumns: [
@@ -146,6 +172,7 @@ export default {
           align: 'center',
           fixed: 'left',
           render: (h, params) => {
+            const caseHandleStatus = params.row.caseHandleStatus;
             return h('div', [
               h(
                 'a',
@@ -154,25 +181,18 @@ export default {
                   props: {},
                   on: {
                     click: () => {
-                      this.cases_collect_stop(params.row.id);
+                      if (caseHandleStatus === 'SUSPEND') {
+                        this.handeldBtnClick('4');
+                        this.caseID = params.row.id;
+                      } else {
+                        this.handeldBtnClick('3');
+                        this.caseID = params.row.id;
+                      }
                     }
                   }
                 },
-                '停催'
+                caseHandleStatus === 'SUSPEND' ? '恢复催收' : '停催'
               ),
-              h(
-                'a',
-                {
-                  class: 'edit-btn',
-                  props: {},
-                  on: {
-                    click: () => {
-                      this.cases_collect_recover(params.row.id);
-                    }
-                  }
-                },
-                '恢复催收'
-              )
             ]);
           }
         },
@@ -281,7 +301,6 @@ export default {
           key: 'caseHandleStatusName',
           align: 'center',
         },
-
       ]
     };
   },
@@ -302,7 +321,7 @@ export default {
           h('span', [
             h('Icon', {
               props: {
-                type: '',
+                type: data.leafType === '04' ? 'person' : 'home',
               },
               style: {
                 marginRight: '4px'
@@ -329,7 +348,10 @@ export default {
       console.log(arr);
       this.collectRoleIds = [];
       arr.forEach(item => {
-        if (item.leafType === '04') {
+        if (item.leafType === '04' && this.treeFlag === 0) {
+          this.collectRoleIds.push(item.id);
+        };
+        if (item.leafType === '02' && this.treeFlag === 1) {
           this.collectRoleIds.push(item.id);
         }
       });
@@ -368,11 +390,25 @@ export default {
         }
       });
     },
+    // 下拉框监听
+    selectChange (value) {
+      this.getList();
+    },
     // 日期变更回调
     dateChange(arr, date) {
       console.log(arr, date);
       this.formItem.beginDueDate = arr[0];
       this.formItem.endDueDate = arr[1];
+    },
+    // 点击出现tree
+    selectTreeNode(type) {
+      console.log(12313);
+      if (type === 0) {
+        this.collect_show_children();
+      } else {
+        this.initTree();
+      }
+      this.treeFlag = type;
     },
     // 获取表格数据
     async getList() {
@@ -415,17 +451,35 @@ export default {
     },
     // 获取init tree数据
     async initTree(id, type) {
-      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
-      console.log()
+      const res = await collect_show_children({
+        status: 1,
+        ids: []
+      });
+      if (res.code === 1) {
+        this.data = res.data;
+        this.data.forEach(item => {
+          item.disableCheckbox = true;
+          item.children.forEach(ele => {
+            if (ele.leafType !== '02') {
+              item.children = [];
+            }
+            ele.children = [];
+          })
+        })
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 获取人员列表
+    async collect_show_children() {
+      const res = await collect_show_children({
+        status: 1,
+        ids: []
+      });
+      console.log(res);
       if (res.code === 1) {
         this.data5 = res.data;
-        this.data5.forEach(item => {
-          if (item.leafType != '04') {
-            item.disableCheckbox = true;
-          }
-        });
       } else {
-        this.$Message.error(res.message)
       }
     },
     // 动态获取表格数据
@@ -462,11 +516,11 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {
-        caseStatus: '',
         prodTypes: [],
         periodCounts: [],
         maxPerdCnts: [],
         creditLevels: [],
+        opCompayNames: [],
       };
       this.$refs[name].resetFields();
     },
@@ -488,7 +542,8 @@ export default {
     async cases_batch_recycle() {
       const res = await cases_batch_recycle({
         caseIds: this.caseIds,
-        ...this.formItem
+        ...this.formItem,
+        preTotalCases: this.total,
       });
       if (res.code === 1) {
         this.$Message.success('回收成功');
@@ -501,9 +556,12 @@ export default {
     async cases_collect_stop(id) {
       const res = await cases_collect_stop({
         caseIds: id,
+        ...this.stopFormItem
       });
       if (res.code === 1) {
         this.getList();
+        this.stopCollectionFlag = false;
+        this.stopFormItem.operRemark = '';
         this.$Message.success('操作成功');
       } else {
         this.$Message.error(res.message);
@@ -513,9 +571,12 @@ export default {
     async cases_collect_recover(id) {
       const res = await cases_collect_recover({
         caseIds: id,
+        ...this.recoverFormItem
       });
       if (res.code === 1) {
         this.getList();
+        this.recoverCollectionFlag = false;
+        this.recoverFormItem.operRemark = '';
         this.$Message.success('操作成功');
       } else {
         this.$Message.error(res.message);
@@ -527,7 +588,13 @@ export default {
         case '1':
           this.distributeFlag = true;
           break;
-        case '2': this.recycleFlag = true;
+        case '2':
+          console.log(this.formItem.caseHandleStatus);
+          if (this.formItem.caseHandleStatus && this.formItem.caseHandleStatus != '') {
+            this.recycleFlag = true;
+          } else {
+            this.$Message.error('请选择案件处理状态再回收')
+          };
           break;
         case '3': this.stopCollectionFlag = true;
           break;
@@ -557,7 +624,6 @@ export default {
       switch (type) {
         case '1': this.distributeFlag = false;
           this.distributeRoleFlag = true;
-          this.initTree('', '01')
           break;
         case '2':
           this.cases_batch_allot();
@@ -565,9 +631,11 @@ export default {
         case '3':
           this.cases_batch_recycle();
           break;
-        case '4': this.stopCollectionFlag = false;
+        case '4':
+          this.cases_collect_stop(this.caseID);
           break;
-        case '5': this.recoverCollectionFlag = false;
+        case '5':
+          this.cases_collect_recover(this.caseID);
           break;
       }
     }

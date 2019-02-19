@@ -300,7 +300,8 @@ export default {
         this.collect_user_list("02");
         this.system_role_list();
         this.addStaffFormItem = {
-          parentUuid: this.parentData.nodeData.id
+          parentUuid: this.parentData.nodeData.id,
+          companyId: this.parentData.nodeData.companyId
         };
         break;
       case "03":
@@ -308,10 +309,12 @@ export default {
         this.collect_user_list("02");
         this.system_role_list();
         this.addStaffFormItem = {
-          parentUuid: this.parentData.nodeData.id
+          parentUuid: this.parentData.nodeData.id,
+          companyId: this.parentData.nodeData.companyId,
+          outfitId: this.parentData.nodeData.id
         };
         break;
-    };
+    }
     this.collect_list_leader();
   },
   watch: {
@@ -321,7 +324,7 @@ export default {
           this.addLeaderFormItem = {
             parentUuid: this.parentData.nodeData.id,
             name: this.parentData.nodeData.name,
-            userIds: [],
+            userIds: []
           };
           this.collect_user_list("01");
           break;
@@ -329,7 +332,8 @@ export default {
           this.collect_user_list("02");
           this.system_role_list();
           this.addStaffFormItem = {
-            parentUuid: this.parentData.nodeData.id
+            parentUuid: this.parentData.nodeData.id,
+            companyId: this.parentData.nodeData.companyId
           };
           break;
         case "03":
@@ -338,7 +342,8 @@ export default {
           this.collect_user_list("03");
           this.addStaffFormItem = {
             parentUuid: this.parentData.nodeData.id,
-            name: this.parentData.nodeData.name
+            companyId: this.parentData.nodeData.companyId,
+            outfitId: this.parentData.nodeData.id
           };
           break;
       }

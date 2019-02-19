@@ -99,7 +99,7 @@
               v-model="staffFormItem.seatType"
               filterable
               clearable
-              placeholder="请选择坐席类型"
+              placeholder="请选择坐席"
               :disabled="!formDisabled"
             >
               <Option
@@ -486,6 +486,7 @@ export default {
         console.log(res);
         this.staffFormItem.email = res.data.email;
         this.staffFormItem.mobile = res.data.mobile;
+        this.staffFormItem.seatType = res.data.seatType;
       } else {
         this.$Message.error(res.message);
       }

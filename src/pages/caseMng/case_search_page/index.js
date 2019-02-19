@@ -144,7 +144,7 @@ export default {
         },
         {
           title: '案件编码',
-          minWidth: 150,
+          minWidth: 180,
           key: 'id',
           align: 'center',
           render(h, params) {
@@ -188,7 +188,7 @@ export default {
         },
         {
           title: '客户姓名',
-          minWidth: 60,
+          minWidth: 80,
           align: 'center',
           key: 'userNmHid'
         },
@@ -200,19 +200,19 @@ export default {
         },
         {
           title: '手机号',
-          minWidth: 100,
+          minWidth: 120,
           align: 'center',
           key: 'mblNoHid'
         },
         {
           title: '产品线',
-          minWidth: 120,
+          minWidth: 150,
           align: 'center',
           key: 'prdName'
         },
         {
           title: '账单号',
-          minWidth: 180,
+          minWidth: 200,
           align: 'center',
           key: 'billNo'
         },
@@ -237,28 +237,35 @@ export default {
         },
         {
           title: '到期期数',
-          minWidth: 100,
+          minWidth: 150,
           sortable: true,
           align: 'center',
           key: 'maxPerdCnt'
         },
         {
           title: '信用级别',
-          minWidth: 120,
+          minWidth: 150,
           sortable: true,
           align: 'center',
           key: 'creditLevel'
         },
         {
-          title: '分配时间',
+          title: '还款状态',
           minWidth: 150,
+          sortable: true,
+          align: 'center',
+          key: 'repayStatusName'
+        },
+        {
+          title: '分配时间',
+          minWidth: 200,
           sortable: true,
           align: 'center',
           key: 'allotDate',
           render: (h, params) => {
             let allotDate = params.row.allotDate;
             allotDate = allotDate
-              ? this.$options.filters['formatDate'](allotDate, 'YYYY-MM-DD HH:mm:ss')
+              ? this.$options.filters['formatDate'](allotDate, 'YYYY-MM-DD')
               : allotDate;
             return h('span', allotDate);
           }
@@ -274,7 +281,7 @@ export default {
           title: '经办人',
           minWidth: 120,
           align: 'center',
-          key: 'cntUsrNm'
+          key: 'opUserName'
         },
       ]
     };
@@ -289,7 +296,7 @@ export default {
       this.caseIds = [];
       selection &&
         selection.forEach((element) => {
-          this.caseIds.push(element.uuid);
+          this.caseIds.push(element.id);
         });
       console.log(this.caseIds);
     },
