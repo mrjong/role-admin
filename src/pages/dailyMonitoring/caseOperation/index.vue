@@ -96,8 +96,8 @@
           <Col
             :xs="24"
             :sm="24"
-            :md="6"
-            :lg="6"
+            :md="24"
+            :lg="24"
             span="6"
           >
             <FormItem>
@@ -302,6 +302,7 @@
         this.getList();
       },
       handleSubmit(name) {
+        this.pageNo = 1;
         this.getList();
       },
       async exportData(){
