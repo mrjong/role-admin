@@ -1,5 +1,6 @@
 import { arb_apply } from '@/service/getData';
 import Cookie from 'js-cookie';
+import dayjs from 'dayjs'
 export default {
 	data() {
 		return {
@@ -101,6 +102,7 @@ export default {
 	},
 	methods: {
 		handleSubmit() {
+            console.log(this.formItem)
 			this.$refs.formItem.validate((valid) => {
 				console.log(valid, '----------------');
 				if (valid) {
@@ -127,11 +129,12 @@ export default {
 				standImg: this.uploadList3[0].url
 			};
 			if (this.formItem.standAgreeDate) {
-				obj.standAgreeDate = +new Date(this.formItem.standAgreeDate);
+				obj.standAgreeDate = dayjs(this.formItem.standAgreeDate).format('YYYY-MM-DD')
 			}
 			const res = await arb_apply(obj);
 			if (res.code === 1) {
-				this.repayinfo_getApplyInfo_data = res.data;
+                this.repayinfo_getApplyInfo_data = res.data;
+                this.del();
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -142,6 +145,10 @@ export default {
 			// this.$emit("getChildrenStatus", this.childrenData);
 		},
 		handleRemove(file, type) {
+			const fileList = this.$refs.upload.fileList;
+			this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+        },
+        handleRemove1(file, type) {
 			const fileList = this.$refs[type].fileList;
 			this.$refs[type].fileList.splice(fileList.indexOf(file), 1);
 		},
@@ -161,30 +168,55 @@ export default {
 				this.$Message.error(res.message);
 			}
 		},
-		handleSuccess1(res, file) {
+        handleSuccess1(res, file) {
+			console.log(res, '-----------------');
 			if (res.code === 1) {
-				file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-				file.name = '7eb99afb9d5f317c912f08b5212fd69a';
+				this.formItem.idCardOpposite = res.data.absolutePath;
+				this.uploadList1 = [
+					{
+						url: res.data.absolutePath,
+						status: 'finished'
+					}
+                ];
+                file.url = res.data.absolutePath;
+				this.$refs.formItem.validateField('idCardOpposite');
+			} else {
+				this.$Message.error(res.message);
+			}
+        },
+        handleSuccess2(res, file) {
+			console.log(res, '-----------------');
+			if (res.code === 1) {
+				this.formItem.voucherImg = res.data.absolutePath;
+				this.uploadList2 = [
+					{
+						url: res.data.absolutePath,
+						status: 'finished'
+					}
+                ];
+                file.url = res.data.absolutePath;
+				this.$refs.formItem.validateField('voucherImg');
+			} else {
+				this.$Message.error(res.message);
+			}
+        },
+        handleSuccess3(res, file) {
+			console.log(res, '-----------------');
+			if (res.code === 1) {
+				this.formItem.standImg = res.data.absolutePath;
+				this.uploadList3 = [
+					{
+						url: res.data.absolutePath,
+						status: 'finished'
+					}
+                ];
+                file.url = res.data.absolutePath;
+				this.$refs.formItem.validateField('standImg');
 			} else {
 				this.$Message.error(res.message);
 			}
 		},
-		handleSuccess2(res, file) {
-			if (res.code === 1) {
-				file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-				file.name = '7eb99afb9d5f317c912f08b5212fd69a';
-			} else {
-				this.$Message.error(res.message);
-			}
-		},
-		handleSuccess3(res, file) {
-			if (res.code === 1) {
-				file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-				file.name = '7eb99afb9d5f317c912f08b5212fd69a';
-			} else {
-				this.$Message.error(res.message);
-			}
-		},
+		
 		handleFormatError(file) {
 			this.$Notice.warning({
 				title: '格式不正确',

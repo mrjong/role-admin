@@ -282,7 +282,7 @@
                     ref="upload1"
                     :show-upload-list="false"
                     :default-file-list="defaultList1"
-                    :on-success="handleSuccess"
+                    :on-success="handleSuccess1"
                     :format="['jpg','jpeg','png']"
                     :on-format-error="handleFormatError"
                     type="drag"

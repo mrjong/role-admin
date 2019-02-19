@@ -38,6 +38,7 @@ export default {
 	data() {
 		const _this = this;
 		return {
+			actionId: '',
 			mingwenData: '',
 			parentData: {},
 			prdTyp: '',
@@ -641,18 +642,20 @@ export default {
 					render: (h, params) => {
 						return h('div', [
 							h('span', {}, params.row.usrNmHid),
-							h('Poptip',
-							{
-								content: '-------'
-							},
-							[h(
-								'Icon',
+							h(
+								'Poptip',
 								{
-                                    class:'eye-class',
-									type: 'eye'
+									content: '-------'
 								},
-								''
-							)])
+								[
+									h('Icon', {
+										props: {
+											type: 'eye'
+										},
+										class: 'eye-class'
+									})
+								]
+							)
 						]);
 					}
 				},
@@ -1248,6 +1251,7 @@ export default {
 		this.readType = queryData.readType;
 		delete queryData.caseNotest;
 		delete queryData.prdTyptest;
+		delete queryData.seatType;
 		delete queryData.userIdtest;
 		this.queryData = queryData;
 		// 催收信息
@@ -1291,6 +1295,7 @@ export default {
 				res = await call_kt_hung_on(obj2);
 			}
 			if (res.code === 1) {
+				this.actionId = res.data.actionId;
 				this.$Message.success('呼出成功');
 			} else {
 				this.$Message.error(res.message);
@@ -1624,8 +1629,8 @@ export default {
 					billNo: this.case_detail_case_base_info_Data.billNo,
 					userNmHid: this.case_detail_case_identity_info_Data.userNmHid,
 					caseNo: this.caseNo,
-					userGender: this.case_detail_case_identity_info_Data.userGenderName,
-					userNation: '汉族'
+					userGender: this.case_detail_case_identity_info_Data.userGender,
+					userNation: this.case_detail_case_identity_info_Data.userNation
 				};
 			}
 			this.modal[type] = true;
@@ -1668,7 +1673,8 @@ export default {
 				mblNoHid: this.mblNoHid,
 				caseNo: this.caseNo,
 				callUserTypeLevel: this.callUserTypeLevel,
-				userNmHid: this.userNmHidCopy,
+                userNmHid: this.userNmHidCopy,
+                soundUuid: this.actionId,
 				userNmNew: this.formValidate.userNmHid === this.userNmHidCopy ? '' : this.formValidate.userNmHid
 			});
 			if (res.code === 1) {
