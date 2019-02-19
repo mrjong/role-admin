@@ -167,7 +167,7 @@
   </div>
 </template>
 <script>
-  import { monitor_callDetail_list, monitor_callDetail_exportDown } from '@/service/getData';
+  import { cases_operationList, monitor_callDetail_exportDown } from '@/service/getData';
   import util from '@/libs/util';
   export default {
     name: 'caseOperation',
@@ -196,16 +196,14 @@
         tableColumns: [
           {
             title: '案件编号',
-            type: 'index',
-            width: 60,
-            searchOperator: '=',
             align: alignCenter,
-            key: 'listIndex'
+            width: widthVal,
+            key: 'caseNo'
           },
           {
             title: '枚举类型',
             searchOperator: '=',
-            key: 'handleDate',
+            key: 'operType',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
@@ -213,7 +211,7 @@
           {
             title: '操作描述',
             searchOperator: '=',
-            key: 'calledNo',
+            key: 'operRemark',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
@@ -221,14 +219,14 @@
           {
             title: '操作人ID',
             searchOperator: 'like',
-            key: 'calledUserId',
+            key: 'operUser',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
           },
           {
             title: '操作人名称',
-            key: 'callState',
+            key: 'operName',
             className: 'tableMainW',
             align: alignCenter,
             width: widthMidVal,
@@ -236,19 +234,49 @@
           {
             title: '操作时间',
             searchOperator: 'like',
-            key: 'talkTime',
+            key: 'operTime',
             className: 'tableMainW',
             align: alignCenter,
-            width: widthVal
+            width: widthVal,
+            render: (h, params) => {
+              let remarkDate = params.row.operTime;
+              remarkDate = remarkDate
+                ? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
+                : remarkDate;
+              return h('span', remarkDate);
+            }
           },
           {
             title: '操作人IP',
             searchOperator: 'like',
-            key: 'agentName',
+            key: 'operIp',
             className: 'tableMainW',
             align: alignCenter,
             width: widthMidVal
           },
+          {
+            title: '操作',
+            key: 'edit',
+            minWidth: 180,
+            align: 'center',
+            render: (h, params) => {
+              const obj = params.row;
+              return h('div', [
+                h(
+                  'a',
+                  {
+                    props: {},
+                    on: {
+                      click: () => {
+                        this.handleAdd('1', obj);
+                      }
+                    }
+                  },
+                  '查看'
+                ),
+              ]);
+            }
+          }
         ]
       };
     },
@@ -291,7 +319,7 @@
       },
       // 获取表格数据
       async getList() {
-        let res= await monitor_callDetail_list({
+        let res= await cases_operationList({
           pageNum: this.pageNo,
           pageSize: this.pageSize,
           ...this.formItem
@@ -313,7 +341,18 @@
         this.formItem = {};
         this.dealTime='',
         this.$refs[name].resetFields();
-      }
+      },
+      //查看详情
+      handleDetail(type, obj) {
+        this.modal = true;
+        this.parentData = {
+          modal: this.modal,
+          type: type,
+          userData: obj
+        };
+        console.log(this.parentData);
+      },
+
     }
   };
 

@@ -1201,3 +1201,12 @@ export const sysarea_getAreaByParentId = (obj) =>
 		method: 'POST',
 		data: qs.stringify(obj)
 	});
+
+
+// 案件操作日志管理
+export const cases_operationList = (obj) =>
+  fetch({
+    url: '/caseLog/list' ,
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
