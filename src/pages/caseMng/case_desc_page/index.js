@@ -25,7 +25,8 @@ import {
 	collectcode_getCollectRelate, // 获取沟通状态
 	call_kt_hung_on, // 客天外拨
 	call_moor_hung_on, // 容联外拨
-	syscommon_decrypt // 明文展示
+    syscommon_decrypt, // 明文展示
+    img_mark // 图片展示
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
