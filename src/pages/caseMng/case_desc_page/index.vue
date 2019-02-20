@@ -663,6 +663,20 @@
                       本人
                     </span>
                     {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}
+                    <Poptip
+                  :content="mingwenData"
+                  v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
+                >
+                  <Icon
+                    class="eye-class"
+                    title="显示明文"
+                    type="eye"
+                    @click="syscommon_decrypt({
+                type:'NAME',
+                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm
+            })"
+                  ></Icon>
+                </Poptip>
                     <span>（本人）</span>
                   </span>
                   <span
@@ -683,6 +697,20 @@
                       {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid}}
                     </Tooltip>
                   </span>
+                  <Poptip
+                  :content="mingwenData"
+                  v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid"
+                >
+                  <Icon
+                    class="eye-class"
+                    title="显示明文"
+                    type="eye"
+                    @click="syscommon_decrypt({
+                type:'MBL',
+                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
+            })"
+                  ></Icon>
+                </Poptip>
                   <span class="state">
                     关机
                   </span>
