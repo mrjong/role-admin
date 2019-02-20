@@ -71,7 +71,7 @@
                     <FormItem prop="ovdudaysMin">
                       <Input
                         size="small"
-                        type="text"
+                        type="number"
                         number
                         clearable
                         v-model="formItem.ovdudaysMin"
@@ -86,7 +86,7 @@
                       <Input
                         size="small"
                         number
-                        type="text"
+                        type="number"
                         clearable
                         v-model="formItem.ovdudaysMax"
                       ></Input>
@@ -98,7 +98,13 @@
                 <FormItem label="逾期应还金额:">
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovduamtMin">
-                      <Input size="small" clearable v-model="formItem.ovduamtMin" number></Input>
+                      <Input
+                        size="small"
+                        type="number"
+                        clearable
+                        v-model="formItem.ovduamtMin"
+                        number
+                      ></Input>
                     </FormItem>
                   </Col>
                   <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -106,7 +112,13 @@
                   </Col>
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovduamtMax">
-                      <Input size="small" clearable v-model="formItem.ovduamtMax" number></Input>
+                      <Input
+                        size="small"
+                        type="number"
+                        clearable
+                        v-model="formItem.ovduamtMax"
+                        number
+                      ></Input>
                     </FormItem>
                   </Col>
                 </FormItem>
@@ -185,7 +197,7 @@
                     style="width:80px"
                     long
                     size="small"
-                >{{submitType === 1?'添加': '修改'}}</Button>
+                  >{{submitType === 1?'添加': '修改'}}</Button>
                   <Button
                     size="small"
                     type="ghost"
@@ -347,7 +359,6 @@ export default {
           {
             pattern: this.GLOBAL.num,
             message: "逾期天数为正整数",
-            type: "number"
           },
           {
             validator: validate_day_start,
@@ -358,7 +369,6 @@ export default {
           {
             pattern: this.GLOBAL.num,
             message: "逾期天数为正整数",
-            type: "number"
           },
           {
             validator: validate_day_end,
@@ -369,7 +379,6 @@ export default {
           {
             pattern: this.GLOBAL.money,
             message: "金额格式不正确",
-            type: "number"
           },
           {
             validator: validate_money_start,
@@ -380,7 +389,6 @@ export default {
           {
             pattern: this.GLOBAL.money,
             message: "金额格式不正确",
-            type: "number"
           },
           {
             validator: validate_money_end,
@@ -421,6 +429,7 @@ export default {
       console.log(itemNode);
       this.divide_rules_edit();
     }
+    console.log(this.formItem);
   },
   methods: {
     renderContent(h, { root, node, data }) {
@@ -586,12 +595,12 @@ export default {
         this.data.forEach(item => {
           item.disableCheckbox = true;
           item.children.forEach(ele => {
-            if (ele.leafType !== '02') {
+            if (ele.leafType !== "02") {
               item.children = [];
             }
             ele.children = [];
-          })
-        })
+          });
+        });
       } else {
         this.$Message.error(res.message);
       }
@@ -648,7 +657,7 @@ export default {
       });
       if (res.code === 1) {
         console.log(res);
-        this.$Message.success(res.message);
+        this.$Message.success('添加成功');
       } else {
         this.$Message.error(res.message);
       }

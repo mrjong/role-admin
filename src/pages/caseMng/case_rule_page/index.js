@@ -17,6 +17,7 @@ export default {
       recycleFlag: false,
       stopFlag: false,
       updateRecordFlag: false,
+      parentData: {},
       startFormItem: {
         date: '',
         effectMinDt: '',
@@ -288,6 +289,10 @@ export default {
                   on: {
                     click: () => {
                       this.updateRecordFlag = true;
+                      this.parentData = {
+                        updateRecordFlag: true,
+                        id: params.row.id
+                      }
                     }
                   }
                 },
@@ -319,6 +324,7 @@ export default {
   methods: {
     // 添加案件或者修改案件入口
     handeldBtnClick(type) {
+      window.sessionStorage.removeItem('case_rule_item');
       this.$router.push({ name: 'case_add_distribute_page' });
     },
     handleSubmit(name) {

@@ -128,6 +128,22 @@
                   </Select>
                 </FormItem>
               </Col>
+              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+                <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
+                  <FormItem span="6">
+                    <Button
+                      type="primary"
+                      @click="queryCases"
+                      style="width:80px"
+                      long
+                      size="small"
+                    >查询案件量</Button>
+                  </FormItem>
+                </Col>
+                <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
+                  {{totalcases}}
+                </Col>
+              </Col>
               <Col :xs="24" :sm="24" :md="12" :lg="12" span="6">
                 <FormItem span="6" label="案件状态:" prop="allotType">
                   <RadioGroup v-model="formItem.allotType">
@@ -230,7 +246,11 @@
 <script>
 import formValidateFun from "@/mixin/formValidateFun";
 import sysDictionary from "@/mixin/sysDictionary";
-import { divide_allot_manual, collect_tree_children, collect_show_children} from "@/service/getData";
+import {
+  divide_allot_manual,
+  collect_tree_children,
+  collect_show_children
+} from "@/service/getData";
 export default {
   name: "case_key_distribute_page",
   mixins: [formValidateFun, sysDictionary],
@@ -277,12 +297,13 @@ export default {
         "DIVIDE_CREDIT_LEVEL",
         "CASE_HANDLE_STATUS",
         "ALLOT_TYPE",
-        'DIVIDE_PROD_NUM'
-      ],
+        "DIVIDE_PROD_NUM"
+      ],//s数据字典传的字段
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      treeFlag: '',
+      totalcases: '12',//案件总数
+      treeFlag: "",
       allotRoleIdList: [],
       allotNameList: [],
       ruleValidate: {
@@ -305,7 +326,7 @@ export default {
             required: true,
             message: "请选择接收人员",
             trigger: "blur",
-            type: 'array'
+            type: "array"
           }
         ],
         ovdudaysMin: [
@@ -354,7 +375,7 @@ export default {
         ]
       },
       formItem: {
-        prodTypeList: '',
+        prodTypeList: "",
         perdCountList: [],
         perdThisCountList: [],
         ovdudaysMin: "",
@@ -371,41 +392,47 @@ export default {
     };
   },
   created() {
-    this.initTree('', '01');
+    this.initTree("", "01");
+    console.log(this.formItem);
   },
   methods: {
     renderContent(h, { root, node, data }) {
-      return h('span', {
-        style: {
-          display: 'inline-block',
-          width: '94%',
-          boxSizing: 'border-box',
-        }
-      }, [
-          h('span', [
-            h('Icon', {
+      return h(
+        "span",
+        {
+          style: {
+            display: "inline-block",
+            width: "94%",
+            boxSizing: "border-box"
+          }
+        },
+        [
+          h("span", [
+            h("Icon", {
               props: {
-                type: '',
+                type: ""
               },
               style: {
-                marginRight: '4px'
+                marginRight: "4px"
               }
             }),
-            h('span', {
-              props: {
-              },
-              style: {
-                cursor: 'pointer'
-              },
-              class: 'tree_title',
-              on: {
-                'click': (e) => {
-
+            h(
+              "span",
+              {
+                props: {},
+                style: {
+                  cursor: "pointer"
+                },
+                class: "tree_title",
+                on: {
+                  click: e => {}
                 }
-              }
-            }, data.name)
-          ]),
-        ]);
+              },
+              data.name
+            )
+          ])
+        ]
+      );
     },
     renderContent2(h, { root, node, data }) {
       console.log(data);
@@ -474,7 +501,7 @@ export default {
     },
     // 选中节点的回调函数
     selectNode(node) {
-      console.log(node)
+      console.log(node);
     },
     // 点击出现tree
     selectTreeNode(type) {
@@ -501,7 +528,7 @@ export default {
         }
       });
     },
-     // tree取消回调
+    // tree取消回调
     cancel() {
       this.treeFlag = false;
       this.formItem.allotNameList = [];
@@ -521,12 +548,12 @@ export default {
         this.data.forEach(item => {
           item.disableCheckbox = true;
           item.children.forEach(ele => {
-            if (ele.leafType !== '02') {
+            if (ele.leafType !== "02") {
               item.children = [];
             }
             ele.children = [];
-          })
-        })
+          });
+        });
       } else {
         this.$Message.error(res.message);
       }
@@ -545,47 +572,55 @@ export default {
     },
     // 动态获取表格数据
     async collect_tree_children(id, type, callBack) {
-      const res = await collect_tree_children({ parentId: id, status: '1', leafType: type });
+      const res = await collect_tree_children({
+        parentId: id,
+        status: "1",
+        leafType: type
+      });
       if (res.code === 1) {
         res.data.forEach(item => {
-          if (item.leafType != '04') {
+          if (item.leafType != "04") {
             item.disableCheckbox = true;
           }
         });
-        callBack(res.data)
+        callBack(res.data);
       } else {
-        this.$Message.error(res.message)
+        this.$Message.error(res.message);
       }
     },
     // 异步加载tree数据
     loadData(item, callBack) {
-      console.log(item, '----------------------')
+      console.log(item, "----------------------");
       this.nodeData = item;
       let leafType;
-      if (item.leafType === '01') {
-        leafType = '02';
-      } else if (item.leafType === '02') {
-        leafType = '03';
-      } else if (item.leafType === '03') {
-        leafType = '04';
+      if (item.leafType === "01") {
+        leafType = "02";
+      } else if (item.leafType === "02") {
+        leafType = "03";
+      } else if (item.leafType === "03") {
+        leafType = "04";
       } else {
         return;
-      };
+      }
       this.collect_parent_children(item.id, leafType, callBack);
     },
     // 一键分配接口
     async divide_allot_manual() {
       const res = await divide_allot_manual({
         ...this.formItem,
-        allotRoleIdList: this.allotRoleIdList,
+        allotRoleIdList: this.allotRoleIdList
       });
       if (res.code === 1) {
         console.log(res);
-        this.$Message.success('分配成功');
+        this.$Message.success("分配成功");
       } else {
         this.$Message.error(res.message);
       }
     },
+    //查询案件量
+    async queryCases() {
+      const res = ''
+    }
   }
 };
 </script>

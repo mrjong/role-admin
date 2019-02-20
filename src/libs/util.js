@@ -272,10 +272,8 @@ util.dowloadZip = function (res) {
   window.URL.revokeObjectURL(href) // 释放掉blob对象
 };
 util.dowloadAudio = function (res) {
-  // const type = 'audio/mpeg'//ZIP文件
   const type = 'audio/mpeg'//mp3文件
   const blob = new Blob([res], { type: type })
-  // const downloadElement = document.createElement('a')
   const href = window.URL.createObjectURL(blob);
   return href;
   //后台再header中传文件名

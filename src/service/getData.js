@@ -877,7 +877,7 @@ export const divide_rules_save = (obj) =>
 export const divide_rules_his = (obj) =>
   fetch({
     url: '/divide/rules/his',
-    method: 'GET',
+    method: 'POST',
     data: qs.stringify(obj)
   });
 /*
@@ -1318,4 +1318,4 @@ fetch({
   method: 'POST',
   data: qs.stringify(obj)
 })
-  
+

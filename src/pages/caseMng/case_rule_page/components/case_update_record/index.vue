@@ -1,7 +1,7 @@
 <template>
   <div class="panel_list">
     <Modal
-      v-model="model"
+      v-model="model.updateRecordFlag"
       width="80%"
       class-name="user_info_form_modal"
       :mask-closable="false"
@@ -96,7 +96,7 @@ export default {
           title: "产品线",
           width: 80,
           searchOperator: "=",
-          key: "prdName",
+          key: "prodType",
           align: "center",
           render: (h, params) => {
             return h("div", {
@@ -340,7 +340,8 @@ export default {
     };
   },
   created() {
-    this.getList();
+    this.getList(this.model.id);
+    console.log(this.model)
   },
   methods: {
     // 页码改变的回调
@@ -356,19 +357,21 @@ export default {
     },
     // 关闭回调
     close() {
-      this.childrenFlag = this.model;
+      this.childrenFlag = this.model.updateRecordFlag;
       this.childrenFlag = false;
       this.$emit("passBack", this.childrenFlag);
     },
     // 获取表格数据
-    async getList() {
+    async getList(id) {
       const res = await divide_rules_his({
+        uuid: id,
         pageNum: this.pageNo,
         pageSize: this.pageSize
       });
       console.log(res);
       if (res.code === 1) {
         this.tableData = res.data.content;
+        this.total = res.data.totalElements;
       } else {
         this.$Message.error(res.message);
       }

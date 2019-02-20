@@ -152,8 +152,8 @@
       </Modal>
     </div>
     <!-- 查看分案规则修改记录 -->
-    <div v-if="updateRecordFlag">
-      <caseUpdateRecord v-if="updateRecordFlag" v-model="updateRecordFlag" :updateRecordFlag="updateRecordFlag"></caseUpdateRecord>
+    <div v-if="parentData.updateRecordFlag">
+      <caseUpdateRecord v-if="parentData.updateRecordFlag" v-model="parentData" ></caseUpdateRecord>
     </div>
   </div>
 </template>
