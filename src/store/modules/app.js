@@ -72,7 +72,7 @@ const app = {
 							name: item.url + child.url,
 							icon: child.icon,
 							title: child.text,
-							component: AllRouter[`${child.template}`],
+							component: AllRouter[`${child.url}`],
 							meta: {
 								// 判断子菜单是否有按钮级别的控制
 								btnPermissionsList: child.children ? child.children.map((btn) => btn) : []

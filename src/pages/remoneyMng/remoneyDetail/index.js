@@ -256,6 +256,10 @@ export default {
   methods: {
     // 导出数据
     async exportData(){
+      if(this.tableData.length === 0){
+        this.$Message.info('当前无数据，无法导入');
+        return ;
+      }
       const res= await repay_repayDetail_exportDown({
         ...this.formValidate
       });

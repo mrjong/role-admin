@@ -130,6 +130,7 @@
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
+            :disabled="btnDisable"
           >申请仲裁</Button>
           <Button
             v-if="readType!=='read'"
@@ -137,6 +138,7 @@
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
+            :disabled="btnDisable"
           >申请还款</Button>
           <Button
             v-if="readType!=='read'"
@@ -144,6 +146,7 @@
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
+            :disabled="btnDisable"
           >申请划扣</Button>
 
           <Button
@@ -152,13 +155,14 @@
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
+            :disabled="btnDisable"
           >申请减免</Button>
           <Button
             v-if="readType!=='read'"
             class="fr vue-back-btn header-btn"
             type="primary"
             @click.stop="nextCase(case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.downCaseNo)"
-            :disabled="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.downCaseNo"
+            :disabled="btnDisable||case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.downCaseNo"
             size="small"
           >下一个</Button>
           <Button
@@ -166,7 +170,7 @@
             class="fr vue-back-btn header-btn"
             type="primary"
             @click.stop="nextCase(case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.upCaseNo)"
-            :disabled="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.upCaseNo"
+            :disabled="btnDisable||case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.upCaseNo"
             size="small"
           >上一个</Button>
         </p>
@@ -659,6 +663,20 @@
                       本人
                     </span>
                     {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}
+                    <Poptip
+                  :content="mingwenData"
+                  v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
+                >
+                  <Icon
+                    class="eye-class"
+                    title="显示明文"
+                    type="eye"
+                    @click="syscommon_decrypt({
+                type:'NAME',
+                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm
+            })"
+                  ></Icon>
+                </Poptip>
                     <span>（本人）</span>
                   </span>
                   <span
@@ -679,6 +697,20 @@
                       {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid}}
                     </Tooltip>
                   </span>
+                  <Poptip
+                  :content="mingwenData"
+                  v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid"
+                >
+                  <Icon
+                    class="eye-class"
+                    title="显示明文"
+                    type="eye"
+                    @click="syscommon_decrypt({
+                type:'MBL',
+                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
+            })"
+                  ></Icon>
+                </Poptip>
                   <span class="state">
                     关机
                   </span>
@@ -964,6 +996,7 @@
                   prop="date"
                 >
                   <DatePicker
+                  placement="top"
                     style="width:100%;"
                     size="small"
                     type="datetime"

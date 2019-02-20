@@ -50,7 +50,8 @@ export default {
 			},
 			formItem2: {},
 			tabName: '',
-			callUserTypeLevel: '',
+			collectType: '',
+			btnDisable: true,
 			ruleValidate2: {
 				mblNo: [
 					{
@@ -286,13 +287,72 @@ export default {
 					title: '催收电话',
 					align: 'center',
 					width: 150,
-					key: 'mblNoHid'
+                    key: 'mblNoHid',
+                    render: (h, params) => {
+                        return h('div', [
+                          h('span', {}, params.row.mblNoHid),
+                          h(
+                            'Poptip',
+                            {
+                              props: {
+                                content: _this.mingwenData
+                              }
+                            },
+                            [
+                              h('Icon', {
+                                props: {
+                                  type: 'eye'
+                                                    },
+                                                    on: {
+                                                        click: () => {
+                                                            _this.syscommon_decrypt({
+                                                                type:'MBL',
+                                                                data:params.row.mblNo
+                                                            })
+                                                        }
+                                                    },
+                                class: 'eye-class'
+                              })
+                            ]
+                          )
+                        ]);
+                      }
+                      
 				},
 				{
 					title: '催收姓名',
 					align: 'center',
 					width: 100,
-					key: 'userNmHid'
+                    key: 'userNmHid',
+                    render: (h, params) => {
+                        return h('div', [
+                          h('span', {}, params.row.userNmHid),
+                          h(
+                            'Poptip',
+                            {
+                              props: {
+                                content: _this.mingwenData
+                              }
+                            },
+                            [
+                              h('Icon', {
+                                props: {
+                                  type: 'eye'
+                                                    },
+                                                    on: {
+                                                        click: () => {
+                                                            _this.syscommon_decrypt({
+                                                                type:'NAME',
+                                                                data:params.row.userNm
+                                                            })
+                                                        }
+                                                    },
+                                class: 'eye-class'
+                              })
+                            ]
+                          )
+                        ]);
+                      }
 				},
 				{
 					title: '催收对象',
@@ -311,6 +371,12 @@ export default {
 					align: 'center',
 					width: 100,
 					key: 'communicateResultName'
+				},
+				{
+					title: '通话来源',
+					align: 'center',
+					width: 100,
+					key: 'collectTypeName'
 				},
 				{
 					title: '承诺还款时间',
@@ -415,13 +481,72 @@ export default {
 					title: '还款账号',
 					align: 'center',
 					width: 180,
-					key: 'crdNoHid'
+                    key: 'crdNoHid',
+                    render: (h, params) => {
+                        return h('div', [
+                          h('span', {}, params.row.crdNoHid),
+                          h(
+                            'Poptip',
+                            {
+                              props: {
+                                content: _this.mingwenData
+                              }
+                            },
+                            [
+                              h('Icon', {
+                                props: {
+                                  type: 'eye'
+                                                    },
+                                                    on: {
+                                                        click: () => {
+                                                            _this.syscommon_decrypt({
+                                                                type:'BANK_CARD',
+                                                                data:params.row.crdNo
+                                                            })
+                                                        }
+                                                    },
+                                class: 'eye-class'
+                              })
+                            ]
+                          )
+                        ]);
+                      }
+                      
 				},
 				{
 					title: '实际还款人',
 					align: 'center',
 					width: 100,
-					key: 'userNmHid'
+                    key: 'userNmHid',
+                    render: (h, params) => {
+                        return h('div', [
+                          h('span', {}, params.row.userNmHid),
+                          h(
+                            'Poptip',
+                            {
+                              props: {
+                                content: _this.mingwenData
+                              }
+                            },
+                            [
+                              h('Icon', {
+                                props: {
+                                  type: 'eye'
+                                                    },
+                                                    on: {
+                                                        click: () => {
+                                                            _this.syscommon_decrypt({
+                                                                type:'NAME',
+                                                                data:params.row.userNm
+                                                            })
+                                                        }
+                                                    },
+                                class: 'eye-class'
+                              })
+                            ]
+                          )
+                        ]);
+                      }
 				},
 				{
 					title: '还款人关系',
@@ -645,13 +770,23 @@ export default {
 							h(
 								'Poptip',
 								{
-									content: '-------'
+									props: {
+										content: _this.mingwenData
+									}
 								},
 								[
 									h('Icon', {
 										props: {
 											type: 'eye'
-										},
+                                        },
+                                        on: {
+                                            click: () => {
+                                                _this.syscommon_decrypt({
+                                                    type:'NAME',
+                                                    data:params.row.usrNm
+                                                })
+                                            }
+                                        },
 										class: 'eye-class'
 									})
 								]
@@ -675,7 +810,36 @@ export default {
 					title: '银行卡号',
 					align: 'center',
 					width: 150,
-					key: 'crdNoHid'
+                    key: 'crdNoHid',
+                    render: (h, params) => {
+						return h('div', [
+							h('span', {}, params.row.crdNoHid),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										props: {
+											type: 'eye'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                _this.syscommon_decrypt({
+                                                    type:'BANK_CARD',
+                                                    data:params.row.crdNo
+                                                })
+                                            }
+                                        },
+										class: 'eye-class'
+									})
+								]
+							)
+						]);
+					}
 				},
 				{
 					title: '银行卡后四位',
@@ -707,7 +871,36 @@ export default {
 					title: '身份证号',
 					align: 'center',
 					width: 150,
-					key: 'idNoHid'
+                    key: 'idNoHid',
+                    render: (h, params) => {
+						return h('div', [
+							h('span', {}, params.row.idNoHid),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										props: {
+											type: 'eye'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                _this.syscommon_decrypt({
+                                                    type:'ID_CARD',
+                                                    data:params.row.idNo
+                                                })
+                                            }
+                                        },
+										class: 'eye-class'
+									})
+								]
+							)
+						]);
+					}
 				},
 				{
 					title: '状态',
@@ -924,7 +1117,7 @@ export default {
 									},
 									on: {
 										click: () => {
-											_this.handCall(params.row);
+											_this.handCall(params.row, 'call', '03');
 										}
 									}
 								},
@@ -952,7 +1145,7 @@ export default {
 									},
 									on: {
 										click: () => {
-											_this.handCall(params.row);
+											_this.handCall(params.row, null, '03');
 										}
 									}
 								},
@@ -1036,7 +1229,7 @@ export default {
 									class: 'edit-btn',
 									on: {
 										click: () => {
-											_this.handCall(params.row, 'call');
+											_this.handCall(params.row, 'call', '03');
 										}
 									}
 								},
@@ -1068,7 +1261,7 @@ export default {
 								},
 								on: {
 									click: () => {
-										_this.handCall(params.row);
+										_this.handCall(params.row, null, '03');
 									}
 								}
 							})
@@ -1120,7 +1313,7 @@ export default {
 									class: 'edit-btn',
 									on: {
 										click: () => {
-											_this.handCall(params.row, 'call');
+											_this.handCall(params.row, 'call', '03');
 										}
 									}
 								},
@@ -1148,7 +1341,7 @@ export default {
 									},
 									on: {
 										click: () => {
-											_this.handCall(params.row);
+											_this.handCall(params.row, null, '03');
 										}
 									}
 								},
@@ -1205,7 +1398,7 @@ export default {
 									},
 									on: {
 										click: () => {
-											_this.handCall(params.row, 'call');
+											_this.handCall(params.row, 'call', '03');
 										}
 									}
 								},
@@ -1569,6 +1762,7 @@ export default {
 				id: this.caseNo
 			});
 			if (res.code === 1) {
+				this.btnDisable = false;
 				this.case_detail_case_identity_info_Data = res.data;
 			} else {
 				this.$Message.error(res.message);
@@ -1589,7 +1783,7 @@ export default {
 			this.userNm = '';
 			this.formValidate = {};
 			this.showBottom = false;
-			this.callUserTypeLevel = '';
+			this.collectType = '';
 		},
 
 		// 点击电话
@@ -1605,9 +1799,11 @@ export default {
 					toCallMbl: obj.mblNo || obj.cntUserMblNo,
 					toCallMblHid: obj.mblNoHid || obj.cntUserMblNoHid
 				});
+			} else {
+				this.actionId = '';
 			}
 			if (this.readType !== 'read') {
-				this.callUserTypeLevel = tag;
+				this.collectType = tag;
 				this.formValidate.userNmHid = obj.userNmHid || obj.cntUserNameHid;
 				this.userNmHidCopy = obj.userNmHid || obj.cntUserNameHid;
 				this.mblNoHid = obj.mblNoHid || obj.cntUserMblNoHid;
@@ -1672,9 +1868,9 @@ export default {
 				mblNo: this.mblNo,
 				mblNoHid: this.mblNoHid,
 				caseNo: this.caseNo,
-				callUserTypeLevel: this.callUserTypeLevel,
-                userNmHid: this.userNmHidCopy,
-                soundUuid: this.actionId,
+				collectType: this.collectType,
+				userNmHid: this.userNmHidCopy,
+				soundUuid: this.actionId,
 				userNmNew: this.formValidate.userNmHid === this.userNmHidCopy ? '' : this.formValidate.userNmHid
 			});
 			if (res.code === 1) {

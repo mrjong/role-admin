@@ -47,10 +47,10 @@
           >
             <Select size="small" filterable v-model="formItem.operType" placeholder="请输入枚举类型">
               <Option
-                v-for="item in getDirObj.operType"
-                :value="item.id"
-                :key="item.id"
-              >{{ item.name }}</Option>
+                v-for="item in getDirObj.OPER_TYPE"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -128,12 +128,6 @@
       >
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
         检索结果
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-            @click.stop="exportData"
-          >导出数据</Button>
       </p>
       <!-- 表格 -->
 
@@ -164,7 +158,7 @@
           </div>
         </div>
         <Modal v-model="modalSee" title="案件日志"  class="role-modal">
-          <Card class="vue-panel panel_list" :dis-hover="true">
+          <Card class="vue-panel panel_list" :dis-hover="true" style="border: none">
             <Form
               v-if="!showPanel"
               ref="formValidate"
@@ -230,7 +224,7 @@
   </div>
 </template>
 <script>
-  import { cases_operationList, monitor_callDetail_exportDown, cases_operationDetail } from '@/service/getData';
+  import { cases_operationList, cases_operationDetail } from '@/service/getData';
   import sysDictionary from '@/mixin/sysDictionary';
   import util from '@/libs/util';
   export default {
@@ -244,7 +238,7 @@
         showPanel: false,
         showPanel2: false,
         operTime:[],
-        getDirList: ['operType'],
+        getDirList: ['OPER_TYPE'],
         getDirObj: {},
         modalSee: false,
         formItem: {
@@ -270,8 +264,7 @@
           },
           {
             title: '枚举类型',
-            searchOperator: '=',
-            key: 'operType',
+            key: 'operTypeName',
             className: 'tableMainW',
             align: alignCenter,
             width: widthVal
@@ -373,16 +366,6 @@
       handleSubmit(name) {
         this.pageNo = 1;
         this.getList();
-      },
-      async exportData(){
-        if(this.tableData.length === 0){
-          this.$Message.info('当前无数据，无法导入');
-          return ;
-        }
-        let res = await monitor_callDetail_exportDown({
-          ...this.formItem
-        });
-        util.dowloadfile('呼叫明细',res);
       },
       // 获取表格数据
       async getList() {

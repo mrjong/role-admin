@@ -187,6 +187,12 @@ export default {
 					width: 120,
 					align: 'center',
 					key: 'prdName'
+                },
+                {
+					title: '产品期数',
+					width: 120,
+					align: 'center',
+					key: 'perdCnt'
 				},
 				{
 					title: '账单号',
@@ -342,7 +348,16 @@ export default {
 				this.$Message.error(res.message);
 			}
 		},
-
+		// 重置
+		clearForm(name) {
+			this.pageNo = 1;
+			this.formItem = {
+				prodTypes: [],
+				periodCounts: [],
+				creditLevels: []
+			};
+			this.$refs[name].resetFields();
+		},
 		// 获取表格数据
 		async case_collect_case_list_export() {
 			const res = await case_collect_case_list_export(

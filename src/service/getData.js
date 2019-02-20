@@ -1255,10 +1255,67 @@ export const cases_operationList = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+
 // 案件操作日志详情
 export const cases_operationDetail = (obj) =>
   fetch({
-    url: '/caseLog/detail' ,
+    url: '/caseLog/detail',
     method: 'POST',
     data: qs.stringify(obj)
   })
+
+// 信息日志管理
+export const msg_list = (obj) =>
+  fetch({
+    url: '/collectMsg/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+// 信息日志详情
+export const msg_detail = (obj) =>
+  fetch({
+    url: '/collectMsg/detail',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+// 系统操作日志管理
+export const system_handleList = (obj) =>
+  fetch({
+    url: '/sysOperLog/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+// 系统操作日志详情
+export const system_handleDetail = (obj) =>
+  fetch({
+    url: '/sysOperLog/detail',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+// 定时任务日志管理
+export const timed_taskList = (obj) =>
+  fetch({
+    url: '/quartz/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+// 定时任务日志详情
+export const timed_taskDetail = (obj) =>
+  fetch({
+    url: '/quartz/detail',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+  // 仲裁明细
+export const arb_operateRecord = (obj) =>
+fetch({
+  url: '/arb/operateRecord' ,
+  method: 'POST',
+  data: qs.stringify(obj)
+})
+  
