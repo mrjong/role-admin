@@ -402,7 +402,7 @@
         };
       },
       async getSeatTableList(id){
-        this.groupSeatList = [];
+        //this.groupSeatList = [];
         console.log(id,'idiiidiididdiidi');
         let res = await  monitor_getAgentList({
           parentRoleId: id

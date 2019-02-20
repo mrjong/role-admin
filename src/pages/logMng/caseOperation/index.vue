@@ -45,12 +45,13 @@
           <FormItem
             label="枚举类型:"
           >
-            <Input
-              size="small"
-              clearable
-              v-model="formItem.operType"
-              placeholder="请输入枚举类型"
-            ></Input>
+            <Select size="small" filterable v-model="formItem.operType" placeholder="请输入枚举类型">
+              <Option
+                v-for="item in getDirObj.operType"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.name }}</Option>
+            </Select>
           </FormItem>
           </Col>
           <Col
@@ -66,12 +67,13 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="formItem.operTime"
+                v-model="operTime"
                 format="yyyy-MM-dd"
-                type="date"
+                type="daterange"
                 placement="bottom-start"
                 placeholder="请选择操作时间"
                 @on-change="changeDate"
+                @on-ok="changeDate"
               ></DatePicker>
             </FormItem>
           </Col>
@@ -160,18 +162,80 @@
               @on-change="changePage"
             ></Page>
           </div>
-
         </div>
+        <Modal v-model="modalSee" title="案件日志"  class="role-modal">
+          <Card class="vue-panel panel_list" :dis-hover="true">
+            <Form
+              v-if="!showPanel"
+              ref="formValidate"
+              :model="formValidate"
+              :label-width="90"
+              :rules="ruleValidate"
+            >
+              <Row class="eachRow">
+                <Col span="12">
+                <FormItem label="案件编号:">
+                  <Input size="small" v-model="formValidateInfo.caseNo"  disabled></Input>
+                </FormItem>
+                </Col>
+                <Col span="12">
+                <FormItem label="枚举类型:">
+                  <Input
+                    disabled
+                    size="small"
+                    v-model="formValidateInfo.operTypeName"
+                  ></Input>
+                </FormItem>
+                </Col>
+              </Row>
+              <Row class="eachRow">
+                <Col span="12">
+                <FormItem label="操作描述:">
+                  <Input disabled size="small" v-model="formValidateInfo.operRemark" placeholder></Input>
+                </FormItem>
+                </Col>
+                <Col span="12">
+                <FormItem label="操作人ID:">
+                  <Input disabled size="small" v-model="formValidateInfo.operUser" placeholder></Input>
+                </FormItem>
+                </Col>
+              </Row>
+              <Row class="eachRow">
+                <Col span="12">
+                <FormItem label="操作人名称:">
+                  <Input disabled size="small" v-model="formValidateInfo.operName" placeholder></Input>
+                </FormItem>
+                </Col>
+                <Col span="12">
+                <FormItem label="操作时间:">
+                  <Input disabled size="small" v-model="formValidateInfo.operTime" placeholder></Input>
+                </FormItem>
+                </Col>
+              </Row>
+              <Row class="eachRow">
+                <Col span="12">
+                <FormItem span="6" prop="mblNo" label="操作人IP:">
+                  <Input disabled size="small" v-model="formValidateInfo.operIp" placeholder></Input>
+                </FormItem>
+                </Col>
+              </Row>
+            </Form>
+          </Card>
+          <div slot="footer">
+            <Button size="small" @click="closeModal('1')">关闭</Button>
+          </div>
+        </Modal>
       </div>
     </Card>
   </div>
 </template>
 <script>
-  import { cases_operationList, monitor_callDetail_exportDown } from '@/service/getData';
+  import { cases_operationList, monitor_callDetail_exportDown, cases_operationDetail } from '@/service/getData';
+  import sysDictionary from '@/mixin/sysDictionary';
   import util from '@/libs/util';
   export default {
     name: 'caseOperation',
-    //mixins: [sysDictionary, formValidateFun],
+    mixins: [sysDictionary],
     data() {
       var alignCenter = 'center';
       var widthVal = 180;
@@ -179,12 +243,17 @@
       return {
         showPanel: false,
         showPanel2: false,
-        dealTime:'',
+        operTime:[],
+        getDirList: ['operType'],
+        getDirObj: {},
+        modalSee: false,
         formItem: {
-
         },
         ruleValidate:{
-
+        },
+        formValidate: {
+        },
+        formValidateInfo: {
         },
         pageNo: 1,
         pageSize: 10,
@@ -267,7 +336,7 @@
                     props: {},
                     on: {
                       click: () => {
-                        this.handleAdd('1', obj);
+                        this.handleDetail(obj);
                       }
                     }
                   },
@@ -285,8 +354,8 @@
     methods: {
       // 改变日期区间的格式之后进行处理
       changeDate(val1) {
-        console.log(val1, typeof val1)
-        this.formItem.operTime = val1[0];
+        this.formItem.beginOperDate = val1[0];
+        this.formItem.endOperDate = val1[1];
         // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
       },
       // 页码改变的回调
@@ -317,6 +386,9 @@
       },
       // 获取表格数据
       async getList() {
+//        if(this.formItem.operTime){
+//          this.formItem.operTime = this.$options.filters['formatDate'](this.formItem.operTime, 'YYYY-MM-DD')
+//        }
         let res= await cases_operationList({
           pageNum: this.pageNo,
           pageSize: this.pageSize,
@@ -337,20 +409,20 @@
       clearForm(name) {
         this.pageNo = 1;
         this.formItem = {};
-        this.dealTime='',
+        this.operTime=[],
         this.$refs[name].resetFields();
       },
       //查看详情
-      handleDetail(type, obj) {
-        this.modal = true;
-        this.parentData = {
-          modal: this.modal,
-          type: type,
-          userData: obj
-        };
-        console.log(this.parentData);
+      async handleDetail( obj) {
+        let res= await cases_operationDetail({
+          id: obj.id,
+        })
+        this.formValidateInfo = res.data;
+        this.modalSee = true;
       },
-
+      closeModal(){
+        this.modalSee = false;
+      }
     }
   };
 

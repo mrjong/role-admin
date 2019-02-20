@@ -227,10 +227,10 @@
           <Row :gutter="5">
 
             <div class="panel-desc-title fl mr10">
-              案件数(笔)：<span>{{summary.repayOrdDetailCount||0}}</span>
+              回款数(笔)：<span>{{summary.repayOrdDetailCount||0}}</span>
             </div>
             <div class="panel-desc-title fl mr10">
-              逾期金额(元)：<span>{{summary.sumRepayAmt||0.00}}</span>
+              还款金额(元)：<span>{{summary.sumRepayAmt||0.00}}</span>
             </div>
           </Row>
         </div>

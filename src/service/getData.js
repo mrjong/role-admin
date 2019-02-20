@@ -1227,3 +1227,10 @@ export const cases_operationList = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+// 案件操作日志详情
+export const cases_operationDetail = (obj) =>
+  fetch({
+    url: '/caseLog/detail' ,
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
