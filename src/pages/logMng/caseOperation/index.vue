@@ -325,7 +325,7 @@
           {
             title: '操作',
             key: 'edit',
-            minWidth: 180,
+            width: 180,
             align: 'center',
             render: (h, params) => {
               const obj = params.row;

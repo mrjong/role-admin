@@ -328,7 +328,7 @@ export default {
 				{
 					title: '备注',
 					align: 'center',
-					minWidth: 400,
+					width: 400,
 					key: 'collectRmk',
 					render: (h, params) => {
 						let collectRmk = params.row.collectRmk;
@@ -464,7 +464,7 @@ export default {
 				{
 					title: '失败原因',
 					align: 'center',
-					minWidth: 400,
+					width: 400,
 					key: 'orgFnlMsg',
 					render: (h, params) => {
 						let orgFnlMsg = params.row.orgFnlMsg;
@@ -559,7 +559,7 @@ export default {
 				{
 					title: '失败原因',
 					align: 'center',
-					minWidth: 400,
+					width: 400,
 					key: 'orgFnlMsg',
 					render: (h, params) => {
 						let orgFnlMsg = params.row.orgFnlMsg;
@@ -790,7 +790,7 @@ export default {
 				{
 					title: '备注',
 					align: 'center',
-					minWidth: 400,
+					width: 400,
 					key: 'rmk',
 					render: (h, params) => {
 						let rmk = params.row.rmk;
@@ -852,7 +852,7 @@ export default {
 				{
 					title: '发送内容',
 					align: 'center',
-					minWidth: 400,
+					width: 400,
 					key: 'sendContent',
 					render: (h, params) => {
 						let sendContent = params.row.sendContent;

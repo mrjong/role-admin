@@ -145,7 +145,7 @@ export default {
         },
         {
           title: '案件编码',
-          minWidth: 180,
+          width: 180,
           key: 'id',
           align: 'center',
           render(h, params) {
@@ -189,37 +189,37 @@ export default {
         },
         {
           title: '客户姓名',
-          minWidth: 80,
+          width: 80,
           align: 'center',
           key: 'userNmHid'
         },
         {
           title: '身份证号',
-          minWidth: 150,
+          width: 150,
           align: 'center',
           key: 'idNoHid'
         },
         {
           title: '手机号',
-          minWidth: 120,
+          width: 120,
           align: 'center',
           key: 'mblNoHid'
         },
         {
           title: '产品线',
-          minWidth: 120,
+          width: 120,
           align: 'center',
           key: 'prdName'
         },
         {
           title: '账单号',
-          minWidth: 200,
+          width: 200,
           align: 'center',
           key: 'billNo'
         },
         {
           title: '逾期金额',
-          minWidth: 120,
+          width: 120,
           sortable: true,
           align: 'center',
           key: 'overdueAmt',
@@ -255,7 +255,7 @@ export default {
           width: 150,
           sortable: true,
           align: 'center',
-          key: 'repayStatusName'
+          key: 'caseStatusName'
         },
         {
           title: '分配时间',

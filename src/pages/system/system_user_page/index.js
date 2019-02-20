@@ -29,7 +29,7 @@ export default {
 				{
           title: '序号',
           type: 'index',
-          minWidth: 60,
+          width: 60,
           searchOperator: '=',
           align: 'center',
         },
@@ -37,7 +37,7 @@ export default {
 					title: '登录账号',
 					searchOperator: '=',
 					key: 'loginName',
-					minWidth: 150,
+					width: 150,
 					align: 'center'
 				},
 				{
@@ -45,14 +45,14 @@ export default {
 					searchOperator: 'like',
 					key: 'name',
 					sortable: true,
-					minWidth: 150,
+					width: 150,
 					align: 'center'
 				},
 				{
 					title: '系统角色名称',
 					searchOperator: 'like',
 					key: 'roleName',
-					minWidth: 150,
+					width: 150,
 					align: 'center'
 				},
 				{
@@ -60,14 +60,14 @@ export default {
 					searchOperator: '=',
 					key: 'stateName',
 					ellipsis: true,
-					minWidth: 150,
+					width: 150,
 					align: 'center'
 				},
 				{
 					title: '手机号',
 					searchOperator: '=',
 					key: 'mobile',
-					minWidth: 150,
+					width: 150,
 					align: 'center'
 				},
 				{
@@ -75,14 +75,14 @@ export default {
 					searchOperator: '=',
 					key: 'email',
 					ellipsis: true,
-					minWidth: 180,
+					width: 180,
 					align: 'center'
         },
         {
           title: '创建人',
           key: 'createUser',
           ellipsis: true,
-					minWidth: 100,
+					width: 100,
 					align: 'center'
         },
 				{
@@ -90,7 +90,7 @@ export default {
 					searchOperator: '=',
 					key: 'createTime',
 					ellipsis: true,
-					minWidth: 150,
+					width: 150,
 					align: 'center',
 					render: (h, params) => {
 						let createTime = params.row.createTime;
@@ -103,7 +103,7 @@ export default {
 				{
 					title: '操作',
 					key: 'edit',
-					minWidth: 180,
+					width: 180,
 					align: 'center',
 					render: (h, params) => {
 						const obj = params.row;

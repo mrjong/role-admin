@@ -4,6 +4,7 @@ import { videoPlayer } from 'vue-video-player';
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import tablePage from '@/mixin/tablePage';
+import util from '@/libs/util';
 
 export default {
   name: 'collecttion_recording_page',
@@ -347,7 +348,7 @@ export default {
         {
           responseType: 'blob'
         }
-        // util.dowloadfile('案件查询', res);
+        // util.dowloadZip(res);
         )
         console.log(res);
     },

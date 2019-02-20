@@ -115,50 +115,50 @@ export default {
 			tableColumns: [
 				{
 					title: '定义ID',
-					minWidth: 100,
+					width: 100,
 					sortable: true,
                     align:'center',
                     key: 'defId'
 				},
 				{
 					title: '定义名称',
-					minWidth: 120,
+					width: 120,
                     align:'center',
                     key: 'defName'
 				},
 				{
 					title: '业务标识',
-					minWidth: 120,
+					width: 120,
                     align:'center',
                     key: 'busiKey'
 				},
 				{
 					title: '节点名称',
-					minWidth: 120,
+					width: 120,
                     align:'center',
                     key: 'taskNodeName'
 				},
 				{
 					title: '节点顺序',
-					minWidth: 120,
+					width: 120,
                     align:'center',
                     key: 'taskNodeSort'
 				},
 				{
 					title: '处理人',
-					minWidth: 120,
+					width: 120,
                     align:'center',
                     key: 'waitDealName'
 				},
 				{
 					title: '申请人',
-					minWidth: 120,
+					width: 120,
                     align:'center',
                     key: 'applyName'
 				},
 				{
 					title: '操作',
-					minWidth: 100,
+					width: 100,
                     align:'center',
                     key: 'edit',
 					render: (h, params) => {
