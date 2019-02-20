@@ -45,12 +45,12 @@
           <FormItem
             label="消息类型:"
           >
-            <Select size="small" filterable v-model="formItem.operType" placeholder="请选择消息类型">
+            <Select size="small" filterable v-model="formItem.msgType" placeholder="请选择消息类型">
               <Option
-                v-for="item in getDirObj.operType"
-                :value="item.id"
-                :key="item.id"
-              >{{ item.name }}</Option>
+                v-for="item in getDirObj.MSG_TYPE"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -211,8 +211,6 @@
                   <Input disabled size="small" v-model="formValidateInfo.receiveUserMobHid" placeholder></Input>
                 </FormItem>
                 </Col>
-              </Row>
-              <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="内容类型:">
                   <Input disabled size="small" v-model="formValidateInfo.messageContentTypeName" placeholder></Input>
@@ -225,8 +223,6 @@
                   <Input disabled size="small" v-model="formValidateInfo.messagePurposeName" placeholder></Input>
                 </FormItem>
                 </Col>
-              </Row>
-              <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="消息备注:">
                   <Input disabled size="small" v-model="formValidateInfo.remark" placeholder></Input>
@@ -239,8 +235,6 @@
                   <Input disabled size="small" v-model="formValidateInfo.sendUserId" placeholder></Input>
                 </FormItem>
                 </Col>
-              </Row>
-              <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="消息发送人姓名:">
                   <Input disabled size="small" v-model="formValidateInfo.sendUserName" placeholder></Input>
@@ -253,8 +247,6 @@
                   <Input disabled size="small" v-model="formValidateInfo.messageSendTypeName" placeholder></Input>
                 </FormItem>
                 </Col>
-              </Row>
-              <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="消息发送时间:">
                   <Input disabled size="small" v-model="formValidateInfo.sendTime" placeholder></Input>
@@ -267,8 +259,6 @@
                   <Input disabled size="small" v-model="formValidateInfo.createTime" placeholder></Input>
                 </FormItem>
                 </Col>
-              </Row>
-              <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="消息来源系统简称:">
                   <Input disabled size="small" v-model="formValidateInfo.srcSys" placeholder></Input>
@@ -277,7 +267,7 @@
               </Row>
               <Row class="eachRow">
                 <Col span="12">
-                <FormItem span="6" prop="mblNo" label="存储对应接收标识内容:">
+                <FormItem span="6" prop="mblNo" label="存储对应接收标识内容:" >
                   <Input disabled size="small" v-model="formValidateInfo.msgFlgContent" placeholder></Input>
                 </FormItem>
                 </Col>

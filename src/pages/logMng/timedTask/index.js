@@ -9,6 +9,7 @@ export default {
       showPanel: false,
       showPanel2: false,
       modalSee: false,
+      createTime: [],
       formItem: {
       },
       ruleValidate:{
@@ -53,7 +54,7 @@ export default {
         },
         {
           title: '是否开启',
-          key: 'status',
+          key: 'isLockName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal,
@@ -173,6 +174,7 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {};
+      this.createTime = [];
       this.$refs[name].resetFields();
     },
     //查看详情
@@ -181,6 +183,8 @@ export default {
         id: obj.id,
       })
       this.formValidateInfo = res.data;
+      this.formValidateInfo.createTime = this.$options.filters['formatDate'](this.formValidateInfo.createTime, 'YYYY-MM-DD HH:mm:ss')
+      this.formValidateInfo.updateTime = this.$options.filters['formatDate'](this.formValidateInfo.updateTime, 'YYYY-MM-DD HH:mm:ss')
       this.modalSee = true;
     },
     closeModal(){

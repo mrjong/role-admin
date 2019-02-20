@@ -401,6 +401,7 @@
           id: obj.id,
         })
         this.formValidateInfo = res.data;
+        this.formValidateInfo.operTime = this.$options.filters['formatDate'](this.formValidateInfo.operTime, 'YYYY-MM-DD HH:mm:ss')
         this.modalSee = true;
       },
       closeModal(){

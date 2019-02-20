@@ -11,7 +11,7 @@ export default {
       showPanel: false,
       showPanel2: false,
       operTime:[],
-      getDirList: ['operType'],
+      getDirList: ['MSG_TYPE'],
       getDirObj: {},
       modalSee: false,
       formItem: {
@@ -126,7 +126,7 @@ export default {
           align: alignCenter,
           width: widthVal,
           render: (h, params) => {
-            let remarkDate = params.row.operTime;
+            let remarkDate = params.row.sendTime;
             remarkDate = remarkDate
               ? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
               : remarkDate;
@@ -140,7 +140,7 @@ export default {
           align: alignCenter,
           width: widthVal,
           render: (h, params) => {
-            let remarkDate = params.row.operTime;
+            let remarkDate = params.row.createTime;
             remarkDate = remarkDate
               ? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
               : remarkDate;
@@ -247,6 +247,8 @@ export default {
         id: obj.id,
       })
       this.formValidateInfo = res.data;
+      this.formValidateInfo.sendTime = this.$options.filters['formatDate'](this.formValidateInfo.sendTime, 'YYYY-MM-DD HH:mm:ss')
+      this.formValidateInfo.createTime = this.$options.filters['formatDate'](this.formValidateInfo.createTime, 'YYYY-MM-DD HH:mm:ss')
       this.modalSee = true;
     },
     closeModal(){

@@ -1,7 +1,6 @@
 import { system_handleList, system_handleDetail } from '@/service/getData';
 export default {
   name: 'systemOperation',
-  mixins: [sysDictionary],
   data() {
     var alignCenter = 'center';
     var widthVal = 180;
@@ -10,6 +9,7 @@ export default {
       showPanel: false,
       showPanel2: false,
       modalSee: false,
+      startTime: [],
       formItem: {
       },
       ruleValidate:{
@@ -82,14 +82,14 @@ export default {
         },
         {
           title: '操作描述',
-          key: 'operDec',
+          key: 'operDesc',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal,
         },
         {
           title: '是否成功',
-          key: 'isSuccess',
+          key: 'isSuccessName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal,
@@ -114,34 +114,6 @@ export default {
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal,
-        },
-        {
-          title: '消息发送时间',
-          key: 'sendTime',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal,
-          render: (h, params) => {
-            let remarkDate = params.row.sendTime;
-            remarkDate = remarkDate
-              ? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
-              : remarkDate;
-            return h('span', remarkDate);
-          }
-        },
-        {
-          title: '创建时间',
-          key: 'createTime',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal,
-          render: (h, params) => {
-            let remarkDate = params.row.createTime;
-            remarkDate = remarkDate
-              ? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
-              : remarkDate;
-            return h('span', remarkDate);
-          }
         },
         {
           title: '操作',
@@ -197,6 +169,12 @@ export default {
     },
     // 获取表格数据
     async getList() {
+      if(this.formItem.minDuration){
+        this.formItem.minDuration = parseFloat(this.formItem.minDuration)
+      }
+      if(this.formItem.maxDuration){
+        this.formItem.maxDuration = parseFloat(this.formItem.maxDuration)
+      }
       let res= await system_handleList({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
@@ -216,7 +194,8 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {};
-        this.$refs[name].resetFields();
+      this.startTime = [];
+      this.$refs[name].resetFields();
     },
     //查看详情
     async handleDetail( obj) {
@@ -224,6 +203,8 @@ export default {
         id: obj.id,
       })
       this.formValidateInfo = res.data;
+      this.formValidateInfo.startTime = this.$options.filters['formatDate'](this.formValidateInfo.startTime, 'YYYY-MM-DD HH:mm:ss')
+      this.formValidateInfo.endTime = this.$options.filters['formatDate'](this.formValidateInfo.endTime, 'YYYY-MM-DD HH:mm:ss')
       this.modalSee = true;
     },
     closeModal(){
