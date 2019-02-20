@@ -41,6 +41,7 @@
             <Select
               size="small"
               clearable
+              multiple
               placeholder="请选择产品线"
               v-model="formItem.prdTyp"
             >
@@ -247,6 +248,296 @@
         </div>
       </div>
     </Card>
+    <Modal
+      class="jianmian"
+      title="仲裁详情"
+      width="90%"
+      v-model="showModal1"
+      @on-cancel="del"
+      @on-ok="handleSubmit1"
+    >
+      <div class="alert-desc">
+        <div class="panel-desc">
+          <Form
+            :label-width="120"
+            class="panel_list"
+          >
+            <Row :gutter="10">
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="8"
+                :lg="8"
+              >
+              <FormItem
+                label="订单号:"
+                prop="defType"
+              >
+                <span class="desc-label">{{arb_detail_data&&arb_detail_data.billNo}}</span>
+              </FormItem>
+              </Col>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="8"
+                :lg="8"
+              >
+              <FormItem
+                label="案件编号:"
+                prop="defType"
+              >
+                <span class="desc-label">{{arb_detail_data&&arb_detail_data.caseNo}}</span>
+              </FormItem>
+              </Col>
+
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="8"
+                :lg="8"
+              >
+              <FormItem
+                label="身份证号:"
+                prop="defType"
+              >
+                <span class="desc-label">{{arb_detail_data&&arb_detail_data.idCardNoHid}}</span>
+              </FormItem>
+              </Col>
+
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="8"
+                :lg="8"
+              >
+              <FormItem
+                label="客户姓名:"
+                prop="defType"
+              >
+                <span class="desc-label">{{arb_detail_data&&arb_detail_data.userNameHid}}</span>
+              </FormItem>
+              </Col>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="8"
+                :lg="8"
+              >
+              <FormItem
+                label="性别:"
+                prop="defType"
+              >
+                <span class="desc-label">{{arb_detail_data&&arb_detail_data.userGenderName}}</span>
+              </FormItem>
+              </Col>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="8"
+                :lg="8"
+              >
+              <FormItem
+                label="民族:"
+                prop="defType"
+              >
+                <span class="desc-label">{{arb_detail_data&&arb_detail_data.userNation}}</span>
+              </FormItem>
+              </Col>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="8"
+                :lg="8"
+              >
+              <FormItem
+                label="提前到期日期:"
+                prop="defType"
+              >
+                <span class="desc-label">{{arb_detail_data&&arb_detail_data.standAgreeDate}}</span>
+              </FormItem>
+              </Col>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="16"
+                :lg="16"
+              >
+              <FormItem
+                label="打款凭证流水号:"
+                prop="defType"
+              >
+                <span class="desc-label">{{arb_detail_data&&arb_detail_data.voucherNo}}</span>
+              </FormItem>
+              </Col>
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="24"
+                :lg="24"
+              >
+              <FormItem
+                label="身份证地址:"
+                prop="defType"
+              >
+                <span class="desc-label">{{arb_detail_data&&arb_detail_data.idAddress}}</span>
+              </FormItem>
+              </Col>
+
+              <Col
+                :xs="24"
+                :sm="24"
+                :md="24"
+                :lg="24"
+              >
+              <FormItem
+                label="图片信息:"
+                prop="defType"
+              >
+                <div class="fl">
+                  <div
+                    class="demo-upload-list mr10"
+                    style="width:100px;height:100px;"
+                  >
+                    <img
+                      :src="arb_detail_data&&arb_detail_data.idCardFront"
+                      style="vertical-align: top;"
+                    >
+                  </div>
+                  <div class="text-center card-text mt-15 mr10">身份证正面</div>
+                </div>
+                <div class="fl">
+                  <div
+                    class="demo-upload-list mr10"
+                    style="width:100px;height:100px"
+                  >
+                    <img
+                      :src="arb_detail_data&&arb_detail_data.idCardOpposite"
+                      style="vertical-align: top;"
+                    >
+                  </div>
+                  <div class="text-center card-text mt-15 mr10">身份证反面</div>
+                </div>
+                <div class="fl">
+                  <div
+                    class="demo-upload-list mr10"
+                    style="width:100px;height:100px"
+                  >
+                    <img
+                      :src="arb_detail_data&&arb_detail_data.voucherImg"
+                      style="vertical-align: top;"
+                    >
+                  </div>
+                  <div class="text-center card-text mt-15 mr10">打款凭证</div>
+                </div>
+                <div class="fl">
+                  <div
+                    class="demo-upload-list mr10"
+                    style="width:100px;height:100px"
+                  >
+                    <img
+                      :src="arb_detail_data&&arb_detail_data.standImg"
+                      style="vertical-align: top;"
+                    >
+                  </div>
+                  <div class="text-center card-text mt-15 mr10">提前到期通知</div>
+                </div>
+              </FormItem>
+
+              </Col>
+
+            </Row>
+            <Row v-if="showModalType!=='edit'">
+              <div class="alert-title">操作明细</div>
+              <div>22222222</div>
+            </Row>
+          </Form>
+        </div>
+      </div>
+      <div
+        slot="footer"
+        v-if="showModalType!=='edit'"
+      >
+        <Button
+          type="ghost"
+          size="small"
+          @click="del"
+        >关闭</Button>
+
+      </div>
+      <div
+        slot="footer"
+        v-if="showModalType==='edit'"
+      >
+        <Button
+          type="ghost"
+          size="small"
+          @click="arb_check('02')"
+        >通过</Button>
+        <Button
+          type="primary"
+          size="small"
+          @click="rejectFunc"
+        >驳回</Button>
+      </div>
+    </Modal>
+    <Modal
+      v-model="showModal2"
+      width="800"
+      title="提示"
+      class-name="user_info_form_modal"
+    >
+      <Form
+        ref="recoverFormItem"
+        :model="recoverFormItem"
+        :label-width="120"
+        :rules="ruleValidate2"
+      >
+        <FormItem
+          span="4"
+          label="驳回原因:"
+          prop='approvalRemark'
+        >
+          <Input
+            type="textarea"
+            size="small"
+            :maxlength="30"
+            v-model="recoverFormItem.approvalRemark"
+            placeholder="请输入30字以内"
+          ></Input>
+        </FormItem>
+      </Form>
+      <div slot="footer">
+        <Button
+          type="ghost"
+          size="small"
+          @click="del"
+        >取消</Button>
+        <Button
+          type="primary"
+          size="small"
+          @click="arb_checkTest"
+        >确定</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 <script src="./index.js"></script>
+<style lang="less">
+.jianmian {
+  .ivu-modal-body {
+    padding: 0;
+  }
+  .alert-title {
+    background-color: #f7f7f7;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 3px;
+  }
+  .alert-desc {
+    padding: 5px 0px;
+  }
+  .ivu-modal-close {
+    top: 3px;
+  }
+}
+</style>

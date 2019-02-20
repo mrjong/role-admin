@@ -1,95 +1,32 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { arb_apply,arb_list } from '@/service/getData';
+import { arb_apply, arb_list, arb_detail, arb_check } from '@/service/getData';
 export default {
 	name: 'case_search_page',
 	mixins: [ formValidateFun, sysDictionary ],
 	data() {
 		console.log(this.GLOBAL);
-
+		const _this = this;
 		return {
 			getDirList: [ 'PROD_TYPE', 'GENDER', 'APPROVAL_STATE' ],
 			getDirObj: {},
 			showPanel: false,
+			arb_detail_data: {},
 			showPanel2: false,
-			phoneCallList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
-			productTimeList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
-			productLineList: [
-				{
-					value: 'New York',
-					label: 'New York'
-				},
-				{
-					value: 'London',
-					label: 'London'
-				},
-				{
-					value: 'Sydney',
-					label: 'Sydney'
-				},
-				{
-					value: 'Ottawa',
-					label: 'Ottawa'
-				},
-				{
-					value: 'Paris',
-					label: 'Paris'
-				},
-				{
-					value: 'Canberra',
-					label: 'Canberra'
-				}
-			],
+			showModalType: '',
+			shenheObj: {},
+			recoverFormItem: {},
+			showModal2: false,
+			showModal1: false,
+			ruleValidate2: {
+				approvalRemark: [
+					{
+						required: true,
+						message: '请输入驳回原因',
+						trigger: 'blur'
+					}
+				]
+			},
 			ruleValidate: {
 				idNo: [
 					{
@@ -162,9 +99,48 @@ export default {
 					}
 				]
 			},
-			formItem: {},
+			formItem: {
+                prdTyp:[]
+            },
 			tableData: [],
 			tableColumns: [
+				{
+					title: '操作',
+					width: 150,
+					key: 'edit',
+					align: 'center',
+					fixed: 'left',
+					render: (h, params) => {
+						return h('div', [
+							h(
+								'a',
+								{
+									class: 'edit-btn',
+									props: {},
+									on: {
+										click: () => {
+											_this.arb_detail(params.row);
+										}
+									}
+								},
+								'查看'
+							),
+							h(
+								'a',
+								{
+									class: 'edit-btn',
+									props: {},
+									on: {
+										click: () => {
+											_this.arb_detail(params.row, 'edit');
+										}
+									}
+								},
+								'审核'
+							)
+						]);
+					}
+				},
 				{
 					title: '案件状态',
 					width: 120,
@@ -270,7 +246,7 @@ export default {
 					title: '申请人',
 					width: 120,
 					align: 'center',
-					key: 'createUser'
+					key: 'opUserName'
 				},
 				{
 					title: '电催中心',
@@ -326,6 +302,73 @@ export default {
 		// this.getList();
 	},
 	methods: {
+		// 查看详情
+		async arb_detail(obj, type) {
+			const res = await arb_detail({
+				approvalId: obj.approvalId
+			});
+			if (res.code === 1) {
+				if (type === 'edit') {
+					this.shenheObj = obj;
+					this.showModalType = 'edit';
+				}
+				this.arb_detail_data = res.data;
+				this.showModal1 = true;
+			} else {
+				this.shenheObj = {};
+				this.$Message.error(res.message);
+			}
+		},
+		rejectFunc() {
+			this.showModal1 = false;
+			this.showModal2 = true;
+		},
+		arb_checkTest() {
+			this.$refs.recoverFormItem.validate((valid) => {
+				if (valid) {
+					this.arb_check('03');
+				}
+			});
+		},
+		// 审核
+		async arb_check(type) {
+			let approvalRemark = '';
+			if (type === '03') {
+				approvalRemark = this.recoverFormItem.approvalRemark;
+			}
+			const res = await arb_check({
+				approvalRemark,
+				approvalState: type,
+				approvalId: this.shenheObj.approvalId,
+				caseNo: this.shenheObj.caseNo,
+				billNo: this.shenheObj.billNo
+			});
+			if (res.code === 1) {
+				this.showModal1 = false;
+				this.showModal2 = false;
+				this.$Message.success('操作成功！');
+				this.recoverFormItem = {};
+				setTimeout(() => {
+					this.getList();
+				}, 2000);
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+		handleSubmit1() {
+			this.$refs.formItem.validate((valid) => {
+				if (valid) {
+				} else {
+					this.showModal1 = true;
+				}
+			});
+		},
+		del() {
+			this.showModal2 = false;
+			this.shenheObj = {};
+			this.showModal1 = false;
+			this.showModalType = '';
+		},
 		// 页码改变的回调
 		changePage(pageNo) {
 			this.pageNo = pageNo;
@@ -358,7 +401,9 @@ export default {
 		// 重置
 		clearForm(name) {
 			this.pageNo = 1;
-			this.formItem = {};
+			this.formItem = {
+                prdTyp:[]
+            };
 			this.$refs[name].resetFields();
 		}
 	}

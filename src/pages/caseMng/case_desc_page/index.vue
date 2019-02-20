@@ -247,7 +247,6 @@
             >
             <div
               class="fl"
-              key=""
               v-for="(item,index) in case_detail_case_identity_info_Data.userImgList"
             >
               <div class="demo-upload-list">

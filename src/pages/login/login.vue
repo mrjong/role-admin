@@ -48,6 +48,33 @@
               </span>
               </Input>
             </FormItem>
+
+            <FormItem
+              prop="loginPic"
+              class="imageCode"
+            >
+              <Input
+                clearable
+                maxlength="5"
+                type="text"
+                v-model="form.loginPic"
+                placeholder="请输入图片验证码"
+              >
+              <span slot="prepend">
+                <Icon
+                  :size="14"
+                  type="image"
+                ></Icon>
+              </span>
+              </Input>
+              <div class="image-box">
+                <img
+                  @click="login_code"
+                  :src="imageShow"
+                  alt=""
+                >
+              </div>
+            </FormItem>
             <FormItem>
               <Button
                 @click="handleSubmit"
@@ -65,26 +92,40 @@
 <script>
 import Cookies from "js-cookie"
 import md5 from "js-md5"
-import { login, call_kt_get_seat } from "@/service/getData"
+import { login, call_kt_get_seat, login_code } from "@/service/getData"
 
 export default {
   data() {
     return {
+      imageShow: '',
+      key:'',
       form: {
         loginName: "",
-        loginPwd: ""
+        loginPwd: "",
+        loginPic: ""
       },
       rules: {
         loginName: [
           { required: true, message: "请输入用户名", trigger: "blur" }
         ],
-        loginPwd: [{ required: true, message: "请输入密码", trigger: "blur" }]
+        loginPwd: [{ required: true, message: "请输入密码", trigger: "blur" }],
+        loginPic: [{ required: true, message: "请输入图片验证码", trigger: "blur" }]
       }
     }
   },
   created() {
+    this.login_code()
   },
   methods: {
+    async login_code() {
+         const res = await login_code()
+      if (res.code === 1) {
+        this.imageShow = res.data.base64Code
+        this.key = res.data.key
+      } else {
+        this.$Message.error(res.message)
+      }
+    },
     async call_kt_get_seat(data) {
       const res = await call_kt_get_seat({
         loginName: this.form.loginName
@@ -146,7 +187,9 @@ export default {
         if (valid) {
           const res = await login({
             loginName: this.form.loginName,
-            loginPwd: this.form.loginPwd
+            loginPwd: this.form.loginPwd,
+            code: this.form.loginPic,
+            key:this.key
           })
           if (res && res.code === 1) {
             Cookies.set("user", this.form.loginName)
@@ -171,5 +214,22 @@ export default {
 
 </script>
 
-<style>
+<style lang="less">
+.imageCode {
+  position: relative;
+  padding-right: 130px;
+  .image-box {
+    position: absolute;
+    top: 2px;
+    right: -130px;
+    z-index: 2;
+    height: 30px;
+    img {
+      cursor: pointer;
+      height: 100%;
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
+  }
+}
 </style>
