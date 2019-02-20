@@ -154,7 +154,7 @@ export default {
           title: '分配方式',
           width: 100,
           searchOperator: '=',
-          key: 'ruleName',
+          key: 'allotType',
           align: 'center',
         },
         {

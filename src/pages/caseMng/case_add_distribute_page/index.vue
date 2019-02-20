@@ -185,7 +185,7 @@
                     style="width:80px"
                     long
                     size="small"
-                  >分配</Button>
+                >{{submitType === 1?'添加': '修改'}}</Button>
                   <Button
                     size="small"
                     type="ghost"
@@ -646,7 +646,7 @@ export default {
         ...this.formItem,
         allotRoleIdList: this.allotRoleIdList
       });
-      if (res.code === 200) {
+      if (res.code === 1) {
         console.log(res);
         this.$Message.success(res.message);
       } else {

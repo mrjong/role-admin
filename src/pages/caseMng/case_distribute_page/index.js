@@ -46,6 +46,7 @@ export default {
       getLeafTypeList2_data: [],
       getLeafTypeList_data: [],
       data5: [],
+      data: [],
       collectRoleIds: [],
       caseIds: [],
       caseID: '',
