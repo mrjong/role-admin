@@ -1,11 +1,15 @@
-import { case_collect_collect_list, getLeafTypeList, case_collect_tape_download } from '@/service/getData';
-import 'video.js/dist/video-js.css';
-import { videoPlayer } from 'vue-video-player';
+import { case_collect_collect_list, getLeafTypeList, case_collect_tape_download, case_collect_tape } from '@/service/getData';
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import tablePage from '@/mixin/tablePage';
 import util from '@/libs/util';
-
+import 'video.js/dist/video-js.css';
+import { videoPlayer } from 'vue-video-player';
+// import videojs from 'video.js'
+// import 'videojs-flash';
+import 'vue-video-player/src/custom-theme.css'
+// import SWF_URL from 'videojs-swf/dist/video-js.swf'
+// videojs.options.flash.swf = SWF_URL
 export default {
   name: 'collecttion_recording_page',
   components: {
@@ -13,7 +17,6 @@ export default {
   },
   mixins: [tablePage, formValidateFun, sysDictionary],
   data() {
-
     return {
       getDirList: ['PROD_TYPE'],
       getDirObj: {},
@@ -29,11 +32,23 @@ export default {
         playbackRates: [0.7, 1.0, 1.5, 2.0],
         sources: [
           {
-            type: 'video/mp4',
-            src: 'https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm'
+            type: 'audio/mpeg',
+            // type: 'rtmp/flv',
+            // type: 'application/octet-stream',
+            // src: 'http://sc1.111ttt.cn:8282/2018/1/03m/13/396131229550.m4a?tflag=1546606800&pin=97bb2268ae26c20fe093fd5b0f04be80#.mp3'
+            src: ''
           }
         ],
-        poster: '/static/images/author.jpg'
+        // flash: {
+        //   hls: {
+        //     withCredentials: false
+        //   },
+        //   swf: SWF_URL
+        // },
+        // techOrder: ['flash'],
+        autoplay: false,
+        controls: true
+        // poster: '/static/images/author.jpg'
       },
       phoneCallList: [
         {
@@ -142,14 +157,14 @@ export default {
           align: 'center'
         },
         {
-          title: '关联录音',
+          title: '操作',
           width: 120,
           searchOperator: '=',
           align: 'center',
           key: 'buffet_code',
           render: (h, params) => {
             const soundUuid = params.row.soundUuid;
-            return soundUuid? h('div', [
+            return soundUuid ? h('div', [
               h(
                 'a',
                 {
@@ -160,6 +175,7 @@ export default {
                   },
                   on: {
                     click: () => {
+                      this.case_collect_tape(soundUuid);
                       this.modal1 = true;
                     }
                   }
@@ -182,7 +198,7 @@ export default {
                 },
                 '下载'
               ),
-            ]): h('div', [
+            ]) : h('div', [
               h(
                 'span',
                 {
@@ -340,7 +356,7 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    async case_collect_tape_download (id) {
+    async case_collect_tape_download(id) {
       const res = await case_collect_tape_download(
         {
           ids: id,
@@ -348,9 +364,21 @@ export default {
         {
           responseType: 'blob'
         }
-        // util.dowloadZip(res);
-        )
-        console.log(res);
+      );
+      util.dowloadZip(res);
+      console.log(res);
+    },
+    async case_collect_tape(id) {
+      const res = await case_collect_tape(
+        {
+          id: id,
+        },
+        {
+          responseType: 'blob'
+        }
+      );
+      // this.playerOptions.sources[0].src = res;
+      console.log(res);
     },
     ok() {
       this.$Message.info('Clicked ok');

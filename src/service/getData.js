@@ -1130,13 +1130,34 @@ export const arb_list = (obj, options) =>
 查看仲裁详情
 * */
 export const arb_detail = (obj, options) =>
-  fetch({
-    url: '/arb/detail',
+	fetch({
+		url: '/arb/detail?approvalId=' + obj.approvalId,
+		method: 'get'
+	});
+
+/*
+*
+查看仲裁审核
+* */
+export const arb_check = (obj, options) =>
+	fetch({
+		url: '/arb/check',
+		method: 'POST',
+		data: qs.stringify(obj),
+		options
+    });
+    /*
+*
+获取图片验证码
+* */
+export const login_code = (obj, options) =>
+fetch({
+    url: '/login/code',
     method: 'POST',
     data: qs.stringify(obj),
     options
-  });
-
+});
+    
 /*
 申请仲裁
 * */

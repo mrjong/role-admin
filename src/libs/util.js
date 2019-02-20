@@ -262,9 +262,9 @@ util.dowloadZip = function (res) {
   const downloadElement = document.createElement('a')
   const href = window.URL.createObjectURL(blob)
   //后台再header中传文件名
-  const name = decodeURI(response.headers['content-disposition'].split('=')[1])
+  // const name = decodeURI(res.headers['content-disposition'].split('=')[1])
   downloadElement.href = href
-  downloadElement.download = name
+  downloadElement.download = '录音';
   document.body.appendChild(downloadElement)
   downloadElement.click()
   document.body.removeChild(downloadElement) // 下载完成移除元素
