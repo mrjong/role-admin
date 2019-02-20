@@ -232,7 +232,6 @@ export default {
         },
         {
           title: '电催中心',
-          searchOperator: 'like',
           key: 'opCompayName',
           className: 'tableMainW',
           align: alignCenter,

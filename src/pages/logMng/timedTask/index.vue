@@ -68,7 +68,7 @@
               style="width:100%"
               v-model="createTime"
               format="yyyy-MM-dd"
-              type="date"
+              type="daterange"
               placement="bottom-start"
               placeholder="请选择创建时间"
               @on-change="changeDate"
@@ -177,7 +177,7 @@
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem label="是否开启:">
-                  <Input disabled size="small" v-model="formValidateInfo.status" placeholder></Input>
+                  <Input disabled size="small" v-model="formValidateInfo.isLock" placeholder></Input>
                 </FormItem>
                 </Col>
                 <Col span="12">

@@ -17,22 +17,21 @@
         :rules="ruleValidate"
       >
         <Row>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-          <FormItem
-            label="耗时:"
-          >
-            <Input
-              size="small"
-              clearable
-              v-model="formItem.caseNo"
-              placeholder="请输入时长"
-            ></Input>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem label="耗时:">
+            <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
+            <FormItem prop="minOverdueAmt">
+              <Input size="small" number clearable v-model="formItem.minDuration"></Input>
+            </FormItem>
+            </Col>
+            <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
+            <div class="text-center">-</div>
+            </Col>
+            <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
+            <FormItem prop="maxOverdueAmt">
+              <Input size="small" number clearable v-model="formItem.maxDuration"></Input>
+            </FormItem>
+            </Col>
           </FormItem>
           </Col>
           <Col
@@ -48,7 +47,7 @@
             <Input
               size="small"
               clearable
-              v-model="formItem.operIp"
+              v-model="formItem.userName"
               placeholder="请输入用户名称"
             ></Input>
           </FormItem>
@@ -189,7 +188,7 @@
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="操作描述:">
-                  <Input disabled size="small" v-model="formValidateInfo.operDec" placeholder></Input>
+                  <Input disabled size="small" v-model="formValidateInfo.operDesc" placeholder></Input>
                 </FormItem>
                 </Col>
                 <Col span="12">

@@ -1,5 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
+import dayjs from 'dayjs'
 import { arb_operateRecord, arb_list, arb_detail, arb_check } from '@/service/getData';
 export default {
 	name: 'case_search_page',
@@ -151,7 +152,7 @@ export default {
 				]
 			},
 			formItem: {
-				prdTyp: []
+				productTypes: []
 			},
 			tableData: [],
 			tableColumns: [
@@ -227,13 +228,13 @@ export default {
 					title: '客户姓名',
 					width: 120,
 					align: 'center',
-					key: 'userName'
+					key: 'userNameHid'
 				},
 				{
 					title: '身份证号',
 					width: 120,
 					align: 'center',
-					key: 'idCardNo'
+					key: 'idCardNoHid'
 				},
 				{
 					title: '手机号',
@@ -297,7 +298,7 @@ export default {
 					title: '申请人',
 					width: 120,
 					align: 'center',
-					key: 'opUserName'
+					key: 'createName'
 				},
 				{
 					title: '电催中心',
@@ -309,7 +310,7 @@ export default {
 					title: '审核人',
 					width: 120,
 					align: 'center',
-					key: 'approvalUser'
+					key: 'approvalUserName'
 				},
 				{
 					title: '审核时间',
@@ -374,7 +375,7 @@ export default {
 				approvalId: obj.approvalId
 			});
 			if (res.code === 1) {
-                this.shenheObj = obj;
+				this.shenheObj = obj;
 				if (type === 'edit') {
 					this.showModalType = 'edit';
 				} else {
@@ -471,9 +472,33 @@ export default {
 		},
 		// 获取表格数据
 		async getList() {
-			const res = await arb_list();
+			let applyTimeLt = '',
+				applyTimeBt = '';
+			if (this.formItem.applyTimeLt&&this.formItem.applyTimeLt.length > 0) {
+				applyTimeLt = this.formItem.applyTimeLt[0]?dayjs(this.formItem.applyTimeLt[0]).format('YYYY-MM-DD'):''
+				applyTimeBt = this.formItem.applyTimeLt[1]?dayjs(this.formItem.applyTimeLt[1]).format('YYYY-MM-DD'):''
+			}
+			let approvalTimeLt = '',
+				approvalTimeBt = '';
+			if (this.formItem.approvalTimeLt&&this.formItem.approvalTimeLt.length > 0) {
+				approvalTimeLt = this.formItem.approvalTimeLt[0]?dayjs(this.formItem.approvalTimeLt[0]).format('YYYY-MM-DD'):''
+                approvalTimeBt = this.formItem.approvalTimeLt[1]?dayjs(this.formItem.approvalTimeLt[1]).format('YYYY-MM-DD'):''
+			}
+			// delete this.formItem.approvalTimeLt;
+			// delete this.formItem.applyTimeLt;
+			const res = await arb_list({
+				...this.formItem,
+                applyTimeLt,
+                approvalTimeLt,
+                approvalTimeBt,
+				applyTimeBt,
+				pageNum: this.pageNo,
+				pageSize: this.pageSize
+			});
 			if (res.code === 1) {
-				this.tableData = res.data;
+				this.tableData = res.data.content;
+				this.total = res.data.totalElements;
+				this.pageNo = res.data.number;
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -482,7 +507,7 @@ export default {
 		clearForm(name) {
 			this.pageNo = 1;
 			this.formItem = {
-				prdTyp: []
+				productTypes: []
 			};
 			this.$refs[name].resetFields();
 		}

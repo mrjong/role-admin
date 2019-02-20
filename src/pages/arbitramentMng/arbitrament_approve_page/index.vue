@@ -9,13 +9,6 @@
       >
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
         检索条件
-        <router-link to="/demo/demo_desc">
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-          >详情</Button>
-        </router-link>
       </p>
       <Form
         v-if="!showPanel"
@@ -36,14 +29,14 @@
           <FormItem
             span="6"
             label="产品线:"
-            prop="prdTyp"
+            prop="productTypes"
           >
             <Select
               size="small"
               clearable
               multiple
               placeholder="请选择产品线"
-              v-model="formItem.prdTyp"
+              v-model="formItem.productTypes"
             >
               <Option
                 v-for="item in getDirObj.PROD_TYPE"
@@ -129,7 +122,7 @@
               style="width:100%"
               v-model="formItem.applyTimeLt"
               format="yyyy-MM-dd"
-              type="datetimerange"
+              type="daterange"
               placement="bottom-start"
               placeholder="请选择申请日期"
             ></DatePicker>
@@ -150,9 +143,9 @@
             <DatePicker
               size="small"
               style="width:100%"
-              v-model="formItem.csDate"
+              v-model="formItem.approvalTimeLt"
               format="yyyy-MM-dd"
-              type="datetimerange"
+              type="daterange"
               placement="bottom-start"
               placeholder="请选择审核日期"
             ></DatePicker>
@@ -224,6 +217,7 @@
       <div v-if="!showPanel2">
         <Table
           :data="tableData"
+          border
           :columns="tableColumns"
           stripe
         ></Table>
