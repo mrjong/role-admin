@@ -3,12 +3,13 @@
     id="main"
     class="app-main"
   >
-    <div class="tel-box"
-    v-if="showTel"
+    <div
+      class="tel-box"
+      v-if="showTel"
     >
       <div class="tel-box-desc">
-        <div class="tel-num">{{telNo}}</div>
-        <div class="tel-desc">{{telStatus}}</div>
+        <div class="tel-num">{{telNoHid}}</div>
+        <div class="tel-desc">{{usrNameHid}}</div>
         <div class="tel-btn-box">
           <div
             class="item success"
@@ -37,7 +38,7 @@
           </div>
         </div>
       </div>
-   
+
       <!-- <video
         src="@/libs/ring.wav"
         controls="controls"
@@ -46,13 +47,13 @@
       </video> -->
     </div>
     <router-view></router-view>
-       <video
-        loop
-        ref="ring"
-        preload="auto"
-        src="src/libs/ring.wav"
-      >
-      </video>
+    <video
+      loop
+      ref="ring"
+      preload="auto"
+      src="src/libs/ring.wav"
+    >
+    </video>
   </div>
 </template>
 
@@ -65,8 +66,8 @@ export default {
       fail: false,
       success: false,
       showTel: false,
-      telNo: '***********',
-      telStatus: '****',
+      telNoHid: '***********',
+      usrNameHid: '****',
       theme: this.$store.state.app.themeColor
     }
   },
@@ -78,6 +79,7 @@ export default {
       'changeCallData'
     ])
   },
+
   methods: {
     answer() {
       CallHelper.answer((data) => {
@@ -90,6 +92,8 @@ export default {
       CallHelper.hangup();
       this.fail = false
       this.success = false
+      // 清空展示
+      localStorage.removeItem('callObj')
     },
     play() {
       this.$refs.ring.play()
@@ -97,6 +101,9 @@ export default {
     pause1() {
       this.$refs.ring.pause();
     }
+  },
+  created() {
+
   },
   watch: {
     changeCallData(res) {
@@ -109,6 +116,13 @@ export default {
             this.showTel = false
             break;
           case 'RINGING':
+          console.log(localStorage.getItem('callObj'))
+            if (localStorage.getItem('callObj')) {
+              let callObj = JSON.parse(localStorage.getItem('callObj'))
+                console.log(callObj)
+              this.telNoHid = callObj.telNoHid
+              this.usrNameHid = callObj.usrNameHid
+            }
             // 坐席振铃
             if (res.data) {
               const { direction, phoneNum } = res.data
@@ -126,6 +140,7 @@ export default {
             break;
           case 'HANGUP':
             // 坐席挂机
+            localStorage.removeItem('callObj')
             this.showTel = false
             this.fail = false
             this.success = false

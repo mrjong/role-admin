@@ -25,8 +25,8 @@ import {
 	collectcode_getCollectRelate, // 获取沟通状态
 	call_kt_hung_on, // 客天外拨
 	call_moor_hung_on, // 容联外拨
-    syscommon_decrypt, // 明文展示
-    img_mark // 图片展示
+	syscommon_decrypt, // 明文展示
+	img_mark // 图片展示
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
@@ -39,6 +39,7 @@ export default {
 	data() {
 		const _this = this;
 		return {
+			imglist: {},
 			actionId: '',
 			mingwenData: '',
 			parentData: {},
@@ -288,72 +289,71 @@ export default {
 					title: '催收电话',
 					align: 'center',
 					width: 150,
-                    key: 'mblNoHid',
-                    render: (h, params) => {
-                        return h('div', [
-                          h('span', {}, params.row.mblNoHid),
-                          h(
-                            'Poptip',
-                            {
-                              props: {
-                                content: _this.mingwenData
-                              }
-                            },
-                            [
-                              h('Icon', {
-                                props: {
-                                  type: 'eye'
-                                                    },
-                                                    on: {
-                                                        click: () => {
-                                                            _this.syscommon_decrypt({
-                                                                type:'MBL',
-                                                                data:params.row.mblNo
-                                                            })
-                                                        }
-                                                    },
-                                class: 'eye-class'
-                              })
-                            ]
-                          )
-                        ]);
-                      }
-                      
+					key: 'mblNoHid',
+					render: (h, params) => {
+						return h('div', [
+							h('span', {}, params.row.mblNoHid),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										props: {
+											type: 'eye'
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'MBL',
+													data: params.row.mblNo
+												});
+											}
+										},
+										class: 'eye-class'
+									})
+								]
+							)
+						]);
+					}
 				},
 				{
 					title: '催收姓名',
 					align: 'center',
 					width: 100,
-                    key: 'userNmHid',
-                    render: (h, params) => {
-                        return h('div', [
-                          h('span', {}, params.row.userNmHid),
-                          h(
-                            'Poptip',
-                            {
-                              props: {
-                                content: _this.mingwenData
-                              }
-                            },
-                            [
-                              h('Icon', {
-                                props: {
-                                  type: 'eye'
-                                                    },
-                                                    on: {
-                                                        click: () => {
-                                                            _this.syscommon_decrypt({
-                                                                type:'NAME',
-                                                                data:params.row.userNm
-                                                            })
-                                                        }
-                                                    },
-                                class: 'eye-class'
-                              })
-                            ]
-                          )
-                        ]);
-                      }
+					key: 'userNmHid',
+					render: (h, params) => {
+						return h('div', [
+							h('span', {}, params.row.userNmHid),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										props: {
+											type: 'eye'
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'NAME',
+													data: params.row.userNm
+												});
+											}
+										},
+										class: 'eye-class'
+									})
+								]
+							)
+						]);
+					}
 				},
 				{
 					title: '催收对象',
@@ -482,72 +482,71 @@ export default {
 					title: '还款账号',
 					align: 'center',
 					width: 180,
-                    key: 'crdNoHid',
-                    render: (h, params) => {
-                        return h('div', [
-                          h('span', {}, params.row.crdNoHid),
-                          h(
-                            'Poptip',
-                            {
-                              props: {
-                                content: _this.mingwenData
-                              }
-                            },
-                            [
-                              h('Icon', {
-                                props: {
-                                  type: 'eye'
-                                                    },
-                                                    on: {
-                                                        click: () => {
-                                                            _this.syscommon_decrypt({
-                                                                type:'BANK_CARD',
-                                                                data:params.row.crdNo
-                                                            })
-                                                        }
-                                                    },
-                                class: 'eye-class'
-                              })
-                            ]
-                          )
-                        ]);
-                      }
-                      
+					key: 'crdNoHid',
+					render: (h, params) => {
+						return h('div', [
+							h('span', {}, params.row.crdNoHid),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										props: {
+											type: 'eye'
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'BANK_CARD',
+													data: params.row.crdNo
+												});
+											}
+										},
+										class: 'eye-class'
+									})
+								]
+							)
+						]);
+					}
 				},
 				{
 					title: '实际还款人',
 					align: 'center',
 					width: 100,
-                    key: 'userNmHid',
-                    render: (h, params) => {
-                        return h('div', [
-                          h('span', {}, params.row.userNmHid),
-                          h(
-                            'Poptip',
-                            {
-                              props: {
-                                content: _this.mingwenData
-                              }
-                            },
-                            [
-                              h('Icon', {
-                                props: {
-                                  type: 'eye'
-                                                    },
-                                                    on: {
-                                                        click: () => {
-                                                            _this.syscommon_decrypt({
-                                                                type:'NAME',
-                                                                data:params.row.userNm
-                                                            })
-                                                        }
-                                                    },
-                                class: 'eye-class'
-                              })
-                            ]
-                          )
-                        ]);
-                      }
+					key: 'userNmHid',
+					render: (h, params) => {
+						return h('div', [
+							h('span', {}, params.row.userNmHid),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										props: {
+											type: 'eye'
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'NAME',
+													data: params.row.userNm
+												});
+											}
+										},
+										class: 'eye-class'
+									})
+								]
+							)
+						]);
+					}
 				},
 				{
 					title: '还款人关系',
@@ -779,15 +778,15 @@ export default {
 									h('Icon', {
 										props: {
 											type: 'eye'
-                                        },
-                                        on: {
-                                            click: () => {
-                                                _this.syscommon_decrypt({
-                                                    type:'NAME',
-                                                    data:params.row.usrNm
-                                                })
-                                            }
-                                        },
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'NAME',
+													data: params.row.usrNm
+												});
+											}
+										},
 										class: 'eye-class'
 									})
 								]
@@ -811,8 +810,8 @@ export default {
 					title: '银行卡号',
 					align: 'center',
 					width: 150,
-                    key: 'crdNoHid',
-                    render: (h, params) => {
+					key: 'crdNoHid',
+					render: (h, params) => {
 						return h('div', [
 							h('span', {}, params.row.crdNoHid),
 							h(
@@ -826,15 +825,15 @@ export default {
 									h('Icon', {
 										props: {
 											type: 'eye'
-                                        },
-                                        on: {
-                                            click: () => {
-                                                _this.syscommon_decrypt({
-                                                    type:'BANK_CARD',
-                                                    data:params.row.crdNo
-                                                })
-                                            }
-                                        },
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'BANK_CARD',
+													data: params.row.crdNo
+												});
+											}
+										},
 										class: 'eye-class'
 									})
 								]
@@ -872,8 +871,8 @@ export default {
 					title: '身份证号',
 					align: 'center',
 					width: 150,
-                    key: 'idNoHid',
-                    render: (h, params) => {
+					key: 'idNoHid',
+					render: (h, params) => {
 						return h('div', [
 							h('span', {}, params.row.idNoHid),
 							h(
@@ -887,15 +886,15 @@ export default {
 									h('Icon', {
 										props: {
 											type: 'eye'
-                                        },
-                                        on: {
-                                            click: () => {
-                                                _this.syscommon_decrypt({
-                                                    type:'ID_CARD',
-                                                    data:params.row.idNo
-                                                })
-                                            }
-                                        },
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'ID_CARD',
+													data: params.row.idNo
+												});
+											}
+										},
 										class: 'eye-class'
 									})
 								]
@@ -1459,6 +1458,7 @@ export default {
 	},
 	methods: {
 		async syscommon_decrypt(obj) {
+			this.mingwenData = '';
 			const res = await syscommon_decrypt(obj);
 			if (res.code === 1) {
 				this.mingwenData = res.data;
@@ -1468,7 +1468,7 @@ export default {
 		},
 		async call_kt_hung_on(obj) {
 			this.telShow = true;
-			let callData = JSON.parse(sessionStorage.getItem('callData'));
+			let callData = JSON.parse(localStorage.getItem('callData'));
 			let obj2 = {
 				callno: obj.callno,
 				caseNo: this.caseNo,
@@ -1491,6 +1491,12 @@ export default {
 			if (res.code === 1) {
 				this.actionId = res.data.actionId;
 				this.$Message.success('呼出成功');
+				let obj34 = {
+					telNoHid: obj.toCallMblHid,
+					usrNameHid: obj.toCallUserHid
+                };
+                console.log(obj34)
+				localStorage.setItem('callObj', JSON.stringify(obj34));
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -1755,6 +1761,18 @@ export default {
 				this.$Message.error(res.message);
 			}
 		},
+		// 查询案件详情基础信息
+		async img_mark(obj) {
+			const res = await img_mark({
+				path: obj.path
+			});
+			if (res.code === 1) {
+				this.imglist[obj.imgTypeName].imgPath = res.data && res.data;
+				this.imglist[obj.imgTypeName].imgTypeName = obj.imgTypeName;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
 
 		// 查询案件详情身份信息
 		async case_detail_case_identity_info() {
@@ -1765,6 +1783,17 @@ export default {
 			if (res.code === 1) {
 				this.btnDisable = false;
 				this.case_detail_case_identity_info_Data = res.data;
+				if (
+					this.case_detail_case_identity_info_Data &&
+					this.case_detail_case_identity_info_Data.userImgList.length > 0
+				) {
+					this.case_detail_case_identity_info_Data.userImgList.forEach((item, index) => {
+						this.img_mark({
+							path: item.imgPath,
+							name: item.imgTypeName
+						});
+					});
+				}
 			} else {
 				this.$Message.error(res.message);
 			}

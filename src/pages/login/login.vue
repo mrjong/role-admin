@@ -153,7 +153,7 @@ export default {
       }
     },
     call(obj) {
-      sessionStorage.setItem('callData', JSON.stringify(obj))
+      localStorage.setItem('callData', JSON.stringify(obj))
       var config = {
         uname: obj.loginName,
         pwd: obj.password,
