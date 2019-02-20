@@ -242,11 +242,8 @@ export default {
         this.$refs[name].resetFields();
     },
     //查看详情
-    async handleDetail( obj) {
-      let res= await msg_detail({
-        id: obj.id,
-      })
-      this.formValidateInfo = res.data;
+    handleDetail( obj) {
+      this.formValidateInfo = obj;
       this.formValidateInfo.sendTime = this.$options.filters['formatDate'](this.formValidateInfo.sendTime, 'YYYY-MM-DD HH:mm:ss')
       this.formValidateInfo.createTime = this.$options.filters['formatDate'](this.formValidateInfo.createTime, 'YYYY-MM-DD HH:mm:ss')
       this.modalSee = true;

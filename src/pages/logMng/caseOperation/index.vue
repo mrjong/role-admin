@@ -396,11 +396,8 @@
         this.$refs[name].resetFields();
       },
       //查看详情
-      async handleDetail( obj) {
-        let res= await cases_operationDetail({
-          id: obj.id,
-        })
-        this.formValidateInfo = res.data;
+      handleDetail( obj) {
+        this.formValidateInfo = obj;
         this.formValidateInfo.operTime = this.$options.filters['formatDate'](this.formValidateInfo.operTime, 'YYYY-MM-DD HH:mm:ss')
         this.modalSee = true;
       },

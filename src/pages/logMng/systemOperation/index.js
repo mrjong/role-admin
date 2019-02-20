@@ -199,10 +199,7 @@ export default {
     },
     //查看详情
     async handleDetail( obj) {
-      let res= await system_handleDetail({
-        id: obj.id,
-      })
-      this.formValidateInfo = res.data;
+      this.formValidateInfo = obj
       this.formValidateInfo.startTime = this.$options.filters['formatDate'](this.formValidateInfo.startTime, 'YYYY-MM-DD HH:mm:ss')
       this.formValidateInfo.endTime = this.$options.filters['formatDate'](this.formValidateInfo.endTime, 'YYYY-MM-DD HH:mm:ss')
       this.modalSee = true;
