@@ -1,6 +1,7 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { arb_apply, arb_list, arb_detail, arb_check } from '@/service/getData';
+import dayjs from 'dayjs'
+import { arb_operateRecord, arb_list, arb_detail, arb_check } from '@/service/getData';
 export default {
 	name: 'case_search_page',
 	mixins: [ formValidateFun, sysDictionary ],
@@ -15,6 +16,57 @@ export default {
 			showPanel2: false,
 			showModalType: '',
 			shenheObj: {},
+			case_detail_remark_list_tableData: [],
+			case_detail_remark_list_pageNo: 1,
+			case_detail_remark_list_pageSize: 10,
+			case_detail_remark_list_total: 0,
+			case_detail_remark_list_tableColumns: [
+				{
+					title: '操作人',
+					align: 'center',
+					key: 'approvalName'
+				},
+				{
+					title: '操作时间',
+					align: 'center',
+					key: 'approvalTime',
+					width: 200,
+					render: (h, params) => {
+						let approvalTime = params.row.approvalTime;
+						approvalTime = approvalTime
+							? this.$options.filters['formatDate'](approvalTime, 'YYYY-MM-DD HH:mm:ss')
+							: approvalTime;
+						return h('span', approvalTime);
+					}
+				},
+				{
+					title: '操作',
+					align: 'center',
+					key: 'approvalStateName'
+				},
+				{
+					title: '备注',
+					align: 'center',
+					width: 400,
+					key: 'approvalRmk',
+					render: (h, params) => {
+						let approvalRmk = params.row.approvalRmk;
+						return h(
+							'Tooltip',
+							{
+								style: {
+									margin: '0 5px'
+								},
+								props: {
+									content: approvalRmk,
+									placement: 'top'
+								}
+							},
+							[ h('div', {}, approvalRmk) ]
+						);
+					}
+				}
+			],
 			recoverFormItem: {},
 			showModal2: false,
 			showModal1: false,
@@ -100,8 +152,8 @@ export default {
 				]
 			},
 			formItem: {
-                prdTyp:[]
-            },
+				productTypes: []
+			},
 			tableData: [],
 			tableColumns: [
 				{
@@ -176,13 +228,13 @@ export default {
 					title: '客户姓名',
 					width: 120,
 					align: 'center',
-					key: 'userName'
+					key: 'userNameHid'
 				},
 				{
 					title: '身份证号',
 					width: 120,
 					align: 'center',
-					key: 'idCardNo'
+					key: 'idCardNoHid'
 				},
 				{
 					title: '手机号',
@@ -246,7 +298,7 @@ export default {
 					title: '申请人',
 					width: 120,
 					align: 'center',
-					key: 'opUserName'
+					key: 'createName'
 				},
 				{
 					title: '电催中心',
@@ -258,7 +310,7 @@ export default {
 					title: '审核人',
 					width: 120,
 					align: 'center',
-					key: 'approvalUser'
+					key: 'approvalUserName'
 				},
 				{
 					title: '审核时间',
@@ -302,15 +354,33 @@ export default {
 		// this.getList();
 	},
 	methods: {
+		// 获取表格数据
+		async arb_operateRecord() {
+			const res = await arb_operateRecord({
+				caseNo: this.shenheObj.caseNo,
+				pageNum: this.case_detail_remark_list_pageNo,
+				pageSize: this.case_detail_remark_list_pageSize
+			});
+			if (res.code === 1) {
+				this.case_detail_remark_list_tableData = res.data && res.data.content;
+				this.case_detail_remark_list_pageSize = res.data.size;
+				this.case_detail_remark_list_total = res.data.totalElements;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
 		// 查看详情
 		async arb_detail(obj, type) {
 			const res = await arb_detail({
 				approvalId: obj.approvalId
 			});
 			if (res.code === 1) {
+				this.shenheObj = obj;
 				if (type === 'edit') {
-					this.shenheObj = obj;
 					this.showModalType = 'edit';
+				} else {
+					this.case_detail_remark_list_pageNo = 1;
+					this.arb_operateRecord();
 				}
 				this.arb_detail_data = res.data;
 				this.showModal1 = true;
@@ -380,6 +450,17 @@ export default {
 			this.pageNo = 1;
 			this.getList();
 		},
+		// 页码改变的回调
+		changePage_remark(pageNo) {
+			this.case_detail_remark_list_pageNo = pageNo;
+			this.arb_operateRecord();
+		},
+		// 切换每页条数时的回调
+		changeSize_remark(pageSize) {
+			this.case_detail_remark_list_pageSize = pageSize;
+			this.case_detail_remark_list_pageNo = 1;
+			this.arb_operateRecord();
+		},
 		handleSubmit(name) {
 			this.$refs[name].validate((valid) => {
 				if (valid) {
@@ -391,9 +472,33 @@ export default {
 		},
 		// 获取表格数据
 		async getList() {
-			const res = await arb_list();
+			let applyTimeLt = '',
+				applyTimeBt = '';
+			if (this.formItem.applyTimeLt&&this.formItem.applyTimeLt.length > 0) {
+				applyTimeLt = this.formItem.applyTimeLt[0]?dayjs(this.formItem.applyTimeLt[0]).format('YYYY-MM-DD'):''
+				applyTimeBt = this.formItem.applyTimeLt[1]?dayjs(this.formItem.applyTimeLt[1]).format('YYYY-MM-DD'):''
+			}
+			let approvalTimeLt = '',
+				approvalTimeBt = '';
+			if (this.formItem.approvalTimeLt&&this.formItem.approvalTimeLt.length > 0) {
+				approvalTimeLt = this.formItem.approvalTimeLt[0]?dayjs(this.formItem.approvalTimeLt[0]).format('YYYY-MM-DD'):''
+                approvalTimeBt = this.formItem.approvalTimeLt[1]?dayjs(this.formItem.approvalTimeLt[1]).format('YYYY-MM-DD'):''
+			}
+			// delete this.formItem.approvalTimeLt;
+			// delete this.formItem.applyTimeLt;
+			const res = await arb_list({
+				...this.formItem,
+                applyTimeLt,
+                approvalTimeLt,
+                approvalTimeBt,
+				applyTimeBt,
+				pageNum: this.pageNo,
+				pageSize: this.pageSize
+			});
 			if (res.code === 1) {
-				this.tableData = res.data;
+				this.tableData = res.data.content;
+				this.total = res.data.totalElements;
+				this.pageNo = res.data.number;
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -402,8 +507,8 @@ export default {
 		clearForm(name) {
 			this.pageNo = 1;
 			this.formItem = {
-                prdTyp:[]
-            };
+				productTypes: []
+			};
 			this.$refs[name].resetFields();
 		}
 	}

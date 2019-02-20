@@ -158,7 +158,7 @@
 
 <script src="./index.js"></script>
 
-<style lang="less">
+<style lang="less" scoped>
 .video-player-box,
 .video-js,
 #modal_wrap {

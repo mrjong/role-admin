@@ -55,7 +55,7 @@
             >
               <Input
                 clearable
-                maxlength="5"
+                :maxlength="5"
                 type="text"
                 v-model="form.loginPic"
                 placeholder="请输入图片验证码"
@@ -98,7 +98,7 @@ export default {
   data() {
     return {
       imageShow: '',
-      key:'',
+      key: '',
       form: {
         loginName: "",
         loginPwd: "",
@@ -109,7 +109,14 @@ export default {
           { required: true, message: "请输入用户名", trigger: "blur" }
         ],
         loginPwd: [{ required: true, message: "请输入密码", trigger: "blur" }],
-        loginPic: [{ required: true, message: "请输入图片验证码", trigger: "blur" }]
+        loginPic: [
+          {            required: true, message: "请输入图片验证码", trigger: "blur",
+          }, {
+            min: 5,
+            type: 'string',
+            message: "长度不正确", trigger: "blur"
+          }
+        ]
       }
     }
   },
@@ -118,10 +125,11 @@ export default {
   },
   methods: {
     async login_code() {
-         const res = await login_code()
+      const res = await login_code()
       if (res.code === 1) {
         this.imageShow = res.data.base64Code
         this.key = res.data.key
+        this.form.loginPic = ''
       } else {
         this.$Message.error(res.message)
       }
@@ -189,7 +197,7 @@ export default {
             loginName: this.form.loginName,
             loginPwd: this.form.loginPwd,
             code: this.form.loginPic,
-            key:this.key
+            key: this.key
           })
           if (res && res.code === 1) {
             Cookies.set("user", this.form.loginName)
@@ -203,6 +211,10 @@ export default {
             // this.call_kt_get_seat()
             Cookies.set("access", 1)
             this.call_kt_get_seat(res)
+          } else if (res && res.code === 3010010) {
+            this.login_code()
+
+            this.$Message.error(res.message);
           } else {
             this.$Message.error(res.message);
           }
