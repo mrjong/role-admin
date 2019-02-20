@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { arb_apply, arb_list, arb_detail, arb_check } from '@/service/getData';
+import { arb_operateRecord, arb_list, arb_detail, arb_check } from '@/service/getData';
 export default {
 	name: 'case_search_page',
 	mixins: [ formValidateFun, sysDictionary ],
@@ -15,6 +15,57 @@ export default {
 			showPanel2: false,
 			showModalType: '',
 			shenheObj: {},
+			case_detail_remark_list_tableData: [],
+			case_detail_remark_list_pageNo: 1,
+			case_detail_remark_list_pageSize: 10,
+			case_detail_remark_list_total: 0,
+			case_detail_remark_list_tableColumns: [
+				{
+					title: '操作人',
+					align: 'center',
+					key: 'approvalName'
+				},
+				{
+					title: '操作时间',
+					align: 'center',
+					key: 'approvalTime',
+					width: 200,
+					render: (h, params) => {
+						let approvalTime = params.row.approvalTime;
+						approvalTime = approvalTime
+							? this.$options.filters['formatDate'](approvalTime, 'YYYY-MM-DD HH:mm:ss')
+							: approvalTime;
+						return h('span', approvalTime);
+					}
+				},
+				{
+					title: '操作',
+					align: 'center',
+					key: 'approvalStateName'
+				},
+				{
+					title: '备注',
+					align: 'center',
+					width: 400,
+					key: 'approvalRmk',
+					render: (h, params) => {
+						let approvalRmk = params.row.approvalRmk;
+						return h(
+							'Tooltip',
+							{
+								style: {
+									margin: '0 5px'
+								},
+								props: {
+									content: approvalRmk,
+									placement: 'top'
+								}
+							},
+							[ h('div', {}, approvalRmk) ]
+						);
+					}
+				}
+			],
 			recoverFormItem: {},
 			showModal2: false,
 			showModal1: false,
@@ -100,8 +151,8 @@ export default {
 				]
 			},
 			formItem: {
-                prdTyp:[]
-            },
+				prdTyp: []
+			},
 			tableData: [],
 			tableColumns: [
 				{
@@ -302,15 +353,33 @@ export default {
 		// this.getList();
 	},
 	methods: {
+		// 获取表格数据
+		async arb_operateRecord() {
+			const res = await arb_operateRecord({
+				caseNo: this.shenheObj.caseNo,
+				pageNum: this.case_detail_remark_list_pageNo,
+				pageSize: this.case_detail_remark_list_pageSize
+			});
+			if (res.code === 1) {
+				this.case_detail_remark_list_tableData = res.data && res.data.content;
+				this.case_detail_remark_list_pageSize = res.data.size;
+				this.case_detail_remark_list_total = res.data.totalElements;
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
 		// 查看详情
 		async arb_detail(obj, type) {
 			const res = await arb_detail({
 				approvalId: obj.approvalId
 			});
 			if (res.code === 1) {
+                this.shenheObj = obj;
 				if (type === 'edit') {
-					this.shenheObj = obj;
 					this.showModalType = 'edit';
+				} else {
+					this.case_detail_remark_list_pageNo = 1;
+					this.arb_operateRecord();
 				}
 				this.arb_detail_data = res.data;
 				this.showModal1 = true;
@@ -380,6 +449,17 @@ export default {
 			this.pageNo = 1;
 			this.getList();
 		},
+		// 页码改变的回调
+		changePage_remark(pageNo) {
+			this.case_detail_remark_list_pageNo = pageNo;
+			this.arb_operateRecord();
+		},
+		// 切换每页条数时的回调
+		changeSize_remark(pageSize) {
+			this.case_detail_remark_list_pageSize = pageSize;
+			this.case_detail_remark_list_pageNo = 1;
+			this.arb_operateRecord();
+		},
 		handleSubmit(name) {
 			this.$refs[name].validate((valid) => {
 				if (valid) {
@@ -402,8 +482,8 @@ export default {
 		clearForm(name) {
 			this.pageNo = 1;
 			this.formItem = {
-                prdTyp:[]
-            };
+				prdTyp: []
+			};
 			this.$refs[name].resetFields();
 		}
 	}

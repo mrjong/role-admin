@@ -448,7 +448,32 @@
             </Row>
             <Row v-if="showModalType!=='edit'">
               <div class="alert-title">操作明细</div>
-              <div>22222222</div>
+              <div>
+                <Table
+                  border
+                  :data="case_detail_remark_list_tableData"
+                  :columns="case_detail_remark_list_tableColumns"
+                  stripe
+                ></Table>
+                <!-- 分页 -->
+                <div class="vue-panel-page">
+
+                  <div class="fr">
+                    <Page
+                      :total="case_detail_remark_list_total"
+                      show-total
+                      size="small"
+                      :page-size-opts="[10, 20, 50, 100]"
+                      show-elevator
+                      :page-size="case_detail_remark_list_pageSize"
+                      :current.sync="case_detail_remark_list_pageNo"
+                      @on-page-size-change="changeSize_remark"
+                      @on-change="changePage_remark"
+                    ></Page>
+                  </div>
+
+                </div>
+              </div>
             </Row>
           </Form>
         </div>

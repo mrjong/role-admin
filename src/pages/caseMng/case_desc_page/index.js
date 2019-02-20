@@ -50,7 +50,8 @@ export default {
 			},
 			formItem2: {},
 			tabName: '',
-			callUserTypeLevel: '',
+            collectType: '',
+            btnDisable:true,
 			ruleValidate2: {
 				mblNo: [
 					{
@@ -311,6 +312,12 @@ export default {
 					align: 'center',
 					width: 100,
 					key: 'communicateResultName'
+                },
+                {
+					title: '通话来源',
+					align: 'center',
+					width: 100,
+					key: 'collectTypeName'
 				},
 				{
 					title: '承诺还款时间',
@@ -924,7 +931,7 @@ export default {
 									},
 									on: {
 										click: () => {
-											_this.handCall(params.row);
+											_this.handCall(params.row,'call','03');
 										}
 									}
 								},
@@ -952,7 +959,7 @@ export default {
 									},
 									on: {
 										click: () => {
-											_this.handCall(params.row);
+											_this.handCall(params.row,null,'03');
 										}
 									}
 								},
@@ -1036,7 +1043,7 @@ export default {
 									class: 'edit-btn',
 									on: {
 										click: () => {
-											_this.handCall(params.row, 'call');
+											_this.handCall(params.row, 'call','03');
 										}
 									}
 								},
@@ -1068,7 +1075,7 @@ export default {
 								},
 								on: {
 									click: () => {
-										_this.handCall(params.row);
+										_this.handCall(params.row,null,'03');
 									}
 								}
 							})
@@ -1120,7 +1127,7 @@ export default {
 									class: 'edit-btn',
 									on: {
 										click: () => {
-											_this.handCall(params.row, 'call');
+											_this.handCall(params.row, 'call','03');
 										}
 									}
 								},
@@ -1148,7 +1155,7 @@ export default {
 									},
 									on: {
 										click: () => {
-											_this.handCall(params.row);
+											_this.handCall(params.row,null,'03');
 										}
 									}
 								},
@@ -1205,7 +1212,7 @@ export default {
 									},
 									on: {
 										click: () => {
-											_this.handCall(params.row, 'call');
+											_this.handCall(params.row, 'call','03');
 										}
 									}
 								},
@@ -1569,6 +1576,7 @@ export default {
 				id: this.caseNo
 			});
 			if (res.code === 1) {
+                this.btnDisable = false
 				this.case_detail_case_identity_info_Data = res.data;
 			} else {
 				this.$Message.error(res.message);
@@ -1589,7 +1597,7 @@ export default {
 			this.userNm = '';
 			this.formValidate = {};
 			this.showBottom = false;
-			this.callUserTypeLevel = '';
+			this.collectType = '';
 		},
 
 		// 点击电话
@@ -1605,9 +1613,11 @@ export default {
 					toCallMbl: obj.mblNo || obj.cntUserMblNo,
 					toCallMblHid: obj.mblNoHid || obj.cntUserMblNoHid
 				});
-			}
+			}else{
+                this.actionId = ''
+            }
 			if (this.readType !== 'read') {
-				this.callUserTypeLevel = tag;
+				this.collectType = tag;
 				this.formValidate.userNmHid = obj.userNmHid || obj.cntUserNameHid;
 				this.userNmHidCopy = obj.userNmHid || obj.cntUserNameHid;
 				this.mblNoHid = obj.mblNoHid || obj.cntUserMblNoHid;
@@ -1672,7 +1682,7 @@ export default {
 				mblNo: this.mblNo,
 				mblNoHid: this.mblNoHid,
 				caseNo: this.caseNo,
-				callUserTypeLevel: this.callUserTypeLevel,
+				collectType: this.collectType,
                 userNmHid: this.userNmHidCopy,
                 soundUuid: this.actionId,
 				userNmNew: this.formValidate.userNmHid === this.userNmHidCopy ? '' : this.formValidate.userNmHid

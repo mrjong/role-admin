@@ -1303,3 +1303,11 @@ export const timed_taskDetail = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+  // 仲裁明细
+export const arb_operateRecord = (obj) =>
+fetch({
+  url: '/arb/operateRecord' ,
+  method: 'POST',
+  data: qs.stringify(obj)
+})
+  
