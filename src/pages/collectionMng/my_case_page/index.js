@@ -120,7 +120,7 @@ export default {
 			tableColumns: [
 				{
 					title: '案件编码',
-					minWidth: 150,
+					width: 150,
 					key: 'id',
 					align: 'center',
 					render(h, params) {
@@ -166,38 +166,38 @@ export default {
 				},
 				{
 					title: '客户姓名',
-					minWidth: 60,
+					width: 60,
 					align: 'center',
 					key: 'userNmHid'
 				},
 				{
 					title: '身份证号',
-					minWidth: 150,
+					width: 150,
 					align: 'center',
 					key: 'idNoHid'
 				},
 				{
 					title: '手机号',
-					minWidth: 100,
+					width: 100,
 					align: 'center',
 					key: 'mblNoHid'
 				},
 				{
 					title: '产品线',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'prdName'
 				},
 				{
 					title: '账单号',
-					minWidth: 180,
+					width: 180,
 					align: 'center',
 					key: 'billNo'
 				},
 
 				{
 					title: '逾期金额',
-					minWidth: 120,
+					width: 120,
 					sortable: true,
 					align: 'center',
 					key: 'overdueAmt',
@@ -209,35 +209,35 @@ export default {
 				},
 				{
 					title: '逾期天数',
-					minWidth: 100,
+					width: 100,
 					sortable: true,
 					align: 'center',
 					key: 'overdueDays'
 				},
 				{
 					title: '到期期数',
-					minWidth: 100,
+					width: 100,
 					sortable: true,
 					align: 'center',
 					key: 'maxPerdCnt'
 				},
 				{
 					title: '身份证属地',
-					minWidth: 200,
+					width: 200,
 					align: 'center',
 					key: 'idAddr'
 				},
 
 				{
 					title: '信用级别',
-					minWidth: 120,
+					width: 120,
 					sortable: true,
 					align: 'center',
 					key: 'creditLevel'
 				},
 				{
 					title: '分配时间',
-					minWidth: 150,
+					width: 150,
 					sortable: true,
 					align: 'center',
 					key: 'allotDate',
@@ -251,7 +251,7 @@ export default {
 				},
 				{
 					title: '最后催收时间',
-					minWidth: 150,
+					width: 150,
 					align: 'center',
 					key: 'lastCollectDate',
 					render: (h, params) => {
@@ -264,20 +264,20 @@ export default {
 				},
 				{
 					title: '借款人拨打状态',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'lastCurrentCollectResultName'
 				},
 
 				{
 					title: '借款人沟通结果',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'collectStsName'
 				},
 				{
 					title: '承诺还款时间',
-					minWidth: 130,
+					width: 130,
 					sortable: true,
 					align: 'center',
 					key: 'promiseRepayDate',
@@ -291,13 +291,13 @@ export default {
 				},
 				{
 					title: '紧急联系人拨打状态',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'lastCntCollectResultName'
 				},
 				{
 					title: '是否提交仲裁',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'isSubmit',
 					render: (h, params) => {

@@ -31,38 +31,38 @@ export default {
 			tableColumns: [
 				{
 					title: '名称',
-					minWidth: 180,
+					width: 180,
 					sortable: true,
 					align: 'center',
 					key: 'defName'
 				},
 				{
 					title: '类型',
-					minWidth: 150,
+					width: 150,
 					align: 'center',
 					key: 'defTypeName'
 				},
 				{
 					title: '编号',
 					align: 'center',
-					minWidth: 200,
+					width: 200,
 					key: 'defCode'
 				},
 				{
 					title: '版本号',
-					minWidth: 100,
+					width: 100,
 					align: 'center',
 					key: 'version'
 				},
 				{
 					title: '状态',
 					align: 'center',
-					minWidth: 100,
+					width: 100,
 					key: 'statusName'
 				},
 				{
 					title: '创建时间',
-					minWidth: 150,
+					width: 150,
 					align: 'center',
 					key: 'createTime',
 					render: (h, params) => {
@@ -76,7 +76,7 @@ export default {
 				{
 					title: '创建人',
 					align: 'center',
-					minWidth: 100,
+					width: 100,
 					key: 'creater'
 				},
 				{

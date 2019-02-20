@@ -171,7 +171,7 @@ export default {
 					width: 120,
 					key: 'perdCount'
 				},
-		
+
 				{
                     title: '客户身份证号',
                     width: 180,
@@ -181,7 +181,7 @@ export default {
 				{
 					title: '备注',
 					align: 'center',
-					minWidth: 400,
+					width: 400,
 					key: 'collectRmk',
 					render: (h, params) => {
 						let collectRmk = params.row.collectRmk;
@@ -222,12 +222,12 @@ export default {
         // console.log('player pause!', player)
       },
       // ...player event
-  
+
       // or listen state event
       playerStateChanged(playerCurrentState) {
         // console.log('player current update state', playerCurrentState)
       },
-  
+
       // player is ready
       playerReadied(player) {
         console.log('the player is readied', player)
@@ -254,7 +254,7 @@ export default {
 			console.log(this.$Modal);
 			this.$Modal.remove();
         },
-        
+
         async getLeafTypeList() {
 			const res = await getLeafTypeList({
                 leafType:'04'

@@ -167,62 +167,62 @@ export default {
 			tableColumns: [
 				{
 					title: '案件状态',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'approvalStateName'
 				},
 				{
 					title: '案件编号',
-					minWidth: 180,
+					width: 180,
 					align: 'center',
 					key: 'caseNo'
 				},
 				{
 					title: '账单号',
-					minWidth: 200,
+					width: 200,
 					align: 'center',
 					key: 'billNo'
 				},
 				{
 					title: '产品名称',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'productName'
 				},
 
 				{
 					title: '借款期限',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'perdCnt'
 				},
 				{
 					title: '客户姓名',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'userName'
 				},
 				{
 					title: '身份证号',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'idCardNo'
 				},
 				{
 					title: '手机号',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'mblNo'
 				},
 				{
 					title: '逾期天数',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'overdueDays'
 				},
 				{
 					title: '逾期应还金额',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'overdueAmt',
 					render: (h, params) => {
@@ -233,7 +233,7 @@ export default {
 				},
 				{
 					title: '已还罚息',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'perdFineRep',
 					render: (h, params) => {
@@ -244,7 +244,7 @@ export default {
 				},
 				{
 					title: '已还滞纳金',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'perdOvduRep',
 					render: (h, params) => {
@@ -255,7 +255,7 @@ export default {
 				},
 				{
 					title: '申请时间',
-					minWidth: 150,
+					width: 150,
 					align: 'center',
 					key: 'createTime',
 					render: (h, params) => {
@@ -268,25 +268,25 @@ export default {
 				},
 				{
 					title: '申请人',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'createUser'
 				},
 				{
 					title: '电催中心',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'opCompayName'
 				},
 				{
 					title: '审核人',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'approvalUser'
 				},
 				{
 					title: '审核时间',
-					minWidth: 150,
+					width: 150,
 					align: 'center',
 					key: 'approvalTime',
 					render: (h, params) => {
@@ -299,7 +299,7 @@ export default {
 				},
 				{
 					title: '审核备注',
-					minWidth: 120,
+					width: 120,
 					align: 'center',
 					key: 'approvalRemark',
 					render: (h, params) => {

@@ -4,14 +4,14 @@
 // import packjson from '../../package.json';
 
 let util = {};
-util.title = function(title, vm) {
+util.title = function (title, vm) {
   let iTitle = '贷后管理系统';
   if (title) {
     iTitle += ' - ' + (title.i18n ? vm.$t(title.i18n) : title);
   }
   window.document.title = iTitle;
 };
-util.clearAllCookie = function() {
+util.clearAllCookie = function () {
   let keys = document.cookie.match(/[^ =;]+(?=\=)/g);
   if (keys) {
     for (let i = keys.length; i--;) {
@@ -19,7 +19,7 @@ util.clearAllCookie = function() {
     }
   }
 };
-util.inOf = function(arr, targetArr) {
+util.inOf = function (arr, targetArr) {
   let res = true;
   arr.forEach((item) => {
     if (targetArr.indexOf(item) < 0) {
@@ -29,7 +29,7 @@ util.inOf = function(arr, targetArr) {
   return res;
 };
 
-util.oneOf = function(ele, targetArr) {
+util.oneOf = function (ele, targetArr) {
   if (targetArr.indexOf(ele) >= 0) {
     return true;
   } else {
@@ -37,7 +37,7 @@ util.oneOf = function(ele, targetArr) {
   }
 };
 
-util.showThisRoute = function(itAccess, currentAccess) {
+util.showThisRoute = function (itAccess, currentAccess) {
   if (typeof itAccess === 'object' && Array.isArray(itAccess)) {
     return util.oneOf(currentAccess, itAccess);
   } else {
@@ -45,7 +45,7 @@ util.showThisRoute = function(itAccess, currentAccess) {
   }
 };
 
-util.getRouterObjByName = function(routers, name) {
+util.getRouterObjByName = function (routers, name) {
   if (!name || !routers || !routers.length) {
     return null;
   }
@@ -63,7 +63,7 @@ util.getRouterObjByName = function(routers, name) {
   return null;
 };
 
-util.handleTitle = function(vm, item) {
+util.handleTitle = function (vm, item) {
   if (typeof item.title === 'object') {
     return vm.$t(item.title.i18n);
   } else {
@@ -71,7 +71,7 @@ util.handleTitle = function(vm, item) {
   }
 };
 
-util.setCurrentPath = function(vm, name) {
+util.setCurrentPath = function (vm, name) {
   let title = '';
   let isOtherRouter = false;
   vm.$store.state.app.routers.forEach((item) => {
@@ -181,7 +181,7 @@ util.setCurrentPath = function(vm, name) {
   return currentPathArr;
 };
 
-util.openNewPage = function(vm, name, argu, query) {
+util.openNewPage = function (vm, name, argu, query) {
   let pageOpenedList = vm.$store.state.app.pageOpenedList;
   let openedPageLen = pageOpenedList.length;
   let i = 0;
@@ -222,7 +222,7 @@ util.openNewPage = function(vm, name, argu, query) {
   vm.$store.commit('setCurrentPageName', name);
 };
 
-util.toDefaultPage = function(routers, name, route, next) {
+util.toDefaultPage = function (routers, name, route, next) {
   let len = routers.length;
   let i = 0;
   let notHandle = true;
@@ -242,8 +242,8 @@ util.toDefaultPage = function(routers, name, route, next) {
   }
 };
 
-util.dowloadfile = function(name, res) {
-  var blob = new Blob([ res ], {
+util.dowloadfile = function (name, res) {
+  var blob = new Blob([res], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   }); // application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
   var downloadElement = document.createElement('a');
@@ -256,7 +256,21 @@ util.dowloadfile = function(name, res) {
   document.body.removeChild(downloadElement); // 下载完成移除元素
   window.URL.revokeObjectURL(href); // 释放掉blob对象
 };
-util.fullscreenEvent = function(vm) {
+util.dowloadZip = function (res) {
+  const type = 'application/zip'//ZIP文件
+  const blob = new Blob([res], { type: type })
+  const downloadElement = document.createElement('a')
+  const href = window.URL.createObjectURL(blob)
+  //后台再header中传文件名
+  const name = decodeURI(response.headers['content-disposition'].split('=')[1])
+  downloadElement.href = href
+  downloadElement.download = name
+  document.body.appendChild(downloadElement)
+  downloadElement.click()
+  document.body.removeChild(downloadElement) // 下载完成移除元素
+  window.URL.revokeObjectURL(href) // 释放掉blob对象
+};
+util.fullscreenEvent = function (vm) {
   vm.$store.commit('initCachepage');
   // 全屏相关
 };

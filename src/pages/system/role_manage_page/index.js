@@ -97,7 +97,7 @@ export default {
         {
           title: '序号',
           type: 'index',
-          minWidth: 60,
+          width: 60,
           searchOperator: '=',
           align: alignCenter,
           key: 'buffet_id'
@@ -108,7 +108,7 @@ export default {
           key: 'name',
           className: 'tableMainW',
           align: alignCenter,
-          minWidth: widthVal
+          width: widthVal
         },
         {
           title: '角色状态',
@@ -116,7 +116,7 @@ export default {
           key: 'roleStatusName',
           className: 'tableMainW',
           align: alignCenter,
-          minWidth: widthVal
+          width: widthVal
         },
         {
           title: '角色类型',
@@ -124,20 +124,20 @@ export default {
           key: 'roleTypeName',
           className: 'tableMain',
           align: alignCenter,
-          minWidth: widthMidVal
+          width: widthMidVal
         },
         {
           title: '角色描述',
           searchOperator: 'like',
           key: 'description',
-          minWidth: widthMidVal,
+          width: widthMidVal,
           align: alignCenter,
         },
         {
           title: '创建人',
           searchOperator: 'like',
           key: 'createUser',
-          minWidth: 100,
+          width: 100,
           align: alignCenter,
         },
         {
@@ -146,7 +146,7 @@ export default {
           key: 'createtime',
           className: 'tableMainW',
           align: alignCenter,
-          minWidth: widthVal,
+          width: widthVal,
           render: (h, params) => {
             let createDate = params.row.createtime;
             createDate = createDate
@@ -159,7 +159,7 @@ export default {
           title: '修改人',
           searchOperator: 'like',
           key: 'updateUser',
-          minWidth: 100,
+          width: 100,
           align: alignCenter,
         },
         {
@@ -168,7 +168,7 @@ export default {
           key: 'updatetime',
           className: 'tableMainW',
           align: alignCenter,
-          minWidth: widthVal,
+          width: widthVal,
           render: (h, params) => {
             let createDate = params.row.updatetime;
             createDate = createDate
@@ -183,7 +183,7 @@ export default {
           key: 'updatetime',
           className: 'tableMainW',
           align: alignCenter,
-          minWidth: widthMidVal,
+          width: widthMidVal,
           render: (h, params) => {
             let createDate;
             if (params.row.updatetime) {

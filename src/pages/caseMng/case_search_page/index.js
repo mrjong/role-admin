@@ -189,7 +189,7 @@ export default {
         },
         {
           title: '客户姓名',
-          minWidth: 80,
+          width: 80,
           align: 'center',
           key: 'userNmHid'
         },
@@ -201,13 +201,13 @@ export default {
         },
         {
           title: '手机号',
-          minWidth: 120,
+          width: 120,
           align: 'center',
           key: 'mblNoHid'
         },
         {
           title: '产品线',
-          minWidth: 120,
+          width: 120,
           align: 'center',
           key: 'prdName'
         },
@@ -219,7 +219,7 @@ export default {
         },
         {
           title: '逾期金额',
-          minWidth: 120,
+          width: 120,
           sortable: true,
           align: 'center',
           key: 'overdueAmt',
