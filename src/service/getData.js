@@ -951,9 +951,17 @@ export const case_collect_collect_list = (obj, options) =>
 * */
 
 // 录音播放（催收录音）
-export const case_collect_tape = (obj) =>
+export const case_collect_tape = (obj, options) =>
   fetch({
     url: '/case/collect/tape',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+    responseType: 'blob'
+  })
+export const case_collect_tape_link = (obj) =>
+  fetch({
+    url: `case/collect/tape_path`,
     method: 'POST',
     data: qs.stringify(obj),
   })
@@ -1157,7 +1165,7 @@ fetch({
     data: qs.stringify(obj),
     options
 });
-    
+
 /*
 申请仲裁
 * */

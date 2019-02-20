@@ -41,7 +41,7 @@
                     v-model="formItem.perdCountList"
                   >
                     <Option
-                      v-for="item in getDirObj.PROD_CNT"
+                      v-for="item in getDirObj.DIVIDE_PROD_CNT"
                       :value="item.itemCode"
                       :key="item.itemName"
                     >{{ item.itemName }}</Option>
@@ -58,7 +58,7 @@
                     v-model="formItem.perdThisCountList"
                   >
                     <Option
-                      v-for="item in getDirObj.PROD_NUM"
+                      v-for="item in getDirObj.DIVIDE_PROD_NUM"
                       :value="item.itemCode"
                       :key="item.itemName"
                     >{{ item.itemName }}</Option>
@@ -121,7 +121,7 @@
                     v-model="formItem.creditLevelList"
                   >
                     <Option
-                      v-for="item in getDirObj.CREDIT_LEVEL"
+                      v-for="item in getDirObj.DIVIDE_CREDIT_LEVEL"
                       :value="item.itemCode"
                       :key="item.itemName"
                     >{{ item.itemName }}</Option>
@@ -273,11 +273,11 @@ export default {
     return {
       getDirList: [
         "DIVIDE_PROD_TYPE",
-        "PROD_CNT",
-        "CREDIT_LEVEL",
+        "DIVIDE_PROD_CNT",
+        "DIVIDE_CREDIT_LEVEL",
         "CASE_HANDLE_STATUS",
         "ALLOT_TYPE",
-        'PROD_NUM'
+        'DIVIDE_PROD_NUM'
       ],
       getDirObj: {},
       showPanel: false,

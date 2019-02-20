@@ -201,7 +201,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="经办人:">
-              <Select size="small" clearable placeholder="请选择经办人" v-model="formItem.opUserUuid">
+              <Select size="small" clearable filterable placeholder="请选择经办人" v-model="formItem.opUserUuid">
                 <Option
                   v-for="item in getLeafTypeList_data"
                   :value="item.id"

@@ -1,12 +1,11 @@
-import { case_collect_collect_list, getLeafTypeList, case_collect_tape_download, case_collect_tape } from '@/service/getData';
+import { case_collect_collect_list, getLeafTypeList, case_collect_tape_download, case_collect_tape, case_collect_tape_link } from '@/service/getData';
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import tablePage from '@/mixin/tablePage';
 import util from '@/libs/util';
 import 'video.js/dist/video-js.css';
 import { videoPlayer } from 'vue-video-player';
-// import videojs from 'video.js'
-// import 'videojs-flash';
+import videojs from 'video.js'
 import 'vue-video-player/src/custom-theme.css'
 // import SWF_URL from 'videojs-swf/dist/video-js.swf'
 // videojs.options.flash.swf = SWF_URL
@@ -34,7 +33,6 @@ export default {
           {
             type: 'audio/mpeg',
             // type: 'rtmp/flv',
-            // type: 'application/octet-stream',
             // src: 'http://sc1.111ttt.cn:8282/2018/1/03m/13/396131229550.m4a?tflag=1546606800&pin=97bb2268ae26c20fe093fd5b0f04be80#.mp3'
             src: ''
           }
@@ -176,6 +174,7 @@ export default {
                   on: {
                     click: () => {
                       this.case_collect_tape(soundUuid);
+                      // this.case_collect_tape_link(soundUuid);
                       this.modal1 = true;
                     }
                   }
@@ -377,8 +376,19 @@ export default {
           responseType: 'blob'
         }
       );
-      // this.playerOptions.sources[0].src = res;
+      console.log(util.dowloadAudio(res));
+      this.playerOptions.sources[0].src = util.dowloadAudio(res);
+      // this.playerOptions.sources[0].src = "http://172.18.40.250:8031/6bd0819c-ece5-426a-9aa2-51d3d4cf8350";
       console.log(res);
+    },
+    async case_collect_tape_link(id) {
+      const res = await case_collect_tape_link({ id: id });
+      console.log(res);
+      if (res.code === 1) {
+        this.playerOptions.sources[0].src = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     ok() {
       this.$Message.info('Clicked ok');
