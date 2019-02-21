@@ -201,6 +201,7 @@
                     <template v-if="item.status === 'finished'">
                       <img :src="item.url">
                       <div class="demo-upload-list-cover">
+                          <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
                         <Icon
                           type="ios-trash-outline"
                           @click.native="handleRemove(item,'upload')"
@@ -216,7 +217,7 @@
                     </template>
                   </div>
                   <Upload
-                    v-if="uploadList.length ===0 "
+                    v-show="uploadList.length ===0"
                     ref="upload"
                     :show-upload-list="false"
                     :default-file-list="defaultList"
@@ -224,6 +225,8 @@
                     :format="['jpg','jpeg','png']"
                     :on-format-error="handleFormatError"
                     type="drag"
+                    :on-exceeded-size="handleMaxSize"
+                    :max-size="1024*10"
                     :data="{
                     imgType: 'idCardFront',
                     caseNo:zhongcai_data.caseNo
@@ -263,9 +266,10 @@
                     <template v-if="item.status === 'finished'">
                       <img :src="item.url">
                       <div class="demo-upload-list-cover">
+                          <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
                         <Icon
                           type="ios-trash-outline"
-                          @click.native="handleRemove(item,'upload1')"
+                          @click.native="handleRemove1(item,'upload1')"
                         ></Icon>
                       </div>
                     </template>
@@ -278,12 +282,14 @@
                     </template>
                   </div>
                   <Upload
-                    v-if="uploadList1.length ===0 "
+                    v-show="uploadList1.length ===0 "
                     ref="upload1"
+                    :max-size="1024*10"
                     :show-upload-list="false"
                     :default-file-list="defaultList1"
                     :on-success="handleSuccess1"
                     :format="['jpg','jpeg','png']"
+                    :on-exceeded-size="handleMaxSize"
                     :on-format-error="handleFormatError"
                     type="drag"
                     :data="{
@@ -325,9 +331,10 @@
                     <template v-if="item.status === 'finished'">
                       <img :src="item.url">
                       <div class="demo-upload-list-cover">
+                          <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
                         <Icon
                           type="ios-trash-outline"
-                          @click.native="handleRemove(item,'upload2')"
+                          @click.native="handleRemove2(item,'upload2')"
                         ></Icon>
                       </div>
                     </template>
@@ -340,8 +347,10 @@
                     </template>
                   </div>
                   <Upload
-                    v-if="uploadList2.length ===0 "
+                    v-show="uploadList2.length ===0 "
                     ref="upload2"
+                    :on-exceeded-size="handleMaxSize"
+                    :max-size="1024*10"
                     :show-upload-list="false"
                     :default-file-list="defaultList2"
                     :on-success="handleSuccess2"
@@ -387,9 +396,10 @@
                     <template v-if="item.status === 'finished'">
                       <img :src="item.url">
                       <div class="demo-upload-list-cover">
+                          <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
                         <Icon
                           type="ios-trash-outline"
-                          @click.native="handleRemove(item,'upload3')"
+                          @click.native="handleRemove3(item,'upload3')"
                         ></Icon>
                       </div>
                     </template>
@@ -402,12 +412,14 @@
                     </template>
                   </div>
                   <Upload
-                    v-if="uploadList3.length ===0 "
+                  :on-exceeded-size="handleMaxSize"
+                    v-show="uploadList3.length ===0 "
                     ref="upload3"
                     :show-upload-list="false"
                     :default-file-list="defaultList3"
                     :on-success="handleSuccess3"
                     :format="['jpg','jpeg','png']"
+                    :max-size="1024*10"
                     :on-format-error="handleFormatError"
                     type="drag"
                     :data="{
@@ -447,6 +459,16 @@
           @click="handleSubmit"
         >提交</Button>
       </div>
+    </Modal>
+     <Modal
+      title="查看图片"
+      v-model="visible"
+    >
+      <img
+        :src="imgName"
+        v-if="visible"
+        style="width: 100%"
+      >
     </Modal>
   </div>
 </template>

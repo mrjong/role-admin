@@ -11,7 +11,8 @@ export default {
 		return {
 			getDirList: [ 'PROD_TYPE', 'GENDER', 'APPROVAL_STATE' ],
 			getDirObj: {},
-			showPanel: false,
+            showPanel: false,
+            prefix:'/admin/img/mark/',
 			arb_detail_data: {},
 			showPanel2: false,
 			showModalType: '',
@@ -138,7 +139,9 @@ export default {
 						trigger: 'blur'
 					}
 				]
-			},
+            },
+            imgName: '',
+            visible:false,
 			pageNo: 1,
 			pageSize: 10,
 			total: 0,
@@ -354,6 +357,10 @@ export default {
 		// this.getList();
 	},
 	methods: {
+        handleView(name) {
+			this.imgName = name;
+			this.visible = true;
+		},
 		// 获取表格数据
 		async arb_operateRecord() {
 			const res = await arb_operateRecord({
@@ -405,7 +412,9 @@ export default {
 			let approvalRemark = '';
 			if (type === '03') {
 				approvalRemark = this.recoverFormItem.approvalRemark;
-			}
+			}else if(type === '02'){
+                approvalRemark = "仲裁审核通过"
+            }
 			const res = await arb_check({
 				approvalRemark,
 				approvalState: type,
