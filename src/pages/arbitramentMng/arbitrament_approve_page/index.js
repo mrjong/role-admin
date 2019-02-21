@@ -12,7 +12,7 @@ export default {
 			getDirList: [ 'PROD_TYPE', 'GENDER', 'APPROVAL_STATE' ],
 			getDirObj: {},
             showPanel: false,
-            prefix:'/admin/img/mark/',
+            prefix:'/admin/arb/images/',
 			arb_detail_data: {},
 			showPanel2: false,
 			showModalType: '',

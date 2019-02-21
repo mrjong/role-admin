@@ -279,7 +279,7 @@
                 <Input
                   style="width:100%"
                   v-model="item.nodeSort"
-                  :disabled="item.nodeSort==='51'||item.nodeSort==='0'"
+                  :disabled="index===0||index===1"
                   placeholder="请输入节点顺序"
                   size="small"
                 ></Input>

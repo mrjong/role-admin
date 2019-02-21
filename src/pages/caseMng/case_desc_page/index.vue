@@ -711,8 +711,8 @@
             })"
                     ></Icon>
                   </Poptip>
-                  <span class="state">
-                    关机
+                  <span class="state" v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.callStateName">
+                    {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.callStateName}}
                   </span>
                   <Tooltip
                     v-if="readType!=='read'"

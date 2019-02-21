@@ -137,7 +137,14 @@ export default {
 			(this.parentData && this.parentData.type && this.parentData.type === 'read')
 		) {
             this.domain = this.parentData.workData.domain;
-            this.$set(this.formData, 'items', this.parentData.workData.nodeList);
+            let testObj =[]
+            this.parentData.workData.nodeList.forEach((item)=>{
+                testObj.push({
+                    ...item,
+                    nodeSort:item.nodeSort+''
+                })
+            })
+            this.$set(this.formData, 'items', testObj);
 		}
 		this.handleRenderRuler();
 	},

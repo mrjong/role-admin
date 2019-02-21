@@ -9,11 +9,11 @@
       >
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
         检索条件
-        <Button
+        <!-- <Button
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
-        >添加</Button>
+        >添加</Button> -->
       </p>
       <Form
         v-if="!showPanel"

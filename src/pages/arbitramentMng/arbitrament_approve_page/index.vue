@@ -392,12 +392,12 @@
             >
               <div class="demo-upload-list" style="width:100px;height:100px;line-height: 100px;">
                 <img
-                  :src="arb_detail_data&&prefix+arb_detail_data.idCardFrontAbs"
+                  :src="arb_detail_data&&prefix+arb_detail_data.idCardFront"
                   style="vertical-align: top;"
                 >
                 <div
                   class="demo-upload-list-cover"
-                  @click="handleView(prefix+arb_detail_data.idCardFrontAbs)"
+                  @click="handleView(prefix+arb_detail_data.idCardFront)"
                 >
                   <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
                 </div>
@@ -410,12 +410,12 @@
             >
               <div class="demo-upload-list" style="width:100px;height:100px;line-height: 100px;">
                 <img
-                  :src="arb_detail_data&&prefix+arb_detail_data.idCardOppositeAbs"
+                  :src="arb_detail_data&&prefix+arb_detail_data.idCardOpposite"
                   style="vertical-align: top;"
                 >
                 <div
                   class="demo-upload-list-cover"
-                  @click="handleView(arb_detail_data&&prefix+arb_detail_data.idCardOppositeAbs)"
+                  @click="handleView(arb_detail_data&&prefix+arb_detail_data.idCardOpposite)"
                 >
                   <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
                 </div>
@@ -428,12 +428,12 @@
             >
               <div class="demo-upload-list" style="width:100px;height:100px;line-height: 100px;">
                 <img
-                  :src="arb_detail_data&&prefix+arb_detail_data.voucherImgAbs"
+                  :src="arb_detail_data&&prefix+arb_detail_data.voucherImg"
                   style="vertical-align: top;"
                 >
                 <div
                   class="demo-upload-list-cover"
-                  @click="handleView(arb_detail_data&&prefix+arb_detail_data.voucherImgAbs)"
+                  @click="handleView(arb_detail_data&&prefix+arb_detail_data.voucherImg)"
                 >
                   <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
                 </div>
@@ -446,12 +446,12 @@
             >
               <div class="demo-upload-list" style="width:100px;height:100px;line-height: 100px;">
                 <img
-                  :src="arb_detail_data&&prefix+arb_detail_data.standImgAbs"
+                  :src="arb_detail_data&&prefix+arb_detail_data.standImg"
                   style="vertical-align: top;"
                 >
                 <div
                   class="demo-upload-list-cover"
-                  @click="handleView(arb_detail_data&&prefix+arb_detail_data.standImgAbs)"
+                  @click="handleView(arb_detail_data&&prefix+arb_detail_data.standImg)"
                 >
                   <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
                 </div>

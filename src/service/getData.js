@@ -1334,4 +1334,11 @@ export const arb_operateRecord = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-
+    // 图片转移
+export const  arb_uploadUrl  = (obj) =>
+fetch({
+    url: '/arb/uploadUrl ',
+    method: 'POST',
+    data: qs.stringify(obj)
+});
+   

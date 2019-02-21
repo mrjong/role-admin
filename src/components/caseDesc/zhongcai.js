@@ -1,4 +1,4 @@
-import { arb_apply } from '@/service/getData';
+import { arb_apply, arb_uploadUrl } from '@/service/getData';
 import Cookie from 'js-cookie';
 import dayjs from 'dayjs';
 export default {
@@ -6,8 +6,8 @@ export default {
 		return {
 			headers: {
 				'SXF-TOKEN': Cookie.get('SXF-TOKEN')
-            },
-            prefix:'/admin/img/mark/',
+			},
+			prefix: '/admin/arb/images/',
 			formItem: {},
 			ruleValidate: {
 				userGender: [
@@ -102,29 +102,23 @@ export default {
 		this.formItem.userGender = this.zhongcai_data.userGender;
 	},
 	methods: {
-        handleView(name) {
+		handleView(name) {
 			this.imgName = name;
 			this.visible = true;
 		},
 		// 详情带入  回显身份证图片
 		showImg() {
 			if (this.zhongcai_data.idCardFront) {
-                this.formItem.idCardFront = this.zhongcai_data.idCardFront
-				this.uploadList.push({
-                    url: this.prefix+this.zhongcai_data.idCardFront,
-                    relativePath:this.zhongcai_data.idCardFront,
-                    status: "finished"
-                });
-                this.$refs.formItem.validateField('idCardFront');
+				this.arb_uploadUrl({
+                    key:'idCardFront',
+					path: this.zhongcai_data.idCardFront
+				});
 			}
 			if (this.zhongcai_data.idCardOpposite) {
-                this.formItem.idCardOpposite = this.zhongcai_data.idCardOpposite
-				this.uploadList1.push({
-                    url: this.prefix+this.zhongcai_data.idCardOpposite,
-                    relativePath:this.zhongcai_data.idCardOpposite,
-                    status: "finished"
-                });
-                this.$refs.formItem.validateField('idCardOpposite');
+				this.arb_uploadUrl({
+                    key:'idCardOpposite',
+					path: this.zhongcai_data.idCardOpposite
+				});
 			}
 		},
 		handleSubmit() {
@@ -171,30 +165,30 @@ export default {
 			// this.$emit("getChildrenStatus", this.childrenData);
 		},
 		handleRemove(file, type) {
-            console.log(file)
-            this.uploadList.splice(this.uploadList.indexOf(file), 1);
-        },
-        handleRemove1(file, type) {
-            this.uploadList1.splice(this.uploadList1.indexOf(file), 1);
-        },
-        handleRemove2(file, type) {
-            this.uploadList2.splice(this.uploadList2.indexOf(file), 1);
+			console.log(file);
+			this.uploadList.splice(this.uploadList.indexOf(file), 1);
+		},
+		handleRemove1(file, type) {
+			this.uploadList1.splice(this.uploadList1.indexOf(file), 1);
+		},
+		handleRemove2(file, type) {
+			this.uploadList2.splice(this.uploadList2.indexOf(file), 1);
 		},
 		handleRemove3(file, type) {
-            this.uploadList3.splice(this.uploadList3.indexOf(file), 1);
+			this.uploadList3.splice(this.uploadList3.indexOf(file), 1);
 		},
 		handleSuccess(res, file) {
 			console.log(res, '-----------------');
 			if (res.code === 1) {
-				this.formItem.idCardFront = res.data.absolutePath;
+				this.formItem.idCardFront = res.data.relativePath;
 				this.uploadList = [
 					{
-                        url: this.prefix + res.data.absolutePath,
-                    relativePath:res.data.relativePath,
+						url: this.prefix + res.data.relativePath,
+						relativePath: res.data.relativePath,
 						status: 'finished'
 					}
 				];
-				file.url = res.data.absolutePath;
+				file.url = res.data.relativePath;
 				this.$refs.formItem.validateField('idCardFront');
 			} else {
 				this.$Message.error(res.message);
@@ -203,16 +197,45 @@ export default {
 		handleSuccess1(res, file) {
 			console.log(res, '-----------------');
 			if (res.code === 1) {
-				this.formItem.idCardOpposite = res.data.absolutePath;
+				this.formItem.idCardOpposite = res.data.relativePath;
 				this.uploadList1 = [
-                    { 
-                    relativePath:res.data.relativePath,
-						url: this.prefix +res.data.absolutePath,
+					{
+						relativePath: res.data.relativePath,
+						url: this.prefix + res.data.relativePath,
 						status: 'finished'
 					}
 				];
-				file.url = res.data.absolutePath;
+				file.url = res.data.relativePath;
 				this.$refs.formItem.validateField('idCardOpposite');
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+
+		async arb_uploadUrl(obj) {
+			const res = await arb_uploadUrl({
+                caseNo:this.zhongcai_data.caseNo,
+                imgType:obj.key,
+				uploadUrlImage:obj.path
+			});
+			if (res.code === 1) {
+				if (obj.key === 'idCardFront') {
+					this.formItem.idCardFront = this.zhongcai_data.idCardFront;
+					this.uploadList.push({
+						url: this.prefix +  res.data.relativePath,
+						relativePath: res.data.relativePath,
+						status: 'finished'
+					});
+					this.$refs.formItem.validateField('idCardFront');
+				} else if (obj.key === 'idCardOpposite') {
+					this.formItem.idCardOpposite = this.zhongcai_data.idCardOpposite;
+					this.uploadList1.push({
+						url: this.prefix + res.data.relativePath,
+						relativePath: res.data.relativePath,
+						status: 'finished'
+					});
+					this.$refs.formItem.validateField('idCardOpposite');
+				}
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -220,15 +243,15 @@ export default {
 		handleSuccess2(res, file) {
 			console.log(res, '-----------------');
 			if (res.code === 1) {
-				this.formItem.voucherImg = res.data.absolutePath;
+				this.formItem.voucherImg = res.data.relativePath;
 				this.uploadList2 = [
 					{
-                        url: this.prefix +res.data.absolutePath,
-                        relativePath:res.data.relativePath,
+						url: this.prefix + res.data.relativePath,
+						relativePath: res.data.relativePath,
 						status: 'finished'
 					}
 				];
-				file.url = res.data.absolutePath;
+				file.url = res.data.relativePath;
 				this.$refs.formItem.validateField('voucherImg');
 			} else {
 				this.$Message.error(res.message);
@@ -237,15 +260,15 @@ export default {
 		handleSuccess3(res, file) {
 			console.log(res, '-----------------');
 			if (res.code === 1) {
-				this.formItem.standImg = res.data.absolutePath;
+				this.formItem.standImg = res.data.relativePath;
 				this.uploadList3 = [
 					{
-                        url: this.prefix +res.data.absolutePath,
-                        relativePath:res.data.relativePath,
+						url: this.prefix + res.data.relativePath,
+						relativePath: res.data.relativePath,
 						status: 'finished'
 					}
 				];
-				file.url = res.data.absolutePath;
+				file.url = res.data.relativePath;
 				this.$refs.formItem.validateField('standImg');
 			} else {
 				this.$Message.error(res.message);
@@ -275,14 +298,14 @@ export default {
 		}
 	},
 	mounted() {
-        // if (!this.zhongcai_data.idCardFront) {
-        // this.uploadList = this.$refs.upload.fileList;
-        // }
-        // if (!this.zhongcai_data.idCardOpposite) {
-        // this.uploadList1 = this.$refs.upload1.fileList;
-        // }
+		// if (!this.zhongcai_data.idCardFront) {
+		// this.uploadList = this.$refs.upload.fileList;
+		// }
+		// if (!this.zhongcai_data.idCardOpposite) {
+		// this.uploadList1 = this.$refs.upload1.fileList;
+		// }
 		// this.uploadList2 = this.$refs.upload2.fileList;
-        // this.uploadList3 = this.$refs.upload3.fileList;
-		this.showImg();        
+		// this.uploadList3 = this.$refs.upload3.fileList;
+		this.showImg();
 	}
 };

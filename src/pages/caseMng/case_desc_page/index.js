@@ -492,33 +492,33 @@ export default {
 					render: (h, params) => {
 						return h('div', [
 							h('span', {}, params.row.crdNoHid),
-							h(
-								'Poptip',
-								{
-									props: {
-										content: _this.mingwenData
-									}
-								},
-								[
-									h('Icon', {
-										style: {
-											display: params.row.crdNoHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'BANK_CARD',
-													data: params.row.crdNo
-												});
-											}
-										},
-										class: 'eye-class'
-									})
-								]
-							)
+							// h(
+							// 	'Poptip',
+							// 	{
+							// 		props: {
+							// 			content: _this.mingwenData
+							// 		}
+							// 	},
+							// 	[
+							// 		h('Icon', {
+							// 			style: {
+							// 				display: params.row.crdNoHid ? 'inline-block' : 'none'
+							// 			},
+							// 			props: {
+							// 				type: 'eye'
+							// 			},
+							// 			on: {
+							// 				click: () => {
+							// 					_this.syscommon_decrypt({
+							// 						type: 'BANK_CARD',
+							// 						data: params.row.crdNo
+							// 					});
+							// 				}
+							// 			},
+							// 			class: 'eye-class'
+							// 		})
+							// 	]
+							// )
 						]);
 					}
 				}
