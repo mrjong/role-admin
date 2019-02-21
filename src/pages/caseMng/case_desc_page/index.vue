@@ -113,7 +113,7 @@
               class="eye-class"
               title="显示明文"
               type="eye"
-              @click="syscommon_decrypt({
+              @click.native="syscommon_decrypt({
                 type:'NAME',
                 data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm
             })"
@@ -192,7 +192,7 @@
                     class="eye-class"
                     title="显示明文"
                     type="eye"
-                    @click="syscommon_decrypt({
+                    @click.native="syscommon_decrypt({
                 type:'ID_CARD',
                 data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNo
             })"
@@ -311,7 +311,7 @@
                         class="eye-class"
                         title="显示明文"
                         type="eye"
-                        @click="syscommon_decrypt({
+                        @click.native="syscommon_decrypt({
                 type:'BANK_CARD',
                 data:case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNo
             })"
@@ -666,7 +666,7 @@
                         class="eye-class"
                         title="显示明文"
                         type="eye"
-                        @click="syscommon_decrypt({
+                        @click.native="syscommon_decrypt({
                 type:'NAME',
                 data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm
             })"
@@ -700,7 +700,7 @@
                       class="eye-class"
                       title="显示明文"
                       type="eye"
-                      @click="syscommon_decrypt({
+                      @click.native="syscommon_decrypt({
                 type:'MBL',
                 data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
             })"
@@ -746,7 +746,7 @@
                         class="eye-class"
                         title="显示明文"
                         type="eye"
-                        @click="syscommon_decrypt({
+                        @click.native="syscommon_decrypt({
                 type:'NAME',
                 data:item&&item.cntUserName
             })"
@@ -773,7 +773,7 @@
                       class="eye-class"
                       title="显示明文"
                       type="eye"
-                      @click="syscommon_decrypt({
+                      @click.native="syscommon_decrypt({
                 type:'MBL',
                 data:item&&item.cntUserMblNo
             })"

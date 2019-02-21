@@ -1571,23 +1571,31 @@ export default {
 									}
 								},
 								[
-									h('Icon', {
-										style: {
-											display: params.row.userNmHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'NAME',
-													data: params.row.userNm
-												});
+									h(
+										'span',
+										{
+											style: {
+												display: params.row.userNmHid ? 'inline-block' : 'none'
+											},
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'NAME',
+														data: params.row.userNm
+													});
+												}
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
 							)
 						]);
@@ -2125,7 +2133,17 @@ export default {
 			if (type === 'call') {
 				// type ['call] 拨打电话
 				if (localStorage.getItem('callData')) {
+					console.log('-----------------------');
 					this.call(JSON.parse(localStorage.getItem('callData')));
+				} else {
+					this.call_kt_hung_on({
+						callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+						callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
+						toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
+						toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
+						toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+						toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid
+					});
 				}
 				this.objCopy = obj;
 			} else {
