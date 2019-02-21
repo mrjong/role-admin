@@ -30,6 +30,7 @@
               <Select
                 size="small"
                 v-model="formValidate.prdTyp"
+                placeholder="请选择产品线"
               >
                 <Option
                   v-for="item in getDirObj.PROD_TYPE"
@@ -53,7 +54,7 @@
                 size="small"
                 clearable
                 v-model="formValidate.caseNo"
-                placeholder="请输入账单号"
+                placeholder="请输入案件号"
               ></Input>
             </FormItem>
           </Col>
@@ -88,6 +89,7 @@
               <Select
                 size="small"
                 v-model="formValidate.repayOrdSts"
+                placeholder="请选择订单状态"
               >
                 <Option
                   v-for="item in getDirObj.REPAY_ORD_STS"
@@ -132,8 +134,8 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.applayNo"
-                placeholder="请输入账单号"
+                v-model="formValidate.applyNo"
+                placeholder="请输入流水号"
               ></Input>
             </FormItem>
           </Col>

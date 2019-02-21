@@ -673,7 +673,7 @@
         let res = await monitor_overDueReports_exportDown({
           ...this.formItem
         });
-        util.dowloadfile('逾期报表',res);
+        util.dowloadfile('逾期日报',res);
       },
       // 获取表格数据
       async getList() {

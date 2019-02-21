@@ -419,7 +419,7 @@
         let res = await monitor_agentState_exportDown({
           ...this.formValidate
         });
-        util.dowloadfile('seatTable',res);
+        util.dowloadfile('坐席报表',res);
       },
       // 获取表格数据
       async getList() {

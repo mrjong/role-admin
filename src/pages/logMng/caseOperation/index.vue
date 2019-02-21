@@ -43,9 +43,9 @@
             span="6"
           >
           <FormItem
-            label="枚举类型:"
+            label="操作类型:"
           >
-            <Select size="small" filterable v-model="formItem.operType" placeholder="请输入枚举类型">
+            <Select size="small" filterable v-model="formItem.operType" placeholder="请选择操作类型">
               <Option
                 v-for="item in getDirObj.CASE_OPER_TYPE"
                 :value="item.itemCode"
@@ -173,7 +173,7 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="枚举类型:">
+                <FormItem label="操作类型:">
                   <span class="desc-label-item">{{formValidateInfo.operTypeName}}</span>
                 </FormItem>
                 </Col>

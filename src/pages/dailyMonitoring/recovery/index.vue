@@ -251,7 +251,7 @@
         }
         let res = await monitor_collectRate_exportDown({
         });
-        util.dowloadfile('催款回收',res);
+        util.dowloadfile('催款回收率',res);
       },
       // 获取表格数据
       async getList() {
