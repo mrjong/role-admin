@@ -183,6 +183,9 @@ export default {
 							h(
 								'a',
 								{
+                                    style: {
+										display: params.row.approvalState !== '02' && params.row.approvalState !== '03' ? 'inline-block' : 'none'
+									},
 									class: 'edit-btn',
 									props: {},
 									on: {

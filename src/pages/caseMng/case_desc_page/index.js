@@ -1673,10 +1673,25 @@ export default {
 			]
 		};
 	},
+	watch: {
+		collectcode_getCollectRelate_childItem() {
+			if (
+				this.collectcode_getCollectRelate_childItem &&
+				this.collectcode_getCollectRelate_childItem.length === 1
+			) {
+				this.$set(
+					this.formValidate,
+					'communicateResult',
+					this.collectcode_getCollectRelate_childItem[0].codeKeyResult
+				);
+				this.$refs.formValidate.validateField('communicateResult');
+			}
+		}
+	},
 	created() {
 		let params = location.hash.split('?');
 		const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
-		this.caseNo = queryData.caseNotest;
+		this.caseNo = window.atob(queryData.caseNotest);
 		this.seatType = queryData.seatType;
 		console.log(this.seatType);
 		this.prdTyp = queryData.prdTyptest;
@@ -1685,13 +1700,11 @@ export default {
 		delete queryData.caseNotest;
 		delete queryData.prdTyptest;
 		delete queryData.seatType;
-        delete queryData.userIdtest;
-        if (queryData.readType === 'edit') {
+		delete queryData.userIdtest;
+		if (queryData.readType === 'edit') {
 			this.case_collect_case_list(); // 我的案件
-		} else {
-			this.case_list(); // 案件查询
 		}
-        delete queryData.readType;
+		delete queryData.readType;
 		this.queryData = queryData;
 		// 催收信息
 		this.case_detail_remark_list(); // 催收信息
@@ -1701,15 +1714,14 @@ export default {
 		this.collectcode_getCollectRelate(); // 获取沟通状态
 		this.case_detail_mail_statistics_list(); // 通话统计
 		this.case_detail_case_identity_info(); // 查询案件详情身份信息
-		
 	},
 	methods: {
 		// 获取表格数据
 		async case_list() {
 			const res = await case_list({
 				...this.queryData,
-                id: this.caseNo,
-                pageNum:1
+				id: this.caseNo,
+				pageNum: 1
 			});
 			console.log(res);
 			if (res.code === 1) {
@@ -1724,8 +1736,8 @@ export default {
 			console.log(this.queryData, '---------------');
 			const res = await case_collect_case_list({
 				...this.queryData,
-                id: this.caseNo,
-                pageNum:1
+				id: this.caseNo,
+				pageNum: 1
 			});
 			if (res.code === 1) {
 				this.case_collect_case_list_data =
@@ -2180,7 +2192,7 @@ export default {
 		nextCase(caseNo) {
 			let params = location.hash.split('?');
 			const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
-			queryData.caseNotest = caseNo;
+			queryData.caseNotest = window.btoa(caseNo);
 			location.href = params[0] + '?' + qs.stringify(queryData);
 			location.reload();
 		},
@@ -2230,6 +2242,7 @@ export default {
 			}
 		},
 		SelectChange(code) {
+			this.$set(this.formValidate, 'communicateResult', '');
 			this.collectcode_getCollectRelate_Data.forEach((element) => {
 				if (element.code === code) {
 					this.collectcode_getCollectRelate_childItem = element.codeRelateDomains;
