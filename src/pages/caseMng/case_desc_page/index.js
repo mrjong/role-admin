@@ -25,7 +25,9 @@ import {
 	collectcode_getCollectRelate, // 获取沟通状态
 	call_kt_hung_on, // 客天外拨
 	call_moor_hung_on, // 容联外拨
-	syscommon_decrypt // 明文展示
+	syscommon_decrypt, // 明文展示
+	case_collect_case_list, // 我的案件
+	case_list
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
@@ -43,6 +45,7 @@ export default {
 			objCopy: {},
 			mingwenData: '',
 			parentData: {},
+			case_collect_case_list_data: {},
 			prdTyp: '',
 			userNm: '',
 			modal: {
@@ -491,7 +494,7 @@ export default {
 					key: 'crdNoHid',
 					render: (h, params) => {
 						return h('div', [
-							h('span', {}, params.row.crdNoHid),
+							h('span', {}, params.row.crdNoHid)
 							// h(
 							// 	'Poptip',
 							// 	{
@@ -1670,10 +1673,25 @@ export default {
 			]
 		};
 	},
+	watch: {
+		collectcode_getCollectRelate_childItem() {
+			if (
+				this.collectcode_getCollectRelate_childItem &&
+				this.collectcode_getCollectRelate_childItem.length === 1
+			) {
+				this.$set(
+					this.formValidate,
+					'communicateResult',
+					this.collectcode_getCollectRelate_childItem[0].codeKeyResult
+				);
+				this.$refs.formValidate.validateField('communicateResult');
+			}
+		}
+	},
 	created() {
 		let params = location.hash.split('?');
 		const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
-		this.caseNo = queryData.caseNotest;
+		this.caseNo = window.atob(queryData.caseNotest);
 		this.seatType = queryData.seatType;
 		console.log(this.seatType);
 		this.prdTyp = queryData.prdTyptest;
@@ -1683,6 +1701,10 @@ export default {
 		delete queryData.prdTyptest;
 		delete queryData.seatType;
 		delete queryData.userIdtest;
+		if (queryData.readType === 'edit') {
+			this.case_collect_case_list(); // 我的案件
+		}
+		delete queryData.readType;
 		this.queryData = queryData;
 		// 催收信息
 		this.case_detail_remark_list(); // 催收信息
@@ -1694,6 +1716,36 @@ export default {
 		this.case_detail_case_identity_info(); // 查询案件详情身份信息
 	},
 	methods: {
+		// 获取表格数据
+		async case_list() {
+			const res = await case_list({
+				...this.queryData,
+				id: this.caseNo,
+				pageNum: 1
+			});
+			console.log(res);
+			if (res.code === 1) {
+				this.case_collect_case_list_data =
+					res.data && res.data.page && res.data.page.content && res.data.page.content[0];
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+		// 获取表格数据
+		async case_collect_case_list() {
+			console.log(this.queryData, '---------------');
+			const res = await case_collect_case_list({
+				...this.queryData,
+				id: this.caseNo,
+				pageNum: 1
+			});
+			if (res.code === 1) {
+				this.case_collect_case_list_data =
+					res.data && res.data.page && res.data.page.content && res.data.page.content[0];
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
 		call(obj) {
 			var config = {
 				uname: obj.loginName,
@@ -2140,7 +2192,7 @@ export default {
 		nextCase(caseNo) {
 			let params = location.hash.split('?');
 			const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
-			queryData.caseNotest = caseNo;
+			queryData.caseNotest = window.btoa(caseNo);
 			location.href = params[0] + '?' + qs.stringify(queryData);
 			location.reload();
 		},
@@ -2190,6 +2242,7 @@ export default {
 			}
 		},
 		SelectChange(code) {
+			this.$set(this.formValidate, 'communicateResult', '');
 			this.collectcode_getCollectRelate_Data.forEach((element) => {
 				if (element.code === code) {
 					this.collectcode_getCollectRelate_childItem = element.codeRelateDomains;

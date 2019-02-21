@@ -105,11 +105,6 @@
       <!-- 检索条件 -->
       <Card class="vue-panel case-desc">
         <p slot="title">
-          <Icon
-            @click="showPanel=!showPanel"
-            :type="!showPanel?'chevron-down':'chevron-up'"
-          ></Icon>
-
           {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}} <Poptip
             :content="mingwenData"
             v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
@@ -132,14 +127,14 @@
             size="small"
             :disabled="btnDisable"
           >申请仲裁</Button>
-          <Button
+          <!-- <Button
             v-if="readType!=='read'"
             @click="handOpen('huankuan','申请还款')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
             :disabled="btnDisable"
-          >申请还款</Button>
+          >申请还款</Button> -->
           <Button
             v-if="readType!=='read'"
             @click.stop="handOpen('huakou')"
@@ -149,28 +144,28 @@
             :disabled="btnDisable"
           >申请划扣</Button>
 
-          <Button
+          <!-- <Button
             v-if="readType!=='read'"
             @click="handOpen('jianmian','申请减免')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
             :disabled="btnDisable"
-          >申请减免</Button>
+          >申请减免</Button> -->
           <Button
-            v-if="readType!=='read'"
             class="fr vue-back-btn header-btn"
             type="primary"
-            @click.stop="nextCase(case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.downCaseNo)"
-            :disabled="btnDisable||case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.downCaseNo"
+            v-if="readType!=='read'"
+            @click.stop="nextCase(case_collect_case_list_data&&case_collect_case_list_data.downCaseNo)"
+            :disabled="btnDisable||!case_collect_case_list_data||!case_collect_case_list_data.downCaseNo"
             size="small"
           >下一个</Button>
           <Button
-            v-if="readType!=='read'"
             class="fr vue-back-btn header-btn"
             type="primary"
-            @click.stop="nextCase(case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.upCaseNo)"
-            :disabled="btnDisable||case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.upCaseNo"
+            v-if="readType!=='read'"
+            @click.stop="nextCase(case_collect_case_list_data&&case_collect_case_list_data.upCaseNo)"
+            :disabled="btnDisable||!case_collect_case_list_data||!case_collect_case_list_data.upCaseNo"
             size="small"
           >上一个</Button>
         </p>

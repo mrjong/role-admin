@@ -148,7 +148,7 @@ export default {
 											on: {
 												click: () => {
 													window.open(
-														`${location.origin}/#/case_desc_page?caseNotest=${id}&prdTyptest=${prdTyp}&userIdtest=${userId}&seatType=${seatType
+														`${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=edit&userIdtest=${userId}&seatType=${seatType
 															? seatType
 															: 'KT'}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
 															_this.formItem
@@ -187,8 +187,8 @@ export default {
 					width: 120,
 					align: 'center',
 					key: 'prdName'
-                },
-                {
+				},
+				{
 					title: '产品期数',
 					width: 120,
 					align: 'center',
@@ -365,8 +365,8 @@ export default {
 					...this.formItem
 				},
 				{
-          responseType: 'blob',
-          timeout: 90000,
+					responseType: 'blob',
+					timeout: 90000
 				}
 			);
 			util.dowloadfile('我的案件', res);

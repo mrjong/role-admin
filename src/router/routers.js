@@ -7,6 +7,7 @@ import remoneyMngRouter from '@/pages/remoneyMng/router';
 import dailyMontiorRouter from '@/pages/dailyMonitoring/router';
 import businessMngRouter from '@/pages/businessMng/router';
 import logMngRouter from '@/pages/logMng/router';
+import taskManagementRouter from '@/pages/taskManagement/router';
 export default {
   ...collectionMngRouter,
   ...workflowRouter,
@@ -16,5 +17,6 @@ export default {
   ...remoneyMngRouter,
   ...dailyMontiorRouter,
   ...businessMngRouter,
-  ...logMngRouter
+  ...logMngRouter,
+  ...taskManagementRouter
 };

@@ -315,6 +315,7 @@
             title: '操作',
             key: 'edit',
             width: 180,
+            fixed: 'left',
             align: 'center',
             render: (h, params) => {
               const obj = params.row;
