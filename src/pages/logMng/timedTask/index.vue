@@ -137,7 +137,7 @@
             ></Page>
           </div>
         </div>
-        <Modal v-model="modalSee" title="定时日志"  class="role-modal">
+        <Modal v-model="modalSee" title="定时日志"  class-name="role-modal">
           <Card class="vue-panel panel_list" :dis-hover="true" style="border: none">
             <Form
               v-if="!showPanel"
@@ -216,7 +216,7 @@
   </div>
 </template>
 <script src="./index.js"></script>
-<style lang="less">
+<style lang="less" >
   .tableBox {
     overflow-x: scroll ;
     overflow-y: hidden;
@@ -224,10 +224,7 @@
       min-width: 400px;
     }
   }
-  .ivu-form-item-label {
-    width: 100px !important;
-  }
-  .ivu-form-item-content{
-  margin-left: 100px !important;
+  .role-modal .ivu-modal-body {
+    margin-left: -16px ;
   }
 </style>

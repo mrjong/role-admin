@@ -156,7 +156,7 @@
             ></Page>
           </div>
         </div>
-        <Modal v-model="modalSee" title="消息日志"  class="role-modal" width="700px">
+        <Modal v-model="modalSee" title="消息日志"  class-name="role-modal" width="700px">
           <Card class="vue-panel panel_list" :dis-hover="true" style="border: none">
             <Form
               v-if="!showPanel"
@@ -290,6 +290,9 @@
     .tableMainW {
       min-width: 400px;
     }
+  }
+  .role-modal .ivu-modal-body {
+    margin-left: -16px ;
   }
   /*.ivu-form-item-content{*/
   /*margin-left: 0 !important;*/
