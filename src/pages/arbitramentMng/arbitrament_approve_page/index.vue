@@ -387,54 +387,77 @@
                 label="图片信息:"
                 prop="defType"
               >
-                <div class="fl">
-                  <div
-                    class="demo-upload-list mr10"
-                    style="width:100px;height:100px;"
-                  >
-                    <img
-                      :src="arb_detail_data&&arb_detail_data.idCardFront"
-                      style="vertical-align: top;"
-                    >
-                  </div>
-                  <div class="text-center card-text mt-15 mr10">身份证正面</div>
+              <div
+              class="fl"
+            >
+              <div class="demo-upload-list" style="width:100px;height:100px;line-height: 100px;">
+                <img
+                  :src="arb_detail_data&&prefix+arb_detail_data.idCardFrontAbs"
+                  style="vertical-align: top;"
+                >
+                <div
+                  class="demo-upload-list-cover"
+                  @click="handleView(prefix+arb_detail_data.idCardFrontAbs)"
+                >
+                  <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
                 </div>
-                <div class="fl">
-                  <div
-                    class="demo-upload-list mr10"
-                    style="width:100px;height:100px"
-                  >
-                    <img
-                      :src="arb_detail_data&&arb_detail_data.idCardOpposite"
-                      style="vertical-align: top;"
-                    >
-                  </div>
-                  <div class="text-center card-text mt-15 mr10">身份证反面</div>
+              </div>
+              <div class="text-center card-text">身份证正面</div>
+            </div>
+
+              <div
+              class="fl"
+            >
+              <div class="demo-upload-list" style="width:100px;height:100px;line-height: 100px;">
+                <img
+                  :src="arb_detail_data&&prefix+arb_detail_data.idCardOppositeAbs"
+                  style="vertical-align: top;"
+                >
+                <div
+                  class="demo-upload-list-cover"
+                  @click="handleView(arb_detail_data&&prefix+arb_detail_data.idCardOppositeAbs)"
+                >
+                  <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
                 </div>
-                <div class="fl">
-                  <div
-                    class="demo-upload-list mr10"
-                    style="width:100px;height:100px"
-                  >
-                    <img
-                      :src="arb_detail_data&&arb_detail_data.voucherImg"
-                      style="vertical-align: top;"
-                    >
-                  </div>
-                  <div class="text-center card-text mt-15 mr10">打款凭证</div>
+              </div>
+              <div class="text-center card-text">身份证反面</div>
+            </div>
+
+              <div
+              class="fl"
+            >
+              <div class="demo-upload-list" style="width:100px;height:100px;line-height: 100px;">
+                <img
+                  :src="arb_detail_data&&prefix+arb_detail_data.voucherImgAbs"
+                  style="vertical-align: top;"
+                >
+                <div
+                  class="demo-upload-list-cover"
+                  @click="handleView(arb_detail_data&&prefix+arb_detail_data.voucherImgAbs)"
+                >
+                  <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
                 </div>
-                <div class="fl">
-                  <div
-                    class="demo-upload-list mr10"
-                    style="width:100px;height:100px"
-                  >
-                    <img
-                      :src="arb_detail_data&&arb_detail_data.standImg"
-                      style="vertical-align: top;"
-                    >
-                  </div>
-                  <div class="text-center card-text mt-15 mr10">提前到期通知</div>
+              </div>
+              <div class="text-center card-text">打款凭证</div>
+            </div>
+
+              <div
+              class="fl"
+            >
+              <div class="demo-upload-list" style="width:100px;height:100px;line-height: 100px;">
+                <img
+                  :src="arb_detail_data&&prefix+arb_detail_data.standImgAbs"
+                  style="vertical-align: top;"
+                >
+                <div
+                  class="demo-upload-list-cover"
+                  @click="handleView(arb_detail_data&&prefix+arb_detail_data.standImgAbs)"
+                >
+                  <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
                 </div>
+              </div>
+              <div class="text-center card-text">提前到期通知</div>
+            </div>
               </FormItem>
 
               </Col>
@@ -537,6 +560,16 @@
           @click="arb_checkTest"
         >确定</Button>
       </div>
+    </Modal>
+    <Modal
+      title="查看图片"
+      v-model="visible"
+    >
+      <img
+        :src="imgName"
+        v-if="visible"
+        style="width: 100%"
+      >
     </Modal>
   </div>
 </template>

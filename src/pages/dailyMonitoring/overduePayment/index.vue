@@ -624,7 +624,7 @@ export default {
           responseType: "blob"
         }
       );
-      util.dowloadfile("逾期报表", res);
+      util.dowloadfile("逾期日报", res);
     },
     // 获取表格数据
     async getList() {
@@ -665,11 +665,4 @@ export default {
 };
 </script>
 <style lang="less">
-.tableBox {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  .tableMainW {
-    min-width: 400px;
-  }
-}
 </style>

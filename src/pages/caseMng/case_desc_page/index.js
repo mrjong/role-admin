@@ -25,8 +25,7 @@ import {
 	collectcode_getCollectRelate, // 获取沟通状态
 	call_kt_hung_on, // 客天外拨
 	call_moor_hung_on, // 容联外拨
-	syscommon_decrypt, // 明文展示
-	img_mark // 图片展示
+	syscommon_decrypt // 明文展示
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
@@ -41,6 +40,7 @@ export default {
 		return {
 			imglist: {},
 			actionId: '',
+			objCopy: {},
 			mingwenData: '',
 			parentData: {},
 			prdTyp: '',
@@ -302,6 +302,9 @@ export default {
 								},
 								[
 									h('Icon', {
+										style: {
+											display: params.row.mblNoHid ? 'inline-block' : 'none'
+										},
 										props: {
 											type: 'eye'
 										},
@@ -337,6 +340,9 @@ export default {
 								},
 								[
 									h('Icon', {
+										style: {
+											display: params.row.userNmHid ? 'inline-block' : 'none'
+										},
 										props: {
 											type: 'eye'
 										},
@@ -495,6 +501,9 @@ export default {
 								},
 								[
 									h('Icon', {
+										style: {
+											display: params.row.crdNoHid ? 'inline-block' : 'none'
+										},
 										props: {
 											type: 'eye'
 										},
@@ -512,48 +521,48 @@ export default {
 							)
 						]);
 					}
-				},
-				{
-					title: '实际还款人',
-					align: 'center',
-					width: 100,
-					key: 'userNmHid',
-					render: (h, params) => {
-						return h('div', [
-							h('span', {}, params.row.userNmHid),
-							h(
-								'Poptip',
-								{
-									props: {
-										content: _this.mingwenData
-									}
-								},
-								[
-									h('Icon', {
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'NAME',
-													data: params.row.userNm
-												});
-											}
-										},
-										class: 'eye-class'
-									})
-								]
-							)
-						]);
-					}
-				},
-				{
-					title: '还款人关系',
-					align: 'center',
-					width: 100,
-					key: ''
 				}
+				// {
+				// 	title: '实际还款人',
+				// 	align: 'center',
+				// 	width: 100,
+				// 	key: 'userNmHid',
+				// 	render: (h, params) => {
+				// 		return h('div', [
+				// 			h('span', {}, params.row.userNmHid),
+				// 			h(
+				// 				'Poptip',
+				// 				{
+				// 					props: {
+				// 						content: _this.mingwenData
+				// 					}
+				// 				},
+				// 				[
+				// 					h('Icon', {
+				// 						props: {
+				// 							type: 'eye'
+				// 						},
+				// 						on: {
+				// 							click: () => {
+				// 								_this.syscommon_decrypt({
+				// 									type: 'NAME',
+				// 									data: params.row.userNm
+				// 								});
+				// 							}
+				// 						},
+				// 						class: 'eye-class'
+				// 					})
+				// 				]
+				// 			)
+				// 		]);
+				// 	}
+				// },
+				// {
+				// 	title: '还款人关系',
+				// 	align: 'center',
+				// 	width: 100,
+				// 	key: ''
+				// }
 			],
 
 			// 用户主动还款
@@ -679,7 +688,7 @@ export default {
 					title: '订单状态',
 					align: 'center',
 					width: 100,
-					key: 'ordSts'
+					key: 'ordStsName'
 				},
 				{
 					title: '失败原因',
@@ -718,13 +727,13 @@ export default {
 					title: '卡类型',
 					align: 'center',
 					width: 100,
-					key: 'crdAcTyp'
+					key: 'crdAcTypName'
 				},
 				{
 					title: '还款银行',
 					align: 'center',
 					width: 100,
-					key: 'crdCorpOrg'
+					key: 'crdCorpOrgName'
 				},
 				{
 					title: '还款银行卡后四位',
@@ -776,6 +785,9 @@ export default {
 								},
 								[
 									h('Icon', {
+										style: {
+											display: params.row.usrNmHid ? 'inline-block' : 'none'
+										},
 										props: {
 											type: 'eye'
 										},
@@ -823,6 +835,9 @@ export default {
 								},
 								[
 									h('Icon', {
+										style: {
+											display: params.row.crdNoHid ? 'inline-block' : 'none'
+										},
 										props: {
 											type: 'eye'
 										},
@@ -884,6 +899,9 @@ export default {
 								},
 								[
 									h('Icon', {
+										style: {
+											display: params.row.idNoHid ? 'inline-block' : 'none'
+										},
 										props: {
 											type: 'eye'
 										},
@@ -1096,6 +1114,33 @@ export default {
 									}
 								},
 								`${userNmHid}(${callUserTypeName})`
+							),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										style: {
+											display: params.row.userNmHid ? 'inline-block' : 'none'
+										},
+										props: {
+											type: 'eye'
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'NAME',
+													data: params.row.userNm
+												});
+											}
+										},
+										class: 'eye-class'
+									})
+								]
 							)
 						]);
 					}
@@ -1122,6 +1167,33 @@ export default {
 									}
 								},
 								`${mblNoHid}(${callStateName})`
+							),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										style: {
+											display: params.row.mblNoHid ? 'inline-block' : 'none'
+										},
+										props: {
+											type: 'eye'
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'MBL',
+													data: params.row.mblNo
+												});
+											}
+										},
+										class: 'eye-class'
+									})
+								]
 							)
 						]);
 					}
@@ -1175,6 +1247,9 @@ export default {
 							h(
 								'span',
 								{
+									style: {
+										color: '#2d8cf0'
+									},
 									props: {
 										type: 'edit'
 									}
@@ -1210,6 +1285,33 @@ export default {
 									}
 								},
 								`${userNmHid ? userNmHid : ''}(${callUserTypeName ? callUserTypeName : ''})`
+							),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										style: {
+											display: params.row.userNmHid ? 'inline-block' : 'none'
+										},
+										props: {
+											type: 'eye'
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'NAME',
+													data: params.row.userNm
+												});
+											}
+										},
+										class: 'eye-class'
+									})
+								]
 							)
 						]);
 					}
@@ -1234,6 +1336,33 @@ export default {
 									}
 								},
 								`${mblNoHid ? mblNoHid : ''}(${callStateName ? callStateName : ''})`
+							),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										style: {
+											display: params.row.mblNoHid ? 'inline-block' : 'none'
+										},
+										props: {
+											type: 'eye'
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'MBL',
+													data: params.row.mblNo
+												});
+											}
+										},
+										class: 'eye-class'
+									})
+								]
 							)
 						]);
 					}
@@ -1294,6 +1423,33 @@ export default {
 									}
 								},
 								`${userNmHid ? userNmHid : ''}(${callUserTypeName ? callUserTypeName : ''})`
+							),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										style: {
+											display: params.row.userNmHid ? 'inline-block' : 'none'
+										},
+										props: {
+											type: 'eye'
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'NAME',
+													data: params.row.userNm
+												});
+											}
+										},
+										class: 'eye-class'
+									})
+								]
 							)
 						]);
 					}
@@ -1318,6 +1474,33 @@ export default {
 									}
 								},
 								`${mblNoHid ? mblNoHid : ''}(${callStateName ? callStateName : ''})`
+							),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										style: {
+											display: params.row.mblNoHid ? 'inline-block' : 'none'
+										},
+										props: {
+											type: 'eye'
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'MBL',
+													data: params.row.mblNo
+												});
+											}
+										},
+										class: 'eye-class'
+									})
+								]
 							)
 						]);
 					}
@@ -1376,6 +1559,33 @@ export default {
 									}
 								},
 								`${userNmHid ? userNmHid : ''}(${callUserTypeName ? callUserTypeName : ''})`
+							),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										style: {
+											display: params.row.userNmHid ? 'inline-block' : 'none'
+										},
+										props: {
+											type: 'eye'
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'NAME',
+													data: params.row.userNm
+												});
+											}
+										},
+										class: 'eye-class'
+									})
+								]
 							)
 						]);
 					}
@@ -1403,6 +1613,33 @@ export default {
 									}
 								},
 								`${mblNoHid}(${callStateName ? callStateName : ''})`
+							),
+							h(
+								'Poptip',
+								{
+									props: {
+										content: _this.mingwenData
+									}
+								},
+								[
+									h('Icon', {
+										style: {
+											display: params.row.mblNoHid ? 'inline-block' : 'none'
+										},
+										props: {
+											type: 'eye'
+										},
+										on: {
+											click: () => {
+												_this.syscommon_decrypt({
+													type: 'MBL',
+													data: params.row.mblNo
+												});
+											}
+										},
+										class: 'eye-class'
+									})
+								]
 							)
 						]);
 					}
@@ -1457,6 +1694,44 @@ export default {
 		this.case_detail_case_identity_info(); // 查询案件详情身份信息
 	},
 	methods: {
+		call(obj) {
+			var config = {
+				uname: obj.loginName,
+				pwd: obj.password,
+				debug: true,
+				isAutoAnswer: false,
+				stateListenerCallBack: this.stateCallback,
+				forceAnswerWhenRing: false, // 是否振铃自动接通
+				autoReady: true,
+				url: obj.url
+			};
+			CallHelper.init(config, this.initCallback);
+		},
+		/**
+      * 设置状态监听回调
+      */
+		stateCallback(data) {
+			this.$store.commit('changeCallData', data);
+		},
+		/**
+          * 初始化方法回调是否成功
+          */
+		initCallback(data) {
+			if (data.successChange) {
+				console.log(data);
+				console.log('您已登录成功！');
+				this.call_kt_hung_on({
+					callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+					callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
+					toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
+					toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
+					toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+					toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid
+				});
+			} else {
+				this.$Message.error('登录失败，请联系管理员！');
+			}
+		},
 		async syscommon_decrypt(obj) {
 			this.mingwenData = '';
 			const res = await syscommon_decrypt(obj);
@@ -1494,8 +1769,8 @@ export default {
 				let obj34 = {
 					telNoHid: obj.toCallMblHid,
 					usrNameHid: obj.toCallUserHid
-                };
-                console.log(obj34)
+				};
+				console.log(obj34);
 				localStorage.setItem('callObj', JSON.stringify(obj34));
 			} else {
 				this.$Message.error(res.message);
@@ -1761,19 +2036,6 @@ export default {
 				this.$Message.error(res.message);
 			}
 		},
-		// 查询案件详情基础信息
-		async img_mark(obj) {
-			const res = await img_mark({
-				path: obj.path
-			});
-			if (res.code === 1) {
-				this.imglist[obj.imgTypeName].imgPath = res.data && res.data;
-				this.imglist[obj.imgTypeName].imgTypeName = obj.imgTypeName;
-			} else {
-				this.$Message.error(res.message);
-			}
-		},
-
 		// 查询案件详情身份信息
 		async case_detail_case_identity_info() {
 			const res = await case_detail_case_identity_info({
@@ -1783,17 +2045,6 @@ export default {
 			if (res.code === 1) {
 				this.btnDisable = false;
 				this.case_detail_case_identity_info_Data = res.data;
-				if (
-					this.case_detail_case_identity_info_Data &&
-					this.case_detail_case_identity_info_Data.userImgList.length > 0
-				) {
-					this.case_detail_case_identity_info_Data.userImgList.forEach((item, index) => {
-						this.img_mark({
-							path: item.imgPath,
-							name: item.imgTypeName
-						});
-					});
-				}
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -1821,15 +2072,12 @@ export default {
 			this.handleCancle();
 			if (type === 'call') {
 				// type ['call] 拨打电话
-				this.call_kt_hung_on({
-					callno: obj.mblNo || obj.cntUserMblNo,
-					callUserType: obj.callUserType || obj.cntRelTyp,
-					toCallUser: obj.userNm || obj.cntUserName,
-					toCallUserHid: obj.userNmHid || obj.cntUserNameHid,
-					toCallMbl: obj.mblNo || obj.cntUserMblNo,
-					toCallMblHid: obj.mblNoHid || obj.cntUserMblNoHid
-				});
+				if (localStorage.getItem('callData')) {
+					this.call(JSON.parse(localStorage.getItem('callData')));
+				}
+				this.objCopy = obj;
 			} else {
+				this.objCopy = {};
 				this.actionId = '';
 			}
 			if (this.readType !== 'read') {
@@ -1850,13 +2098,30 @@ export default {
 		handOpen(type) {
 			console.log(this.modal);
 			if (type === 'zhongcai') {
+				let idCardFront = '';
+				let idCardOpposite = '';
+				if (
+					this.case_detail_case_identity_info_Data &&
+					this.case_detail_case_identity_info_Data.userImgList &&
+					this.case_detail_case_identity_info_Data.userImgList.length > 0
+				) {
+					this.case_detail_case_identity_info_Data.userImgList.forEach((item) => {
+						if (item.imgType == 1) {
+							idCardFront = item.imgPath;
+						} else if (item.imgType == 2) {
+							idCardOpposite = item.imgPath;
+						}
+					});
+				}
 				this.zhongcai_set_data = {
 					idNoHid: this.case_detail_case_identity_info_Data.idNoHid,
 					billNo: this.case_detail_case_base_info_Data.billNo,
 					userNmHid: this.case_detail_case_identity_info_Data.userNmHid,
 					caseNo: this.caseNo,
 					userGender: this.case_detail_case_identity_info_Data.userGender,
-					userNation: this.case_detail_case_identity_info_Data.userNation
+					userNation: this.case_detail_case_identity_info_Data.userNation,
+					idCardFront,
+					idCardOpposite
 				};
 			}
 			this.modal[type] = true;

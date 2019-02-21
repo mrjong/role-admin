@@ -122,6 +122,7 @@ export default {
   },
   created() {
     this.login_code()
+    localStorage.removeItem('callData')
   },
   methods: {
     async login_code() {
@@ -142,7 +143,9 @@ export default {
       if (res.code === 1) {
         if (res.data.seatType === 'KT') {
           sessionStorage.setItem('seatType', 'KT');
+          localStorage.setItem('callData', JSON.stringify(res.data))
           this.call(res.data);
+
           this.loginSuccess(data);
         } else {
           sessionStorage.setItem('seatType', 'RL')
@@ -153,7 +156,6 @@ export default {
       }
     },
     call(obj) {
-      localStorage.setItem('callData', JSON.stringify(obj))
       var config = {
         uname: obj.loginName,
         pwd: obj.password,

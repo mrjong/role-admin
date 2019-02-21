@@ -137,71 +137,67 @@
             ></Page>
           </div>
         </div>
-        <Modal v-model="modalSee" title="案件日志"  class="role-modal">
+        <Modal v-model="modalSee" title="定时日志"  class-name="role-modal" width="700px">
           <Card class="vue-panel panel_list" :dis-hover="true" style="border: none">
             <Form
               v-if="!showPanel"
               ref="formValidate"
               :model="formValidate"
-              :label-width="90"
+              :label-width="100"
               :rules="ruleValidate"
             >
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem label="任务名称:">
-                  <Input size="small" v-model="formValidateInfo.jobName"  disabled></Input>
+                  <span class="desc-label-item">{{formValidateInfo.jobName}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem label="任务类名:">
-                  <Input
-                    disabled
-                    size="small"
-                    v-model="formValidateInfo.jobClass"
-                  ></Input>
+                  <span class="desc-label-item">{{formValidateInfo.jobClass}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem label="IP地址:">
-                  <Input disabled size="small" v-model="formValidateInfo.ipAddress" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.ipAddress}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem label="cron表达式:">
-                  <Input disabled size="small" v-model="formValidateInfo.cronExpression" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.cronExpression}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem label="是否开启:">
-                  <Input disabled size="small" v-model="formValidateInfo.isLock" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.isLock}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem label="创建人:">
-                  <Input disabled size="small" v-model="formValidateInfo.createUser" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.createUser}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="创建时间:">
-                  <Input disabled size="small" v-model="formValidateInfo.createTime" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.createTime}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="修改人:">
-                  <Input disabled size="small" v-model="formValidateInfo.updateUser" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.updateUser}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="修改时间:">
-                  <Input disabled size="small" v-model="formValidateInfo.updateTime" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.updateTime}}</span>
                 </FormItem>
                 </Col>
               </Row>
@@ -216,15 +212,16 @@
   </div>
 </template>
 <script src="./index.js"></script>
-<style lang="less">
-  .tableBox {
-    overflow-x: scroll ;
-    overflow-y: hidden;
-    .tableMainW {
-      min-width: 400px;
-    }
+<style lang="less" >
+  .role-modal .ivu-modal-body {
+    margin-left: -16px ;
   }
-  /*.ivu-form-item-content{*/
-  /*margin-left: 0 !important;*/
-  /*}*/
+  .role-modal .ivu-form-item-label{
+    color: #000;
+    font-weight: 500;
+  }
+  .desc-label-item {
+    vertical-align: middle;
+    line-height: 38px;
+  }
 </style>

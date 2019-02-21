@@ -159,7 +159,7 @@ export default {
           key: 'msgFlgContent',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: 250
         },
         {
           title: '操作',
@@ -239,7 +239,8 @@ export default {
       this.pageNo = 1;
       this.formItem = {};
       this.operTime=[],
-        this.$refs[name].resetFields();
+      this.$refs[name].resetFields();
+      this.getList();
     },
     //查看详情
     handleDetail( obj) {

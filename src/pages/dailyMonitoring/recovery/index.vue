@@ -237,7 +237,7 @@ export default {
           responseType: "blob"
         }
       );
-      util.dowloadfile("催款回收", res);
+      util.dowloadfile("催款回收率", res);
     },
     // 获取表格数据
     async getList() {
@@ -264,11 +264,4 @@ export default {
 };
 </script>
 <style lang="less">
-.tableBox {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  .tableMainW {
-    min-width: 400px;
-  }
-}
 </style>

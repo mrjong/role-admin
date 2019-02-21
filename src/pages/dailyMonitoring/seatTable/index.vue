@@ -373,7 +373,7 @@ export default {
           responseType: "blob"
         }
       );
-      util.dowloadfile("seatTable", res);
+      util.dowloadfile("坐席报表", res);
     },
     // 获取表格数据
     async getList() {
@@ -405,11 +405,4 @@ export default {
 };
 </script>
 <style lang="less">
-.tableBox {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  .tableMainW {
-    min-width: 400px;
-  }
-}
 </style>

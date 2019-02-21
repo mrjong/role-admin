@@ -71,21 +71,21 @@ export default {
           key: 'operParam',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal,
+          width: 250,
         },
         {
           title: '执行结果',
           key: 'operResult',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal,
+          width: 250,
         },
         {
           title: '操作描述',
           key: 'operDesc',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal,
+          width: 250,
         },
         {
           title: '是否成功',
@@ -99,7 +99,7 @@ export default {
           key: 'userId',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal,
+          width: 250,
         },
         {
           title: '用户名称',
@@ -196,6 +196,7 @@ export default {
       this.formItem = {};
       this.startTime = [];
       this.$refs[name].resetFields();
+      this.getList();
     },
     //查看详情
     async handleDetail( obj) {

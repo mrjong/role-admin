@@ -279,14 +279,7 @@ export default {
 };
 </script>
 <style lang="less">
-.tableBox {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  .tableMainW {
-    min-width: 400px;
-  }
-}
-/*.ivu-form-item-content{*/
-/*margin-left: 0 !important;*/
-/*}*/
+  /*.ivu-form-item-content{*/
+    /*margin-left: 0 !important;*/
+  /*}*/
 </style>

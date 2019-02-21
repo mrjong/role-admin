@@ -1335,9 +1335,3 @@ export const arb_operateRecord = (obj) =>
     data: qs.stringify(obj)
   });
 
-// 图片展示
-export const img_mark = (obj) =>
-  fetch({
-    url: '/img/mark?imageSrcPath=' + obj.path,
-    method: 'GET'
-  });
