@@ -302,26 +302,36 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-								},
-								[
-									h('Icon', {
-										style: {
-											display: params.row.mblNoHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'MBL',
-													data: params.row.mblNo
-												});
+                                },
+                                [
+									h(
+										'span',
+										{
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'MBL',
+														data: params.row.mblNo
+													});
+												}
+											},
+											style: {
+												display: params.row.mblNoHid ? 'inline-block' : 'none'
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
+								
+								
 							)
 						]);
 					}
@@ -340,26 +350,35 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-								},
-								[
-									h('Icon', {
-										style: {
-											display: params.row.userNmHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'NAME',
-													data: params.row.userNm
-												});
+                                },
+                                [
+									h(
+										'span',
+										{
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'NAME',
+														data: params.row.userNm
+													});
+												}
+											},
+											style: {
+												display: params.row.userNmHid ? 'inline-block' : 'none'
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
+								
 							)
 						]);
 					}
@@ -785,26 +804,35 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-								},
-								[
-									h('Icon', {
-										style: {
-											display: params.row.usrNmHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'NAME',
-													data: params.row.usrNm
-												});
+                                },
+                                [
+									h(
+										'span',
+										{
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'NAME',
+														data: params.row.userNm
+													});
+												}
+											},
+											style: {
+												display: params.row.userNmHid ? 'inline-block' : 'none'
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
+								
 							)
 						]);
 					}
@@ -835,26 +863,35 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-								},
-								[
-									h('Icon', {
-										style: {
-											display: params.row.crdNoHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'BANK_CARD',
-													data: params.row.crdNo
-												});
+                                },
+                                [
+									h(
+										'span',
+										{
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'BANK_CARD',
+														data: params.row.crdNo
+													});
+												}
+											},
+											style: {
+												display: params.row.crdNoHid ? 'inline-block' : 'none'
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
+								
 							)
 						]);
 					}
@@ -899,26 +936,35 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-								},
-								[
-									h('Icon', {
-										style: {
-											display: params.row.idNoHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'ID_CARD',
-													data: params.row.idNo
-												});
+                                },
+                                [
+									h(
+										'span',
+										{
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'ID_CARD',
+														data: params.row.idNo
+													});
+												}
+											},
+											style: {
+												display: params.row.idNoHid ? 'inline-block' : 'none'
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
+								
 							)
 						]);
 					}
@@ -1126,23 +1172,31 @@ export default {
 									}
 								},
 								[
-									h('Icon', {
-										style: {
-											display: params.row.userNmHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'NAME',
-													data: params.row.userNm
-												});
+									h(
+										'span',
+										{
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'NAME',
+														data: params.row.userNm
+													});
+												}
+											},
+											style: {
+												display: params.row.userNmHid ? 'inline-block' : 'none'
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
 							)
 						]);
@@ -1177,26 +1231,35 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-								},
-								[
-									h('Icon', {
-										style: {
-											display: params.row.mblNoHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'MBL',
-													data: params.row.mblNo
-												});
+                                },
+                                [
+									h(
+										'span',
+										{
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'MBL',
+														data: params.row.mblNo
+													});
+												}
+											},
+											style: {
+												display: params.row.mblNoHid ? 'inline-block' : 'none'
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
+								
 							)
 						]);
 					}
@@ -1204,29 +1267,31 @@ export default {
 				{
 					title: '操作',
 					align: 'center',
-					width: 100,
 					key: 'edit',
+					width: 50,
 					render: (h, params) => {
-						return h('div', [
-							h(
-								'Icon',
-								{
-									style: {
-										display: _this.readType !== 'read' ? 'inline-block' : 'none'
-									},
-									class: 'edit-btn',
-									props: {
-										type: 'edit'
-									},
-									on: {
-										click: () => {
-											_this.handCall(params.row, null, '03');
-										}
+                        return h('div',
+                        [
+							h('span',{
+                                style: {
+									display: _this.readType !== 'read' ? 'inline-block' : 'none'
+                                },
+                                on: {
+									click: () => {
+										_this.handCall(params.row, null, '03');
 									}
+								}
+                            },[h('Icon', {
+								
+								class: 'edit-btn',
+								props: {
+									type: 'edit'
 								},
-								'删除'
-							)
-						]);
+								
+							})])
+                        ] 
+                       
+                        );
 					}
 				}
 			],
@@ -1295,26 +1360,35 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-								},
-								[
-									h('Icon', {
-										style: {
-											display: params.row.userNmHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'NAME',
-													data: params.row.userNm
-												});
+                                },
+                                [
+									h(
+										'span',
+										{
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'NAME',
+														data: params.row.userNm
+													});
+												}
+											},
+											style: {
+												display: params.row.userNmHid ? 'inline-block' : 'none'
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
+								
 							)
 						]);
 					}
@@ -1346,26 +1420,35 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-								},
-								[
-									h('Icon', {
-										style: {
-											display: params.row.mblNoHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'MBL',
-													data: params.row.mblNo
-												});
+                                },
+                                [
+									h(
+										'span',
+										{
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'MBL',
+														data: params.row.mblNo
+													});
+												}
+											},
+											style: {
+												display: params.row.mblNoHid ? 'inline-block' : 'none'
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
+								
 							)
 						]);
 					}
@@ -1382,22 +1465,28 @@ export default {
 					width: 100,
 					key: 'edit',
 					render: (h, params) => {
-						return h('div', [
-							h('Icon', {
-								style: {
+                        return h('div', 
+                        [
+							h('span',{
+                                style: {
 									display: _this.readType !== 'read' ? 'inline-block' : 'none'
-								},
-								class: 'edit-btn',
-								props: {
-									type: 'edit'
-								},
-								on: {
+                                },
+                                on: {
 									click: () => {
 										_this.handCall(params.row, null, '03');
 									}
 								}
-							})
-						]);
+                            },[h('Icon', {
+								
+								class: 'edit-btn',
+								props: {
+									type: 'edit'
+								},
+								
+							})])
+                        ]
+                        
+                        );
 					}
 				}
 			],
@@ -1433,26 +1522,36 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-								},
-								[
-									h('Icon', {
-										style: {
-											display: params.row.userNmHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'NAME',
-													data: params.row.userNm
-												});
+                                },
+                                [
+									h(
+										'span',
+										{
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'NAME',
+														data: params.row.userNm
+													});
+												}
+											},
+											style: {
+												display: params.row.userNmHid ? 'inline-block' : 'none'
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
+								
+								
 							)
 						]);
 					}
@@ -1484,26 +1583,37 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-								},
-								[
-									h('Icon', {
-										style: {
-											display: params.row.mblNoHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'MBL',
-													data: params.row.mblNo
-												});
+                                },
+                                [
+									h(
+										'span',
+										{
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'MBL',
+														data: params.row.mblNo
+													});
+												}
+											},
+											style: {
+												display: params.row.mblNoHid ? 'inline-block' : 'none'
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
+								
+								
+					
 							)
 						]);
 					}
@@ -1514,26 +1624,27 @@ export default {
 					width: 100,
 					key: 'edit',
 					render: (h, params) => {
-						return h('div', [
-							h(
-								'Icon',
-								{
-									style: {
-										display: _this.readType !== 'read' ? 'inline-block' : 'none'
-									},
-									class: 'edit-btn',
-									props: {
-										type: 'edit'
-									},
-									on: {
-										click: () => {
-											_this.handCall(params.row, null, '03');
-										}
+                        return h('div', 
+                        [
+							h('span',{
+                                style: {
+									display: _this.readType !== 'read' ? 'inline-block' : 'none'
+                                },
+                                on: {
+									click: () => {
+										_this.handCall(params.row, null, '03');
 									}
+								}
+                            },[h('Icon', {
+								
+								class: 'edit-btn',
+								props: {
+									type: 'edit'
 								},
-								'编辑'
-							)
-						]);
+								
+							})])
+                        ]
+                        );
 					}
 				}
 			],
@@ -1547,7 +1658,7 @@ export default {
 				{
 					title: '姓名（关系）',
 					align: 'center',
-					width: 150,
+					width: 130,
 					key: 'userNmHid',
 					render: (h, params) => {
 						let callUserTypeName = params.row.callUserTypeName;
@@ -1604,7 +1715,7 @@ export default {
 				{
 					title: '手机(状态)',
 					align: 'center',
-					width: 150,
+					width: 170,
 					key: 'mblNoHid',
 					render: (h, params) => {
 						let callStateName = params.row.callStateName;
@@ -1631,26 +1742,36 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-								},
-								[
-									h('Icon', {
-										style: {
-											display: params.row.mblNoHid ? 'inline-block' : 'none'
-										},
-										props: {
-											type: 'eye'
-										},
-										on: {
-											click: () => {
-												_this.syscommon_decrypt({
-													type: 'MBL',
-													data: params.row.mblNo
-												});
+                                },
+                                [
+									h(
+										'span',
+										{
+											on: {
+												click: () => {
+													_this.syscommon_decrypt({
+														type: 'MBL',
+														data: params.row.mblNo
+													});
+												}
+											},
+											style: {
+												display: params.row.mblNoHid ? 'inline-block' : 'none'
 											}
 										},
-										class: 'eye-class'
-									})
+										[
+											h('Icon', {
+												props: {
+													type: 'eye'
+												},
+
+												class: 'eye-class'
+											})
+										]
+									)
 								]
+								
+								
 							)
 						]);
 					}
@@ -1658,24 +1779,29 @@ export default {
 				{
 					title: '操作',
 					align: 'center',
-					width: 100,
 					key: 'edit',
 					render: (h, params) => {
-						return h('div', [
-							h(
-								'Icon',
-								{
-									style: {
-										display: _this.readType !== 'read' ? 'inline-block' : 'none'
-									},
-									class: 'edit-btn',
-									props: {
-										type: 'edit'
+                        return h('div', 
+                        [
+							h('span',{
+                                style: {
+									display: _this.readType !== 'read' ? 'inline-block' : 'none'
+                                },
+                                on: {
+									click: () => {
+										_this.handCall(params.row, null, '03');
 									}
+								}
+                            },[h('Icon', {
+								
+								class: 'edit-btn',
+								props: {
+									type: 'edit'
 								},
-								'编辑'
-							)
-						]);
+								
+							})])
+                        ]
+                        );
 					}
 				}
 			]

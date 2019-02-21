@@ -642,14 +642,14 @@
             >
               <div>
                 <div
-                  @click="isShow"
+                 
                   class="case-desc-close"
                 >
                   <Tooltip
                     content="收起"
                     placement="left"
                   >
-                    <Icon type="close-round"></Icon>
+                    <Icon  @click.native="isShow" type="close-round"></Icon>
                   </Tooltip>
                 </div>
                 <div class="ivu-alert-copy ivu-alert-info">
@@ -716,7 +716,7 @@
                     placement="left"
                   >
                     <Icon
-                      @click="handCall({
+                      @click.native="handCall({
                         callUserType:'01',
                          userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
                         userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
@@ -792,7 +792,7 @@
                     placement="left"
                   >
                     <Icon
-                      @click="handCall(item,null,'02')"
+                      @click.native="handCall(item,null,'02')"
                       class="edit"
                       type="edit"
                     ></Icon>
