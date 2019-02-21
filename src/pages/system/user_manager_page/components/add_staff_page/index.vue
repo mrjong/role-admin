@@ -39,7 +39,7 @@
                 v-for="item in organizationList"
                 :value="item.id"
                 :key="item.id"
-              >{{ item.text }}</Option>
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -117,7 +117,7 @@
                 v-for="(item,index) in companyList"
                 :value="item.id"
                 :key="item"
-              >{{ item.text }}</Option>
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -130,7 +130,7 @@
               clearable
               placeholder="请选择部门"
             >
-              <Option v-for="item in departmentList" :value="item.id" :key="item.id">{{ item.text }}</Option>
+              <Option v-for="item in departmentList" :value="item.id" :key="item.id">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -166,6 +166,17 @@
             <Input size="small" v-model="addStaffFormItem.email"></Input>
           </FormItem>
         </Col>
+        <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
+          <FormItem span="4" label="说明:">
+            <Input
+              type="textarea"
+              size="small"
+              :maxlength="100"
+              v-model="addStaffFormItem.remark"
+              placeholder="请输入100字以内"
+            ></Input>
+          </FormItem>
+        </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
           <FormItem>
             <Button
@@ -194,6 +205,7 @@ import {
   collect_user_leader_add,
   collect_list_leader,
   collect_user_list,
+  collect_parent_children,
   system_role_list,
   collect_user_check
 } from "@/service/getData";
@@ -298,10 +310,11 @@ export default {
         break;
       case "02":
         this.collect_user_list("02");
+        this.collect_user_list("03");
         this.system_role_list();
         this.addStaffFormItem = {
           parentUuid: this.parentData.nodeData.id,
-          companyId: this.parentData.nodeData.companyId
+          companyId: this.parentData.nodeData.id
         };
         break;
       case "03":
@@ -319,6 +332,7 @@ export default {
   },
   watch: {
     parentData() {
+      console.log(this.parentData);
       switch (this.parentData.type) {
         case "01":
           this.addLeaderFormItem = {
@@ -330,10 +344,11 @@ export default {
           break;
         case "02":
           this.collect_user_list("02");
+          this.collect_user_list("03");
           this.system_role_list();
           this.addStaffFormItem = {
             parentUuid: this.parentData.nodeData.id,
-            companyId: this.parentData.nodeData.companyId
+            companyId: this.parentData.nodeData.id
           };
           break;
         case "03":
@@ -352,7 +367,7 @@ export default {
   methods: {
     cancelStatus() {
       console.log(this.$parent);
-      this.$parent.roleModal = false;
+      this.$parent.$parent.$parent.roleModal = false;
     },
     // 提交保存修改
     handleSubmit(type, name) {
@@ -387,22 +402,23 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    // 查询上级机构
-    async collect_user_list(type) {
-      const res = await collect_user_list({
+    // 查询机构，公司，部门
+    async collect_user_list(type, parent) {
+      const res = await collect_parent_children({
         status: "1",
-        leafType: type
+        leafType: type,
+        parentId: parent || ""
       });
       if (res.code === 1) {
         switch (type) {
           case "01":
-            this.organizationList = res.data.data;
+            this.organizationList = res.data;
             break;
           case "02":
-            this.companyList = res.data.data;
+            this.companyList = res.data;
             break;
           case "03":
-            this.departmentList = res.data.data;
+            this.departmentList = res.data;
             break;
         }
       } else {
@@ -432,6 +448,7 @@ export default {
       console.log(res);
       if (res.code === 1) {
         this.$Message.success("添加成功");
+        this.$parent.$parent.$parent.roleModal = false;
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
@@ -446,6 +463,7 @@ export default {
       console.log(res);
       if (res.code === 1) {
         this.$Message.success("添加成功");
+        this.$parent.$parent.$parent.roleModal = false;
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);

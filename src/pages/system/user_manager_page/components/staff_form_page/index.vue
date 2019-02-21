@@ -343,13 +343,8 @@ export default {
       companyId: this.parentData.nodeData.companyId,
       outfitId: this.parentData.nodeData.outfitId,
       roleId: this.parentData.nodeData.roleId,
-      seatType: this.parentData.nodeData.seatType,
-      callno: this.parentData.nodeData.callno,
       createUser: this.parentData.nodeData.createUser,
-      createTime: this.parentData.nodeData.createTime,
       updateUser: this.parentData.nodeData.updateUser,
-      updateTime: this.parentData.nodeData.updateTime,
-      remark: this.parentData.nodeData.remark,
       parentUuid: this.parentData.nodeData.parentUuid,
       status: String(this.parentData.nodeData.status)
     };
@@ -364,16 +359,12 @@ export default {
         companyId: this.parentData.nodeData.companyId,
         outfitId: this.parentData.nodeData.outfitId,
         roleId: this.parentData.nodeData.roleId,
-        seatType: this.parentData.nodeData.seatType,
-        callno: this.parentData.nodeData.callno,
         createUser: this.parentData.nodeData.createUser,
-        createTime: this.parentData.nodeData.createTime,
         updateUser: this.parentData.nodeData.updateUser,
-        updateTime: this.parentData.nodeData.updateTime,
-        remark: this.parentData.nodeData.remark,
         parentUuid: this.parentData.nodeData.parentUuid,
         status: String(this.parentData.nodeData.status)
       };
+      this.collect_user_clerk_info(this.parentData.nodeData.name);
     }
   },
   methods: {
@@ -480,13 +471,18 @@ export default {
     async collect_user_clerk_info(name) {
       const res = await collect_user_clerk_info({
         loginName: this.parentData.nodeData.loginName,
-        parentUuid: this.parentData.nodeData.parentUuid,
+        parentUuid: this.parentData.nodeData.parentUuid
       });
       if (res.code === 1) {
         console.log(res);
         this.staffFormItem.email = res.data.email;
         this.staffFormItem.mobile = res.data.mobile;
         this.staffFormItem.seatType = res.data.seatType;
+        this.staffFormItem.callno = res.data.callno;
+        this.staffFormItem.remark = res.data.remark;
+        this.staffFormItem.createTime = res.data.createTime?this.$options.filters['formatDate'](res.data.createTime, 'YYYY-MM-DD HH:mm:ss'): res.data.createTime;
+        this.staffFormItem.updateTime = res.data.updateTime?this.$options.filters['formatDate'](res.data.updateTime, 'YYYY-MM-DD HH:mm:ss'): res.data.updateTime;
+        console.log(this.staffFormItem)
       } else {
         this.$Message.error(res.message);
       }

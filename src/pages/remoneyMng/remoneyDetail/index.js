@@ -10,20 +10,20 @@ export default {
     var widthMidVal = 100;
     let $this = this;
     return {
-      getDirList: ['PAY_OFF_STS','ROLE_TYPE'],
+      getDirList: ['PAY_OFF_STS', 'ROLE_TYPE'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
       opCompanyNameList: [],
       startRepayDateRange: '', //实际还款日期区间
       shouldRepayDate: '',
-      summary:{},
+      summary: {},
       formValidate: {
-        startRepayDate : '', // 实际还款起始日期
+        startRepayDate: '', // 实际还款起始日期
         endRepayDate: '', //实际还款结束日期
-        startDueDate: "" , //应还款日期起始
-        endDueDate:'',// 应还款日期结束
-        caseNo:'', // 案件编码
+        startDueDate: "", //应还款日期起始
+        endDueDate: '',// 应还款日期结束
+        caseNo: '', // 案件编码
         billNo: '', //账单号
         opUserName: '', //经办人
         opCompayName: '', // 电催中心,
@@ -67,7 +67,8 @@ export default {
         {
           type: 'selection', // 通过给columns 数据设置 type:'selection'即可自动开启多选功能
           width: 60,
-          align: alignCenter
+          align: alignCenter,
+          fixed: 'left'
         },
         {
           title: '序号',
@@ -100,10 +101,10 @@ export default {
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal,
-          render(h,params){
+          render(h, params) {
             let res = params.row.repayAmt;
             res = res ? $this.$options.filters['money'](res) : res;
-            return h('span',res);
+            return h('span', res);
           }
         },
         {
@@ -112,11 +113,11 @@ export default {
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal,
-          render(h,params){
+          render(h, params) {
             const row = params.row;
             const res = row.repayOrdTypName;
-            console.log(row,'nmnnmnmnm');
-            return h('span',res);
+            console.log(row, 'nmnnmnmnm');
+            return h('span', res);
           }
         },
         {
@@ -125,11 +126,11 @@ export default {
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal,
-          render(h,params){
+          render(h, params) {
             const row = params.row;
-            const res = row.payOffStsName ;
-            console.log(row,'nmnnmnmnm');
-            return h('span',res);
+            const res = row.payOffStsName;
+            console.log(row, 'nmnnmnmnm');
+            return h('span', res);
           }
         },
         {
@@ -155,9 +156,9 @@ export default {
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal,
-          render(h,params){
+          render(h, params) {
             const row = params.row;
-            const prdTypName = row.prdTypName ;
+            const prdTypName = row.prdTypName;
             return h('span', prdTypName);
           }
         },
@@ -254,41 +255,47 @@ export default {
   },
   methods: {
     // 导出数据
-    async exportData(){
-      if(this.tableData.length === 0){
+    async exportData() {
+      if (this.tableData.length === 0) {
         this.$Message.info('当前无数据，无法导入');
-        return ;
+        return;
       }
-      const res= await repay_repayDetail_exportDown({
-        ...this.formValidate
-      });
+      const res = await repay_repayDetail_exportDown(
+        {
+          ...this.formValidate
+        },
+        {
+          timeout: 90000,
+          responseType: "blob"
+        }
+      );
       util.dowloadfile('回款明细', res);
     },
-    async getLeafList(){
+    async getLeafList() {
       let res = await getLeafTypeList({
         leafType: '02',
       });
-      if(res && res.code === 1){
-        console.log(res,'电催中心的接口结果');
+      if (res && res.code === 1) {
+        console.log(res, '电催中心的接口结果');
         this.opCompanyNameList = res.data;
       }
     },
     // 改变日期区间的格式之后进行处理
     changeActDate(val1, val2) {
-      console.log(val1,val2);
+      console.log(val1, val2);
       this.formValidate.startRepayDate = val1[0];
       this.formValidate.endRepayDate = val1[1];
       console.log('123', this.formValidate);
 
       //this.formValidate.startAndend[1].Date('yyyy-MM-dd');
     },
-    changeDueDate(val1,val2){
+    changeDueDate(val1, val2) {
       this.formValidate.startDueDate = val1[0];
       this.formValidate.endDueDate = val1[1];
     },
     // 页码改变的回调
     changePage(pageNo) { //默认带入一个参数是当前的页码数
-      console.log(pageNo,'当前的页码数量值');
+      console.log(pageNo, '当前的页码数量值');
       this.pageNo = pageNo;
       this.getList();
     },
@@ -308,12 +315,12 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      let res= await repay_repayDetail_list({
+      let res = await repay_repayDetail_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formValidate
       })
-      if(res && res.code === 1){
+      if (res && res.code === 1) {
         this.$Message.success('请求成功!');
         let data = res.data;
         this.tableData = data.page.content;
@@ -321,7 +328,7 @@ export default {
         this.summary = data.summary;
         //data.page.size  数据的大小
         //data.page.numberOfElements  当前页面实际返回的数量
-      } else{
+      } else {
         this.$Message.error(res.message);
       }
       // 试着处理数据和分页组件之间的关系,

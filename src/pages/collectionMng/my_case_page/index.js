@@ -365,7 +365,8 @@ export default {
 					...this.formItem
 				},
 				{
-					responseType: 'blob'
+          responseType: 'blob',
+          timeout: 90000,
 				}
 			);
 			util.dowloadfile('我的案件', res);

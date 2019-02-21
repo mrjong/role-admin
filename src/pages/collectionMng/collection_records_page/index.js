@@ -259,13 +259,11 @@ export default {
           id: id,
         },
         {
-          responseType: 'blob'
+          responseType: 'blob',
+          timeout: 90000,
         }
       );
-      console.log(util.dowloadAudio(res));
       this.playerOptions.sources[0].src = util.dowloadAudio(res);
-      // this.playerOptions.sources[0].src = "http://172.18.40.250:8031/6bd0819c-ece5-426a-9aa2-51d3d4cf8350";
-      console.log(res);
     },
     ok() {
       this.$Message.info('Clicked ok');

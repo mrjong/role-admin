@@ -267,8 +267,6 @@
 <script src="./index.js"></script>
 <style lang="less">
   .tableBox {
-    overflow-x: scroll ;
-    overflow-y: hidden;
     .tableMainW {
       min-width: 400px;
     }
