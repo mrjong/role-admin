@@ -34,6 +34,8 @@ export default {
       }
       callback();
     };
+    let _this = this;
+
     return {
       getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PAY_OFF_STS'],
       getDirObj: {},
@@ -189,9 +191,8 @@ export default {
                       class: 'edit-desc',
                       on: {
                         click: () => {
-                          let _this = this;
                           window.open(
-                            `${location.origin}/#/case_desc_page?caseNotest=${id}&prdTyptest=${prdTyp}&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+                            `${location.origin}/#/case_desc_page?caseNotest=${id}&prdTyptest=${prdTyp}&readType=read&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
                               _this.formItem
                             )}`
                           );

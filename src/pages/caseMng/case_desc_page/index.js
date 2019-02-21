@@ -25,7 +25,9 @@ import {
 	collectcode_getCollectRelate, // 获取沟通状态
 	call_kt_hung_on, // 客天外拨
 	call_moor_hung_on, // 容联外拨
-	syscommon_decrypt // 明文展示
+	syscommon_decrypt, // 明文展示
+	case_collect_case_list, // 我的案件
+	case_list
 } from '@/service/getData';
 export default {
 	name: 'case_desc',
@@ -43,6 +45,7 @@ export default {
 			objCopy: {},
 			mingwenData: '',
 			parentData: {},
+			case_collect_case_list_data: {},
 			prdTyp: '',
 			userNm: '',
 			modal: {
@@ -491,7 +494,7 @@ export default {
 					key: 'crdNoHid',
 					render: (h, params) => {
 						return h('div', [
-							h('span', {}, params.row.crdNoHid),
+							h('span', {}, params.row.crdNoHid)
 							// h(
 							// 	'Poptip',
 							// 	{
@@ -1682,7 +1685,8 @@ export default {
 		delete queryData.caseNotest;
 		delete queryData.prdTyptest;
 		delete queryData.seatType;
-		delete queryData.userIdtest;
+        delete queryData.userIdtest;
+        delete queryData.readType;
 		this.queryData = queryData;
 		// 催收信息
 		this.case_detail_remark_list(); // 催收信息
@@ -1692,8 +1696,43 @@ export default {
 		this.collectcode_getCollectRelate(); // 获取沟通状态
 		this.case_detail_mail_statistics_list(); // 通话统计
 		this.case_detail_case_identity_info(); // 查询案件详情身份信息
+		if (queryData.readType === 'edit') {
+			this.case_collect_case_list(); // 我的案件
+		} else {
+			this.case_list(); // 案件查询
+		}
 	},
 	methods: {
+		// 获取表格数据
+		async case_list() {
+			const res = await case_list({
+				...this.queryData,
+                id: this.caseNo,
+                pageNum:1
+			});
+			console.log(res);
+			if (res.code === 1) {
+				this.case_collect_case_list_data =
+					res.data && res.data.page && res.data.page.content && res.data.page.content[0];
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
+		// 获取表格数据
+		async case_collect_case_list() {
+			console.log(this.queryData, '---------------');
+			const res = await case_collect_case_list({
+				...this.queryData,
+                id: this.caseNo,
+                pageNum:1
+			});
+			if (res.code === 1) {
+				this.case_collect_case_list_data =
+					res.data && res.data.page && res.data.page.content && res.data.page.content[0];
+			} else {
+				this.$Message.error(res.message);
+			}
+		},
 		call(obj) {
 			var config = {
 				uname: obj.loginName,

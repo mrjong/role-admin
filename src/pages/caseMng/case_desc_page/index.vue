@@ -158,19 +158,17 @@
             :disabled="btnDisable"
           >申请减免</Button>
           <Button
-            v-if="readType!=='read'"
             class="fr vue-back-btn header-btn"
             type="primary"
-            @click.stop="nextCase(case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.downCaseNo)"
-            :disabled="btnDisable||case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.downCaseNo"
+            @click.stop="nextCase(case_collect_case_list_data&&case_collect_case_list_data.downCaseNo)"
+            :disabled="btnDisable||!case_collect_case_list_data||!case_collect_case_list_data.downCaseNo"
             size="small"
           >下一个</Button>
           <Button
-            v-if="readType!=='read'"
             class="fr vue-back-btn header-btn"
             type="primary"
-            @click.stop="nextCase(case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.upCaseNo)"
-            :disabled="btnDisable||case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.upCaseNo"
+            @click.stop="nextCase(case_collect_case_list_data&&case_collect_case_list_data.upCaseNo)"
+            :disabled="btnDisable||!case_collect_case_list_data||!case_collect_case_list_data.upCaseNo"
             size="small"
           >上一个</Button>
         </p>
