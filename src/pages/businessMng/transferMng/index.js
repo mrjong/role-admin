@@ -268,7 +268,7 @@ export default {
     // 获取表格数据
     async getList() {
       let res= await deduct_list({
-        pageNo: this.pageNo,
+        pageNum: this.pageNo,
         pageSize: this.pageSize,
         //repayOrdTyp: this.repayOrdTyp,
         ...this.formValidate
