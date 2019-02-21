@@ -5,7 +5,7 @@
       <Col span="8" class="tree-col">
         <Card class="vue-panel tree-card">
           <p slot="title">
-            <Icon :type="!showPanel?'chevron-down':'chevron-up'" @click="showPanel=!showPanel"></Icon>菜单
+            <Icon :type="!showPanel?'chevron-down':'chevron-up'" @click="showPanel=!showPanel"></Icon> 菜单
             <!-- <router-link to="/demo/demo_desc">
               <Button class="fr vue-back-btn header-btn" type="primary" size="small">详情</Button>
             </router-link>-->
@@ -33,27 +33,28 @@
           <p slot="title">修改信息</p>
           <!-- 菜单项详情 -->
           <Form ref="menuFormItem" :model="menuFormItem" :label-width="90" :rules="ruleValidate1">
-            <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+            <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="菜单名称:" prop="text">
                 <Input size="small" clearable v-model="menuFormItem.text" placeholder="请输入菜单名称"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="位置:" prop="sort">
-                <Input size="small" v-model="menuFormItem.sort" placeholder="请输入位置"></Input>
+                <Input size="small" v-model="menuFormItem.sort" clearable placeholder="请输入位置"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="URL:" prop="url">
-                <Input size="small" v-model="menuFormItem.url" placeholder="请输入url"></Input>
+                <Input size="small" v-model="menuFormItem.url" clearable placeholder="请输入url"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="图标:">
-                <Input size="small" v-model="menuFormItem.icon" disabled placeholder="请选择图标"></Input>
-                <Button type="primary" size="small" @click="showIconList(1)">选择图标</Button>
+                <Input size="small" v-model="menuFormItem.icon" disabled clearable placeholder="请选择图标"></Input>
+                <Button :icon="menuFormItem.icon" type="primary" size="small" @click="showIconList(1)">选择图标</Button>
               </FormItem>
             </Col>
+           
             <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
               <FormItem>
                 <Button type="ghost" size="small" @click="cancel">取消</Button>
@@ -74,25 +75,25 @@
             :label-width="90"
             :rules="ruleValidate2"
           >
-            <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+            <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="菜单名称:" prop="text">
-                <Input size="small" clearable v-model="menuAddFormItem.text" placeholder="请输入菜单名称"></Input>
+                <Input size="small" clearable v-model="menuAddFormItem.text" clearable placeholder="请输入菜单名称"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="位置:" prop="sort">
-                <Input size="small" v-model="menuAddFormItem.sort" placeholder="请输入位置"></Input>
+                <Input size="small" v-model="menuAddFormItem.sort" clearable placeholder="请输入位置"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="URL:" prop="url">
-                <Input size="small" v-model="menuAddFormItem.url" placeholder="请输入url"></Input>
+                <Input size="small" v-model="menuAddFormItem.url" clearable placeholder="请输入url"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="图标:">
-                <Input size="small" v-model="menuAddFormItem.icon" disabled placeholder="请选择图标"></Input>
-                <Button type="primary" size="small" @click="showIconList(0)">选择图标</Button>
+                <Input size="small" v-model="menuAddFormItem.icon" clearable disabled placeholder="请选择图标"></Input>
+                <Button  :icon="menuAddFormItem.icon" type="primary" size="small" @click="showIconList(0)">选择图标</Button>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
