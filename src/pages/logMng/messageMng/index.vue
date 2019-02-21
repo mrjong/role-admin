@@ -68,7 +68,7 @@
               size="small"
               clearable
               v-model="formItem.operIp"
-              placeholder="请输入操作人IP"
+              placeholder="请输入账单ID"
             ></Input>
           </FormItem>
           </Col>
@@ -156,13 +156,13 @@
             ></Page>
           </div>
         </div>
-        <Modal v-model="modalSee" title="案件日志"  class="role-modal">
+        <Modal v-model="modalSee" title="消息日志"  class="role-modal" width="700px">
           <Card class="vue-panel panel_list" :dis-hover="true" style="border: none">
             <Form
               v-if="!showPanel"
               ref="formValidate"
               :model="formValidate"
-              :label-width="90"
+              :label-width="140"
               :rules="ruleValidate"
             >
               <Row class="eachRow">
@@ -172,7 +172,7 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="消息类型:">
+                <FormItem label="消息类型:" style="margin-left: 20px">
                   <Input
                     disabled
                     size="small"
@@ -188,8 +188,8 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="消息内容:">
-                  <Input disabled size="small" v-model="formValidateInfo.msgContent" placeholder></Input>
+                <FormItem label="消息内容:" style="margin-left: 20px">
+                  <Input disabled size="small" v-model="formValidateInfo.msgContent" placeholder ></Input>
                 </FormItem>
                 </Col>
               </Row>
@@ -200,7 +200,7 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="接收用户ID:">
+                <FormItem label="接收用户ID:" style="margin-left: 20px">
                   <Input disabled size="small" v-model="formValidateInfo.receiveUserId" placeholder></Input>
                 </FormItem>
                 </Col>
@@ -212,7 +212,7 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem span="6" prop="mblNo" label="内容类型:">
+                <FormItem span="6" prop="mblNo" label="内容类型:" style="margin-left: 20px">
                   <Input disabled size="small" v-model="formValidateInfo.messageContentTypeName" placeholder></Input>
                 </FormItem>
                 </Col>
@@ -224,7 +224,7 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem span="6" prop="mblNo" label="消息备注:">
+                <FormItem span="6" prop="mblNo" label="消息备注:" style="margin-left: 20px">
                   <Input disabled size="small" v-model="formValidateInfo.remark" placeholder></Input>
                 </FormItem>
                 </Col>
@@ -236,7 +236,7 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem span="6" prop="mblNo" label="消息发送人姓名:">
+                <FormItem span="6" prop="mblNo" label="消息发送人姓名:" style="margin-left: 20px">
                   <Input disabled size="small" v-model="formValidateInfo.sendUserName" placeholder></Input>
                 </FormItem>
                 </Col>
@@ -248,7 +248,7 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem span="6" prop="mblNo" label="消息发送时间:">
+                <FormItem span="6" prop="mblNo" label="消息发送时间:" style="margin-left: 20px">
                   <Input disabled size="small" v-model="formValidateInfo.sendTime" placeholder></Input>
                 </FormItem>
                 </Col>
@@ -260,7 +260,7 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem span="6" prop="mblNo" label="消息来源系统简称:">
+                <FormItem span="6" prop="mblNo" label="消息来源系统简称:" style="margin-left: 20px">
                   <Input disabled size="small" v-model="formValidateInfo.srcSys" placeholder></Input>
                 </FormItem>
                 </Col>

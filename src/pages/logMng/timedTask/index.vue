@@ -137,13 +137,13 @@
             ></Page>
           </div>
         </div>
-        <Modal v-model="modalSee" title="案件日志"  class="role-modal">
+        <Modal v-model="modalSee" title="定时日志"  class="role-modal">
           <Card class="vue-panel panel_list" :dis-hover="true" style="border: none">
             <Form
               v-if="!showPanel"
               ref="formValidate"
               :model="formValidate"
-              :label-width="90"
+              :label-width="100"
               :rules="ruleValidate"
             >
               <Row class="eachRow">
@@ -224,7 +224,10 @@
       min-width: 400px;
     }
   }
-  /*.ivu-form-item-content{*/
-  /*margin-left: 0 !important;*/
-  /*}*/
+  .ivu-form-item-label {
+    width: 100px !important;
+  }
+  .ivu-form-item-content{
+  margin-left: 100px !important;
+  }
 </style>

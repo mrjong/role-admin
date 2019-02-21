@@ -47,7 +47,7 @@
           >
             <Select size="small" filterable v-model="formItem.operType" placeholder="请输入枚举类型">
               <Option
-                v-for="item in getDirObj.OPER_TYPE"
+                v-for="item in getDirObj.CASE_OPER_TYPE"
                 :value="item.itemCode"
                 :key="item.itemCode"
               >{{ item.itemName }}</Option>
@@ -238,7 +238,7 @@
         showPanel: false,
         showPanel2: false,
         operTime:[],
-        getDirList: ['OPER_TYPE'],
+        getDirList: ['CASE_OPER_TYPE'],
         getDirObj: {},
         modalSee: false,
         formItem: {
@@ -275,7 +275,7 @@
             key: 'operRemark',
             className: 'tableMainW',
             align: alignCenter,
-            width: widthVal
+            width: 250,
           },
           {
             title: '操作人ID',
@@ -283,7 +283,7 @@
             key: 'operUser',
             className: 'tableMainW',
             align: alignCenter,
-            width: widthVal
+            width: 250,
           },
           {
             title: '操作人名称',
@@ -394,6 +394,7 @@
         this.formItem = {};
         this.operTime=[],
         this.$refs[name].resetFields();
+        this.getList();
       },
       //查看详情
       handleDetail( obj) {

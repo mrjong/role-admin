@@ -136,7 +136,7 @@
             ></Page>
           </div>
         </div>
-        <Modal v-model="modalSee" title="案件日志"  class="role-modal">
+        <Modal v-model="modalSee" title="系统日志"  class="role-modal">
           <Card class="vue-panel panel_list" :dis-hover="true" style="border: none">
             <Form
               v-if="!showPanel"
@@ -188,7 +188,7 @@
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="操作描述:">
-                  <Input disabled size="small" v-model="formValidateInfo.operDesc" placeholder></Input>
+                  <Input disabled size="small" v-model="formValidateInfo.operDesc" placeholder ></Input>
                 </FormItem>
                 </Col>
                 <Col span="12">
