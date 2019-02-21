@@ -168,107 +168,103 @@
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem label="案件编号:">
-                  <Input size="small" v-model="formValidateInfo.caseNo"  disabled></Input>
+                  <span class="desc-label-item">{{formValidateInfo.caseNo}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem label="消息类型:" style="margin-left: 20px">
-                  <Input
-                    disabled
-                    size="small"
-                    v-model="formValidateInfo.msgTypeName"
-                  ></Input>
+                  <span class="desc-label-item">{{formValidateInfo.msgTypeName}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem label="接收标识:">
-                  <Input disabled size="small" v-model="formValidateInfo.msgFlgName" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.msgFlgName}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem label="消息内容:" style="margin-left: 20px">
-                  <Input disabled size="small" v-model="formValidateInfo.msgContent" placeholder ></Input>
+                  <span class="desc-label-item">{{formValidateInfo.msgContent}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem label="账单ID:">
-                  <Input disabled size="small" v-model="formValidateInfo.billNo" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.billNo}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem label="接收用户ID:" style="margin-left: 20px">
-                  <Input disabled size="small" v-model="formValidateInfo.receiveUserId" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.receiveUserId}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="接收手机号掩码:">
-                  <Input disabled size="small" v-model="formValidateInfo.receiveUserMobHid" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.receiveUserMobHid}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="内容类型:" style="margin-left: 20px">
-                  <Input disabled size="small" v-model="formValidateInfo.messageContentTypeName" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.messageContentTypeName}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="消息提醒:">
-                  <Input disabled size="small" v-model="formValidateInfo.messagePurposeName" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.messagePurposeName}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="消息备注:" style="margin-left: 20px">
-                  <Input disabled size="small" v-model="formValidateInfo.remark" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.remark}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="消息发送人ID:">
-                  <Input disabled size="small" v-model="formValidateInfo.sendUserId" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.sendUserId}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="消息发送人姓名:" style="margin-left: 20px">
-                  <Input disabled size="small" v-model="formValidateInfo.sendUserName" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.sendUserName}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="发送类型:">
-                  <Input disabled size="small" v-model="formValidateInfo.messageSendTypeName" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.messageSendTypeName}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="消息发送时间:" style="margin-left: 20px">
-                  <Input disabled size="small" v-model="formValidateInfo.sendTime" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.sendTime}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="创建时间:">
-                  <Input disabled size="small" v-model="formValidateInfo.createTime" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.createTime}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="消息来源系统简称:" style="margin-left: 20px">
-                  <Input disabled size="small" v-model="formValidateInfo.srcSys" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.srcSys}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="存储对应接收标识内容:" >
-                  <Input disabled size="small" v-model="formValidateInfo.msgFlgContent" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.msgFlgContent}}</span>
                 </FormItem>
                 </Col>
               </Row>
@@ -291,10 +287,12 @@
       min-width: 400px;
     }
   }
-  .role-modal .ivu-modal-body {
-    margin-left: -16px ;
+  .role-modal .ivu-form-item-label{
+    color: #000;
+    font-weight: 500;
   }
-  /*.ivu-form-item-content{*/
-  /*margin-left: 0 !important;*/
-  /*}*/
+  .desc-label-item {
+    vertical-align: middle;
+    line-height: 38px;
+  }
 </style>

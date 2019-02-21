@@ -157,7 +157,7 @@
             ></Page>
           </div>
         </div>
-        <Modal v-model="modalSee" title="案件日志"  class-name="role-modal">
+        <Modal v-model="modalSee" title="案件日志"  class-name="role-modal" width="700px">
           <Card class="vue-panel panel_list" :dis-hover="true" style="border: none">
             <Form
               v-if="!showPanel"
@@ -169,47 +169,43 @@
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem label="案件编号:">
-                  <Input size="small" v-model="formValidateInfo.caseNo"  disabled></Input>
+                  <span class="desc-label-item">{{formValidateInfo.caseNo}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem label="枚举类型:">
-                  <Input
-                    disabled
-                    size="small"
-                    v-model="formValidateInfo.operTypeName"
-                  ></Input>
+                  <span class="desc-label-item">{{formValidateInfo.operTypeName}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem label="操作描述:">
-                  <Input disabled size="small" v-model="formValidateInfo.operRemark" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.operRemark}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem label="操作人ID:">
-                  <Input disabled size="small" v-model="formValidateInfo.operUser" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.operUser}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem label="操作人名称:">
-                  <Input disabled size="small" v-model="formValidateInfo.operName" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.operName}}</span>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem label="操作时间:">
-                  <Input disabled size="small" v-model="formValidateInfo.operTime" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.operTime}}</span>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow">
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="操作人IP:">
-                  <Input disabled size="small" v-model="formValidateInfo.operIp" placeholder></Input>
+                  <span class="desc-label-item">{{formValidateInfo.operIp}}</span>
                 </FormItem>
                 </Col>
               </Row>
@@ -417,7 +413,12 @@
       min-width: 400px;
     }
   }
-  .role-modal .ivu-modal-body {
-    margin-left: -16px ;
+  .role-modal .ivu-form-item-label{
+    color: #000;
+    font-weight: 500;
+  }
+  .desc-label-item {
+    vertical-align: middle;
+    line-height: 38px;
   }
 </style>
