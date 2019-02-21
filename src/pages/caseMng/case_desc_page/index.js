@@ -1686,6 +1686,11 @@ export default {
 		delete queryData.prdTyptest;
 		delete queryData.seatType;
         delete queryData.userIdtest;
+        if (queryData.readType === 'edit') {
+			this.case_collect_case_list(); // 我的案件
+		} else {
+			this.case_list(); // 案件查询
+		}
         delete queryData.readType;
 		this.queryData = queryData;
 		// 催收信息
@@ -1696,11 +1701,7 @@ export default {
 		this.collectcode_getCollectRelate(); // 获取沟通状态
 		this.case_detail_mail_statistics_list(); // 通话统计
 		this.case_detail_case_identity_info(); // 查询案件详情身份信息
-		if (queryData.readType === 'edit') {
-			this.case_collect_case_list(); // 我的案件
-		} else {
-			this.case_list(); // 案件查询
-		}
+		
 	},
 	methods: {
 		// 获取表格数据
