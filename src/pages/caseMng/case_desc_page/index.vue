@@ -255,12 +255,12 @@
             >
               <div class="demo-upload-list">
                 <img
-                  :src="item.imgPath"
+                  :src="`/admin/img/mark/${item.imgPath}`"
                   style="vertical-align: top;"
                 >
                 <div
                   class="demo-upload-list-cover"
-                  @click="handleView(item.imgPath)"
+                  @click="handleView(`/admin/img/mark/${item.imgPath}`)"
                 >
                   <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
                 </div>
@@ -664,19 +664,19 @@
                     </span>
                     {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}
                     <Poptip
-                  :content="mingwenData"
-                  v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
-                >
-                  <Icon
-                    class="eye-class"
-                    title="显示明文"
-                    type="eye"
-                    @click="syscommon_decrypt({
+                      :content="mingwenData"
+                      v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
+                    >
+                      <Icon
+                        class="eye-class"
+                        title="显示明文"
+                        type="eye"
+                        @click="syscommon_decrypt({
                 type:'NAME',
                 data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm
             })"
-                  ></Icon>
-                </Poptip>
+                      ></Icon>
+                    </Poptip>
                     <span>（本人）</span>
                   </span>
                   <span
@@ -698,19 +698,19 @@
                     </Tooltip>
                   </span>
                   <Poptip
-                  :content="mingwenData"
-                  v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid"
-                >
-                  <Icon
-                    class="eye-class"
-                    title="显示明文"
-                    type="eye"
-                    @click="syscommon_decrypt({
+                    :content="mingwenData"
+                    v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid"
+                  >
+                    <Icon
+                      class="eye-class"
+                      title="显示明文"
+                      type="eye"
+                      @click="syscommon_decrypt({
                 type:'MBL',
                 data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
             })"
-                  ></Icon>
-                </Poptip>
+                    ></Icon>
+                  </Poptip>
                   <span class="state">
                     关机
                   </span>
@@ -742,7 +742,22 @@
                     紧急联系人
                   </span>
                   <span class="name">
-                    {{item.cntUserNameHid}}<span>（{{item.cntRelTypName}}）</span>
+                    {{item.cntUserNameHid}}
+                    <Poptip
+                      :content="mingwenData"
+                      v-if="item&&item.cntUserNameHid"
+                    >
+                      <Icon
+                        class="eye-class"
+                        title="显示明文"
+                        type="eye"
+                        @click="syscommon_decrypt({
+                type:'NAME',
+                data:item&&item.cntUserName
+            })"
+                      ></Icon>
+                    </Poptip>
+                    <span>（{{item.cntRelTypName}}）</span>
                   </span>
                   <span
                     class="tel"
@@ -755,6 +770,20 @@
                       {{item.cntUserMblNoHid}}
                     </Tooltip>
                   </span>
+                  <Poptip
+                    :content="mingwenData"
+                    v-if="item&&item.cntUserMblNoHid"
+                  >
+                    <Icon
+                      class="eye-class"
+                      title="显示明文"
+                      type="eye"
+                      @click="syscommon_decrypt({
+                type:'MBL',
+                data:item&&item.cntUserMblNo
+            })"
+                    ></Icon>
+                  </Poptip>
                   <span
                     class="state"
                     v-if="item.callStateName"
@@ -996,7 +1025,7 @@
                   prop="date"
                 >
                   <DatePicker
-                  placement="top"
+                    placement="top"
                     style="width:100%;"
                     size="small"
                     type="datetime"

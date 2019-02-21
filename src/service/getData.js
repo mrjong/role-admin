@@ -1322,6 +1322,6 @@ export const arb_operateRecord = (obj) =>
 // 图片展示
 export const img_mark = (obj) =>
 	fetch({
-		url: '/img/mark?imageSrcPath=' + obj.path,
+		url: '/img/mark/' + obj.path,
 		method: 'GET'
 	});

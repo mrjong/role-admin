@@ -71,7 +71,10 @@ export default {
       theme: this.$store.state.app.themeColor
     }
   },
-  mounted() {
+    created() {
+    if (localStorage.getItem('callData')) {
+      this.call(JSON.parse(localStorage.getItem('callData')))
+    }
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
@@ -81,6 +84,36 @@ export default {
   },
 
   methods: {
+    call(obj) {
+      var config = {
+        uname: obj.loginName,
+        pwd: obj.password,
+        debug: true,
+        isAutoAnswer: false,
+        stateListenerCallBack: this.stateCallback,
+        forceAnswerWhenRing: false, // 是否振铃自动接通
+        autoReady: true,
+        url: obj.url
+      };
+      CallHelper.init(config, this.initCallback);
+
+    },
+    /**
+* 设置状态监听回调
+*/
+    stateCallback(data) {
+      this.$store.commit('changeCallData', data)
+    },
+    /**
+    * 初始化方法回调是否成功
+    */
+    initCallback(data) {
+      if (data.successChange) {
+        console.log('您已登录成功！');
+      } else {
+        this.$Message.error('登录失败，请联系管理员！');
+      }
+    },
     answer() {
       CallHelper.answer((data) => {
         console.log(data);
@@ -102,9 +135,7 @@ export default {
       this.$refs.ring.pause();
     }
   },
-  created() {
 
-  },
   watch: {
     changeCallData(res) {
       if (res.msg) {
@@ -116,10 +147,10 @@ export default {
             this.showTel = false
             break;
           case 'RINGING':
-          console.log(localStorage.getItem('callObj'))
+            console.log(localStorage.getItem('callObj'))
             if (localStorage.getItem('callObj')) {
               let callObj = JSON.parse(localStorage.getItem('callObj'))
-                console.log(callObj)
+              console.log(callObj)
               this.telNoHid = callObj.telNoHid
               this.usrNameHid = callObj.usrNameHid
             }
