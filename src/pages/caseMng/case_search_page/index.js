@@ -318,9 +318,9 @@ export default {
           this.caseIds.push(element.id);
         });
         if (this.caseIds.length != 0) {
-          this.caseMounts = this.caseIds.length;
+          this.totalCase = this.caseIds.length;
         } else {
-          this.caseMounts = this.totalCase;
+          this.totalCase = this.totalCase;
         }
       console.log(this.caseIds);
     },
@@ -350,7 +350,7 @@ export default {
         {
           ...this.formItem,
           caseIds: this.caseIds,
-          preTotalCases: this.caseMounts,
+          preTotalCases: this.totalCase,
         },
         {
           responseType: 'blob',
@@ -416,6 +416,7 @@ export default {
         ...this.formItem,
         ...this.messageFormItem,
         caseIds: this.caseIds,
+        preTotalCases: this.totalCase,
       });
       if (res.code === 1) {
         this.getList();
