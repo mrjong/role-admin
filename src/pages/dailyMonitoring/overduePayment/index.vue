@@ -221,8 +221,8 @@ export default {
         {
           title: "案件状态",
           searchOperator: "=",
-          key: "dialout",
-          className: "caseHandleStatus",
+          key: "caseHandleStatus",
+          className: "tableMainW",
           align: alignCenter,
           width: widthVal
         },
