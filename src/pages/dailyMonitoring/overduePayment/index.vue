@@ -216,7 +216,7 @@ export default {
           key: "caseNo",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 200
         },
         {
           title: "案件状态",
@@ -237,9 +237,9 @@ export default {
         {
           title: "账单号",
           key: "billNo",
-          className: "billNo",
+          className: "tableMainW",
           align: alignCenter,
-          width: widthMidVal
+          width: 250
         },
         {
           title: "信用级别",
@@ -303,7 +303,7 @@ export default {
           key: "cardNoHid",
           className: "tableMainW",
           align: alignCenter,
-          width: widthMidVal
+          width: 150
         },
         {
           title: "银行名称",
