@@ -857,6 +857,13 @@ export const divide_allot_manual = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+// 一键分配里面查询案件量接口
+export const allot_manualcounts = (obj) =>
+  fetch({
+    url: '/divide/allot/manualcounts',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 
 // 案件状态启用，停用
 export const divide_rules_changeStatus = (obj) =>
@@ -1334,11 +1341,11 @@ export const arb_operateRecord = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-    // 图片转移
-export const  arb_uploadUrl  = (obj) =>
-fetch({
+// 图片转移
+export const arb_uploadUrl = (obj) =>
+  fetch({
     url: '/arb/uploadUrl ',
     method: 'POST',
     data: qs.stringify(obj)
-});
-   
+  });
+

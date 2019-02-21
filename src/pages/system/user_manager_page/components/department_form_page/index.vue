@@ -54,6 +54,26 @@
             </Select>
           </FormItem>
         </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+          <FormItem span="4" label="创建人:">
+            <Input size="small" v-model="departmentFormItem.createUser" disabled></Input>
+          </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+          <FormItem span="4" label="创建时间:">
+            <Input size="small" v-model="departmentFormItem.createTime" disabled></Input>
+          </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+          <FormItem span="4" label="修改人:">
+            <Input size="small" v-model="departmentFormItem.updateUser" disabled></Input>
+          </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+          <FormItem span="4" label="修改时间:">
+            <Input size="small" v-model="departmentFormItem.updateTime" disabled></Input>
+          </FormItem>
+        </Col>
         <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
           <FormItem span="4" label="说明:">
             <Input
@@ -125,9 +145,13 @@
 </template>
 
 <script>
-import { collect_outfit_update, collect_user_list, collect_status_change } from "@/service/getData";
+import {
+  collect_outfit_update,
+  collect_user_list,
+  collect_status_change
+} from "@/service/getData";
 export default {
-  props: ['parentData'],
+  props: ["parentData"],
   data() {
     return {
       modal: false,
@@ -161,10 +185,34 @@ export default {
     console.log(this.parentData);
     this.collect_user_list();
     this.departmentFormItem = this.parentData.nodeData;
+    this.departmentFormItem.createTime = this.parentData.nodeData.createTime
+      ? this.$options.filters["formatDate"](
+          this.parentData.nodeData.createTimee,
+          "YYYY-MM-DD HH:mm:ss"
+        )
+      : this.parentData.nodeData.createTime;
+    this.departmentFormItem.updateTime = this.parentData.nodeData.updateTime
+      ? this.$options.filters["formatDate"](
+          this.parentData.nodeData.updateTimee,
+          "YYYY-MM-DD HH:mm:ss"
+        )
+      : this.parentData.nodeData.updateTime;
   },
   watch: {
     parentData() {
       this.departmentFormItem = this.parentData.nodeData;
+      this.departmentFormItem.createTime = this.parentData.nodeData.createTime
+      ? this.$options.filters["formatDate"](
+          this.parentData.nodeData.createTimee,
+          "YYYY-MM-DD HH:mm:ss"
+        )
+      : this.parentData.nodeData.createTime;
+    this.departmentFormItem.updateTime = this.parentData.nodeData.updateTime
+      ? this.$options.filters["formatDate"](
+          this.parentData.nodeData.updateTimee,
+          "YYYY-MM-DD HH:mm:ss"
+        )
+      : this.parentData.nodeData.updateTime;
     }
   },
   methods: {
@@ -234,7 +282,7 @@ export default {
     },
     ok() {
       // this.$Message.info('Clicked ok');
-      this.collect_status_change()
+      this.collect_status_change();
     },
     cancel() {
       this.modal = false;
@@ -243,7 +291,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .ivu-col {
   margin-bottom: 5px;
 }

@@ -317,11 +317,11 @@ export default {
         selection.forEach((element) => {
           this.caseIds.push(element.id);
         });
-        if (this.caseIds.length != 0) {
-          this.totalCase = this.caseIds.length;
-        } else {
-          this.totalCase = this.totalCase;
-        }
+      if (this.caseIds.length != 0) {
+        this.totalCase = this.caseIds.length;
+      } else {
+        this.totalCase = this.totalCase;
+      }
       console.log(this.caseIds);
     },
     // 页码改变的回调
@@ -399,7 +399,7 @@ export default {
       this.$refs[name].resetFields();
     },
     // 站内信发送的取消按钮
-    cancel () {
+    cancel() {
       this.messageFlag = false;
       this.messageFormItem = {};
     },
@@ -419,6 +419,8 @@ export default {
         preTotalCases: this.totalCase,
       });
       if (res.code === 1) {
+        this.messageFlag = false;
+        this.messageFormItem = {};
         this.getList();
       } else {
         this.$Message.error(res.message);

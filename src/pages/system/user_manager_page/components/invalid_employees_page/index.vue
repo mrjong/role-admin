@@ -84,7 +84,6 @@
         @on-ok="ok"
         @on-cancel="cancel"
         width="500"
-        :transfer="false"
         :mask-closable="false"
       >
         <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
@@ -229,7 +228,7 @@ export default {
           width: 100,
           key: "edit",
           align: "center",
-          fixed: "right",
+          fixed: "left",
           render: (h, params) => {
             return h("div", [
               h(
@@ -294,9 +293,8 @@ export default {
         status: 0,
       });
       if (res.code === 1) {
-        this.tableData = res.data.data.data;
-        this.total = res.data.data.totalElements;
-        this.pageNo = res.data.data.number;
+        this.tableData = res.data.content;
+        this.total = res.data.totalElements;
       } else {
         this.$Message.error(res.message);
       }

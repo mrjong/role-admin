@@ -116,12 +116,12 @@
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem span="4" label="手机号:">
+          <FormItem span="4" label="手机号:" prop='mobile'>
             <Input size="small" v-model="staffFormItem.mobile" :disabled="!formDisabled"></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem span="4" label="邮箱:">
+          <FormItem span="4" label="邮箱:" prop='email'>
             <Input size="small" v-model="staffFormItem.email" :disabled="!formDisabled"></Input>
           </FormItem>
         </Col>
@@ -324,7 +324,21 @@ export default {
             message: "请选择部门",
             trigger: "change"
           }
-        ]
+        ],
+        mobile: [
+					{
+						pattern: this.GLOBAL.mblNo,
+						message: '请输入正确手机号',
+						trigger: 'blur'
+					}
+				],
+        email: [
+					{
+						pattern: this.GLOBAL.email,
+						message: '请输入正确邮箱号',
+						trigger: 'blur'
+					}
+				],
       },
       companyList: [],
       departmentList: [],
@@ -336,34 +350,30 @@ export default {
     this.collect_user_list("02");
     this.collect_user_list("03");
     this.system_role_list();
-    this.staffFormItem = {
-      id: this.parentData.nodeData.id,
-      name: this.parentData.nodeData.name,
-      loginName: this.parentData.nodeData.loginName,
-      companyId: this.parentData.nodeData.companyId,
-      outfitId: this.parentData.nodeData.outfitId,
-      roleId: this.parentData.nodeData.roleId,
-      createUser: this.parentData.nodeData.createUser,
-      updateUser: this.parentData.nodeData.updateUser,
-      parentUuid: this.parentData.nodeData.parentUuid,
-      status: String(this.parentData.nodeData.status)
-    };
+    this.staffFormItem.id = this.parentData.nodeData.id;
+    this.staffFormItem.name = this.parentData.nodeData.name;
+    this.staffFormItem.loginName = this.parentData.nodeData.loginName;
+    this.staffFormItem.companyId = this.parentData.nodeData.companyId;
+    this.staffFormItem.outfitId = this.parentData.nodeData.outfitId;
+    this.staffFormItem.roleId = this.parentData.nodeData.roleId;
+    this.staffFormItem.createUser = this.parentData.nodeData.createUser;
+    this.staffFormItem.updateUser = this.parentData.nodeData.updateUser;
+    this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
+    this.staffFormItem.status = String(this.parentData.nodeData.status);
     this.collect_user_clerk_info(this.parentData.nodeData.name);
   },
   watch: {
     parentData() {
-      this.staffFormItem = {
-        id: this.parentData.nodeData.id,
-        name: this.parentData.nodeData.name,
-        loginName: this.parentData.nodeData.loginName,
-        companyId: this.parentData.nodeData.companyId,
-        outfitId: this.parentData.nodeData.outfitId,
-        roleId: this.parentData.nodeData.roleId,
-        createUser: this.parentData.nodeData.createUser,
-        updateUser: this.parentData.nodeData.updateUser,
-        parentUuid: this.parentData.nodeData.parentUuid,
-        status: String(this.parentData.nodeData.status)
-      };
+      this.staffFormItem.id = this.parentData.nodeData.id;
+      this.staffFormItem.name = this.parentData.nodeData.name;
+      this.staffFormItem.loginName = this.parentData.nodeData.loginName;
+      this.staffFormItem.companyId = this.parentData.nodeData.companyId;
+      this.staffFormItem.outfitId = this.parentData.nodeData.outfitId;
+      this.staffFormItem.roleId = this.parentData.nodeData.roleId;
+      this.staffFormItem.createUser = this.parentData.nodeData.createUser;
+      this.staffFormItem.updateUser = this.parentData.nodeData.updateUser;
+      this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
+      this.staffFormItem.status = String(this.parentData.nodeData.status);
       this.collect_user_clerk_info(this.parentData.nodeData.name);
     }
   },
@@ -438,6 +448,7 @@ export default {
       });
       if (res.code === 1) {
         this.$Message.success("修改成功");
+        this.$parent.$parent.$parent.modalType = '';
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
@@ -480,9 +491,19 @@ export default {
         this.staffFormItem.seatType = res.data.seatType;
         this.staffFormItem.callno = res.data.callno;
         this.staffFormItem.remark = res.data.remark;
-        this.staffFormItem.createTime = res.data.createTime?this.$options.filters['formatDate'](res.data.createTime, 'YYYY-MM-DD HH:mm:ss'): res.data.createTime;
-        this.staffFormItem.updateTime = res.data.updateTime?this.$options.filters['formatDate'](res.data.updateTime, 'YYYY-MM-DD HH:mm:ss'): res.data.updateTime;
-        console.log(this.staffFormItem)
+        this.staffFormItem.createTime = res.data.createTime
+          ? this.$options.filters["formatDate"](
+              res.data.createTime,
+              "YYYY-MM-DD HH:mm:ss"
+            )
+          : res.data.createTime;
+        this.staffFormItem.updateTime = res.data.updateTime
+          ? this.$options.filters["formatDate"](
+              res.data.updateTime,
+              "YYYY-MM-DD HH:mm:ss"
+            )
+          : res.data.updateTime;
+        console.log(this.staffFormItem);
       } else {
         this.$Message.error(res.message);
       }
@@ -504,7 +525,7 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .ivu-col {
   margin-bottom: 5px;
 }

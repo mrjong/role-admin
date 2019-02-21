@@ -83,12 +83,12 @@
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="账号:" prop="loginName">
-            <Input size="small" v-model="addStaffFormItem.loginName" placeholder="请输入账号"></Input>
+            <Input size="small" v-model="addStaffFormItem.loginName" :maxlength='10' placeholder="请输入账号"></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="用户名称:" prop="name">
-            <Input size="small" clearable v-model="addStaffFormItem.name" placeholder="请输入用户名称"></Input>
+            <Input size="small" clearable v-model="addStaffFormItem.name" :maxlength='20' placeholder="请输入用户名称"></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -121,7 +121,8 @@
             </Select>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="parentData.type === '03'">
+        <!-- <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="parentData.type === '03'"> -->
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem label="部门:" span="4" prop="outfitId">
             <Select
               size="small"
@@ -152,17 +153,17 @@
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem span="4" label="坐席号:">
-            <Input size="small" v-model="addStaffFormItem.callno"></Input>
+          <FormItem span="4" label="坐席编号:">
+            <Input size="small" v-model="addStaffFormItem.callno" :maxlength='10'></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem span="4" label="手机号:">
+          <FormItem span="4" label="手机号:" prop='mobile'>
             <Input size="small" v-model="addStaffFormItem.mobile"></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem span="4" label="邮箱:">
+          <FormItem span="4" label="邮箱:" prop='email'>
             <Input size="small" v-model="addStaffFormItem.email"></Input>
           </FormItem>
         </Col>
@@ -270,7 +271,21 @@ export default {
             message: "请选择部门",
             trigger: "change"
           }
-        ]
+        ],
+        mobile: [
+					{
+						pattern: this.GLOBAL.mblNo,
+						message: '请输入正确手机号',
+						trigger: 'blur'
+					}
+				],
+        email: [
+					{
+						pattern: this.GLOBAL.email,
+						message: '请输入正确邮箱号',
+						trigger: 'blur'
+					}
+				],
       },
       addLeaderFormItem: {
         userIds: []

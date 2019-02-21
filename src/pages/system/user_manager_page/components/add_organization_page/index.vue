@@ -14,7 +14,7 @@
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="机构名称:" prop="name">
-            <Input size="small" clearable v-model="organizationFormItem.name" placeholder="请输入机构名称"></Input>
+            <Input size="small" clearable v-model="organizationFormItem.name" :maxlength='20' placeholder="请输入机构名称"></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="6">
@@ -75,7 +75,7 @@
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="公司名称:" prop="name">
-            <Input size="small" clearable v-model="componeyFormItem.name" placeholder="请输入公司名称"></Input>
+            <Input size="small" clearable v-model="componeyFormItem.name" :maxlength='20' placeholder="请输入公司名称"></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -144,7 +144,7 @@
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="部门名称:" prop="name">
-            <Input size="small" clearable v-model="departmentFormItem.name" placeholder="请输入部门名称"></Input>
+            <Input size="small" clearable v-model="departmentFormItem.name" :maxlength='20' placeholder="请输入部门名称"></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">

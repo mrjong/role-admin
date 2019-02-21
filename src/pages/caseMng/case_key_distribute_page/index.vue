@@ -133,7 +133,7 @@
                   <FormItem span="6">
                     <Button
                       type="primary"
-                      @click="queryCases"
+                      @click="handleQueryCases('formItem')"
                       style="width:80px"
                       long
                       size="small"
@@ -141,7 +141,9 @@
                   </FormItem>
                 </Col>
                 <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
-                  {{totalcases}}
+                  <div class="casesWrap">
+                    {{totalcases}}条案件
+                  </div>
                 </Col>
               </Col>
               <Col :xs="24" :sm="24" :md="12" :lg="12" span="6">
@@ -249,7 +251,8 @@ import sysDictionary from "@/mixin/sysDictionary";
 import {
   divide_allot_manual,
   collect_tree_children,
-  collect_show_children
+  collect_show_children,
+  allot_manualcounts
 } from "@/service/getData";
 export default {
   name: "case_key_distribute_page",
@@ -302,7 +305,7 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      totalcases: '12',//案件总数
+      totalcases: '0',//案件总数
       treeFlag: "",
       allotRoleIdList: [],
       allotNameList: [],
@@ -521,10 +524,9 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           // this.getList();
-          this.$Message.success("ok");
           this.divide_allot_manual();
         } else {
-          this.$Message.error("查询条件格式有误，请重新填写");
+          this.$Message.error("校验条件式有误，请重新填写");
         }
       });
     },
@@ -617,9 +619,28 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 校验查询案件量的参数
+    handleQueryCases(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          // this.getList();
+          this.queryCases();
+        } else {
+          this.$Message.error("校验条件式有误，请重新填写");
+        }
+      });
+    },
     //查询案件量
     async queryCases() {
-      const res = ''
+      const res = await allot_manualcounts({
+        ...this.formItem
+      });
+      console.log(res);
+      if (res.code === 1) {
+        this.totalcases = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
     }
   }
 };
@@ -628,6 +649,9 @@ export default {
 <style lang="less" scoped>
 .ivu-col {
   margin-bottom: 5px;
+  .casesWrap {
+    line-height: 35px;
+  }
 }
 </style>
 

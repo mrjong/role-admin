@@ -313,6 +313,7 @@ export default {
     changeRole(parm) {
       this.modalChange = true;
       this.formValidateChange = parm;
+      this.formValidateChange.roleStatus = String(this.formValidateChange.roleStatus);
       sessionStorage.setItem('updateId', parm.id);
     },
     // 确认修改信息

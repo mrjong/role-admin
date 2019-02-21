@@ -424,7 +424,7 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .ivu-col {
   margin-bottom: 5px;
 }
