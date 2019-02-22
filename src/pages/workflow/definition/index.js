@@ -34,7 +34,8 @@ export default {
 					width: 180,
 					sortable: true,
 					align: 'center',
-					key: 'defName'
+					key: 'defName',
+          fixed: 'left',
 				},
 				{
 					title: '类型',

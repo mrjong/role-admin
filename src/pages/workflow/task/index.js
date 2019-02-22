@@ -39,8 +39,9 @@ export default {
 					title: '定义ID',
 					width: 100,
 					sortable: true,
-                    align:'center',
-                    key: 'defId'
+          align:'center',
+          key: 'defId',
+          fixed: 'left',
 				},
 				{
 					title: '定义名称',
