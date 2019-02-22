@@ -43,7 +43,7 @@ export default {
         },
         {
           title: '坐席编号',
-          width: 150,
+          width: 120,
           searchOperator: '=',
           key: 'callno',
           align: 'center'
@@ -68,7 +68,8 @@ export default {
           title: '接听方式',
           searchOperator: 'like',
           key: 'extenTypeName',
-          align: 'center'
+          align: 'center',
+          width: 120
           // render: (h, params) => {
           //   return h('div', [
           //     h(
@@ -91,7 +92,8 @@ export default {
           title: '状态',
           searchOperator: '=',
           key: 'statusName',
-          align: 'center'
+          align: 'center',
+          width: 120
         },
         {
           title: '创建时间',
@@ -127,20 +129,23 @@ export default {
           title: '创建人',
           searchOperator: '=',
           key: 'createUser',
-          align: 'center'
+          align: 'center',
+          width: 120
         },
         {
           title: '修改人',
           searchOperator: '=',
           key: 'updateUser',
           ellipsis: true,
-          align: 'center'
+          align: 'center',
+          width: 120
         },
         {
           title: '操作',
           width: 100,
           key: 'edit',
           align: 'center',
+          fixed: 'left',
           render: (h, params) => {
             return h('div', [
               h('Poptip', {

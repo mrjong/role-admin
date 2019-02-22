@@ -32,6 +32,7 @@ export default {
           width: 60,
           searchOperator: '=',
           align: 'center',
+          fixed: 'left',
         },
 				{
 					title: '登录账号',
@@ -104,7 +105,8 @@ export default {
 					title: '操作',
 					key: 'edit',
 					width: 180,
-					align: 'center',
+          align: 'center',
+          fixed: 'left',
 					render: (h, params) => {
 						const obj = params.row;
 						return h('div', [

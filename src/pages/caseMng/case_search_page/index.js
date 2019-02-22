@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { case_list, cases_export, cases_case_sendwebmessage } from '@/service/getData';
+import { case_list, cases_export,  } from '@/service/getData';
 import util from '@/libs/util';
 import qs from 'qs';
 export default {
@@ -45,7 +45,6 @@ export default {
       totalCase: '',
       caseMounts: '',
       caseIds: [],
-      messageFlag: false,
       ruleValidate: {
         idNo: [
           {
@@ -106,22 +105,6 @@ export default {
           }
         ]
       },
-      ruleValidate2: {
-        msgTitle: [
-          {
-            required: true,
-            message: '标题不能为空',
-            trigger: 'blur'
-          },
-        ],
-        msgContent: [
-          {
-            required: true,
-            message: '内容不能为空',
-            trigger: 'blur'
-          },
-        ],
-      },
       pageNo: 1,
       pageSize: 10,
       total: 0,
@@ -141,7 +124,6 @@ export default {
         repayStatus: '',
         creditLevels: [],
       },
-      messageFormItem: {},
       tableData: [],
       tableColumns: [
         {
@@ -168,6 +150,7 @@ export default {
           width: 180,
           key: 'id',
           align: 'center',
+          fixed: 'left',
           render(h, params) {
             const id = params.row.id;
             const prdTyp = params.row.prdTyp;
@@ -399,33 +382,6 @@ export default {
       };
       this.$refs[name].resetFields();
     },
-    // 站内信发送的取消按钮
-    cancel() {
-      this.messageFlag = false;
-      this.messageFormItem = {};
-    },
-    ok(name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.cases_case_sendwebmessage();
-        }
-      });
-    },
-    // 站内信发送接口
-    async cases_case_sendwebmessage() {
-      const res = await cases_case_sendwebmessage({
-        ...this.formItem,
-        ...this.messageFormItem,
-        caseIds: this.caseIds,
-        preTotalCases: this.totalCase,
-      });
-      if (res.code === 1) {
-        this.messageFlag = false;
-        this.messageFormItem = {};
-        this.getList();
-      } else {
-        this.$Message.error(res.message);
-      }
-    }
+
   }
 };

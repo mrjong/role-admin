@@ -7,6 +7,7 @@ import tablePage from '@/mixin/tablePage';
 import util from '@/libs/util';
 import 'video.js/dist/video-js.css';
 import 'vue-video-player/src/custom-theme.css'
+import qs from 'qs';
 
 
 export default {
@@ -16,7 +17,6 @@ export default {
     videoPlayer,
   },
   data() {
-    console.log(this.GLOBAL);
     const _this = this
     return {
       playerOptions: {
@@ -77,7 +77,8 @@ export default {
           title: '序号',
           width: 80,
           type: 'index',
-          align: 'center'
+          align: 'center',
+          fixed: 'left',
         },
         {
           title: '关联录音',
@@ -85,6 +86,7 @@ export default {
           searchOperator: '=',
           key: 'buffet_code',
           align: 'center',
+          fixed: 'left',
           render: (h, params) => {
             const soundUuid = params.row.soundUuid;
             return h('div', [
@@ -176,6 +178,44 @@ export default {
           searchOperator: '=',
           key: 'caseNo',
           align: 'center',
+          fixed: 'left',
+          render(h, params) {
+            const id = params.row.caseNo;
+            const prdTyp = params.row.prdTyp;
+            const userId = params.row.userId;
+            return h('div', [
+              h(
+                'Tooltip',
+                {
+                  style: {
+                    margin: '0 5px'
+                  },
+                  props: {
+                    content: '查看详情',
+                    placement: 'top'
+                  }
+                },
+                [
+                  h(
+                    'a',
+                    {
+                      class: 'edit-desc',
+                      on: {
+                        click: () => {
+                          window.open(
+                            `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=read&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+                              _this.formItem
+                            )}`
+                          );
+                        }
+                      }
+                    },
+                    id
+                  )
+                ]
+              )
+            ]);
+          }
         },
         {
           title: '账单号',

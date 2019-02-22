@@ -1,6 +1,7 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { cases_allot_list, getLeafTypeList, collect_parent_children, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, collect_show_children } from '@/service/getData';
+import { cases_allot_list, getLeafTypeList, collect_parent_children, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, collect_show_children, cases_case_sendwebmessage } from '@/service/getData';
+import qs from 'qs';
 
 export default {
   name: 'case_distribute_page',
@@ -33,6 +34,7 @@ export default {
       }
       callback();
     };
+    let _this = this;
     return {
       getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PROD_NUM'],
       getDirObj: {},
@@ -43,6 +45,7 @@ export default {
       recycleFlag: false,
       stopCollectionFlag: false,
       recoverCollectionFlag: false,
+      messageFlag: false,
       getLeafTypeList2_data: [],
       getLeafTypeList_data: [],
       data5: [],
@@ -125,6 +128,7 @@ export default {
         creditLevels: [],
         opCompayNames: [],
       },
+      messageFormItem: {},
       ruleValidate1: {
         operRemark: [
           {
@@ -141,6 +145,22 @@ export default {
             message: '请输入停催原因',
             trigger: 'blur'
           }
+        ],
+      },
+      ruleValidate3: {
+        msgTitle: [
+          {
+            required: true,
+            message: '标题不能为空',
+            trigger: 'blur'
+          },
+        ],
+        msgContent: [
+          {
+            required: true,
+            message: '内容不能为空',
+            trigger: 'blur'
+          },
         ],
       },
       stopFormItem: {
@@ -203,6 +223,44 @@ export default {
           searchOperator: '=',
           key: 'id',
           align: 'center',
+          fixed: 'left',
+          render(h, params) {
+            const id = params.row.id;
+            const prdTyp = params.row.prdTyp;
+            const userId = params.row.userId;
+            return h('div', [
+              h(
+                'Tooltip',
+                {
+                  style: {
+                    margin: '0 5px'
+                  },
+                  props: {
+                    content: '查看详情',
+                    placement: 'top'
+                  }
+                },
+                [
+                  h(
+                    'a',
+                    {
+                      class: 'edit-desc',
+                      on: {
+                        click: () => {
+                          window.open(
+                            `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=read&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+                              _this.formItem
+                            )}`
+                          );
+                        }
+                      }
+                    },
+                    params.row.id
+                  )
+                ]
+              )
+            ]);
+          }
         },
         {
           title: '客户姓名',
@@ -386,9 +444,9 @@ export default {
         this.caseIds.push(element.id);
       });
       if (this.caseIds.length != 0) {
-        this.caseMounts = this.caseIds.length;
+        this.totalCase = this.caseIds.length;
       } else {
-        this.caseMounts = this.totalCase;
+        this.totalCase = this.totalCase;
       }
       console.log(this.caseIds);
     },
@@ -486,13 +544,13 @@ export default {
         this.data = res.data;
         this.data.forEach(item => {
           item.disableCheckbox = true;
-          item.children.forEach(ele => {
-            if (ele.leafType !== '02') {
-              item.children = [];
-            }
-            ele.children = [];
+          item.children.forEach((item2, index) => {
+            if (item2.leafType === '02') {
+              item2.children = [];
+            };
           })
         })
+        console.log(this.data)
       } else {
         this.$Message.error(res.message);
       }
@@ -557,7 +615,7 @@ export default {
         ...this.formItem,
         collectRoleIds: this.collectRoleIds,
         caseIds: this.caseIds,
-        preTotalCases: this.total,
+        preTotalCases: this.totalCase,
       });
       if (res.code === 1) {
         this.$Message.success('分配成功');
@@ -572,7 +630,7 @@ export default {
       const res = await cases_batch_recycle({
         caseIds: this.caseIds,
         ...this.formItem,
-        preTotalCases: this.total,
+        preTotalCases: this.totalCase,
       });
       if (res.code === 1) {
         this.$Message.success('回收成功');
@@ -612,24 +670,40 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 站内信发送接口
+    async cases_case_sendwebmessage() {
+      const res = await cases_case_sendwebmessage({
+        ...this.formItem,
+        ...this.messageFormItem,
+        caseIds: this.caseIds,
+        preTotalCases: this.totalCase,
+      });
+      if (res.code === 1) {
+        this.messageFlag = false;
+        this.messageFormItem = {};
+        this.getList();
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
     // 根据类型判断提交
     handeldBtnClick(type) {
       switch (type) {
         case '1':
-          console.log(this.formItem.caseHandleStatus);
-          if (this.formItem.caseHandleStatus && this.formItem.caseHandleStatus != '') {
-            this.distributeFlag = true;
-          } else {
-            this.$Message.error('请选择案件处理状态再分配')
-          };
+          this.distributeFlag = true;
+          // if (this.formItem.caseHandleStatus && this.formItem.caseHandleStatus != '') {
+          //   this.distributeFlag = true;
+          // } else {
+          //   this.$Message.error('请选择案件处理状态再分配')
+          // };
           break;
         case '2':
-          console.log(this.formItem.caseHandleStatus);
-          if (this.formItem.caseHandleStatus && this.formItem.caseHandleStatus != '') {
-            this.recycleFlag = true;
-          } else {
-            this.$Message.error('请选择案件处理状态再回收')
-          };
+          this.recycleFlag = true;
+          // if (this.formItem.caseHandleStatus && this.formItem.caseHandleStatus != '') {
+          //   this.recycleFlag = true;
+          // } else {
+          //   this.$Message.error('请选择案件处理状态再回收')
+          // };
           break;
         case '3': this.stopCollectionFlag = true;
           break;
@@ -651,6 +725,9 @@ export default {
         case '4': this.stopCollectionFlag = false;
           break;
         case '5': this.recoverCollectionFlag = false;
+          break;
+        case '6': this.messageFlag = false;
+          this.messageFormItem = {};
           break;
       }
     },
@@ -677,6 +754,13 @@ export default {
           this.$refs[name].validate((valid) => {
             if (valid) {
               this.cases_collect_recover(this.caseID);
+            }
+          });
+          break;
+        case '6':
+          this.$refs[name].validate((valid) => {
+            if (valid) {
+              this.cases_case_sendwebmessage();
             }
           });
           break;

@@ -307,6 +307,7 @@
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <Tree
               :data="data5"
+              ref='tree'
               :render="renderContent"
               multiple
               show-checkbox

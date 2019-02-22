@@ -3,14 +3,14 @@ import tablePage from '@/mixin/tablePage';
 import sysDictionary from '@/mixin/sysDictionary';
 export default {
   name: 'remoney_user',
-	mixins: [ sysDictionary, tablePage ],
+  mixins: [sysDictionary, tablePage],
   data() {
     var alignCenter = 'center';
     var widthVal = 180;
     var widthMidVal = 180;
     return {
-      getDirList: [ 'ROLE_TYPE','1_0_EFFECT_INVAL'],
-			getDirObj: {},
+      getDirList: ['ROLE_TYPE', '1_0_EFFECT_INVAL'],
+      getDirObj: {},
       showPanel: false,
       showPanel2: false,
       menuModal: false,
@@ -24,8 +24,8 @@ export default {
       modalAddRole: false,
       formValidate: {
       },
-      formValidateChange:{roleCode:''},
-      formValidateAdd:{
+      formValidateChange: { roleCode: '' },
+      formValidateAdd: {
         roleCode: '',
         roleStatus: '1',
         roleType: '01'
@@ -41,7 +41,7 @@ export default {
         ]
       },
       ruleValidateChange: {
-        name:[
+        name: [
           {
             required: true,
             message: '角色名称不能为空',
@@ -64,7 +64,7 @@ export default {
         ]
       },
       ruleValidateAdd: {
-        name:[
+        name: [
           {
             required: true,
             message: '角色名称不能为空',
@@ -100,7 +100,7 @@ export default {
           width: 60,
           searchOperator: '=',
           align: alignCenter,
-          key: 'buffet_id'
+          fixed: 'left',
         },
         {
           title: '角色名称',
@@ -203,54 +203,55 @@ export default {
           key: 'edit',
           align: alignCenter,
           width: widthMidVal,
+          fixed: 'left',
           render: (h, params) => {
-            console.log(params.row,'ccccccc');
+            console.log(params.row, 'ccccccc');
             let id = params.row.id;
             let changeInfo = params.row;
             return h('div', [
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {},
-                      on: {
-                        click: () => {
-                          this.checkSeeClick(id);
-                        }
-                      }
+              h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.checkSeeClick(id);
+                    }
+                  }
+                },
+                '查看'
+              ),
+              h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.changeRole(changeInfo);
+                    }
+                  }
+                },
+                '修改'
+              ),
+              h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  on: {
+                    click: () => {
+                      console.log(params.row)
+                      this.roleId = params.row.id;
+                      this.name = params.row.name;
+                      this.getMenuList();
+                      this.menuModal = true;
                     },
-                    '查看'
-                  ),
-                  h(
-                    'a',
-                    {
-                      class: 'edit-btn',
-                      props: {},
-                      on: {
-                        click: ()=> {
-                          this.changeRole(changeInfo);
-                        }
-                      }
-                    },
-                    '修改'
-                  ),
-                    h(
-                      'a',
-                      {
-                        class: 'edit-btn',
-                        props: {},
-                        on: {
-                          click: () => {
-                            console.log(params.row)
-                            this.roleId = params.row.id;
-                            this.name = params.row.name;
-                            this.getMenuList();
-                            this.menuModal = true;
-                          },
-                        }
-                      },
-                      '菜单分配'
-                    )
+                  }
+                },
+                '菜单分配'
+              )
             ]);
           }
         }
@@ -260,10 +261,17 @@ export default {
   created() {
     this.getList();
   },
+  watch: {
+    menuIds() {
+      console.log(this.$refs.tree.getSelectedNodes());
+    }
+  },
   methods: {
     // 勾选节点的回调函数
     checkChange(arr) {
+      console.log(this.$refs.tree.getSelectedNodes());
       this.menuIds = [];
+      console.log(arr);
       arr.forEach(item => {
         this.menuIds.push(item.id)
         console.log(item.id.length)
@@ -273,39 +281,42 @@ export default {
     },
     // 选中节点的回调函数
     selectNode(node) {
-      console.log(node)
+      console.log(node);
+      console.log(this.$refs.tree.getSelectedNodes());
+
     },
-    renderContent(h, {root, node, data}) {
+    renderContent(h, { root, node, data }) {
       return h('span', {
         style: {
           display: 'inline-block',
           width: '94%',
           boxSizing: 'border-box',
+        },
+        class: '123123',
+        on: {
+          'click': (e) => {
+            console.log(node)
+          }
         }
       }, [
-        h('span', [
-          h('Icon', {
-            props: {
-              type: '',
-            },
-            style: {
-              marginRight: '4px'
-            }
-          }),
-          h('span', {
-            props: {},
-            style: {
-              cursor: 'pointer'
-            },
-            class: 'tree_title',
-            on: {
-              'click': (e) => {
-
+          h('span', [
+            h('Icon', {
+              props: {
+                type: '',
+              },
+              style: {
+                marginRight: '4px'
               }
-            }
-          }, data.text)
-        ]),
-      ]);
+            }),
+            h('span', {
+              props: {},
+              style: {
+                cursor: 'pointer'
+              },
+              class: 'tree_title',
+            }, data.text)
+          ]),
+        ]);
     },
     ok() {
 
@@ -364,7 +375,7 @@ export default {
       });
     },
     checkSeeClick(id) {
-      console.log(id,'wo我是IDDDDD');
+      console.log(id, 'wo我是IDDDDD');
       this.getInfo(id);
       this.modalSee = true;
     },
@@ -379,7 +390,7 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      let status = this.formValidate.status == 'one' ? 1:this.formValidate.status == 'zero' ? 0: '';
+      let status = this.formValidate.status == 'one' ? 1 : this.formValidate.status == 'zero' ? 0 : '';
       let res = await system_role_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
@@ -391,7 +402,7 @@ export default {
       // 试着处理数据和分页组件之间的关系,
     },
     async getInfo(id) {
-      let res = await system_role_info({id})
+      let res = await system_role_info({ id })
       this.formValidateInfo = res.data;
       // this.formValidateInfo.roleStatus = this.formValidateInfo.roleStatus == '1' ?'有效' : '无效';
       this.formValidateInfo.updatetime = this.$options.filters['formatDate'](this.formValidateInfo.updatetime, 'YYYY-MM-DD HH:mm:ss')
@@ -399,7 +410,7 @@ export default {
     },
     // 提交修改角色的接口
     async toChangeRole() {
-      let res = await system_role_update({id: sessionStorage.getItem('updateId'), ...this.formValidateChange});
+      let res = await system_role_update({ id: sessionStorage.getItem('updateId'), ...this.formValidateChange });
       console.log(res, '刷新看结果');
       if (res && res.code === 1) {
         // this.$Message.success('修改成功');
@@ -413,7 +424,7 @@ export default {
     },
     async toAddRole() {
       let res = await
-        system_role_add({...this.formValidateAdd});
+        system_role_add({ ...this.formValidateAdd });
       if (res && res.code === 1) {
         //this.$Message.success('添加成功');
         this.modalAddRole = false;
@@ -427,10 +438,12 @@ export default {
     },
     // 获取菜单列表数据
     async getMenuList() {
-      let res = await system_role_menu_list({id: this.roleId });
+      let res = await system_role_menu_list({ id: this.roleId });
       if (res.code === 1) {
         this.data5 = res.data.data;
         this.data5[0].expand = true;
+        this.data5[0].selected = false;
+        this.data5[0].checked = false;
       } else {
         this.$Message.error(res.message)
       }

@@ -594,13 +594,12 @@ export default {
         this.data = res.data;
         this.data.forEach(item => {
           item.disableCheckbox = true;
-          item.children.forEach(ele => {
-            if (ele.leafType !== "02") {
-              item.children = [];
-            }
-            ele.children = [];
-          });
-        });
+          item.children.forEach((item2, index) => {
+            if (item2.leafType === '02') {
+              item2.children = [];
+            };
+          })
+        })
       } else {
         this.$Message.error(res.message);
       }

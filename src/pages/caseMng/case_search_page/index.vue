@@ -185,12 +185,6 @@
           size="small"
           @click.stop="cases_export"
         >导出数据</Button>
-        <Button
-          class="fr vue-back-btn header-btn"
-          type="primary"
-          size="small"
-          @click.stop="messageFlag = !messageFlag"
-        >站内信批量发送</Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
@@ -214,62 +208,6 @@
         </div>
       </div>
     </Card>
-    <!-- 站内信的批量发送内容 -->
-    <div v-if="messageFlag">
-      <Modal
-        v-model="messageFlag"
-        width="800"
-        class-name="user_info_form_modal"
-        :mask-closable="false"
-      >
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
-          <span>站内信</span>
-        </p>
-        <Form
-          ref="messageFormItem"
-          :model="messageFormItem"
-          :label-width="120"
-          :rules="ruleValidate2"
-        >
-          <Col :xs="24" :sm="24" :md="10" :lg="10" span="6">
-            <FormItem span="4" label="标题:" prop="msgTitle">
-              <Input
-                type="text"
-                size="small"
-                v-model="messageFormItem.msgTitle"
-                placeholder="请输入标题"
-              ></Input>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-            <FormItem span="4" label="内容:" prop="msgContent">
-              <Input
-                type="textarea"
-                size="small"
-                :maxlength="100"
-                v-model="messageFormItem.msgContent"
-                placeholder="请输入100字以内内容"
-              ></Input>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-            <FormItem span="4" label="备注:">
-              <Input
-                type="textarea"
-                size="small"
-                :maxlength="100"
-                v-model="messageFormItem.remark"
-                placeholder="请输入100字以内备注"
-              ></Input>
-            </FormItem>
-          </Col>
-        </Form>
-        <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel()">取消</Button>
-          <Button type="primary" size="small" @click="ok('messageFormItem')">确定</Button>
-        </div>
-      </Modal>
-    </div>
   </div>
 </template>
 <script src="./index.js"></script>

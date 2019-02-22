@@ -9,6 +9,8 @@ import videojs from 'video.js'
 import 'vue-video-player/src/custom-theme.css'
 // import SWF_URL from 'videojs-swf/dist/video-js.swf'
 // videojs.options.flash.swf = SWF_URL
+import qs from 'qs';
+
 export default {
   name: 'collecttion_recording_page',
   components: {
@@ -16,6 +18,7 @@ export default {
   },
   mixins: [tablePage, formValidateFun, sysDictionary],
   data() {
+    let _this = this;
     return {
       getDirList: ['PROD_TYPE'],
       getDirObj: {},
@@ -152,7 +155,8 @@ export default {
           title: '序号',
           width: 80,
           type: 'index',
-          align: 'center'
+          align: 'center',
+          fixed: 'left'
         },
         {
           title: '操作',
@@ -160,6 +164,7 @@ export default {
           searchOperator: '=',
           align: 'center',
           key: 'buffet_code',
+          fixed: 'left',
           render: (h, params) => {
             const soundUuid = params.row.soundUuid;
             return soundUuid ? h('div', [
@@ -273,6 +278,44 @@ export default {
           searchOperator: '=',
           key: 'caseNo',
           align: 'center',
+          fixed: 'left',
+          render(h, params) {
+            const id = params.row.caseNo;
+            const prdTyp = params.row.prdTyp;
+            const userId = params.row.userId;
+            return h('div', [
+              h(
+                'Tooltip',
+                {
+                  style: {
+                    margin: '0 5px'
+                  },
+                  props: {
+                    content: '查看详情',
+                    placement: 'top'
+                  }
+                },
+                [
+                  h(
+                    'a',
+                    {
+                      class: 'edit-desc',
+                      on: {
+                        click: () => {
+                          window.open(
+                            `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=read&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+                              _this.formItem
+                            )}`
+                          );
+                        }
+                      }
+                    },
+                    id
+                  )
+                ]
+              )
+            ]);
+          }
         },
         {
           title: '账单号',
