@@ -194,7 +194,7 @@
             >检索</Button>
             <Button
               size="small"
-              type="ghost"
+               
               style="width:80px;margin-left: 8px"
               @click="clearForm('formItem')"
             >重置</Button>
@@ -500,7 +500,7 @@
         v-if="showModalType!=='edit'"
       >
         <Button
-          type="ghost"
+           
           size="small"
           @click="del"
         >关闭</Button>
@@ -511,7 +511,7 @@
         v-if="showModalType==='edit'"
       >
         <Button
-          type="ghost"
+           
           size="small"
           @click="arb_check('02')"
         >通过</Button>
@@ -550,7 +550,7 @@
       </Form>
       <div slot="footer">
         <Button
-          type="ghost"
+           
           size="small"
           @click="del"
         >取消</Button>

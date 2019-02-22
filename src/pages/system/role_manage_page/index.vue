@@ -54,7 +54,7 @@
 
               <Button
                 size="small"
-                type="ghost"
+                 
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formValidate')"
               >重置</Button>

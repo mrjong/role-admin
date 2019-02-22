@@ -57,7 +57,7 @@
            
             <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
               <FormItem>
-                <Button type="ghost" size="small" @click="cancel">取消</Button>
+                <Button   size="small" @click="cancel">取消</Button>
                 <Button type="primary" size="small" @click="handleSubmit('menuFormItem',1)">确定</Button>
               </FormItem>
             </Col>
@@ -98,7 +98,7 @@
             </Col>
             <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
               <FormItem>
-                <Button type="ghost" size="small" @click="cancel">取消</Button>
+                <Button   size="small" @click="cancel">取消</Button>
                 <Button type="primary" size="small" @click="handleSubmit('menuAddFormItem',0)">确定</Button>
               </FormItem>
             </Col>
@@ -118,7 +118,7 @@
           </p>
           <IconList v-on:passBack="passBack"></IconList>
           <div slot="footer">
-            <Button type="ghost" size="small" @click="selectIcon(1)">关闭</Button>
+            <Button   size="small" @click="selectIcon(1)">关闭</Button>
             <Button
               type="primary"
               size="small"

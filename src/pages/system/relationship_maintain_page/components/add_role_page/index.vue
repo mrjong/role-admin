@@ -94,7 +94,7 @@
         </Card>
       </div>
       <div slot="footer">
-        <Button type="ghost" size="small" @click="del">关闭</Button>
+        <Button   size="small" @click="del">关闭</Button>
         <Button type="primary" size="small" @click="call_employee_add">提交</Button>
       </div>
     </Modal>

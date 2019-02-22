@@ -119,7 +119,7 @@
           <FormItem>
             <Button
               size="small"
-              type="ghost"
+               
               style="width:80px;margin-right: 8px"
               @click="cancelStatus()"
             >取消</Button>
@@ -163,7 +163,7 @@
           </RadioGroup>
         </Col>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel">取消</Button>
+          <Button   size="small" @click="cancel">取消</Button>
           <Button type="primary" size="small" @click="ok">确定</Button>
         </div>
       </Modal>

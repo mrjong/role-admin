@@ -193,7 +193,7 @@
                   >分配</Button>
                   <Button
                     size="small"
-                    type="ghost"
+                     
                     style="width:80px;margin-left: 8px"
                     @click="handleCancel('formItem')"
                   >取消</Button>
@@ -217,7 +217,7 @@
             @on-check-change="checkChangePerson"
           ></Tree>
           <div>
-            <Button type="ghost" size="small" @click="cancel()">取消</Button>
+            <Button   size="small" @click="cancel()">取消</Button>
             <Button type="primary" size="small" @click="ok()">确定</Button>
           </div>
         </Card>
@@ -236,7 +236,7 @@
             @on-check-change="checkChangeOrz"
           ></Tree>
           <div>
-            <Button type="ghost" size="small" @click="cancel()">取消</Button>
+            <Button   size="small" @click="cancel()">取消</Button>
             <Button type="primary" size="small" @click="ok()">确定</Button>
           </div>
         </Card>
