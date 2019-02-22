@@ -28,7 +28,7 @@
               <span slot="prepend">
                 <Icon
                   :size="16"
-                  type="person"
+                  type="ios-person"
                 ></Icon>
               </span>
               </Input>
@@ -43,7 +43,7 @@
               <span slot="prepend">
                 <Icon
                   :size="14"
-                  type="locked"
+                  type="ios-lock"
                 ></Icon>
               </span>
               </Input>
@@ -63,7 +63,7 @@
               <span slot="prepend">
                 <Icon
                   :size="14"
-                  type="image"
+                  type="ios-image"
                 ></Icon>
               </span>
               </Input>
@@ -189,7 +189,7 @@ export default {
       this.$Message.success('登录成功!');
       window.$router = this.$router
       this.$router.push({
-        path: "/home/home"
+        path: "/home/home/home"
       })
     },
     handleSubmit() {

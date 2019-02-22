@@ -46,7 +46,7 @@
               >检索</Button>
               <Button
                 size="small"
-                type="ghost"
+                 
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -124,7 +124,7 @@
           </FormItem>
         </Form>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel('1')">取消</Button>
+          <Button   size="small" @click="cancel('1')">取消</Button>
           <Button type="primary" size="small" @click="ok('1', 'startFormItem')">确定</Button>
         </div>
       </Modal>
@@ -146,7 +146,7 @@
           >停用后，此规则将失效，是否继续？</template>
         </Alert>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel('2')">取消</Button>
+          <Button   size="small" @click="cancel('2')">取消</Button>
           <Button type="primary" size="small" @click="ok('2', 'startFormItem')">确定</Button>
         </div>
       </Modal>

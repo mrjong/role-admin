@@ -152,7 +152,7 @@
         </Card>
       </div>
       <div slot="footer">
-        <Button type="ghost" size="small" @click="del">关闭</Button>
+        <Button   size="small" @click="del">关闭</Button>
         <Button
           type="primary"
           size="small"
@@ -256,6 +256,9 @@ export default {
     console.log(this.formItem);
     if (this.model.type === '1' || this.model.type === '2') {
       this.formItem = this.model.userData;
+      if (!this.formItem.roleIds) {
+        this.formItem.roleIds = [];
+      };
       this.formItem.state = String(this.formItem.state);
     }
     this.system_role_list();

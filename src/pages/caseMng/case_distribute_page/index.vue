@@ -221,7 +221,7 @@
               >检索</Button>
               <Button
                 size="small"
-                type="ghost"
+                 
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -310,7 +310,7 @@
           <template slot="desc">该操作将分配所有查询出的结果,共{{totalCase}}笔案件，您确认要全部分配么?</template>
         </Alert>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel('1')">取消</Button>
+          <Button   size="small" @click="cancel('1')">取消</Button>
           <Button type="primary" size="small" @click="ok('1')">确定</Button>
         </div>
       </Modal>
@@ -360,7 +360,7 @@
           v-if="treeFlag === 1"
         ></Tree>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel('2')">取消</Button>
+          <Button   size="small" @click="cancel('2')">取消</Button>
           <Button type="primary" size="small" @click="ok('2')">确定</Button>
         </div>
       </Modal>
@@ -380,7 +380,7 @@
           <template slot="desc">共查询出{{totalCase}}条案件,确定要回收吗？</template>
         </Alert>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel('3')">取消</Button>
+          <Button   size="small" @click="cancel('3')">取消</Button>
           <Button type="primary" size="small" @click="ok('3')">确定</Button>
         </div>
       </Modal>
@@ -408,7 +408,7 @@
           </FormItem>
         </Form>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel('4')">取消</Button>
+          <Button   size="small" @click="cancel('4')">取消</Button>
           <Button type="primary" size="small" @click="ok('4', 'stopFormItem')">确定</Button>
         </div>
       </Modal>
@@ -436,7 +436,7 @@
           </FormItem>
         </Form>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel('5')">取消</Button>
+          <Button   size="small" @click="cancel('5')">取消</Button>
           <Button type="primary" size="small" @click="ok('5', 'recoverFormItem')">确定</Button>
         </div>
       </Modal>

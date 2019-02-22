@@ -161,7 +161,7 @@
           <FormItem>
             <Button
               size="small"
-              type="ghost"
+               
               style="width:80px;margin-right: 8px"
               @click="cancelStatus()"
             >取消</Button>
@@ -207,7 +207,7 @@
           </RadioGroup>
         </Col>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel">取消</Button>
+          <Button   size="small" @click="cancel">取消</Button>
           <Button type="primary" size="small" @click="ok">确定</Button>
         </div>
       </Modal>
@@ -239,7 +239,7 @@
           <p>重置后该账户登录密码将更改为初始密码，是否确认重置密码?</p>
         </Col>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel2">取消</Button>
+          <Button   size="small" @click="cancel2">取消</Button>
           <Button type="primary" size="small" @click="ok2">确定</Button>
         </div>
       </Modal>
