@@ -178,7 +178,7 @@ export default {
           key: "allotCaseAmt",
           className: "tableMainW",
           align: alignCenter,
-          width: widthMidVal
+          width: 200
         },
         {
           title: "当月回款金额",
@@ -191,11 +191,19 @@ export default {
         {
           title: "当月金额回收率",
           searchOperator: "like",
+          key: "collectRate",
+          className: "tableMainW",
+          align: alignCenter,
+          width: widthVal
+        },
+        {
+          title: "上月金额回收率",
+          searchOperator: "like",
           key: "lastCollectRate",
           className: "tableMainW",
           align: alignCenter,
           width: widthVal
-        }
+        },
       ]
     };
   },
@@ -248,6 +256,11 @@ export default {
       if (res && res.code === 1) {
         this.$Message.success("请求成功!");
         let data = res.data;
+        data.content.map((val, key)=>{
+          val.lastCollectRate = val.lastCollectRate + '%';
+          val.repayCountRate = val.repayCountRate + '%';
+          val.collectRate = val.collectRate + '%';
+        })
         this.tableData = data.content;
         this.total = data.totalElements; //接口中在该条件下取得的数据量
         //data.page.numberOfElements  当前页面实际返回的数量
