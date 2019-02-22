@@ -1,32 +1,5 @@
 <template>
   <div class="panel_list">
-    <!-- 检索条件 -->
-    <Card class="vue-panel">
-      <p slot="title" @click="showPanel=!showPanel">
-        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
-      </p>
-      <Form
-        v-if="!showPanel"
-        ref="formItem"
-        :model="formItem"
-        :label-width="90"
-        :rules="ruleValidate"
-      >
-        <Row>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem>
-              <Button
-                type="primary"
-                @click="handleSubmit('formItem')"
-                style="width:80px"
-                long
-                size="small"
-              >检索</Button>
-            </FormItem>
-          </Col>
-        </Row>
-      </Form>
-    </Card>
     <Card class="vue-panel-table">
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
