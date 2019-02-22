@@ -6,7 +6,7 @@ import {
 } from '@/service/getData';
 
 export default {
-	name: 'case_search_page',
+	name: 'home_home',
 	data() {
 		return {
 			showPanel3: false,

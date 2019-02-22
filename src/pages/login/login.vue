@@ -189,7 +189,7 @@ export default {
       this.$Message.success('登录成功!');
       window.$router = this.$router
       this.$router.push({
-        path: "/home/home/home"
+        path: "/home/home"
       })
     },
     handleSubmit() {

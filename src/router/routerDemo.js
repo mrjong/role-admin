@@ -6,6 +6,7 @@ const CASE_ADD_DISTRIBUTE_PAGE = () => import('@/pages/caseMng/case_add_distribu
 const Page404 = () => import('@/pages/common/error-page/404.vue');
 const Page403 = () => import('@/pages/common/error-page/403.vue');
 const Page500 = () => import('@/pages/common/error-page/500.vue');
+// const Home = () => import('@/pages/common/home');
 
 // 初始化路由
 export const initMenu = [
@@ -15,6 +16,12 @@ export const initMenu = [
 		title: 'Login - 登录',
 		component: Login
 	},
+	// {
+	// 	path: '/home/home',
+	// 	name: 'home_home',
+	// 	title: '首页',
+	// 	component: Home
+	// },
 	{
 		path: '/locking',
 		name: 'locking',

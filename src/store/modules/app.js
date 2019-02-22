@@ -19,16 +19,16 @@ const app = {
 		pageOpenedList: [
 			{
 				title: '首页',
-				path: '',
-				name: '/home/home/home'
+				path: '/home/home',
+				name: 'home_home'
 			}
 		],
 		currentPageName: '',
 		currentPath: [
 			{
 				title: '首页',
-				path: '',
-				name: '/home/home/home'
+				path: '/home/home',
+				name: 'home_home'
 			}
 		], // 面包屑数组
 		menuList: [],
