@@ -1,7 +1,22 @@
 {
 	"code": 1,
 	"message": "OK",
-	"data": [
+	"data": [{
+        "id": "4e0b269e185b48f598e6fa0cce8ce2ee",
+        "text": "首页",
+        "url": "/home",
+        "icon": "ionic",
+        "template": null,
+        "children": [
+            {
+                "text": "首页",
+                "url": "/home/home",
+                "icon": "arrow-up-c",
+                "template": "/caseMng/case_search_page"
+            }
+            
+        ]
+    },
     {
 			"id": "4e0b269e185b48f598e6fa0cce8ce2ee",
 			"text": "案件管理",
