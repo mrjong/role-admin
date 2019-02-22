@@ -19,7 +19,7 @@
               class="icon-box"
               @click="answer"
             >
-              <Icon type="ios-telephone"></Icon>
+              <Icon type="ios-call"></Icon>
             </div>
           </div>
           <div
@@ -32,7 +32,7 @@
             >
               <Icon
                 class="fail-icon"
-                type="ios-telephone"
+                type="ios-call"
               ></Icon>
             </div>
           </div>
@@ -71,7 +71,7 @@ export default {
       theme: this.$store.state.app.themeColor
     }
   },
-    created() {
+  created() {
     if (localStorage.getItem('callData')) {
       this.call(JSON.parse(localStorage.getItem('callData')))
     }
@@ -109,9 +109,10 @@ export default {
     */
     initCallback(data) {
       if (data.successChange) {
+        localStorage.removeItem('callObj')
         console.log('您已登录成功！app.vue');
       } else {
-        this.$Message.error('登录失败，请联系管理员！');
+        // this.$Message.error('登录失败，请联系管理员！');
       }
     },
     answer() {
@@ -122,7 +123,7 @@ export default {
       });
     },
     hangup() {
-        this.showTel =false
+      this.showTel = false
       CallHelper.hangup();
       this.fail = false
       this.success = false
@@ -163,6 +164,12 @@ export default {
                 this.answer()
               } else if ("ib" == direction) {
                 // 呼入
+                this.telNoHid = res.data.phoneNum
+                this.usrNameHid = res.data.area
+                localStorage.setItem('callObj',{
+                    telNoHid:res.data.phoneNum,
+                    usrNameHid:res.data.area
+                })
                 this.play()
                 this.fail = true
                 this.success = true
@@ -212,7 +219,7 @@ body {
   position: fixed;
   left: 0;
   bottom: 20px;
-  width: 100px;
+  width: 110px;
   height: 100px;
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;

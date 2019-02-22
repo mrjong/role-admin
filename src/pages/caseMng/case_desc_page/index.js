@@ -1157,7 +1157,7 @@ export default {
 									}
 								},
 								`${userNm}(${callUserTypeName})`
-							),
+							)
 							// h(
 							// 	'Poptip',
 							// 	{
@@ -1347,7 +1347,7 @@ export default {
 									}
 								},
 								`${userNm ? userNm : ''}(${callUserTypeName ? callUserTypeName : ''})`
-							),
+							)
 							// h(
 							// 	'Poptip',
 							// 	{
@@ -1508,7 +1508,7 @@ export default {
 									}
 								},
 								`${userNm ? userNm : ''}(${callUserTypeName ? callUserTypeName : ''})`
-							),
+							)
 							// h(
 							// 	'Poptip',
 							// 	{
@@ -1663,7 +1663,7 @@ export default {
 									}
 								},
 								`${userNm ? userNm : ''}(${callUserTypeName ? callUserTypeName : ''})`
-							),
+							)
 							// h(
 							// 	'Poptip',
 							// 	{
@@ -1888,7 +1888,6 @@ export default {
       * 设置状态监听回调
       */
 		stateCallback(data) {
-			console.log('00000000000000000000011111111111');
 			this.$store.commit('changeCallData', data);
 		},
 		/**
@@ -1908,7 +1907,7 @@ export default {
 					toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid
 				});
 			} else {
-				this.$Message.error('登录失败，请联系管理员！');
+				// this.$Message.error('登录失败，请联系管理员！');
 			}
 		},
 		async syscommon_decrypt(obj) {
@@ -2252,9 +2251,20 @@ export default {
 			if (type === 'call' && this.readType !== 'read') {
 				this.objCopy = obj;
 				// type ['call] 拨打电话
-				if (localStorage.getItem('callData')) {
-					console.log('1111111111');
-					this.call(JSON.parse(localStorage.getItem('callData')));
+				if (localStorage.getItem('callData')&&this.seatType==='KT') {
+
+                    if(localStorage.getItem('callObj')){
+                        this.$Message.info('请先挂断其他电话，再重试');
+                        return
+                    }
+					var head = document.getElementsByTagName('head')[0];
+					var script = document.createElement('script');
+					script.type = 'text/javascript';
+					script.src = '/dist/callhelper.min.js';
+					head.appendChild(script);
+					setTimeout(()=>{
+                        this.call(JSON.parse(localStorage.getItem('callData')));
+                    },1000)
 				} else {
 					this.call_kt_hung_on({
 						callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,

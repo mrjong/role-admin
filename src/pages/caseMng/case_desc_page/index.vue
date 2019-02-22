@@ -27,6 +27,7 @@
             prop="mblNo"
           >
             <Input
+            :maxlength="11"
               size="small"
               clearable
               v-model="formItem2.mblNo"

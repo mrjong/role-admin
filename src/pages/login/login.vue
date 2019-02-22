@@ -123,6 +123,7 @@ export default {
   created() {
     this.login_code()
     localStorage.removeItem('callData')
+    localStorage.removeItem('callObj')
   },
   methods: {
     async login_code() {
@@ -182,7 +183,7 @@ export default {
       if (data.successChange) {
         console.log('您已登录成功！');
       } else {
-        this.$Message.error('登录失败，请联系管理员！');
+        // this.$Message.error('登录失败，请联系管理员！');
       }
     },
     loginSuccess(res) {
