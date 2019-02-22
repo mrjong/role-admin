@@ -52,8 +52,8 @@ const app = {
 		getMenuTreeOriginal({ commit }) {
 			return new Promise(async (resolve, reject) => {
 				const menuTree = await system_menu_findTreeByCurrentUser();
-				commit('changeMenuTreeOriginal', menuTree.data);
-				resolve(menuTree.data);
+				commit('changeMenuTreeOriginal', menuTree2.data);
+				resolve(menuTree2.data);
 			});
 		},
 		async generateRoutes({ state, commit, dispatch }) {

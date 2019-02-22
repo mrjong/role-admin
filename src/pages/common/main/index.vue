@@ -88,7 +88,7 @@
             @click="toggleClick"
           >
             <Icon
-              type="navicon"
+              type="md-menu"
               size="32"
             ></Icon>
           </Button>
@@ -105,7 +105,7 @@
           ></full-screen>
           <lock-screen></lock-screen>
           <!-- <message-tip v-model="mesCount"></message-tip> -->
-          <theme-switch></theme-switch>
+          <!-- <theme-switch></theme-switch> -->
 
           <div class="user-dropdown-menu-con">
             <Row
@@ -120,8 +120,7 @@
                 @on-click="handleClickUserDropdown"
               >
                 <a href="javascript:void(0)">
-                  <span class="main-user-name">{{ userName }}</span>
-                  <Icon type="arrow-down-b"></Icon>
+                  <span class="main-user-name">{{ userName }}</span><Icon type="md-arrow-dropdown"></Icon>
                 </a>
                 <DropdownMenu slot="list">
                   <DropdownItem name="editPwd"> 修改密码</DropdownItem>

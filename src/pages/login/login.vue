@@ -28,7 +28,7 @@
               <span slot="prepend">
                 <Icon
                   :size="16"
-                  type="person"
+                  type="ios-person"
                 ></Icon>
               </span>
               </Input>
@@ -43,7 +43,7 @@
               <span slot="prepend">
                 <Icon
                   :size="14"
-                  type="locked"
+                  type="ios-lock"
                 ></Icon>
               </span>
               </Input>
@@ -63,7 +63,7 @@
               <span slot="prepend">
                 <Icon
                   :size="14"
-                  type="image"
+                  type="ios-image"
                 ></Icon>
               </span>
               </Input>

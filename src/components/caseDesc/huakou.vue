@@ -178,7 +178,7 @@
       </div>
       <div slot="footer">
         <Button
-          type="ghost"
+           
           size="small"
           @click="del"
         >关闭</Button>

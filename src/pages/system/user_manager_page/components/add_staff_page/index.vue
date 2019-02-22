@@ -58,7 +58,7 @@
           <FormItem>
             <Button
               size="small"
-              type="ghost"
+               
               style="width:80px;margin-right: 8px"
               @click="cancelStatus()"
             >取消</Button>
@@ -182,7 +182,7 @@
           <FormItem>
             <Button
               size="small"
-              type="ghost"
+               
               style="width:80px;margin-right: 8px"
               @click="cancelStatus()"
             >取消</Button>

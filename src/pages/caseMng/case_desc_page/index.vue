@@ -85,7 +85,7 @@
       </Form>
       <div slot="footer">
         <Button
-          type="ghost"
+           
           size="small"
           @click="closeTxl"
         >关闭</Button>
@@ -1047,7 +1047,7 @@
                     @click="handleSubmit('formValidate')"
                   >提交</Button>
                   <Button
-                    type="ghost"
+                     
                     size="small"
                     @click="handleCancle()"
                     style="margin-left: 8px"
