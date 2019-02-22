@@ -5,7 +5,8 @@ export default {
 	data() {
 		return {
 			headers: {
-				'SXF-TOKEN': Cookie.get('SXF-TOKEN')
+				'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
+				timeout: 90000
 			},
 			prefix: '/admin/arb/images/',
 			formItem: {},
@@ -98,18 +99,19 @@ export default {
 		model: {}
 	},
 	created() {
-        this.formItem.idAddress  = this.zhongcai_data.idAddress
-        this.formItem.voucherNo  = this.zhongcai_data.voucherNo
-        this.formItem.standAgreeDate = this.zhongcai_data.standAgreeDate?new Date(this.zhongcai_data.standAgreeDate):'';
-       if(this.zhongcai_data.userGender){
-        this.formItem.userGender = this.zhongcai_data.userGender;
-        this.$refs.formItem.validateField('userGender');
-       }
-       if(this.zhongcai_data.userNation){
-        this.formItem.userNation = this.zhongcai_data.userNation;
-        this.$refs.formItem.validateField('userNation');
-       }
-        
+		this.formItem.idAddress = this.zhongcai_data.idAddress;
+		this.formItem.voucherNo = this.zhongcai_data.voucherNo;
+		this.formItem.standAgreeDate = this.zhongcai_data.standAgreeDate
+			? new Date(this.zhongcai_data.standAgreeDate)
+			: '';
+		if (this.zhongcai_data.userGender) {
+			this.formItem.userGender = this.zhongcai_data.userGender;
+			this.$refs.formItem.validateField('userGender');
+		}
+		if (this.zhongcai_data.userNation) {
+			this.formItem.userNation = this.zhongcai_data.userNation;
+			this.$refs.formItem.validateField('userNation');
+		}
 	},
 	methods: {
 		handleView(name) {
@@ -118,64 +120,58 @@ export default {
 		},
 		// 详情带入  回显身份证图片
 		showImg() {
-            if(this.zhongcai_data.routertype ==='my_zhongcai'){
-                if(this.zhongcai_data.idCardFront){
-                    this.formItem.idCardFront = this.zhongcai_data.idCardFront;
+			if (this.zhongcai_data.routertype === 'my_zhongcai') {
+				if (this.zhongcai_data.idCardFront) {
+					this.formItem.idCardFront = this.zhongcai_data.idCardFront;
 					this.uploadList.push({
-						url: this.prefix +  this.zhongcai_data.idCardFront,
-						relativePath:this.zhongcai_data.idCardFront,
+						url: this.prefix + this.zhongcai_data.idCardFront,
+						relativePath: this.zhongcai_data.idCardFront,
 						status: 'finished'
 					});
 					this.$refs.formItem.validateField('idCardFront');
-                }
+				}
 
-              
-
-                if(this.zhongcai_data.idCardOpposite){
-                    this.formItem.idCardOpposite = this.zhongcai_data.idCardOpposite;
+				if (this.zhongcai_data.idCardOpposite) {
+					this.formItem.idCardOpposite = this.zhongcai_data.idCardOpposite;
 					this.uploadList1.push({
-						url: this.prefix +  this.zhongcai_data.idCardOpposite,
-						relativePath:this.zhongcai_data.idCardOpposite,
+						url: this.prefix + this.zhongcai_data.idCardOpposite,
+						relativePath: this.zhongcai_data.idCardOpposite,
 						status: 'finished'
 					});
 					this.$refs.formItem.validateField('idCardOpposite');
-                }
-                if(this.zhongcai_data.voucherImg){
-                    this.formItem.voucherImg = this.zhongcai_data.voucherImg;
+				}
+				if (this.zhongcai_data.voucherImg) {
+					this.formItem.voucherImg = this.zhongcai_data.voucherImg;
 					this.uploadList2.push({
-						url: this.prefix +  this.zhongcai_data.voucherImg,
-						relativePath:this.zhongcai_data.voucherImg,
+						url: this.prefix + this.zhongcai_data.voucherImg,
+						relativePath: this.zhongcai_data.voucherImg,
 						status: 'finished'
 					});
 					this.$refs.formItem.validateField('voucherImg');
-                }
-                if(this.zhongcai_data.standImg){
-                    this.formItem.standImg = this.zhongcai_data.standImg;
+				}
+				if (this.zhongcai_data.standImg) {
+					this.formItem.standImg = this.zhongcai_data.standImg;
 					this.uploadList3.push({
-						url: this.prefix +  this.zhongcai_data.standImg,
-						relativePath:this.zhongcai_data.standImg,
+						url: this.prefix + this.zhongcai_data.standImg,
+						relativePath: this.zhongcai_data.standImg,
 						status: 'finished'
 					});
 					this.$refs.formItem.validateField('standImg');
-                }
-                
-                
-            }else{
-                if (this.zhongcai_data.idCardFront) {
-                    this.arb_uploadUrl({
-                        key:'idCardFront',
-                        path: this.zhongcai_data.idCardFront
-                    });
-                }
-                if (this.zhongcai_data.idCardOpposite) {
-                    this.arb_uploadUrl({
-                        key:'idCardOpposite',
-                        path: this.zhongcai_data.idCardOpposite
-                    });
-                }
-            }
-			
-            
+				}
+			} else {
+				if (this.zhongcai_data.idCardFront) {
+					this.arb_uploadUrl({
+						key: 'idCardFront',
+						path: this.zhongcai_data.idCardFront
+					});
+				}
+				if (this.zhongcai_data.idCardOpposite) {
+					this.arb_uploadUrl({
+						key: 'idCardOpposite',
+						path: this.zhongcai_data.idCardOpposite
+					});
+				}
+			}
 		},
 		handleSubmit() {
 			console.log(this.formItem);
@@ -203,15 +199,15 @@ export default {
 				idCardOpposite: this.uploadList1[0].relativePath,
 				voucherImg: this.uploadList2[0].relativePath,
 				standImg: this.uploadList3[0].relativePath
-            };
+			};
 			if (this.formItem.standAgreeDate) {
 				obj.standAgreeDate = dayjs(this.formItem.standAgreeDate).format('YYYY-MM-DD');
 			}
 			const res = await arb_apply(obj);
 			if (res.code === 1) {
-                this.repayinfo_getApplyInfo_data = res.data;
-                this.del();
-				this.$Message.success('提交成功');                
+				this.repayinfo_getApplyInfo_data = res.data;
+				this.del();
+				this.$Message.success('提交成功');
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -271,15 +267,15 @@ export default {
 
 		async arb_uploadUrl(obj) {
 			const res = await arb_uploadUrl({
-                caseNo:this.zhongcai_data.caseNo,
-                imgType:obj.key,
-				uploadUrlImage:obj.path
+				caseNo: this.zhongcai_data.caseNo,
+				imgType: obj.key,
+				uploadUrlImage: obj.path
 			});
 			if (res.code === 1) {
 				if (obj.key === 'idCardFront') {
 					this.formItem.idCardFront = this.zhongcai_data.idCardFront;
 					this.uploadList.push({
-						url: this.prefix +  res.data.relativePath,
+						url: this.prefix + res.data.relativePath,
 						relativePath: res.data.relativePath,
 						status: 'finished'
 					});
