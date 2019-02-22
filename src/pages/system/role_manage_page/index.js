@@ -269,12 +269,10 @@ export default {
   methods: {
     // 勾选节点的回调函数
     checkChange(arr) {
-      console.log(this.$refs.tree.getSelectedNodes());
       this.menuIds = [];
       console.log(arr);
       arr.forEach(item => {
-        this.menuIds.push(item.id)
-        console.log(item.id.length)
+        this.menuIds.push(item.id);
       });
       // this.menuIds = this.menuIds.join(',');
       console.log(this.menuIds);
