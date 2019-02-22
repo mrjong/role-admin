@@ -4,7 +4,7 @@ import Util from '../libs/util';
 import VueRouter from 'vue-router';
 import Cookies from 'js-cookie';
 import store from '@/store';
-import { routers } from './router';
+// import { routers } from './router';
 import { initMenu, newStyleRouter } from './routerDemo';
 
 Vue.use(VueRouter);
@@ -73,8 +73,7 @@ router.beforeEach((to, from, next) => {
       }
     } else {
       // 没有配置权限的路由, 直接通过
-      console.log(routers, 'routers');
-      Util.toDefaultPage([ routers ], to.name, router, next);
+      Util.toDefaultPage([  ], to.name, router, next);
     }
   } else {
     if (whiteList.indexOf(to.path) !== -1) {

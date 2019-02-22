@@ -302,8 +302,8 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-                                },
-                                [
+								},
+								[
 									h(
 										'span',
 										{
@@ -330,8 +330,6 @@ export default {
 										]
 									)
 								]
-								
-								
 							)
 						]);
 					}
@@ -350,8 +348,8 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-                                },
-                                [
+								},
+								[
 									h(
 										'span',
 										{
@@ -378,7 +376,6 @@ export default {
 										]
 									)
 								]
-								
 							)
 						]);
 					}
@@ -804,8 +801,8 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-                                },
-                                [
+								},
+								[
 									h(
 										'span',
 										{
@@ -832,7 +829,6 @@ export default {
 										]
 									)
 								]
-								
 							)
 						]);
 					}
@@ -863,8 +859,8 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-                                },
-                                [
+								},
+								[
 									h(
 										'span',
 										{
@@ -891,7 +887,6 @@ export default {
 										]
 									)
 								]
-								
 							)
 						]);
 					}
@@ -936,8 +931,8 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-                                },
-                                [
+								},
+								[
 									h(
 										'span',
 										{
@@ -964,7 +959,6 @@ export default {
 										]
 									)
 								]
-								
 							)
 						]);
 					}
@@ -1231,8 +1225,8 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-                                },
-                                [
+								},
+								[
 									h(
 										'span',
 										{
@@ -1259,7 +1253,6 @@ export default {
 										]
 									)
 								]
-								
 							)
 						]);
 					}
@@ -1270,28 +1263,29 @@ export default {
 					key: 'edit',
 					width: 50,
 					render: (h, params) => {
-                        return h('div',
-                        [
-							h('span',{
-                                style: {
-									display: _this.readType !== 'read' ? 'inline-block' : 'none'
-                                },
-                                on: {
-									click: () => {
-										_this.handCall(params.row, null, '03');
+						return h('div', [
+							h(
+								'span',
+								{
+									style: {
+										display: _this.readType !== 'read' ? 'inline-block' : 'none'
+									},
+									on: {
+										click: () => {
+											_this.handCall(params.row, null, '03');
+										}
 									}
-								}
-                            },[h('Icon', {
-								
-								class: 'edit-btn',
-								props: {
-									type: 'edit'
 								},
-								
-							})])
-                        ] 
-                       
-                        );
+								[
+									h('Icon', {
+										class: 'edit-btn',
+										props: {
+											type: 'edit'
+										}
+									})
+								]
+							)
+						]);
 					}
 				}
 			],
@@ -1360,8 +1354,8 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-                                },
-                                [
+								},
+								[
 									h(
 										'span',
 										{
@@ -1388,7 +1382,6 @@ export default {
 										]
 									)
 								]
-								
 							)
 						]);
 					}
@@ -1420,8 +1413,8 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-                                },
-                                [
+								},
+								[
 									h(
 										'span',
 										{
@@ -1448,7 +1441,6 @@ export default {
 										]
 									)
 								]
-								
 							)
 						]);
 					}
@@ -1465,28 +1457,29 @@ export default {
 					width: 100,
 					key: 'edit',
 					render: (h, params) => {
-                        return h('div', 
-                        [
-							h('span',{
-                                style: {
-									display: _this.readType !== 'read' ? 'inline-block' : 'none'
-                                },
-                                on: {
-									click: () => {
-										_this.handCall(params.row, null, '03');
+						return h('div', [
+							h(
+								'span',
+								{
+									style: {
+										display: _this.readType !== 'read' ? 'inline-block' : 'none'
+									},
+									on: {
+										click: () => {
+											_this.handCall(params.row, null, '03');
+										}
 									}
-								}
-                            },[h('Icon', {
-								
-								class: 'edit-btn',
-								props: {
-									type: 'edit'
 								},
-								
-							})])
-                        ]
-                        
-                        );
+								[
+									h('Icon', {
+										class: 'edit-btn',
+										props: {
+											type: 'edit'
+										}
+									})
+								]
+							)
+						]);
 					}
 				}
 			],
@@ -1522,8 +1515,8 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-                                },
-                                [
+								},
+								[
 									h(
 										'span',
 										{
@@ -1550,8 +1543,6 @@ export default {
 										]
 									)
 								]
-								
-								
 							)
 						]);
 					}
@@ -1583,8 +1574,8 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-                                },
-                                [
+								},
+								[
 									h(
 										'span',
 										{
@@ -1611,9 +1602,6 @@ export default {
 										]
 									)
 								]
-								
-								
-					
 							)
 						]);
 					}
@@ -1624,27 +1612,29 @@ export default {
 					width: 100,
 					key: 'edit',
 					render: (h, params) => {
-                        return h('div', 
-                        [
-							h('span',{
-                                style: {
-									display: _this.readType !== 'read' ? 'inline-block' : 'none'
-                                },
-                                on: {
-									click: () => {
-										_this.handCall(params.row, null, '03');
+						return h('div', [
+							h(
+								'span',
+								{
+									style: {
+										display: _this.readType !== 'read' ? 'inline-block' : 'none'
+									},
+									on: {
+										click: () => {
+											_this.handCall(params.row, null, '03');
+										}
 									}
-								}
-                            },[h('Icon', {
-								
-								class: 'edit-btn',
-								props: {
-									type: 'edit'
 								},
-								
-							})])
-                        ]
-                        );
+								[
+									h('Icon', {
+										class: 'edit-btn',
+										props: {
+											type: 'edit'
+										}
+									})
+								]
+							)
+						]);
 					}
 				}
 			],
@@ -1742,8 +1732,8 @@ export default {
 									props: {
 										content: _this.mingwenData
 									}
-                                },
-                                [
+								},
+								[
 									h(
 										'span',
 										{
@@ -1770,8 +1760,6 @@ export default {
 										]
 									)
 								]
-								
-								
 							)
 						]);
 					}
@@ -1781,27 +1769,29 @@ export default {
 					align: 'center',
 					key: 'edit',
 					render: (h, params) => {
-                        return h('div', 
-                        [
-							h('span',{
-                                style: {
-									display: _this.readType !== 'read' ? 'inline-block' : 'none'
-                                },
-                                on: {
-									click: () => {
-										_this.handCall(params.row, null, '03');
+						return h('div', [
+							h(
+								'span',
+								{
+									style: {
+										display: _this.readType !== 'read' ? 'inline-block' : 'none'
+									},
+									on: {
+										click: () => {
+											_this.handCall(params.row, null, '03');
+										}
 									}
-								}
-                            },[h('Icon', {
-								
-								class: 'edit-btn',
-								props: {
-									type: 'edit'
 								},
-								
-							})])
-                        ]
-                        );
+								[
+									h('Icon', {
+										class: 'edit-btn',
+										props: {
+											type: 'edit'
+										}
+									})
+								]
+							)
+						]);
 					}
 				}
 			]
@@ -1891,21 +1881,24 @@ export default {
 				autoReady: true,
 				url: obj.url
 			};
+			console.log(config);
 			CallHelper.init(config, this.initCallback);
 		},
 		/**
       * 设置状态监听回调
       */
 		stateCallback(data) {
+			console.log('00000000000000000000011111111111');
 			this.$store.commit('changeCallData', data);
 		},
 		/**
           * 初始化方法回调是否成功
           */
 		initCallback(data) {
+			console.log(data, '-------------');
 			if (data.successChange) {
 				console.log(data);
-				console.log('您已登录成功！');
+				console.log('您已登录成功！desc_page');
 				this.call_kt_hung_on({
 					callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
 					callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
@@ -2256,10 +2249,11 @@ export default {
 		// 点击电话
 		handCall(obj, type, tag) {
 			this.handleCancle();
-			if (type === 'call') {
+			if (type === 'call' && this.readType !== 'read') {
+				this.objCopy = obj;
 				// type ['call] 拨打电话
 				if (localStorage.getItem('callData')) {
-					console.log('-----------------------');
+					console.log('1111111111');
 					this.call(JSON.parse(localStorage.getItem('callData')));
 				} else {
 					this.call_kt_hung_on({
@@ -2271,7 +2265,6 @@ export default {
 						toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid
 					});
 				}
-				this.objCopy = obj;
 			} else {
 				this.objCopy = {};
 				this.actionId = '';

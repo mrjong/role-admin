@@ -1,8 +1,4 @@
 const Login = () => import('@/pages/login/login.vue');
-
-const LayoutMain = () => import('@/pages/common/main');
-
-const Home = () => import('@/pages/common/home');
 const Locking = () => import('@/components/lockscreen/components/locking-page.vue');
 const CASE_DESC_PAGE = () => import('@/pages/caseMng/case_desc_page');
 const CASE_KEY_DISTRIBUTE_PAGE = () => import('@/pages/caseMng/case_key_distribute_page');
@@ -43,21 +39,6 @@ export const initMenu = [
 		name: 'error-500',
 		component: Page500
 	},
-	{
-		path: '/',
-		name: 'otherRouter',
-		redirect: '/home',
-		title: '首页',
-		component: LayoutMain,
-		children: [
-			{
-				path: 'home',
-				title: 'home',
-				name: 'home',
-				component: Home
-			}
-		]
-	}
 ];
 export const newStyleRouter = [
 	{
@@ -85,5 +66,3 @@ export const newStyleRouter = [
 		component: CASE_ADD_DISTRIBUTE_PAGE
   },
 ];
-// 导出设置动态路由方法
-export const setRouter = function(menuTree) {};

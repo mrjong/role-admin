@@ -5,12 +5,12 @@
 <template>
     <Menu accordion ref="sideMenu" :active-name="$route.name" :open-names="openNames" :theme="menuTheme" width="auto" @on-select="changeMenu">
         <template v-for="item in menuList">
-            <!-- <MenuItem v-if="item.children.length<=1" :name="item.children[0].name" :key="'menuitem' + item.name">
+            <MenuItem v-if="item.children.length<=1&&item.name==='/home'" :name="item.children[0].name" :key="'menuitem' + item.name">
                 <Icon :type="item.children[0].icon || item.icon" :size="iconSize" :key="'menuicon' + item.name"></Icon>
                 <span class="layout-text" :key="'title' + item.name">{{ itemTitle(item.children[0]) }}</span>
-            </MenuItem> -->
+            </MenuItem>
 
-            <Submenu :name="item.name" :key="item.name">
+            <Submenu :name="item.name" :key="item.name" v-if="item.name!=='/home'">
                 <template slot="title">
                     <Icon :type="item.icon" :size="iconSize"></Icon>
                     <span class="layout-text">{{ itemTitle(item) }}</span>

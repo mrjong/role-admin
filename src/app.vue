@@ -109,7 +109,7 @@ export default {
     */
     initCallback(data) {
       if (data.successChange) {
-        console.log('您已登录成功！');
+        console.log('您已登录成功！app.vue');
       } else {
         this.$Message.error('登录失败，请联系管理员！');
       }
@@ -122,6 +122,7 @@ export default {
       });
     },
     hangup() {
+        this.showTel =false
       CallHelper.hangup();
       this.fail = false
       this.success = false
@@ -151,8 +152,8 @@ export default {
             if (localStorage.getItem('callObj')) {
               let callObj = JSON.parse(localStorage.getItem('callObj'))
               console.log(callObj)
-              this.telNoHid = callObj.telNoHid
-              this.usrNameHid = callObj.usrNameHid
+              this.telNoHid = callObj.telNoHid || this.telNoHid
+              this.usrNameHid = callObj.usrNameHid || this.usrNameHid
             }
             // 坐席振铃
             if (res.data) {

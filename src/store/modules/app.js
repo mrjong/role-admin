@@ -1,4 +1,3 @@
-import { otherRouter } from '@/router/router';
 import Util from '@/libs/util';
 import Cookies from 'js-cookie';
 import Vue from 'vue';
@@ -21,7 +20,7 @@ const app = {
 			{
 				title: '首页',
 				path: '',
-				name: 'home'
+				name: '/home/home/home'
 			}
 		],
 		currentPageName: '',
@@ -29,12 +28,12 @@ const app = {
 			{
 				title: '首页',
 				path: '',
-				name: 'home'
+				name: '/home/home/home'
 			}
 		], // 面包屑数组
 		menuList: [],
-		routers: [ otherRouter ],
-		tagsList: [ ...otherRouter.children ],
+		routers: [],
+		tagsList: [],
 		messageCount: 0,
 		dontCache: [ 'text-editor', 'artical-publish' ], // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
 		menuTreeOriginal: [], // 菜单树结构 源数据
@@ -115,7 +114,7 @@ const app = {
 			state.isFinishedRouteAdd = data;
 		},
 		changeRouters(state, data) {
-			state.routers = [ otherRouter, ...data ];
+			state.routers = [  ...data ];
 		},
 		setTagsList(state, list) {
 			state.tagsList.push(...list);
@@ -197,7 +196,7 @@ const app = {
 		setOpenedList(state) {
 			state.pageOpenedList = localStorage.pageOpenedList
 				? JSON.parse(localStorage.pageOpenedList)
-				: [ otherRouter.children[0] ];
+				: [ ];
 		},
 		setCurrentPath(state, pathArr) {
 			state.currentPath = pathArr;
