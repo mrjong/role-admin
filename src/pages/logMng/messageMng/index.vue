@@ -62,6 +62,25 @@
             span="6"
           >
           <FormItem
+            label="发送状态:"
+          >
+            <Select size="small" filterable v-model="formItem.isSuccess" placeholder="请选择发送状态">
+              <Option
+                v-for="item in getDirObj['1_0_SUCCESS_FAIL']"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+          <FormItem
             label="账单ID:"
           >
             <Input
@@ -184,8 +203,8 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="消息内容:" style="margin-left: 20px">
-                  <span class="desc-label-item">{{formValidateInfo.msgContent}}</span>
+                <FormItem span="6" prop="mblNo" label="消息提醒:" style="margin-left: 20px">
+                  <span class="desc-label-item">{{formValidateInfo.messagePurposeName}}</span>
                 </FormItem>
                 </Col>
               </Row>
@@ -210,18 +229,6 @@
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="内容类型:" style="margin-left: 20px">
                   <span class="desc-label-item">{{formValidateInfo.messageContentTypeName}}</span>
-                </FormItem>
-                </Col>
-              </Row>
-              <Row class="eachRow">
-                <Col span="12">
-                <FormItem span="6" prop="mblNo" label="消息提醒:">
-                  <span class="desc-label-item">{{formValidateInfo.messagePurposeName}}</span>
-                </FormItem>
-                </Col>
-                <Col span="12">
-                <FormItem span="6" prop="mblNo" label="消息备注:" style="margin-left: 20px">
-                  <span class="desc-label-item">{{formValidateInfo.remark}}</span>
                 </FormItem>
                 </Col>
               </Row>
@@ -265,6 +272,23 @@
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="存储对应接收标识内容:" >
                   <span class="desc-label-item">{{formValidateInfo.msgFlgContent}}</span>
+                </FormItem>
+                </Col>
+                <Col span="12">
+                <FormItem span="6" prop="mblNo" label="发送状态:" style="margin-left: 20px">
+                  <span class="desc-label-item">{{formValidateInfo.isSuccessName}}</span>
+                </FormItem>
+                </Col>
+              </Row>
+              <Row class="eachRow">
+                <Col span="12">
+                <FormItem label="消息内容:">
+                  <span class="desc-label-item">{{formValidateInfo.msgContent}}</span>
+                </FormItem>
+                </Col>
+                <Col span="12">
+                <FormItem span="6" prop="mblNo" label="消息备注:" style="margin-left: 20px">
+                  <span class="desc-label-item">{{formValidateInfo.remark}}</span>
                 </FormItem>
                 </Col>
               </Row>

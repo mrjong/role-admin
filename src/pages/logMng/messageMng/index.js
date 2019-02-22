@@ -11,7 +11,7 @@ export default {
       showPanel: false,
       showPanel2: false,
       operTime:[],
-      getDirList: ['MSG_TYPE'],
+      getDirList: ['MSG_TYPE', '1_0_SUCCESS_FAIL'],
       getDirObj: {},
       modalSee: false,
       formItem: {
@@ -160,6 +160,13 @@ export default {
           className: 'tableMainW',
           align: alignCenter,
           width: 250
+        },
+        {
+          title: '发送状态',
+          key: 'isSuccessName',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal
         },
         {
           title: '操作',
