@@ -238,7 +238,7 @@
                     <div style="width: 58px;height:58px;line-height: 58px;">
                       <Icon
                         size="20"
-                        type="plus"
+                        type="md-add"
                       ></Icon>
                     </div>
                   </Upload>
@@ -303,7 +303,7 @@
                     <div style="width: 58px;height:58px;line-height: 58px;">
                       <Icon
                         size="20"
-                        type="plus"
+                        type="md-add"
                       ></Icon>
                     </div>
                   </Upload>
@@ -368,7 +368,7 @@
                     <div style="width: 58px;height:58px;line-height: 58px;">
                       <Icon
                         size="20"
-                        type="plus"
+                        type="md-add"
                       ></Icon>
                     </div>
                   </Upload>
@@ -433,7 +433,7 @@
                     <div style="width: 58px;height:58px;line-height: 58px;">
                       <Icon
                         size="20"
-                        type="plus"
+                        type="md-add"
                       ></Icon>
                     </div>
                   </Upload>

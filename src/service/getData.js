@@ -1155,6 +1155,17 @@ export const arb_list = (obj, options) =>
     data: qs.stringify(obj),
     options
   });
+  /*
+*
+我的仲裁
+* */
+export const arb_myArbList = (obj, options) =>
+fetch({
+  url: '/arb/myArbList',
+  method: 'POST',
+  data: qs.stringify(obj),
+  options
+});
 
 /*
 *

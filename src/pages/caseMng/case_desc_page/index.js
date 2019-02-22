@@ -78,7 +78,7 @@ export default {
 			mblNo: '',
 			caseNo: '',
 			userId: '',
-			readType: 'edit',
+			readtype: 'md-create',
 			showBtn: true,
 			showPanel: false,
 			showPanel2: false,
@@ -322,7 +322,7 @@ export default {
 										[
 											h('Icon', {
 												props: {
-													type: 'eye'
+													type: 'md-eye'
 												},
 
 												class: 'eye-class'
@@ -368,7 +368,7 @@ export default {
 										[
 											h('Icon', {
 												props: {
-													type: 'eye'
+													type: 'md-eye'
 												},
 
 												class: 'eye-class'
@@ -524,7 +524,7 @@ export default {
 							// 				display: params.row.crdNoHid ? 'inline-block' : 'none'
 							// 			},
 							// 			props: {
-							// 				type: 'eye'
+							// 				type: 'md-eye'
 							// 			},
 							// 			on: {
 							// 				click: () => {
@@ -559,7 +559,7 @@ export default {
 				// 				[
 				// 					h('Icon', {
 				// 						props: {
-				// 							type: 'eye'
+				// 							type: 'md-eye'
 				// 						},
 				// 						on: {
 				// 							click: () => {
@@ -821,7 +821,7 @@ export default {
 										[
 											h('Icon', {
 												props: {
-													type: 'eye'
+													type: 'md-eye'
 												},
 
 												class: 'eye-class'
@@ -879,7 +879,7 @@ export default {
 										[
 											h('Icon', {
 												props: {
-													type: 'eye'
+													type: 'md-eye'
 												},
 
 												class: 'eye-class'
@@ -951,7 +951,7 @@ export default {
 										[
 											h('Icon', {
 												props: {
-													type: 'eye'
+													type: 'md-eye'
 												},
 
 												class: 'eye-class'
@@ -1143,56 +1143,56 @@ export default {
 					title: '姓名（关系）',
 					align: 'center',
 					width: 150,
-					key: 'userNmHid',
+					key: 'userNm',
 					render: (h, params) => {
 						let callUserTypeName = params.row.callUserTypeName;
-						let userNmHid = params.row.userNmHid;
+						let userNm = params.row.userNm;
 
 						return h('div', [
 							h(
 								'span',
 								{
 									props: {
-										type: 'edit'
+										type: 'md-create'
 									}
 								},
-								`${userNmHid}(${callUserTypeName})`
+								`${userNm}(${callUserTypeName})`
 							),
-							h(
-								'Poptip',
-								{
-									props: {
-										content: _this.mingwenData
-									}
-								},
-								[
-									h(
-										'span',
-										{
-											on: {
-												click: () => {
-													_this.syscommon_decrypt({
-														type: 'NAME',
-														data: params.row.userNm
-													});
-												}
-											},
-											style: {
-												display: params.row.userNmHid ? 'inline-block' : 'none'
-											}
-										},
-										[
-											h('Icon', {
-												props: {
-													type: 'eye'
-												},
+							// h(
+							// 	'Poptip',
+							// 	{
+							// 		props: {
+							// 			content: _this.mingwenData
+							// 		}
+							// 	},
+							// 	[
+							// 		h(
+							// 			'span',
+							// 			{
+							// 				on: {
+							// 					click: () => {
+							// 						_this.syscommon_decrypt({
+							// 							type: 'NAME',
+							// 							data: params.row.userNm
+							// 						});
+							// 					}
+							// 				},
+							// 				style: {
+							// 					display: params.row.userNmHid ? 'inline-block' : 'none'
+							// 				}
+							// 			},
+							// 			[
+							// 				h('Icon', {
+							// 					props: {
+							// 						type: 'md-eye'
+							// 					},
 
-												class: 'eye-class'
-											})
-										]
-									)
-								]
-							)
+							// 					class: 'eye-class'
+							// 				})
+							// 			]
+							// 		)
+							// 	]
+							// )
 						]);
 					}
 				},
@@ -1209,7 +1209,7 @@ export default {
 								'a',
 								{
 									props: {
-										type: 'edit'
+										type: 'md-create'
 									},
 									on: {
 										click: () => {
@@ -1245,7 +1245,7 @@ export default {
 										[
 											h('Icon', {
 												props: {
-													type: 'eye'
+													type: 'md-eye'
 												},
 
 												class: 'eye-class'
@@ -1280,7 +1280,7 @@ export default {
 									h('Icon', {
 										class: 'edit-btn',
 										props: {
-											type: 'edit'
+											type: 'md-create'
 										}
 									})
 								]
@@ -1313,7 +1313,7 @@ export default {
 										color: '#2d8cf0'
 									},
 									props: {
-										type: 'edit'
+										type: 'md-create'
 									}
 								},
 								callDuration
@@ -1322,7 +1322,7 @@ export default {
 								'div',
 								{
 									props: {
-										type: 'edit'
+										type: 'md-create'
 									}
 								},
 								callTime ? this.$options.filters['formatDate'](callTime, 'YYYY-MM-DD HH:mm:ss') : ''
@@ -1334,55 +1334,55 @@ export default {
 					title: '姓名（关系）',
 					align: 'center',
 					width: 150,
-					key: 'userNmHid',
+					key: 'userNm',
 					render: (h, params) => {
 						let callUserTypeName = params.row.callUserTypeName;
-						let userNmHid = params.row.userNmHid;
+						let userNm = params.row.userNm;
 						return h('div', [
 							h(
 								'span',
 								{
 									props: {
-										type: 'edit'
+										type: 'md-create'
 									}
 								},
-								`${userNmHid ? userNmHid : ''}(${callUserTypeName ? callUserTypeName : ''})`
+								`${userNm ? userNm : ''}(${callUserTypeName ? callUserTypeName : ''})`
 							),
-							h(
-								'Poptip',
-								{
-									props: {
-										content: _this.mingwenData
-									}
-								},
-								[
-									h(
-										'span',
-										{
-											on: {
-												click: () => {
-													_this.syscommon_decrypt({
-														type: 'NAME',
-														data: params.row.userNm
-													});
-												}
-											},
-											style: {
-												display: params.row.userNmHid ? 'inline-block' : 'none'
-											}
-										},
-										[
-											h('Icon', {
-												props: {
-													type: 'eye'
-												},
+							// h(
+							// 	'Poptip',
+							// 	{
+							// 		props: {
+							// 			content: _this.mingwenData
+							// 		}
+							// 	},
+							// 	[
+							// 		h(
+							// 			'span',
+							// 			{
+							// 				on: {
+							// 					click: () => {
+							// 						_this.syscommon_decrypt({
+							// 							type: 'NAME',
+							// 							data: params.row.userNm
+							// 						});
+							// 					}
+							// 				},
+							// 				style: {
+							// 					display: params.row.userNmHid ? 'inline-block' : 'none'
+							// 				}
+							// 			},
+							// 			[
+							// 				h('Icon', {
+							// 					props: {
+							// 						type: 'md-eye'
+							// 					},
 
-												class: 'eye-class'
-											})
-										]
-									)
-								]
-							)
+							// 					class: 'eye-class'
+							// 				})
+							// 			]
+							// 		)
+							// 	]
+							// )
 						]);
 					}
 				},
@@ -1433,7 +1433,7 @@ export default {
 										[
 											h('Icon', {
 												props: {
-													type: 'eye'
+													type: 'md-eye'
 												},
 
 												class: 'eye-class'
@@ -1474,7 +1474,7 @@ export default {
 									h('Icon', {
 										class: 'edit-btn',
 										props: {
-											type: 'edit'
+											type: 'md-create'
 										}
 									})
 								]
@@ -1497,53 +1497,53 @@ export default {
 					key: 'userNmHid',
 					render: (h, params) => {
 						let callUserTypeName = params.row.callUserTypeName;
-						let userNmHid = params.row.userNmHid;
+						let userNm = params.row.userNm;
 
 						return h('div', [
 							h(
 								'span',
 								{
 									props: {
-										type: 'edit'
+										type: 'md-create'
 									}
 								},
-								`${userNmHid ? userNmHid : ''}(${callUserTypeName ? callUserTypeName : ''})`
+								`${userNm ? userNm : ''}(${callUserTypeName ? callUserTypeName : ''})`
 							),
-							h(
-								'Poptip',
-								{
-									props: {
-										content: _this.mingwenData
-									}
-								},
-								[
-									h(
-										'span',
-										{
-											on: {
-												click: () => {
-													_this.syscommon_decrypt({
-														type: 'NAME',
-														data: params.row.userNm
-													});
-												}
-											},
-											style: {
-												display: params.row.userNmHid ? 'inline-block' : 'none'
-											}
-										},
-										[
-											h('Icon', {
-												props: {
-													type: 'eye'
-												},
+							// h(
+							// 	'Poptip',
+							// 	{
+							// 		props: {
+							// 			content: _this.mingwenData
+							// 		}
+							// 	},
+							// 	[
+							// 		h(
+							// 			'span',
+							// 			{
+							// 				on: {
+							// 					click: () => {
+							// 						_this.syscommon_decrypt({
+							// 							type: 'NAME',
+							// 							data: params.row.userNm
+							// 						});
+							// 					}
+							// 				},
+							// 				style: {
+							// 					display: params.row.userNmHid ? 'inline-block' : 'none'
+							// 				}
+							// 			},
+							// 			[
+							// 				h('Icon', {
+							// 					props: {
+							// 						type: 'md-eye'
+							// 					},
 
-												class: 'eye-class'
-											})
-										]
-									)
-								]
-							)
+							// 					class: 'eye-class'
+							// 				})
+							// 			]
+							// 		)
+							// 	]
+							// )
 						]);
 					}
 				},
@@ -1594,7 +1594,7 @@ export default {
 										[
 											h('Icon', {
 												props: {
-													type: 'eye'
+													type: 'md-eye'
 												},
 
 												class: 'eye-class'
@@ -1629,7 +1629,7 @@ export default {
 									h('Icon', {
 										class: 'edit-btn',
 										props: {
-											type: 'edit'
+											type: 'md-create'
 										}
 									})
 								]
@@ -1649,56 +1649,56 @@ export default {
 					title: '姓名（关系）',
 					align: 'center',
 					width: 130,
-					key: 'userNmHid',
+					key: 'userNm',
 					render: (h, params) => {
 						let callUserTypeName = params.row.callUserTypeName;
-						let userNmHid = params.row.userNmHid;
+						let userNm = params.row.userNm;
 
 						return h('div', [
 							h(
 								'span',
 								{
 									props: {
-										type: 'edit'
+										type: 'md-create'
 									}
 								},
-								`${userNmHid ? userNmHid : ''}(${callUserTypeName ? callUserTypeName : ''})`
+								`${userNm ? userNm : ''}(${callUserTypeName ? callUserTypeName : ''})`
 							),
-							h(
-								'Poptip',
-								{
-									props: {
-										content: _this.mingwenData
-									}
-								},
-								[
-									h(
-										'span',
-										{
-											style: {
-												display: params.row.userNmHid ? 'inline-block' : 'none'
-											},
-											on: {
-												click: () => {
-													_this.syscommon_decrypt({
-														type: 'NAME',
-														data: params.row.userNm
-													});
-												}
-											}
-										},
-										[
-											h('Icon', {
-												props: {
-													type: 'eye'
-												},
+							// h(
+							// 	'Poptip',
+							// 	{
+							// 		props: {
+							// 			content: _this.mingwenData
+							// 		}
+							// 	},
+							// 	[
+							// 		h(
+							// 			'span',
+							// 			{
+							// 				style: {
+							// 					display: params.row.userNmHid ? 'inline-block' : 'none'
+							// 				},
+							// 				on: {
+							// 					click: () => {
+							// 						_this.syscommon_decrypt({
+							// 							type: 'NAME',
+							// 							data: params.row.userNm
+							// 						});
+							// 					}
+							// 				}
+							// 			},
+							// 			[
+							// 				h('Icon', {
+							// 					props: {
+							// 						type: 'md-eye'
+							// 					},
 
-												class: 'eye-class'
-											})
-										]
-									)
-								]
-							)
+							// 					class: 'eye-class'
+							// 				})
+							// 			]
+							// 		)
+							// 	]
+							// )
 						]);
 					}
 				},
@@ -1716,7 +1716,7 @@ export default {
 								{
 									class: 'edit-btn',
 									props: {
-										type: 'edit'
+										type: 'md-create'
 									},
 									on: {
 										click: () => {
@@ -1752,7 +1752,7 @@ export default {
 										[
 											h('Icon', {
 												props: {
-													type: 'eye'
+													type: 'md-eye'
 												},
 
 												class: 'eye-class'
@@ -1786,7 +1786,7 @@ export default {
 									h('Icon', {
 										class: 'edit-btn',
 										props: {
-											type: 'edit'
+											type: 'md-create'
 										}
 									})
 								]

@@ -104,6 +104,12 @@
 					"url": "/arbitramentMng/arbitrament_approve_page",
 					"icon": "arrow-up-c",
 					"template": "/arbitramentMng/arbitrament_approve_page"
+                },
+                {
+					"text": "我的仲裁",
+					"url": "/arbitramentMng/my_arbitrament_approve_page",
+					"icon": "arrow-up-c",
+					"template": "/arbitramentMng/my_arbitrament_approve_page"
 				}
 			]
 		},

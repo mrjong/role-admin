@@ -1,18 +1,27 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import dayjs from 'dayjs'
-import { arb_operateRecord, arb_list, arb_detail, arb_check } from '@/service/getData';
+import dayjs from 'dayjs';
+import zhongcai from '@/components/caseDesc/zhongcai.vue';
+
+import { arb_operateRecord, arb_myArbList, arb_detail, arb_check } from '@/service/getData';
 export default {
 	name: 'case_search_page',
 	mixins: [ formValidateFun, sysDictionary ],
+	components: {
+		zhongcai
+	},
 	data() {
 		console.log(this.GLOBAL);
 		const _this = this;
 		return {
-			getDirList: [ 'PROD_TYPE', 'GENDER', 'APPROVAL_STATE' ],
+            modal: {
+				zhongcai: false
+            },
+            zhongcai_set_data: {},
+			getDirList: [ 'PROD_TYPE', 'GENDER', 'APPROVAL_STATE','NATION' ],
 			getDirObj: {},
-            showPanel: false,
-            prefix:'/admin/arb/images/',
+			showPanel: false,
+			prefix: '/admin/arb/images/',
 			arb_detail_data: {},
 			showPanel2: false,
 			showModalType: '',
@@ -139,9 +148,9 @@ export default {
 						trigger: 'blur'
 					}
 				]
-            },
-            imgName: '',
-            visible:false,
+			},
+			imgName: '',
+			visible: false,
 			pageNo: 1,
 			pageSize: 10,
 			total: 0,
@@ -183,8 +192,8 @@ export default {
 							h(
 								'a',
 								{
-                                    style: {
-										display: params.row.approvalState !== '02' && params.row.approvalState !== '03' ? 'inline-block' : 'none'
+									style: {
+										display: params.row.approvalState === '03' ? 'inline-block' : 'none'
 									},
 									class: 'edit-btn',
 									props: {},
@@ -194,7 +203,7 @@ export default {
 										}
 									}
 								},
-								'审核'
+								'编辑'
 							)
 						]);
 					}
@@ -360,7 +369,13 @@ export default {
 		// this.getList();
 	},
 	methods: {
-        handleView(name) {
+        passBack(type) {
+            this.modal[type] = false;
+            this.del()
+            this.pageNo = 1;
+            this.getList()
+		},
+		handleView(name) {
 			this.imgName = name;
 			this.visible = true;
 		},
@@ -393,8 +408,29 @@ export default {
 					this.case_detail_remark_list_pageNo = 1;
 					this.arb_operateRecord();
 				}
-				this.arb_detail_data = res.data;
-				this.showModal1 = true;
+                this.arb_detail_data = res.data;
+                if(type==='edit'){
+                    this.zhongcai_set_data = {
+                        idNoHid: res.data.idCardNoHid,
+                        billNo: res.data.billNo,
+                        userNmHid: res.data.userNameHid,
+                        caseNo: res.data.caseNo,
+                        voucherNo:res.data.voucherNo,
+                        idAddress:res.data.idAddress,
+                        userGender: res.data.userGender,
+                        userNation: res.data.userNation,
+                        idCardFront:res.data.idCardFront,
+                        idCardOpposite:res.data.idCardOpposite,
+                        voucherImg:res.data.voucherImg,
+                        standImg:res.data.standImg,
+                        routertype:'my_zhongcai',
+                        standAgreeDate:res.data.standAgreeDate
+                    };
+                this.modal['zhongcai'] = true;
+                }else{
+                this.showModal1 = true;
+                }
+             
 			} else {
 				this.shenheObj = {};
 				this.$Message.error(res.message);
@@ -416,9 +452,9 @@ export default {
 			let approvalRemark = '';
 			if (type === '03') {
 				approvalRemark = this.recoverFormItem.approvalRemark;
-			}else if(type === '02'){
-                approvalRemark = "仲裁审核通过"
-            }
+			} else if (type === '02') {
+				approvalRemark = '仲裁审核通过';
+			}
 			const res = await arb_check({
 				approvalRemark,
 				approvalState: type,
@@ -432,8 +468,10 @@ export default {
 				this.$Message.success('操作成功！');
 				this.recoverFormItem = {};
 				setTimeout(() => {
+                    this.pageNo = 1
 					this.getList();
-				}, 2000);
+                }, 2000);
+                this.del()
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -487,23 +525,31 @@ export default {
 		async getList() {
 			let applyTimeLt = '',
 				applyTimeBt = '';
-			if (this.formItem.applyTimeLt&&this.formItem.applyTimeLt.length > 0) {
-				applyTimeLt = this.formItem.applyTimeLt[0]?dayjs(this.formItem.applyTimeLt[0]).format('YYYY-MM-DD'):''
-				applyTimeBt = this.formItem.applyTimeLt[1]?dayjs(this.formItem.applyTimeLt[1]).format('YYYY-MM-DD'):''
+			if (this.formItem.applyTimeLt && this.formItem.applyTimeLt.length > 0) {
+				applyTimeLt = this.formItem.applyTimeLt[0]
+					? dayjs(this.formItem.applyTimeLt[0]).format('YYYY-MM-DD')
+					: '';
+				applyTimeBt = this.formItem.applyTimeLt[1]
+					? dayjs(this.formItem.applyTimeLt[1]).format('YYYY-MM-DD')
+					: '';
 			}
 			let approvalTimeLt = '',
 				approvalTimeBt = '';
-			if (this.formItem.approvalTimeLt&&this.formItem.approvalTimeLt.length > 0) {
-				approvalTimeLt = this.formItem.approvalTimeLt[0]?dayjs(this.formItem.approvalTimeLt[0]).format('YYYY-MM-DD'):''
-                approvalTimeBt = this.formItem.approvalTimeLt[1]?dayjs(this.formItem.approvalTimeLt[1]).format('YYYY-MM-DD'):''
+			if (this.formItem.approvalTimeLt && this.formItem.approvalTimeLt.length > 0) {
+				approvalTimeLt = this.formItem.approvalTimeLt[0]
+					? dayjs(this.formItem.approvalTimeLt[0]).format('YYYY-MM-DD')
+					: '';
+				approvalTimeBt = this.formItem.approvalTimeLt[1]
+					? dayjs(this.formItem.approvalTimeLt[1]).format('YYYY-MM-DD')
+					: '';
 			}
 			// delete this.formItem.approvalTimeLt;
 			// delete this.formItem.applyTimeLt;
-			const res = await arb_list({
+			const res = await arb_myArbList({
 				...this.formItem,
-                applyTimeLt,
-                approvalTimeLt,
-                approvalTimeBt,
+				applyTimeLt,
+				approvalTimeLt,
+				approvalTimeBt,
 				applyTimeBt,
 				pageNum: this.pageNo,
 				pageSize: this.pageSize
