@@ -1334,6 +1334,14 @@ export const timed_taskDetail = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+
+// 系统登录/退出日志管理
+export const login_quitList = (obj) =>
+  fetch({
+    url: '/loginLog/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 // 仲裁明细
 export const arb_operateRecord = (obj) =>
   fetch({

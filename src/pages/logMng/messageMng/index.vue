@@ -86,7 +86,7 @@
             <Input
               size="small"
               clearable
-              v-model="formItem.operIp"
+              v-model="formItem.billNo"
               placeholder="请输入账单ID"
             ></Input>
           </FormItem>
