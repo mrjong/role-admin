@@ -189,7 +189,7 @@
                 </Col>
                 <Col span="12">
                 <FormItem span="6" prop="mblNo" label="是否成功:">
-                  <span class="desc-label-item">{{formValidateInfo.isSuccess}}</span>
+                  <span class="desc-label-item">{{formValidateInfo.isSuccessName}}</span>
                 </FormItem>
                 </Col>
               </Row>
