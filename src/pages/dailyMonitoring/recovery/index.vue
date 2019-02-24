@@ -104,7 +104,8 @@ export default {
           width: 60,
           searchOperator: "=",
           align: alignCenter,
-          key: "listIndex"
+          key: "listIndex",
+          fixed: 'left',
         },
         {
           title: "所属组别",

@@ -208,7 +208,8 @@ export default {
           width: 60,
           searchOperator: "=",
           align: alignCenter,
-          key: "listIndex"
+          key: "listIndex",
+          fixed: 'left',
         },
         {
           title: "案件编码",

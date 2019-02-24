@@ -27,6 +27,7 @@
             prop="mblNo"
           >
             <Input
+            :maxlength="11"
               size="small"
               clearable
               v-model="formItem2.mblNo"
@@ -105,20 +106,22 @@
       <!-- 检索条件 -->
       <Card class="vue-panel case-desc">
         <p slot="title">
-          {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}} <Poptip
+          {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}
+           <!-- <Poptip
             :content="mingwenData"
             v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
           >
             <Icon
               class="eye-class"
               title="显示明文"
-              type="eye"
+              type="md-eye"
               @click.native="syscommon_decrypt({
                 type:'NAME',
                 data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm
             })"
             ></Icon>
-          </Poptip>（{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
+          </Poptip> -->
+          （{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
           <Button
             v-if="readType!=='read'"
             @click.stop="handOpen('zhongcai')"
@@ -191,7 +194,7 @@
                   <Icon
                     class="eye-class"
                     title="显示明文"
-                    type="eye"
+                    type="md-eye"
                     @click.native="syscommon_decrypt({
                 type:'ID_CARD',
                 data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNo
@@ -310,7 +313,7 @@
                       <Icon
                         class="eye-class"
                         title="显示明文"
-                        type="eye"
+                        type='md-eye'
                         @click.native="syscommon_decrypt({
                 type:'BANK_CARD',
                 data:case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNo
@@ -649,7 +652,7 @@
                     content="收起"
                     placement="left"
                   >
-                    <Icon  @click.native="isShow" type="close-round"></Icon>
+                    <Icon  @click.native="isShow" size="20" type="md-close"></Icon>
                   </Tooltip>
                 </div>
                 <div class="ivu-alert-copy ivu-alert-info">
@@ -658,20 +661,20 @@
                       本人
                     </span>
                     {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}
-                    <Poptip
+                    <!-- <Poptip
                       :content="mingwenData"
                       v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
                     >
                       <Icon
                         class="eye-class"
                         title="显示明文"
-                        type="eye"
+                        type="md-eye"
                         @click.native="syscommon_decrypt({
                 type:'NAME',
                 data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm
             })"
                       ></Icon>
-                    </Poptip>
+                    </Poptip> -->
                     <span>（本人）</span>
                   </span>
                   <span
@@ -699,7 +702,7 @@
                     <Icon
                       class="eye-class"
                       title="显示明文"
-                      type="eye"
+                      type="md-eye"
                       @click.native="syscommon_decrypt({
                 type:'MBL',
                 data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
@@ -725,7 +728,7 @@
                         mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
                     },null,'01')"
                       class="edit"
-                      type="edit"
+                      type="md-create"
                     ></Icon>
                   </Tooltip>
                 </div>
@@ -738,20 +741,20 @@
                   </span>
                   <span class="name">
                     {{item.cntUserNameHid}}
-                    <Poptip
+                    <!-- <Poptip
                       :content="mingwenData"
                       v-if="item&&item.cntUserNameHid"
                     >
                       <Icon
                         class="eye-class"
                         title="显示明文"
-                        type="eye"
+                        type="md-eye"
                         @click.native="syscommon_decrypt({
                 type:'NAME',
                 data:item&&item.cntUserName
             })"
                       ></Icon>
-                    </Poptip>
+                    </Poptip> -->
                     <span>（{{item.cntRelTypName}}）</span>
                   </span>
                   <span
@@ -772,7 +775,7 @@
                     <Icon
                       class="eye-class"
                       title="显示明文"
-                      type="eye"
+                      type="md-eye"
                       @click.native="syscommon_decrypt({
                 type:'MBL',
                 data:item&&item.cntUserMblNo
@@ -794,7 +797,7 @@
                     <Icon
                       @click.native="handCall(item,null,'02')"
                       class="edit"
-                      type="edit"
+                      type="md-create"
                     ></Icon>
                   </Tooltip>
                 </div>

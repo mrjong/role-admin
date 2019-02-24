@@ -55,7 +55,8 @@ export default {
 				{
 					type: 'selection', // 通过给columns 数据设置 type:'selection'即可自动开启多选功能
 					width: 60,
-					align: alignCenter
+					align: alignCenter,
+          fixed: 'left',
 				},
 				{
 					title: '序号',

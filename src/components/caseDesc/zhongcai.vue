@@ -226,7 +226,7 @@
                     :on-format-error="handleFormatError"
                     type="drag"
                     :on-exceeded-size="handleMaxSize"
-                    :max-size="1024*10"
+                    :max-size="1024*9.9"
                     :data="{
                     imgType: 'idCardFront',
                     caseNo:zhongcai_data.caseNo
@@ -238,7 +238,7 @@
                     <div style="width: 58px;height:58px;line-height: 58px;">
                       <Icon
                         size="20"
-                        type="plus"
+                        type="md-add"
                       ></Icon>
                     </div>
                   </Upload>
@@ -284,7 +284,7 @@
                   <Upload
                     v-show="uploadList1.length ===0 "
                     ref="upload1"
-                    :max-size="1024*10"
+                    :max-size="1024*9.9"
                     :show-upload-list="false"
                     :default-file-list="defaultList1"
                     :on-success="handleSuccess1"
@@ -303,7 +303,7 @@
                     <div style="width: 58px;height:58px;line-height: 58px;">
                       <Icon
                         size="20"
-                        type="plus"
+                        type="md-add"
                       ></Icon>
                     </div>
                   </Upload>
@@ -350,7 +350,7 @@
                     v-show="uploadList2.length ===0 "
                     ref="upload2"
                     :on-exceeded-size="handleMaxSize"
-                    :max-size="1024*10"
+                    :max-size="1024*9.9"
                     :show-upload-list="false"
                     :default-file-list="defaultList2"
                     :on-success="handleSuccess2"
@@ -368,7 +368,7 @@
                     <div style="width: 58px;height:58px;line-height: 58px;">
                       <Icon
                         size="20"
-                        type="plus"
+                        type="md-add"
                       ></Icon>
                     </div>
                   </Upload>
@@ -419,7 +419,7 @@
                     :default-file-list="defaultList3"
                     :on-success="handleSuccess3"
                     :format="['jpg','jpeg','png']"
-                    :max-size="1024*10"
+                    :max-size="1024*9.9"
                     :on-format-error="handleFormatError"
                     type="drag"
                     :data="{
@@ -433,7 +433,7 @@
                     <div style="width: 58px;height:58px;line-height: 58px;">
                       <Icon
                         size="20"
-                        type="plus"
+                        type="md-add"
                       ></Icon>
                     </div>
                   </Upload>

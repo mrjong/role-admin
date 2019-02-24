@@ -123,6 +123,7 @@ export default {
 					width: 150,
 					key: 'id',
 					align: 'center',
+          fixed: 'left',
 					render(h, params) {
 						const id = params.row.id;
 						const prdTyp = params.row.prdTyp;
