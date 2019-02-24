@@ -85,7 +85,7 @@
           <FormItem>
             <Button
               size="small"
-               
+
               style="width:80px;margin-right: 8px"
               @click="cancelStatus()"
             >取消</Button>
@@ -195,9 +195,13 @@ export default {
     this.organizationFormItem.userIds = userIds;
     this.organizationFormItem.remark = remark;
     this.createUser = createUser;
-    this.createTime = createTime;
     this.updateUser = updateUser;
-    this.updateTime = updateTime;
+    this.createTime = createTime
+          ? this.$options.filters["formatDate"](createTime,"YYYY-MM-DD HH:mm:ss")
+          : createTime;
+      this.updateTime = updateTime
+          ? this.$options.filters["formatDate"](updateTime,"YYYY-MM-DD HH:mm:ss")
+          : updateTime;
     this.status = status;
     // this.organizationFormItem.userIds = [];
     this.collect_list_leader();
@@ -226,9 +230,13 @@ export default {
       this.organizationFormItem.userIds = userIds;
       this.organizationFormItem.remark = remark;
       this.createUser = createUser;
-      this.createTime = createTime;
       this.updateUser = updateUser;
-      this.updateTime = updateTime;
+      this.createTime = createTime
+          ? this.$options.filters["formatDate"](createTime,"YYYY-MM-DD HH:mm:ss")
+          : createTime;
+      this.updateTime = updateTime
+          ? this.$options.filters["formatDate"](updateTime,"YYYY-MM-DD HH:mm:ss")
+          : updateTime;
       this.status = status;
       console.log(this.parentData);
     }
@@ -260,9 +268,13 @@ export default {
       this.organizationFormItem.userIds = userIds;
       this.organizationFormItem.remark = remark;
       this.createUser = createUser;
-      this.createTime = createTime;
       this.updateUser = updateUser;
-      this.updateTime = updateTime;
+      this.createTime = createTime
+          ? this.$options.filters["formatDate"](createTime,"YYYY-MM-DD HH:mm:ss")
+          : createTime;
+      this.updateTime = updateTime
+          ? this.$options.filters["formatDate"](updateTime,"YYYY-MM-DD HH:mm:ss")
+          : updateTime;
       this.status = status;
       this.formDisabled = false;
     },
@@ -301,6 +313,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success("修改成功");
         this.formDisabled = false;
+        this.$parent.$parent.$parent.modalType = '';
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
@@ -315,6 +328,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success("变更成功");
         this.modal = false;
+        this.$parent.$parent.$parent.modalType = '';
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);

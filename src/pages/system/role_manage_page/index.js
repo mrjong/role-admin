@@ -261,11 +261,6 @@ export default {
   created() {
     this.getList();
   },
-  watch: {
-    menuIds() {
-      console.log(this.$refs.tree.getSelectedNodes());
-    }
-  },
   methods: {
     // 勾选节点的回调函数
     checkChange(arr) {
@@ -280,8 +275,6 @@ export default {
     // 选中节点的回调函数
     selectNode(node) {
       console.log(node);
-      console.log(this.$refs.tree.getSelectedNodes());
-
     },
     renderContent(h, { root, node, data }) {
       return h('span', {
@@ -290,17 +283,11 @@ export default {
           width: '94%',
           boxSizing: 'border-box',
         },
-        class: '123123',
-        on: {
-          'click': (e) => {
-            console.log(node)
-          }
-        }
       }, [
           h('span', [
             h('Icon', {
               props: {
-                type: '',
+                type: data.icon,
               },
               style: {
                 marginRight: '4px'
@@ -438,10 +425,10 @@ export default {
     async getMenuList() {
       let res = await system_role_menu_list({ id: this.roleId });
       if (res.code === 1) {
+        res.data.data[0].expand = true;
         this.data5 = res.data.data;
-        this.data5[0].expand = true;
-        this.data5[0].selected = false;
-        this.data5[0].checked = false;
+        // this.$set(this.data5[0].expand, 'expand', true);
+        console.log(this.data5)
       } else {
         this.$Message.error(res.message)
       }

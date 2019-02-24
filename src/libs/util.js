@@ -93,22 +93,23 @@ util.setCurrentPath = function (vm, name) {
       });
     }
   });
+  console.log(name,'-----------------');
   let currentPathArr = [];
-  if (name === 'home_home') {
+  if (name === '/home') {
     currentPathArr = [
       {
-        title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_home')),
-        path: '/home/home',
-        name: 'home_home/'
+        title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, '/home')),
+        path: '/home',
+        name: '/home'
       }
     ];
   } else
-   if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== 'home_home') {
+   if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== '/home') {
     currentPathArr = [
       {
-        title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_home')),
-        path: '/home/home',
-        name: 'home_home'
+        title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, '/home')),
+        path: '/home',
+        name: '/home'
       },
       {
         title: title,
@@ -133,20 +134,20 @@ util.setCurrentPath = function (vm, name) {
         return false;
       }
     })[0];
-    if (currentPathObj.children.length <= 1 && currentPathObj.name === 'home_home') {
+    if (currentPathObj.children.length <= 1 && currentPathObj.name === '/home') {
       currentPathArr = [
         {
           title: '首页',
-          path: '/home/home',
-          name: 'home_home'
+          path: '/home',
+          name: '/home'
         }
       ];
-    } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home_home') {
+    } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== '/home') {
       currentPathArr = [
         {
           title: '首页',
-          path: '/home/home',
-          name: 'home_home'
+          path: '/home',
+          name: '/home'
         },
         {
           title: currentPathObj.title,
@@ -159,11 +160,11 @@ util.setCurrentPath = function (vm, name) {
         return child.name === name;
       })[0];
       currentPathArr = [
-        // {
-        //   title: '首页',
-        //   path: '/home/home/home',
-        //   name: '/home/home/home'
-        // },
+        {
+          title: '首页',
+          path: '/home',
+          name: '/home'
+        },
         {
           title: currentPathObj.title,
           path: '',

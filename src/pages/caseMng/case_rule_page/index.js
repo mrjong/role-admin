@@ -10,7 +10,7 @@ export default {
   },
   data() {
     return {
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', '01_02_EFFECT_INVAL'],
+      getDirList: ['DIVIDE_PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', '01_02_EFFECT_INVAL'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,

@@ -17,7 +17,7 @@
                 v-model="formItem.prodTypeList"
               >
                 <Option
-                  v-for="item in getDirObj.PROD_TYPE"
+                  v-for="item in getDirObj.DIVIDE_PROD_TYPE"
                   :value="item.itemCode"
                   :key="item.itemName"
                 >{{ item.itemName }}</Option>
@@ -46,7 +46,7 @@
               >检索</Button>
               <Button
                 size="small"
-                 
+
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>

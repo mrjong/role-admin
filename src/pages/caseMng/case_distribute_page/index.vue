@@ -221,7 +221,7 @@
               >检索</Button>
               <Button
                 size="small"
-                 
+
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -234,7 +234,7 @@
     <Card class="vue-panel-table">
       <p slot="title">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'" @click="showPanel2=!showPanel2"></Icon>检索结果
-        <span style="margin-left: 10px;">总共{{totalCase}}笔案件，</span>
+        <span style="margin-left: 10px;">总共{{total}}笔案件，</span>
         <span>总共逾期金额{{totalOverdueAmt}}元</span>
         <!-- <Button
           class="fr vue-back-btn header-btn"
@@ -449,7 +449,7 @@
         class-name="user_info_form_modal"
         :mask-closable="false"
       >
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 14px;">
           <span>站内信发送总数：{{totalCase}}</span>
         </p>
         <Form

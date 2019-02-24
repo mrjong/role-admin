@@ -88,12 +88,7 @@
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" span="6" v-if="formDisabled">
           <FormItem>
-            <Button
-              size="small"
-               
-              style="width:80px;margin-right: 8px"
-              @click="cancelStatus()"
-            >取消</Button>
+            <Button size="small" style="width:80px;margin-right: 8px" @click="cancelStatus()">取消</Button>
             <Button
               type="primary"
               @click="handleSubmit('departmentFormItem')"
@@ -136,7 +131,7 @@
           </RadioGroup>
         </Col>
         <div slot="footer">
-          <Button   size="small" @click="cancel">取消</Button>
+          <Button size="small" @click="cancel">取消</Button>
           <Button type="primary" size="small" @click="ok">确定</Button>
         </div>
       </Modal>
@@ -202,17 +197,17 @@ export default {
     parentData() {
       this.departmentFormItem = this.parentData.nodeData;
       this.departmentFormItem.createTime = this.parentData.nodeData.createTime
-      ? this.$options.filters["formatDate"](
-          this.parentData.nodeData.createTimee,
-          "YYYY-MM-DD HH:mm:ss"
-        )
-      : this.parentData.nodeData.createTime;
-    this.departmentFormItem.updateTime = this.parentData.nodeData.updateTime
-      ? this.$options.filters["formatDate"](
-          this.parentData.nodeData.updateTimee,
-          "YYYY-MM-DD HH:mm:ss"
-        )
-      : this.parentData.nodeData.updateTime;
+        ? this.$options.filters["formatDate"](
+            this.parentData.nodeData.createTimee,
+            "YYYY-MM-DD HH:mm:ss"
+          )
+        : this.parentData.nodeData.createTime;
+      this.departmentFormItem.updateTime = this.parentData.nodeData.updateTime
+        ? this.$options.filters["formatDate"](
+            this.parentData.nodeData.updateTimee,
+            "YYYY-MM-DD HH:mm:ss"
+          )
+        : this.parentData.nodeData.updateTime;
     }
   },
   methods: {
@@ -227,6 +222,19 @@ export default {
     },
     // 恢复表单的不可用状态
     cancelStatus() {
+      this.departmentFormItem = this.parentData.nodeData;
+      this.departmentFormItem.createTime = this.parentData.nodeData.createTime
+        ? this.$options.filters["formatDate"](
+            this.parentData.nodeData.createTimee,
+            "YYYY-MM-DD HH:mm:ss"
+          )
+        : this.parentData.nodeData.createTime;
+      this.departmentFormItem.updateTime = this.parentData.nodeData.updateTime
+        ? this.$options.filters["formatDate"](
+            this.parentData.nodeData.updateTimee,
+            "YYYY-MM-DD HH:mm:ss"
+          )
+        : this.parentData.nodeData.updateTime;
       this.formDisabled = false;
     },
     // 提交保存修改
@@ -261,6 +269,7 @@ export default {
       });
       if (res.code === 1) {
         this.$Message.success("修改成功");
+        this.$parent.$parent.$parent.modalType = "";
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
@@ -275,6 +284,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success("变更成功");
         this.modal = false;
+        this.$parent.$parent.$parent.modalType = "";
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);

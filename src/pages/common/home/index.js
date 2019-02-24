@@ -6,7 +6,7 @@ import {
 } from '@/service/getData';
 
 export default {
-	name: 'home_home',
+	name: '/home',
 	data() {
 		return {
 			showPanel3: false,

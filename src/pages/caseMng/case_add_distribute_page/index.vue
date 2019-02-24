@@ -200,7 +200,7 @@
                   >{{submitType === 1?'添加': '修改'}}</Button>
                   <Button
                     size="small"
-                     
+
                     style="width:80px;margin-left: 8px"
                     @click="handleCancel('formItem')"
                   >取消</Button>
@@ -657,6 +657,9 @@ export default {
       if (res.code === 1) {
         console.log(res);
         this.$Message.success('添加成功');
+        setTimeout(() => {
+          window.history.go(-1)
+        },0);
       } else {
         this.$Message.error(res.message);
       }
@@ -697,6 +700,9 @@ export default {
       });
       if (res.code === 1) {
         this.$Message.success("修改成功");
+        setTimeout(() => {
+          window.history.go(-1)
+        },0);
       } else {
         this.$Message.error(res.message);
       }

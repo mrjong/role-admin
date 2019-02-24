@@ -190,7 +190,7 @@ export default {
       window.$router = this.$router
       this.$router.push({
         path: "/home/home/home"
-      })
+      });
     },
     handleSubmit() {
       this.$refs.loginForm.validate(async valid => {

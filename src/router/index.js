@@ -59,7 +59,7 @@ router.beforeEach((to, from, next) => {
     const curRouterObj = Util.getRouterObjByName(store.state.routers, to.name);
     if (curRouterObj && curRouterObj.title) {
       Util.title(curRouterObj.title, router.app);
-    }
+    };
     console.log(curRouterObj, 'curRouterObj');
     if (curRouterObj && curRouterObj.access !== undefined) {
       // 需要判断权限的路由

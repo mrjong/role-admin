@@ -161,7 +161,7 @@
           <FormItem>
             <Button
               size="small"
-               
+
               style="width:80px;margin-right: 8px"
               @click="cancelStatus()"
             >取消</Button>
@@ -463,6 +463,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success("变更成功");
         this.modal = false;
+        this.$parent.$parent.$parent.modalType = '';
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
@@ -474,6 +475,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success("重置密码成功");
         this.modal2 = false;
+        this.$parent.$parent.$parent.modalType = '';
       } else {
         this.$Message.error(res.message);
       }

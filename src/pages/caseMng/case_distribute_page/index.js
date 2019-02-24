@@ -446,7 +446,7 @@ export default {
       if (this.caseIds.length != 0) {
         this.totalCase = this.caseIds.length;
       } else {
-        this.totalCase = this.totalCase;
+        this.totalCase = this.total;
       }
       console.log(this.caseIds);
     },

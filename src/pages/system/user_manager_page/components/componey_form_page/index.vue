@@ -117,12 +117,7 @@
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" span="6" v-if="formDisabled">
           <FormItem>
-            <Button
-              size="small"
-               
-              style="width:80px;margin-right: 8px"
-              @click="cancelStatus()"
-            >取消</Button>
+            <Button size="small" style="width:80px;margin-right: 8px" @click="cancelStatus()">取消</Button>
             <Button
               type="primary"
               @click="handleSubmit('componeyFormItem')"
@@ -135,13 +130,7 @@
       </Form>
     </Card>
     <div v-if="modal">
-      <Modal
-        v-model="modal"
-        @on-ok="ok"
-        @on-cancel="cancel"
-        width="500"
-        :mask-closable="false"
-      >
+      <Modal v-model="modal" @on-ok="ok" @on-cancel="cancel" width="500" :mask-closable="false">
         <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
           <span>状态变更</span>
         </p>
@@ -163,7 +152,7 @@
           </RadioGroup>
         </Col>
         <div slot="footer">
-          <Button   size="small" @click="cancel">取消</Button>
+          <Button size="small" @click="cancel">取消</Button>
           <Button type="primary" size="small" @click="ok">确定</Button>
         </div>
       </Modal>
@@ -260,9 +249,13 @@ export default {
     this.componeyFormItem.areaCity = areaCity;
     this.componeyFormItem.areaProvince = areaProvince;
     this.createUser = createUser;
-    this.createTime = createTime;
     this.updateUser = updateUser;
-    this.updateTime = updateTime;
+    this.createTime = createTime
+      ? this.$options.filters["formatDate"](createTime, "YYYY-MM-DD HH:mm:ss")
+      : createTime;
+    this.updateTime = updateTime
+      ? this.$options.filters["formatDate"](updateTime, "YYYY-MM-DD HH:mm:ss")
+      : updateTime;
   },
   watch: {
     parentData() {
@@ -292,9 +285,13 @@ export default {
       this.componeyFormItem.areaCity = areaCity;
       this.componeyFormItem.areaProvince = areaProvince;
       this.createUser = createUser;
-      this.createTime = createTime;
       this.updateUser = updateUser;
-      this.updateTime = updateTime;
+      this.createTime = createTime
+        ? this.$options.filters["formatDate"](createTime, "YYYY-MM-DD HH:mm:ss")
+        : createTime;
+      this.updateTime = updateTime
+        ? this.$options.filters["formatDate"](updateTime, "YYYY-MM-DD HH:mm:ss")
+        : updateTime;
     }
   },
   methods: {
@@ -319,6 +316,38 @@ export default {
     },
     // 恢复表单的不可用状态
     cancelStatus() {
+      const {
+        id,
+        name,
+        collectType,
+        parentUuid,
+        leafType,
+        loginName,
+        remark,
+        areaCity,
+        areaProvince,
+        createUser,
+        createTime,
+        updateUser,
+        updateTime
+      } = this.parentData.nodeData;
+      this.componeyFormItem.id = id;
+      this.componeyFormItem.name = name;
+      this.componeyFormItem.collectType = collectType;
+      this.componeyFormItem.parentUuid = parentUuid;
+      this.componeyFormItem.leafType = leafType;
+      this.componeyFormItem.loginName = loginName;
+      this.componeyFormItem.remark = remark;
+      this.componeyFormItem.areaCity = areaCity;
+      this.componeyFormItem.areaProvince = areaProvince;
+      this.createUser = createUser;
+      this.updateUser = updateUser;
+      this.createTime = createTime
+        ? this.$options.filters["formatDate"](createTime, "YYYY-MM-DD HH:mm:ss")
+        : createTime;
+      this.updateTime = updateTime
+        ? this.$options.filters["formatDate"](updateTime, "YYYY-MM-DD HH:mm:ss")
+        : updateTime;
       this.formDisabled = false;
     },
     // 提交保存修改
@@ -351,6 +380,7 @@ export default {
       });
       if (res.code === 1) {
         this.$Message.success("修改成功");
+        this.$parent.$parent.$parent.modalType = "";
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
@@ -365,6 +395,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success("变更成功");
         this.modal = false;
+        this.$parent.$parent.$parent.modalType = "";
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
@@ -404,7 +435,7 @@ export default {
           item.loading = false;
           item.children = [];
           if (item.id === this.componeyFormItem.areaProvince) {
-            console.log('-----------------------');
+            console.log("-----------------------");
             this.componeyFormItem.area.push(item.id);
             this.sysarea_getAreaByParentId(item);
           }
