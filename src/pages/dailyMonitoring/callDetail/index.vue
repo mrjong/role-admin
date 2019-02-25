@@ -38,7 +38,7 @@
               >检索</Button>
               <Button
                 size="small"
-                 
+
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -234,6 +234,7 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
+      this.pageNo = 1;
       this.getList();
     },
     async exportData() {
