@@ -31,7 +31,6 @@ export default {
       pageSize: 10,
       total: 0,
       formItem: {
-        loginId: '',
         callno: ''
       },
       tableData: [
@@ -243,14 +242,12 @@ export default {
         pageSize: this.pageSize,
       });
       console.log(res);
-      if (res.data && res.data.data) {
-        this.tableData = res.data.data;
+      if (res.code === 1) {
+        this.tableData = res.data.content;
         this.total = res.data.totalElements;
         // this.pageNo = res.data.number;
       } else {
-        this.tableData = [];
-        this.total = 0;
-        this.pageNo = 1;
+        this.$Message.error(res.message);
       }
     },
     // 删除坐席

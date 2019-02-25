@@ -491,6 +491,7 @@ export default {
         this.staffFormItem.seatType = res.data.seatType;
         this.staffFormItem.callno = res.data.callno;
         this.staffFormItem.remark = res.data.remark;
+        this.staffFormItem.userUuid = res.data.userUuid;
         this.staffFormItem.createTime = res.data.createTime
           ? this.$options.filters["formatDate"](
               res.data.createTime,
@@ -517,7 +518,7 @@ export default {
     },
     ok2() {
       // this.$Message.info('Clicked ok');
-      this.system_user_reset(this.staffFormItem.id);
+      this.system_user_reset(this.staffFormItem.userUuid);
     },
     cancel2() {
       this.modal2 = false;

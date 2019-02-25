@@ -6,7 +6,7 @@ export default {
 		return {
 			headers: {
 				'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
-				timeout: 90000
+				timeout: 120000,
 			},
 			prefix: '/admin/arb/images/',
 			formItem: {},

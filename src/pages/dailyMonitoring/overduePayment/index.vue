@@ -57,7 +57,7 @@
               >检索</Button>
               <Button
                 size="small"
-                 
+
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -621,7 +621,7 @@ export default {
           ...this.formItem
         },
         {
-          timeout: 90000,
+          timeout: 120000,
           responseType: "blob"
         }
       );

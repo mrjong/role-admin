@@ -405,7 +405,7 @@ export default {
         },
         {
           responseType: 'blob',
-          timeout: 90000,
+          timeout: 120000,
         }
       );
       util.dowloadZip(res);
@@ -418,7 +418,7 @@ export default {
         },
         {
           responseType: 'blob',
-          timeout: 90000,
+          timeout: 120000,
         }
       );
       this.playerOptions.sources[0].src = util.dowloadAudio(res);

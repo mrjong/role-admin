@@ -20,7 +20,7 @@ axios.interceptors.request.use(
     if (reqList.length === 1) {
       iView.Message.loading({
         content: '数据加载中...',
-        duration: 20
+        duration: 120
       });
     }
     return config;
@@ -86,7 +86,7 @@ export default function fetch({ url = '', method = 'GET', data = {}, options = {
     method: method.toLocaleLowerCase(),
     url,
     data,
-    timeout: 20000,
+    timeout: 120000,
     options,
     responseType
   })

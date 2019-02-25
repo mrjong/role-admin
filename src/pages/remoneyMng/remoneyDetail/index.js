@@ -265,7 +265,7 @@ export default {
           ...this.formValidate
         },
         {
-          timeout: 90000,
+          timeout: 120000,
           responseType: "blob"
         }
       );
