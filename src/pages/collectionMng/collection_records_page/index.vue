@@ -50,9 +50,11 @@
                 style="width:100%"
                 v-model="formItem.csDate"
                 format="yyyy-MM-dd"
-                type="datetimerange"
+                type="daterange"
                 placement="bottom-start"
+                @on-change='dateChange'
                 placeholder="请选择催收时间"
+                clearable
               ></DatePicker>
             </FormItem>
           </Col>
@@ -67,8 +69,8 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="经办人:" prop="opUserName">
-              <Select size="small" filterable v-model="formItem.opUserName" placeholder="请选择经办人">
+            <FormItem label="经办人:">
+              <Select size="small" filterable v-model="formItem.opUserUuid" clearable placeholder="请选择经办人">
                 <Option
                   v-for="item in getLeafTypeList_data"
                   :value="item.id"
@@ -78,8 +80,8 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="电催中心:" prop="opCompayName">
-              <Select size="small" filterable v-model="formItem.opCompayName" placeholder="请选择电催中心">
+            <FormItem span="6" label="电催中心:">
+              <Select size="small" filterable v-model="formItem.opCompayUuid" clearable placeholder="请选择电催中心">
                 <Option
                   v-for="item in getLeafTypeList2_data"
                   :value="item.id"
@@ -99,7 +101,6 @@
               >检索</Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>

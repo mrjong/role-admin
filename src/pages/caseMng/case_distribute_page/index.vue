@@ -190,7 +190,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="电催中心:">
-              <Select size="small" clearable multiple filterable placeholder="请选择电催中心" v-model="formItem.opCompayNames">
+              <Select size="small" clearable filterable placeholder="请选择电催中心" v-model="formItem.opCompayUuid">
                 <Option
                   v-for="item in getLeafTypeList2_data"
                   :value="item.id"
@@ -221,7 +221,6 @@
               >检索</Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>

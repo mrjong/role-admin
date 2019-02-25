@@ -126,7 +126,7 @@ export default {
         periodCounts: [],
         maxPerdCnts: [],
         creditLevels: [],
-        opCompayNames: [],
+        opCompayUuid: '',
       },
       messageFormItem: {},
       ruleValidate1: {
@@ -606,7 +606,7 @@ export default {
         periodCounts: [],
         maxPerdCnts: [],
         creditLevels: [],
-        opCompayNames: [],
+        opCompayUuid: '',
       };
       this.$refs[name].resetFields();
     },
