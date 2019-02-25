@@ -222,11 +222,10 @@ export default {
     const validateID = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("账号不能为空"));
-        return;
       } else if (!blank.test(value)) {
         callback(new Error("不能包含有空格"));
-        return;
-      }
+      };
+      callback()
     };
     return {
       getDirList: ["SEAT_TYPE"],
