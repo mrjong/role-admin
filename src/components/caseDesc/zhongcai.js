@@ -209,6 +209,7 @@ export default {
 				this.del();
 				this.$Message.success('提交成功');
 			} else {
+        this.del();
 				this.$Message.error(res.message);
 			}
 		},
