@@ -602,6 +602,7 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
+      this.pageNo = 1;
       this.getList();
     },
     async exportData() {

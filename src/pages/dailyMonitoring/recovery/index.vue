@@ -231,9 +231,9 @@ export default {
         this.$Message.success("请求成功!");
         let data = res.data;
         data.content.map((val, key)=>{
-          val.lastCollectRate = val.lastCollectRate + '%';
-          val.repayCountRate = val.repayCountRate + '%';
-          val.collectRate = val.collectRate + '%';
+          val.lastCollectRate = val.lastCollectRate && (val.lastCollectRate + '%');
+          val.repayCountRate = val.repayCountRate && (val.repayCountRate + '%');
+          val.collectRate = val.collectRate && (val.collectRate + '%');
         })
         this.tableData = data.content;
         this.total = data.totalElements; //接口中在该条件下取得的数据量
