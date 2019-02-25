@@ -94,12 +94,12 @@
           >
           <FormItem
             label="申请人:"
-            prop="applyUserName"
+            prop="opUserName"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.applyUserName"
+              v-model="formItem.opUserName"
               placeholder="请输入申请人"
             />
           </FormItem>
@@ -180,6 +180,25 @@
           <Col
             :xs="24"
             :sm="24"
+            :md="6"
+            :lg="6"
+            span="6"
+          >
+          <FormItem
+            label="客户姓名:"
+            prop="userName"
+          >
+            <Input
+              size="small"
+              clearable
+              v-model="formItem.userName"
+              placeholder="请输入客户姓名"
+            />
+          </FormItem>
+          </Col>
+          <Col
+            :xs="24"
+            :sm="24"
             :md="24"
             :lg="24"
             span="6"
@@ -194,7 +213,7 @@
             >检索</Button>
             <Button
               size="small"
-               
+
               style="width:80px;margin-left: 8px"
               @click="clearForm('formItem')"
             >重置</Button>
@@ -500,7 +519,7 @@
         v-if="showModalType!=='edit'"
       >
         <Button
-           
+
           size="small"
           @click="del"
         >关闭</Button>
@@ -511,7 +530,7 @@
         v-if="showModalType==='edit'"
       >
         <Button
-           
+
           size="small"
           @click="arb_check('02')"
         >通过</Button>
@@ -550,7 +569,7 @@
       </Form>
       <div slot="footer">
         <Button
-           
+
           size="small"
           @click="del"
         >取消</Button>

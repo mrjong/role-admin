@@ -313,7 +313,7 @@ export default {
 					title: '申请人',
 					width: 120,
 					align: 'center',
-					key: 'createName'
+					key: 'opUserName'
 				},
 				{
 					title: '电催中心',
@@ -523,7 +523,7 @@ export default {
 		async getList() {
 			let applyTimeLt = '',
 				applyTimeBt = '';
-			if (this.formItem.applyTimeLt && this.formItem.applyTimeLt.length > 0) {
+      if (this.formItem.applyTimeLt && this.formItem.applyTimeLt.length > 0) {
 				applyTimeLt = this.formItem.applyTimeLt[0]
 					? dayjs(this.formItem.applyTimeLt[0]).format('YYYY-MM-DD')
 					: '';

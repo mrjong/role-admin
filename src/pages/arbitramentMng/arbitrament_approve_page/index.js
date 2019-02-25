@@ -304,7 +304,7 @@ export default {
 					title: '申请人',
 					width: 120,
 					align: 'center',
-					key: 'createName'
+					key: 'opUserName'
 				},
 				{
 					title: '电催中心',
@@ -475,6 +475,7 @@ export default {
 			this.arb_operateRecord();
 		},
 		handleSubmit(name) {
+      this.pageNo = 1;
 			this.$refs[name].validate((valid) => {
 				if (valid) {
 					this.getList();
@@ -521,6 +522,11 @@ export default {
 				productTypes: []
 			};
 			this.$refs[name].resetFields();
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.getList();
+        }
+      });
 		}
 	}
 };

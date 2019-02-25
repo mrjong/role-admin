@@ -306,12 +306,7 @@ export default {
 					title: '是否提交仲裁',
 					width: 120,
 					align: 'center',
-					key: 'isSubmit',
-					render: (h, params) => {
-						let isSubmit = params.row.isSubmit;
-						isSubmit = isSubmit ? this.$options.filters['isSubmit'](isSubmit) : '否';
-						return h('span', isSubmit);
-					}
+					key: 'isSubmitName',
 				}
 			]
 		};
