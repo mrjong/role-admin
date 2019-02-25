@@ -27,6 +27,14 @@ export default {
 			selectList: [],
 			tableColumns: [
 				{
+          title: '',
+          type: 'selection',
+          width: 60,
+          searchOperator: '=',
+          align: 'center',
+          fixed: 'left',
+        },
+				{
           title: '序号',
           type: 'index',
           width: 60,
@@ -242,6 +250,8 @@ export default {
 			const res = await system_user_reset({ ids: ids});
 			if (res.code === 1) {
         this.$Message.success('重置密码成功');
+        this.selectList = [];
+        this.getList();
 			} else {
 				this.$Message.error(res.message);
 			}

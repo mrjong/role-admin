@@ -225,13 +225,6 @@ export default {
           align: 'center',
         },
         {
-          title: '催收期数',
-          width: 120,
-          key: 'perdCount',
-          align: 'center',
-        },
-
-        {
           title: '客户身份证号',
           width: 180,
           key: 'idNoHid',
@@ -240,7 +233,7 @@ export default {
         {
           title: '备注',
           align: 'center',
-          width: 400,
+          width: 220,
           key: 'collectRmk',
           render: (h, params) => {
             let collectRmk = params.row.collectRmk;

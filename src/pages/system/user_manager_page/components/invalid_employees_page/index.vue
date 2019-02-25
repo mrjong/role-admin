@@ -39,7 +39,7 @@
               >检索</Button>
               <Button
                 size="small"
-                 
+
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -266,8 +266,6 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           this.getList();
-        } else {
-          this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
     },

@@ -44,7 +44,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <!-- beginDate endDate -->
-            <FormItem label="催收时间:" prop="mblNo">
+            <FormItem label="催收时间:">
               <DatePicker
                 size="small"
                 style="width:100%"
@@ -99,7 +99,7 @@
               >检索</Button>
               <Button
                 size="small"
-                 
+
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>

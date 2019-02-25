@@ -193,7 +193,7 @@
                   >分配</Button>
                   <Button
                     size="small"
-                     
+
                     style="width:80px;margin-left: 8px"
                     @click="handleCancel('formItem')"
                   >取消</Button>
@@ -525,8 +525,6 @@ export default {
         if (valid) {
           // this.getList();
           this.divide_allot_manual();
-        } else {
-          this.$Message.error("校验条件式有误，请重新填写");
         }
       });
     },
@@ -624,8 +622,6 @@ export default {
         if (valid) {
           // this.getList();
           this.queryCases();
-        } else {
-          this.$Message.error("校验条件式有误，请重新填写");
         }
       });
     },

@@ -127,24 +127,14 @@
                   ></Input>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4"  v-if="model.type !== '0'">
-                <FormItem
-                  span="4"
-                  label="修改时间:"
-                  prop="updateTime"
-                  class="text-left"
-                >
-                  <label for class="mt5">{{formItem.updateTime | formatDatetime}}</label>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="model.type !== '0'">
+                <FormItem span="4" label="修改时间:" prop="updateTime" class="text-left">
+                  <Input size="small" v-model="formItem.updateTime" disabled></Input>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="model.type !== '0'">
-                <FormItem
-                  span="4"
-                  label="创建时间:"
-                  prop="createtime"
-                  class="text-left"
-                >
-                  <label for class="mt5">{{formItem.createTime | formatDatetime}}</label>
+                <FormItem span="4" label="创建时间:" prop="createtime" class="text-left">
+                  <Input size="small" v-model="formItem.createTime" disabled></Input>
                 </FormItem>
               </Col>
             </Row>
@@ -152,7 +142,7 @@
         </Card>
       </div>
       <div slot="footer">
-        <Button   size="small" @click="del">关闭</Button>
+        <Button size="small" @click="del">关闭</Button>
         <Button
           type="primary"
           size="small"
@@ -254,20 +244,32 @@ export default {
   },
   created() {
     console.log(this.formItem);
-    if (this.model.type === '1' || this.model.type === '2') {
+    if (this.model.type === "1" || this.model.type === "2") {
       this.formItem = this.model.userData;
+      this.formItem.createTime = this.model.userData.createTime
+          ? this.$options.filters["formatDate"](
+              this.model.userData.createTime,
+              "YYYY-MM-DD HH:mm:ss"
+            )
+          : this.model.userData.createTime;
+      this.formItem.updateTime = this.model.userData.updateTime
+          ? this.$options.filters["formatDate"](
+              this.model.userData.updateTime,
+              "YYYY-MM-DD HH:mm:ss"
+            )
+          : this.model.userData.updateTime;
       if (!this.formItem.roleIds) {
         this.formItem.roleIds = [];
-      };
+      }
       this.formItem.state = String(this.formItem.state);
     }
     this.system_role_list();
   },
   methods: {
     // 系统角色回调
-    roleSelect (arr) {
+    roleSelect(arr) {
       console.log(arr);
-      console.log(this.formItem.roleIds)
+      console.log(this.formItem.roleIds);
     },
     // 获取表格数据
     async system_role_list() {
@@ -292,7 +294,7 @@ export default {
     handleSubmit(name, type) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          if (type === '0') {
+          if (type === "0") {
             this.system_user_add();
           } else {
             this.system_user_update();
@@ -318,7 +320,7 @@ export default {
     async system_user_add() {
       const res = await system_user_add({
         ...this.formItem,
-        userType: '01'
+        userType: "01"
       });
       if (res.code === 1) {
         this.$Message.success("添加成功");
@@ -333,7 +335,7 @@ export default {
       this.childrenData = this.model;
       this.childrenData.modal = false;
       if (type === 1) {
-        console.log(this.$parent.getList())
+        console.log(this.$parent.getList());
         this.$parent.getList();
       }
       console.log(this.childrenData);

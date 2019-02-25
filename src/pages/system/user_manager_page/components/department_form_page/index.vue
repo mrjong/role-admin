@@ -243,8 +243,6 @@ export default {
         if (valid) {
           // this.getList();
           this.collect_outfit_update();
-        } else {
-          this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
     },

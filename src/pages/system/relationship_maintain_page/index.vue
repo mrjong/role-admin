@@ -19,6 +19,23 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="坐席类型:" span="4">
+              <Select
+                size="small"
+                v-model="formItem.seatType"
+                filterable
+                clearable
+                placeholder="请选择坐席类型"
+              >
+                <Option
+                  v-for="item in getDirObj['SEAT_TYPE']"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="登陆账号:">
               <Input size="small" clearable v-model="formItem.loginId" placeholder="请输入登陆账号"></Input>
             </FormItem>
@@ -34,7 +51,6 @@
               >检索</Button>
               <Button
                 size="small"
-                 
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -81,8 +97,8 @@
         </div>
       </div>
     </Card>
-    <Addform v-model="parentData" v-if="parentData.modal" @passBack='passBack'></Addform>
-    <Reviseform v-model="parentData2" v-if="parentData2.modal" @childPassBack='childPassBack'></Reviseform>
+    <Addform v-model="parentData" v-if="parentData.modal" @passBack="passBack"></Addform>
+    <Reviseform v-model="parentData2" v-if="parentData2.modal" @childPassBack="childPassBack"></Reviseform>
   </div>
 </template>
 <script src="./index.js"></script>

@@ -159,7 +159,7 @@ export default {
           align: 'center',
         },
         {
-          title: '分配人数',
+          title: '分配人数/机构',
           width: 100,
           searchOperator: '=',
           key: 'allotCounts',
@@ -370,8 +370,6 @@ export default {
           if (valid) {
             this.startFormItem.status = '01';
             this.divide_rules_changeStatus(this.startFormItem);
-          } else {
-            this.$Message.error('查询条件格式有误，请重新填写');
           }
         });
       } else {

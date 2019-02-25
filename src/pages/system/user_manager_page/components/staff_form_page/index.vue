@@ -434,8 +434,6 @@ export default {
         if (valid) {
           // this.getList();
           this.collect_user_clerk_update();
-        } else {
-          this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
     },

@@ -355,8 +355,6 @@ export default {
       this.$refs[name].validate(valid => {
         if (valid) {
           this.collect_company_update();
-        } else {
-          this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
     },

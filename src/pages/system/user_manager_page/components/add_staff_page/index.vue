@@ -56,12 +56,7 @@
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
           <FormItem>
-            <Button
-              size="small"
-               
-              style="width:80px;margin-right: 8px"
-              @click="cancelStatus()"
-            >取消</Button>
+            <Button size="small" style="width:80px;margin-right: 8px" @click="cancelStatus()">取消</Button>
             <Button
               type="primary"
               @click="handleSubmit(parentData.type,'addLeaderFormItem')"
@@ -83,12 +78,23 @@
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="账号:" prop="loginName">
-            <Input size="small" v-model="addStaffFormItem.loginName" :maxlength='10' placeholder="请输入账号"></Input>
+            <Input
+              size="small"
+              v-model="addStaffFormItem.loginName"
+              :maxlength="10"
+              placeholder="请输入账号"
+            ></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="用户名称:" prop="name">
-            <Input size="small" clearable v-model="addStaffFormItem.name" :maxlength='20' placeholder="请输入用户名称"></Input>
+            <Input
+              size="small"
+              clearable
+              v-model="addStaffFormItem.name"
+              :maxlength="20"
+              placeholder="请输入用户名称"
+            ></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -98,6 +104,7 @@
               v-model="addStaffFormItem.roleId"
               filterable
               clearable
+              @on-change="roleSelect"
               placeholder="请选择角色"
             >
               <Option v-for="item in roleList" :value="item.id" :key="item.id">{{ item.name }}</Option>
@@ -122,7 +129,7 @@
           </FormItem>
         </Col>
         <!-- <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="parentData.type === '03'"> -->
-        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="departmentFlag">
           <FormItem label="部门:" span="4" prop="outfitId">
             <Select
               size="small"
@@ -154,16 +161,16 @@
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="坐席编号:">
-            <Input size="small" v-model="addStaffFormItem.callno" :maxlength='10'></Input>
+            <Input size="small" v-model="addStaffFormItem.callno" :maxlength="10"></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem span="4" label="手机号:" prop='mobile'>
+          <FormItem span="4" label="手机号:" prop="mobile">
             <Input size="small" v-model="addStaffFormItem.mobile"></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem span="4" label="邮箱:" prop='email'>
+          <FormItem span="4" label="邮箱:" prop="email">
             <Input size="small" v-model="addStaffFormItem.email"></Input>
           </FormItem>
         </Col>
@@ -180,12 +187,7 @@
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
           <FormItem>
-            <Button
-              size="small"
-               
-              style="width:80px;margin-right: 8px"
-              @click="cancelStatus()"
-            >取消</Button>
+            <Button size="small" style="width:80px;margin-right: 8px" @click="cancelStatus()">取消</Button>
             <Button
               type="primary"
               @click="handleSubmit(parentData.type, 'addStaffFormItem')"
@@ -216,9 +218,20 @@ export default {
   props: ["parentData"],
   mixins: [sysDictionary, tablePage],
   data() {
+    const blank = /^\S*$/;
+    const validateID = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("账号不能为空"));
+        return;
+      } else if (!blank.test(value)) {
+        callback(new Error("不能包含有空格"));
+        return;
+      }
+    };
     return {
       getDirList: ["SEAT_TYPE"],
       getDirObj: {},
+      departmentFlag: true,
       ruleValidate1: {
         userIds: [
           {
@@ -247,7 +260,7 @@ export default {
         loginName: [
           {
             required: true,
-            message: "请输入账号",
+            validator: validateID,
             trigger: "blur"
           }
         ],
@@ -273,19 +286,19 @@ export default {
           }
         ],
         mobile: [
-					{
-						pattern: this.GLOBAL.mblNo,
-						message: '请输入正确手机号',
-						trigger: 'blur'
-					}
-				],
+          {
+            pattern: this.GLOBAL.mblNo,
+            message: "请输入正确手机号",
+            trigger: "blur"
+          }
+        ],
         email: [
-					{
-						pattern: this.GLOBAL.email,
-						message: '请输入正确邮箱号',
-						trigger: 'blur'
-					}
-				],
+          {
+            pattern: this.GLOBAL.email,
+            message: "请输入正确邮箱号",
+            trigger: "blur"
+          }
+        ]
       },
       addLeaderFormItem: {
         userIds: []
@@ -380,6 +393,14 @@ export default {
     }
   },
   methods: {
+    // 选择角色变更
+    roleSelect(item) {
+      if (item === "2474cbac7a34419f8decc99f022846a1") {
+        this.departmentFlag = false;
+      } else {
+        this.departmentFlag = true;
+      }
+    },
     cancelStatus() {
       console.log(this.$parent);
       this.$parent.$parent.$parent.roleModal = false;
@@ -400,8 +421,6 @@ export default {
               this.collect_user_clerk_add();
               break;
           }
-        } else {
-          this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
     },
@@ -486,15 +505,25 @@ export default {
     },
     // 信息校验
     async collect_user_check(value, type) {
+      // new Promise(async (resolve, reject) => {
+      //   const menuTree = await collect_user_check();
+      //   const res = await collect_user_check({
+      //     content: value,
+      //     type: type
+      //   });
+      //   resolve(res);
+      //   return res
+      // });
       const res = await collect_user_check({
         content: value,
         type: type
       });
-      if (res.code === 1) {
-        return true;
-      } else {
-        return false;
-      }
+      return res;
+      // if (res.code === 1) {
+      //   return true;
+      // } else {
+      //   return false;
+      // }
     }
   }
 };

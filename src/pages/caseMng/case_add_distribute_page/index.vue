@@ -554,8 +554,6 @@ export default {
             this.divide_rules_save();
           }
           console.log(this.formItem);
-        } else {
-          this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
     },

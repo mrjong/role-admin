@@ -54,7 +54,7 @@
 
               <Button
                 size="small"
-                 
+
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formValidate')"
               >重置</Button>
@@ -326,13 +326,6 @@
 </template>
 <script src="./index.js"></script>
 <style lang="less" scoped>
-.tableBox {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  .tableMainW {
-    min-width: 400px;
-  }
-}
 .eachRow {
   .ivu-form-item {
     margin-bottom: 0;

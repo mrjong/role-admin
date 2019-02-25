@@ -284,8 +284,6 @@ export default {
         if (valid) {
           console.log(this.organizationFormItem);
           this.collect_section_update();
-        } else {
-          this.$Message.error("查询条件格式有误，请重新填写");
         }
       });
     },

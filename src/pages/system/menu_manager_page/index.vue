@@ -28,7 +28,7 @@
         </Card>
       </Col>
       <!-- 修改菜单项 -->
-      <Col span="16" class="detail-col" v-if="modal === '1'">
+      <Col span="16" class="detail-col" v-show="modal === '1'">
         <Card class="vue-panel detail-card">
           <p slot="title">修改信息</p>
           <!-- 菜单项详情 -->
@@ -54,7 +54,7 @@
                 <Button :icon="menuFormItem.icon" type="primary" size="small" @click="showIconList(1)">选择图标</Button>
               </FormItem>
             </Col>
-           
+
             <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
               <FormItem>
                 <Button   size="small" @click="cancel">取消</Button>
@@ -65,7 +65,7 @@
         </Card>
       </Col>
       <!-- 新建菜单项 -->
-      <Col span="16" class="detail-col" v-if="modal === '0'">
+      <Col span="16" class="detail-col" v-show="modal === '0'">
         <Card class="vue-panel detail-card">
           <p slot="title">新建菜单项</p>
           <!-- 菜单项详情 -->

@@ -47,7 +47,6 @@
               >检索</Button>
               <Button
                 size="small"
-                 
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -84,8 +83,8 @@
       <div v-if="!showPanel2">
         <Table
           :data="tableData"
-           @on-selection-change="selectOne"
-              @on-select-all="selectOne"
+          @on-selection-change="selectOne"
+          @on-select-all="selectOne"
           :columns="tableColumns"
           stripe
           border
@@ -94,7 +93,6 @@
         <div class="vue-panel-page">
           <div class="fr">
             <Page
-
               :total="total"
               show-total
               size="small"

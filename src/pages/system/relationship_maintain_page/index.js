@@ -1,14 +1,19 @@
 import { call_employee_list, call_employee_del } from '@/service/getData';
 import Addform from './components/add_role_page'
 import Reviseform from './components/revise_role_page'
+import sysDictionary from "@/mixin/sysDictionary";
+
 export default {
   name: 'relationship_maintain_page',
   components: {
     Addform,
     Reviseform,
   },
+  mixins: [sysDictionary],
   data() {
     return {
+      getDirList: ["SEAT_TYPE"],
+      getDirObj: {},
       showPanel: false,
       showPanel2: false,
       parentData: {
@@ -46,6 +51,13 @@ export default {
           width: 120,
           searchOperator: '=',
           key: 'callno',
+          align: 'center'
+        },
+        {
+          title: '坐席类型',
+          width: 120,
+          searchOperator: '=',
+          key: 'seatTypeName',
           align: 'center'
         },
         {
@@ -226,8 +238,7 @@ export default {
     // 获取表格数据
     async getList() {
       const res = await call_employee_list({
-        loginId: this.formItem.loginId,
-        callno: this.formItem.callno,
+        ...this.formItem,
         pageNum: this.pageNo,
         pageSize: this.pageSize,
       });

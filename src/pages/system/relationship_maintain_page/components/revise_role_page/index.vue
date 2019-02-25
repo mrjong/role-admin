@@ -73,8 +73,8 @@
         </Card>
       </div>
       <div slot="footer">
-        <Button   size="small" @click="del('1')">关闭</Button>
-        <Button type="primary" size="small" @click="call_employee_update('0')">提交</Button>
+        <Button size="small" @click="del('1')">关闭</Button>
+        <Button type="primary" size="small" @click="handleSubmit('formItem')">提交</Button>
       </div>
     </Modal>
   </div>
@@ -149,19 +149,27 @@ export default {
       loginId: this.model.data.loginId,
       status: this.model.data.status,
       seatType: this.model.data.seatType,
-      empno: this.model.data.loginId,
+      empno: '',
     };
     this.call_employee_user();
   },
   methods: {
-    // 添加坐席关系
+    handleSubmit(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.call_employee_update();
+        }
+      });
+    },
+    // 修改坐席关系
     async call_employee_update() {
       const res = await call_employee_update(this.formItem);
       console.log(res);
       if (res.code==1) {
+        this.$Message.success('修改成功');
         this.del("0");
       } else {
-        this.$Message.error("查询条件格式有误，请重新填写");
+        this.$Message.error(res.message);
       }
     },
     // 查询关联人员

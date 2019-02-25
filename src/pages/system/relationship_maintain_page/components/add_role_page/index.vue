@@ -95,7 +95,7 @@
       </div>
       <div slot="footer">
         <Button   size="small" @click="del">关闭</Button>
-        <Button type="primary" size="small" @click="call_employee_add">提交</Button>
+        <Button type="primary" size="small" @click="handleSubmit('formItem')">提交</Button>
       </div>
     </Modal>
   </div>
@@ -195,17 +195,25 @@ export default {
     console.log(this.model);
   },
   methods: {
+    handleSubmit(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.call_employee_add();
+        }
+      });
+    },
     // 添加坐席关系
     async call_employee_add() {
       const res = await call_employee_add(this.formItem);
       if (res.code === 1) {
+        this.$Message.success('修改成功');
         this.childrenData = {
           modal: false,
           type: "ok"
         };
         this.$emit("passBack", this.childrenData);
       } else {
-        this.$Message.error("添加内容信息校验不正确，请重新填写");
+        this.$Message.error(res.message);
       }
     },
     del() {

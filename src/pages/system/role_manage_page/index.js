@@ -390,8 +390,8 @@ export default {
       let res = await system_role_info({ id })
       this.formValidateInfo = res.data;
       // this.formValidateInfo.roleStatus = this.formValidateInfo.roleStatus == '1' ?'有效' : '无效';
-      this.formValidateInfo.updatetime = this.$options.filters['formatDate'](this.formValidateInfo.updatetime, 'YYYY-MM-DD HH:mm:ss')
-      this.formValidateInfo.createtime = this.$options.filters['formatDate'](this.formValidateInfo.createtime, 'YYYY-MM-DD HH:mm:ss')
+      this.formValidateInfo.updatetime = this.formValidateInfo.updatetime?this.$options.filters['formatDate'](this.formValidateInfo.updatetime, 'YYYY-MM-DD HH:mm:ss'):this.formValidateInfo.updatetime;
+      this.formValidateInfo.createtime = this.formValidateInfo.createtime?this.$options.filters['formatDate'](this.formValidateInfo.createtime, 'YYYY-MM-DD HH:mm:ss'):this.formValidateInfo.createtime;
     },
     // 提交修改角色的接口
     async toChangeRole() {
