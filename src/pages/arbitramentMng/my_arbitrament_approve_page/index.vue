@@ -200,12 +200,12 @@
           >
           <FormItem
             label="客户姓名:"
-            prop="userNameHid"
+            prop="userName"
           >
             <Input
               size="small"
               clearable
-              v-model="formItem.userNameHid"
+              v-model="formItem.userName"
               placeholder="请输入客户姓名"
             />
           </FormItem>
