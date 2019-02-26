@@ -344,6 +344,14 @@ export default {
 				this.$Message.error(res.message);
 			}
 		},
+    handleSubmit(name) {
+      this.pageNo=1;
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.getList();
+        }
+      });
+    },
 		// 重置
 		clearForm(name) {
 			this.pageNo = 1;

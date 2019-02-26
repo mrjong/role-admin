@@ -327,6 +327,15 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    handleSubmit(name) {
+      debugger
+      this.pageNo=1;
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.getList();
+        }
+      });
+    },
     async getList() {
       const res = await case_collect_collect_list({
         ...this.formItem,

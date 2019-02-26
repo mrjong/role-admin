@@ -28,7 +28,7 @@
           >
           <FormItem
             span="6"
-           
+
             label="产品线:"
             prop="prodTypes"
           >
