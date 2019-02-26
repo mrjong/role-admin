@@ -360,6 +360,7 @@ export default {
         this.pageNo = res.data.page.number;
         this.totalCase = res.data.summary.totalCount;
         this.totalOverdueAmt = res.data.summary.totalOverdueAmt;
+        this.caseIds = [];
       } else {
         this.$Message.error(res.message);
       }
