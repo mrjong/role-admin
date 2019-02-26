@@ -96,7 +96,7 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.caseNo"
+                v-model.trim="formValidate.caseNo"
                 placeholder="请输入案件编码"
               ></Input>
             </FormItem>
@@ -114,7 +114,7 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.billNo"
+                v-model.trim="formValidate.billNo"
                 placeholder="请输入账单号"
               ></Input>
             </FormItem>
@@ -134,7 +134,7 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.opUserName"
+                v-model.trim="formValidate.opUserName"
                 placeholder="请输入经办人姓名"
               ></Input>
             </FormItem>
@@ -175,7 +175,7 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.userNm"
+                v-model.trim="formValidate.userNm"
                 placeholder="请输入客户姓名"
               ></Input>
             </FormItem>
@@ -197,7 +197,7 @@
               >检索</Button>
               <Button
                 size="small"
-                 
+
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formValidate')"
               >重置</Button>

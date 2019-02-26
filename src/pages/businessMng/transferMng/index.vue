@@ -53,7 +53,7 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.caseNo"
+                v-model.trim="formValidate.caseNo"
                 placeholder="请输入案件号"
               ></Input>
             </FormItem>
@@ -71,7 +71,7 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.billNo"
+                v-model.trim="formValidate.billNo"
                 placeholder="请输入账单号"
               ></Input>
             </FormItem>
@@ -134,7 +134,7 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.applyNo"
+                v-model.trim="formValidate.applyNo"
                 placeholder="请输入流水号"
               ></Input>
             </FormItem>
@@ -156,7 +156,7 @@
               >检索</Button>
               <Button
                 size="small"
-                 
+
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formValidate')"
               >重置</Button>

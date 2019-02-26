@@ -30,7 +30,7 @@
             <Input
               size="small"
               clearable
-              v-model="formItem.caseNo"
+              v-model.trim="formItem.caseNo"
               placeholder="请输入案件编号"
             ></Input>
           </FormItem>
@@ -112,7 +112,7 @@
               >检索</Button>
               <Button
                 size="small"
-                 
+
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>

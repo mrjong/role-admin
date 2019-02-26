@@ -15,7 +15,7 @@
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="坐席编号:">
-              <Input size="small" clearable v-model="formItem.callno" placeholder="请输入坐席编号"></Input>
+              <Input size="small" clearable v-model.trim="formItem.callno" placeholder="请输入坐席编号"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -37,7 +37,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="员工姓名:">
-              <Input size="small" clearable v-model="formItem.userName" placeholder="请输入员工姓名"></Input>
+              <Input size="small" clearable v-model.trim="formItem.userName" placeholder="请输入员工姓名"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">

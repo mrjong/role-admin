@@ -9,7 +9,7 @@ export default {
 		var widthMidVal = 100;
 		let $this = this;
 		return {
-      getDirList: ['ORD_STS', 'PROD_TYPE'],
+      getDirList: ['ORD_STS', 'AC_TYP'],
       getDirObj: {},
 			showPanel: false,
 			showPanel2: false,

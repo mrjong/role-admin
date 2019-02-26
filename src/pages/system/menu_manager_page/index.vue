@@ -35,17 +35,17 @@
           <Form ref="menuFormItem" :model="menuFormItem" :label-width="90" :rules="ruleValidate1">
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="菜单名称:" prop="text">
-                <Input size="small" clearable v-model="menuFormItem.text" placeholder="请输入菜单名称"></Input>
+                <Input size="small" clearable v-model.trim="menuFormItem.text" placeholder="请输入菜单名称"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="位置:" prop="sort">
-                <Input size="small" v-model="menuFormItem.sort" clearable placeholder="请输入位置"></Input>
+                <Input size="small" v-model.trim="menuFormItem.sort" clearable placeholder="请输入位置"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="URL:" prop="url">
-                <Input size="small" v-model="menuFormItem.url" clearable placeholder="请输入url"></Input>
+                <Input size="small" v-model.trim="menuFormItem.url" clearable placeholder="请输入url"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="6">

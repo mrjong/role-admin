@@ -21,7 +21,7 @@
           <FormItem label="耗时:">
             <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
             <FormItem prop="minOverdueAmt">
-              <Input size="small" number clearable v-model="formItem.minDuration"></Input>
+              <Input size="small" number clearable v-model.trim="formItem.minDuration"></Input>
             </FormItem>
             </Col>
             <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -29,7 +29,7 @@
             </Col>
             <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
             <FormItem prop="maxOverdueAmt">
-              <Input size="small" number clearable v-model="formItem.maxDuration"></Input>
+              <Input size="small" number clearable v-model.trim="formItem.maxDuration"></Input>
             </FormItem>
             </Col>
           </FormItem>
@@ -47,7 +47,7 @@
             <Input
               size="small"
               clearable
-              v-model="formItem.userName"
+              v-model.trim="formItem.userName"
               placeholder="请输入用户名称"
             ></Input>
           </FormItem>
@@ -92,7 +92,7 @@
             >检索</Button>
             <Button
               size="small"
-               
+
               style="width:80px;margin-left: 8px"
               @click="clearForm('formItem')"
             >重置</Button>

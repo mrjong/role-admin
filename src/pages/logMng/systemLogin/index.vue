@@ -30,7 +30,7 @@
             <Input
               size="small"
               clearable
-              v-model="formItem.userIp"
+              v-model.trim="formItem.userIp"
               placeholder="请输入用户IP"
             ></Input>
           </FormItem>
@@ -48,7 +48,7 @@
             <Input
               size="small"
               clearable
-              v-model="formItem.userName"
+              v-model.trim="formItem.userName"
               placeholder="请输入用户名称"
             ></Input>
           </FormItem>

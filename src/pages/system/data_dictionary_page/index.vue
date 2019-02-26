@@ -34,24 +34,24 @@
                 <Input
                   size="small"
                   clearable
-                  v-model="menuFormItem.itemName"
+                  v-model.trim="menuFormItem.itemName"
                   placeholder="请输入字典项名称"
                 ></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="字典项代码:" prop="sort">
-                <Input size="small" v-model="menuFormItem.itemCode" placeholder="请输入字典项代码"></Input>
+                <Input size="small" v-model.trim="menuFormItem.itemCode" placeholder="请输入字典项代码"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="字典项描述:">
-                <Input size="small" v-model="menuFormItem.itemDesc" placeholder="请输入字典项描述"></Input>
+                <Input size="small" v-model.trim="menuFormItem.itemDesc" placeholder="请输入字典项描述"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="排序号:">
-                <Input size="small" v-model="menuFormItem.sort" placeholder="请输入排序号"></Input>
+                <Input size="small" v-model.trim="menuFormItem.sort" placeholder="请输入排序号"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">

@@ -16,12 +16,12 @@
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="姓名:" prop="name">
-              <Input size="small" clearable v-model="formItem.name" placeholder="请输入姓名"/>
+              <Input size="small" clearable v-model.trim="formItem.name" placeholder="请输入姓名"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="账号:" prop="loginName">
-              <Input size="small" clearable v-model="formItem.loginName" placeholder="请输入账号"/>
+              <Input size="small" clearable v-model.trim="formItem.loginName" placeholder="请输入账号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">

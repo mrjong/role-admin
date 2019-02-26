@@ -30,7 +30,7 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.usrNm"
+                v-model.trim="formValidate.usrNm"
                 placeholder="请输入客户名称"
               ></Input>
             </FormItem>
@@ -50,7 +50,7 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.mblNo"
+                v-model.trim="formValidate.mblNo"
                 placeholder="请输入手机号"
               ></Input>
             </FormItem>
@@ -90,7 +90,7 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.billNo"
+                v-model.trim="formValidate.billNo"
                 placeholder="请输入账单号"
               ></Input>
             </FormItem>
@@ -134,7 +134,7 @@
                 filterable
               >
                 <Option
-                  v-for="item in getDirObj.PROD_TYPE"
+                  v-for="item in getDirObj.AC_TYP"
                   :value="item.itemCode"
                   :key="item.itemCode"
                 >{{ item.itemName }}</Option>
@@ -154,7 +154,7 @@
               <Input
                 size="small"
                 clearable
-                v-model="formValidate.dkorgOrdNo"
+                v-model.trim="formValidate.dkorgOrdNo"
                 placeholder="请输入代扣订单号"
               ></Input>
             </FormItem>
@@ -176,7 +176,7 @@
               >检索</Button>
               <Button
                 size="small"
-                 
+
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formValidate')"
               >重置</Button>

@@ -22,7 +22,7 @@
             <FormItem prop="loginName">
               <Input
                 clearable
-                v-model="form.loginName"
+                v-model.trim="form.loginName"
                 placeholder="请输入用户名"
               >
               <span slot="prepend">
@@ -37,7 +37,7 @@
               <Input
                 clearable
                 type="password"
-                v-model="form.loginPwd"
+                v-model.trim="form.loginPwd"
                 placeholder="请输入密码"
               >
               <span slot="prepend">

@@ -15,7 +15,7 @@
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="角色名称:">
-              <Input size="small" clearable v-model="formValidate.name" placeholder="请输入角色名称"></Input>
+              <Input size="small" clearable v-model.trim="formValidate.name" placeholder="请输入角色名称"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
