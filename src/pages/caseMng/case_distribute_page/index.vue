@@ -449,7 +449,7 @@
         :mask-closable="false"
       >
         <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 14px;">
-          <span>站内信发送总数：{{totalCase}}</span>
+          <span>站内信发送总数：{{total}}</span>
         </p>
         <Form
           ref="messageFormItem"
@@ -491,7 +491,7 @@
           </Col>
         </Form>
         <div slot="footer">
-          <Button type="ghost" size="small" @click="cancel('6')">取消</Button>
+          <Button size="small" @click="cancel('6')">取消</Button>
           <Button type="primary" size="small" @click="ok('6','messageFormItem')">确定</Button>
         </div>
       </Modal>

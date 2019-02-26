@@ -716,7 +716,7 @@ export default {
         ...this.formItem,
         ...this.messageFormItem,
         caseIds: this.caseIds,
-        preTotalCases: this.totalCase,
+        preTotalCases: this.total,
       });
       if (res.code === 1) {
         this.messageFlag = false;
