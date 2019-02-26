@@ -203,9 +203,9 @@
             <FormItem label="经办人:">
               <Select size="small" clearable filterable placeholder="请选择经办人" v-model="formItem.opUserUuid">
                 <Option
-                  v-for="item in getLeafTypeList_data"
+                  v-for="(item,index) in getLeafTypeList_data"
                   :value="item.id"
-                  :key="item.id"
+                  :key="item.id + index"
                 >{{ item.name }}</Option>
               </Select>
             </FormItem>
@@ -306,7 +306,7 @@
           <span>提示</span>
         </p>
         <Alert show-icon type="warning">
-          <template slot="desc">该操作将分配所有查询出的结果,共{{totalCase}}笔案件，您确认要全部分配么?</template>
+          <template slot="desc">该操作将分配所有查询出的结果,共{{Number(totalCase) - stopCases.length}}笔可分配案件，{{stopCases.length}}笔停催案件，您确认要全部分配么?</template>
         </Alert>
         <div slot="footer">
           <Button   size="small" @click="cancel('1')">取消</Button>

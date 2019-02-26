@@ -51,8 +51,9 @@ export default {
       data5: [],
       data: [],
       collectRoleIds: [],
-      caseIds: [],
-      caseID: '',
+      caseIds: [],//勾选案件集合
+      caseID: '',//单个案件
+      stopCases: [],//停催案件集合
       treeFlag: '',
       caseMounts: 0,
       totalCase: '',
@@ -433,15 +434,19 @@ export default {
         };
         if (item.leafType === '02' && this.treeFlag === 1) {
           this.collectRoleIds.push(item.id);
-        }
+        };
       });
     },
     // table勾选回调
     changeSelect(selection) {
       console.log('---------');
       this.caseIds = [];
+      this.stopCases = [];
       selection.forEach((element) => {
         this.caseIds.push(element.id);
+        if (element.caseHandleStatus === 'SUSPEND') {
+          this.stopCases.push(element);
+        }
       });
       if (this.caseIds.length != 0) {
         this.totalCase = this.caseIds.length;
@@ -511,6 +516,12 @@ export default {
         this.caseMounts = res.data.summary.totalCount;
         this.pageNo = res.data.page.number;
         this.total = res.data.page.totalElements;
+        this.stopCases = [];
+        this.tableData.forEach(item => {
+          if (item.caseHandleStatus === 'SUSPEND') {
+            this.stopCases.push(item);
+          }
+        });
       } else {
         this.$Message.error(res.message);
       }
@@ -691,12 +702,12 @@ export default {
     handeldBtnClick(type) {
       switch (type) {
         case '1':
-          this.distributeFlag = true;
-          // if (this.formItem.caseHandleStatus && this.formItem.caseHandleStatus != '') {
-          //   this.distributeFlag = true;
-          // } else {
-          //   this.$Message.error('请选择案件处理状态再分配')
-          // };
+          // this.distributeFlag = true;
+          if (this.totalCase-this.stopCases.length > 0) {
+            this.distributeFlag = true;
+          } else {
+            this.$Message.error('暂无可分配的案件');
+          };
           break;
         case '2':
           this.recycleFlag = true;
