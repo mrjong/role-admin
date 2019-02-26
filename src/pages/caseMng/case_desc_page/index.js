@@ -262,7 +262,7 @@ export default {
 					title: '已还罚息',
 					width: 150,
 					align: 'center',
-					key: 'perdMngRep',
+					key: 'perdFineRep',
 					render: (h, params) => {
 						let perdMngRep = params.row.perdMngRep;
 						perdMngRep = perdMngRep ? this.$options.filters['money'](perdMngRep) : perdMngRep;
@@ -273,7 +273,7 @@ export default {
 					title: '已还滞纳金',
 					width: 150,
 					align: 'center',
-					key: 'perdMngRep',
+					key: 'perdOvduRep',
 					render: (h, params) => {
 						let perdMngRep = params.row.perdMngRep;
 						perdMngRep = perdMngRep ? this.$options.filters['money'](perdMngRep) : perdMngRep;

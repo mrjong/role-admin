@@ -13,7 +13,7 @@ export default {
 			showPanel2: false,
       showPanel1: false,
       other_add: false,//其他添加
-      other_delete: false,//其他删除
+      other_del: false,//其他删除
       notice_del: false,//公告删除
       notice_add: false,//公告添加
       charge_add: false,//罚息规则添加
@@ -27,15 +27,17 @@ export default {
 			tableColumns2: [
 				{
 					width: 100,
-					type: 'index'
+          type: 'index',
+          align: 'center'
 				},
 				{
 					title: '公告详情',
-					key: 'announcementContent'
+          key: 'announcementContent',
 				},
 				{
 					title: '操作',
-					width: 100,
+          width: 100,
+          align: 'center',
 					render: (h, params) => {
 						return h('div', [
 							this.charge_edit?h(
@@ -58,18 +60,65 @@ export default {
 			tableColumns: [
 				{
 					width: 100,
-					type: 'index'
+          type: 'index',
+          align: 'center'
 				},
 				{
 					title: '公告详情',
-					key: 'announcementContent'
+          key: 'announcementContent',
 				},
 				{
 					title: '操作',
-					width: 100,
+          width: 100,
+          align: 'center',
 					render: (h, params) => {
 						return h('div', [
 							this.notice_del?h(
+								'Poptip',
+								{
+									props: {
+										confirm: true,
+										title: '您确定要删除这条数据吗?',
+										transfer: true
+									},
+									on: {
+										'on-ok': () => {
+											this.delAnnouncement(params.row.uuid);
+										}
+									}
+								},
+								[
+									h(
+										'a',
+										{
+											class: 'edit-btn',
+											props: {}
+										},
+										'删除'
+									)
+								]
+							): null
+						]);
+					}
+				}
+			],
+			tableColumns3: [
+				{
+					width: 100,
+          type: 'index',
+          align: 'center'
+				},
+				{
+					title: '公告详情',
+          key: 'announcementContent',
+				},
+				{
+					title: '操作',
+          width: 100,
+          align: 'center',
+					render: (h, params) => {
+						return h('div', [
+							this.other_del?h(
 								'Poptip',
 								{
 									props: {
@@ -102,9 +151,13 @@ export default {
 	},
 	created() {
     console.log(this.$route)
+    // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
-      switch(item.url && item.type === '03') {
+      if (item.type !== '03') {
+        return;
+      }
+      switch(item.url) {
         case "other_del" : this.other_del = true;
         break;
         case "other_add" : this.other_add = true;
@@ -119,6 +172,12 @@ export default {
         break;
       }
     });
+    console.log(this.notice_del);
+    console.log(this.notice_add);
+    console.log(this.other_del);
+    console.log(this.other_add);
+    console.log(this.charge_add);
+    console.log(this.charge_edit);
 		window.$router = this.$router;
 		this.announcement_list_fun();
 	},

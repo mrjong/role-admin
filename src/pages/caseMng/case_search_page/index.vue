@@ -17,7 +17,7 @@
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="案件状态:" prop="caseHandleStatus">
+            <FormItem span="6" label="案件处理状态:" prop="caseHandleStatus">
               <Select
                 clearable
                 size="small"
