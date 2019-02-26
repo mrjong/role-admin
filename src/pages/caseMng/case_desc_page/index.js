@@ -264,9 +264,9 @@ export default {
 					align: 'center',
 					key: 'perdFineRep',
 					render: (h, params) => {
-						let perdMngRep = params.row.perdMngRep;
-						perdMngRep = perdMngRep ? this.$options.filters['money'](perdMngRep) : perdMngRep;
-						return h('span', perdMngRep);
+						let perdFineRep = params.row.perdFineRep;
+						perdFineRep = perdFineRep ? this.$options.filters['money'](perdFineRep) : perdFineRep;
+						return h('span', perdFineRep);
 					}
         },
 				{
@@ -275,9 +275,9 @@ export default {
 					align: 'center',
 					key: 'perdOvduRep',
 					render: (h, params) => {
-						let perdMngRep = params.row.perdMngRep;
-						perdMngRep = perdMngRep ? this.$options.filters['money'](perdMngRep) : perdMngRep;
-						return h('span', perdMngRep);
+						let perdOvduRep = params.row.perdOvduRep;
+						perdOvduRep = perdOvduRep ? this.$options.filters['money'](perdOvduRep) : perdOvduRep;
+						return h('span', perdOvduRep);
 					}
         },
 

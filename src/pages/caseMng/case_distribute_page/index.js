@@ -730,12 +730,12 @@ export default {
           };
           break;
         case '2':
-          this.recycleFlag = true;
-          // if (this.formItem.caseHandleStatus && this.formItem.caseHandleStatus != '') {
-          //   this.recycleFlag = true;
-          // } else {
-          //   this.$Message.error('请选择案件处理状态再回收')
-          // };
+          // this.recycleFlag = true;
+          if (this.totalCase > 0) {
+            this.recycleFlag = true;
+          } else {
+            this.$Message.error('暂无可回收的案件')
+          };
           break;
         case '3': this.stopCollectionFlag = true;
           break;
