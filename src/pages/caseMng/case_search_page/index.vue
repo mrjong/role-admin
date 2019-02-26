@@ -183,6 +183,7 @@
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
+          v-if="export_case"
           @click.stop="cases_export"
         >导出数据</Button>
       </p>

@@ -41,6 +41,9 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      query: false,//案件查询权限
+      detail: false,//c查看案件详情权限
+      export_case: false,//导出权限
       totalOverdueAmt: '',
       totalCase: '',
       caseMounts: '',
@@ -174,6 +177,10 @@ export default {
                       class: 'edit-desc',
                       on: {
                         click: () => {
+                          if (!this.detail) {
+                            this.$Message.error('很抱歉，暂无权限查看详情');
+                            return;
+                          }
                           window.open(
                             `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=read&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
                               _this.formItem
@@ -309,7 +316,22 @@ export default {
     };
   },
   created() {
-    this.getList();
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch(item.url) {
+        case "query" : this.query = true;
+        break;
+        case "detail" : this.detail = true;
+        break;
+        case "export" : this.export_case = true;
+        break;
+      }
+    });
+    // this.getList();
     console.log(this.$route)
   },
   methods: {
@@ -367,6 +389,10 @@ export default {
     },
     // 获取表格数据
     async getList() {
+      if (!this.query) {
+        this.$Message.error('很抱歉，暂无权限查询');
+        return
+      }
       const res = await case_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,

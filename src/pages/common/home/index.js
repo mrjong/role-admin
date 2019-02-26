@@ -172,12 +172,6 @@ export default {
         break;
       }
     });
-    console.log(this.notice_del);
-    console.log(this.notice_add);
-    console.log(this.other_del);
-    console.log(this.other_add);
-    console.log(this.charge_add);
-    console.log(this.charge_edit);
 		window.$router = this.$router;
 		this.announcement_list_fun();
 	},

@@ -544,15 +544,28 @@ export default {
         ids: this.allotRoleIdList
       });
       if (res.code === 1) {
-        this.data = res.data;
-        this.data.forEach(item => {
-          item.disableCheckbox = true;
-          item.children.forEach((item2, index) => {
-            if (item2.leafType === '02') {
-              item2.children = [];
-            };
+        this.data = res.data.collectRoleTreeVos;
+        if (res.data.type === '01') {
+          this.data.forEach(item => {
+            item.disableCheckbox = true;
+            item.children.forEach((item2, index) => {
+              if (item2.leafType === '02') {
+                item2.children = [];
+              };
+            })
           })
-        });
+        } else {
+          this.data.forEach(item => {
+            item.children.forEach((item2, index) => {
+              // if (item2.leafType === '02') {
+              // };
+              item2.disableCheckbox = true;
+              item2.children.forEach((item3, index) => {
+                item3.disableCheckbox = true;
+              })
+            })
+          })
+        }
       } else {
         this.$Message.error(res.message);
       }
@@ -565,7 +578,7 @@ export default {
       });
       console.log(res);
       if (res.code === 1) {
-        this.data5 = res.data;
+        this.data5 = res.data.collectRoleTreeVos;
       } else {
       }
     },

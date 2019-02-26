@@ -10,6 +10,7 @@
               type="primary"
               size="small"
               @click.stop="showAlert('1')"
+              v-if="notice_add"
             >添加</Button>
           </p>
           <!-- 表格 -->
@@ -35,6 +36,7 @@
               type="primary"
               size="small"
               @click.stop="showAlert('2')"
+              v-if="charge_add"
             >添加</Button>
           </p>
           <!-- 表格 -->
@@ -60,6 +62,7 @@
               type="primary"
               size="small"
               @click.stop="showAlert('3')"
+              v-if="other_add"
             >添加</Button>
           </p>
           <!-- 表格 -->
