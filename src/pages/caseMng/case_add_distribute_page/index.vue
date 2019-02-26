@@ -74,7 +74,7 @@
                         type="number"
                         number
                         clearable
-                        v-model="formItem.ovdudaysMin"
+                        v-model.trim="formItem.ovdudaysMin"
                       ></Input>
                     </FormItem>
                   </Col>
@@ -88,7 +88,7 @@
                         number
                         type="number"
                         clearable
-                        v-model="formItem.ovdudaysMax"
+                        v-model.trim="formItem.ovdudaysMax"
                       ></Input>
                     </FormItem>
                   </Col>
@@ -102,7 +102,7 @@
                         size="small"
                         type="number"
                         clearable
-                        v-model="formItem.ovduamtMin"
+                        v-model.trim="formItem.ovduamtMin"
                         number
                       ></Input>
                     </FormItem>
@@ -116,7 +116,7 @@
                         size="small"
                         type="number"
                         clearable
-                        v-model="formItem.ovduamtMax"
+                        v-model.trim="formItem.ovduamtMax"
                         number
                       ></Input>
                     </FormItem>

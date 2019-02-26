@@ -83,12 +83,12 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="客户姓名:">
-              <Input size="small" clearable v-model="formItem.userNm" placeholder="请输入客户姓名"/>
+              <Input size="small" clearable v-model.trim="formItem.userNm" placeholder="请输入客户姓名"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="身份证号:" prop="idNo">
-              <Input size="small" clearable v-model="formItem.idNo" placeholder="请输入身份证号"/>
+              <Input size="small" clearable v-model.trim="formItem.idNo" placeholder="请输入身份证号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -98,7 +98,7 @@
                 number
                 size="small"
                 clearable
-                v-model="formItem.mblNo"
+                v-model.trim="formItem.mblNo"
                 placeholder="请输入手机号"
               />
             </FormItem>
@@ -112,7 +112,7 @@
                     number
                     type="number"
                     clearable
-                    v-model="formItem.minOverdueDays"
+                    v-model.trim="formItem.minOverdueDays"
                   ></Input>
                 </FormItem>
               </Col>
@@ -126,7 +126,7 @@
                     number
                     type="number"
                     clearable
-                    v-model="formItem.maxOverdueDays"
+                    v-model.trim="formItem.maxOverdueDays"
                   ></Input>
                 </FormItem>
               </Col>
@@ -136,7 +136,7 @@
             <FormItem label="逾期应还金额:">
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                 <FormItem prop="minOverdueAmt">
-                  <Input size="small" number clearable v-model="formItem.minOverdueAmt"></Input>
+                  <Input size="small" number clearable v-model.trim="formItem.minOverdueAmt"></Input>
                 </FormItem>
               </Col>
               <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -144,7 +144,7 @@
               </Col>
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                 <FormItem prop="maxOverdueAmt">
-                  <Input size="small" number clearable v-model="formItem.maxOverdueAmt"></Input>
+                  <Input size="small" number clearable v-model.trim="formItem.maxOverdueAmt"></Input>
                 </FormItem>
               </Col>
             </FormItem>
@@ -163,12 +163,12 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="案件编号:">
-              <Input size="small" clearable v-model="formItem.id" placeholder="请输入案件编号"/>
+              <Input size="small" clearable v-model.trim="formItem.id" placeholder="请输入案件编号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="账单号:">
-              <Input size="small" clearable v-model="formItem.billNo" placeholder="请输入账单号"/>
+              <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入账单号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -401,7 +401,7 @@
               type="textarea"
               size="small"
               :maxlength="100"
-              v-model="stopFormItem.operRemark"
+              v-model.trim="stopFormItem.operRemark"
               placeholder="请输入100字以内"
             ></Input>
           </FormItem>
@@ -429,7 +429,7 @@
               type="textarea"
               size="small"
               :maxlength="100"
-              v-model="recoverFormItem.operRemark"
+              v-model.trim="recoverFormItem.operRemark"
               placeholder="请输入100字以内"
             ></Input>
           </FormItem>
@@ -462,7 +462,7 @@
               <Input
                 type="text"
                 size="small"
-                v-model="messageFormItem.msgTitle"
+                v-model.trim="messageFormItem.msgTitle"
                 placeholder="请输入标题"
               ></Input>
             </FormItem>
@@ -473,7 +473,7 @@
                 type="textarea"
                 size="small"
                 :maxlength="100"
-                v-model="messageFormItem.msgContent"
+                v-model.trim="messageFormItem.msgContent"
                 placeholder="请输入100字以内内容"
               ></Input>
             </FormItem>
@@ -484,7 +484,7 @@
                 type="textarea"
                 size="small"
                 :maxlength="100"
-                v-model="messageFormItem.remark"
+                v-model.trim="messageFormItem.remark"
                 placeholder="请输入100字以内备注"
               ></Input>
             </FormItem>

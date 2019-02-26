@@ -11,7 +11,13 @@ export default {
 		return {
 			showPanel3: false,
 			showPanel2: false,
-			showPanel1: false,
+      showPanel1: false,
+      other_add: false,//其他添加
+      other_delete: false,//其他删除
+      notice_del: false,//公告删除
+      notice_add: false,//公告添加
+      charge_add: false,//罚息规则添加
+      charge_edit: false,//罚息规则删除
 			val: '',
 			announcement_list3: [],
 			announcement_list1: [],
@@ -32,32 +38,7 @@ export default {
 					width: 100,
 					render: (h, params) => {
 						return h('div', [
-							// h(
-							// 	'Poptip',
-							// 	{
-							// 		props: {
-							// 			confirm: true,
-							// 			title: '您确定要删除这条数据吗?',
-							// 			transfer: true
-							// 		},
-							// 		on: {
-							// 			'on-ok': () => {
-							// 				this.delAnnouncement(params.row.uuid);
-							// 			}
-							// 		}
-							// 	},
-							// 	[
-							// 		h(
-							// 			'a',
-							// 			{
-							// 				class: 'edit-btn',
-							// 				props: {}
-							// 			},
-							// 			'删除'
-							// 		)
-							// 	]
-							// ),
-							h(
+							this.charge_edit?h(
 								'a',
 								{
 									class: 'edit-btn',
@@ -69,7 +50,7 @@ export default {
 									}
 								},
 								'编辑'
-							)
+							): null
 						]);
 					}
 				}
@@ -88,7 +69,7 @@ export default {
 					width: 100,
 					render: (h, params) => {
 						return h('div', [
-							h(
+							this.notice_del?h(
 								'Poptip',
 								{
 									props: {
@@ -112,7 +93,7 @@ export default {
 										'删除'
 									)
 								]
-							)
+							): null
 						]);
 					}
 				}
@@ -120,7 +101,24 @@ export default {
 		};
 	},
 	created() {
-		console.log('---------');
+    console.log(this.$route)
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      switch(item.url && item.type === '03') {
+        case "other_del" : this.other_del = true;
+        break;
+        case "other_add" : this.other_add = true;
+        break;
+        case "notice_del" : this.notice_del = true;
+        break;
+        case "notice_add" : this.notice_add = true;
+        break;
+        case "charge_add" : this.charge_add = true;
+        break;
+        case "charge_edit" : this.charge_edit = true;
+        break;
+      }
+    });
 		window.$router = this.$router;
 		this.announcement_list_fun();
 	},

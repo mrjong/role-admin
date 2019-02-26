@@ -2,7 +2,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import 'video.js/dist/video-js.css'
 import { videoPlayer } from 'vue-video-player'
-import { case_collect_collect_list, case_collect_tape_download, getLeafTypeList, case_collect_tape } from '@/service/getData';
+import { case_collect_collect_list, case_collect_collect_export, getLeafTypeList, case_collect_tape } from '@/service/getData';
 import tablePage from '@/mixin/tablePage';
 import util from '@/libs/util';
 import 'video.js/dist/video-js.css';
@@ -223,6 +223,25 @@ export default {
           sortable: true,
           key: 'billNo',
           align: 'center',
+          render(h, params) {
+            return h('div', [
+              h('Tooltip',
+                {
+                  style: {
+                    margin: '0 5px'
+                  },
+                  props: {
+                    content: params.row.billNo,
+                    placement: 'top'
+                  }
+                },
+                [
+                  h('span', {
+                  },params.row.billNo)
+                ]
+              )
+            ])
+          }
         },
         {
           title: '客户身份证号',
@@ -267,7 +286,7 @@ export default {
   },
   methods: {
     // 日历监听
-    dateChange (arr) {
+    dateChange(arr) {
       console.log(arr);
       this.formItem.beginDate = arr[0];
       this.formItem.endDate = arr[1];
@@ -336,7 +355,7 @@ export default {
     },
     handleSubmit(name) {
       debugger
-      this.pageNo=1;
+      this.pageNo = 1;
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.getList();
@@ -356,6 +375,22 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+    },
+    // 催收记录导出
+    async case_collect_collect_export() {
+      const res = await case_collect_collect_export(
+        {
+          ...this.formItem
+        },
+        {
+          responseType: 'blob',
+          timeout: 120000,
+        }
+      );
+      util.dowloadfile('催收记录', res);
+      setTimeout(() => {
+        this.getList();
+      }, 1000)
     }
   }
 };

@@ -966,6 +966,15 @@ export const case_collect_collect_list = (obj, options) =>
     data: qs.stringify(obj),
     options
   });
+  // 催收记录导出
+export const case_collect_collect_export = (obj, options) =>
+  fetch({
+    url: '/case/collect/collect_export',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
+  })
 
 /*
 *

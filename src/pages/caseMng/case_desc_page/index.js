@@ -257,7 +257,30 @@ export default {
 						perdMngRep = perdMngRep ? this.$options.filters['money'](perdMngRep) : perdMngRep;
 						return h('span', perdMngRep);
 					}
-				}
+        },
+				{
+					title: '已还罚息',
+					width: 150,
+					align: 'center',
+					key: 'perdMngRep',
+					render: (h, params) => {
+						let perdMngRep = params.row.perdMngRep;
+						perdMngRep = perdMngRep ? this.$options.filters['money'](perdMngRep) : perdMngRep;
+						return h('span', perdMngRep);
+					}
+        },
+				{
+					title: '已还滞纳金',
+					width: 150,
+					align: 'center',
+					key: 'perdMngRep',
+					render: (h, params) => {
+						let perdMngRep = params.row.perdMngRep;
+						perdMngRep = perdMngRep ? this.$options.filters['money'](perdMngRep) : perdMngRep;
+						return h('span', perdMngRep);
+					}
+        },
+
 			],
 			case_detail_address_info_Data: {},
 			// 催收信息
@@ -459,7 +482,26 @@ export default {
 					width: 200,
 					align: 'center',
 					key: 'billNo',
-					sortable: true
+          sortable: true,
+          render(h, params) {
+            return h('div', [
+              h('Tooltip',
+                {
+                  style: {
+                    margin: '0 5px'
+                  },
+                  props: {
+                    content: params.row.billNo,
+                    placement: 'top'
+                  }
+                },
+                [
+                  h('span', {
+                  },params.row.billNo)
+                ]
+              )
+            ])
+          }
 				},
 				{
 					title: '还款时间',

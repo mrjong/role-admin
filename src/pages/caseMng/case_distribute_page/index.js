@@ -297,6 +297,25 @@ export default {
           width: 200,
           key: 'billNo',
           align: 'center',
+          render(h, params) {
+            return h('div', [
+              h('Tooltip',
+                {
+                  style: {
+                    margin: '0 5px'
+                  },
+                  props: {
+                    content: params.row.billNo,
+                    placement: 'top'
+                  }
+                },
+                [
+                  h('span', {
+                  },params.row.billNo)
+                ]
+              )
+            ])
+          }
         },
         {
           title: '逾期金额',
@@ -516,6 +535,7 @@ export default {
         this.caseMounts = res.data.summary.totalCount;
         this.pageNo = res.data.page.number;
         this.total = res.data.page.totalElements;
+        this.caseIds = [];
         this.stopCases = [];
         this.tableData.forEach(item => {
           if (item.caseHandleStatus === 'SUSPEND') {
