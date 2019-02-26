@@ -306,7 +306,7 @@
           <span>提示</span>
         </p>
         <Alert show-icon type="warning">
-          <template slot="desc">该操作将分配所有查询出的结果,共{{Number(totalCase) - stopCases.length}}笔可分配案件，{{stopCases.length}}笔停催案件，您确认要全部分配么?</template>
+          <template slot="desc">该操作将分配所有查询出的结果,共{{Number(totalCase)}}笔可分配案件，{{stopCases.length}}笔停催案件，您确认要全部分配么?</template>
         </Alert>
         <div slot="footer">
           <Button   size="small" @click="cancel('1')">取消</Button>
@@ -376,7 +376,7 @@
           <span>批量回收</span>
         </p>
         <Alert show-icon type="warning">
-          <template slot="desc">共查询出{{totalCase}}条案件,确定要回收吗？</template>
+          <template slot="desc">共查询出{{total}}条案件,确定要回收吗？</template>
         </Alert>
         <div slot="footer">
           <Button   size="small" @click="cancel('3')">取消</Button>
