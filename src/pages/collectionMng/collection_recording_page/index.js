@@ -323,6 +323,25 @@ export default {
           sortable: true,
           key: 'billNo',
           align: 'center',
+          render(h, params) {
+            return h('div', [
+              h('Tooltip',
+                {
+                  style: {
+                    margin: '0 5px'
+                  },
+                  props: {
+                    content: params.row.billNo,
+                    placement: 'top'
+                  }
+                },
+                [
+                  h('span', {
+                  },params.row.billNo)
+                ]
+              )
+            ])
+          }
         },
         {
           title: '客户身份证号',
@@ -345,7 +364,7 @@ export default {
   },
   methods: {
     // 日历监听
-    dateChange (arr) {
+    dateChange(arr) {
       console.log(arr);
       this.formItem.beginDate = arr[0];
       this.formItem.endDate = arr[1];
@@ -393,7 +412,7 @@ export default {
     },
     handleSubmit(name) {
       debugger
-      this.pageNo=1;
+      this.pageNo = 1;
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.getList();

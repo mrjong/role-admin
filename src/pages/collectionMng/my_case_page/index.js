@@ -199,7 +199,26 @@ export default {
 					title: '账单号',
 					width: 180,
 					align: 'center',
-					key: 'billNo'
+          key: 'billNo',
+          render(h, params) {
+            return h('div', [
+              h('Tooltip',
+                {
+                  style: {
+                    margin: '0 5px'
+                  },
+                  props: {
+                    content: params.row.billNo,
+                    placement: 'top'
+                  }
+                },
+                [
+                  h('span', {
+                  },params.row.billNo)
+                ]
+              )
+            ])
+          }
 				},
 
 				{

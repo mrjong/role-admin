@@ -11,7 +11,13 @@ export default {
 		return {
 			showPanel3: false,
 			showPanel2: false,
-			showPanel1: false,
+      showPanel1: false,
+      other_add: false,//其他添加
+      other_del: false,//其他删除
+      notice_del: false,//公告删除
+      notice_add: false,//公告添加
+      charge_add: false,//罚息规则添加
+      charge_edit: false,//罚息规则删除
 			val: '',
 			announcement_list3: [],
 			announcement_list1: [],
@@ -21,43 +27,20 @@ export default {
 			tableColumns2: [
 				{
 					width: 100,
-					type: 'index'
+          type: 'index',
+          align: 'center'
 				},
 				{
 					title: '公告详情',
-					key: 'announcementContent'
+          key: 'announcementContent',
 				},
 				{
 					title: '操作',
-					width: 100,
+          width: 100,
+          align: 'center',
 					render: (h, params) => {
 						return h('div', [
-							// h(
-							// 	'Poptip',
-							// 	{
-							// 		props: {
-							// 			confirm: true,
-							// 			title: '您确定要删除这条数据吗?',
-							// 			transfer: true
-							// 		},
-							// 		on: {
-							// 			'on-ok': () => {
-							// 				this.delAnnouncement(params.row.uuid);
-							// 			}
-							// 		}
-							// 	},
-							// 	[
-							// 		h(
-							// 			'a',
-							// 			{
-							// 				class: 'edit-btn',
-							// 				props: {}
-							// 			},
-							// 			'删除'
-							// 		)
-							// 	]
-							// ),
-							h(
+							this.charge_edit?h(
 								'a',
 								{
 									class: 'edit-btn',
@@ -69,7 +52,7 @@ export default {
 									}
 								},
 								'编辑'
-							)
+							): null
 						]);
 					}
 				}
@@ -77,18 +60,20 @@ export default {
 			tableColumns: [
 				{
 					width: 100,
-					type: 'index'
+          type: 'index',
+          align: 'center'
 				},
 				{
 					title: '公告详情',
-					key: 'announcementContent'
+          key: 'announcementContent',
 				},
 				{
 					title: '操作',
-					width: 100,
+          width: 100,
+          align: 'center',
 					render: (h, params) => {
 						return h('div', [
-							h(
+							this.notice_del?h(
 								'Poptip',
 								{
 									props: {
@@ -112,7 +97,52 @@ export default {
 										'删除'
 									)
 								]
-							)
+							): null
+						]);
+					}
+				}
+			],
+			tableColumns3: [
+				{
+					width: 100,
+          type: 'index',
+          align: 'center'
+				},
+				{
+					title: '公告详情',
+          key: 'announcementContent',
+				},
+				{
+					title: '操作',
+          width: 100,
+          align: 'center',
+					render: (h, params) => {
+						return h('div', [
+							this.other_del?h(
+								'Poptip',
+								{
+									props: {
+										confirm: true,
+										title: '您确定要删除这条数据吗?',
+										transfer: true
+									},
+									on: {
+										'on-ok': () => {
+											this.delAnnouncement(params.row.uuid);
+										}
+									}
+								},
+								[
+									h(
+										'a',
+										{
+											class: 'edit-btn',
+											props: {}
+										},
+										'删除'
+									)
+								]
+							): null
 						]);
 					}
 				}
@@ -120,7 +150,34 @@ export default {
 		};
 	},
 	created() {
-		console.log('---------');
+    console.log(this.$route)
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch(item.url) {
+        case "other_del" : this.other_del = true;
+        break;
+        case "other_add" : this.other_add = true;
+        break;
+        case "notice_del" : this.notice_del = true;
+        break;
+        case "notice_add" : this.notice_add = true;
+        break;
+        case "charge_add" : this.charge_add = true;
+        break;
+        case "charge_edit" : this.charge_edit = true;
+        break;
+      }
+    });
+    console.log(this.notice_del);
+    console.log(this.notice_add);
+    console.log(this.other_del);
+    console.log(this.other_add);
+    console.log(this.charge_add);
+    console.log(this.charge_edit);
 		window.$router = this.$router;
 		this.announcement_list_fun();
 	},

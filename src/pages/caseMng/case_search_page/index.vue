@@ -17,7 +17,7 @@
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="案件状态:" prop="caseHandleStatus">
+            <FormItem span="6" label="案件处理状态:" prop="caseHandleStatus">
               <Select
                 clearable
                 size="small"
@@ -68,24 +68,24 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="客户姓名:" prop="userNm">
-              <Input size="small" clearable v-model="formItem.userNm" placeholder="请输入客户姓名"/>
+              <Input size="small" clearable v-model.trim="formItem.userNm" placeholder="请输入客户姓名"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="身份证号:" prop="idNo">
-              <Input size="small" clearable v-model="formItem.idNo" placeholder="请输入身份证号"/>
+              <Input size="small" clearable v-model.trim="formItem.idNo" placeholder="请输入身份证号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="手机号:" prop="mblNo">
-              <Input size="small" clearable v-model="formItem.mblNo" placeholder="请输入手机号"/>
+              <Input size="small" clearable v-model.trim="formItem.mblNo" placeholder="请输入手机号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="逾期天数:">
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                 <FormItem prop="minOverdueDays">
-                  <Input size="small" clearable v-model="formItem.minOverdueDays"></Input>
+                  <Input size="small" clearable v-model.trim="formItem.minOverdueDays"></Input>
                 </FormItem>
               </Col>
               <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -93,7 +93,7 @@
               </Col>
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                 <FormItem prop="maxOverdueDays">
-                  <Input size="small" clearable v-model="formItem.maxOverdueDays"></Input>
+                  <Input size="small" clearable v-model.trim="formItem.maxOverdueDays"></Input>
                 </FormItem>
               </Col>
             </FormItem>
@@ -102,7 +102,7 @@
             <FormItem label="逾期应还金额:">
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                 <FormItem prop="minOverdueAmt">
-                  <Input size="small" clearable v-model="formItem.minOverdueAmt"></Input>
+                  <Input size="small" clearable v-model.trim="formItem.minOverdueAmt"></Input>
                 </FormItem>
               </Col>
               <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -110,19 +110,19 @@
               </Col>
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                 <FormItem prop="maxOverdueAmt">
-                  <Input size="small" clearable v-model="formItem.maxOverdueAmt"></Input>
+                  <Input size="small" clearable v-model.trim="formItem.maxOverdueAmt"></Input>
                 </FormItem>
               </Col>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="案件编号:" prop="id">
-              <Input size="small" clearable v-model="formItem.id" placeholder="请输入案件编号"/>
+              <Input size="small" clearable v-model.trim="formItem.id" placeholder="请输入案件编号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="账单号:" prop="billNo">
-              <Input size="small" clearable v-model="formItem.billNo" placeholder="请输入账单号"/>
+              <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入账单号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">

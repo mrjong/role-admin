@@ -4,9 +4,6 @@
     <Card class="vue-panel">
       <p slot="title" @click="showPanel=!showPanel">
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
-        <router-link to="/demo/demo_desc">
-          <Button class="fr vue-back-btn header-btn" type="primary" size="small">详情</Button>
-        </router-link>
       </p>
       <Form
         v-if="!showPanel"
@@ -29,17 +26,17 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="客户姓名:" prop="userNm">
-              <Input size="small" clearable v-model="formItem.userNm" placeholder="请输入客户姓名"/>
+              <Input size="small" clearable v-model.trim="formItem.userNm" placeholder="请输入客户姓名"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="身份证号:" prop="idNo">
-              <Input size="small" clearable v-model="formItem.idNo" placeholder="请输入身份证号"/>
+              <Input size="small" clearable v-model.trim="formItem.idNo" placeholder="请输入身份证号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="催收电话:" prop="mblNo">
-              <Input size="small" clearable v-model="formItem.mblNo" placeholder="请输入催收电话"/>
+              <Input size="small" clearable v-model.trim="formItem.mblNo" placeholder="请输入催收电话"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -60,12 +57,12 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="案件编号:" prop="caseNo">
-              <Input size="small" clearable v-model="formItem.caseNo" placeholder="请输入案件编号"/>
+              <Input size="small" clearable v-model.trim="formItem.caseNo" placeholder="请输入案件编号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="账单号:" prop="billNo">
-              <Input size="small" clearable v-model="formItem.billNo" placeholder="请输入账单号"/>
+              <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入账单号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">

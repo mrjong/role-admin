@@ -51,7 +51,8 @@ export default {
       data5: [],
       data: [],
       collectRoleIds: [],
-      caseIds: [],//勾选案件集合
+      caseIds: [],//勾选分配案件集合
+      caseIds2: [],//勾选回收案件集合
       caseID: '',//单个案件
       stopCases: [],//停催案件集合
       treeFlag: '',
@@ -297,6 +298,25 @@ export default {
           width: 200,
           key: 'billNo',
           align: 'center',
+          render(h, params) {
+            return h('div', [
+              h('Tooltip',
+                {
+                  style: {
+                    margin: '0 5px'
+                  },
+                  props: {
+                    content: params.row.billNo,
+                    placement: 'top'
+                  }
+                },
+                [
+                  h('span', {
+                  },params.row.billNo)
+                ]
+              )
+            ])
+          }
         },
         {
           title: '逾期金额',
@@ -441,17 +461,23 @@ export default {
     changeSelect(selection) {
       console.log('---------');
       this.caseIds = [];
+      this.caseIds2 = [];
       this.stopCases = [];
       selection.forEach((element) => {
-        this.caseIds.push(element.id);
+        this.caseIds2.push(element.id);
         if (element.caseHandleStatus === 'SUSPEND') {
           this.stopCases.push(element);
+        } else {
+          this.caseIds.push(element.id);
         }
       });
-      if (this.caseIds.length != 0) {
+      if (this.caseIds.length > 0) {
         this.totalCase = this.caseIds.length;
       } else {
-        this.totalCase = this.total;
+        this.totalCase = 0;
+      }
+      if (this.caseIds2.length > 0) {
+        this.total = this.caseIds2.length;
       }
       console.log(this.caseIds);
     },
@@ -516,6 +542,8 @@ export default {
         this.caseMounts = res.data.summary.totalCount;
         this.pageNo = res.data.page.number;
         this.total = res.data.page.totalElements;
+        this.caseIds = [];
+        this.caseIds2 = [];
         this.stopCases = [];
         this.tableData.forEach(item => {
           if (item.caseHandleStatus === 'SUSPEND') {
@@ -640,9 +668,9 @@ export default {
     // 批量回收接口
     async cases_batch_recycle() {
       const res = await cases_batch_recycle({
-        caseIds: this.caseIds,
+        caseIds: this.caseIds2,
         ...this.formItem,
-        preTotalCases: this.totalCase,
+        preTotalCases: this.total,
       });
       if (res.code === 1) {
         this.$Message.success('回收成功');
@@ -688,7 +716,7 @@ export default {
         ...this.formItem,
         ...this.messageFormItem,
         caseIds: this.caseIds,
-        preTotalCases: this.totalCase,
+        preTotalCases: this.total,
       });
       if (res.code === 1) {
         this.messageFlag = false;
@@ -703,19 +731,19 @@ export default {
       switch (type) {
         case '1':
           // this.distributeFlag = true;
-          if (this.totalCase-this.stopCases.length > 0) {
+          if (this.totalCase > 0) {
             this.distributeFlag = true;
           } else {
-            this.$Message.error('暂无可分配的案件');
+            this.$Message.error('选择可分配的案件为0');
           };
           break;
         case '2':
-          this.recycleFlag = true;
-          // if (this.formItem.caseHandleStatus && this.formItem.caseHandleStatus != '') {
-          //   this.recycleFlag = true;
-          // } else {
-          //   this.$Message.error('请选择案件处理状态再回收')
-          // };
+          // this.recycleFlag = true;
+          if (this.total > 0) {
+            this.recycleFlag = true;
+          } else {
+            this.$Message.error('选择可回收的案件为0')
+          };
           break;
         case '3': this.stopCollectionFlag = true;
           break;

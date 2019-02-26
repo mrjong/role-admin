@@ -74,7 +74,7 @@
                         number
                         type="number"
                         clearable
-                        v-model="formItem.ovdudaysMin"
+                        v-model.trim="formItem.ovdudaysMin"
                       ></Input>
                     </FormItem>
                   </Col>
@@ -88,7 +88,7 @@
                         number
                         type="number"
                         clearable
-                        v-model="formItem.ovdudaysMax"
+                        v-model.trim="formItem.ovdudaysMax"
                       ></Input>
                     </FormItem>
                   </Col>
@@ -98,7 +98,7 @@
                 <FormItem label="逾期应还金额:">
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovduamtMin">
-                      <Input size="small" clearable number v-model="formItem.ovduamtMin"></Input>
+                      <Input size="small" clearable number v-model.trim="formItem.ovduamtMin"></Input>
                     </FormItem>
                   </Col>
                   <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -106,7 +106,7 @@
                   </Col>
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovduamtMax">
-                      <Input size="small" clearable number v-model="formItem.ovduamtMax"></Input>
+                      <Input size="small" clearable number v-model.trim="formItem.ovduamtMax"></Input>
                     </FormItem>
                   </Col>
                 </FormItem>

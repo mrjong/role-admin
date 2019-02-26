@@ -217,7 +217,26 @@ export default {
           title: '账单号',
           width: 200,
           align: 'center',
-          key: 'billNo'
+          key: 'billNo',
+          render(h, params) {
+            return h('div', [
+              h('Tooltip',
+                {
+                  style: {
+                    margin: '0 5px'
+                  },
+                  props: {
+                    content: params.row.billNo,
+                    placement: 'top'
+                  }
+                },
+                [
+                  h('span', {
+                  },params.row.billNo)
+                ]
+              )
+            ])
+          }
         },
         {
           title: '逾期金额',
