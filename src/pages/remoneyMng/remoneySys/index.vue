@@ -134,7 +134,7 @@
                 filterable
               >
                 <Option
-                  v-for="item in getDirObj.PROD_TYPE"
+                  v-for="item in getDirObj.AC_TYP"
                   :value="item.itemCode"
                   :key="item.itemCode"
                 >{{ item.itemName }}</Option>

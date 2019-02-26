@@ -79,7 +79,7 @@ export default {
 			caseNo: '',
 			userId: '',
 			readtype: 'md-create',
-			showBtn: true,
+			showBtn: false,
 			showPanel: false,
 			showPanel2: false,
 			imgName: '',
