@@ -121,7 +121,7 @@ export default {
         maxOverdueAmt: '',
         id: '',
         billNo: '',
-        repayStatus: '',
+        caseStatus: '',
         creditLevels: [],
       },
       tableData: [],
@@ -291,6 +291,7 @@ export default {
   },
   created() {
     this.getList();
+    console.log(this.$route)
   },
   methods: {
     // table选中
@@ -322,6 +323,7 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          this.pageNo = 1;
           this.getList();
         };
       });
@@ -336,10 +338,13 @@ export default {
         },
         {
           responseType: 'blob',
-          timeout: 90000,
+          timeout: 120000,
         }
       );
       util.dowloadfile('案件查询', res);
+      setTimeout(() => {
+        this.getList();
+      },1000)
     },
     // 获取表格数据
     async getList() {
@@ -355,6 +360,7 @@ export default {
         this.pageNo = res.data.page.number;
         this.totalCase = res.data.summary.totalCount;
         this.totalOverdueAmt = res.data.summary.totalOverdueAmt;
+        this.caseIds = [];
       } else {
         this.$Message.error(res.message);
       }
@@ -375,7 +381,7 @@ export default {
         maxOverdueAmt: '',
         id: '',
         billNo: '',
-        repayStatus: '',
+        caseStatus: '',
         creditLevels: [],
       };
       this.$refs[name].resetFields();

@@ -126,7 +126,7 @@ export default {
         periodCounts: [],
         maxPerdCnts: [],
         creditLevels: [],
-        opCompayNames: [],
+        opCompayUuid: '',
       },
       messageFormItem: {},
       ruleValidate1: {
@@ -468,6 +468,7 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          this.pageNo = 1;
           this.getList();
         } else {
           this.$Message.error('查询条件格式有误，请重新填写');
@@ -605,7 +606,7 @@ export default {
         periodCounts: [],
         maxPerdCnts: [],
         creditLevels: [],
-        opCompayNames: [],
+        opCompayUuid: '',
       };
       this.$refs[name].resetFields();
     },

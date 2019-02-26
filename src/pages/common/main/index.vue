@@ -60,7 +60,7 @@
           <div
             slot="top"
             class="logo-con"
-            @click="$router.push('/home')"
+            @click="$router.push('/home/home/home')"
           >
             <img
               v-show="!shrink"

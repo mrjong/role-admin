@@ -86,7 +86,7 @@
       </Form>
       <div slot="footer">
         <Button
-           
+
           size="small"
           @click="closeTxl"
         >关闭</Button>
@@ -645,7 +645,7 @@
             >
               <div>
                 <div
-                 
+
                   class="case-desc-close"
                 >
                   <Tooltip
@@ -1050,7 +1050,7 @@
                     @click="handleSubmit('formValidate')"
                   >提交</Button>
                   <Button
-                     
+
                     size="small"
                     @click="handleCancle()"
                     style="margin-left: 8px"

@@ -370,7 +370,7 @@ export default {
 				},
 				{
 					responseType: 'blob',
-					timeout: 90000
+					timeout: 120000,
 				}
 			);
 			util.dowloadfile('我的案件', res);

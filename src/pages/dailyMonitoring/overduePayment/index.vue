@@ -622,7 +622,7 @@ export default {
           ...this.formItem
         },
         {
-          timeout: 90000,
+          timeout: 120000,
           responseType: "blob"
         }
       );

@@ -20,21 +20,41 @@ export default {
         sort: '',
       },
       newMenuItem: {
-        text: '',
-        parent: '',
+        parentId: '',
       },
       ruleValidate1: {
-        text: [
+        itemName: [
           {
             required: true,
-            message: "请输入菜单名称",
+            message: "请输入字典名称",
+            trigger: "blur"
+          }
+        ],
+        itemCode: [
+          {
+            required: true,
+            message: "请输入字典代码",
+            trigger: "blur"
+          }
+        ],
+        itemDesc: [
+          {
+            required: true,
+            message: "请输入字典描述",
+            trigger: "blur"
+          }
+        ],
+        depth: [
+          {
+            required: true,
+            message: "请输入字典级别",
             trigger: "blur"
           }
         ],
         sort: [
           {
             required: true,
-            message: "请输入位置",
+            message: "请输入排序号",
             trigger: "blur"
           }
         ],
@@ -50,7 +70,7 @@ export default {
       console.log(node)
     },
     renderContent(h, { root, node, data }) {
-      console.log(data )
+      console.log(data)
 
       return h('span', {
         style: {
@@ -59,94 +79,95 @@ export default {
           boxSizing: 'border-box',
         }
       }, [
-        h('span', [
-          h('Icon', {
-            props: {
-              type: 'ios-paper-outline',
-            },
-            style: {
-              marginRight: '4px'
-            }
-          }),
-          h('span', {
-            props: {
-            },
-            style: {
-              cursor: 'pointer'
-            },
-            class: 'tree_title',
-            on: {
-              'click': (e) => {
-                let titleSpan = document.querySelectorAll('.tree_title');
-                titleSpan.forEach(item => {
-                  item.className = 'tree_title';
-                });
-                if (e.target.className.indexOf('ivu-tree-title-selected') === -1) {
-                  e.target.className = 'tree_title ivu-tree-title-selected';
-                };
-                this.detailFlag = true;
-                this.menuFormItem = {
-                  itemName: data.itemName,
-                  itemCode: data.itemCode,
-                  itemDesc: data.itemDesc,
-                  sort: data.sort,
-                  id: data.id,
+          h('span', [
+            h('Icon', {
+              props: {
+                type: 'ios-paper-outline',
+              },
+              style: {
+                marginRight: '4px'
+              }
+            }),
+            h('span', {
+              props: {
+              },
+              style: {
+                cursor: 'pointer'
+              },
+              class: 'tree_title',
+              on: {
+                'click': (e) => {
+                  let titleSpan = document.querySelectorAll('.tree_title');
+                  titleSpan.forEach(item => {
+                    item.className = 'tree_title';
+                  });
+                  if (e.target.className.indexOf('ivu-tree-title-selected') === -1) {
+                    e.target.className = 'tree_title ivu-tree-title-selected';
+                  };
+                  this.detailFlag = true;
+                  this.menuFormItem = {
+                    itemName: data.itemName,
+                    itemCode: data.itemCode,
+                    itemDesc: data.itemDesc,
+                    sort: data.sort,
+                    id: data.id,
+                  }
                 }
               }
-            }
-          }, data.itemName)
-        ]),
-        h('span', {
-          style: {
-            display: 'inline-block',
-            float: 'right',
-            marginRight: '20px'
-          }
-        }, [
-          h('Button', {
-            props: Object.assign({}, this.buttonProps, {
-              // icon: 'ios-plus-empty'
-              type: 'primary'
-            }),
+            }, data.itemName)
+          ]),
+          h('span', {
             style: {
-              // marginRight: data.type === '4' || data.type === '3' ? 0 : '4px'
-            },
-            on: {
-              click: () => { this.addItem(data) }
+              display: 'inline-block',
+              float: 'right',
+              marginRight: '20px'
             }
-          }, '添加'),
-          h('Button', {
-            props: Object.assign({}, this.buttonProps, {
-              // icon: 'ios-plus-empty'
-              type: 'error'
-            }),
-            style: {
-              marginLeft: '4px'
-            },
-            on: {
-              click: () => {
-                this.deleteItem({id: data.id});
-              }
-            }
-          }, '删除'),
-        ])
-      ]);
+          }, [
+              h('Button', {
+                props: Object.assign({}, this.buttonProps, {
+                  // icon: 'ios-plus-empty'
+                  type: 'primary'
+                }),
+                style: {
+                  // marginRight: data.type === '4' || data.type === '3' ? 0 : '4px'
+                },
+                on: {
+                  click: () => { this.addItem(data) }
+                }
+              }, '添加'),
+              h('Button', {
+                props: Object.assign({}, this.buttonProps, {
+                  // icon: 'ios-plus-empty'
+                  type: 'error'
+                }),
+                style: {
+                  marginLeft: '4px'
+                },
+                on: {
+                  click: () => {
+                    this.deleteItem({ id: data.id });
+                  }
+                }
+              }, '删除'),
+            ])
+        ]);
     },
     // 提交保存修改
-    handleSubmit(name) {
-      this.menuUpdate(this.menuFormItem)
-      // this.$refs[name].validate(valid => {
-      //   if (valid) {
-      //     // this.getList();
-      //     // this.$Message.success("ok");
-      //     this.menuUpdate(this.menuFormItem)
-      //   } else {
-      //     this.$Message.error("查询条件格式有误，请重新填写");
-      //   }
-      // });
+    handleSubmit(name, type) {
+      // this.menuUpdate(this.menuFormItem)
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          if (type === 0) {
+            this.newMenuItem.parentId = this.data.id;
+            this.menuAdd();
+          } else {
+            this.menuUpdate(this.menuFormItem);
+          }
+        }
+      });
     },
     // 删除菜单项
-    deleteItem(param){
+    deleteItem(param) {
       this.menuDelete(param)
     },
     // 添加菜单项
@@ -155,10 +176,6 @@ export default {
       this.data = data;
     },
     ok() {
-     //校验代码表单校验
-      this.newMenuItem.parent = this.data.id;
-      this.menuAdd(this.newMenuItem)
-      //this.modal = false;
     },
     cancel() {
       this.modal = false;
@@ -178,6 +195,7 @@ export default {
     async menuUpdate(params) {
       const res = await sysDictionary_update(params);
       if (res.code === 1) {
+        this.$Message.success('修改成功');
         this.getList();
       } else {
         this.$Message.error(res.message);
@@ -185,17 +203,14 @@ export default {
     },
     // 新增菜单项
     async menuAdd(params) {
-      let parm = {
-        parentId:this.data.id,
-        itemName: '122', //节点名称
-        itemCode:'122',
-        itemDesc:'123',
-        depth: 1,
-        sort: 1
-      }
-      const res = await sysDictionary_save(parm);
+      const res = await sysDictionary_save({
+        ...this.newMenuItem
+      });
       if (res.code === 1) {
         this.$Message.success('添加成功');
+        this.newMenuItem = {
+          parentId: ''
+        };
         this.modal = false;
         this.getList();
       } else {
@@ -203,12 +218,12 @@ export default {
       }
     },
     // 删除菜单项
-    async menuDelete(params){
+    async menuDelete(params) {
       const res = await sysDictionary_delete(params);
-      if(res && res.code === 1){
+      if (res && res.code === 1) {
         this.$Message.success('删除成功');
         this.getList();
-      } else{
+      } else {
         this.$Message.error(res.message);
       }
     }

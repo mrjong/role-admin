@@ -127,7 +127,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="还款状态:">
-              <Select size="small" v-model="formItem.repayStatus">
+              <Select size="small" v-model="formItem.caseStatus" clearable>
                 <Option
                   v-for="item in getDirObj.PAY_OFF_STS"
                   :value="item.itemCode"

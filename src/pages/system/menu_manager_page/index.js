@@ -1,11 +1,16 @@
 import { stytem_menu_list, stytem_menu_update, stytem_menu_add, system_menu_del } from '@/service/getData';
 import IconList from '@/components/iconList';
+import sysDictionary from '@/mixin/sysDictionary';
+
 export default {
   components: {
     IconList
   },
+	mixins: [ sysDictionary ],
   data() {
     return {
+      getDirList: [ 'MENU_TYPE' ],
+			getDirObj: {},
       showPanel: false,
       showPanel2: false,
       detailFlag: false,
@@ -40,6 +45,13 @@ export default {
             message: '请输入url',
             trigger: 'blur'
           }
+        ],
+        type: [
+          {
+            required: true,
+            message: '请选择类型',
+            trigger: 'change'
+          }
         ]
       },
       ruleValidate2: {
@@ -62,6 +74,13 @@ export default {
             required: true,
             message: '请输入url',
             trigger: 'blur'
+          }
+        ],
+        type: [
+          {
+            required: true,
+            message: '请选择类型',
+            trigger: 'change'
           }
         ]
       },
@@ -125,12 +144,14 @@ export default {
                       e.target.className = 'tree_title ivu-tree-title-selected';
                     }
                     this.modal = '1';
+                    console.log(data)
                     this.menuFormItem = {
                       parent: data.parent,
                       id: data.id,
                       text: data.text,
                       icon: data.icon,
                       url: data.url,
+                      type: data.type,
                       sort: String(data.sort)
                     };
                   }

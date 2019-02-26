@@ -266,6 +266,13 @@ export default {
     this.getLeafTypeList2()
   },
   methods: {
+    // 日历监听
+    dateChange (arr) {
+      console.log(arr);
+      this.formItem.beginDate = arr[0];
+      this.formItem.endDate = arr[1];
+      console.log(this.formItem)
+    },
     // listen event
     onPlayerPlay(player) {
       // console.log('player play!', player)
@@ -293,7 +300,7 @@ export default {
         },
         {
           responseType: 'blob',
-          timeout: 90000,
+          timeout: 120000,
         }
       );
       this.playerOptions.sources[0].src = util.dowloadAudio(res);

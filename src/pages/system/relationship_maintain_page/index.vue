@@ -36,8 +36,8 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="登陆账号:">
-              <Input size="small" clearable v-model="formItem.loginId" placeholder="请输入登陆账号"></Input>
+            <FormItem span="6" label="员工姓名:">
+              <Input size="small" clearable v-model="formItem.userName" placeholder="请输入员工姓名"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
@@ -77,7 +77,7 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-        <Table :data="tableData" :columns="tableColumns" stripe width="1200" size="small"></Table>
+        <Table :data="tableData" :columns="tableColumns" stripe size="small"></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div style="float: right;">

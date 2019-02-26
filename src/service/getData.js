@@ -802,7 +802,7 @@ export const cases_batch_allot = (obj) =>
     url: '/cases/batch/allot',
     method: 'POST',
     data: qs.stringify(obj),
-    timeout: 90000,
+    timeout: 120000,
   });
 // 案件批量回收接口
 export const cases_batch_recycle = (obj) =>
@@ -810,7 +810,7 @@ export const cases_batch_recycle = (obj) =>
     url: '/cases/batch/recycle',
     method: 'POST',
     data: qs.stringify(obj),
-    timeout: 90000,
+    timeout: 120000,
   });
 // 案件停止催收
 export const cases_collect_stop = (obj) =>
@@ -832,7 +832,7 @@ export const cases_case_sendwebmessage = (obj) =>
     url: '/cases/case/sendwebmessage',
     method: 'POST',
     data: qs.stringify(obj),
-    timeout: 90000
+    timeout: 120000,
   })
 // 分案规则列表
 export const divide_rules_list = (obj) =>

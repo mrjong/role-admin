@@ -215,7 +215,7 @@ export default {
       let res = await monitor_collectRate_exportDown(
         {},
         {
-          timeout: 90000,
+          timeout: 120000,
           responseType: "blob"
         }
       );

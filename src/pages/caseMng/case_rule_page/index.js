@@ -145,7 +145,7 @@ export default {
           }
         },
         {
-          title: '引用分',
+          title: '信用分',
           width: 100,
           searchOperator: '=',
           key: 'creditLevel',
@@ -335,6 +335,7 @@ export default {
       //     this.$Message.error('查询条件格式有误，请重新填写');
       //   }
       // });
+      this.pageNo = 1;
       this.getList();
     },
     // 页码改变的回调
