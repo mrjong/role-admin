@@ -279,6 +279,12 @@ export default {
           align: 'center',
         },
         {
+          title: '身份证归属地',
+          width: 150,
+          align: 'center',
+          key: 'idAddr'
+        },
+        {
           title: '手机号',
           searchOperator: 'like',
           width: 150,

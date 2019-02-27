@@ -209,6 +209,12 @@ export default {
           key: 'idNoHid'
         },
         {
+          title: '身份证归属地',
+          width: 150,
+          align: 'center',
+          key: 'idAddr'
+        },
+        {
           title: '手机号',
           width: 120,
           align: 'center',
