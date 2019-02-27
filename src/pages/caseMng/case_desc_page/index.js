@@ -319,41 +319,6 @@ export default {
 					render: (h, params) => {
 						return h('div', [
 							h('span', {}, params.row.mblNoHid),
-							h(
-								'Poptip',
-								{
-									props: {
-										content: _this.mingwenData
-									}
-								},
-								[
-									h(
-										'span',
-										{
-											on: {
-												click: () => {
-													_this.syscommon_decrypt({
-														type: 'MBL',
-														data: params.row.mblNo
-													});
-												}
-											},
-											style: {
-												display: params.row.mblNoHid ? 'inline-block' : 'none'
-											}
-										},
-										[
-											h('Icon', {
-												props: {
-													type: 'md-eye'
-												},
-
-												class: 'eye-class'
-											})
-										]
-									)
-								]
-							)
 						]);
 					}
 				},
@@ -365,41 +330,6 @@ export default {
 					render: (h, params) => {
 						return h('div', [
 							h('span', {}, params.row.userNmHid),
-							h(
-								'Poptip',
-								{
-									props: {
-										content: _this.mingwenData
-									}
-								},
-								[
-									h(
-										'span',
-										{
-											on: {
-												click: () => {
-													_this.syscommon_decrypt({
-														type: 'NAME',
-														data: params.row.userNm
-													});
-												}
-											},
-											style: {
-												display: params.row.userNmHid ? 'inline-block' : 'none'
-											}
-										},
-										[
-											h('Icon', {
-												props: {
-													type: 'md-eye'
-												},
-
-												class: 'eye-class'
-											})
-										]
-									)
-								]
-							)
 						]);
 					}
 				},
@@ -897,41 +827,6 @@ export default {
 					render: (h, params) => {
 						return h('div', [
 							h('span', {}, params.row.idNoHid),
-							h(
-								'Poptip',
-								{
-									props: {
-										content: _this.mingwenData
-									}
-								},
-								[
-									h(
-										'span',
-										{
-											on: {
-												click: () => {
-													_this.syscommon_decrypt({
-														type: 'ID_CARD',
-														data: params.row.idNo
-													});
-												}
-											},
-											style: {
-												display: params.row.idNoHid ? 'inline-block' : 'none'
-											}
-										},
-										[
-											h('Icon', {
-												props: {
-													type: 'md-eye'
-												},
-
-												class: 'eye-class'
-											})
-										]
-									)
-								]
-							)
 						]);
 					}
 				},
