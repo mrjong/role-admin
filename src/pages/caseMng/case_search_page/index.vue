@@ -155,8 +155,8 @@
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
-              <Button type="primary" style="width:80px" long size="small" :loading="queryLoading">
-                <span v-if="!queryLoading" @click="handleSubmit('formItem')">检索</span>
+              <Button type="primary" style="width:80px" long size="small" :loading="queryLoading" @click="handleSubmit('formItem')">
+                <span v-if="!queryLoading">检索</span>
                 <span v-else>请求中...</span>
               </Button>
               <Button
@@ -175,8 +175,8 @@
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
         <span style="margin-left: 10px;">总共{{totalCase}}笔案件，</span>
         <span>总共逾期金额{{totalOverdueAmt}}元</span>
-        <Button class="fr vue-back-btn header-btn" type="primary" size="small" style="min-width: 80px" v-if="export_case" :loading='exportLoading'>
-          <span v-if="!exportLoading" @click.stop="cases_export">导出数据</span>
+        <Button class="fr vue-back-btn header-btn" type="primary" size="small" style="min-width: 80px" v-if="export_case" :loading='exportLoading' @click.stop="cases_export">
+          <span v-if="!exportLoading">导出数据</span>
           <span v-else>请求中...</span>
         </Button>
       </p>

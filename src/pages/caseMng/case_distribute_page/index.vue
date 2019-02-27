@@ -224,8 +224,8 @@
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
-              <Button type="primary" style="width:80px" long size="small" :loading='queryLoading'>
-                <span v-if="!queryLoading" @click="handleSubmit('formItem')">检索</span>
+              <Button type="primary" style="width:80px" long size="small" :loading='queryLoading' @click="handleSubmit('formItem')">
+                <span v-if="!queryLoading">检索</span>
                 <span v-else>请求中...</span>
               </Button>
               <Button
@@ -373,8 +373,8 @@
         ></Tree>
         <div slot="footer">
           <Button size="small" @click="cancel('2')">取消</Button>
-          <Button type="primary" size="small" :loading='batch_distribute_loading'>
-            <span v-if="!batch_distribute_loading" @click="ok('2')">确定</span>
+          <Button type="primary" size="small" :loading='batch_distribute_loading' @click="ok('2')">
+            <span v-if="!batch_distribute_loading">确定</span>
             <span v-else>分配中...</span>
           </Button>
         </div>
@@ -397,7 +397,7 @@
         <div slot="footer">
           <Button size="small" @click="cancel('3')">取消</Button>
           <Button type="primary" size="small" @click="ok('3')" :loading='recoverLoading'>
-            <span v-if="!recoverLoading" @click="ok('3')">确定</span>
+            <span v-if="!recoverLoading">确定</span>
             <span v-else>回收中...</span>
           </Button>
         </div>
