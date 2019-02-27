@@ -44,6 +44,8 @@ export default {
       query: false,//案件查询权限
       detail: false,//c查看案件详情权限
       export_case: false,//导出权限
+      queryLoading: false,//查询按钮loading
+      exportLoading: false,//导出loading
       totalOverdueAmt: '',
       totalCase: '',
       caseMounts: '',
@@ -177,8 +179,8 @@ export default {
                       class: 'edit-desc',
                       on: {
                         click: () => {
-                          if (!this.detail) {
-                            this.$Message.error('很抱歉，暂无权限查看详情');
+                          if (!_this.detail) {
+                            _this.$Message.error('很抱歉，暂无权限查看详情');
                             return;
                           }
                           window.open(
@@ -377,6 +379,7 @@ export default {
     },
     // 案件导出
     async cases_export() {
+      this.exportLoading = true;
       const res = await cases_export(
         {
           ...this.formItem,
@@ -389,6 +392,7 @@ export default {
         }
       );
       util.dowloadfile('案件查询', res);
+      this.exportLoading = false;
       setTimeout(() => {
         this.getList();
       },1000)
@@ -398,7 +402,8 @@ export default {
       if (!this.query) {
         this.$Message.error('很抱歉，暂无权限查询');
         return
-      }
+      };
+      this.queryLoading = true;
       const res = await case_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
@@ -415,6 +420,7 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+      this.queryLoading = false;
     },
     // 重置
     clearForm(name) {

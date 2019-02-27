@@ -155,16 +155,12 @@
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
-              <Button
-                type="primary"
-                @click="handleSubmit('formItem')"
-                style="width:80px"
-                long
-                size="small"
-              >检索</Button>
+              <Button type="primary" style="width:80px" long size="small" :loading="queryLoading">
+                <span v-if="!queryLoading" @click="handleSubmit('formItem')">检索</span>
+                <span v-else>请求中...</span>
+              </Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -179,13 +175,10 @@
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
         <span style="margin-left: 10px;">总共{{totalCase}}笔案件，</span>
         <span>总共逾期金额{{totalOverdueAmt}}元</span>
-        <Button
-          class="fr vue-back-btn header-btn"
-          type="primary"
-          size="small"
-          v-if="export_case"
-          @click.stop="cases_export"
-        >导出数据</Button>
+        <Button class="fr vue-back-btn header-btn" type="primary" size="small" style="min-width: 80px" v-if="export_case" :loading='exportLoading'>
+          <span v-if="!exportLoading" @click.stop="cases_export">导出数据</span>
+          <span v-else>请求中...</span>
+        </Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">

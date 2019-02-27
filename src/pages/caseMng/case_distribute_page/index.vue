@@ -20,7 +20,7 @@
                 size="small"
                 placeholder="请选择规则状态"
                 v-model="formItem.caseHandleStatus"
-                @on-change='selectChange'
+                @on-change="selectChange"
               >
                 <Option
                   v-for="item in getDirObj.CASE_HANDLE_STATUS"
@@ -190,7 +190,13 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="电催中心:">
-              <Select size="small" clearable filterable placeholder="请选择电催中心" v-model="formItem.opCompayUuid">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择电催中心"
+                v-model="formItem.opCompayUuid"
+              >
                 <Option
                   v-for="item in getLeafTypeList2_data"
                   :value="item.id"
@@ -201,7 +207,13 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="经办人:">
-              <Select size="small" clearable filterable placeholder="请选择经办人" v-model="formItem.opUserUuid">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择经办人"
+                v-model="formItem.opUserUuid"
+              >
                 <Option
                   v-for="(item,index) in getLeafTypeList_data"
                   :value="item.id"
@@ -212,13 +224,10 @@
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
-              <Button
-                type="primary"
-                @click="handleSubmit('formItem')"
-                style="width:80px"
-                long
-                size="small"
-              >检索</Button>
+              <Button type="primary" style="width:80px" long size="small" :loading='queryLoading'>
+                <span v-if="!queryLoading" @click="handleSubmit('formItem')">检索</span>
+                <span v-else>请求中...</span>
+              </Button>
               <Button
                 size="small"
                 style="width:80px;margin-left: 8px"
@@ -251,12 +260,14 @@
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
+          v-if="recover"
           @click.stop="handeldBtnClick('2')"
         >批量回收</Button>
         <Button
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
+          v-if="batch_distribute"
           @click.stop="handeldBtnClick('1')"
         >批量分配</Button>
         <Button
@@ -306,10 +317,12 @@
           <span>提示</span>
         </p>
         <Alert show-icon type="warning">
-          <template slot="desc">该操作将分配所有查询出的结果,共{{Number(totalCase)}}笔可分配案件，{{stopCases.length}}笔停催案件，您确认要全部分配么?</template>
+          <template
+            slot="desc"
+          >该操作将分配所有查询出的结果,共{{Number(totalCase)}}笔可分配案件，{{stopCases.length}}笔停催案件，您确认要全部分配么?</template>
         </Alert>
         <div slot="footer">
-          <Button   size="small" @click="cancel('1')">取消</Button>
+          <Button size="small" @click="cancel('1')">取消</Button>
           <Button type="primary" size="small" @click="ok('1')">确定</Button>
         </div>
       </Modal>
@@ -339,15 +352,15 @@
           >选择公司</Button>
         </p>
         <!-- <div v-if="treeFlag === 0"> -->
-          <Tree
-            :data="data5"
-            :render="renderContent"
-            multiple
-            show-checkbox
-            @on-select-change="selectNode"
-            @on-check-change="checkChange"
-            v-if="treeFlag === 0"
-          ></Tree>
+        <Tree
+          :data="data5"
+          :render="renderContent"
+          multiple
+          show-checkbox
+          @on-select-change="selectNode"
+          @on-check-change="checkChange"
+          v-if="treeFlag === 0"
+        ></Tree>
         <!-- </div> -->
         <Tree
           :data="data"
@@ -359,8 +372,11 @@
           v-if="treeFlag === 1"
         ></Tree>
         <div slot="footer">
-          <Button   size="small" @click="cancel('2')">取消</Button>
-          <Button type="primary" size="small" @click="ok('2')">确定</Button>
+          <Button size="small" @click="cancel('2')">取消</Button>
+          <Button type="primary" size="small" :loading='batch_distribute_loading'>
+            <span v-if="!batch_distribute_loading" @click="ok('2')">确定</span>
+            <span v-else>分配中...</span>
+          </Button>
         </div>
       </Modal>
     </div>
@@ -379,8 +395,11 @@
           <template slot="desc">共查询出{{total}}条案件,确定要回收吗？</template>
         </Alert>
         <div slot="footer">
-          <Button   size="small" @click="cancel('3')">取消</Button>
-          <Button type="primary" size="small" @click="ok('3')">确定</Button>
+          <Button size="small" @click="cancel('3')">取消</Button>
+          <Button type="primary" size="small" @click="ok('3')" :loading='recoverLoading'>
+            <span v-if="!recoverLoading" @click="ok('3')">确定</span>
+            <span v-else>回收中...</span>
+          </Button>
         </div>
       </Modal>
     </div>
@@ -396,7 +415,7 @@
           <span>案件停催</span>
         </p>
         <Form ref="stopFormItem" :model="stopFormItem" :label-width="90" :rules="ruleValidate1">
-          <FormItem span="4" label="停催原因:" prop='operRemark'>
+          <FormItem span="4" label="停催原因:" prop="operRemark">
             <Input
               type="textarea"
               size="small"
@@ -407,8 +426,11 @@
           </FormItem>
         </Form>
         <div slot="footer">
-          <Button   size="small" @click="cancel('4')">取消</Button>
-          <Button type="primary" size="small" @click="ok('4', 'stopFormItem')">确定</Button>
+          <Button size="small" @click="cancel('4')">取消</Button>
+          <Button type="primary" size="small" @click="ok('4', 'stopFormItem')" :loading='stop_urge_loading'>
+            <span v-if="!stop_urge_loading">确定</span>
+            <span v-else>停催中...</span>
+          </Button>
         </div>
       </Modal>
     </div>
@@ -423,8 +445,13 @@
         <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
           <span>恢复催收</span>
         </p>
-        <Form ref="recoverFormItem" :model="recoverFormItem" :label-width="120" :rules="ruleValidate2">
-          <FormItem span="4" label="恢复催收原因:" prop='operRemark'>
+        <Form
+          ref="recoverFormItem"
+          :model="recoverFormItem"
+          :label-width="120"
+          :rules="ruleValidate2"
+        >
+          <FormItem span="4" label="恢复催收原因:" prop="operRemark">
             <Input
               type="textarea"
               size="small"
@@ -435,8 +462,11 @@
           </FormItem>
         </Form>
         <div slot="footer">
-          <Button   size="small" @click="cancel('5')">取消</Button>
-          <Button type="primary" size="small" @click="ok('5', 'recoverFormItem')">确定</Button>
+          <Button size="small" @click="cancel('5')">取消</Button>
+          <Button type="primary" size="small" @click="ok('5', 'recoverFormItem')" :loading='regain_urge_loading'>
+            <span v-if="!regain_urge_loading">确定</span>
+            <span v-else>恢复催收中...</span>
+          </Button>
         </div>
       </Modal>
     </div>

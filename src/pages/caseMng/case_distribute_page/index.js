@@ -46,6 +46,18 @@ export default {
       stopCollectionFlag: false,
       recoverCollectionFlag: false,
       messageFlag: false,
+      queryList: false,//查询权限
+      one_distribute: false,//一键分配权限
+      batch_distribute: false,//批量分配权限
+      recover: false,//回收权限
+      stop_urge: false,//停催权限
+      regain_urge: false,//恢复催收权限
+      queryLoading: false,//查询按钮loading
+      recoverLoading: false,//回收按钮loading
+      one_distribute_loading: false,//一键分配按钮loading
+      batch_distribute_loading: false,//批量分配分配按钮loading
+      stop_urge_loading: false,//停催提交按钮loading
+      regain_urge_loading: false,//恢复催收提交按钮loading
       getLeafTypeList2_data: [],
       getLeafTypeList_data: [],
       data5: [],
@@ -205,9 +217,17 @@ export default {
                   on: {
                     click: () => {
                       if (caseHandleStatus === 'SUSPEND') {
+                        if (!this.regain_urge) {
+                          this.$Message.error('暂无恢复催收权限');
+                          return;
+                        }
                         this.handeldBtnClick('4');
                         this.caseID = params.row.id;
                       } else {
+                        if (!this.stop_urge) {
+                          this.$Message.error('暂无停催权限');
+                          return;
+                        }
                         this.handeldBtnClick('3');
                         this.caseID = params.row.id;
                       }
@@ -412,7 +432,28 @@ export default {
     };
   },
   created() {
-    this.getList();
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.queryList = true;
+          break;
+        case "one_distribute": this.one_distribute = true;
+          break;
+        case "batch_distribute": this.batch_distribute = true;
+          break;
+        case "recover": this.recover = true;
+          break;
+        case "stop_urge": this.stop_urge = true;
+          break;
+        case "regain_urge": this.regain_urge = true;
+          break;
+      }
+    });
+    // this.getList();
     this.getLeafTypeList()
     this.getLeafTypeList2()
   },
@@ -525,23 +566,26 @@ export default {
     },
     // 点击出现tree
     selectTreeNode(type) {
-      console.log(12313);
+      this.treeFlag = type;
       if (type === 0) {
         this.collect_show_children();
       } else {
         this.initTree();
       }
-      this.treeFlag = type;
     },
     // 获取表格数据
     async getList() {
+      if (!this.queryList) {
+        this.$Message.error('很抱歉，暂无权限查询');
+        return;
+      }
+      this.queryLoading = true;
       const res = await cases_allot_list({
         ...this.formItem,
         pageNum: this.pageNo,
         pageSize: this.pageSize,
       });
       if (res.code === 1) {
-        console.log(res);
         this.tableData = res.data.page.content;
         this.totalCase = res.data.summary.totalCount;
         this.totalOverdueAmt = res.data.summary.totalOverdueAmt;
@@ -559,6 +603,7 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+      this.queryLoading = false;
     },
     async getLeafTypeList() {
       const res = await getLeafTypeList({
@@ -588,7 +633,8 @@ export default {
       });
       if (res.code === 1) {
         this.data = res.data.collectRoleTreeVos;
-        if (res.data.type === '01') {
+        if (res.data.userType === '01') {
+          // 系统人员
           this.data.forEach(item => {
             item.disableCheckbox = true;
             item.children.forEach((item2, index) => {
@@ -598,6 +644,7 @@ export default {
             })
           })
         } else {
+          // 催收人员
           this.data.forEach(item => {
             item.children.forEach((item2, index) => {
               // if (item2.leafType === '02') {
@@ -624,6 +671,7 @@ export default {
       if (res.code === 1) {
         this.data5 = res.data.collectRoleTreeVos;
       } else {
+        this.$Message.error(res.message)
       }
     },
     // 动态获取表格数据
@@ -670,6 +718,7 @@ export default {
     },
     // 批量分配接口
     async cases_batch_allot() {
+      this.batch_distribute_loading = true;
       const res = await cases_batch_allot({
         ...this.formItem,
         collectRoleIds: this.collectRoleIds,
@@ -683,9 +732,11 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+      this.batch_distribute_loading = false;
     },
     // 批量回收接口
     async cases_batch_recycle() {
+      this.recoverLoading = true;
       const res = await cases_batch_recycle({
         caseIds: this.caseIds2,
         ...this.formItem,
@@ -698,9 +749,11 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+      this.recoverLoading = true;
     },
     // 案件停止催收接口
     async cases_collect_stop(id) {
+      this.stop_urge_loading = true;
       const res = await cases_collect_stop({
         caseIds: id,
         ...this.stopFormItem
@@ -712,10 +765,12 @@ export default {
         this.$Message.success('操作成功');
       } else {
         this.$Message.error(res.message);
-      }
+      };
+      this.stop_urge_loading = false;
     },
     // 案件恢复催收接口
     async cases_collect_recover(id) {
+      this.regain_urge_loading = true;
       const res = await cases_collect_recover({
         caseIds: id,
         ...this.recoverFormItem
@@ -727,7 +782,8 @@ export default {
         this.$Message.success('操作成功');
       } else {
         this.$Message.error(res.message);
-      }
+      };
+      this.regain_urge_loading = true;
     },
     // 站内信发送接口
     async cases_case_sendwebmessage() {
@@ -778,12 +834,16 @@ export default {
         case '1': this.distributeFlag = false;
           break;
         case '2': this.distributeRoleFlag = false;
+          this.batch_distribute_loading = false;
           break;
         case '3': this.recycleFlag = false;
+          this.recoverLoading = false;
           break;
         case '4': this.stopCollectionFlag = false;
+          this.stop_urge_loading = false;
           break;
         case '5': this.recoverCollectionFlag = false;
+          this.regain_urge_loading = false;
           break;
         case '6': this.messageFlag = false;
           this.messageFormItem = {};

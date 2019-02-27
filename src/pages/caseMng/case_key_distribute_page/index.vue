@@ -545,7 +545,7 @@ export default {
       });
       if (res.code === 1) {
         this.data = res.data.collectRoleTreeVos;
-        if (res.data.type === '01') {
+        if (res.data.userType === '01') {
           this.data.forEach(item => {
             item.disableCheckbox = true;
             item.children.forEach((item2, index) => {
