@@ -837,41 +837,6 @@ export default {
 					render: (h, params) => {
 						return h('div', [
 							h('span', {}, params.row.usrNmHid),
-							h(
-								'Poptip',
-								{
-									props: {
-										content: _this.mingwenData
-									}
-								},
-								[
-									h(
-										'span',
-										{
-											on: {
-												click: () => {
-													_this.syscommon_decrypt({
-														type: 'NAME',
-														data: params.row.userNm
-													});
-												}
-											},
-											style: {
-												display: params.row.userNmHid ? 'inline-block' : 'none'
-											}
-										},
-										[
-											h('Icon', {
-												props: {
-													type: 'md-eye'
-												},
-
-												class: 'eye-class'
-											})
-										]
-									)
-								]
-							)
 						]);
 					}
 				},
@@ -895,41 +860,6 @@ export default {
 					render: (h, params) => {
 						return h('div', [
 							h('span', {}, params.row.crdNoHid),
-							h(
-								'Poptip',
-								{
-									props: {
-										content: _this.mingwenData
-									}
-								},
-								[
-									h(
-										'span',
-										{
-											on: {
-												click: () => {
-													_this.syscommon_decrypt({
-														type: 'BANK_CARD',
-														data: params.row.crdNo
-													});
-												}
-											},
-											style: {
-												display: params.row.crdNoHid ? 'inline-block' : 'none'
-											}
-										},
-										[
-											h('Icon', {
-												props: {
-													type: 'md-eye'
-												},
-
-												class: 'eye-class'
-											})
-										]
-									)
-								]
-							)
 						]);
 					}
 				},
@@ -1302,7 +1232,8 @@ export default {
 				{
 					title: '操作',
 					align: 'center',
-					key: 'edit',
+					key: 'edit' ,
+          fixed: 'left',
 					width: 50,
 					render: (h, params) => {
 						return h('div', [

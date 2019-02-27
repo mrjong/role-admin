@@ -767,7 +767,7 @@
                   <Input
                     v-model.trim="formValidate.collectRmk"
                     type="textarea"
-                    :autosize="{minRows: 2,maxRows: 5}"
+                    :autosize="{minRows: 2,maxRows: 2}"
                     placeholder="请输入备注"
                   ></Input>
                 </FormItem>
