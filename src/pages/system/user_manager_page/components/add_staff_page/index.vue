@@ -118,6 +118,7 @@
               v-model="addStaffFormItem.companyId"
               filterable
               clearable
+              @on-change='companyChange'
               placeholder="请选择公司"
             >
               <Option
@@ -392,6 +393,11 @@ export default {
     }
   },
   methods: {
+    //公司变更联动部门变更
+    companyChange(item) {
+      console.log(item);
+      this.collect_user_list('03', item);
+    },
     // 选择角色变更
     roleSelect(item) {
       if (item === "2474cbac7a34419f8decc99f022846a1") {

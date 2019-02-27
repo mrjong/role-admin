@@ -40,6 +40,11 @@ export default {
       showPanel: false,
       productLineList: [],
       showPanel2: false,
+      query: false,//查询权限
+      export_case: false,//导出权限
+      play: false,//播放权限
+      query_loading: false,//查询按钮loading
+      export_case_loading: false,//导出按钮loading
       ruleValidate: {
         idNo: [
           {
@@ -89,7 +94,7 @@ export default {
           fixed: 'left',
           render: (h, params) => {
             const soundUuid = params.row.soundUuid;
-            return h('div', [
+            return soundUuid?h('div', [
               h(
                 'a',
                 {
@@ -99,13 +104,28 @@ export default {
                   },
                   on: {
                     click: () => {
+                      if (!this.play) {
+                        this.$Message.error('很抱歉，暂无权限播放录音');
+                        return;
+                      }
                       this.case_collect_tape(soundUuid);
                       this.modal1 = true;
                     }
                   }
                 },
                 '播放'
-              )
+              ),
+            ]): h('div', [
+              h(
+                'span',
+                {
+                  props: {},
+                  style: {
+                    color: '#CCC'
+                  }
+                },
+                '暂无录音'
+              ),
             ]);
           }
         },
@@ -280,7 +300,22 @@ export default {
     }
   },
   created() {
-    this.getList();
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+        case "play": this.play = true;
+          break;
+        case "export_case": this.export_case = true;
+          break;
+      }
+    });
+    // this.getList();
     this.getLeafTypeList()
     this.getLeafTypeList2()
   },
@@ -328,7 +363,6 @@ export default {
       this.$Message.info('Clicked ok');
     },
     cancel() {
-      this.$Message.info('Clicked cancel');
       console.log(this.$Modal);
       this.$Modal.remove();
     },
@@ -354,7 +388,6 @@ export default {
       }
     },
     handleSubmit(name) {
-      debugger
       this.pageNo = 1;
       this.$refs[name].validate((valid) => {
         if (valid) {
@@ -363,11 +396,17 @@ export default {
       });
     },
     async getList() {
+      if (!this.query) {
+        this.$Message.error('很抱歉，暂无权限查询');
+        return;
+      }
+      this.query_loading = true;
       const res = await case_collect_collect_list({
         ...this.formItem,
         pageSize: this.pageSize,
         pageNum: this.pageNo
       });
+      this.query_loading = false;
       if (res.code === 1) {
         this.tableData = res.data.page.content;
         this.total = res.data.page.totalElements;
@@ -378,6 +417,7 @@ export default {
     },
     // 催收记录导出
     async case_collect_collect_export() {
+      this.export_case_loading = true;
       const res = await case_collect_collect_export(
         {
           ...this.formItem
@@ -388,6 +428,7 @@ export default {
         }
       );
       util.dowloadfile('催收记录', res);
+      this.export_case_loading = false;
       setTimeout(() => {
         this.getList();
       }, 1000)

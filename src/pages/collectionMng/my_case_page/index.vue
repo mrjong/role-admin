@@ -145,7 +145,11 @@
                 style="width:80px"
                 long
                 size="small"
-              >检索</Button>
+                :loading="query_loading"
+              >
+                <span v-if="!query_loading">检索</span>
+                <span v-else>检索中...</span>
+              </Button>
               <Button
                 size="small"
                 style="width:80px;margin-left: 8px"
@@ -161,21 +165,28 @@
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
         <Button
-          @click.stop="case_collect_case_list_export"
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
-        >导出数据</Button>
+          v-if="export_case"
+          @click.stop="case_collect_case_list_export"
+          :loading="export_case_loading"
+        >
+          <span v-if="!export_case_loading">导出数据</span>
+          <span v-else>导出中...</span>
+        </Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
         <div class="panel-desc">
           <Row :gutter="5">
-            <div class="panel-desc-title fl mr10">案件数(笔)：
+            <div class="panel-desc-title fl mr10">
+              案件数(笔)：
               <span>{{summary.totalCount || 0}}</span>
             </div>
 
-            <div class="panel-desc-title fl mr10">逾期金额(元)：
+            <div class="panel-desc-title fl mr10">
+              逾期金额(元)：
               <span>{{summary.totalOverdueAmt | money}}</span>
             </div>
           </Row>

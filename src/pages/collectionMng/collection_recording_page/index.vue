@@ -48,7 +48,7 @@
                 v-model="formItem.csDate"
                 format="yyyy-MM-dd"
                 type="daterange"
-                @on-change='dateChange'
+                @on-change="dateChange"
                 placement="bottom-start"
                 placeholder="请选择催收时间"
                 clearable
@@ -67,7 +67,13 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="经办人:">
-              <Select size="small" filterable v-model="formItem.opUserUuid" clearable placeholder="请选择经办人">
+              <Select
+                size="small"
+                filterable
+                v-model="formItem.opUserUuid"
+                clearable
+                placeholder="请选择经办人"
+              >
                 <Option
                   v-for="item in getLeafTypeList_data"
                   :value="item.id"
@@ -78,7 +84,13 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="电催中心:">
-              <Select size="small" filterable v-model="formItem.opCompayUuid" clearable placeholder="请选择电催中心">
+              <Select
+                size="small"
+                filterable
+                v-model="formItem.opCompayUuid"
+                clearable
+                placeholder="请选择电催中心"
+              >
                 <Option
                   v-for="item in getLeafTypeList2_data"
                   :value="item.id"
@@ -95,10 +107,13 @@
                 style="width:80px"
                 long
                 size="small"
-              >检索</Button>
+                :loading="query_loading"
+              >
+                <span v-if="!query_loading">检索</span>
+                <span v-else>检索中...</span>
+              </Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -135,8 +150,15 @@
       </div>
     </Card>
     <!-- modal -->
-    <div v-if="modal1" class="modal_wrap">
-      <Modal v-model="modal1" title="录音播放" @on-ok="ok" @on-cancel="cancel">
+    <div v-if="modal1">
+      <Modal
+        v-model="modal1"
+        class-name="modal_wrap_play"
+        title="录音播放"
+        @on-ok="ok"
+        @on-cancel="cancel"
+        draggable
+      >
         <video-player
           class="video-player-box"
           ref="videoPlayer"
@@ -163,6 +185,8 @@
 #modal_wrap {
   width: 100%;
   box-sizing: border-box;
+}
+.modal_wrap_play {
 }
 </style>
 
