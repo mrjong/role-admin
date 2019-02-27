@@ -297,9 +297,17 @@ export const sysDictionary_getListByParentId = (obj, options) =>
 *
 * 催收管理 我的案件
 * */
+//催收记录列表
 export const case_collect_case_list = (obj, options) =>
   fetch({
     url: '/case/collect/case_list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+  //催收录音列表
+export const case_collect_record_file_list = (obj) =>
+  fetch({
+    url: '/case/collect/record_file_list',
     method: 'POST',
     data: qs.stringify(obj)
   });

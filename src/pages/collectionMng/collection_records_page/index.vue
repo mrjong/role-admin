@@ -48,7 +48,7 @@
                 format="yyyy-MM-dd"
                 type="daterange"
                 placement="bottom-start"
-                @on-change='dateChange'
+                @on-change="dateChange"
                 placeholder="请选择催收时间"
                 clearable
               ></DatePicker>
@@ -66,7 +66,13 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="经办人:">
-              <Select size="small" filterable v-model="formItem.opUserUuid" clearable placeholder="请选择经办人">
+              <Select
+                size="small"
+                filterable
+                v-model="formItem.opUserUuid"
+                clearable
+                placeholder="请选择经办人"
+              >
                 <Option
                   v-for="item in getLeafTypeList_data"
                   :value="item.id"
@@ -77,7 +83,13 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="电催中心:">
-              <Select size="small" filterable v-model="formItem.opCompayUuid" clearable placeholder="请选择电催中心">
+              <Select
+                size="small"
+                filterable
+                v-model="formItem.opCompayUuid"
+                clearable
+                placeholder="请选择电催中心"
+              >
                 <Option
                   v-for="item in getLeafTypeList2_data"
                   :value="item.id"
@@ -93,8 +105,12 @@
                 @click="handleSubmit('formItem')"
                 style="width:80px"
                 long
+                :loading="query_loading"
                 size="small"
-              >检索</Button>
+              >
+                <span v-if="!query_loading">检索</span>
+                <span v-else>检索中...</span>
+              </Button>
               <Button
                 size="small"
                 style="width:80px;margin-left: 8px"
@@ -114,7 +130,12 @@
           type="primary"
           size="small"
           @click.stop="case_collect_collect_export"
-        >导出数据</Button>
+          v-if="export_case"
+          :loading="export_case_loading"
+        >
+          <span v-if="!export_case_loading">导出数据</span>
+          <span v-else>导出中...</span>
+        </Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
@@ -138,8 +159,8 @@
         </div>
       </div>
     </Card>
-    <div v-if="modal1" class="modal_wrap">
-      <Modal v-model="modal1" title="录音播放" @on-ok="ok" @on-cancel="cancel">
+    <div v-if="modal1">
+      <Modal v-model="modal1" title="录音播放" @on-ok="ok" @on-cancel="cancel" draggable>
         <video-player
           class="video-player-box"
           ref="videoPlayer"

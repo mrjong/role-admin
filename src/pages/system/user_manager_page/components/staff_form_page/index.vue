@@ -58,6 +58,7 @@
               filterable
               clearable
               placeholder="请选择角色"
+              @on-change="roleSelect"
               :disabled="!formDisabled"
             >
               <Option v-for="item in roleList" :value="item.id" :key="item.id">{{ item.name }}</Option>
@@ -71,14 +72,15 @@
               v-model="staffFormItem.companyId"
               filterable
               clearable
+              @on-change="companyChange"
               placeholder="请选择公司"
               :disabled="!formDisabled"
             >
-              <Option v-for="item in companyList" :value="item.id" :key="item.id">{{ item.text }}</Option>
+              <Option v-for="item in companyList" :value="item.id" :key="item.id">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-show="formDisabled">
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="formDisabled && departmentFlag">
           <FormItem label="部门:" span="4" prop="outfitId">
             <Select
               size="small"
@@ -88,7 +90,7 @@
               placeholder="请选择部门"
               :disabled="!formDisabled"
             >
-              <Option v-for="item in departmentList" :value="item.id" :key="item.id">{{ item.text }}</Option>
+              <Option v-for="item in departmentList" :value="item.id" :key="item.id">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -116,12 +118,12 @@
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem span="4" label="手机号:" prop='mobile'>
+          <FormItem span="4" label="手机号:" prop="mobile">
             <Input size="small" v-model="staffFormItem.mobile" :disabled="!formDisabled"></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem span="4" label="邮箱:" prop='email'>
+          <FormItem span="4" label="邮箱:" prop="email">
             <Input size="small" v-model="staffFormItem.email" :disabled="!formDisabled"></Input>
           </FormItem>
         </Col>
@@ -159,12 +161,7 @@
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" span="6" v-if="formDisabled">
           <FormItem>
-            <Button
-              size="small"
-
-              style="width:80px;margin-right: 8px"
-              @click="cancelStatus()"
-            >取消</Button>
+            <Button size="small" style="width:80px;margin-right: 8px" @click="cancelStatus()">取消</Button>
             <Button
               type="primary"
               @click="handleSubmit('staffFormItem')"
@@ -207,7 +204,7 @@
           </RadioGroup>
         </Col>
         <div slot="footer">
-          <Button   size="small" @click="cancel">取消</Button>
+          <Button size="small" @click="cancel">取消</Button>
           <Button type="primary" size="small" @click="ok">确定</Button>
         </div>
       </Modal>
@@ -239,7 +236,7 @@
           <p>重置后该账户登录密码将更改为初始密码，是否确认重置密码?</p>
         </Col>
         <div slot="footer">
-          <Button   size="small" @click="cancel2">取消</Button>
+          <Button size="small" @click="cancel2">取消</Button>
           <Button type="primary" size="small" @click="ok2">确定</Button>
         </div>
       </Modal>
@@ -252,6 +249,7 @@ import tablePage from "@/mixin/tablePage";
 import sysDictionary from "@/mixin/sysDictionary";
 import {
   collect_user_list,
+  collect_parent_children,
   collect_user_check,
   system_role_list,
   collect_user_clerk_update,
@@ -269,6 +267,7 @@ export default {
       formDisabled: false,
       modal: false,
       modal2: false,
+      departmentFlag: true,
       status: "0",
       staffFormItem: {
         id: "",
@@ -326,19 +325,19 @@ export default {
           }
         ],
         mobile: [
-					{
-						pattern: this.GLOBAL.mblNo,
-						message: '请输入正确手机号',
-						trigger: 'blur'
-					}
-				],
+          {
+            pattern: this.GLOBAL.mblNo,
+            message: "请输入正确手机号",
+            trigger: "blur"
+          }
+        ],
         email: [
-					{
-						pattern: this.GLOBAL.email,
-						message: '请输入正确邮箱号',
-						trigger: 'blur'
-					}
-				],
+          {
+            pattern: this.GLOBAL.email,
+            message: "请输入正确邮箱号",
+            trigger: "blur"
+          }
+        ]
       },
       companyList: [],
       departmentList: [],
@@ -356,6 +355,9 @@ export default {
     this.staffFormItem.companyId = this.parentData.nodeData.companyId;
     this.staffFormItem.outfitId = this.parentData.nodeData.outfitId;
     this.staffFormItem.roleId = this.parentData.nodeData.roleId;
+    if (this.staffFormItem.roleId === "2474cbac7a34419f8decc99f022846a1") {
+      this.departmentFlag = false;
+    };
     this.staffFormItem.createUser = this.parentData.nodeData.createUser;
     this.staffFormItem.updateUser = this.parentData.nodeData.updateUser;
     this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
@@ -370,6 +372,9 @@ export default {
       this.staffFormItem.companyId = this.parentData.nodeData.companyId;
       this.staffFormItem.outfitId = this.parentData.nodeData.outfitId;
       this.staffFormItem.roleId = this.parentData.nodeData.roleId;
+      if (this.staffFormItem.roleId === "2474cbac7a34419f8decc99f022846a1") {
+        this.departmentFlag = false;
+      };
       this.staffFormItem.createUser = this.parentData.nodeData.createUser;
       this.staffFormItem.updateUser = this.parentData.nodeData.updateUser;
       this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
@@ -378,6 +383,19 @@ export default {
     }
   },
   methods: {
+    //公司变更联动部门变更
+    companyChange(item) {
+      console.log(item);
+      this.collect_user_list("03", item);
+    },
+    // 选择角色变更
+    roleSelect(item) {
+      if (item === "2474cbac7a34419f8decc99f022846a1") {
+        this.departmentFlag = false;
+      } else {
+        this.departmentFlag = true;
+      }
+    },
     // 设置表单编辑状态
     setFormStatus(type) {
       this.formDisabled = true;
@@ -395,19 +413,20 @@ export default {
       this.formDisabled = false;
     },
     // 查询上级机构
-    async collect_user_list(type) {
-      const res = await collect_user_list({
+    async collect_user_list(type, parent) {
+      const res = await collect_parent_children({
         status: "1",
-        leafType: type
+        leafType: type,
+        parentId: parent || ""
       });
       console.log(res);
       if (res.code === 1) {
         switch (type) {
           case "02":
-            this.companyList = res.data.data;
+            this.companyList = res.data;
             break;
           case "03":
-            this.departmentList = res.data.data;
+            this.departmentList = res.data;
             break;
         }
       } else {
@@ -446,7 +465,7 @@ export default {
       });
       if (res.code === 1) {
         this.$Message.success("修改成功");
-        this.$parent.$parent.$parent.modalType = '';
+        this.$parent.$parent.$parent.modalType = "";
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
@@ -461,7 +480,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success("变更成功");
         this.modal = false;
-        this.$parent.$parent.$parent.modalType = '';
+        this.$parent.$parent.$parent.modalType = "";
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
@@ -473,7 +492,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success("重置密码成功");
         this.modal2 = false;
-        this.$parent.$parent.$parent.modalType = '';
+        this.$parent.$parent.$parent.modalType = "";
       } else {
         this.$Message.error(res.message);
       }

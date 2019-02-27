@@ -1,4 +1,4 @@
-import { case_collect_collect_list, getLeafTypeList, case_collect_tape_download, case_collect_tape, case_collect_tape_link } from '@/service/getData';
+import { case_collect_record_file_list, getLeafTypeList, case_collect_tape_download, case_collect_tape, case_collect_tape_link } from '@/service/getData';
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import tablePage from '@/mixin/tablePage';
@@ -24,6 +24,10 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      query: false,//查询权限
+      play: false,//播放权限
+      download: false,//下载权限
+      query_loading: false,//查询权限按钮loading
       getLeafTypeList_data: [],
       getLeafTypeList2_data: [],
       modal1: false,
@@ -166,8 +170,8 @@ export default {
           key: 'buffet_code',
           fixed: 'left',
           render: (h, params) => {
-            const soundUuid = params.row.soundUuid;
-            return soundUuid ? h('div', [
+            const actionId = params.row.actionId;
+            return actionId ? h('div', [
               h(
                 'a',
                 {
@@ -178,7 +182,11 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.case_collect_tape(soundUuid);
+                      if (!this.play) {
+                        this.$Message.error('很抱歉，暂无播放权限');
+                        return;
+                      }
+                      this.case_collect_tape(actionId);
                       // this.case_collect_tape_link(soundUuid);
                       this.modal1 = true;
                     }
@@ -196,7 +204,11 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.case_collect_tape_download(soundUuid);
+                      if (!this.download) {
+                        this.$Message.error('很抱歉，暂无下载权限');
+                        return;
+                      }
+                      this.case_collect_tape_download(actionId);
                     }
                   }
                 },
@@ -225,33 +237,33 @@ export default {
         {
           title: '呼叫电话',
           width: 150,
-          key: 'mblNoHid',
+          key: 'callMbl',
           align: 'center',
         },
         {
           title: '呼叫开始时间',
           width: 150,
-          key: 'startTime',
+          key: 'callStartTime',
           align: 'center',
           render: (h, params) => {
-            let startTime = params.row.startTime;
-            startTime = startTime
-              ? this.$options.filters['formatDate'](startTime, 'YYYY-MM-DD HH:mm:ss')
-              : startTime;
-            return h('span', startTime);
+            let callStartTime = params.row.callStartTime;
+            callStartTime = callStartTime
+              ? this.$options.filters['formatDate'](callStartTime, 'YYYY-MM-DD HH:mm:ss')
+              : callStartTime;
+            return h('span', callStartTime);
           }
         },
         {
           title: '呼叫结束时间',
           width: 150,
-          key: 'endTime',
+          key: 'callEndTime',
           align: 'center',
           render: (h, params) => {
-            let endTime = params.row.endTime;
-            endTime = endTime
-              ? this.$options.filters['formatDate'](endTime, 'YYYY-MM-DD HH:mm:ss')
-              : endTime;
-            return h('span', endTime);
+            let callEndTime = params.row.callEndTime;
+            callEndTime = callEndTime
+              ? this.$options.filters['formatDate'](callEndTime, 'YYYY-MM-DD HH:mm:ss')
+              : callEndTime;
+            return h('span', callEndTime);
           }
         },
         {
@@ -353,7 +365,22 @@ export default {
     };
   },
   created() {
-    this.getList();
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+        case "play": this.play = true;
+          break;
+        case "download": this.download = true;
+          break;
+      }
+    });
+    // this.getList();
     this.getLeafTypeList()
     this.getLeafTypeList2()
   },
@@ -411,7 +438,6 @@ export default {
       }
     },
     handleSubmit(name) {
-      debugger
       this.pageNo = 1;
       this.$refs[name].validate((valid) => {
         if (valid) {
@@ -420,11 +446,17 @@ export default {
       });
     },
     async getList() {
-      const res = await case_collect_collect_list({
+      if (!this.query) {
+        this.$Message.error('很抱歉，暂无权限查询');
+        return;
+      };
+      this.query_loading = true;
+      const res = await case_collect_record_file_list({
         ...this.formItem,
         pageSize: this.pageSize,
         pageNum: this.pageNo
       });
+      this.query_loading = false;
       if (res.code === 1) {
         this.tableData = res.data.page.content;
         this.total = res.data.page.totalElements;
@@ -471,8 +503,6 @@ export default {
       this.$Message.info('Clicked ok');
     },
     cancel() {
-      this.$Message.info('Clicked cancel');
-      console.log(this.$Modal);
       this.$Modal.remove();
     }
   }
