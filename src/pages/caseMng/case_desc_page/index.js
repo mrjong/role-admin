@@ -1023,8 +1023,8 @@ export default {
 										type: 'md-create'
 									}
 								},
-								`${userNm}(${callUserTypeName})`
-							)
+                `${userNm === null ? '' :userNm }${callUserTypeName ===null ? '' :'('+callUserTypeName+')' }`
+              )
 							// h(
 							// 	'Poptip',
 							// 	{
@@ -1084,8 +1084,8 @@ export default {
 										}
 									}
 								},
-								`${mblNoHid}(${callStateName})`
-							),
+                `${mblNoHid === null ? '' :mblNoHid }${callStateName ===null ? '' :'('+callStateName+')' }`
+              ),
 							h(
 								'Poptip',
 								{
@@ -1214,8 +1214,8 @@ export default {
 										type: 'md-create'
 									}
 								},
-								`${userNm ? userNm : ''}(${callUserTypeName ? callUserTypeName : ''})`
-							)
+                `${userNm === null ? '' :userNm }${callUserTypeName ===null ? '' :'('+callUserTypeName+')' }`
+              )
 							// h(
 							// 	'Poptip',
 							// 	{
@@ -1273,8 +1273,8 @@ export default {
 										}
 									}
 								},
-								`${mblNoHid ? mblNoHid : ''}(${callStateName ? callStateName : ''})`
-							),
+                `${mblNoHid === null ? '' :mblNoHid }${callStateName ===null ? '' :'('+callStateName+')' }`
+              ),
 							h(
 								'Poptip',
 								{
@@ -1375,8 +1375,8 @@ export default {
 										type: 'md-create'
 									}
 								},
-								`${userNm ? userNm : ''}(${callUserTypeName ? callUserTypeName : ''})`
-							)
+                `${userNm === null ? '' :userNm }${callUserTypeName ===null ? '' :'('+callUserTypeName+')' }`
+              )
 							// h(
 							// 	'Poptip',
 							// 	{
@@ -1434,8 +1434,8 @@ export default {
 										}
 									}
 								},
-								`${mblNoHid ? mblNoHid : ''}(${callStateName ? callStateName : ''})`
-							),
+                `${mblNoHid === null ? '' :mblNoHid }${callStateName ===null ? '' :'('+callStateName+')' }`
+              ),
 							h(
 								'Poptip',
 								{
@@ -1530,8 +1530,8 @@ export default {
 										type: 'md-create'
 									}
 								},
-								`${userNm ? userNm : ''}(${callUserTypeName ? callUserTypeName : ''})`
-							)
+                `${userNm === null ? '' :userNm }${callUserTypeName ===null ? '' :'('+callUserTypeName+')' }`
+              )
 							// h(
 							// 	'Poptip',
 							// 	{
@@ -1592,8 +1592,8 @@ export default {
 										}
 									}
 								},
-								`${mblNoHid}(${callStateName ? callStateName : ''})`
-							),
+                `${mblNoHid === null ? '' :mblNoHid }${callStateName ===null ? '' :'('+callStateName+')' }`
+              ),
 							h(
 								'Poptip',
 								{
