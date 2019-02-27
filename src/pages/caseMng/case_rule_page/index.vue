@@ -37,16 +37,12 @@
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
-              <Button
-                type="primary"
-                @click="handleSubmit('formItem')"
-                style="width:80px"
-                long
-                size="small"
-              >检索</Button>
+              <Button type="primary" @click="handleSubmit('formItem')" style="width:80px" long size="small" :loading="query_loading">
+                <span v-if="!query_loading">检索</span>
+                <span v-else>请求中...</span>
+              </Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -63,12 +59,14 @@
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
+          v-if="add_rule"
           @click.stop="handeldBtnClick('2')"
         >添加</Button>
         <Button
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
+          v-if="one_distribute"
           @click.stop="handleBtnDistribute"
         >一键分配</Button>
       </p>
@@ -100,7 +98,8 @@
         v-model="recycleFlag"
         width="800"
         class-name="user_info_form_modal"
-        :mask-closable="false">
+        :mask-closable="false"
+      >
         <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
           <span>启用</span>
         </p>
@@ -124,7 +123,7 @@
           </FormItem>
         </Form>
         <div slot="footer">
-          <Button   size="small" @click="cancel('1')">取消</Button>
+          <Button size="small" @click="cancel('1')">取消</Button>
           <Button type="primary" size="small" @click="ok('1', 'startFormItem')">确定</Button>
         </div>
       </Modal>
@@ -141,19 +140,17 @@
           <span>停用</span>
         </p>
         <Alert show-icon type="warning">
-          <template
-            slot="desc"
-          >停用后，此规则将失效，是否继续？</template>
+          <template slot="desc">停用后，此规则将失效，是否继续？</template>
         </Alert>
         <div slot="footer">
-          <Button   size="small" @click="cancel('2')">取消</Button>
+          <Button size="small" @click="cancel('2')">取消</Button>
           <Button type="primary" size="small" @click="ok('2', 'startFormItem')">确定</Button>
         </div>
       </Modal>
     </div>
     <!-- 查看分案规则修改记录 -->
     <div v-if="parentData.updateRecordFlag">
-      <caseUpdateRecord v-if="parentData.updateRecordFlag" v-model="parentData" ></caseUpdateRecord>
+      <caseUpdateRecord v-if="parentData.updateRecordFlag" v-model="parentData"></caseUpdateRecord>
     </div>
   </div>
 </template>

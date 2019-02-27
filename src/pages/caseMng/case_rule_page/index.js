@@ -17,6 +17,15 @@ export default {
       recycleFlag: false,
       stopFlag: false,
       updateRecordFlag: false,
+      query: false,//查询权限
+      add_rule: false,//添加权限
+      update: false,//修改权限
+      status_change: false,//状态变更权限
+      move_up: false,//上移权限
+      view_change_his: false,//查看修改记录权限
+      one_distribute: false,//一键分配权限
+      one_distribute_loading: false,//一键分配按钮loading
+      query_loading: false,//查询按钮loading
       parentData: {},
       startFormItem: {
         date: '',
@@ -255,6 +264,10 @@ export default {
                   props: {},
                   on: {
                     click: () => {
+                      if (!this.update) {
+                        this.$Message.error('很抱歉，暂无权限修改');
+                        return;
+                      }
                       window.sessionStorage.setItem('case_rule_item', JSON.stringify(params.row));
                       this.$router.push({ name: 'case_update_distribute_page' });
                     }
@@ -269,6 +282,10 @@ export default {
                   props: {},
                   on: {
                     click: () => {
+                      if (!this.status_change) {
+                        this.$Message.error('很抱歉，暂无权限变更状态');
+                        return;
+                      }
                       if (params.row.status === '02') {
                         this.recycleFlag = true;
                         this.startFormItem.id = params.row.id;
@@ -288,6 +305,10 @@ export default {
                   props: {},
                   on: {
                     click: () => {
+                      if (!this.view_change_his) {
+                        this.$Message.error('很抱歉，暂无权限查看记录');
+                        return;
+                      }
                       this.updateRecordFlag = true;
                       this.parentData = {
                         updateRecordFlag: true,
@@ -305,6 +326,10 @@ export default {
                   props: {},
                   on: {
                     click: () => {
+                      if (!this.move_up) {
+                        this.$Message.error('很抱歉，暂无权限');
+                        return;
+                      }
                       this.divide_rules_order({id: params.row.id, orderType: 'up'});
                     }
                   }
@@ -319,7 +344,30 @@ export default {
     }
   },
   created() {
-    this.getList()
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+        case "one_distribute": this.one_distribute = true;
+          break;
+        case "add": this.add_rule = true;
+          break;
+        case "update": this.update = true;
+          break;
+        case "status_change": this.status_change = true;
+          break;
+        case "move_up": this.move_up = true;
+          break;
+        case "view_change_his": this.view_change_his = true;
+          break;
+      }
+    });
+    // this.getList()
   },
   methods: {
     // 添加案件或者修改案件入口
@@ -328,13 +376,6 @@ export default {
       this.$router.push({ name: 'case_add_distribute_page' });
     },
     handleSubmit(name) {
-      // this.$refs[name].validate((valid) => {
-      //   if (valid) {
-      //     this.getList();
-      //   } else {
-      //     this.$Message.error('查询条件格式有误，请重新填写');
-      //   }
-      // });
       this.pageNo = 1;
       this.getList();
     },
@@ -380,11 +421,17 @@ export default {
     },
     // 获取表格数据
     async getList() {
+      if (!this.query) {
+        this.$Message.error('很抱歉，暂无权限查询');
+        return;
+      }
+      this.query_loading = true;
       const res = await divide_rules_list({
         ...this.formItem,
         pageNum: this.pageNo,
         pageSize: this.pageSize
       });
+      this.query_loading = false;
       console.log(res);
       if (res.code === 1) {
         this.tableData = res.data.content;

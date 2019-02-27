@@ -47,14 +47,12 @@ export default {
       recoverCollectionFlag: false,
       messageFlag: false,
       queryList: false,//查询权限
-      one_distribute: false,//一键分配权限
       batch_distribute: false,//批量分配权限
       recover: false,//回收权限
       stop_urge: false,//停催权限
       regain_urge: false,//恢复催收权限
       queryLoading: false,//查询按钮loading
       recoverLoading: false,//回收按钮loading
-      one_distribute_loading: false,//一键分配按钮loading
       batch_distribute_loading: false,//批量分配分配按钮loading
       stop_urge_loading: false,//停催提交按钮loading
       regain_urge_loading: false,//恢复催收提交按钮loading
@@ -585,6 +583,7 @@ export default {
         pageNum: this.pageNo,
         pageSize: this.pageSize,
       });
+      this.queryLoading = false;
       if (res.code === 1) {
         this.tableData = res.data.page.content;
         this.totalCase = res.data.summary.totalCount;
@@ -603,7 +602,6 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
-      this.queryLoading = false;
     },
     async getLeafTypeList() {
       const res = await getLeafTypeList({
@@ -725,6 +723,7 @@ export default {
         caseIds: this.caseIds,
         preTotalCases: this.totalCase,
       });
+      this.batch_distribute_loading = false;
       if (res.code === 1) {
         this.$Message.success('分配成功');
         this.getList();
@@ -732,7 +731,6 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
-      this.batch_distribute_loading = false;
     },
     // 批量回收接口
     async cases_batch_recycle() {
@@ -742,6 +740,7 @@ export default {
         ...this.formItem,
         preTotalCases: this.total,
       });
+      this.recoverLoading = false;
       if (res.code === 1) {
         this.$Message.success('回收成功');
         this.getList();
@@ -749,7 +748,6 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
-      this.recoverLoading = true;
     },
     // 案件停止催收接口
     async cases_collect_stop(id) {
@@ -758,6 +756,7 @@ export default {
         caseIds: id,
         ...this.stopFormItem
       });
+      this.stop_urge_loading = false;
       if (res.code === 1) {
         this.getList();
         this.stopCollectionFlag = false;
@@ -766,7 +765,6 @@ export default {
       } else {
         this.$Message.error(res.message);
       };
-      this.stop_urge_loading = false;
     },
     // 案件恢复催收接口
     async cases_collect_recover(id) {
@@ -775,6 +773,7 @@ export default {
         caseIds: id,
         ...this.recoverFormItem
       });
+      this.regain_urge_loading = false;
       if (res.code === 1) {
         this.getList();
         this.recoverCollectionFlag = false;
@@ -783,7 +782,6 @@ export default {
       } else {
         this.$Message.error(res.message);
       };
-      this.regain_urge_loading = true;
     },
     // 站内信发送接口
     async cases_case_sendwebmessage() {

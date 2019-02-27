@@ -410,6 +410,7 @@ export default {
         ...this.formItem
       });
       console.log(res);
+      this.queryLoading = false;
       if (res.code === 1) {
         this.tableData = res.data.page.content;
         this.total = res.data.page.totalElements;
@@ -420,7 +421,6 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
-      this.queryLoading = false;
     },
     // 重置
     clearForm(name) {

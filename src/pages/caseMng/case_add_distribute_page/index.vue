@@ -196,11 +196,27 @@
                     @click="handleSubmit('formItem', submitType)"
                     style="width:80px"
                     long
+                    v-if="submitType === 1"
+                    :loading='add_loading'
                     size="small"
-                  >{{submitType === 1?'添加': '修改'}}</Button>
+                  >
+                    <span v-if="!add_loading">添加</span>
+                    <span v-else>添加中...</span>
+                  </Button>
+                  <Button
+                    type="primary"
+                    @click="handleSubmit('formItem', submitType)"
+                    style="width:80px"
+                    long
+                    v-if="submitType === 2"
+                    :loading='update_loading'
+                    size="small"
+                  >
+                  <span v-if="!update_loading">修改</span>
+                  <span v-else>修改中...</span>
+                  </Button>
                   <Button
                     size="small"
-
                     style="width:80px;margin-left: 8px"
                     @click="handleCancel('formItem')"
                   >取消</Button>
@@ -243,7 +259,7 @@
             @on-check-change="checkChangeOrz"
           ></Tree>
           <div>
-            <Button   size="small" @click="cancel()">取消</Button>
+            <Button  size="small" @click="cancel()">取消</Button>
             <Button type="primary" size="small" @click="ok()">确定</Button>
           </div>
         </Card>
@@ -320,6 +336,8 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      add_loading: false,//添加按钮loading
+      update_loading: false,//修改按钮loading
       treeFlag: "",
       submitType: 1, //提交类型 1添加，2修改
       ruleId: "",
@@ -661,10 +679,12 @@ export default {
     },
     // 添加案件接口
     async divide_rules_add() {
+      this.add_loading = true;
       const res = await divide_rules_add({
         ...this.formItem,
         allotRoleIdList: this.allotRoleIdList
       });
+      this.add_loading = false;
       if (res.code === 1) {
         console.log(res);
         this.$Message.success('添加成功');
@@ -705,10 +725,12 @@ export default {
     },
     // 保存修改分案规则接口
     async divide_rules_save() {
+      thsi.update_loading = true;
       const res = await divide_rules_save({
         ...this.formItem,
         allotRoleIdList: this.allotRoleIdList
       });
+      thsi.update_loading = false;
       if (res.code === 1) {
         this.$Message.success("修改成功");
         setTimeout(() => {
