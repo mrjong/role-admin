@@ -725,12 +725,12 @@ export default {
     },
     // 保存修改分案规则接口
     async divide_rules_save() {
-      thsi.update_loading = true;
+      this.update_loading = true;
       const res = await divide_rules_save({
         ...this.formItem,
         allotRoleIdList: this.allotRoleIdList
       });
-      thsi.update_loading = false;
+      this.update_loading = false;
       if (res.code === 1) {
         this.$Message.success("修改成功");
         setTimeout(() => {

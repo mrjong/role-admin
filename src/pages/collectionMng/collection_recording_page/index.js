@@ -438,12 +438,18 @@ export default {
       }
     },
     handleSubmit(name) {
-      this.pageNo = 1;
       this.$refs[name].validate((valid) => {
         if (valid) {
+          this.pageNo = 1;
           this.getList();
         }
       });
+    },
+    // 重置
+    clearForm() {
+      this.formItem = {};
+      this.pageNo = 1;
+      this.getList();
     },
     async getList() {
       if (!this.query) {

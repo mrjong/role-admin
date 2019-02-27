@@ -46,6 +46,7 @@
                 size="small"
                 style="width:100%"
                 format="yyyy-MM-dd"
+                v-model="formItem.csDate"
                 type="daterange"
                 placement="bottom-start"
                 @on-change="dateChange"

@@ -395,6 +395,12 @@ export default {
         }
       });
     },
+    // 重置
+    clearForm() {
+      this.formItem = {};
+      this.pageNo = 1;
+      this.getList();
+    },
     async getList() {
       if (!this.query) {
         this.$Message.error('很抱歉，暂无权限查询');
