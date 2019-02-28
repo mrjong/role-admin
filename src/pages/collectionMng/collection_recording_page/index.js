@@ -229,7 +229,7 @@ export default {
           }
         },
         {
-          title: '时长',
+          title: '时长（s）',
           width: 80,
           key: 'callTime',
           align: 'center'

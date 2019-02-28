@@ -768,7 +768,8 @@
                     v-model.trim="formValidate.collectRmk"
                     type="textarea"
                     :autosize="{minRows: 2,maxRows: 2}"
-                    placeholder="请输入备注"
+                    :maxlength='255'
+                    placeholder="请输入备注，最大255个字符"
                   ></Input>
                 </FormItem>
                 <FormItem style="margin-top:10px">

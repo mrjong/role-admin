@@ -3,7 +3,6 @@
     <Card class="vue-panel detail-card">
       <p slot="title" v-if="parentData.type === '01'">机构负责人</p>
       <p slot="title" v-if="parentData.type === '02' || parentData.type === '03'">员工信息</p>
-
       <!-- 机构负责人 -->
       <Form
         ref="addLeaderFormItem"
@@ -338,15 +337,14 @@ export default {
         break;
       case "02":
         this.collect_user_list("02");
-        this.collect_user_list("03");
         this.system_role_list();
         this.addStaffFormItem = {
           parentUuid: this.parentData.nodeData.id,
           companyId: this.parentData.nodeData.id
         };
+        this.collect_user_list("03", this.addStaffFormItem.companyId);
         break;
       case "03":
-        this.collect_user_list("03");
         this.collect_user_list("02");
         this.system_role_list();
         this.addStaffFormItem = {
@@ -354,6 +352,7 @@ export default {
           companyId: this.parentData.nodeData.companyId,
           outfitId: this.parentData.nodeData.id
         };
+        this.collect_user_list("03", this.addStaffFormItem.companyId);
         break;
     }
     this.collect_list_leader();
@@ -372,22 +371,22 @@ export default {
           break;
         case "02":
           this.collect_user_list("02");
-          this.collect_user_list("03");
           this.system_role_list();
           this.addStaffFormItem = {
             parentUuid: this.parentData.nodeData.id,
             companyId: this.parentData.nodeData.id
           };
+        this.collect_user_list("03", this.addStaffFormItem.companyId);
           break;
         case "03":
           this.system_role_list();
           this.collect_user_list("02");
-          this.collect_user_list("03");
           this.addStaffFormItem = {
             parentUuid: this.parentData.nodeData.id,
             companyId: this.parentData.nodeData.companyId,
             outfitId: this.parentData.nodeData.id
           };
+        this.collect_user_list("03", this.addStaffFormItem.companyId);
           break;
       }
     }

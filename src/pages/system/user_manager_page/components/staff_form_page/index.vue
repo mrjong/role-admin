@@ -347,7 +347,6 @@ export default {
   created() {
     console.log(this.parentData.nodeData);
     this.collect_user_list("02");
-    this.collect_user_list("03");
     this.system_role_list();
     this.staffFormItem.id = this.parentData.nodeData.id;
     this.staffFormItem.name = this.parentData.nodeData.name;
@@ -357,7 +356,8 @@ export default {
     this.staffFormItem.roleId = this.parentData.nodeData.roleId;
     if (this.staffFormItem.roleId === "2474cbac7a34419f8decc99f022846a1") {
       this.departmentFlag = false;
-    };
+    }
+    this.collect_user_list("03", this.staffFormItem.companyId);
     this.staffFormItem.createUser = this.parentData.nodeData.createUser;
     this.staffFormItem.updateUser = this.parentData.nodeData.updateUser;
     this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
@@ -366,6 +366,8 @@ export default {
   },
   watch: {
     parentData() {
+      this.collect_user_list("02");
+      this.system_role_list();
       this.staffFormItem.id = this.parentData.nodeData.id;
       this.staffFormItem.name = this.parentData.nodeData.name;
       this.staffFormItem.loginName = this.parentData.nodeData.loginName;
@@ -374,7 +376,8 @@ export default {
       this.staffFormItem.roleId = this.parentData.nodeData.roleId;
       if (this.staffFormItem.roleId === "2474cbac7a34419f8decc99f022846a1") {
         this.departmentFlag = false;
-      };
+      }
+      this.collect_user_list("03", this.staffFormItem.companyId);
       this.staffFormItem.createUser = this.parentData.nodeData.createUser;
       this.staffFormItem.updateUser = this.parentData.nodeData.updateUser;
       this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
