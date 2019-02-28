@@ -50,7 +50,7 @@
           <FormItem>
             <Button
               size="small"
-               
+
               style="width:80px;margin-right: 8px"
               @click="cancelStatus()"
             >取消</Button>
@@ -119,7 +119,7 @@
           <FormItem>
             <Button
               size="small"
-               
+
               style="width:80px;margin-right: 8px"
               @click="cancelStatus()"
             >取消</Button>
@@ -167,7 +167,7 @@
           <FormItem>
             <Button
               size="small"
-               
+
               style="width:80px;margin-right: 8px"
               @click="cancelStatus()"
             >取消</Button>
@@ -458,7 +458,7 @@ export default {
     async collect_list_leader(id, type) {
       const res = await collect_list_leader({
         status: "1",
-        lcollectType: ""
+        userType: "01"
       });
       if (res.code === 1) {
         this.bossList = res.data;

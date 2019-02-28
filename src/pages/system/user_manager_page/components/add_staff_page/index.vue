@@ -432,7 +432,7 @@ export default {
     async collect_list_leader(id, type) {
       const res = await collect_list_leader({
         status: "1",
-        lcollectType: ""
+        userType: "01"
       });
       if (res.code === 1) {
         this.bossList = res.data;

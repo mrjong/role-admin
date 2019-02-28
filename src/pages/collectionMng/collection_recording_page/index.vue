@@ -186,8 +186,6 @@
   width: 100%;
   box-sizing: border-box;
 }
-.modal_wrap_play {
-}
 </style>
 
 

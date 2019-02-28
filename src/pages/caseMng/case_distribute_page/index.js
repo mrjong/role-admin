@@ -705,6 +705,7 @@ export default {
     // 重置
     clearForm(name) {
       this.pageNo = 1;
+      this.date = [];
       this.formItem = {
         prodTypes: [],
         periodCounts: [],

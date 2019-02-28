@@ -20,7 +20,6 @@
                 size="small"
                 placeholder="请选择规则状态"
                 v-model="formItem.caseHandleStatus"
-                @on-change="selectChange"
               >
                 <Option
                   v-for="item in getDirObj.CASE_HANDLE_STATUS"
