@@ -318,7 +318,7 @@
         <Alert show-icon type="warning">
           <template
             slot="desc"
-          >共查询出{{Number(totalCase)}}笔可分配案件，{{stopCases.length}}笔停催案件，您确认要全部分配么?</template>
+          >共查询出{{Number(allotCaseMounts)}}笔可分配案件，{{stopCases.length > 0?stopCases.length: initStopCases.length}}笔停催案件，您确认要全部分配么?</template>
         </Alert>
         <div slot="footer">
           <Button size="small" @click="cancel('1')">取消</Button>
@@ -391,7 +391,7 @@
           <span>批量回收</span>
         </p>
         <Alert show-icon type="warning">
-          <template slot="desc">共查询出{{total}}条案件,确定要回收吗？</template>
+          <template slot="desc">共查询出{{recycleCaseMounts}}条案件,确定要回收吗？</template>
         </Alert>
         <div slot="footer">
           <Button size="small" @click="cancel('3')">取消</Button>
@@ -478,7 +478,7 @@
         :mask-closable="false"
       >
         <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 14px;">
-          <span>站内信发送总数：{{total}}</span>
+          <span>站内信发送总数：{{recycleCaseMounts}}</span>
         </p>
         <Form
           ref="messageFormItem"

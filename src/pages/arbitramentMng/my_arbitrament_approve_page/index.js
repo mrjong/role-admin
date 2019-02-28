@@ -25,7 +25,11 @@ export default {
 			arb_detail_data: {},
 			showPanel2: false,
 			showModalType: '',
-			shenheObj: {},
+      shenheObj: {},
+      query: false,//查询权限
+      update: false,//编辑权限
+      update_loading: false,//编辑按钮loading
+      query_loading: false,//查询按钮loading
 			case_detail_remark_list_tableData: [],
 			case_detail_remark_list_pageNo: 1,
 			case_detail_remark_list_pageSize: 10,
@@ -199,6 +203,10 @@ export default {
 									props: {},
 									on: {
 										click: () => {
+                      if (!_this.update) {
+                        _this.$Message.error('很抱歉，暂无编辑权限');
+                        return;
+                      }
 											_this.arb_detail(params.row, 'edit');
 										}
 									}
@@ -366,6 +374,19 @@ export default {
 		};
 	},
 	created() {
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+        case "update": this.update = true;
+          break;
+      }
+    });
 		// this.getList();
 	},
 	methods: {
@@ -521,6 +542,11 @@ export default {
 		},
 		// 获取表格数据
 		async getList() {
+      if (!this.query) {
+        this.$Message.error('很抱歉，暂无权限查询');
+        return;
+      };
+      this.query_loading = true;
 			let applyTimeLt = '',
 				applyTimeBt = '';
       if (this.formItem.applyTimeLt && this.formItem.applyTimeLt.length > 0) {
@@ -551,7 +577,8 @@ export default {
 				applyTimeBt,
 				pageNum: this.pageNo,
 				pageSize: this.pageSize
-			});
+      });
+      this.query_loading = false;
 			if (res.code === 1) {
 				this.tableData = res.data.content;
 				this.total = res.data.totalElements;

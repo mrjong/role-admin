@@ -61,13 +61,15 @@ export default {
       data5: [],
       data: [],
       collectRoleIds: [],
-      caseIds: [],//勾选分配案件集合
-      caseIds2: [],//勾选回收案件集合
+      allotCaseIds: [],//勾选分配案件集合
+      recycleCaseIds: [],//勾选回收案件集合
       caseID: '',//单个案件
+      initStopCases: [],//初始停催案件集合
       stopCases: [],//停催案件集合
       treeFlag: '',
-      caseMounts: 0,
-      totalCase: '',
+      allotCaseMounts: 0,
+      recycleCaseMounts: 0,
+      totalCase: 0,
       totalOverdueAmt: '',
       ruleValidate: {
         idNo: [
@@ -504,27 +506,29 @@ export default {
     },
     // table勾选回调
     changeSelect(selection) {
-      console.log('---------');
-      this.caseIds = [];
-      this.caseIds2 = [];
+      console.log('---------',selection);
+      this.allotCaseIds = [];
+      this.recycleCaseIds = [];
       this.stopCases = [];
       selection.forEach((element) => {
-        this.caseIds2.push(element.id);
+        this.recycleCaseIds.push(element.id);
         if (element.caseHandleStatus === 'SUSPEND') {
           this.stopCases.push(element);
         } else {
-          this.caseIds.push(element.id);
+          this.allotCaseIds.push(element.id);
         }
       });
-      if (this.caseIds.length > 0) {
-        this.totalCase = this.caseIds.length;
+      if (this.allotCaseIds.length > 0) {
+        this.allotCaseMounts = this.allotCaseIds.length;
       } else {
-        this.totalCase = 0;
+        this.allotCaseMounts = this.totalCase - this.initStopCases.length;
       }
-      if (this.caseIds2.length > 0) {
-        this.total = this.caseIds2.length;
+      if (this.recycleCaseIds.length > 0) {
+        this.recycleCaseMounts = this.recycleCaseIds.length;
+      } else {
+        this.recycleCaseMounts = this.totalCase;
       }
-      console.log(this.caseIds);
+      console.log(this.allotCaseIds);
     },
     // 选中节点的回调函数
     selectNode(node) {
@@ -586,19 +590,20 @@ export default {
       this.queryLoading = false;
       if (res.code === 1) {
         this.tableData = res.data.page.content;
-        this.totalCase = res.data.summary.totalCount;
-        this.totalOverdueAmt = res.data.summary.totalOverdueAmt;
-        this.caseMounts = res.data.summary.totalCount;
+        this.totalCase = res.data.summary.totalCount;//案件总数
+        this.recycleCaseMounts = res.data.summary.totalCount;//回收案件总数
+        this.totalOverdueAmt = res.data.summary.totalOverdueAmt;//总金额
         this.pageNo = res.data.page.number;
-        this.total = res.data.page.totalElements;
-        this.caseIds = [];
-        this.caseIds2 = [];
-        this.stopCases = [];
+        this.total = res.data.page.totalElements;//数据总数
+        this.allotCaseIds = [];
+        this.recycleCaseIds = [];
+        this.initStopCases = [];//初始化案件停催集合
         this.tableData.forEach(item => {
           if (item.caseHandleStatus === 'SUSPEND') {
-            this.stopCases.push(item);
+            this.initStopCases.push(item);
           }
         });
+        this.allotCaseMounts = this.totalCase - this.initStopCases.length;//可分配案件总数
       } else {
         this.$Message.error(res.message);
       }
@@ -721,8 +726,8 @@ export default {
       const res = await cases_batch_allot({
         ...this.formItem,
         collectRoleIds: this.collectRoleIds,
-        caseIds: this.caseIds,
-        preTotalCases: this.totalCase,
+        caseIds: this.allotCaseIds,
+        preTotalCases: this.allotCaseIds>0?this.allotCaseMounts:this.total,
       });
       this.batch_distribute_loading = false;
       if (res.code === 1) {
@@ -737,9 +742,9 @@ export default {
     async cases_batch_recycle() {
       this.recoverLoading = true;
       const res = await cases_batch_recycle({
-        caseIds: this.caseIds2,
+        caseIds: this.recycleCaseIds,
         ...this.formItem,
-        preTotalCases: this.total,
+        preTotalCases: this.recycleCaseMounts,
       });
       this.recoverLoading = false;
       if (res.code === 1) {
@@ -789,8 +794,8 @@ export default {
       const res = await cases_case_sendwebmessage({
         ...this.formItem,
         ...this.messageFormItem,
-        caseIds: this.caseIds,
-        preTotalCases: this.total,
+        caseIds: this.recycleCaseIds,
+        preTotalCases: this.recycleCaseMounts,
       });
       if (res.code === 1) {
         this.messageFlag = false;
@@ -805,7 +810,7 @@ export default {
       switch (type) {
         case '1':
           // this.distributeFlag = true;
-          if (this.totalCase > 0) {
+          if (this.allotCaseMounts > 0) {
             this.distributeFlag = true;
           } else {
             this.$Message.error('选择可分配的案件为0');
@@ -813,7 +818,7 @@ export default {
           break;
         case '2':
           // this.recycleFlag = true;
-          if (this.total > 0) {
+          if (this.recycleCaseMounts > 0) {
             this.recycleFlag = true;
           } else {
             this.$Message.error('选择可回收的案件为0')

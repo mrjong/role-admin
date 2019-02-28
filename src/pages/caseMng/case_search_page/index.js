@@ -273,6 +273,13 @@ export default {
           key: 'overdueDays'
         },
         {
+          title: '分期期数',
+          width: 120,
+          sortable: true,
+          align: 'center',
+          key: 'perdCnt'
+        },
+        {
           title: '到期期数',
           width: 120,
           sortable: true,

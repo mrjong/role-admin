@@ -87,7 +87,7 @@ export default {
           render: (h, params) => {
             return h("span", {
               domProps: {
-                innerHTML: `${params.row.updateUser}`
+                innerHTML: `${params.row.updateUser?params.row.updateUser: ''}`
               }
             });
           }
@@ -101,7 +101,7 @@ export default {
           render: (h, params) => {
             return h("div", {
               domProps: {
-                innerHTML: `${params.row.perdCounts}`
+                innerHTML: `${params.row.prodType?params.row.prodType: ''}`
               }
             });
           }
@@ -115,7 +115,7 @@ export default {
           render: (h, params) => {
             return h("div", {
               domProps: {
-                innerHTML: `${params.row.perdCounts}`
+                innerHTML: `${params.row.perdCounts?params.row.perdCounts:''}`
               }
             });
           }
@@ -129,7 +129,7 @@ export default {
           render: (h, params) => {
             return h("div", {
               domProps: {
-                innerHTML: `${params.row.perdThisCounts}`
+                innerHTML: `${params.row.perdThisCounts?params.row.perdThisCounts:''}`
               }
             });
           }
@@ -152,7 +152,7 @@ export default {
                     padding: "0px"
                   },
                   domProps: {
-                    innerHTML: `${params.row.ovdudaysMin}-`
+                    innerHTML: `${params.row.ovdudaysMin?params.row.ovdudaysMin: ''}-`
                   }
                 },
                 params.row.ovdudaysMin
@@ -167,7 +167,7 @@ export default {
                     padding: "0px"
                   },
                   domProps: {
-                    innerHTML: `-${params.row.ovdudaysMax}`
+                    innerHTML: `-${params.row.ovdudaysMax?params.row.ovdudaysMax: ''}`
                   }
                 },
                 params.row.ovdudaysMax
@@ -193,7 +193,7 @@ export default {
                     padding: "0px"
                   },
                   domProps: {
-                    innerHTML: `${params.row.ovduamtMin}-`
+                    innerHTML: `${params.row.ovduamtMin?params.row.ovduamtMin:''}-`
                   }
                 },
                 params.row.ovduamtMin
@@ -208,7 +208,7 @@ export default {
                     padding: "0px"
                   },
                   domProps: {
-                    innerHTML: `-${params.row.ovduamtMax}`
+                    innerHTML: `-${params.row.ovduamtMax?params.row.ovduamtMax:''}`
                   }
                 },
                 params.row.ovduamtMax
@@ -227,7 +227,7 @@ export default {
               "div",
               {
                 domProps: {
-                  innerHTML: `${params.row.creditLevel}`
+                  innerHTML: `${params.row.creditLevel?params.row.creditLevel:''}`
                 }
               },
               params.row.creditLevel
@@ -243,7 +243,7 @@ export default {
           render: (h, params) => {
             return h("div", {
               domProps: {
-                innerHTML: `${params.row.allotType}`
+                innerHTML: `${params.row.allotType?params.row.allotType: ''}`
               }
             });
           }
@@ -257,7 +257,7 @@ export default {
           render: (h, params) => {
             return h("div", {
               domProps: {
-                innerHTML: `${params.row.allotCounts}`
+                innerHTML: `${params.row.allotCounts?params.row.allotCounts:''}`
               }
             });
           }
@@ -280,7 +280,7 @@ export default {
                     padding: "0px"
                   },
                   domProps: {
-                    innerHTML: `${params.row.effectMinDt}`
+                    innerHTML: `${params.row.effectMinDt?params.row.effectMinDt: ''}`
                   }
                 },
                 params.row.effectMinDt
@@ -309,7 +309,7 @@ export default {
                     padding: "0px"
                   },
                   domProps: {
-                    innerHTML: `${params.row.effectMaxDt}`
+                    innerHTML: `${params.row.effectMaxDt? params.row.effectMaxDt: ''}`
                   }
                 },
                 params.row.effectMaxDt
@@ -328,7 +328,7 @@ export default {
           render: (h, params) => {
             return h("div", {
               domProps: {
-                innerHTML: `${params.row.status}`
+                innerHTML: `${params.row.status?params.row.status: ''}`
               }
             });
           }
@@ -347,13 +347,13 @@ export default {
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
-      this.getList();
+      this.getList(this.model.id);
     },
     // 切换每页条数时的回调
     changeSize(pageSize) {
       this.pageSize = pageSize;
       this.pageNo = 1;
-      this.getList();
+      this.getList(this.model.id);
     },
     // 关闭回调
     close() {

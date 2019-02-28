@@ -276,6 +276,9 @@ export default {
       callback();
     };
     const validate_day_start = (rule, value, callback) => {
+      if (Number(value) > 999) {
+        callback(new Error("逾期天数不能大于999天"));
+      }
       if (
         value &&
         this.formItem.ovdudaysMax &&
@@ -288,6 +291,9 @@ export default {
       }
     };
     const validate_day_end = (rule, value, callback) => {
+      if (Number(value) > 999) {
+        callback(new Error("逾期天数不能大于999天"));
+      }
       if (this.formItem.ovdudaysMin) {
         this.$refs.formItem.validateField("ovdudaysMin");
       }
