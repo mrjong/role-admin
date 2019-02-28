@@ -288,13 +288,13 @@ export default {
           title: '最后催收时间',
           width: 150,
           align: 'center',
-          key: 'lastCollectDate',
+          key: 'lastCurrentCollectStsName',
           render: (h, params) => {
-            let lastCollectDate = params.row.lastCollectDate;
-            lastCollectDate = lastCollectDate
-              ? this.$options.filters['formatDate'](lastCollectDate, 'YYYY-MM-DD HH:mm:ss')
-              : lastCollectDate;
-            return h('span', lastCollectDate);
+            let lastCurrentCollectStsName = typeof(params.row.lastCurrentCollectStsName)=="number" ? params.row.lastCurrentCollectStsName : '';
+            lastCurrentCollectStsName = lastCurrentCollectStsName
+              ? this.$options.filters['formatDate'](lastCurrentCollectStsName, 'YYYY-MM-DD HH:mm:ss')
+              : lastCurrentCollectStsName;
+            return h('span', lastCurrentCollectStsName);
           }
         },
         {
