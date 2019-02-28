@@ -288,13 +288,13 @@ export default {
           title: '最后催收时间',
           width: 150,
           align: 'center',
-          key: 'lastCurrentCollectStsName',
+          key: 'lastCurrentCollectDate',
           render: (h, params) => {
-            let lastCurrentCollectStsName = typeof(params.row.lastCurrentCollectStsName)=="number" ? params.row.lastCurrentCollectStsName : '';
-            lastCurrentCollectStsName = lastCurrentCollectStsName
-              ? this.$options.filters['formatDate'](lastCurrentCollectStsName, 'YYYY-MM-DD HH:mm:ss')
-              : lastCurrentCollectStsName;
-            return h('span', lastCurrentCollectStsName);
+            let lastCurrentCollectDate =  params.row.lastCurrentCollectDate ;
+            lastCurrentCollectDate = lastCurrentCollectDate
+              ? this.$options.filters['formatDate'](lastCurrentCollectDate, 'YYYY-MM-DD HH:mm:ss')
+              : lastCurrentCollectDate;
+            return h('span', lastCurrentCollectDate);
           }
         },
         {
@@ -308,7 +308,7 @@ export default {
           title: '借款人沟通结果',
           width: 120,
           align: 'center',
-          key: 'collectStsName'
+          key: 'lastCurrentCollectStsName'
         },
         {
           title: '承诺还款时间',
