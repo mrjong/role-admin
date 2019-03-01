@@ -141,9 +141,7 @@
                   </FormItem>
                 </Col>
                 <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
-                  <div class="casesWrap">
-                    {{totalcases}}条案件
-                  </div>
+                  <div class="casesWrap">{{totalcases}}条案件</div>
                 </Col>
               </Col>
               <Col :xs="24" :sm="24" :md="12" :lg="12" span="6">
@@ -193,7 +191,6 @@
                   >分配</Button>
                   <Button
                     size="small"
-
                     style="width:80px;margin-left: 8px"
                     @click="handleCancel('formItem')"
                   >取消</Button>
@@ -203,7 +200,7 @@
           </Form>
         </Card>
       </Col>
-      <Col span="12" class="tree-col" v-if="treeFlag === 0">
+      <Col span="12" v-if="treeFlag === 0">
         <Card class="vue-panel">
           <p slot="title" @click="showPanel2=!showPanel2">
             <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>人员组织树
@@ -217,12 +214,12 @@
             @on-check-change="checkChangePerson"
           ></Tree>
           <div>
-            <Button   size="small" @click="cancel()">取消</Button>
+            <Button size="small" @click="cancel()">取消</Button>
             <Button type="primary" size="small" @click="ok()">确定</Button>
           </div>
         </Card>
       </Col>
-      <Col span="12" class="tree-col" v-if="treeFlag === 1">
+      <Col span="12" v-if="treeFlag === 1">
         <Card class="vue-panel">
           <p slot="title" @click="showPanel2=!showPanel2">
             <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>公司组织树
@@ -236,7 +233,7 @@
             @on-check-change="checkChangeOrz"
           ></Tree>
           <div>
-            <Button   size="small" @click="cancel()">取消</Button>
+            <Button size="small" @click="cancel()">取消</Button>
             <Button type="primary" size="small" @click="ok()">确定</Button>
           </div>
         </Card>
@@ -307,11 +304,11 @@ export default {
         "CASE_HANDLE_STATUS",
         "ALLOT_TYPE",
         "DIVIDE_PROD_NUM"
-      ],//s数据字典传的字段
+      ], //s数据字典传的字段
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      totalcases: '0',//案件总数
+      totalcases: "0", //案件总数
       treeFlag: "",
       allotRoleIdList: [],
       allotNameList: [],
@@ -419,7 +416,7 @@ export default {
           h("span", [
             h("Icon", {
               props: {
-                type: ""
+                type: data.leafType === "04" ? "md-person" : "md-home"
               },
               style: {
                 marginRight: "4px"
@@ -458,7 +455,7 @@ export default {
           h("span", [
             h("Icon", {
               props: {
-                type: ""
+                type: data.leafType === "04" ? "md-person" : "md-home"
               },
               style: {
                 marginRight: "4px"
@@ -550,28 +547,31 @@ export default {
         ids: this.allotRoleIdList
       });
       if (res.code === 1) {
-        this.data = res.data.collectRoleTreeVos;
-        if (res.data.userType === '01') {
-          this.data.forEach(item => {
+        if (res.data.userType === "01") {
+          res.data.collectRoleTreeVos.forEach(item => {
             item.disableCheckbox = true;
+            item.true = true;
             item.children.forEach((item2, index) => {
-              if (item2.leafType === '02') {
+              if (item2.leafType === "02") {
                 item2.children = [];
-              };
-            })
-          })
+              }
+            });
+          });
         } else {
-          this.data.forEach(item => {
+          res.data.collectRoleTreeVos.forEach(item => {
+            item.true = true;
             item.children.forEach((item2, index) => {
               // if (item2.leafType === '02') {
               // };
               item2.disableCheckbox = true;
+              item2.true = true;
               item2.children.forEach((item3, index) => {
                 item3.disableCheckbox = true;
-              })
-            })
-          })
+              });
+            });
+          });
         }
+        this.data = res.data.collectRoleTreeVos;
       } else {
         this.$Message.error(res.message);
       }
@@ -584,6 +584,15 @@ export default {
       });
       console.log(res);
       if (res.code === 1) {
+        res.data.collectRoleTreeVos.forEach(item => {
+          item.expand = true;
+          item.children.forEach(item2 => {
+            item2.expand = true;
+            item2.children.forEach(item3 => {
+              item3.expand = true;
+            });
+          });
+        });
         this.data5 = res.data.collectRoleTreeVos;
       } else {
       }

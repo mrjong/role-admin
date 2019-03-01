@@ -39,7 +39,7 @@
             <FormItem>
               <Button type="primary" @click="handleSubmit('formItem')" style="width:80px" long size="small" :loading="query_loading">
                 <span v-if="!query_loading">检索</span>
-                <span v-else>请求中...</span>
+                <span v-else>检索中...</span>
               </Button>
               <Button
                 size="small"

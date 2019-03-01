@@ -157,7 +157,7 @@
             <FormItem>
               <Button type="primary" style="width:80px" long size="small" :loading="queryLoading" @click="handleSubmit('formItem')">
                 <span v-if="!queryLoading">检索</span>
-                <span v-else>请求中...</span>
+                <span v-else>检索中...</span>
               </Button>
               <Button
                 size="small"
@@ -177,7 +177,7 @@
         <span>总共逾期金额{{totalOverdueAmt}}元</span>
         <Button class="fr vue-back-btn header-btn" type="primary" size="small" style="min-width: 80px" v-if="export_case" :loading='exportLoading' @click.stop="cases_export">
           <span v-if="!exportLoading">导出数据</span>
-          <span v-else>请求中...</span>
+          <span v-else>导出中...</span>
         </Button>
       </p>
       <!-- 表格 -->

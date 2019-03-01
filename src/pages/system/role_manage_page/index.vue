@@ -310,7 +310,6 @@
               ref='tree'
               :render="renderContent"
               multiple
-              check-strictly
               show-checkbox
               @on-select-change="selectNode"
               @on-check-change="checkChange"

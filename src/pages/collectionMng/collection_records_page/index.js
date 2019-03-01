@@ -104,10 +104,10 @@ export default {
                   },
                   on: {
                     click: () => {
-                      if (!this.play) {
-                        this.$Message.error('很抱歉，暂无权限播放录音');
-                        return;
-                      }
+                      // if (!this.play) {
+                      //   this.$Message.error('很抱歉，暂无权限播放录音');
+                      //   return;
+                      // }
                       this.case_collect_tape(soundUuid);
                       this.modal1 = true;
                     }
@@ -402,10 +402,10 @@ export default {
       this.getList();
     },
     async getList() {
-      if (!this.query) {
-        this.$Message.error('很抱歉，暂无权限查询');
-        return;
-      }
+      // if (!this.query) {
+      //   this.$Message.error('很抱歉，暂无权限查询');
+      //   return;
+      // }
       this.query_loading = true;
       const res = await case_collect_collect_list({
         ...this.formItem,

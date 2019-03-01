@@ -197,7 +197,7 @@
                     style="width:80px"
                     long
                     v-if="submitType === 1"
-                    :loading='add_loading'
+                    :loading="add_loading"
                     size="small"
                   >
                     <span v-if="!add_loading">添加</span>
@@ -209,11 +209,11 @@
                     style="width:80px"
                     long
                     v-if="submitType === 2"
-                    :loading='update_loading'
+                    :loading="update_loading"
                     size="small"
                   >
-                  <span v-if="!update_loading">修改</span>
-                  <span v-else>修改中...</span>
+                    <span v-if="!update_loading">修改</span>
+                    <span v-else>修改中...</span>
                   </Button>
                   <Button
                     size="small"
@@ -226,7 +226,7 @@
           </Form>
         </Card>
       </Col>
-      <Col span="12" class="tree-col" v-if="treeFlag === 0">
+      <Col span="12" v-if="treeFlag === 0">
         <Card class="vue-panel">
           <p slot="title" @click="showPanel2=!showPanel2">
             <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>人员组织树
@@ -240,12 +240,12 @@
             @on-check-change="checkChangePerson"
           ></Tree>
           <div>
-            <Button   size="small" @click="cancel()">取消</Button>
+            <Button size="small" @click="cancel()">取消</Button>
             <Button type="primary" size="small" @click="ok()">确定</Button>
           </div>
         </Card>
       </Col>
-      <Col span="12" class="tree-col" v-if="treeFlag === 1">
+      <Col span="12" v-if="treeFlag === 1">
         <Card class="vue-panel">
           <p slot="title" @click="showPanel2=!showPanel2">
             <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>公司组织树
@@ -259,7 +259,7 @@
             @on-check-change="checkChangeOrz"
           ></Tree>
           <div>
-            <Button  size="small" @click="cancel()">取消</Button>
+            <Button size="small" @click="cancel()">取消</Button>
             <Button type="primary" size="small" @click="ok()">确定</Button>
           </div>
         </Card>
@@ -341,8 +341,8 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      add_loading: false,//添加按钮loading
-      update_loading: false,//修改按钮loading
+      add_loading: false, //添加按钮loading
+      update_loading: false, //修改按钮loading
       treeFlag: "",
       submitType: 1, //提交类型 1添加，2修改
       ruleId: "",
@@ -381,7 +381,7 @@ export default {
         ovdudaysMin: [
           {
             pattern: this.GLOBAL.num,
-            message: "逾期天数为正整数",
+            message: "逾期天数为正整数"
           },
           {
             validator: validate_day_start,
@@ -391,7 +391,7 @@ export default {
         ovdudaysMax: [
           {
             pattern: this.GLOBAL.num,
-            message: "逾期天数为正整数",
+            message: "逾期天数为正整数"
           },
           {
             validator: validate_day_end,
@@ -401,7 +401,7 @@ export default {
         ovduamtMin: [
           {
             pattern: this.GLOBAL.money,
-            message: "金额格式不正确",
+            message: "金额格式不正确"
           },
           {
             validator: validate_money_start,
@@ -411,7 +411,7 @@ export default {
         ovduamtMax: [
           {
             pattern: this.GLOBAL.money,
-            message: "金额格式不正确",
+            message: "金额格式不正确"
           },
           {
             validator: validate_money_end,
@@ -469,7 +469,7 @@ export default {
           h("span", [
             h("Icon", {
               props: {
-                type: ""
+                type: data.leafType === "04" ? "md-person" : "md-home"
               },
               style: {
                 marginRight: "4px"
@@ -508,7 +508,7 @@ export default {
           h("span", [
             h("Icon", {
               props: {
-                type: ""
+                type: data.leafType === "04" ? "md-person" : "md-home"
               },
               style: {
                 marginRight: "4px"
@@ -612,28 +612,31 @@ export default {
         ids: this.allotRoleIdList
       });
       if (res.code === 1) {
-        this.data = res.data.collectRoleTreeVos;
-        if (res.data.userType === '01') {
-          this.data.forEach(item => {
+        if (res.data.userType === "01") {
+          res.data.collectRoleTreeVos.forEach(item => {
             item.disableCheckbox = true;
+            item.expand = true;
             item.children.forEach((item2, index) => {
-              if (item2.leafType === '02') {
+              if (item2.leafType === "02") {
                 item2.children = [];
-              };
-            })
-          })
+              }
+            });
+          });
         } else {
-          this.data.forEach(item => {
+          res.data.collectRoleTreeVos.forEach(item => {
+            item.expand = true;
             item.children.forEach((item2, index) => {
               // if (item2.leafType === '02') {
               // };
               item2.disableCheckbox = true;
+              item2.expand = true;
               item2.children.forEach((item3, index) => {
                 item3.disableCheckbox = true;
-              })
-            })
-          })
+              });
+            });
+          });
         }
+        this.data = res.data.collectRoleTreeVos;
       } else {
         this.$Message.error(res.message);
       }
@@ -646,6 +649,15 @@ export default {
       });
       console.log(res);
       if (res.code === 1) {
+        res.data.collectRoleTreeVos.forEach(item => {
+          item.expand = true;
+          item.children.forEach(item2 => {
+            item2.expand = true;
+            item2.children.forEach(item3 => {
+              item3.expand = true;
+            })
+          })
+        })
         this.data5 = res.data.collectRoleTreeVos;
       } else {
       }
@@ -692,10 +704,10 @@ export default {
       this.add_loading = false;
       if (res.code === 1) {
         console.log(res);
-        this.$Message.success('添加成功');
+        this.$Message.success("添加成功");
         setTimeout(() => {
-          window.history.go(-1)
-        },0);
+          window.history.go(-1);
+        }, 0);
       } else {
         this.$Message.error(res.message);
       }
@@ -718,6 +730,7 @@ export default {
         this.formItem.allotNameList = res.data.allotNameList;
         this.formItem.id = res.data.id;
         this.formItem.allotType = res.data.allotType;
+        this.formItem.status = res.data.status;
         this.allotRoleIdList = res.data.allotRoleIdList;
         if (res.data.effectMaxDt && res.data.effectMinDt) {
           this.formItem.date = [];
@@ -739,8 +752,8 @@ export default {
       if (res.code === 1) {
         this.$Message.success("修改成功");
         setTimeout(() => {
-          window.history.go(-1)
-        },0);
+          window.history.go(-1);
+        }, 0);
       } else {
         this.$Message.error(res.message);
       }

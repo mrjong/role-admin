@@ -100,7 +100,7 @@ export default {
           h('span', [
             h('Icon', {
               props: {
-                type: data.leafType === '04' ? 'person' : 'home',
+                type: data.leafType === '04' ? 'md-person' : 'md-home',
               },
               style: {
                 marginRight: '4px'
@@ -242,16 +242,12 @@ export default {
       if (res.code === 1) {
         console.log(res);
         // this.data5 = res.data;
-        // res.data.forEach(item => {
-        //   if (item.leafType === '04') {
-        //     delete item.children;
-        //   };
-        //   item.children.forEach(ele => {
-        //     if (ele.leafType === '04') {
-        //       delete ele.children;
-        //     };
-        //   })
-        // });
+        res.data.forEach(item => {
+          item.expand = true;
+          item.children.forEach(item2 => {
+            item2.expand = true;
+          })
+        });
         this.data5 = res.data;
         console.log(this.data5);
       } else {

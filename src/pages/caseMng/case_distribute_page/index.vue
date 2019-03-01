@@ -226,7 +226,7 @@
             <FormItem>
               <Button type="primary" style="width:80px" long size="small" :loading='queryLoading' @click="handleSubmit('formItem')">
                 <span v-if="!queryLoading">检索</span>
-                <span v-else>请求中...</span>
+                <span v-else>检索...</span>
               </Button>
               <Button
                 size="small"
@@ -274,6 +274,7 @@
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
+          v-if="send_message"
           @click.stop="messageFlag = !messageFlag"
         >站内信批量发送</Button>
       </p>
@@ -319,7 +320,7 @@
         <Alert show-icon type="warning">
           <template
             slot="desc"
-          >共查询出{{Number(allotCaseMounts)}}笔可分配案件，{{stopCases.length > 0?stopCases.length: initStopCases.length}}笔停催案件，您确认要全部分配么?</template>
+          >共查询出{{Number(allotCaseMounts)}}笔可分配案件，{{allotCaseIds.length > 0?stopCases.length: stopCaseMounts}}笔停催案件，您确认要全部分配么?</template>
         </Alert>
         <div slot="footer">
           <Button size="small" @click="cancel('1')">取消</Button>
@@ -522,7 +523,10 @@
         </Form>
         <div slot="footer">
           <Button size="small" @click="cancel('6')">取消</Button>
-          <Button type="primary" size="small" @click="ok('6','messageFormItem')">确定</Button>
+          <Button type="primary" size="small" @click="ok('6','messageFormItem')" :loading='send_message_loading'>
+            <span v-if="!send_message_loading">确定</span>
+            <span v-else>发送中...</span>
+          </Button>
         </div>
       </Modal>
     </div>

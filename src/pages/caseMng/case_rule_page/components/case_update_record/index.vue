@@ -72,7 +72,7 @@ export default {
             const updateTime = row.updateTime
               ? this.$options.filters["formatDate"](
                   row.updateTime,
-                  "YYYY-MM-DD hh:mm:ss"
+                  "YYYY-MM-DD HH:mm:ss"
                 )
               : row.updateTime;
             return h("span", updateTime);

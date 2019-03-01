@@ -463,6 +463,9 @@ export default {
     async collect_user_clerk_update() {
       this.staffFormItem.createTime = null;
       this.staffFormItem.updateTime = null;
+      if (!this.departmentFlag) {
+        this.staffFormItem.outfitId = ''
+      };
       const res = await collect_user_clerk_update({
         ...this.staffFormItem
       });

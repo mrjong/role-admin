@@ -494,6 +494,9 @@ export default {
     },
     // 添加普通员工
     async collect_user_clerk_add() {
+      if (!this.departmentFlag) {
+        this.addStaffFormItem.outfitId = ''
+      };
       const res = await collect_user_clerk_add({
         status: "1",
         ...this.addStaffFormItem

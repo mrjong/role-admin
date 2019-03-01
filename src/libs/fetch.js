@@ -17,12 +17,12 @@ axios.interceptors.request.use(
     }
 
     reqList.push(config.baseURL + config.url);
-    if (reqList.length === 1) {
-      iView.Message.loading({
-        content: '数据加载中...',
-        duration: 120
-      });
-    }
+    // if (reqList.length === 1) {
+    //   iView.Message.loading({
+    //     content: '数据加载中...',
+    //     duration: 120
+    //   });
+    // }
     return config;
   },
   (error) => {

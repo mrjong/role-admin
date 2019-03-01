@@ -51,11 +51,13 @@ export default {
       recover: false,//回收权限
       stop_urge: false,//停催权限
       regain_urge: false,//恢复催收权限
+      send_message: false,//站内信权限
       queryLoading: false,//查询按钮loading
       recoverLoading: false,//回收按钮loading
       batch_distribute_loading: false,//批量分配分配按钮loading
       stop_urge_loading: false,//停催提交按钮loading
       regain_urge_loading: false,//恢复催收提交按钮loading
+      send_message_loading: false,//批量发送站内信按钮loading
       getLeafTypeList2_data: [],
       getLeafTypeList_data: [],
       data5: [],
@@ -66,6 +68,7 @@ export default {
       caseID: '',//单个案件
       initStopCases: [],//初始停催案件集合
       stopCases: [],//停催案件集合
+      stopCaseMounts: 0,//停催案件总数
       treeFlag: '',
       allotCaseMounts: 0,
       recycleCaseMounts: 0,
@@ -235,7 +238,7 @@ export default {
                   }
                 },
                 caseHandleStatus === 'SUSPEND' ? '恢复催收' : '停催'
-              ),
+              )
             ]);
           }
         },
@@ -451,6 +454,8 @@ export default {
           break;
         case "regain_urge": this.regain_urge = true;
           break;
+        case "send_message": this.send_message = true;
+          break;
       }
     });
     // this.getList();
@@ -469,7 +474,7 @@ export default {
           h('span', [
             h('Icon', {
               props: {
-                type: data.leafType === '04' ? 'person' : 'home',
+                type: data.leafType === '04' ? 'md-person' : 'md-home',
               },
               style: {
                 marginRight: '4px'
@@ -506,7 +511,7 @@ export default {
     },
     // table勾选回调
     changeSelect(selection) {
-      console.log('---------',selection);
+      console.log('---------', selection);
       this.allotCaseIds = [];
       this.recycleCaseIds = [];
       this.stopCases = [];
@@ -518,11 +523,15 @@ export default {
           this.allotCaseIds.push(element.id);
         }
       });
+      // 计算可分配的数，停催的数
       if (this.allotCaseIds.length > 0) {
         this.allotCaseMounts = this.allotCaseIds.length;
-      } else {
-        this.allotCaseMounts = this.totalCase - this.initStopCases.length;
-      }
+      } else if (this.stopCases.length > 0 && this.allotCaseIds.length === 0) {
+        this.allotCaseMounts = 0;
+      } else if (this.allotCaseIds.length === 0 && this.stopCases.length === 0) {
+        this.allotCaseMounts = this.totalCase - this.stopCaseMounts;
+      };
+      //计算可回收的数
       if (this.recycleCaseIds.length > 0) {
         this.recycleCaseMounts = this.recycleCaseIds.length;
       } else {
@@ -591,6 +600,9 @@ export default {
       if (res.code === 1) {
         this.tableData = res.data.page.content;
         this.totalCase = res.data.summary.totalCount;//案件总数
+        if (res.data.summary.stopCollectCount) {
+          this.stopCaseMounts = res.data.summary.stopCollectCount;//停催总数
+        };
         this.recycleCaseMounts = res.data.summary.totalCount;//回收案件总数
         this.totalOverdueAmt = res.data.summary.totalOverdueAmt;//总金额
         this.pageNo = res.data.page.number;
@@ -598,12 +610,12 @@ export default {
         this.allotCaseIds = [];
         this.recycleCaseIds = [];
         this.initStopCases = [];//初始化案件停催集合
-        this.tableData.forEach(item => {
-          if (item.caseHandleStatus === 'SUSPEND') {
-            this.initStopCases.push(item);
-          }
-        });
-        this.allotCaseMounts = this.totalCase - this.initStopCases.length;//可分配案件总数
+        // this.tableData.forEach(item => {
+        //   if (item.caseHandleStatus === 'SUSPEND') {
+        //     this.initStopCases.push(item);
+        //   }
+        // });
+        this.allotCaseMounts = this.totalCase - this.stopCaseMounts;//可分配案件总数
       } else {
         this.$Message.error(res.message);
       }
@@ -635,11 +647,11 @@ export default {
         ids: [],
       });
       if (res.code === 1) {
-        this.data = res.data.collectRoleTreeVos;
         if (res.data.userType === '01') {
           // 系统人员
-          this.data.forEach(item => {
+          res.data.collectRoleTreeVos.forEach(item => {
             item.disableCheckbox = true;
+            item.expand = true;
             item.children.forEach((item2, index) => {
               if (item2.leafType === '02') {
                 item2.children = [];
@@ -648,7 +660,8 @@ export default {
           })
         } else {
           // 催收人员
-          this.data.forEach(item => {
+          res.data.collectRoleTreeVos.forEach(item => {
+            item.expand = true;
             item.children.forEach((item2, index) => {
               // if (item2.leafType === '02') {
               // };
@@ -659,6 +672,7 @@ export default {
             })
           })
         }
+        this.data = res.data.collectRoleTreeVos;
         console.log(this.data)
       } else {
         this.$Message.error(res.message);
@@ -672,6 +686,15 @@ export default {
       });
       console.log(res);
       if (res.code === 1) {
+        res.data.collectRoleTreeVos.forEach(item => {
+          item.expand = true;
+          item.children.forEach(item2 => {
+            item2.expand = true;
+            item2.children.forEach(item3 => {
+              item3.expand = true;
+            })
+          })
+        })
         this.data5 = res.data.collectRoleTreeVos;
       } else {
         this.$Message.error(res.message)
@@ -727,7 +750,7 @@ export default {
         ...this.formItem,
         collectRoleIds: this.collectRoleIds,
         caseIds: this.allotCaseIds,
-        preTotalCases: this.allotCaseIds>0?this.allotCaseMounts:this.total,
+        preTotalCases: this.allotCaseMounts,
       });
       this.batch_distribute_loading = false;
       if (res.code === 1) {
@@ -791,12 +814,14 @@ export default {
     },
     // 站内信发送接口
     async cases_case_sendwebmessage() {
+      this.send_message_loading = true;
       const res = await cases_case_sendwebmessage({
         ...this.formItem,
         ...this.messageFormItem,
         caseIds: this.recycleCaseIds,
         preTotalCases: this.recycleCaseMounts,
       });
+      this.send_message_loading = false;
       if (res.code === 1) {
         this.messageFlag = false;
         this.messageFormItem = {};
@@ -850,6 +875,7 @@ export default {
           this.regain_urge_loading = false;
           break;
         case '6': this.messageFlag = false;
+          this.send_message_loading = false;
           this.messageFormItem = {};
           break;
       }
