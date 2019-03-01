@@ -18,13 +18,14 @@
               <Select
                 clearable
                 size="small"
-                placeholder="请选择规则状态"
+                placeholder="请选择案件处理状态"
                 v-model="formItem.caseHandleStatus"
               >
                 <Option
                   v-for="item in getDirObj.CASE_HANDLE_STATUS"
                   :value="item.itemCode"
                   :key="item.itemCode"
+                  v-if="item.itemName !=='出催'"
                 >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
