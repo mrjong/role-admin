@@ -8,6 +8,8 @@ import tablePage from '@/mixin/tablePage';
 import qs from 'qs';
 import sysDictionary from '@/mixin/sysDictionary';
 import util from '@/libs/util';
+import Cookie from 'js-cookie';
+
 export default {
   name: 'case_search_page',
   mixins: [formValidateFun, sysDictionary, tablePage],
@@ -50,6 +52,10 @@ export default {
       query: false,//查询权限
       detail: false,//查看案件详情权限
       export_case: false,//导出权限
+      all_opt: false,//案件详情全部操作权限
+      plaintext: false,//案件详情查看明文权限
+      apply_arbitrament: false,//案件详情申请仲裁权限
+      apply_deduct: false,//案件详情申请划扣权限
       query_loading: false,//查询按钮loading
       export_case_loading: false,//导出按钮loading
       summary: {},
@@ -290,7 +296,7 @@ export default {
           align: 'center',
           key: 'lastCurrentCollectDate',
           render: (h, params) => {
-            let lastCurrentCollectDate =  params.row.lastCurrentCollectDate ;
+            let lastCurrentCollectDate = params.row.lastCurrentCollectDate;
             lastCurrentCollectDate = lastCurrentCollectDate
               ? this.$options.filters['formatDate'](lastCurrentCollectDate, 'YYYY-MM-DD HH:mm:ss')
               : lastCurrentCollectDate;
@@ -351,10 +357,22 @@ export default {
           break;
         case "detail": this.detail = true;
           break;
-        case "export_case": this.export_case = true;
+        case "export": this.export_case = true;
+          break;
+        case "all_opt": this.all_opt = true;
+          break;
+        case "plaintext": this.plaintext = true;
+          break;
+        case "apply_arbitrament": this.apply_arbitrament = true;
+          break;
+        case "apply_deduct": this.apply_deduct = true;
           break;
       }
     });
+    Cookie.set('all_opt', this.all_opt);
+    Cookie.set('plaintext', this.plaintext);
+    Cookie.set('apply_arbitrament', this.apply_arbitrament);
+    Cookie.set('apply_deduct', this.apply_deduct);
     // 沟通状态
     this.collectcode_getListByCodeType();
   },

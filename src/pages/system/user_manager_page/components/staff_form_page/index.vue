@@ -73,6 +73,7 @@
               filterable
               clearable
               @on-change="companyChange"
+              label-in-value
               placeholder="请选择公司"
               :disabled="!formDisabled"
             >
@@ -88,6 +89,8 @@
               filterable
               clearable
               placeholder="请选择部门"
+              label-in-value
+              @on-change="outfitChange"
               :disabled="!formDisabled"
             >
               <Option v-for="item in departmentList" :value="item.id" :key="item.id">{{ item.name }}</Option>
@@ -352,7 +355,9 @@ export default {
     this.staffFormItem.name = this.parentData.nodeData.name;
     this.staffFormItem.loginName = this.parentData.nodeData.loginName;
     this.staffFormItem.companyId = this.parentData.nodeData.companyId;
+    this.staffFormItem.companyName = this.parentData.nodeData.companyName;
     this.staffFormItem.outfitId = this.parentData.nodeData.outfitId;
+    this.staffFormItem.outfitName = this.parentData.nodeData.outfitName;
     this.staffFormItem.roleId = this.parentData.nodeData.roleId;
     if (this.staffFormItem.roleId === "2474cbac7a34419f8decc99f022846a1") {
       this.departmentFlag = false;
@@ -372,7 +377,9 @@ export default {
       this.staffFormItem.name = this.parentData.nodeData.name;
       this.staffFormItem.loginName = this.parentData.nodeData.loginName;
       this.staffFormItem.companyId = this.parentData.nodeData.companyId;
+      this.staffFormItem.companyName = this.parentData.nodeData.companyName;
       this.staffFormItem.outfitId = this.parentData.nodeData.outfitId;
+      this.staffFormItem.outfitName = this.parentData.nodeData.outfitName;
       this.staffFormItem.roleId = this.parentData.nodeData.roleId;
       if (this.staffFormItem.roleId === "2474cbac7a34419f8decc99f022846a1") {
         this.departmentFlag = false;
@@ -387,9 +394,15 @@ export default {
   },
   methods: {
     //公司变更联动部门变更
-    companyChange(item) {
-      console.log(item);
-      this.collect_user_list("03", item);
+    companyChange(obj) {
+      console.log(obj);
+      this.staffFormItem.companyName = obj.label;
+      this.collect_user_list("03", obj.value);
+    },
+    //部门变更
+    outfitChange(obj) {
+      console.log(obj);
+      this.staffFormItem.outfitName = obj.label;
     },
     // 选择角色变更
     roleSelect(item) {
@@ -464,10 +477,14 @@ export default {
       this.staffFormItem.createTime = null;
       this.staffFormItem.updateTime = null;
       if (!this.departmentFlag) {
-        this.staffFormItem.outfitId = ''
-      };
+        this.staffFormItem.outfitId = "";
+      }
       const res = await collect_user_clerk_update({
-        ...this.staffFormItem
+        ...this.staffFormItem,
+        originOutfitId: this.parentData.nodeData.outfitId,
+        originOutfitName: this.parentData.nodeData.outfitName,
+        originCompanyId: this.parentData.nodeData.companyId,
+        originCompanyName: this.parentData.nodeData.companyName
       });
       if (res.code === 1) {
         this.$Message.success("修改成功");

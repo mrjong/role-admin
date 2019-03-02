@@ -3,6 +3,7 @@ import huakou from '@/components/caseDesc/huakou.vue';
 import zhongcai from '@/components/caseDesc/zhongcai.vue';
 import qs from 'qs';
 import dayjs from 'dayjs';
+import Cookie from 'js-cookie';
 import sysDictionary from '@/mixin/sysDictionary';
 import {
   case_detail_remark_list, // 催收
@@ -44,6 +45,10 @@ export default {
       moorToCallMblHid: '',//容联电话呼叫成功显示的电话密文
       moorToCallUser: '',//容联电话呼叫成功显示的姓名
       showMoorTel: false,//容联电话弹窗flag
+      all_opt: false,//案件详情全部操作权限
+      plaintext: false,//案件详情查看明文权限
+      apply_arbitrament: false,//案件详情申请仲裁权限
+      apply_deduct: false,//案件详情申请划扣权限
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -1693,11 +1698,11 @@ export default {
     }
   },
   created() {
+    console.log(Cookie.get('all_opt'));
     let params = location.hash.split('?');
     const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
     this.caseNo = window.atob(queryData.caseNotest);
     this.seatType = queryData.seatType;
-    console.log(this.seatType);
     this.prdTyp = queryData.prdTyptest;
     this.userId = queryData.userIdtest;
     this.readType = queryData.readType;
