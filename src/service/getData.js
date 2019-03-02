@@ -304,7 +304,7 @@ export const case_collect_case_list = (obj, options) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-  //催收录音列表
+//催收录音列表
 export const case_collect_record_file_list = (obj) =>
   fetch({
     url: '/case/collect/record_file_list',
@@ -974,7 +974,7 @@ export const case_collect_collect_list = (obj, options) =>
     data: qs.stringify(obj),
     options
   });
-  // 催收记录导出
+// 催收记录导出
 export const case_collect_collect_export = (obj, options) =>
   fetch({
     url: '/case/collect/collect_export',
@@ -1172,17 +1172,17 @@ export const arb_list = (obj, options) =>
     data: qs.stringify(obj),
     options
   });
-  /*
+/*
 *
 我的仲裁
 * */
 export const arb_myArbList = (obj, options) =>
-fetch({
-  url: '/arb/myArbList',
-  method: 'POST',
-  data: qs.stringify(obj),
-  options
-});
+  fetch({
+    url: '/arb/myArbList',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options
+  });
 
 /*
 *
@@ -1251,7 +1251,7 @@ export const call_kt_hung_on = (obj, options) =>
   });
 
 /*
-容联
+容联外呼
 * */
 export const call_moor_hung_on = (obj, options) =>
   fetch({
@@ -1260,6 +1260,13 @@ export const call_moor_hung_on = (obj, options) =>
     data: qs.stringify(obj),
     options
   });
+// 容联挂断
+export const call_moor_hung_up = (obj) =>
+  fetch({
+    url: '/call/moor/hung_up',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
 
 // 数据字典添加
 export const sysDictionary_save = (obj) =>

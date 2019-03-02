@@ -38,13 +38,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <video
-        src="@/libs/ring.wav"
-        controls="controls"
-      >
-        您的浏览器不支持 video 标签。
-      </video> -->
     </div>
     <router-view></router-view>
     <video

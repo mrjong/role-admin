@@ -25,6 +25,7 @@ import {
   collectcode_getCollectRelate, // 获取沟通状态
   call_kt_hung_on, // 客天外拨
   call_moor_hung_on, // 容联外拨
+  call_moor_hung_up,//容联挂断
   syscommon_decrypt, // 明文展示
   case_collect_case_list, // 我的案件
   case_list
@@ -40,6 +41,9 @@ export default {
   data() {
     const _this = this;
     return {
+      moorToCallMblHid: '',//容联电话呼叫成功显示的电话密文
+      moorToCallUser: '',//容联电话呼叫成功显示的姓名
+      showMoorTel: false,//容联电话弹窗flag
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -1820,6 +1824,11 @@ export default {
       if (res.code === 1) {
         this.actionId = res.data.actionId;
         this.$Message.success('呼出成功');
+        if (this.seatType === 'RL') {
+          this.showMoorTel = true;
+          this.moorToCallMblHid = res.data.toCallMblHid;
+          this.moorToCallUser = res.data.toCallUser
+        }
         let obj34 = {
           telNoHid: obj.toCallMblHid,
           usrNameHid: obj.toCallUserHid
@@ -1828,6 +1837,20 @@ export default {
         localStorage.setItem('callObj', JSON.stringify(obj34));
       } else {
         this.$Message.error(res.message);
+      }
+    },
+    // 容联外呼挂断方法
+    async call_moor_hung_up() {
+      const res = await call_moor_hung_up();
+      if (res.code === 1) {
+        this.showMoorTel = false;
+      } else {
+        this.$Message.error(res.message);
+        let timer;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          this.showMoorTel = false;
+        }, 2000);
       }
     },
     rowClassName(row, index) {
@@ -2128,7 +2151,6 @@ export default {
         this.objCopy = obj;
         // type ['call] 拨打电话
         if (localStorage.getItem('callData') && this.seatType === 'KT') {
-
           if (localStorage.getItem('callObj')) {
             this.$Message.info('请先挂断其他电话，再重试');
             return

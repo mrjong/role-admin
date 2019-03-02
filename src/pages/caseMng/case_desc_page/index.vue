@@ -119,7 +119,8 @@
           <Row :gutter="10">
             <Col span="12">
               <Col :xs="24" :sm="24" :md="24" :lg="24">
-                <div class="panel-desc-title">身份证号：
+                <div class="panel-desc-title">
+                  身份证号：
                   <span>
                     {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNoHid}}
                     <Poptip
@@ -140,17 +141,20 @@
                 </div>
               </Col>
               <Col :xs="24" :sm="24" :md="24" :lg="24">
-                <div class="panel-desc-title">逾期应还金额：
+                <div class="panel-desc-title">
+                  逾期应还金额：
                   <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.overdueAmt | money}}</span>
                 </div>
               </Col>
               <Col :xs="24" :sm="24" :md="24" :lg="24">
-                <div class="panel-desc-title">总逾期期数：
+                <div class="panel-desc-title">
+                  总逾期期数：
                   <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.overduePerdCount}}</span>
                 </div>
               </Col>
               <Col :xs="24" :sm="24" :md="24" :lg="24">
-                <div class="panel-desc-title">家庭住址：
+                <div class="panel-desc-title">
+                  家庭住址：
                   <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.address}}</span>
                 </div>
               </Col>
@@ -188,19 +192,23 @@
           <Form ref="formItem" :model="formItem" :label-width="80" :rules="ruleValidate">
             <div class="panel-desc">
               <Row :gutter="5">
-                <div class="panel-desc-title fl mr10">账单号：
+                <div class="panel-desc-title fl mr10">
+                  账单号：
                   <span>{{case_detail_case_base_info_Data.billNo}}</span>
                 </div>
 
-                <div class="panel-desc-title fl mr10">借款本金：
+                <div class="panel-desc-title fl mr10">
+                  借款本金：
                   <span>{{case_detail_case_base_info_Data.loanAmount | money}}</span>
                 </div>
 
-                <div class="panel-desc-title fl mr10">借款时间：
+                <div class="panel-desc-title fl mr10">
+                  借款时间：
                   <span>{{case_detail_case_base_info_Data.loanTime | formatDatetime}}</span>
                 </div>
 
-                <div class="panel-desc-title fl mr10">银行卡号：
+                <div class="panel-desc-title fl mr10">
+                  银行卡号：
                   <span>
                     {{case_detail_case_base_info_Data.crdNoHid}}
                     <Poptip
@@ -220,7 +228,8 @@
                   </span>
                 </div>
 
-                <div class="panel-desc-title fl mr10">银行卡：
+                <div class="panel-desc-title fl mr10">
+                  银行卡：
                   <span>{{case_detail_case_base_info_Data.corgName}}</span>
                 </div>
               </Row>
@@ -428,13 +437,15 @@
               <div class="panel-desc">
                 <Row :gutter="10">
                   <Col :xs="24" :sm="24" :md="24" :lg="24">
-                    <div class="panel-desc-title">家庭住址：
+                    <div class="panel-desc-title">
+                      家庭住址：
                       <span>{{case_detail_address_info_Data&&case_detail_address_info_Data.usrProvAddr}}{{case_detail_address_info_Data&&case_detail_address_info_Data.usrCityAddr}}{{case_detail_address_info_Data&&case_detail_address_info_Data.usrDtlAddr}}</span>
                     </div>
                   </Col>
 
                   <Col :xs="24" :sm="24" :md="24" :lg="24">
-                    <div class="panel-desc-title">工作地址：
+                    <div class="panel-desc-title">
+                      工作地址：
                       <span>{{case_detail_address_info_Data&&case_detail_address_info_Data.workProvAddr}}{{case_detail_address_info_Data&&case_detail_address_info_Data.workCityAddr}}{{case_detail_address_info_Data&&case_detail_address_info_Data.workDtlAddr}}</span>
                     </div>
                   </Col>
@@ -768,7 +779,7 @@
                     v-model.trim="formValidate.collectRmk"
                     type="textarea"
                     :autosize="{minRows: 2,maxRows: 2}"
-                    :maxlength='249'
+                    :maxlength="249"
                     placeholder="请输入备注，最大249个字符"
                   ></Input>
                 </FormItem>
@@ -804,9 +815,88 @@
       :caseNo="caseNo"
       :userId="userId"
     ></huakou>
+    <!-- 容联软电话 -->
+    <div class="tel-box" v-if="showMoorTel">
+      <div class="tel-box-desc">
+        <div class="tel-num">{{moorToCallMblHid}}</div>
+        <div class="tel-desc">{{moorToCallUser}}</div>
+        <div class="tel-btn-box">
+          <!-- <div class="item success" v-if="success">
+            <div class="icon-box" @click="answer">
+              <Icon type="ios-call"></Icon>
+            </div>
+          </div> -->
+          <div class="item fail">
+            <div class="icon-box" @click="call_moor_hung_up">
+              <Icon class="fail-icon" type="ios-call"></Icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script src="./index.js"></script>
 <style lang="less">
 @import "./index.less";
+.fail-icon {
+  transform: rotate(132deg);
+}
+.tel-box {
+  position: fixed;
+  left: 0;
+  bottom: 20px;
+  width: 110px;
+  height: 100px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  z-index: 1000;
+
+  line-height: 25px;
+  .tel-box-desc {
+    padding: 5px;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    width: 100px;
+    left: 0;
+    .tel-num {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .tel-desc {
+      color: #fff;
+      font-size: 12px;
+    }
+    .tel-btn-box {
+      margin: 5px auto;
+      display: flex;
+      .item {
+        flex: 1;
+        cursor: pointer;
+        .icon-box {
+          font-size: 20px;
+          width: 30px;
+          display: inline-block;
+          line-height: 30px;
+          border-radius: 50%;
+          height: 30px;
+          color: #fff;
+        }
+        &.fail {
+          .icon-box {
+            background: rgb(234, 86, 66);
+          }
+        }
+        &.success {
+          .icon-box {
+            background: rgb(117, 213, 114);
+          }
+        }
+      }
+    }
+  }
+}
 </style>
