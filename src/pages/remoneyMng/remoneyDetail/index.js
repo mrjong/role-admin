@@ -14,6 +14,10 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      export_case: false,//导出权限
+      query: false,//查询权限
+      query_loading: false,//查询按钮loading
+      export_case_loading: false,//导出按钮loading
       opCompanyNameList: [],
       startRepayDateRange: '', //实际还款日期区间
       shouldRepayDate: '',
@@ -44,24 +48,6 @@ export default {
       pageSize: 10,
       total: 10,
       tableData: [
-        // {
-        //   caseNo:'', //案件编号
-        //   billNo: '', // 账单号
-        //   repayAmt:'', // 还款金额
-        //   repayOrdTypName: '', // 还款方式
-        //   payOffStsName:'', // 还款状态
-        //   overdueDays: '',//逾期天数
-        //   perdCnt: '',// 还款期数
-        //   prdTypName:'',//产品线
-        //   userNmHid:'',//客户姓名
-        //   idNoHid:'',//身份证号
-        //   mblNoHid:'',//手机号
-        //   repayDate:'',//实际还款时间
-        //   dueDate:'',//应该混款时间
-        //   allotDate:'',//分配时间
-        //   opCompayName:'',//电催中心
-        //   opUserName:'',//经办人
-        // },
       ],
       tableColumns: [
         {
@@ -250,8 +236,21 @@ export default {
     };
   },
   created() {
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+        case "export": this.export_case = true;
+          break;
+      }
+    });
     this.getLeafList();
-    this.getList();
+    // this.getList();
   },
   methods: {
     // 导出数据
@@ -260,6 +259,7 @@ export default {
         this.$Message.info('当前无数据，无法导入');
         return;
       }
+      this.export_case_loading = true;
       const res = await repay_repayDetail_exportDown(
         {
           ...this.formValidate
@@ -269,6 +269,7 @@ export default {
           responseType: "blob"
         }
       );
+      this.export_case_loading = false;
       util.dowloadfile('回款明细', res);
     },
     async getLeafList() {
@@ -315,11 +316,17 @@ export default {
     },
     // 获取表格数据
     async getList() {
+      if (!this.query) {
+        this.$Message.error('很抱歉，暂无权限查询');
+        return;
+      }
+      this.query_loading = true;
       let res = await repay_repayDetail_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formValidate
       })
+      this.query_loading = false;
       if (res && res.code === 1) {
         this.$Message.success('请求成功!');
         let data = res.data;

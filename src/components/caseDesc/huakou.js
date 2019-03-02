@@ -21,6 +21,7 @@ export default {
       formItem: {},
       visible1: false,
       huakouFlag: true,
+      huakou_loading: false,//划扣提交loading
       ruleValidate: {
         repayAmount: [
           {
@@ -80,6 +81,7 @@ export default {
     del() {
       this.huakouFlag = this.model;
       this.huakouFlag = false;
+      this.huakou_loading = false;
       this.$emit('passBack', this.huakouFlag);
       // this.$emit("getChildrenStatus", this.childrenData);
     },
@@ -111,10 +113,8 @@ export default {
     },
     // 调用代扣
     async repayinfo_applayRepay() {
-      if (isClick) {
-        return;
-      }
       isClick = true;
+      this.huakou_loading = true;
       const res = await repayinfo_applayRepay({
         ...this.formItem,
         caseNo: this.repayinfo_getApplyInfo_data.caseNo,
@@ -122,6 +122,7 @@ export default {
         overdueAmt: this.repayinfo_getApplyInfo_data.overdueAmt,
       });
       isClick = false;
+      this.huakou_loading = false;
       if (res.code === 1) {
         this.repayinfo_applayRepay_data = res.data;
         this.huakouFlag = this.model;

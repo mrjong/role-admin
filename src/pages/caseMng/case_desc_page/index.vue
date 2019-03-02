@@ -66,7 +66,7 @@
           </Poptip>-->
           （{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
           <Button
-            v-if="readType!=='read'"
+            v-if="readType!=='read' && apply_arbitrament"
             @click.stop="handOpen('zhongcai')"
             class="fr vue-back-btn header-btn"
             type="primary"
@@ -82,7 +82,7 @@
             :disabled="btnDisable"
           >申请还款</Button>-->
           <Button
-            v-if="readType!=='read'"
+            v-if="readType!=='read' && apply_deduct"
             @click.stop="handOpen('huakou')"
             class="fr vue-back-btn header-btn"
             type="primary"
@@ -131,6 +131,7 @@
                         class="eye-class"
                         title="显示明文"
                         type="md-eye"
+                        v-if="plaintext"
                         @click.native="syscommon_decrypt({
                 type:'ID_CARD',
                 data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNo
@@ -215,15 +216,16 @@
                       :content="mingwenData"
                       v-if="case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNoHid"
                     >
-                      <Icon
+                      <!-- <Icon
                         class="eye-class"
+                        v-if
                         title="显示明文"
                         type="md-eye"
                         @click.native="syscommon_decrypt({
                 type:'BANK_CARD',
                 data:case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNo
             })"
-                      ></Icon>
+                      ></Icon> -->
                     </Poptip>
                   </span>
                 </div>
@@ -507,7 +509,7 @@
                     },'call','01')"
                   >
                     <Tooltip
-                      content="拨打"
+                      :content="all_opt?'拨打':'暂无权限拨打'"
                       placement="left"
                     >{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid}}</Tooltip>
                   </span>
@@ -519,6 +521,7 @@
                       class="eye-class"
                       title="显示明文"
                       type="md-eye"
+                      v-if="plaintext"
                       @click.native="syscommon_decrypt({
                 type:'MBL',
                 data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
@@ -546,6 +549,7 @@
                     },null,'01')"
                       class="edit"
                       type="md-create"
+                      v-if="all_opt"
                     ></Icon>
                   </Tooltip>
                 </div>
@@ -573,13 +577,14 @@
                     <span>（{{item.cntRelTypName}}）</span>
                   </span>
                   <span class="tel" @click="handCall(item,'call','02')">
-                    <Tooltip content="拨打" placement="left">{{item.cntUserMblNoHid}}</Tooltip>
+                    <Tooltip :content="all_opt?'拨打':'暂无权限拨打'" placement="left">{{item.cntUserMblNoHid}}</Tooltip>
                   </span>
                   <Poptip :content="mingwenData" v-if="item&&item.cntUserMblNoHid">
                     <Icon
                       class="eye-class"
                       title="显示明文"
                       type="md-eye"
+                      v-if="plaintext"
                       @click.native="syscommon_decrypt({
                 type:'MBL',
                 data:item&&item.cntUserMblNo
@@ -593,7 +598,7 @@
                     content="编辑"
                     placement="left"
                   >
-                    <Icon @click.native="handCall(item,null,'02')" class="edit" type="md-create"></Icon>
+                    <Icon @click.native="handCall(item,null,'02')" class="edit" type="md-create" v-if="all_opt"></Icon>
                   </Tooltip>
                 </div>
               </div>
@@ -706,7 +711,7 @@
                   <Button
                     class="vue-back-btn header-btn mt5"
                     type="primary"
-                    v-if="readType!=='read'"
+                    v-if="readType!=='read' && all_opt"
                     size="small"
                     slot="extra"
                     @click.stop="addtxl"
@@ -825,7 +830,7 @@
             <div class="icon-box" @click="answer">
               <Icon type="ios-call"></Icon>
             </div>
-          </div> -->
+          </div>-->
           <div class="item fail">
             <div class="icon-box" @click="call_moor_hung_up">
               <Icon class="fail-icon" type="ios-call"></Icon>

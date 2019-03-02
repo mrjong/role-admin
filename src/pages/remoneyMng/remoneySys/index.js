@@ -13,6 +13,8 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      query: false,//查询权限
+      query_loading: false,//查询按钮权限
       startAndend: '', //还款日期区间
       formValidate: {
         // 查询接口时候所需的参数值传递
@@ -44,23 +46,6 @@ export default {
       total: 100,
       repayOrdTyp: 'SR', //区分用户主动还款、系统代扣还款，UR：用户主动还款，SR：系统代扣还款
       tableData: [
-        // {
-        //   billNo: '1', //账单号
-        //   dkorgOrdNo: '2', // string 代扣订单号
-        //   usrNmHid: '3', // 用户姓名
-        //   idNoHid: '4', // 身份证号
-        //   mblNoHid: '5', // 手机号
-        //   repayOrdAmt: '6', //还款金额
-        //   ordStsName: '7', // 订单状态 借口中取
-        //   orgFnlMsg: '8', //失败原因,
-        //   ordDt: '9', // 还款时间,
-        //   crdAcTypName: '10', //卡类型
-        //   crdCorpOrgName: '11', // 还款银行
-        //   crdNoLast: '12', //还款银行四位
-        //   repayOrdPrcp: '13', // 已还本金
-        //   prdTypName: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
-        //   rutCopyOrg: '15' // 代扣类型
-        // },
       ],
       tableColumns: [
         {
@@ -213,7 +198,18 @@ export default {
     };
   },
   created() {
-    this.getList();
+    // this.getList();
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+      }
+    });
   },
   methods: {
     // 改变日期区间的格式之后进行处理
@@ -246,12 +242,18 @@ export default {
     },
     // 获取表格数据
     async getList() {
+      if (!this.query) {
+        this.$Message.error('很抱歉，暂无权限查询');
+        return;
+      }
+      this.query_loading = true;
       let res= await repay_repayUserOrSystem_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         repayOrdTyp: this.repayOrdTyp,
         ...this.formValidate
       })
+      this.query_loading = false;
       if(res && res.code === 1){
         this.tableData = res.data.content;
         this.total = res.data.totalElements;

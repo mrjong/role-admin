@@ -32,14 +32,11 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response) => {
-    console.log(response);
     reqList.forEach((element, index) => {
-      console.log(element, response.config.url);
       if (element === response.config.url) {
         reqList.splice(index, 1);
       }
     });
-    console.log(reqList);
     if (reqList.length === 0) {
       iView.Message.destroy();
     }

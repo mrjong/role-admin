@@ -2,12 +2,8 @@
   <div class="panel_list">
     <!-- 检索条件 -->
     <Card class="vue-panel">
-      <p
-        slot="title"
-        @click="showPanel=!showPanel"
-      >
-        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
-        检索条件
+      <p slot="title" @click="showPanel=!showPanel">
+        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
       </p>
       <Form
         v-if="!showPanel"
@@ -17,16 +13,8 @@
         :rules="ruleValidate"
       >
         <Row>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="实际还款日期:"
-            >
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="实际还款日期:">
               <DatePicker
                 size="small"
                 style="width:100%"
@@ -39,16 +27,8 @@
               ></DatePicker>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="应还款日期:"
-            >
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="应还款日期:">
               <DatePicker
                 size="small"
                 style="width:100%"
@@ -61,20 +41,9 @@
               ></DatePicker>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="还款状态:"
-            >
-              <Select
-                size="small"
-                v-model="formValidate.payOffSts"
-              >
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="还款状态:">
+              <Select size="small" v-model="formValidate.payOffSts">
                 <Option
                   v-for="item in getDirObj.PAY_OFF_STS"
                   :value="item.itemCode"
@@ -83,16 +52,8 @@
               </Select>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="案件编码:"
-            >
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="案件编码:">
               <Input
                 size="small"
                 clearable
@@ -101,36 +62,13 @@
               ></Input>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="账单号:"
-            >
-              <Input
-                size="small"
-                clearable
-                v-model.trim="formValidate.billNo"
-                placeholder="请输入账单号"
-              ></Input>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="账单号:">
+              <Input size="small" clearable v-model.trim="formValidate.billNo" placeholder="请输入账单号"></Input>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              span="6"
-              prop="mblNo"
-              label="经办人:"
-            >
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" prop="mblNo" label="经办人:">
               <Input
                 size="small"
                 clearable
@@ -139,39 +77,19 @@
               ></Input>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              span="6"
-              label="电催中心:"
-            >
-              <Select
-                size="small"
-                v-model="formValidate.opCompayName">
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="电催中心:">
+              <Select size="small" v-model="formValidate.opCompayName">
                 <Option
-                v-for="item in opCompanyNameList"
-                :value="item.name"
-                :key="item.id"
-                >{{item.name}}
-                </Option>
+                  v-for="item in opCompanyNameList"
+                  :value="item.name"
+                  :key="item.id"
+                >{{item.name}}</Option>
               </Select>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="客户姓名:"
-            >
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="客户姓名:">
               <Input
                 size="small"
                 clearable
@@ -180,13 +98,7 @@
               ></Input>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="24"
-            :lg="24"
-            span="6"
-          >
+          <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
               <Button
                 type="primary"
@@ -194,10 +106,13 @@
                 style="width:80px"
                 long
                 size="small"
-              >检索</Button>
+                :loading='query_loading'
+              >
+              <span v-if="!query_loading">检索</span>
+              <span v-else>检索中...</span>
+              </Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formValidate')"
               >重置</Button>
@@ -207,43 +122,31 @@
       </Form>
     </Card>
     <Card class="vue-panel-table">
-      <p
-        slot="title"
-        @click="showPanel2=!showPanel2"
-      >
-        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
-        检索结果
-          <Button
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-            @click.stop="exportData"
-          >导出数据</Button>
+      <p slot="title" @click="showPanel2=!showPanel2">
+        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
+        <Button
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+          @click.stop="exportData"
+          v-if="export_case"
+        >导出数据</Button>
       </p>
       <!-- 表格 -->
-
       <div v-if="!showPanel2">
         <div class="panel-desc">
           <Row :gutter="5">
-
-            <div class="panel-desc-title fl mr10">
-              回款数(笔)：<span>{{summary.repayOrdDetailCount||0}}</span>
+            <div class="panel-desc-title fl mr10">回款数(笔)：
+              <span>{{summary.repayOrdDetailCount||0}}</span>
             </div>
-            <div class="panel-desc-title fl mr10">
-              还款金额(元)：<span>{{summary.sumRepayAmt||0.00}}</span>
+            <div class="panel-desc-title fl mr10">还款金额(元)：
+              <span>{{summary.sumRepayAmt||0.00}}</span>
             </div>
           </Row>
         </div>
-        <Table
-          border
-          :data="tableData"
-          :columns="tableColumns"
-          stripe
-          class="tableBox"
-        ></Table>
+        <Table border :data="tableData" :columns="tableColumns" stripe class="tableBox"></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
-
           <div style="float: right;">
             <Page
               :total="total"
@@ -258,7 +161,6 @@
               @on-change="changePage"
             ></Page>
           </div>
-
         </div>
       </div>
     </Card>
@@ -266,9 +168,9 @@
 </template>
 <script src="./index.js"></script>
 <style lang="less">
-  .tableBox {
-    .tableMainW {
-      min-width: 400px;
-    }
+.tableBox {
+  .tableMainW {
+    min-width: 400px;
   }
+}
 </style>

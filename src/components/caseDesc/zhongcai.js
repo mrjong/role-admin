@@ -9,7 +9,8 @@ export default {
 				timeout: 120000,
 			},
 			prefix: '/admin/arb/images/',
-			formItem: {},
+      formItem: {},
+      zhongcai_loading: false,//仲裁提交loading
 			ruleValidate: {
 				userGender: [
 					{
@@ -186,6 +187,7 @@ export default {
 		},
 		// 获取信息
 		async arb_apply() {
+      this.zhongcai_loading = true;
 			let obj = {
 				billNo: this.formItem.billNo,
 				caseNo: this.zhongcai_data.caseNo,
@@ -203,7 +205,8 @@ export default {
 			if (this.formItem.standAgreeDate) {
 				obj.standAgreeDate = dayjs(this.formItem.standAgreeDate).format('YYYY-MM-DD');
 			}
-			const res = await arb_apply(obj);
+      const res = await arb_apply(obj);
+      this.zhongcai_loading = false;
 			if (res.code === 1) {
 				this.repayinfo_getApplyInfo_data = res.data;
 				this.del();

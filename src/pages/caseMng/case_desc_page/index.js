@@ -1080,7 +1080,7 @@ export default {
           width: 40,
           render: (h, params) => {
             return h('div', [
-              h(
+             _this.all_opt? h(
                 'span',
                 {
                   style: {
@@ -1100,7 +1100,7 @@ export default {
                     }
                   })
                 ]
-              )
+              ): '无'
             ]);
           }
         },
@@ -1128,7 +1128,7 @@ export default {
                 },
                 `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
               ),
-              h(
+             this.plaintext? h(
                 'Poptip',
                 {
                   props: {
@@ -1156,13 +1156,12 @@ export default {
                         props: {
                           type: 'md-eye'
                         },
-
                         class: 'eye-class'
                       })
                     ]
                   )
                 ]
-              )
+              ): null
             ]);
           }
         },
@@ -1182,7 +1181,7 @@ export default {
           fixed: 'left',
           render: (h, params) => {
             return h('div', [
-              h(
+              _this.all_opt? h(
                 'span',
                 {
                   style: {
@@ -1202,7 +1201,7 @@ export default {
                     }
                   })
                 ]
-              )
+              ): '无'
             ]);
           }
         },
@@ -1318,7 +1317,7 @@ export default {
                 },
                 `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
               ),
-              h(
+             this.plaintext? h(
                 'Poptip',
                 {
                   props: {
@@ -1352,7 +1351,7 @@ export default {
                     ]
                   )
                 ]
-              )
+              ): null
             ]);
           }
         },
@@ -1378,7 +1377,7 @@ export default {
           fixed: 'left',
           render: (h, params) => {
             return h('div', [
-              h(
+              _this.all_opt? h(
                 'span',
                 {
                   style: {
@@ -1398,7 +1397,7 @@ export default {
                     }
                   })
                 ]
-              )
+              ): '无'
             ]);
           }
         },
@@ -1481,7 +1480,7 @@ export default {
                 },
                 `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
               ),
-              h(
+              this.plaintext? h(
                 'Poptip',
                 {
                   props: {
@@ -1515,7 +1514,7 @@ export default {
                     ]
                   )
                 ]
-              )
+              ): null
             ]);
           }
         },
@@ -1535,7 +1534,7 @@ export default {
           width: 40,
           render: (h, params) => {
             return h('div', [
-              h(
+              _this.all_opt? h(
                 'span',
                 {
                   style: {
@@ -1555,7 +1554,7 @@ export default {
                     }
                   })
                 ]
-              )
+              ): '无'
             ]);
           }
         },
@@ -1641,7 +1640,7 @@ export default {
                 },
                 `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
               ),
-              h(
+              this.plaintext? h(
                 'Poptip',
                 {
                   props: {
@@ -1675,7 +1674,7 @@ export default {
                     ]
                   )
                 ]
-              )
+              ): null
             ]);
           }
         },
@@ -1699,6 +1698,18 @@ export default {
   },
   created() {
     console.log(Cookie.get('all_opt'));
+    if (Cookie.get('all_opt') === 'true') {
+      this.all_opt = true;
+    };
+    if (Cookie.get('plaintext') === 'true') {
+      this.plaintext = true;
+    };
+    if (Cookie.get('apply_arbitrament') === 'true') {
+      this.apply_arbitrament = true;
+    };
+    if (Cookie.get('apply_deduct') === 'true') {
+      this.apply_deduct = true;
+    };
     let params = location.hash.split('?');
     const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
     this.caseNo = window.atob(queryData.caseNotest);
@@ -2151,6 +2162,10 @@ export default {
 
     // 点击电话
     handCall(obj, type, tag) {
+      if (!this.all_opt) {
+        this.$Message.error('很抱歉，暂无权限拨打');
+        return;
+      }
       this.handleCancle();
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;
