@@ -25,7 +25,7 @@
                   v-for="item in getDirObj.CASE_HANDLE_STATUS"
                   :value="item.itemCode"
                   :key="item.itemCode"
-                  v-if="item.itemName !=='出催'"
+                  v-if="userType === '01'?item.itemName !=='出催': item.itemName !== '出催' && item.itemName !== '停催' && item.itemName !== '待分配'"
                 >{{ item.itemName }}</Option>
               </Select>
             </FormItem>

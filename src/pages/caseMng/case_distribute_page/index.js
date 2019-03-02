@@ -1,5 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
+import Cookie from 'js-cookie';
 import { cases_allot_list, getLeafTypeList, collect_parent_children, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, collect_show_children, cases_case_sendwebmessage } from '@/service/getData';
 import qs from 'qs';
 
@@ -46,6 +47,7 @@ export default {
       stopCollectionFlag: false,
       recoverCollectionFlag: false,
       messageFlag: false,
+      userType: Cookie.get("userType"),//获取人员类型 01 系统 02催收
       queryList: false,//查询权限
       batch_distribute: false,//批量分配权限
       recover: false,//回收权限
