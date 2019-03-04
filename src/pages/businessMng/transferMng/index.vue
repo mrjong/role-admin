@@ -2,12 +2,8 @@
   <div class="panel_list">
     <!-- 检索条件 -->
     <Card class="vue-panel">
-      <p
-        slot="title"
-        @click="showPanel=!showPanel"
-      >
-        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
-        检索条件
+      <p slot="title" @click="showPanel=!showPanel">
+        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
       </p>
       <Form
         v-if="!showPanel"
@@ -17,21 +13,9 @@
         :rules="ruleValidate"
       >
         <Row>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="产品线:"
-            >
-              <Select
-                size="small"
-                v-model="formValidate.prdTyp"
-                placeholder="请选择产品线"
-              >
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="产品线:">
+              <Select size="small" v-model="formValidate.prdTyp" placeholder="请选择产品线">
                 <Option
                   v-for="item in getDirObj.PROD_TYPE"
                   :value="item.itemCode"
@@ -40,57 +24,19 @@
               </Select>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="案件号:"
-            >
-              <Input
-                size="small"
-                clearable
-                v-model.trim="formValidate.caseNo"
-                placeholder="请输入案件号"
-              ></Input>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="案件号:">
+              <Input size="small" clearable v-model.trim="formValidate.caseNo" placeholder="请输入案件号"></Input>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="账单号:"
-            >
-              <Input
-                size="small"
-                clearable
-                v-model.trim="formValidate.billNo"
-                placeholder="请输入账单号"
-              ></Input>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="账单号:">
+              <Input size="small" clearable v-model.trim="formValidate.billNo" placeholder="请输入账单号"></Input>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="订单状态:"
-            >
-              <Select
-                size="small"
-                v-model="formValidate.repayOrdSts"
-                placeholder="请选择订单状态"
-              >
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="订单状态:">
+              <Select size="small" v-model="formValidate.repayOrdSts" placeholder="请选择订单状态">
                 <Option
                   v-for="item in getDirObj.REPAY_ORD_STS"
                   :value="item.itemCode"
@@ -99,16 +45,8 @@
               </Select>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="申请日期:"
-            >
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="申请日期:">
               <DatePicker
                 size="small"
                 style="width:100%"
@@ -121,16 +59,8 @@
               ></DatePicker>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
-            <FormItem
-              label="申请流水号:"
-            >
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="申请流水号:">
               <Input
                 size="small"
                 clearable
@@ -139,13 +69,7 @@
               ></Input>
             </FormItem>
           </Col>
-          <Col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            span="6"
-          >
+          <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
             <FormItem>
               <Button
                 type="primary"
@@ -153,10 +77,13 @@
                 style="width:80px"
                 long
                 size="small"
-              >检索</Button>
+                :loading="query_loading"
+              >
+                <span v-if="!query_loading">检索</span>
+                <span v-else>检索中...</span>
+              </Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formValidate')"
               >重置</Button>
@@ -166,26 +93,14 @@
       </Form>
     </Card>
     <Card class="vue-panel-table">
-      <p
-        slot="title"
-        @click="showPanel2=!showPanel2"
-      >
-        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>
-        检索结果
+      <p slot="title" @click="showPanel2=!showPanel2">
+        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
       </p>
       <!-- 表格 -->
-
       <div v-if="!showPanel2">
-        <Table
-          border
-          :data="tableData"
-          :columns="tableColumns"
-          stripe
-          class="tableBox"
-        ></Table>
+        <Table border :data="tableData" :columns="tableColumns" stripe class="tableBox"></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
-
           <div style="float: right;">
             <Page
               :total="total"
@@ -200,7 +115,6 @@
               @on-change="changePage"
             ></Page>
           </div>
-
         </div>
       </div>
     </Card>

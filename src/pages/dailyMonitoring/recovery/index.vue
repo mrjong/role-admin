@@ -228,7 +228,6 @@ export default {
         pageSize: this.pageSize
       });
       if (res && res.code === 1) {
-        this.$Message.success("请求成功!");
         let data = res.data;
         data.content.map((val, key)=>{
           val.lastCollectRate = val.lastCollectRate && (val.lastCollectRate + '%');

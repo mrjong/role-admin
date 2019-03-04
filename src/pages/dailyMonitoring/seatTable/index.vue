@@ -385,7 +385,6 @@ export default {
       });
       console.log(res);
       if (res && res.code === 1) {
-        this.$Message.success("请求成功!");
         let data = res.data;
         this.tableData = data.content;
         this.total = data.totalElements; //接口中在该条件下取得的数据量

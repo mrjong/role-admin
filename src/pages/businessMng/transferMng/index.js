@@ -15,6 +15,8 @@ export default {
       showPanel2: false,
       modal12: false,
       modal11: false,
+      query: false,//查询权限按钮
+      query_loading: false,//查询权限按钮loding
       applyDate: '', //申请日期区间
       formValidate: {
         // prdTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
@@ -237,7 +239,18 @@ export default {
     };
   },
   created() {
-    this.getList();
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+      }
+    });
+    // this.getList();
   },
   methods: {
     // 改变日期区间的格式之后进行处理
@@ -268,13 +281,18 @@ export default {
     },
     // 获取表格数据
     async getList() {
+      if (!this.query) {
+        this.$Message.error('很抱歉，暂无权限查询');
+        return;
+      }
+      this.query_loading = true;
       let res= await deduct_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         //repayOrdTyp: this.repayOrdTyp,
         ...this.formValidate
       })
-      console.log(res)
+      this.query_loading = false;
       // 请求成功之后需要做分页处理，然后将拿到的数据进行数据处理，总数目和展示条数
       if(res && res.code === 1){
         this.tableData = res.data.content;
