@@ -259,6 +259,7 @@ export default {
   },
   watch: {
     parentData() {
+      this.formDisabled = false;//切换不同公司，表单disabled重置
       this.sysarea_getAreaProvience();
       const {
         id,

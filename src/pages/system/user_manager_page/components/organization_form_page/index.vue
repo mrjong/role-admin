@@ -238,6 +238,7 @@ export default {
           ? this.$options.filters["formatDate"](updateTime,"YYYY-MM-DD HH:mm:ss")
           : updateTime;
       this.status = status;
+      this.formDisabled = false;//切换不同机构，表单disabled重置
       console.log(this.parentData);
     }
   },

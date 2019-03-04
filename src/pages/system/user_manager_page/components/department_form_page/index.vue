@@ -195,6 +195,7 @@ export default {
   },
   watch: {
     parentData() {
+      this.formDisabled = false;//切换不同部门，表单disabled重置
       this.departmentFormItem = this.parentData.nodeData;
       this.departmentFormItem.createTime = this.parentData.nodeData.createTime
         ? this.$options.filters["formatDate"](

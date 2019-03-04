@@ -328,7 +328,6 @@ export default {
       })
       this.query_loading = false;
       if (res && res.code === 1) {
-        this.$Message.success('请求成功!');
         let data = res.data;
         this.tableData = data.page.content;
         this.total = data.page.totalElements //接口中在该条件下取得的数据量

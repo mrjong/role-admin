@@ -27,7 +27,7 @@
               ></DatePicker>
             </FormItem>
           </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
               <Button
                 type="primary"
@@ -35,10 +35,13 @@
                 style="width:80px"
                 long
                 size="small"
-              >检索</Button>
+                :loading="query_loading"
+              >
+                <span v-if="!query_loading">检索</span>
+                <span v-else>检索中...</span>
+              </Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -55,7 +58,12 @@
           type="primary"
           size="small"
           @click.stop="exportData"
-        >导出数据</Button>
+          v-if="export_case"
+          :loading="export_case_loading"
+        >
+          <span v-if="!export_case_loading">导出数据</span>
+          <span v-else>导出中...</span>
+        </Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
@@ -97,6 +105,10 @@ export default {
     return {
       showPanel: false,
       showPanel2: false,
+      export_case: false, //导出权限
+      query: false, //查询权限
+      query_loading: false, //查询按钮loading
+      export_case_loading: false, //导出按钮loading
       dealTime: "",
       formItem: {
         startDate: "",
@@ -129,17 +141,7 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 10,
-      tableData: [
-        // {
-        //   handleDate:'',//处理日期
-        //   calledNo: '', //外呼手机号
-        //   calledUserId:'', // 用户ID
-        //   callState:'', //通话结果
-        //   talkTime:'',// 通话时长
-        //   agentName:'', //坐席姓名
-        //   agent:'',//坐席工号
-        // },
-      ],
+      tableData: [],
       tableColumns: [
         {
           title: "序号",
@@ -148,7 +150,7 @@ export default {
           searchOperator: "=",
           align: alignCenter,
           key: "listIndex",
-          fixed: 'left',
+          fixed: "left"
         },
         {
           title: "处理日期",
@@ -209,7 +211,22 @@ export default {
     };
   },
   created() {
-    this.getList();
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== "03") {
+        return;
+      }
+      switch (item.url) {
+        case "query":
+          this.query = true;
+          break;
+        case "export":
+          this.export_case = true;
+          break;
+      }
+    });
+    // this.getList();
   },
   methods: {
     // 改变日期区间的格式之后进行处理
@@ -242,6 +259,7 @@ export default {
         this.$Message.info("当前无数据，无法导入");
         return;
       }
+      this.export_case_loading = true;
       let res = await monitor_callDetail_exportDown(
         {
           ...this.formItem
@@ -252,15 +270,21 @@ export default {
         }
       );
       util.dowloadfile("呼叫明细", res);
+      this.export_case_loading = false;
     },
     // 获取表格数据
     async getList() {
+      if (!this.query) {
+        this.$Message.error("很抱歉，暂无权限查询");
+        return;
+      }
+      this.query_loading = true;
       let res = await monitor_callDetail_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formItem
       });
-      console.log(res);
+      this.query_loading = false;
       if (res && res.code === 1) {
         let data = res.data;
         this.tableData = data.content;
@@ -280,7 +304,7 @@ export default {
 };
 </script>
 <style lang="less">
-  /*.ivu-form-item-content{*/
-    /*margin-left: 0 !important;*/
-  /*}*/
+/*.ivu-form-item-content{*/
+/*margin-left: 0 !important;*/
+/*}*/
 </style>

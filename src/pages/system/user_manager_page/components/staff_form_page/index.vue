@@ -361,6 +361,8 @@ export default {
     this.staffFormItem.roleId = this.parentData.nodeData.roleId;
     if (this.staffFormItem.roleId === "2474cbac7a34419f8decc99f022846a1") {
       this.departmentFlag = false;
+    } else {
+      this.departmentFlag = true;
     }
     this.collect_user_list("03", this.staffFormItem.companyId);
     this.staffFormItem.createUser = this.parentData.nodeData.createUser;
@@ -383,6 +385,8 @@ export default {
       this.staffFormItem.roleId = this.parentData.nodeData.roleId;
       if (this.staffFormItem.roleId === "2474cbac7a34419f8decc99f022846a1") {
         this.departmentFlag = false;
+      } else {
+        this.departmentFlag = true;
       }
       this.collect_user_list("03", this.staffFormItem.companyId);
       this.staffFormItem.createUser = this.parentData.nodeData.createUser;
@@ -390,6 +394,7 @@ export default {
       this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
       this.staffFormItem.status = String(this.parentData.nodeData.status);
       this.collect_user_clerk_info(this.parentData.nodeData.name);
+      this.formDisabled = false;//切换不同催收员，表单disabled重置
     }
   },
   methods: {
@@ -454,7 +459,7 @@ export default {
       const res = await system_role_list({
         roleType: "02",
         status: "1",
-        pageSize: 10000
+        pageSize: 100
       });
       console.log(res);
       if (res.code === 1) {

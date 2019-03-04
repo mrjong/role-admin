@@ -46,7 +46,7 @@
               ></DatePicker>
             </FormItem>
           </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
             <FormItem>
               <Button
                 type="primary"
@@ -54,10 +54,13 @@
                 style="width:80px"
                 long
                 size="small"
-              >检索</Button>
+                :loading="query_loading"
+              >
+                <span v-if="!query_loading">检索</span>
+                <span v-else>检索中...</span>
+              </Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -74,7 +77,12 @@
           type="primary"
           size="small"
           @click.stop="exportData"
-        >导出数据</Button>
+          v-if="export_case"
+          :loading="export_case_loading"
+        >
+          <span v-if="!export_case_loading">导出数据</span>
+          <span v-else>导出中...</span>
+        </Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
@@ -118,6 +126,10 @@ export default {
     return {
       showPanel: false,
       showPanel2: false,
+      export_case: false, //导出权限
+      query: false, //查询权限
+      query_loading: false, //查询按钮loading
+      export_case_loading: false, //导出按钮loading
       formItem: {
         createDate: "", //默认获取当前的日期时间需要进行转换
         overdueDaysLt: "",
@@ -150,57 +162,7 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 10,
-      tableData: [
-        // {
-        //   caseNo:'',//案件编码
-        //   caseHandleStatus: '', //案件状态
-        //   prdTyp:'', // 产品线
-        //   billNo:'', //账单号
-        //   creditLevel:'',// 信用级别
-        //   billRegDt:'', //申请日期
-        //   ordSuccDt:'',//放款日期
-        //   overdueTotalCount:'',//逾期触发次数
-        //   overdueTotalDays:'',//逾期累计天数
-        //   perdCnt:'',//分期期数
-        //   waitPerdNum:'',//未分期数
-        //   cardNoHid: "",//银行卡号
-        //   corpOrgNm: '',//银行名称
-        //   billPrcpAmt:'',//借款本金
-        //   billTotAmt:'',//订单总金额
-        //   perdPrcpAmt:'',//每期应还本金
-        //   billSerAmt:'',//服务费
-        //   billItrtAmt:'',//利息
-        //   perdTotAmt:'',//每期应还总金额
-        //   billOvdtAmt:'',//逾期费
-        //   billOvduAmt:'',//滞纳金
-        //   perdNowTotAmt:'',//当前应还总额
-        //   billSts:'',//账单类型
-        //   idNoHid:'',//用户身份证号
-        //   usrNm:'',//用户名
-        //   usrId:'',//用户ID
-        //   mblNoHid:'',//用户手机号
-        //   cntUsrNm:'',//紧急联系人姓名
-        //   cntRelTyp:'',//与用户的关系
-        //   cntMblNo:'',//紧急联系人手机号
-        //   usrBirthDt:'',//年龄
-        //   usrGender:'',//性别
-        //   idDtlAddr:'',//户籍地址
-        //   billOvdtSts:'',//逾期状态
-        //   perpRepayDt:'',//实际还款时间
-        //   perdNum:'',//当前逾期期数
-        //   perdDueDt:'',//应还日期
-        //   perdOutDueDt:'',//逾期日期
-        //   perdAllNum:'',//逾期期数
-        //   perdTotRep:'',//实际还款金额
-        //   drtFineAmt:'',//减免金额
-        //   perdItrtRep:'',//实收利息
-        //   perdFineRep:'',//实收罚息
-        //   overDueDays:'',//逾期天数
-        //   billRemainPrcpAmt:'',//剩余本金
-        //   ordSuccCount:'',//放款次数
-        //   opUserName:'' ,//经办人
-        // },
-      ],
+      tableData: [],
       tableColumns: [
         {
           title: "序号",
@@ -209,7 +171,7 @@ export default {
           searchOperator: "=",
           align: alignCenter,
           key: "listIndex",
-          fixed: 'left',
+          fixed: "left"
         },
         {
           title: "案件编码",
@@ -570,8 +532,23 @@ export default {
       createT,
       "YYYY-MM-DD"
     );
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== "03") {
+        return;
+      }
+      switch (item.url) {
+        case "query":
+          this.query = true;
+          break;
+        case "export":
+          this.export_case = true;
+          break;
+      }
+    });
     console.log(this.formItem, "qqqqqqqqqqqqqqqmmmmm");
-    this.getList();
+    // this.getList();
   },
   methods: {
     //清空时间日期
@@ -610,7 +587,7 @@ export default {
         this.$Message.info("当前无数据，无法导入");
         return;
       }
-      console.log("逾期导出");
+      this.export_case_loading = true;
       if (this.formItem.createDate) {
         this.formItem.createDate = this.$options.filters["formatDate"](
           this.formItem.createDate,
@@ -627,22 +604,27 @@ export default {
         }
       );
       util.dowloadfile("逾期日报", res);
+      this.export_case_loading = false;
     },
     // 获取表格数据
     async getList() {
+      if (!this.query) {
+        this.$Message.error("很抱歉，暂无权限查询");
+        return;
+      }
+      this.query_loading = true;
       if (this.formItem.createDate) {
         this.formItem.createDate = this.$options.filters["formatDate"](
           this.formItem.createDate,
           "YYYY-MM-DD"
         );
       }
-      console.log(this.formItem, "qqqqqqqqqqqqqqq");
       let res = await monitor_overdueReports_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formItem
       });
-      console.log(res);
+      this.query_loading = false;
       if (res && res.code === 1) {
         let data = res.data;
         this.tableData = data.content;

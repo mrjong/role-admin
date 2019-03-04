@@ -8,7 +8,12 @@
           type="primary"
           size="small"
           @click.stop="exportData"
-        >导出数据</Button>
+          v-if="export_case"
+          :loading="export_case_loading"
+        >
+          <span v-if="!export_case_loading">导出数据</span>
+          <span v-else>导出中...</span>
+        </Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
@@ -51,6 +56,8 @@ export default {
       showPanel: false,
       showPanel2: false,
       modal12: false,
+      export_case: false, //导出按钮权限
+      export_case_loading: false, //导出按钮loading
       inputGrid: "",
       modal11: false,
       formItem: {
@@ -105,7 +112,7 @@ export default {
           searchOperator: "=",
           align: alignCenter,
           key: "listIndex",
-          fixed: 'left',
+          fixed: "left"
         },
         {
           title: "所属组别",
@@ -177,11 +184,23 @@ export default {
           className: "tableMainW",
           align: alignCenter,
           width: widthVal
-        },
+        }
       ]
     };
   },
   created() {
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== "03") {
+        return;
+      }
+      switch (item.url) {
+        case "export":
+          this.export_case = true;
+          break;
+      }
+    });
     this.getList();
   },
   methods: {
@@ -212,6 +231,7 @@ export default {
         this.$Message.info("当前无数据，无法导入");
         return;
       }
+      this.export_case_loading = true;
       let res = await monitor_collectRate_exportDown(
         {},
         {
@@ -220,6 +240,7 @@ export default {
         }
       );
       util.dowloadfile("催款回收率", res);
+      this.export_case_loading = false;
     },
     // 获取表格数据
     async getList() {
@@ -229,11 +250,12 @@ export default {
       });
       if (res && res.code === 1) {
         let data = res.data;
-        data.content.map((val, key)=>{
-          val.lastCollectRate = val.lastCollectRate && (val.lastCollectRate + '%');
-          val.repayCountRate = val.repayCountRate && (val.repayCountRate + '%');
-          val.collectRate = val.collectRate && (val.collectRate + '%');
-        })
+        data.content.map((val, key) => {
+          val.lastCollectRate =
+            val.lastCollectRate && val.lastCollectRate + "%";
+          val.repayCountRate = val.repayCountRate && val.repayCountRate + "%";
+          val.collectRate = val.collectRate && val.collectRate + "%";
+        });
         this.tableData = data.content;
         this.total = data.totalElements; //接口中在该条件下取得的数据量
         //data.page.numberOfElements  当前页面实际返回的数量

@@ -45,7 +45,7 @@
               </Select>
             </FormItem>
           </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
             <FormItem>
               <Button
                 type="primary"
@@ -53,10 +53,13 @@
                 style="width:80px"
                 long
                 size="small"
-              >检索</Button>
+                :loading="query_loading"
+              >
+                <span v-if="!query_loading">检索</span>
+                <span v-else>检索中...</span>
+              </Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formValidate')"
               >重置</Button>
@@ -73,7 +76,12 @@
           type="primary"
           size="small"
           @click.stop="exportData"
-        >导出数据</Button>
+          v-if="export_case"
+          :loading="export_case_loading"
+        >
+          <span v-if="!export_case_loading">导出数据</span>
+          <span v-else>导出中...</span>
+        </Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
@@ -117,6 +125,10 @@ export default {
       showPanel: false,
       showPanel2: false,
       groupSeatList: [],
+      export_case: false, //导出权限
+      query: false, //查询权限
+      query_loading: false, //查询按钮loading
+      export_case_loading: false, //导出按钮loading
       groupList: [],
       modal12: false,
       modal11: false,
@@ -133,34 +145,14 @@ export default {
       pageSize: 10,
       total: 0,
       tableData: [
-        // {
-        //   agentName:'', //催收员
-        //   dialout: '', // 外呼数
-        //   effectiveLink:'', // 有效接通数
-        //   linkRate: '', // 接通率
-        //   onlineTimeStr:'', // 在线总时长
-        //   effectiveTalkTimeStr: '',//有效接通总时长
-        //   caseCount: '',// 在案量
-        //   caseAmountCount:'',//载案金
-        //   memberProcessRate:'',//用户处理率
-        //   dialoutMemberRate:'',//外呼覆盖率
-        //   linkMemberRate:'',//接通覆盖率
-        //   repayOrderCount:'',//还款笔数
-        //   linkRepayRate:'',//接通还款率
-        //   avgProcessCount:'',//每1H处理量
-        //   repayAmountCount:'',//还款本金
-        //   repayCountRate:'',//笔数还款率
-        //   repayAmountRate:''//金额还款率
-        // },
       ],
       tableColumns: [
         {
-          title: "id",
+          title: "序号",
           type: "index",
           width: 60,
           searchOperator: "=",
           align: alignCenter,
-          key: "listIndex",
           fixed: 'left',
         },
         {
@@ -310,10 +302,25 @@ export default {
     };
   },
   created() {
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== "03") {
+        return;
+      }
+      switch (item.url) {
+        case "query":
+          this.query = true;
+          break;
+        case "export":
+          this.export_case = true;
+          break;
+      }
+    });
     // 此处注意刁颖顺序，因为是两级联动关系，必须等到拿到组别之后，在进行坐席接口调用
     //this.getSeatTableList();
     this.groupListArr();
-    this.getList();
+    // this.getList();
   },
   methods: {
     // 改变日期区间的格式之后进行处理
@@ -365,6 +372,7 @@ export default {
         this.$Message.info("当前无数据，无法导入");
         return;
       }
+      this.export_case_loading = true;
       let res = await monitor_agentState_exportDown(
         {
           ...this.formValidate
@@ -374,16 +382,22 @@ export default {
           responseType: "blob"
         }
       );
+      this.export_case_loading = false;
       util.dowloadfile("坐席报表", res);
     },
     // 获取表格数据
     async getList() {
+      if (!this.query) {
+        this.$Message.error("很抱歉，暂无权限查询");
+        return;
+      }
+      this.query_loading = true;
       let res = await monitor_agentState_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formValidate
       });
-      console.log(res);
+      this.query_loading = false;
       if (res && res.code === 1) {
         let data = res.data;
         this.tableData = data.content;
