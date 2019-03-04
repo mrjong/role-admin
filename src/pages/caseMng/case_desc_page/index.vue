@@ -27,7 +27,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
             <FormItem label="关系:" prop="callUserType">
-              <Select size="small" placeholder="请选择关系" v-model="formItem2.callUserType">
+              <Select size="small" placeholder="请选择关系" transfer v-model="formItem2.callUserType">
                 <Option
                   v-for="item in getDirObj.CNT_REL_TYP"
                   :value="item.itemCode"
@@ -730,7 +730,7 @@
                   <Input size="small" v-model.trim="formValidate.userNmHid" placeholder="请输入沟通对象"></Input>
                 </FormItem>
                 <FormItem label="关系" prop="callUserType">
-                  <Select size="small" v-model="formValidate.callUserType" placeholder="请输入选择关系">
+                  <Select size="small" v-model="formValidate.callUserType" transfer placeholder="请选择关系">
                     <Option
                       v-for="item in getDirObj.CNT_REL_TYP"
                       :value="item.itemCode"
@@ -744,7 +744,8 @@
                     size="small"
                     v-model="formValidate.collectResult"
                     @on-change="SelectChange"
-                    placeholder="请输入选择拨打状态"
+                    transfer
+                    placeholder="请选择拨打状态"
                   >
                     <Option
                       v-for="item in collectcode_getCollectRelate_Data"
@@ -757,8 +758,9 @@
                 <FormItem label="沟通状态" prop="communicateResult">
                   <Select
                     size="small"
+                    transfer
                     v-model="formValidate.communicateResult"
-                    placeholder="请输入选择沟通状态"
+                    placeholder="请选择沟通状态"
                   >
                     <Option
                       v-for="item in collectcode_getCollectRelate_childItem"
@@ -789,7 +791,10 @@
                   ></Input>
                 </FormItem>
                 <FormItem style="margin-top:10px">
-                  <Button type="primary" size="small" @click="handleSubmit('formValidate')">提交</Button>
+                  <Button type="primary" size="small" @click="handleSubmit('formValidate')" :loading='add_collect_loading'>
+                    <span v-if="!add_collect_loading">提交</span>
+                    <span v-else>提交中...</span>
+                  </Button>
                   <Button size="small" @click="handleCancle()" style="margin-left: 8px">取消</Button>
                 </FormItem>
               </Form>

@@ -49,6 +49,7 @@ export default {
       plaintext: false,//案件详情查看明文权限
       apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
+      add_collect_loading: false,//添加催记按钮loading
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -2150,6 +2151,7 @@ export default {
 
     // 取消催记
     handleCancle() {
+      this.add_collect_loading = false;
       // 重置初始化数据
       this.mblNo = '';
       this.userNmHidCopy = '';
@@ -2270,6 +2272,7 @@ export default {
     },
     // 新增催记
     async case_remark_his_add() {
+      this.add_collect_loading = true;
       const res = await case_remark_his_add({
         ...this.formValidate,
         promiseRepayDate: this.formValidate.promiseRepayDate
@@ -2285,6 +2288,7 @@ export default {
         soundUuid: this.actionId,
         userNmNew: this.formValidate.userNmHid === this.userNmHidCopy ? '' : this.formValidate.userNmHid
       });
+      this.add_collect_loading = false;
       if (res.code === 1) {
         this.$Message.success('添加成功');
         setTimeout(() => {
