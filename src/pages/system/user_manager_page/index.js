@@ -25,6 +25,13 @@ export default {
       showPanel3: false,
       modal1: false,
       roleModal: false,
+      query: false,//查询权限
+      add_org: false,//添加组织权限
+      view_invalid_user: false,//查看无效员工权限
+      update: false,//修改权限
+      add_user: false,//添加人员权限
+      status_update: false,//状态变更权限
+      reset_pwd: false,//重置密码权限
       roleType: '',
       organizationModal: false,
       organizationType: '',
@@ -62,6 +69,30 @@ export default {
   created() {
     // this.getList();
     // this.getList('#', '01');
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+        case "add_org": this.add_org = true;
+          break;
+        case "view_invalid_user": this.view_invalid_user = true;
+          break;
+        case "update": this.update = true;
+          break;
+        case "add_user": this.add_user = true;
+          break;
+        case "status_update": this.status_update = true;
+          break;
+        case "reset_pwd": this.reset_pwd = true;
+          break;
+      }
+    });
+    console.log(this.add_org)
     this.collect_tree_children();
   },
   methods: {
@@ -120,7 +151,7 @@ export default {
               marginRight: '20px'
             }
           }, [
-              data.leafType !== '04' && data.leafType !== '03' ?
+              data.leafType !== '04' && data.leafType !== '03' && this.add_org?
                 h('Button', {
                   props: Object.assign({}, this.buttonProps, {
                     // icon: 'ios-plus-empty'
@@ -136,22 +167,21 @@ export default {
                     }
                   }
                 }, this.getOrganization(data.leafType)) : null,
-              data.leafType === '04' ? null :
-                h('Button', {
-                  props: Object.assign({}, this.buttonProps, {
-                    // icon: 'ios-plus-empty'
-                  }),
-                  style: {
-                    // marginRight: data.type === '4' || data.type === '3' ? 0 : '4px'
-                  },
-                  on: {
-                    click: (e) => {
-                      e.stopPropagation();
-                      this.nodeData = data;
-                      this.addRole(data)
-                    }
+              data.leafType !== '04' && this.add_user ? h('Button', {
+                props: Object.assign({}, this.buttonProps, {
+                  // icon: 'ios-plus-empty'
+                }),
+                style: {
+                  // marginRight: data.type === '4' || data.type === '3' ? 0 : '4px'
+                },
+                on: {
+                  click: (e) => {
+                    e.stopPropagation();
+                    this.nodeData = data;
+                    this.addRole(data)
                   }
-                }, '添加人员'),
+                }
+              }, '添加人员') :null
             ])
         ]);
     },
@@ -197,6 +227,9 @@ export default {
       this.parentData = {
         type: type,
         nodeData: this.nodeData,
+        update: this.update,
+        status_update: this.status_update,
+        reset_pwd: this.reset_pwd
       };
       this.organizationModal = false;
       this.roleModal = false;
@@ -238,6 +271,10 @@ export default {
     },
     // tree数据一步到位
     async collect_tree_children() {
+      if (!this.query) {
+        this.data5 = [];
+        return;
+      }
       const res = await collect_tree_children({status: 1});
       if (res.code === 1) {
         console.log(res);

@@ -14,11 +14,17 @@
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="机构名称:" prop="name">
-            <Input size="small" clearable v-model="organizationFormItem.name" :maxlength='20' placeholder="请输入机构名称"></Input>
+            <Input
+              size="small"
+              clearable
+              v-model="organizationFormItem.name"
+              :maxlength="20"
+              placeholder="请输入机构名称"
+            ></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="6">
-          <FormItem label="机构负责人:" span="6" prop='userIds'>
+          <FormItem label="机构负责人:" span="6" prop="userIds">
             <Select
               size="small"
               v-model="organizationFormItem.userIds"
@@ -27,11 +33,7 @@
               multiple
               placeholder="请选择机构负责人"
             >
-              <Option
-                v-for="item in bossList"
-                :value="item.uuid"
-                :key="item.uuid"
-              >{{ item.name }}</Option>
+              <Option v-for="item in bossList" :value="item.uuid" :key="item.uuid">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -48,19 +50,18 @@
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
           <FormItem>
-            <Button
-              size="small"
-
-              style="width:80px;margin-right: 8px"
-              @click="cancelStatus()"
-            >取消</Button>
+            <Button size="small" style="width:80px;margin-right: 8px" @click="cancelStatus()">取消</Button>
             <Button
               type="primary"
               @click="handleSubmit(parentData.type,'organizationFormItem')"
               style="width:80px"
               long
               size="small"
-            >确定</Button>
+              :loading="add_orz_loading"
+            >
+              <span v-if="!add_orz_loading">确定</span>
+              <span v-else>添加中...</span>
+            </Button>
           </FormItem>
         </Col>
       </Form>
@@ -75,7 +76,13 @@
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="公司名称:" prop="name">
-            <Input size="small" clearable v-model="componeyFormItem.name" :maxlength='20' placeholder="请输入公司名称"></Input>
+            <Input
+              size="small"
+              clearable
+              v-model="componeyFormItem.name"
+              :maxlength="20"
+              placeholder="请输入公司名称"
+            ></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -101,7 +108,14 @@
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="地区:">
-            <Cascader :data="areaList" v-model="componeyFormItem.area" size="small" :load-data="loadData" @on-change='areaSelect'></Cascader>
+            <Cascader
+              :data="areaList"
+              v-model="componeyFormItem.area"
+              size="small"
+              :load-data="loadData"
+              @on-change="areaSelect"
+              transfer
+            ></Cascader>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
@@ -117,19 +131,18 @@
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
           <FormItem>
-            <Button
-              size="small"
-
-              style="width:80px;margin-right: 8px"
-              @click="cancelStatus()"
-            >取消</Button>
+            <Button size="small" style="width:80px;margin-right: 8px" @click="cancelStatus()">取消</Button>
             <Button
               type="primary"
               @click="handleSubmit(parentData.type,'componeyFormItem')"
               style="width:80px"
               long
               size="small"
-            >确定</Button>
+              :loading="add_orz_loading"
+            >
+              <span v-if="!add_orz_loading">确定</span>
+              <span v-else>添加中...</span>
+            </Button>
           </FormItem>
         </Col>
       </Form>
@@ -144,7 +157,13 @@
       >
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="部门名称:" prop="name">
-            <Input size="small" clearable v-model="departmentFormItem.name" :maxlength='20' placeholder="请输入部门名称"></Input>
+            <Input
+              size="small"
+              clearable
+              v-model="departmentFormItem.name"
+              :maxlength="20"
+              placeholder="请输入部门名称"
+            ></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -165,19 +184,18 @@
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
           <FormItem>
-            <Button
-              size="small"
-
-              style="width:80px;margin-right: 8px"
-              @click="cancelStatus()"
-            >取消</Button>
+            <Button size="small" style="width:80px;margin-right: 8px" @click="cancelStatus()">取消</Button>
             <Button
               type="primary"
               @click="handleSubmit(parentData.type,'departmentFormItem')"
               style="width:80px"
               long
               size="small"
-            >确定</Button>
+              :loading="add_orz_loading"
+            >
+              <span v-if="!add_orz_loading">确定</span>
+              <span v-else>添加中...</span>
+            </Button>
           </FormItem>
         </Col>
       </Form>
@@ -207,6 +225,7 @@ export default {
     return {
       getDirList: ["COLLECT_TYPE"],
       getDirObj: {},
+      add_orz_loading: false, //提及按钮的loading
       data: [
         {
           value: "beijing",
@@ -337,7 +356,7 @@ export default {
         ]
       },
       bossList: [],
-      areaList: [],
+      areaList: []
     };
   },
   created() {
@@ -360,6 +379,7 @@ export default {
   },
   watch: {
     parentData() {
+      this.add_orz_loading = false;
       console.log(this.parentData);
       switch (this.parentData.type) {
         case "01":
@@ -377,19 +397,20 @@ export default {
     }
   },
   methods: {
-    loadData (item, callback) {
-      console.log(item)
+    loadData(item, callback) {
+      console.log(item);
       item.loading = true;
-      this.sysarea_getAreaByParentId(item,callback);
+      this.sysarea_getAreaByParentId(item, callback);
     },
     // 地区选择后的回调
     areaSelect(value, selectedData) {
-      console.log(value, '-----', selectedData);
+      console.log(value, "-----", selectedData);
       this.componeyFormItem.areaProvince = value[0];
       this.componeyFormItem.areaCity = value[1];
     },
     cancelStatus() {
       console.log(this.$parent);
+      this.add_orz_loading = false;
       this.$parent.roleModal = false;
     },
     // 提交保存修改
@@ -420,9 +441,12 @@ export default {
       // this.organizationFormItem.userIds = JSON.stringify(
       //   this.organizationFormItem.userIds
       // );
+      this.add_orz_loading = true;
       const res = await collect_section_add(this.organizationFormItem);
+      this.add_orz_loading = false;
       if (res.code === 1) {
         this.$Message.success("添加成功");
+        this.$parent.$parent.$parent.organizationModal = false;
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
@@ -430,12 +454,15 @@ export default {
     },
     // 添加公司
     async collect_company_add(id, type) {
+      this.add_orz_loading = true;
       const res = await collect_company_add({
         ...this.componeyFormItem,
         status: "1"
       });
+      this.add_orz_loading = false;
       if (res.code === 1) {
         this.$Message.success("添加成功");
+        this.$parent.$parent.$parent.organizationModal = false;
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
@@ -443,12 +470,15 @@ export default {
     },
     // 添加部门
     async collect_outfit_add(id, type) {
+      this.add_orz_loading = true;
       const res = await collect_outfit_add({
         ...this.departmentFormItem,
-        status: "1",
+        status: "1"
       });
+      this.add_orz_loading = false;
       if (res.code === 1) {
         this.$Message.success("添加成功");
+        this.$parent.$parent.$parent.organizationModal = false;
         this.$parent.$parent.$parent.collect_tree_children("#", "01");
       } else {
         this.$Message.error(res.message);
@@ -469,7 +499,7 @@ export default {
     // 获取地区市级接口
     async sysarea_getAreaByParentId(item, callback) {
       const res = await sysarea_getAreaByParentId({
-        parentId: item.id,
+        parentId: item.id
       });
       if (res.code === 1) {
         // this.areaList = res.data;
@@ -499,7 +529,7 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
-    },
+    }
   }
 };
 </script>

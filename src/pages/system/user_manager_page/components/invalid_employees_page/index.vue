@@ -39,7 +39,6 @@
               >检索</Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -86,7 +85,7 @@
         width="500"
         :mask-closable="false"
       >
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px;">
           <span>状态变更</span>
         </p>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -102,7 +101,10 @@
         </Col>
         <div slot="footer">
           <Button   size="small" @click="cancel">取消</Button>
-          <Button type="primary" size="small" @click="ok">确定</Button>
+          <Button type="primary" size="small" @click="ok" :loading='status_loading'>
+            <span v-if="!status_loading">确定</span>
+            <span v-else>变更中...</span>
+          </Button>
         </div>
       </Modal>
     </div>
@@ -116,11 +118,13 @@ import {
   collect_local_list
 } from "@/service/getData";
 export default {
+  props: ["parentData"],
   data() {
     return {
       showPanel: false,
       showPanel2: false,
       showPanel3: false,
+      status_loading: false,//状态变更提交按钮loading
       modal1: false,
       status: "",
       pageNo: 1,
@@ -231,7 +235,7 @@ export default {
           fixed: "left",
           render: (h, params) => {
             return h("div", [
-              h(
+             this.parentData.status_update? h(
                 "a",
                 {
                   class: "edit-btn",
@@ -246,7 +250,7 @@ export default {
                   }
                 },
                 "状态"
-              )
+              ): '无'
             ]);
           }
         }
@@ -299,10 +303,12 @@ export default {
     },
     // 状态变更接口
     async collect_status_change() {
+      this.status_loading = true;
       const res = await collect_status_change({
         id: this.id,
         status: Number(this.status)
       });
+      this.status_loading = false;
       if (res.code === 1) {
         this.$Message.success("变更成功");
         this.modal1 = false;
@@ -334,6 +340,7 @@ export default {
       this.collect_status_change();
     },
     cancel() {
+      this.status_loading = false;
       this.modal1 = false;
     }
   }

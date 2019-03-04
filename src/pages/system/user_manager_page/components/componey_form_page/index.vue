@@ -9,6 +9,7 @@
           style="width:64px"
           long
           size="small"
+          v-if="parentData.update"
         >修改</Button>
         <Button
           class="fr header-btn"
@@ -17,6 +18,7 @@
           style="width:64px"
           long
           size="small"
+          v-if="parentData.status_update"
         >状态变更</Button>
       </p>
       <Form
@@ -80,6 +82,7 @@
               :load-data="loadData"
               @on-change="areaSelect"
               :disabled="!formDisabled"
+              transfer
             ></Cascader>
           </FormItem>
         </Col>
@@ -124,14 +127,18 @@
               style="width:80px"
               long
               size="small"
-            >确定</Button>
+              :loading="update_loading"
+            >
+              <span v-if="!update_loading">确定</span>
+              <span v-else>修改中...</span>
+            </Button>
           </FormItem>
         </Col>
       </Form>
     </Card>
     <div v-if="modal">
       <Modal v-model="modal" @on-ok="ok" @on-cancel="cancel" width="500" :mask-closable="false">
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px;">
           <span>状态变更</span>
         </p>
         <Col :xs="24" :sm="24" :md="12" :lg="12" span="4">
@@ -153,7 +160,10 @@
         </Col>
         <div slot="footer">
           <Button size="small" @click="cancel">取消</Button>
-          <Button type="primary" size="small" @click="ok">确定</Button>
+          <Button type="primary" size="small" @click="ok" :loading='status_loading'>
+            <span v-if="!status_loading">确定</span>
+            <span v-else>变更中...</span>
+          </Button>
         </div>
       </Modal>
     </div>
@@ -176,6 +186,8 @@ export default {
     return {
       getDirList: ["COLLECT_TYPE"],
       getDirObj: {},
+      update_loading: false, //修改提交按钮loading
+      status_loading: false, //状态提交按钮loading
       formDisabled: "",
       modal: false,
       status: "0",
@@ -259,7 +271,7 @@ export default {
   },
   watch: {
     parentData() {
-      this.formDisabled = false;//切换不同公司，表单disabled重置
+      this.formDisabled = false; //切换不同公司，表单disabled重置
       this.sysarea_getAreaProvience();
       const {
         id,
@@ -317,6 +329,7 @@ export default {
     },
     // 恢复表单的不可用状态
     cancelStatus() {
+      this.update_loading = false;
       const {
         id,
         name,
@@ -374,9 +387,11 @@ export default {
     },
     // 更新公司信息接口
     async collect_company_update() {
+      this.update_loading = true;
       const res = await collect_company_update({
         ...this.componeyFormItem
       });
+      this.update_loading = false;
       if (res.code === 1) {
         this.$Message.success("修改成功");
         this.$parent.$parent.$parent.modalType = "";
@@ -387,10 +402,12 @@ export default {
     },
     // 状态变更接口
     async collect_status_change() {
+      this.status_loading = true;
       const res = await collect_status_change({
         id: this.componeyFormItem.id,
         status: Number(this.componeyFormItem.status)
       });
+      this.status_loading = false;
       if (res.code === 1) {
         this.$Message.success("变更成功");
         this.modal = false;
@@ -449,6 +466,7 @@ export default {
       this.collect_status_change();
     },
     cancel() {
+      this.status_loading = false;
       this.modal = false;
     }
   }

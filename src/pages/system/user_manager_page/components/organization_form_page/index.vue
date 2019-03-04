@@ -9,6 +9,7 @@
           style="width:64px"
           long
           size="small"
+          v-if="parentData.update"
         >修改</Button>
         <Button
           class="fr header-btn"
@@ -17,6 +18,7 @@
           style="width:64px"
           long
           size="small"
+          v-if="parentData.status_update"
         >状态变更</Button>
       </p>
       <Form
@@ -95,14 +97,18 @@
               style="width:80px"
               long
               size="small"
-            >确定</Button>
+              :loading='update_loading'
+            >
+              <span v-if="!update_loading">确定</span>
+              <span v-else>修改中...</span>
+            </Button>
           </FormItem>
         </Col>
       </Form>
     </Card>
     <div v-if="modal1">
       <Modal v-model="modal1" @on-ok="ok" @on-cancel="cancel" :mask-closable="false">
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px;">
           <span>状态变更</span>
         </p>
         <Col :xs="24" :sm="24" :md="12" :lg="12" span="4">
@@ -124,7 +130,10 @@
         </Col>
         <div slot="footer">
           <Button   size="small" @click="cancel">取消</Button>
-          <Button type="primary" size="small" @click="ok">确定</Button>
+          <Button type="primary" size="small" @click="ok" :loading='status_loading'>
+            <span v-if="!status_loading">确定</span>
+            <span v-else>变更中...</span>
+          </Button>
         </div>
       </Modal>
     </div>
@@ -147,6 +156,8 @@ export default {
       updateUser: "",
       updateTime: "",
       modal1: false,
+      update_loading: false,//修改按钮提交loading
+      status_loading: false,//状态按钮提交loading
       status: "",
       organizationFormItem: {
         name: "",
@@ -249,6 +260,7 @@ export default {
     },
     // 恢复表单的不可用状态
     cancelStatus() {
+      this.update_loading = false;
       const {
         id,
         leafType,
@@ -283,7 +295,6 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          console.log(this.organizationFormItem);
           this.collect_section_update();
         }
       });
@@ -305,10 +316,12 @@ export default {
       // this.organizationFormItem.userIds = JSON.stringify(
       //   this.organizationFormItem.userIds
       // );
+      this.update_loading = true;
       const res = await collect_section_update({
         ...this.organizationFormItem,
         status: "1"
       });
+      this.update_loading = false;
       if (res.code === 1) {
         this.$Message.success("修改成功");
         this.formDisabled = false;
@@ -320,10 +333,12 @@ export default {
     },
     // 状态变更接口
     async collect_status_change() {
+      this.status_loading = true;
       const res = await collect_status_change({
         id: this.organizationFormItem.id,
         status: Number(this.status)
       });
+      this.status_loading = false;
       if (res.code === 1) {
         this.$Message.success("变更成功");
         this.modal = false;
@@ -337,6 +352,7 @@ export default {
       this.collect_status_change();
     },
     cancel() {
+      this.status_loading = false;
       this.modal1 = false;
     },
     addOrganization() {

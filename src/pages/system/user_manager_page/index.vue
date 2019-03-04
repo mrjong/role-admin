@@ -16,6 +16,7 @@
               style="width:90px"
               long
               size="small"
+              v-if="view_invalid_user"
             >查看无效员工</Button>
             <Button
               class="fr header-btn"
@@ -24,12 +25,14 @@
               style="width:64px"
               long
               size="small"
+              v-if="add_org"
             >添加机构</Button>
           </p>
           <Tree
             :data="data5"
             :render="renderContent"
             v-if="!showPanel"
+            :empty-text="query? '暂无数据': '暂无权限查看'"
             @on-select-change="selectNode"
             @on-toggle-expand='expandNode'
           ></Tree>
@@ -37,7 +40,7 @@
       </Col>
       <!-- 无效员工列表 -->
       <Col span="16" class="table-col" v-if="modalType==='tableList'">
-        <invalidEmployees></invalidEmployees>
+        <invalidEmployees :parentData='parentData'></invalidEmployees>
       </Col>
       <!-- 查看机构详情 -->
       <Col span="16" class="detail-col" v-show="modalType === '01'">

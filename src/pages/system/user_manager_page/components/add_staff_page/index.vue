@@ -62,7 +62,11 @@
               style="width:80px"
               long
               size="small"
-            >确定</Button>
+              :loading="add_user_loading"
+            >
+              <span v-if="!add_user_loading">确定</span>
+              <span v-else>添加中...</span>
+            </Button>
           </FormItem>
         </Col>
       </Form>
@@ -117,7 +121,7 @@
               v-model="addStaffFormItem.companyId"
               filterable
               clearable
-              @on-change='companyChange'
+              @on-change="companyChange"
               placeholder="请选择公司"
             >
               <Option
@@ -190,11 +194,15 @@
             <Button size="small" style="width:80px;margin-right: 8px" @click="cancelStatus()">取消</Button>
             <Button
               type="primary"
-              @click="handleSubmit(parentData.type, 'addStaffFormItem')"
+              @click="handleSubmit(parentData.type,'addStaffFormItem')"
               style="width:80px"
               long
               size="small"
-            >确定</Button>
+              :loading="add_user_loading"
+            >
+              <span v-if="!add_user_loading">确定</span>
+              <span v-else>添加中...</span>
+            </Button>
           </FormItem>
         </Col>
       </Form>
@@ -224,13 +232,14 @@ export default {
         callback(new Error("账号不能为空"));
       } else if (!blank.test(value)) {
         callback(new Error("不能包含有空格"));
-      };
-      callback()
+      }
+      callback();
     };
     return {
       getDirList: ["SEAT_TYPE"],
       getDirObj: {},
       departmentFlag: true,
+      add_user_loading: false, //添加人员提交loading
       ruleValidate1: {
         userIds: [
           {
@@ -360,6 +369,7 @@ export default {
   watch: {
     parentData() {
       console.log(this.parentData);
+      this.add_user_loading = false;
       switch (this.parentData.type) {
         case "01":
           this.addLeaderFormItem = {
@@ -376,7 +386,7 @@ export default {
             parentUuid: this.parentData.nodeData.id,
             companyId: this.parentData.nodeData.id
           };
-        this.collect_user_list("03", this.addStaffFormItem.companyId);
+          this.collect_user_list("03", this.addStaffFormItem.companyId);
           break;
         case "03":
           this.system_role_list();
@@ -386,7 +396,7 @@ export default {
             companyId: this.parentData.nodeData.companyId,
             outfitId: this.parentData.nodeData.id
           };
-        this.collect_user_list("03", this.addStaffFormItem.companyId);
+          this.collect_user_list("03", this.addStaffFormItem.companyId);
           break;
       }
     }
@@ -395,7 +405,7 @@ export default {
     //公司变更联动部门变更
     companyChange(item) {
       console.log(item);
-      this.collect_user_list('03', item);
+      this.collect_user_list("03", item);
     },
     // 选择角色变更
     roleSelect(item) {
@@ -407,6 +417,7 @@ export default {
     },
     cancelStatus() {
       console.log(this.$parent);
+      this.add_user_loading = false;
       this.$parent.$parent.$parent.roleModal = false;
     },
     // 提交保存修改
@@ -479,10 +490,12 @@ export default {
     },
     // 添加领导
     async collect_user_leader_add() {
+      this.add_user_loading = true;
       const res = await collect_user_leader_add({
         status: "1",
         ...this.addLeaderFormItem
       });
+      this.add_user_loading = false;
       console.log(res);
       if (res.code === 1) {
         this.$Message.success("添加成功");
@@ -494,13 +507,15 @@ export default {
     },
     // 添加普通员工
     async collect_user_clerk_add() {
+      this.add_user_loading = true;
       if (!this.departmentFlag) {
-        this.addStaffFormItem.outfitId = ''
-      };
+        this.addStaffFormItem.outfitId = "";
+      }
       const res = await collect_user_clerk_add({
         status: "1",
         ...this.addStaffFormItem
       });
+      this.add_user_loading = false;
       console.log(res);
       if (res.code === 1) {
         this.$Message.success("添加成功");

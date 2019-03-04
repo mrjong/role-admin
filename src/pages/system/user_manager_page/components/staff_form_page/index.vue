@@ -9,6 +9,7 @@
           style="width:64px"
           long
           size="small"
+          v-if="parentData.reset_pwd"
         >密码重置</Button>
         <Button
           class="fr header-btn"
@@ -17,6 +18,7 @@
           style="width:64px"
           long
           size="small"
+          v-if="parentData.status_update"
         >状态变更</Button>
         <Button
           class="fr header-btn"
@@ -25,6 +27,7 @@
           style="width:64px"
           long
           size="small"
+          v-if="parentData.update"
         >修改</Button>
       </p>
       <Form ref="staffFormItem" :model="staffFormItem" :label-width="90" :rules="ruleValidate">
@@ -171,7 +174,11 @@
               style="width:80px"
               long
               size="small"
-            >确定</Button>
+              :loading="update_loading"
+            >
+              <span v-if="!update_loading">确定</span>
+              <span v-else>修改中...</span>
+            </Button>
           </FormItem>
         </Col>
       </Form>
@@ -186,7 +193,7 @@
         :transfer="false"
         :mask-closable="false"
       >
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px;">
           <span>状态变更</span>
         </p>
         <Col :xs="24" :sm="24" :md="12" :lg="12" span="4">
@@ -208,7 +215,10 @@
         </Col>
         <div slot="footer">
           <Button size="small" @click="cancel">取消</Button>
-          <Button type="primary" size="small" @click="ok">确定</Button>
+          <Button type="primary" size="small" @click="ok" :loading="status_loading">
+            <span v-if="!status_loading">确定</span>
+            <span v-else>变更中...</span>
+          </Button>
         </div>
       </Modal>
     </div>
@@ -222,7 +232,7 @@
         :transfer="false"
         :mask-closable="false"
       >
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px;">
           <span>密码重置</span>
         </p>
         <Col :xs="24" :sm="24" :md="12" :lg="12" span="4">
@@ -240,7 +250,10 @@
         </Col>
         <div slot="footer">
           <Button size="small" @click="cancel2">取消</Button>
-          <Button type="primary" size="small" @click="ok2">确定</Button>
+          <Button type="primary" size="small" @click="ok2" :loading="reset_pwd_loading">
+            <span v-if="!reset_pwd_loading">确定</span>
+            <span v-else>重置中...</span>
+          </Button>
         </div>
       </Modal>
     </div>
@@ -267,6 +280,9 @@ export default {
     return {
       getDirList: ["SEAT_TYPE"],
       getDirObj: {},
+      update_loading: false, //修改提交的loading
+      status_loading: false, //状态修改提交的loading
+      reset_pwd_loading: false, //重置密码提交的loading
       formDisabled: false,
       modal: false,
       modal2: false,
@@ -394,7 +410,7 @@ export default {
       this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
       this.staffFormItem.status = String(this.parentData.nodeData.status);
       this.collect_user_clerk_info(this.parentData.nodeData.name);
-      this.formDisabled = false;//切换不同催收员，表单disabled重置
+      this.formDisabled = false; //切换不同催收员，表单disabled重置
     }
   },
   methods: {
@@ -417,8 +433,28 @@ export default {
         this.departmentFlag = true;
       }
     },
-    // 设置表单编辑状态
+    // 设置表单编辑状态,恢复原来默认反显的数据
     setFormStatus(type) {
+      this.update_loading = false;
+      this.staffFormItem.id = this.parentData.nodeData.id;
+      this.staffFormItem.name = this.parentData.nodeData.name;
+      this.staffFormItem.loginName = this.parentData.nodeData.loginName;
+      this.staffFormItem.companyId = this.parentData.nodeData.companyId;
+      this.staffFormItem.companyName = this.parentData.nodeData.companyName;
+      this.staffFormItem.outfitId = this.parentData.nodeData.outfitId;
+      this.staffFormItem.outfitName = this.parentData.nodeData.outfitName;
+      this.staffFormItem.roleId = this.parentData.nodeData.roleId;
+      if (this.staffFormItem.roleId === "2474cbac7a34419f8decc99f022846a1") {
+        this.departmentFlag = false;
+      } else {
+        this.departmentFlag = true;
+      }
+      this.collect_user_list("03", this.staffFormItem.companyId);
+      this.staffFormItem.createUser = this.parentData.nodeData.createUser;
+      this.staffFormItem.updateUser = this.parentData.nodeData.updateUser;
+      this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
+      this.staffFormItem.status = String(this.parentData.nodeData.status);
+      this.collect_user_clerk_info(this.parentData.nodeData.name);
       this.formDisabled = true;
     },
     // 设置状态变更
@@ -479,6 +515,7 @@ export default {
     },
     // 保存更新员工信息
     async collect_user_clerk_update() {
+      this.update_loading = true;
       this.staffFormItem.createTime = null;
       this.staffFormItem.updateTime = null;
       if (!this.departmentFlag) {
@@ -491,6 +528,7 @@ export default {
         originCompanyId: this.parentData.nodeData.companyId,
         originCompanyName: this.parentData.nodeData.companyName
       });
+      this.update_loading = false;
       if (res.code === 1) {
         this.$Message.success("修改成功");
         this.$parent.$parent.$parent.modalType = "";
@@ -501,10 +539,12 @@ export default {
     },
     // 状态变更接口
     async collect_status_change() {
+      this.status_loading = true;
       const res = await collect_status_change({
         id: this.staffFormItem.id,
         status: Number(this.staffFormItem.status)
       });
+      this.status_loading = false;
       if (res.code === 1) {
         this.$Message.success("变更成功");
         this.modal = false;
@@ -516,7 +556,9 @@ export default {
     },
     // 重置密码
     async system_user_reset(ids) {
+      this.reset_pwd_loading = true;
       const res = await system_user_reset({ ids: JSON.stringify(ids) });
+      this.reset_pwd_loading = false;
       if (res.code === 1) {
         this.$Message.success("重置密码成功");
         this.modal2 = false;
@@ -562,6 +604,7 @@ export default {
     },
     cancel() {
       this.modal = false;
+      this.status_loading = false;
     },
     ok2() {
       // this.$Message.info('Clicked ok');
@@ -569,6 +612,7 @@ export default {
     },
     cancel2() {
       this.modal2 = false;
+      this.reset_pwd_loading = false;
     }
   }
 };
