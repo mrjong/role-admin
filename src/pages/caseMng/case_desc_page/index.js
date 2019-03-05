@@ -1895,12 +1895,11 @@ export default {
       }
     },
     rowClassName(row, index) {
-      if (row.overdueFlg === 'Y') {
-        return 'demo-table-info-row';
+      if (row.overdueFlgName === '已逾期' || row.overdueFlgName === '处理中') {
+        return 'table-info-row-red';
       } else {
-        return 'demo-table-error-row';
+        return 'table-info-row-black';
       }
-      return '';
     },
     // 保存通讯录
     saveTxl() {

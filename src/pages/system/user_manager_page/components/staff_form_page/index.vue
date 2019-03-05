@@ -35,7 +35,6 @@
           <FormItem span="4" label="账号:" prop="loginName">
             <Input
               size="small"
-              clearable
               v-model="staffFormItem.loginName"
               placeholder="请输入账号"
               disabled
@@ -391,11 +390,11 @@ export default {
     } else {
       this.departmentFlag = true;
     }
-    this.collect_user_list("03", this.staffFormItem.companyId);
     this.staffFormItem.createUser = this.parentData.nodeData.createUser;
     this.staffFormItem.updateUser = this.parentData.nodeData.updateUser;
     this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
     this.staffFormItem.status = String(this.parentData.nodeData.status);
+    this.collect_user_list("03", this.staffFormItem.companyId);
     this.collect_user_clerk_info(this.parentData.nodeData.name);
   },
   watch: {
@@ -415,11 +414,11 @@ export default {
       } else {
         this.departmentFlag = true;
       }
-      this.collect_user_list("03", this.staffFormItem.companyId);
       this.staffFormItem.createUser = this.parentData.nodeData.createUser;
       this.staffFormItem.updateUser = this.parentData.nodeData.updateUser;
       this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
       this.staffFormItem.status = String(this.parentData.nodeData.status);
+      this.collect_user_list("03", this.staffFormItem.companyId);
       this.collect_user_clerk_info(this.parentData.nodeData.name);
       this.formDisabled = false; //切换不同催收员，表单disabled重置
     }

@@ -123,7 +123,7 @@ export default {
             this.nodeId = data.nodeKey;
             this.parentId = data.uuid;
             this.leafType = data.leafType;
-            this.setModalType(data.leafType);
+            this.setModalType(data.leafType, data);
           }
         }
       }, [
@@ -220,12 +220,12 @@ export default {
       console.log(node)
     },
     // 控制右侧几个卡片的显隐
-    setModalType(type) {
+    setModalType(type, data) {
       console.log(13123213);
       this.modalType = type;
       this.parentData = {
         type: type,
-        nodeData: this.nodeData,
+        nodeData: data,
         update: this.update,
         status_update: this.status_update,
         reset_pwd: this.reset_pwd
@@ -293,7 +293,7 @@ export default {
     // 异步加载tree数据
     loadData(item, callBack) {
       console.log(item, '----------------------')
-      this.nodeData = item;
+      // this.nodeData = item;
       let leafType;
       if (item.leafType === '01') {
         leafType = '02';
