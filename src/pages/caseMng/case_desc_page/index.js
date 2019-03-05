@@ -2291,10 +2291,10 @@ export default {
       this.add_collect_loading = false;
       if (res.code === 1) {
         this.$Message.success('添加成功');
+        this.handleCancle();
         setTimeout(() => {
           this.case_detail_remark_list_pageNo = 1;
           this.case_detail_remark_list();
-          this.handleCancle();
         }, 2000);
       } else {
         this.$Message.error(res.message);

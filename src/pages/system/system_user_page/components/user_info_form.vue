@@ -7,7 +7,7 @@
       :mask-closable="false"
       @on-visible-change="del"
     >
-      <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+      <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px;">
         <span>用户信息</span>
       </p>
       <div style="text-align:center">
@@ -41,6 +41,7 @@
                     clearable
                     v-model="formItem.loginName"
                     placeholder="请输入账号"
+                    :maxlength="10"
                     :disabled="model.type === '1'? true: false"
                   ></Input>
                 </FormItem>
@@ -165,6 +166,17 @@ export default {
     event: "passBack"
   },
   data() {
+    const blank = /^\S*$/;
+    const validateID = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("账号不能为空"));
+      } else if (!blank.test(value)) {
+        callback(new Error("不能包含有空格"));
+      } else if (!this.GLOBAL.loginCount.test(value)) {
+        callback(new Error('4到10位（字母，数字，下划线，减号）'))
+      }
+      callback();
+    };
     const validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("Please enter your password"));
@@ -192,7 +204,7 @@ export default {
         loginName: [
           {
             required: true,
-            message: "请输入账号",
+            validator: validateID,
             trigger: "blur"
           }
         ],

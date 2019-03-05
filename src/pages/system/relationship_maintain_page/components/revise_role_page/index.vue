@@ -7,7 +7,7 @@
       :mask-closable="false"
       @on-visible-change="del"
     >
-      <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+      <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px">
         <span>配置信息</span>
       </p>
       <div style="text-align:center">

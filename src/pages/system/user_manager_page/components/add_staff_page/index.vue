@@ -232,6 +232,8 @@ export default {
         callback(new Error("账号不能为空"));
       } else if (!blank.test(value)) {
         callback(new Error("不能包含有空格"));
+      } else if (!this.GLOBAL.loginCount.test(value)) {
+        callback(new Error('4到10位（字母，数字，下划线，减号）'))
       }
       callback();
     };

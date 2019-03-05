@@ -277,6 +277,17 @@ export default {
   props: ["parentData"],
   mixins: [sysDictionary, tablePage],
   data() {
+    const blank = /^\S*$/;
+    const validateID = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("账号不能为空"));
+      } else if (!blank.test(value)) {
+        callback(new Error("不能包含有空格"));
+      } else if (!this.GLOBAL.loginCount.test(value)) {
+        callback(new Error('4到10位（字母，数字，下划线，减号）'))
+      }
+      callback();
+    };
     return {
       getDirList: ["SEAT_TYPE"],
       getDirObj: {},
@@ -318,7 +329,7 @@ export default {
         loginName: [
           {
             required: true,
-            message: "请输入账号",
+            validator: validateID,
             trigger: "blur"
           }
         ],

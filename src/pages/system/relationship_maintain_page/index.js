@@ -16,6 +16,10 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      query:  false,//查询权限
+      add:  false,//添加权限
+      delete:  false,//删除权限
+      update:  false,//修改权限
       parentData: {
         modal: false,
         type: null,
@@ -202,6 +206,22 @@ export default {
     };
   },
   created() {
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+        case "add": this.add = true;
+          break;
+        case "delete": this.delete = true;
+          break;
+        case "update": this.update = true;
+          break;
+      }
+    });
     this.getList();
   },
   methods: {

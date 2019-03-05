@@ -92,7 +92,6 @@ export default {
           break;
       }
     });
-    console.log(this.add_org)
     this.collect_tree_children();
   },
   methods: {

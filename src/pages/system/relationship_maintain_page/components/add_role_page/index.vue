@@ -7,7 +7,7 @@
       :mask-closable="false"
       @on-visible-change="del"
     >
-      <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+      <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px;">
         <span>添加内容</span>
       </p>
       <div style="text-align:center">
@@ -47,7 +47,7 @@
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
                 <FormItem span="4" label="登陆账号:" prop="loginId">
-                  <Input size="small" clearable v-model="formItem.loginId" placeholder="请输入登陆账号"></Input>
+                  <Input size="small" clearable v-model="formItem.loginId" :maxlength="10" placeholder="请输入登陆账号"></Input>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -114,6 +114,17 @@ export default {
   },
   mixins: [sysDictionary, tablePage],
   data() {
+    const blank = /^\S*$/;
+    const validateID = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("账号不能为空"));
+      } else if (!blank.test(value)) {
+        callback(new Error("不能包含有空格"));
+      } else if (!this.GLOBAL.loginCount.test(value)) {
+        callback(new Error('4到10位（字母，数字，下划线，减号）'))
+      }
+      callback();
+    };
     const validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("Please enter your password"));
@@ -149,7 +160,7 @@ export default {
         loginId: [
           {
             required: true,
-            message: "请输入登陆账号",
+            validator: validateID,
             trigger: "blur"
           }
         ],

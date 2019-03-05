@@ -18,7 +18,15 @@ export default {
 			parentData: {
 				modal: false
 			},
-			ruleValidate: {},
+			ruleValidate: {
+        loginName: [
+          {
+            pattern: this.GLOBAL.loginCount,
+            message: "4到10位（字母，数字，下划线，减号)",
+            trigger: "blur"
+          }
+        ],
+      },
 			pageNo: 1,
 			pageSize: 10,
 			total: 0,
