@@ -276,19 +276,31 @@ export default {
           key: 'collectRmk',
           render: (h, params) => {
             let collectRmk = params.row.collectRmk;
-            return h(
-              'Tooltip',
-              {
-                style: {
-                  margin: '0 5px'
+            return h('div', [
+              h(
+                'Tooltip',
+                {
+                  style: {
+                    margin: '0 5px',
+                  },
+                  props: {
+                    content: collectRmk,
+                    placement: 'top',
+                    maxWidth: "200",
+                    transfer: true,
+                  }
                 },
-                props: {
-                  content: collectRmk,
-                  placement: 'top'
-                }
-              },
-              [h('div', {}, collectRmk)]
-            );
+                [h('div', {
+                  style: {
+                    cursor: 'pointer',
+                    width: '200px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }
+                }, collectRmk)]
+              ),
+            ]);
           }
         }
       ]

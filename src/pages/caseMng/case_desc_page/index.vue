@@ -775,6 +775,7 @@
                     placement="top"
                     style="width:100%;"
                     size="small"
+                    transfer
                     type="datetime"
                     format="yyyy-MM-dd HH:mm"
                     placeholder="请选择承诺还款时间"

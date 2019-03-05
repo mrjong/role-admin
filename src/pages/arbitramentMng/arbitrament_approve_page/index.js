@@ -57,19 +57,31 @@ export default {
           key: 'approvalRmk',
           render: (h, params) => {
             let approvalRmk = params.row.approvalRmk;
-            return h(
-              'Tooltip',
-              {
-                style: {
-                  margin: '0 5px'
+            return h('div', [
+              h(
+                'Tooltip',
+                {
+                  style: {
+                    margin: '0 5px',
+                  },
+                  props: {
+                    content: approvalRmk,
+                    placement: 'top',
+                    maxWidth: "380",
+                    transfer: true,
+                  }
                 },
-                props: {
-                  content: approvalRmk,
-                  placement: 'top'
-                }
-              },
-              [h('div', {}, approvalRmk)]
-            );
+                [h('div', {
+                  style: {
+                    cursor: 'pointer',
+                    width: '380px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }
+                }, approvalRmk)]
+              ),
+            ])
           }
         }
       ],
@@ -347,19 +359,31 @@ export default {
           key: 'approvalRemark',
           render: (h, params) => {
             let approvalRemark = params.row.approvalRemark;
-            return h(
-              'Tooltip',
-              {
-                style: {
-                  margin: '0 5px'
+            return h('div', [
+              h(
+                'Tooltip',
+                {
+                  style: {
+                    margin: '0 5px',
+                  },
+                  props: {
+                    content: approvalRemark,
+                    placement: 'top',
+                    maxWidth: "110",
+                    transfer: true,
+                  }
                 },
-                props: {
-                  content: approvalRemark,
-                  placement: 'top'
-                }
-              },
-              [h('div', {}, approvalRemark)]
-            );
+                [h('div', {
+                  style: {
+                    cursor: 'pointer',
+                    width: '110px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }
+                }, approvalRemark)]
+              ),
+            ]);
           }
         }
       ]

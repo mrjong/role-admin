@@ -387,19 +387,31 @@ export default {
           key: 'collectRmk',
           render: (h, params) => {
             let collectRmk = params.row.collectRmk;
-            return h(
-              'Tooltip',
-              {
-                style: {
-                  margin: '0 5px'
+            return h('div', [
+              h(
+                'Tooltip',
+                {
+                  style: {
+                    margin: '0 5px',
+                  },
+                  props: {
+                    content: collectRmk,
+                    placement: 'top',
+                    maxWidth: "380",
+                    transfer: true,
+                  }
                 },
-                props: {
-                  content: collectRmk,
-                  placement: 'top'
-                }
-              },
-              [h('div', {}, collectRmk)]
-            );
+                [h('div', {
+                  style: {
+                    cursor: 'pointer',
+                    width: '380px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }
+                }, collectRmk)]
+              ),
+            ])
           }
         }
       ],
@@ -925,19 +937,31 @@ export default {
           key: 'rmk',
           render: (h, params) => {
             let rmk = params.row.rmk;
-            return h(
-              'Tooltip',
-              {
-                style: {
-                  margin: '0 5px'
+            return h('div', [
+              h(
+                'Tooltip',
+                {
+                  style: {
+                    margin: '0 5px',
+                  },
+                  props: {
+                    content: params.row.rmk,
+                    placement: 'top',
+                    maxWidth: "380",
+                    transfer: true,
+                  }
                 },
-                props: {
-                  content: params.row.rmk,
-                  placement: 'top'
-                }
-              },
-              [h('div', {}, params.row.rmk)]
-            );
+                [h('div', {
+                  style: {
+                    cursor: 'pointer',
+                    width: '380px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }
+                }, params.row.rmk)]
+              ),
+            ])
           }
         }
       ],
@@ -1081,7 +1105,7 @@ export default {
           width: 40,
           render: (h, params) => {
             return h('div', [
-             _this.all_opt? h(
+              _this.all_opt ? h(
                 'span',
                 {
                   style: {
@@ -1101,7 +1125,7 @@ export default {
                     }
                   })
                 ]
-              ): '无'
+              ) : '无'
             ]);
           }
         },
@@ -1129,7 +1153,7 @@ export default {
                 },
                 `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
               ),
-             this.plaintext? h(
+              this.plaintext ? h(
                 'Poptip',
                 {
                   props: {
@@ -1162,7 +1186,7 @@ export default {
                     ]
                   )
                 ]
-              ): null
+              ) : null
             ]);
           }
         },
@@ -1182,7 +1206,7 @@ export default {
           fixed: 'left',
           render: (h, params) => {
             return h('div', [
-              _this.all_opt? h(
+              _this.all_opt ? h(
                 'span',
                 {
                   style: {
@@ -1202,7 +1226,7 @@ export default {
                     }
                   })
                 ]
-              ): '无'
+              ) : '无'
             ]);
           }
         },
@@ -1318,7 +1342,7 @@ export default {
                 },
                 `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
               ),
-             this.plaintext? h(
+              this.plaintext ? h(
                 'Poptip',
                 {
                   props: {
@@ -1352,7 +1376,7 @@ export default {
                     ]
                   )
                 ]
-              ): null
+              ) : null
             ]);
           }
         },
@@ -1378,7 +1402,7 @@ export default {
           fixed: 'left',
           render: (h, params) => {
             return h('div', [
-              _this.all_opt? h(
+              _this.all_opt ? h(
                 'span',
                 {
                   style: {
@@ -1398,7 +1422,7 @@ export default {
                     }
                   })
                 ]
-              ): '无'
+              ) : '无'
             ]);
           }
         },
@@ -1481,7 +1505,7 @@ export default {
                 },
                 `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
               ),
-              this.plaintext? h(
+              this.plaintext ? h(
                 'Poptip',
                 {
                   props: {
@@ -1515,7 +1539,7 @@ export default {
                     ]
                   )
                 ]
-              ): null
+              ) : null
             ]);
           }
         },
@@ -1535,7 +1559,7 @@ export default {
           width: 40,
           render: (h, params) => {
             return h('div', [
-              _this.all_opt? h(
+              _this.all_opt ? h(
                 'span',
                 {
                   style: {
@@ -1555,7 +1579,7 @@ export default {
                     }
                   })
                 ]
-              ): '无'
+              ) : '无'
             ]);
           }
         },
@@ -1641,7 +1665,7 @@ export default {
                 },
                 `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
               ),
-              this.plaintext? h(
+              this.plaintext ? h(
                 'Poptip',
                 {
                   props: {
@@ -1675,7 +1699,7 @@ export default {
                     ]
                   )
                 ]
-              ): null
+              ) : null
             ]);
           }
         },
@@ -1781,13 +1805,13 @@ export default {
       console.log(config);
       CallHelper.init(config, this.initCallback);
     },
-		/**
+    /**
       * 设置状态监听回调
       */
     stateCallback(data) {
       this.$store.commit('changeCallData', data);
     },
-		/**
+    /**
           * 初始化方法回调是否成功
           */
     initCallback(data) {
