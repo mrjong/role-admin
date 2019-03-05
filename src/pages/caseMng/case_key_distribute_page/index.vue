@@ -550,7 +550,7 @@ export default {
         if (res.data.userType === "01") {
           res.data.collectRoleTreeVos.forEach(item => {
             item.disableCheckbox = true;
-            item.true = true;
+            item.expand = true;
             item.children.forEach((item2, index) => {
               if (item2.leafType === "02") {
                 item2.children = [];
@@ -559,12 +559,12 @@ export default {
           });
         } else {
           res.data.collectRoleTreeVos.forEach(item => {
-            item.true = true;
+            item.expand = true;
             item.children.forEach((item2, index) => {
               // if (item2.leafType === '02') {
               // };
               item2.disableCheckbox = true;
-              item2.true = true;
+              item2.expand = true;
               item2.children.forEach((item3, index) => {
                 item3.disableCheckbox = true;
               });
