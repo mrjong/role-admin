@@ -29,7 +29,7 @@
             <FormItem label="关系:" prop="callUserType">
               <Select size="small" placeholder="请选择关系" transfer v-model="formItem2.callUserType">
                 <Option
-                  v-for="item in getDirObj.CNT_REL_TYP"
+                  v-for="item in getDirObj.CONTACT_REL_TYPE"
                   :value="item.itemCode"
                   :key="item.itemCode"
                 >{{ item.itemName }}</Option>
@@ -732,7 +732,7 @@
                 <FormItem label="关系" prop="callUserType">
                   <Select size="small" v-model="formValidate.callUserType" transfer placeholder="请选择关系">
                     <Option
-                      v-for="item in getDirObj.CNT_REL_TYP"
+                      v-for="item in getDirObj.CONTACT_REL_TYPE"
                       :value="item.itemCode"
                       :key="item.itemCode"
                     >{{ item.itemName }}</Option>

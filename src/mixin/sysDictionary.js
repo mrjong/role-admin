@@ -28,7 +28,7 @@ const mixin = {
 // CASE_HANDLE_STATUS	案件状态	案件流转状态
 // PERD_FLG	分期付款标志	产品是否分期
 // ID_TYP	证件类型	用户证件类型
-// CNT_REL_TYP	紧急联系人关系	紧急联系人与用户的关系
+// CONTACT_REL_TYPE	紧急联系人关系	紧急联系人与用户的关系
 // ALLOT_TYPE	分配方式	自动分案的分配方式
 // PERD_STS	当期状态	分期账单的状态
 // LEAF_TYPE	催收人员树类型	催收人员树类型

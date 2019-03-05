@@ -81,7 +81,7 @@ export default {
           }
         ]
       },
-      getDirList: ['CNT_REL_TYP', 'GENDER', 'NATION'],
+      getDirList: ['GENDER', 'NATION', 'CONTACT_REL_TYPE'],
       getDirObj: {},
       userNmHidCopy: '',
       telShow: false,
