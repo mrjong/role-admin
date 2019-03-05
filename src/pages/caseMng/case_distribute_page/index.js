@@ -290,6 +290,13 @@ export default {
           }
         },
         {
+          title: '案件状态',
+          searchOperator: 'like',
+          width: 100,
+          key: 'caseHandleStatusName',
+          align: 'center',
+        },
+        {
           title: '客户姓名',
           width: 120,
           searchOperator: '=',
@@ -424,13 +431,6 @@ export default {
           searchOperator: 'like',
           width: 150,
           key: 'opUserName',
-          align: 'center',
-        },
-        {
-          title: '案件状态',
-          searchOperator: 'like',
-          width: 100,
-          key: 'caseHandleStatusName',
           align: 'center',
         },
       ]
