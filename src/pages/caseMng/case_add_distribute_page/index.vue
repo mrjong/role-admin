@@ -616,24 +616,28 @@ export default {
           res.data.collectRoleTreeVos.forEach(item => {
             item.disableCheckbox = true;
             item.expand = true;
-            item.children.forEach((item2, index) => {
-              if (item2.leafType === "02") {
-                item2.children = [];
-              }
-            });
+            if (item.children) {
+              item.children.forEach((item2, index) => {
+                if (item2.leafType === "02") {
+                  item2.children = [];
+                }
+              });
+            }
           });
         } else {
           res.data.collectRoleTreeVos.forEach(item => {
             item.expand = true;
-            item.children.forEach((item2, index) => {
-              // if (item2.leafType === '02') {
-              // };
-              item2.disableCheckbox = true;
-              item2.expand = true;
-              item2.children.forEach((item3, index) => {
-                item3.disableCheckbox = true;
+            if (item.children) {
+              item.children.forEach((item2, index) => {
+                item2.disableCheckbox = true;
+                item2.expand = true;
+                if (item2.children) {
+                  item2.children.forEach((item3, index) => {
+                    item3.disableCheckbox = true;
+                  });
+                }
               });
-            });
+            }
           });
         }
         this.data = res.data.collectRoleTreeVos;
@@ -649,14 +653,19 @@ export default {
       });
       console.log(res);
       if (res.code === 1) {
+        console.log(res.data.collectRoleTreeVos)
         res.data.collectRoleTreeVos.forEach(item => {
           item.expand = true;
-          item.children.forEach(item2 => {
-            item2.expand = true;
-            item2.children.forEach(item3 => {
-              item3.expand = true;
+          if (item.children) {
+            item.children.forEach(item2 => {
+              item2.expand = true;
+              if (item2.children) {
+                item2.children.forEach(item3 => {
+                  item3.expand = true;
+                })
+              }
             })
-          })
+          }
         })
         this.data5 = res.data.collectRoleTreeVos;
       } else {
