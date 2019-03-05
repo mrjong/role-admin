@@ -25,7 +25,7 @@
         </Card>
       </Col>
       <Col span="16" class="detail-col">
-        <Card class="vue-panel detail-card" v-if="detailFlag">
+        <Card class="vue-panel detail-card" v-show="detailFlag">
           <p slot="title">基本信息</p>
           <!-- 菜单项详情 -->
           <Form ref="menuFormItem" :model="menuFormItem" :label-width="90" :rules="ruleValidate1">
