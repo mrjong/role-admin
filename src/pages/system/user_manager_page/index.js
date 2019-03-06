@@ -35,7 +35,7 @@ export default {
       roleType: '',
       organizationModal: false,
       organizationType: '',
-      modalType: '',
+      modalType: null,
       formDisabled: '',
       parentId: '',
       leafType: '',
@@ -116,16 +116,6 @@ export default {
           display: 'inline-block',
           width: '100%'
         },
-        on: {
-          'click': () => {
-            console.log(data);
-            this.nodeData = data;
-            this.nodeId = data.nodeKey;
-            this.parentId = data.uuid;
-            this.leafType = data.leafType;
-            this.setModalType(data.leafType, data);
-          }
-        }
       }, [
           h('span', [
             h('Icon', {
@@ -140,6 +130,16 @@ export default {
               style: {
                 cursor: 'pointer'
               },
+              on: {
+                'click': (e) => {
+                  e.stopPropagation();
+                  console.log(data);
+                  this.nodeData = data;
+                  // this.nodeId = data.nodeKey;
+                  // this.parentId = data.uuid;
+                  this.setModalType(data.leafType, data);
+                }
+              }
 
             }, data.name)
           ]),
@@ -192,24 +192,24 @@ export default {
       // });
       // this.$set(data, 'children', children);
       this.modalType = '';
+      this.organizationModal = false;
       this.roleModal = true;
       this.parentData = {
         type: data.leafType,
         nodeData: data,
       };
-      this.organizationModal = false;
     },
     // 新增机构
     addOrganization(data) {
       console.log(data.leafType)
       this.modalType = '';
+      this.roleModal = false;
       this.organizationModal = true;
       this.parentData = {
         type: data.leafType,
         nodeData: this.nodeData,
       };
       this.organizationType = data.leafType;
-      this.roleModal = false;
     },
     // 选中节点的回调函数
     selectNode(node) {
@@ -221,7 +221,10 @@ export default {
     },
     // 控制右侧几个卡片的显隐
     setModalType(type, data) {
-      console.log(13123213);
+      console.log(type);
+      this.organizationModal = false;
+      this.roleModal = false;
+      this.modalType = '';
       this.modalType = type;
       this.parentData = {
         type: type,
@@ -230,13 +233,10 @@ export default {
         status_update: this.status_update,
         reset_pwd: this.reset_pwd
       };
-      this.organizationModal = false;
-      this.roleModal = false;
     },
     // 获取表格数据
     async getList(id, type) {
       const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
-      console.log()
       if (res.code === 1) {
         this.data5 = res.data;
         // this.data5.forEach(item => {
@@ -276,7 +276,6 @@ export default {
       }
       const res = await collect_tree_children({status: 1});
       if (res.code === 1) {
-        console.log(res);
         // this.data5 = res.data;
         res.data.forEach(item => {
           item.expand = true;
