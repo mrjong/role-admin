@@ -50,6 +50,7 @@ export default {
       apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
       add_collect_loading: false,//添加催记按钮loading
+      add_txl_loading: false,//添加通讯录提交按钮loading
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -1911,11 +1912,13 @@ export default {
     },
     // 新增通讯录
     async mail_list_add() {
+      this.add_txl_loading = true;
       const res = await mail_list_add({
         ...this.formItem2,
         caseNo: this.caseNo,
         userId: this.userId
       });
+      this.add_txl_loading = false;
       if (res.code === 1) {
         // 更新list
         this.case_detail_mail_list_appended();

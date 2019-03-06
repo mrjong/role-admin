@@ -40,7 +40,10 @@
       </Form>
       <div slot="footer">
         <Button size="small" @click="closeTxl">关闭</Button>
-        <Button type="primary" size="small" @click="saveTxl">提交</Button>
+        <Button type="primary" size="small" @click="saveTxl" :loading='add_txl_loading'>
+          <span v-if="!add_txl_loading">提交</span>
+          <span v-else>添加中...</span>
+        </Button>
       </div>
     </Modal>
 
