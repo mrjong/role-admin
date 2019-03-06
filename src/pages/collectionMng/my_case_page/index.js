@@ -156,7 +156,8 @@ export default {
                   },
                   props: {
                     content: '查看详情',
-                    placement: 'top'
+                    placement: 'top',
+                    transfer: true
                   }
                 },
                 [

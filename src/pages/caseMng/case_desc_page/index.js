@@ -1158,7 +1158,8 @@ export default {
                 'Poptip',
                 {
                   props: {
-                    content: _this.mingwenData
+                    content: _this.mingwenData,
+                    transfer: true,
                   }
                 },
                 [
@@ -1347,7 +1348,8 @@ export default {
                 'Poptip',
                 {
                   props: {
-                    content: _this.mingwenData
+                    content: _this.mingwenData,
+                    transfer: true,
                   }
                 },
                 [
@@ -1510,7 +1512,8 @@ export default {
                 'Poptip',
                 {
                   props: {
-                    content: _this.mingwenData
+                    content: _this.mingwenData,
+                    transfer: true,
                   }
                 },
                 [
@@ -1670,7 +1673,8 @@ export default {
                 'Poptip',
                 {
                   props: {
-                    content: _this.mingwenData
+                    content: _this.mingwenData,
+                    transfer: true,
                   }
                 },
                 [
@@ -2213,7 +2217,7 @@ export default {
           head.appendChild(script);
           setTimeout(() => {
             this.call(JSON.parse(localStorage.getItem('callData')));
-          }, 1000)
+          }, 500)
         } else {
           this.call_kt_hung_on({
             callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
