@@ -44,6 +44,7 @@
       loop
       ref="ring"
       preload="auto"
+      style="position: absolute"
       src="src/libs/ring.wav"
     >
     </video>

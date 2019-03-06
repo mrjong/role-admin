@@ -28,6 +28,13 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem label="组别:">
+            <Select size="small" v-model="formValidate.parentRoleId" @on-change="toGetSeat">
+              <Option v-for="item in groupList" :value="item.id" :key="item.id">{{ item.name }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="坐席:">
               <Select size="small" v-model="formValidate.agent">
                 <Option
@@ -35,13 +42,6 @@
                   :value="item.agent"
                   :key="item.agent"
                 >{{ item.agentName }}</Option>
-              </Select>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="组别:">
-              <Select size="small" v-model="formValidate.parentRoleId" @on-change="toGetSeat">
-                <Option v-for="item in groupList" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
           </Col>
