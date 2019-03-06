@@ -43,15 +43,15 @@
         <invalidEmployees :parentData='parentData'></invalidEmployees>
       </Col>
       <!-- 查看机构详情 -->
-      <Col span="16" class="detail-col" v-show="modalType === '01'">
+      <Col span="16" class="detail-col" v-if="modalType === '01'">
         <organizationForm :parentData='parentData'></organizationForm>
       </Col>
       <!-- 查看公司详情 -->
-      <Col span="16" class="detail-col" v-show="modalType === '02'">
+      <Col span="16" class="detail-col" v-if="modalType === '02'">
         <componeyForm :parentData='parentData'></componeyForm>
       </Col>
       <!-- 查看部门详情 -->
-      <Col span="16" class="detail-col" v-show="modalType === '03'">
+      <Col span="16" class="detail-col" v-if="modalType === '03'">
         <departmentForm :parentData='parentData'></departmentForm>
       </Col>
       <!-- 查看员工详情 -->

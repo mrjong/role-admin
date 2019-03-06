@@ -426,13 +426,11 @@ export default {
   methods: {
     //公司变更联动部门变更
     companyChange(obj) {
-      console.log(obj);
       this.staffFormItem.companyName = obj.label;
       this.collect_user_list("03", obj.value);
     },
     //部门变更
     outfitChange(obj) {
-      console.log(obj);
       this.staffFormItem.outfitName = obj.label;
     },
     // 选择角色变更
@@ -486,7 +484,6 @@ export default {
         leafType: type,
         parentId: parent || ""
       });
-      console.log(res);
       if (res.code === 1) {
         switch (type) {
           case "02":
@@ -507,7 +504,6 @@ export default {
         status: "1",
         pageSize: 100
       });
-      console.log(res);
       if (res.code === 1) {
         this.roleList = res.data.content;
       } else {
@@ -584,7 +580,6 @@ export default {
         parentUuid: this.parentData.nodeData.parentUuid
       });
       if (res.code === 1) {
-        console.log(res);
         this.staffFormItem.email = res.data.email;
         this.staffFormItem.mobile = res.data.mobile;
         this.staffFormItem.seatType = res.data.seatType;
@@ -603,7 +598,6 @@ export default {
               "YYYY-MM-DD HH:mm:ss"
             )
           : res.data.updateTime;
-        console.log(this.staffFormItem);
       } else {
         this.$Message.error(res.message);
       }
