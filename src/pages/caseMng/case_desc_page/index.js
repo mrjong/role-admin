@@ -1752,14 +1752,16 @@ export default {
     }
     delete queryData.readType;
     this.queryData = queryData;
+    setTimeout(() => {
+      this.case_detail_remark_list(); // 催收信息
+      this.case_detail_urgent_contact(); // 紧急联系人
+      this.case_detail_case_base_info(); // 基本信息
+      this.case_detail_bindcard_list(); // 绑卡信息
+      this.collectcode_getCollectRelate(); // 获取沟通状态
+      this.case_detail_mail_statistics_list(); // 通话统计
+      this.case_detail_case_identity_info(); // 查询案件详情身份信息
+    },1000)
     // 催收信息
-    this.case_detail_remark_list(); // 催收信息
-    this.case_detail_urgent_contact(); // 紧急联系人
-    this.case_detail_case_base_info(); // 基本信息
-    this.case_detail_bindcard_list(); // 绑卡信息
-    this.collectcode_getCollectRelate(); // 获取沟通状态
-    this.case_detail_mail_statistics_list(); // 通话统计
-    this.case_detail_case_identity_info(); // 查询案件详情身份信息
   },
   methods: {
     // 获取表格数据
@@ -1773,21 +1775,22 @@ export default {
       if (res.code === 1) {
         this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
-      } else {
-        this.$Message.error(res.message);
-      }
-    },
-    // 获取表格数据
-    async case_collect_case_list() {
-      console.log(this.queryData, '---------------');
-      const res = await case_collect_case_list({
-        ...this.queryData,
-        id: this.caseNo,
-        pageNum: 1
-      });
-      if (res.code === 1) {
-        this.case_collect_case_list_data =
+        } else {
+          this.$Message.error(res.message);
+        }
+      },
+      // 获取表格数据
+      async case_collect_case_list() {
+        console.log(this.queryData, '---------------');
+        const res = await case_collect_case_list({
+          ...this.queryData,
+          id: this.caseNo,
+          pageNum: 1
+        });
+        if (res.code === 1) {
+          this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
+          this.userId = res.data.page.content[0].userId;
       } else {
         this.$Message.error(res.message);
       }
@@ -2286,6 +2289,10 @@ export default {
       let params = location.hash.split('?');
       const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
       queryData.caseNotest = window.btoa(caseNo);
+      // delete queryData.userIdtest
+      // queryData.userIdtest = this.case_collect_case_list_data.userId
+      // console.log(queryData,'++++')
+      // return
       location.href = params[0] + '?' + qs.stringify(queryData);
       location.reload();
     },
