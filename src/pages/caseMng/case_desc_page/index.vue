@@ -503,7 +503,7 @@
                   <span
                     class="tel"
                     @click="handCall({
-                         callUserType:'01',
+                         callUserType:'00',
                          userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
                         userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
                         userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
