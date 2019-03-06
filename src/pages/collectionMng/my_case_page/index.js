@@ -130,6 +130,13 @@ export default {
       tableData: [],
       tableColumns: [
         {
+          title: '序号',
+          type: 'index',
+          width: 50,
+          fixed: 'left',
+          align: 'center',
+        },
+        {
           title: '案件编码',
           width: 150,
           key: 'id',

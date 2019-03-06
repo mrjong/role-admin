@@ -20,6 +20,7 @@ export default {
       add:  false,//添加权限
       delete:  false,//删除权限
       update:  false,//修改权限
+      query_loading: false,//查询按钮loading
       parentData: {
         modal: false,
         type: null,
@@ -162,8 +163,8 @@ export default {
           align: 'center',
           fixed: 'left',
           render: (h, params) => {
-            return h('div', [
-              h('Poptip', {
+            return this.delete || this.update?h('div', [
+              this.delete?h('Poptip', {
                 props: {
                   confirm: true,
                   title: '您确定要删除这条数据吗?',
@@ -183,8 +184,8 @@ export default {
                     '删除'
                   )
                 ],
-              ),
-              h('a',
+              ): null,
+              this.update?h('a',
                 {
                   class: 'edit-btn',
                   props: {},
@@ -197,9 +198,8 @@ export default {
                       }
                     }
                   }
-                }
-                , '更改')
-            ])
+                }, '更改'): null
+            ]): h('span','无')
           }
         },
       ]
@@ -222,7 +222,7 @@ export default {
           break;
       }
     });
-    this.getList();
+    // this.getList();
   },
   methods: {
     // 添加列表新数据按钮
@@ -256,12 +256,17 @@ export default {
     },
     // 获取表格数据
     async getList() {
+      if (!this.query) {
+        this.$Message.error('很抱歉，暂无查询权限');
+        return;
+      }
+      this.query_loading = true;
       const res = await call_employee_list({
         ...this.formItem,
         pageNum: this.pageNo,
         pageSize: this.pageSize,
       });
-      console.log(res);
+      this.query_loading = false;
       if (res.code === 1) {
         this.tableData = res.data.content;
         this.total = res.data.totalElements;

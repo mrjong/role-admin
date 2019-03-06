@@ -11,7 +11,13 @@ export default {
 	data() {
 		return {
 			getDirList: [ '1_0_AVAILABLE_DISABLE' ],
-			getDirObj: {},
+      getDirObj: {},
+      query: false,//查询权限
+      add: false,//添加权限
+      detail: false,//删除权限
+      update: false,//修改权限
+      reset_pwd: false,//重置密码权限
+      query_loading: false,//查询按钮loading
 			showPanel: false,
 			showPanel2: false,
 			modal: false,
@@ -125,8 +131,8 @@ export default {
           fixed: 'left',
 					render: (h, params) => {
 						const obj = params.row;
-						return h('div', [
-							h(
+						return this.detail || this.reset_pwd || this.update? h('div', [
+						this.detail? h(
 								'a',
 								{
 									class: 'edit-btn',
@@ -138,8 +144,8 @@ export default {
 									}
 								},
 								'查看'
-							),
-							h(
+							): null,
+						this.update?h(
 								'a',
 								{
 									class: 'edit-btn',
@@ -151,8 +157,8 @@ export default {
 									}
 								},
 								'修改'
-							),
-							h(
+							): null,
+							this.reset_pwd?h(
 								'Poptip',
 								{
 									props: {
@@ -183,15 +189,33 @@ export default {
 										'重置密码'
 									)
 								]
-							)
-						]);
+							): null
+						]) : h('span', '无');
 					}
 				}
 			]
 		};
 	},
 	created() {
-		this.getList();
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+        case "add": this.add = true;
+          break;
+        case "detail": this.detail = true;
+          break;
+        case "update": this.update = true;
+          break;
+        case "reset_pwd": this.reset_pwd = true;
+          break;
+      }
+    });
+		// this.getList();
 	},
 	methods: {
     // 切换每页条数时的回调
@@ -266,11 +290,13 @@ export default {
 		},
 		// 获取表格数据
 		async getList() {
+      this.query_loading = true;
 			const res = await system_user_list({
 				...this.formItem,
 				pageNum: this.pageNo,
 				pageSize: this.pageSize
-			});
+      });
+      this.query_loading = false;
 			if (res.code === 1) {
 				this.tableData = res.data.data;
 				this.pageSize = res.data.pageSize;

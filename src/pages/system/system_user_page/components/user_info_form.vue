@@ -149,7 +149,11 @@
           size="small"
           @click="handleSubmit('formItem', model.type)"
           v-if="model.type !== '1'"
-        >保存</Button>
+          :loading='button_loading'
+        >
+          <span v-if="!button_loading">保存</span>
+          <span v-else>保存中...</span>
+        </Button>
       </div>
     </Modal>
   </div>
@@ -192,6 +196,7 @@ export default {
       showPanel: false,
       childrenData: {},
       childrenModel: false,
+      button_loading: false,//保存按钮loading
       rolesData: [],
       ruleValidate: {
         name: [
@@ -316,10 +321,12 @@ export default {
     },
 
     async system_user_update() {
+      this.button_loading = true;
       const res = await system_user_update({
         ...this.formItem,
         userType: "01"
       });
+      this.button_loading = false;
       if (res.code === 1) {
         this.$Message.success("修改成功");
         setTimeout(() => {
@@ -330,10 +337,12 @@ export default {
       }
     },
     async system_user_add() {
+      this.button_loading = true;
       const res = await system_user_add({
         ...this.formItem,
         userType: "01"
       });
+      this.button_loading = false;
       if (res.code === 1) {
         this.$Message.success("添加成功");
         setTimeout(() => {

@@ -35,7 +35,7 @@ export default {
       roleType: '',
       organizationModal: false,
       organizationType: '',
-      modalType: null,
+      modalType: null,// 01 机构  02 公司  03 部门  04 人员
       formDisabled: '',
       parentId: '',
       leafType: '',

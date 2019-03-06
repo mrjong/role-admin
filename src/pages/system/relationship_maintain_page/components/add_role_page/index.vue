@@ -95,7 +95,10 @@
       </div>
       <div slot="footer">
         <Button   size="small" @click="del">关闭</Button>
-        <Button type="primary" size="small" @click="handleSubmit('formItem')">提交</Button>
+        <Button type="primary" size="small" @click="handleSubmit('formItem')" :loading='add_loading'>
+          <span v-if="!add_loading">提交</span>
+          <span v-else>添加中</span>
+        </Button>
       </div>
     </Modal>
   </div>
@@ -140,6 +143,7 @@ export default {
       getDirList: ["SEAT_TYPE", "0_1_EFFECT_INVAL", "EXTEN_TYPE"],
       getDirObj: {},
       showPanel: false,
+      add_loading: false,//添加按钮loading
       childrenData: {},
       childrenModel: false,
       ruleValidate: {
@@ -215,7 +219,9 @@ export default {
     },
     // 添加坐席关系
     async call_employee_add() {
+      this.add_loading = true;
       const res = await call_employee_add(this.formItem);
+      this.add_loading = false;
       if (res.code === 1) {
         this.$Message.success('修改成功');
         this.childrenData = {

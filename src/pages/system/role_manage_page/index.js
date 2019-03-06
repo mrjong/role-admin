@@ -14,6 +14,15 @@ export default {
       showPanel: false,
       showPanel2: false,
       menuModal: false,
+      query: false,//查询权限
+      add: false,//添加权限
+      detail: false,//删除权限
+      update: false,//修改权限
+      allot: false,//分配权限
+      query_loading: false,//查询按钮loading
+      update_loading: false,//修改按钮loading
+      allot_loading: false,//分配按钮loading
+      add_loading: false,//添加按钮loading
       name: '',
       userId: '',
       roleId: '',
@@ -208,8 +217,8 @@ export default {
             console.log(params.row, 'ccccccc');
             let id = params.row.id;
             let changeInfo = params.row;
-            return h('div', [
-              h(
+            return this.detail || this.update || this.allot ? h('div', [
+              this.detail ? h(
                 'a',
                 {
                   class: 'edit-btn',
@@ -221,8 +230,8 @@ export default {
                   }
                 },
                 '查看'
-              ),
-              h(
+              ) : null,
+              this.update ? h(
                 'a',
                 {
                   class: 'edit-btn',
@@ -234,8 +243,8 @@ export default {
                   }
                 },
                 '修改'
-              ),
-              h(
+              ) : null,
+              this.allot ? h(
                 'a',
                 {
                   class: 'edit-btn',
@@ -251,15 +260,33 @@ export default {
                   }
                 },
                 '菜单分配'
-              )
-            ]);
+              ) : null
+            ]) : h('span', '无');
           }
         }
       ]
     };
   },
   created() {
-    this.getList();
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+        case "add": this.add = true;
+          break;
+        case "detail": this.detail = true;
+          break;
+        case "update": this.update = true;
+          break;
+        case "allot": this.allot = true;
+          break;
+      }
+    });
+    // this.getList();
   },
   methods: {
     // 勾选节点的回调函数
@@ -314,7 +341,6 @@ export default {
     },
     // 确认修改信息
     modalChangeOk(name) {
-      console.log('first')
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.toChangeRole();
@@ -333,6 +359,7 @@ export default {
     },
     // 关闭菜单分配和提交
     menuModalClose() {
+      this.allot_loading = false;
       this.menuModal = false;
     },
     // 页码改变的回调
@@ -368,35 +395,45 @@ export default {
       if (tr === '1') {
         this.modalSee = false;
       } else if (tr == '2') {
+        this.update_loading = false;
         this.modalChange = false;
       } else if (tr === '3') {
+        this.add_loading = false;
         this.modalAddRole = false;
       }
     },
     // 获取表格数据
     async getList() {
-      let status = this.formValidate.status == 'one' ? 1 : this.formValidate.status == 'zero' ? 0 : '';
+      if (!this.query) {
+        this.$Message.error('很抱歉，暂无查询权限');
+        return;
+      }
+      this.query_loading = true;
       let res = await system_role_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formValidate,
       })
-      this.tableData = res.data.content;
-      this.total = res.data.totalElements;
-      console.log(res, '返回结果')
-      // 试着处理数据和分页组件之间的关系,
+      this.query_loading = false;
+      if (res.code === 1) {
+        this.tableData = res.data.content;
+        this.total = res.data.totalElements;
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     async getInfo(id) {
       let res = await system_role_info({ id })
       this.formValidateInfo = res.data;
       // this.formValidateInfo.roleStatus = this.formValidateInfo.roleStatus == '1' ?'有效' : '无效';
-      this.formValidateInfo.updatetime = this.formValidateInfo.updatetime?this.$options.filters['formatDate'](this.formValidateInfo.updatetime, 'YYYY-MM-DD HH:mm:ss'):this.formValidateInfo.updatetime;
-      this.formValidateInfo.createtime = this.formValidateInfo.createtime?this.$options.filters['formatDate'](this.formValidateInfo.createtime, 'YYYY-MM-DD HH:mm:ss'):this.formValidateInfo.createtime;
+      this.formValidateInfo.updatetime = this.formValidateInfo.updatetime ? this.$options.filters['formatDate'](this.formValidateInfo.updatetime, 'YYYY-MM-DD HH:mm:ss') : this.formValidateInfo.updatetime;
+      this.formValidateInfo.createtime = this.formValidateInfo.createtime ? this.$options.filters['formatDate'](this.formValidateInfo.createtime, 'YYYY-MM-DD HH:mm:ss') : this.formValidateInfo.createtime;
     },
     // 提交修改角色的接口
     async toChangeRole() {
+      this.update_loading = true;
       let res = await system_role_update({ id: sessionStorage.getItem('updateId'), ...this.formValidateChange });
-      console.log(res, '刷新看结果');
+      this.update_loading = false;
       if (res && res.code === 1) {
         // this.$Message.success('修改成功');
         this.$refs['formValidateChange'].resetFields();
@@ -408,8 +445,9 @@ export default {
       }
     },
     async toAddRole() {
-      let res = await
-        system_role_add({ ...this.formValidateAdd });
+      this.add_loading = true;
+      let res = await system_role_add({ ...this.formValidateAdd });
+      this.add_loading = true;
       if (res && res.code === 1) {
         //this.$Message.success('添加成功');
         this.modalAddRole = false;
@@ -435,7 +473,9 @@ export default {
     },
     // 菜单分配的接口
     async menuUpdate() {
+      this.allot_loading = true;
       let res = await stytem_menu_opration({ roleId: this.roleId, menuIds: this.menuIds });
+      this.allot_loading = false;
       if (res.code === 1) {
         this.menuModal = false;
       } else {

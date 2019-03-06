@@ -50,11 +50,13 @@
                 style="width:80px"
                 long
                 size="small"
-              >检索</Button>
-
+                :loading="query_loading"
+              >
+                <span v-if="!query_loading">检索</span>
+                <span v-else>检索中...</span>
+              </Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formValidate')"
               >重置</Button>
@@ -72,6 +74,7 @@
           class="fr header-btn"
           style="width:80px"
           size="small"
+          v-if="add"
         >添加</Button>
       </p>
       <!-- 表格 -->
@@ -232,7 +235,10 @@
       </Card>
       <p slot="footer">
         <Button @click="closeModal('2')">取消</Button>
-        <Button @click="modalChangeOk('formValidateChange')" type="primary">确定</Button>
+        <Button @click="modalChangeOk('formValidateChange')" type="primary" :loading='update_loading'>
+          <span v-if="!update_loading">确定</span>
+          <span v-else>修改中...</span>
+        </Button>
       </p>
     </Modal>
     <Modal v-model="modalAddRole" title="基本信息" class="role-modal">
@@ -293,7 +299,10 @@
       </Card>
       <p slot="footer">
         <Button @click="closeModal('3')">取消</Button>
-        <Button @click="sureAddRole('formValidateAdd')" type="primary">确定</Button>
+        <Button @click="sureAddRole('formValidateAdd')" type="primary" :loading='add_loading'>
+          <span v-if="!add_loading">确定</span>
+          <span v-else>添加中...</span>
+        </Button>
       </p>
     </Modal>
     <!-- 菜单分配 -->
@@ -307,7 +316,7 @@
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <Tree
               :data="data5"
-              ref='tree'
+              ref="tree"
               :render="renderContent"
               multiple
               show-checkbox
@@ -318,7 +327,10 @@
         </Row>
         <div slot="footer">
           <Button size="small" @click="menuModalClose">关闭</Button>
-          <Button size="small" type="primary" @click="menuUpdate">保存</Button>
+          <Button size="small" type="primary" @click="menuUpdate" :loading='allot_loading'>
+            <span v-if="!allot_loading">保存</span>
+            <span v-else>保存中...</span>
+          </Button>
         </div>
       </Modal>
     </div>

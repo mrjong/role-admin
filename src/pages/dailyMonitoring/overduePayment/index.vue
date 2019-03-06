@@ -253,7 +253,7 @@ export default {
           width: widthVal
         },
         {
-          title: "未分期数",
+          title: "未还期数",
           searchOperator: "like",
           key: "waitPerdNum",
           className: "tableMainW",

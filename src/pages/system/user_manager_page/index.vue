@@ -29,34 +29,35 @@
             >添加机构</Button>
           </p>
           <Tree
+            class="collect-tree"
             :data="data5"
             :render="renderContent"
             v-if="!showPanel"
             :empty-text="query? '暂无数据': '暂无权限查看'"
             @on-select-change="selectNode"
-            @on-toggle-expand='expandNode'
+            @on-toggle-expand="expandNode"
           ></Tree>
         </Card>
       </Col>
       <!-- 无效员工列表 -->
       <Col span="16" class="table-col" v-if="modalType==='tableList'">
-        <invalidEmployees :parentData='parentData'></invalidEmployees>
+        <invalidEmployees :parentData="parentData"></invalidEmployees>
       </Col>
       <!-- 查看机构详情 -->
       <Col span="16" class="detail-col" v-if="modalType === '01'">
-        <organizationForm :parentData='parentData'></organizationForm>
+        <organizationForm :parentData="parentData"></organizationForm>
       </Col>
       <!-- 查看公司详情 -->
       <Col span="16" class="detail-col" v-if="modalType === '02'">
-        <componeyForm :parentData='parentData'></componeyForm>
+        <componeyForm :parentData="parentData"></componeyForm>
       </Col>
       <!-- 查看部门详情 -->
       <Col span="16" class="detail-col" v-if="modalType === '03'">
-        <departmentForm :parentData='parentData'></departmentForm>
+        <departmentForm :parentData="parentData"></departmentForm>
       </Col>
       <!-- 查看员工详情 -->
       <Col span="16" class="detail-col" v-if="modalType === '04'">
-        <staffForm :parentData='parentData'></staffForm>
+        <staffForm :parentData="parentData"></staffForm>
       </Col>
       <!-- 新增员工 -->
       <Col span="16" class="detail-col" v-if="roleModal">
@@ -85,6 +86,9 @@
     overflow: hidden;
   }
 }
-
+.collect-tree {
+  max-height: 620px;
+  overflow-y: auto;
+}
 </style>
 

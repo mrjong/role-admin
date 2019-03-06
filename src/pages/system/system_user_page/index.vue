@@ -43,7 +43,11 @@
                 style="width:80px"
                 long
                 size="small"
-              >检索</Button>
+                :loading="query_loading"
+              >
+                <span v-if="!query_loading">检索</span>
+                <span v-else>检索中...</span>
+              </Button>
               <Button
                 size="small"
                 style="width:80px;margin-left: 8px"
@@ -68,6 +72,7 @@
           style="width:80px"
           long
           size="small"
+          v-if="reset_pwd"
         >重置密码</Button>
         <Button
           class="fr header-btn"
@@ -76,6 +81,7 @@
           style="width:80px"
           long
           size="small"
+          v-if="add"
         >添加</Button>
       </p>
       <!-- 表格 -->
