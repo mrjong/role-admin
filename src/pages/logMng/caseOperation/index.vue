@@ -109,10 +109,13 @@
                 style="width:80px"
                 long
                 size="small"
-              >检索</Button>
+                :loading='queryLoading'
+              >
+                <span v-if="!queryLoading">检索</span>
+                <span v-else>检索...</span>
+              </Button>
               <Button
                 size="small"
-
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
@@ -237,6 +240,7 @@
         getDirList: ['CASE_OPER_TYPE'],
         getDirObj: {},
         modalSee: false,
+        queryLoading: false,//查询按钮loading
         formItem: {
         },
         ruleValidate:{
@@ -339,7 +343,7 @@
       };
     },
     created() {
-      this.getList();
+//      this.getList();
     },
     methods: {
       // 改变日期区间的格式之后进行处理
@@ -369,14 +373,15 @@
 //        if(this.formItem.operTime){
 //          this.formItem.operTime = this.$options.filters['formatDate'](this.formItem.operTime, 'YYYY-MM-DD')
 //        }
+        this.queryLoading = true;
         let res= await cases_operationList({
           pageNum: this.pageNo,
           pageSize: this.pageSize,
           ...this.formItem
         })
+        this.queryLoading = false;
         console.log(res)
         if(res && res.code === 1){
-          this.$Message.success('请求成功!');
           let data = res.data;
           this.tableData = data.content;
           this.total = data.totalElements //接口中在该条件下取得的数据量

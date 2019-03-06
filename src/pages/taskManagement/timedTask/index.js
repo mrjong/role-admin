@@ -10,6 +10,7 @@ export default {
       showPanel2: false,
       modalSee: false,
       createTime: [],
+      queryLoading: false,
       formItem: {
       },
       ruleValidate:{
@@ -129,7 +130,7 @@ export default {
     };
   },
   created() {
-    this.getList();
+    // this.getList();
   },
   methods: {
     // 改变日期区间的格式之后进行处理
@@ -156,13 +157,14 @@ export default {
     },
     // 获取表格数据
     async getList() {
+      this.queryLoading = true;
       let res= await timed_taskList({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formItem
       })
+      this.queryLoading = false;
       if(res && res.code === 1){
-        this.$Message.success('请求成功!');
         let data = res.data;
         this.tableData = data.content;
         this.total = data.totalElements //接口中在该条件下取得的数据量

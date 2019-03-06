@@ -128,7 +128,11 @@
               style="width:80px"
               long
               size="small"
-            >检索</Button>
+              :loading='queryLoading'
+            >
+              <span v-if="!queryLoading">检索</span>
+              <span v-else>检索...</span>
+            </Button>
             <Button
               size="small"
 
