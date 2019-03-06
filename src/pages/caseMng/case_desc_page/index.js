@@ -2201,6 +2201,7 @@ export default {
         this.$Message.error('很抱歉，暂无权限拨打');
         return;
       }
+      console.log(obj, type, tag)
       this.handleCancle();
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;

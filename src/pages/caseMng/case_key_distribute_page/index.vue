@@ -188,7 +188,11 @@
                     style="width:80px"
                     long
                     size="small"
-                  >分配</Button>
+                    :loading='allot_loading'
+                  >
+                  <span v-if="!allot_loading">分配</span>
+                  <span v-else>分配中...</span>
+                  </Button>
                   <Button
                     size="small"
                     style="width:80px;margin-left: 8px"
@@ -308,6 +312,7 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      allot_loading: false,//分配按钮loading
       totalcases: "0", //案件总数
       treeFlag: "",
       allotRoleIdList: [],
@@ -633,13 +638,18 @@ export default {
     },
     // 一键分配接口
     async divide_allot_manual() {
+      this.allot_loading = true;
       const res = await divide_allot_manual({
         ...this.formItem,
         allotRoleIdList: this.allotRoleIdList
       });
+      this.allot_loading = false;
       if (res.code === 1) {
         console.log(res);
         this.$Message.success("分配成功");
+        setTimeout(() => {
+          window.history.go(-1);
+        }, 0);
       } else {
         this.$Message.error(res.message);
       }
