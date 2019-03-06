@@ -31,8 +31,37 @@ export default {
           align: 'center'
 				},
 				{
-					title: '公告详情',
+          title: '公告详情',
+          maxWidth: 1000,
           key: 'announcementContent',
+          render: (h, params) => {
+            let announcementContent = params.row.announcementContent;
+            return h('div', [
+              h(
+                'Tooltip',
+                {
+                  style: {
+                    margin: '0 5px',
+                  },
+                  props: {
+                    content: announcementContent,
+                    placement: 'top-start',
+                    maxWidth: 980,
+                    transfer: true,
+                  }
+                },
+                [h('div', {
+                  style: {
+                    cursor: 'pointer',
+                    width: '990px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }
+                }, announcementContent)]
+              ),
+            ])
+          }
 				},
 				{
 					title: '操作',
@@ -66,6 +95,35 @@ export default {
 				{
 					title: '公告详情',
           key: 'announcementContent',
+          maxWidth: 1000,
+          render: (h, params) => {
+            let announcementContent = params.row.announcementContent;
+            return h('div', [
+              h(
+                'Tooltip',
+                {
+                  style: {
+                    margin: '0 5px',
+                  },
+                  props: {
+                    content: announcementContent,
+                    placement: 'top-start',
+                    maxWidth: 980,
+                    transfer: true,
+                  }
+                },
+                [h('div', {
+                  style: {
+                    cursor: 'pointer',
+                    width: '990px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }
+                }, announcementContent)]
+              ),
+            ])
+          }
 				},
 				{
 					title: '操作',
@@ -111,6 +169,35 @@ export default {
 				{
 					title: '公告详情',
           key: 'announcementContent',
+          maxWidth: 1000,
+          render: (h, params) => {
+            let announcementContent = params.row.announcementContent;
+            return h('div', [
+              h(
+                'Tooltip',
+                {
+                  style: {
+                    margin: '0 5px',
+                  },
+                  props: {
+                    content: announcementContent,
+                    placement: 'top-start',
+                    maxWidth: 980,
+                    transfer: true,
+                  }
+                },
+                [h('div', {
+                  style: {
+                    cursor: 'pointer',
+                    width: '990px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }
+                }, announcementContent)]
+              ),
+            ])
+          }
 				},
 				{
 					title: '操作',
@@ -216,7 +303,7 @@ export default {
 				this.$Message.success('编辑成功');
 				setTimeout(() => {
 					this.announcement_list_fun();
-				}, 3000);
+				}, 500);
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -232,7 +319,7 @@ export default {
 				this.$Message.success('添加成功');
 				setTimeout(() => {
 					this.announcement_list_fun();
-				}, 3000);
+				}, 500);
 			} else {
 				this.$Message.error(res.message);
 			}
@@ -246,7 +333,7 @@ export default {
 				this.$Message.success('删除成功');
 				setTimeout(() => {
 					this.announcement_list_fun();
-				}, 3000);
+				}, 500);
 			} else {
 				this.$Message.error(res.message);
 			}
