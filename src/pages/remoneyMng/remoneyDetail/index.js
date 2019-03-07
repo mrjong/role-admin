@@ -78,7 +78,7 @@ export default {
           key: 'billNo',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: 210
         },
         {
           title: '还款金额',
@@ -86,7 +86,7 @@ export default {
           key: 'repayAmt',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal,
+          width: 150,
           render(h, params) {
             let res = params.row.repayAmt;
             res = res ? $this.$options.filters['money'](res) : res;

@@ -152,7 +152,7 @@
               </Col>
               <Col :xs="24" :sm="24" :md="24" :lg="24">
                 <div class="panel-desc-title">
-                  总逾期期数：
+                  当前逾期期数：
                   <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.overduePerdCount}}</span>
                 </div>
               </Col>

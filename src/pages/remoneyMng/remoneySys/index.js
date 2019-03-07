@@ -68,7 +68,7 @@ export default {
           key: 'billNo',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: 210
         },
         {
           title: '代扣订单号',
@@ -76,7 +76,7 @@ export default {
           key: 'dkOrdNo',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: 200
         },
         {
           title: '客户姓名',

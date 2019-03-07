@@ -1764,7 +1764,11 @@ export default {
       this.collectcode_getCollectRelate(); // 获取沟通状态
       this.case_detail_mail_statistics_list(); // 通话统计
       this.case_detail_case_identity_info(); // 查询案件详情身份信息
-    },1000)
+    },1000);
+
+    // this.$nextTick(() => {
+    //   document.oncontextmenu = new Function("event.returnValue=false");
+    // });
     // 催收信息
   },
   methods: {

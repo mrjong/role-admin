@@ -411,6 +411,9 @@ export default {
           break;
       }
     });
+    // this.$nextTick(() => {
+    //   document.oncontextmenu = new Function("event.returnValue=false");
+    // });
 		// this.getList();
 	},
 	methods: {
