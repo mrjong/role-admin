@@ -214,7 +214,6 @@ export default {
           width: widthMidVal,
           fixed: 'left',
           render: (h, params) => {
-            console.log(params.row, 'ccccccc');
             let id = params.row.id;
             let changeInfo = params.row;
             return this.detail || this.update || this.allot ? h('div', [
@@ -287,6 +286,19 @@ export default {
       }
     });
     // this.getList();
+  },
+  watch: {
+    data5() {
+      this.menuIds = [];//清空
+      //获取反显被勾选的节点
+      let checkTreeNodes = this.$refs.tree.getCheckedNodes();
+      if (checkTreeNodes.length<=0) {
+        return;
+      }
+      checkTreeNodes.reduce((previousValue, currentValue, index, array) =>{
+        this.menuIds.push(currentValue.id);
+      },0)
+    }
   },
   methods: {
     // 勾选节点的回调函数
@@ -466,7 +478,6 @@ export default {
         res.data.data[0].expand = true;
         this.data5 = res.data.data;
         // this.$set(this.data5[0].expand, 'expand', true);
-        console.log(this.data5)
       } else {
         this.$Message.error(res.message)
       }

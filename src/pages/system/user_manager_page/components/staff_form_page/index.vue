@@ -563,7 +563,7 @@ export default {
     // 重置密码
     async system_user_reset(ids) {
       this.reset_pwd_loading = true;
-      const res = await system_user_reset({ ids: JSON.stringify(ids) });
+      const res = await system_user_reset({ ids: ids });
       this.reset_pwd_loading = false;
       if (res.code === 1) {
         this.$Message.success("重置密码成功");
