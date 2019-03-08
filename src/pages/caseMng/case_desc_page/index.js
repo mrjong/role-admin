@@ -1845,8 +1845,6 @@ export default {
           toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid
         });
         callFlag = false;
-        this.objCopy.mblNo = '';
-        this.objCopy.cntUserMblNo = '';
       } else {
         // this.$Message.error('登录失败，请联系管理员！');
       }
