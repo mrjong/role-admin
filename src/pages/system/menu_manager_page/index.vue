@@ -16,13 +16,18 @@
               style="width:80px"
               long
               size="small"
-            >刷新</Button>
+              :loading="query_loading"
+            >
+              <span v-if="!query_loading">刷新</span>
+              <span v-else>刷新中...</span>
+            </Button>
           </p>
           <Tree
             :data="data5"
             :render="renderContent"
             v-if="!showPanel"
             multiple
+            :empty-text="query? '暂无数据': '暂无权限查看'"
             @on-select-change="selectNode"
           ></Tree>
         </Card>
@@ -35,22 +40,31 @@
           <Form ref="menuFormItem" :model="menuFormItem" :label-width="90" :rules="ruleValidate1">
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="菜单名称:" prop="text">
-                <Input size="small" clearable v-model.trim="menuFormItem.text" placeholder="请输入菜单名称"></Input>
+                <Input
+                  size="small"
+                  v-model.trim="menuFormItem.text"
+                  placeholder="请输入菜单名称"
+                  :clearable='update'
+                  :disabled='!update'
+                ></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="位置:" prop="sort">
-                <Input size="small" v-model.trim="menuFormItem.sort" clearable placeholder="请输入位置"></Input>
+                <Input size="small" v-model.trim="menuFormItem.sort" :clearable='update'
+                  :disabled='!update' placeholder="请输入位置"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="URL:" prop="url">
-                <Input size="small" v-model.trim="menuFormItem.url" clearable placeholder="请输入url"></Input>
+                <Input size="small" v-model.trim="menuFormItem.url" :clearable='update'
+                  :disabled='!update' placeholder="请输入url"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="6">
               <FormItem label="菜单类型:" prop="type">
-                <Select size="small" placeholder="请选择类型" v-model="menuFormItem.type">
+                <Select size="small" placeholder="请选择类型" :clearable='update'
+                  :disabled='!update' v-model="menuFormItem.type">
                   <Option
                     v-for="item in getDirObj['MENU_TYPE']"
                     :value="item.itemCode"
@@ -65,22 +79,25 @@
                   size="small"
                   v-model="menuFormItem.icon"
                   disabled
-                  clearable
+                  :clearable='update'
                   placeholder="请选择图标"
                 ></Input>
                 <Button
                   :icon="menuFormItem.icon"
                   type="primary"
                   size="small"
+                  v-if="update"
                   @click="showIconList(1)"
                 >选择图标</Button>
               </FormItem>
             </Col>
-
-            <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
+            <Col :xs="24" :sm="24" :md="24" :lg="24" span="6" v-if="update">
               <FormItem>
                 <Button size="small" @click="cancel">取消</Button>
-                <Button type="primary" size="small" @click="handleSubmit('menuFormItem',1)">确定</Button>
+                <Button type="primary" size="small" @click="handleSubmit('menuFormItem',1)" :loading='update_loading'>
+                  <span v-if="!update_loading">修改</span>
+                  <span v-else>修改中...</span>
+                </Button>
               </FormItem>
             </Col>
           </Form>
@@ -143,7 +160,10 @@
             <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
               <FormItem>
                 <Button size="small" @click="cancel">取消</Button>
-                <Button type="primary" size="small" @click="handleSubmit('menuAddFormItem',0)">确定</Button>
+                <Button type="primary" size="small" @click="handleSubmit('menuAddFormItem',0)" :loading='add_loading'>
+                  <span v-if="!add_loading">确定</span>
+                  <span v-else>添加中...</span>
+                </Button>
               </FormItem>
             </Col>
           </Form>

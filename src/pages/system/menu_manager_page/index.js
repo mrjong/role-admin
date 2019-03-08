@@ -15,6 +15,14 @@ export default {
       showPanel2: false,
       detailFlag: false,
       showIconFlag: false,
+      query: false,//查询权限
+      add: false,//添加权限
+      delete: false,//删除权限
+      update: false,//修改权限
+      query_loading: false,//查询，刷新loading
+      add_loading: false,//添加loading
+      update_loading: false,//修改loading
+      delete_loading: false,//删除loading
       iconType: '',
       modal: '',
       itemName: '',
@@ -99,6 +107,23 @@ export default {
     };
   },
   created() {
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      if (item.type !== '03') {
+        return;
+      }
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+        case "add": this.add = true;
+          break;
+        case "delete": this.delete = true;
+          break;
+        case "update": this.update = true;
+          break;
+      }
+    });
     this.getList();
   },
   methods: {
@@ -170,16 +195,12 @@ export default {
               }
             },
             [
-              h(
+             this.add? h(
                 'Button',
                 {
                   props: Object.assign({}, this.buttonProps, {
-                    // icon: 'ios-plus-empty'
                     type: 'primary'
                   }),
-                  style: {
-                    // marginRight: data.type === '4' || data.type === '3' ? 0 : '4px'
-                  },
                   on: {
                     click: () => {
                       this.addItem(data);
@@ -187,8 +208,8 @@ export default {
                   }
                 },
                 '添加'
-              ),
-              h(
+              ): null,
+             this.delete? h(
                 'Poptip',
                 {
                   props: {
@@ -207,18 +228,16 @@ export default {
                     'Button',
                     {
                       props: Object.assign({}, this.buttonProps, {
-                        // icon: 'ios-plus-empty'
                         type: 'error'
                       }),
                       style: {
                         marginLeft: '4px'
                       },
-
                     },
                     '删除'
                   )
                 ]
-              )
+              ): null
             ]
           )
         ]
@@ -261,7 +280,6 @@ export default {
         }
       });
     },
-
     // 添加菜单项
     addItem(data) {
       this.menuAddFormItem = {
@@ -274,12 +292,21 @@ export default {
       this.data = data;
     },
     cancel() {
+      this.update_loading = false;
+      this.delete_loading = false;
+      this.add_loading = false;
       this.modal = '';
     },
     // 获取表格数据
     async getList(params) {
+      if (!this.query) {
+        this.data5 = [];
+        return;
+      }
+      this.query_loading = true;
       const res = await stytem_menu_list({ state: '01' });
       console.log(res);
+      this.query_loading = false;
       if (res.code) {
         this.data5 = res.data;
         this.data5[0].expand = true;
@@ -290,7 +317,9 @@ export default {
     },
     // 修改菜单项
     async menuUpdate(params) {
+      this.update_loading = true;
       const res = await stytem_menu_update(params);
+      this.update_loading = false;
       if (res.code === 1) {
         this.$Message.success('更新成功');
         this.modal = '';
@@ -301,7 +330,9 @@ export default {
     },
     // 新增菜单项
     async menuAdd(params) {
+      this.add_loading = true;
       const res = await stytem_menu_add(params);
+      this.add_loading = false;
       if (res.code === 1) {
         this.$Message.success('添加成功');
         this.modal = '';
@@ -312,7 +343,9 @@ export default {
     },
     // 删除菜单项
     async system_menu_del(id) {
+      this.delete_loading = true;
       const res = await system_menu_del({ id: id });
+      this.delete_loading = false;
       if (res.code === 1) {
         this.$Message.success('删除成功');
         this.getList();
