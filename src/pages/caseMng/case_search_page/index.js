@@ -3,6 +3,8 @@ import sysDictionary from '@/mixin/sysDictionary';
 import { case_list, cases_export,  } from '@/service/getData';
 import util from '@/libs/util';
 import qs from 'qs';
+import Cookie from 'js-cookie';
+
 export default {
   name: 'case_search_page',
   mixins: [formValidateFun, sysDictionary],
@@ -44,6 +46,10 @@ export default {
       query: false,//案件查询权限
       detail: false,//c查看案件详情权限
       export_case: false,//导出权限
+      all_opt: false,//案件详情全部操作权限
+      plaintext: false,//案件详情查看明文权限
+      apply_arbitrament: false,//案件详情申请仲裁权限
+      apply_deduct: false,//案件详情申请划扣权限
       queryLoading: false,//查询按钮loading
       exportLoading: false,//导出loading
       totalOverdueAmt: '',
@@ -344,8 +350,14 @@ export default {
         break;
         case "export" : this.export_case = true;
         break;
+        case "plaintext" : this.plaintext = true;
+        break;
       }
     });
+    Cookie.set('all_opt', this.all_opt);
+    Cookie.set('plaintext', this.plaintext);
+    Cookie.set('apply_arbitrament', this.apply_arbitrament);
+    Cookie.set('apply_deduct', this.apply_deduct);
     // this.getList();
     console.log(this.$route)
   },

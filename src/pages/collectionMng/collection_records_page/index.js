@@ -8,6 +8,7 @@ import util from '@/libs/util';
 import 'video.js/dist/video-js.css';
 import 'vue-video-player/src/custom-theme.css'
 import qs from 'qs';
+import Cookie from 'js-cookie';
 
 
 export default {
@@ -43,6 +44,10 @@ export default {
       query: false,//查询权限
       export_case: false,//导出权限
       play: false,//播放权限
+      all_opt: false,//案件详情全部操作权限
+      plaintext: false,//案件详情查看明文权限
+      apply_arbitrament: false,//案件详情申请仲裁权限
+      apply_deduct: false,//案件详情申请划扣权限
       query_loading: false,//查询按钮loading
       export_case_loading: false,//导出按钮loading
       ruleValidate: {
@@ -323,10 +328,16 @@ export default {
           break;
         case "play": this.play = true;
           break;
-        case "export_case": this.export_case = true;
+        case "export": this.export_case = true;
+          break;
+        case "plaintext": this.plaintext = true;
           break;
       }
     });
+    Cookie.set('all_opt', this.all_opt);
+    Cookie.set('plaintext', this.plaintext);
+    Cookie.set('apply_arbitrament', this.apply_arbitrament);
+    Cookie.set('apply_deduct', this.apply_deduct);
     // this.getList();
     this.getLeafTypeList()
     this.getLeafTypeList2()

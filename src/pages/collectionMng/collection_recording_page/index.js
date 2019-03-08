@@ -5,6 +5,7 @@ import tablePage from '@/mixin/tablePage';
 import util from '@/libs/util';
 import 'video.js/dist/video-js.css';
 import { videoPlayer } from 'vue-video-player';
+import Cookie from 'js-cookie';
 import videojs from 'video.js'
 import 'vue-video-player/src/custom-theme.css'
 // import SWF_URL from 'videojs-swf/dist/video-js.swf'
@@ -27,6 +28,10 @@ export default {
       query: false,//查询权限
       play: false,//播放权限
       download: false,//下载权限
+      all_opt: false,//案件详情全部操作权限
+      plaintext: false,//案件详情查看明文权限
+      apply_arbitrament: false,//案件详情申请仲裁权限
+      apply_deduct: false,//案件详情申请划扣权限
       query_loading: false,//查询权限按钮loading
       getLeafTypeList_data: [],
       getLeafTypeList2_data: [],
@@ -55,84 +60,6 @@ export default {
         controls: true
         // poster: '/static/images/author.jpg'
       },
-      phoneCallList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
-      productTimeList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
-      productLineList: [
-        {
-          value: 'New York',
-          label: 'New York'
-        },
-        {
-          value: 'London',
-          label: 'London'
-        },
-        {
-          value: 'Sydney',
-          label: 'Sydney'
-        },
-        {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
-        }
-      ],
       modal12: false,
       inputGrid: '',
       modal11: false,
@@ -142,15 +69,6 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      formValidate3: {
-        items: [
-          {
-            value: '',
-            index: 1,
-            status: 1
-          }
-        ]
-      },
       formItem: {},
       tableData: [
       ],
@@ -378,8 +296,14 @@ export default {
           break;
         case "download": this.download = true;
           break;
+        case "plaintext": this.plaintext = true;
+          break;
       }
     });
+    Cookie.set('all_opt', this.all_opt);
+    Cookie.set('plaintext', this.plaintext);
+    Cookie.set('apply_arbitrament', this.apply_arbitrament);
+    Cookie.set('apply_deduct', this.apply_deduct);
     // this.getList();
     this.getLeafTypeList()
     this.getLeafTypeList2()

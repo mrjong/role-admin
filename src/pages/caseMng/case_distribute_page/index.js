@@ -54,6 +54,10 @@ export default {
       stop_urge: false,//停催权限
       regain_urge: false,//恢复催收权限
       send_message: false,//站内信权限
+      all_opt: false,//案件详情全部操作权限
+      plaintext: false,//案件详情查看明文权限
+      apply_arbitrament: false,//案件详情申请仲裁权限
+      apply_deduct: false,//案件详情申请划扣权限
       queryLoading: false,//查询按钮loading
       recoverLoading: false,//回收按钮loading
       batch_distribute_loading: false,//批量分配分配按钮loading
@@ -458,8 +462,14 @@ export default {
           break;
         case "send_message": this.send_message = true;
           break;
+        case "plaintext": this.plaintext = true;
+          break;
       }
     });
+    Cookie.set('all_opt', this.all_opt);
+    Cookie.set('plaintext', this.plaintext);
+    Cookie.set('apply_arbitrament', this.apply_arbitrament);
+    Cookie.set('apply_deduct', this.apply_deduct);
     // this.getList();
     this.getLeafTypeList()
     this.getLeafTypeList2()
