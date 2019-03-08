@@ -1,58 +1,30 @@
 <template>
-  <div
-    id="main"
-    class="app-main"
-  >
-    <div
-      class="tel-box"
-      v-if="showTel"
-    >
+  <div id="main" class="app-main">
+    <div class="tel-box" v-if="showTel">
       <div class="tel-box-desc">
         <div class="tel-num">{{telNoHid}}</div>
         <div class="tel-desc">{{usrNameHid}}</div>
         <div class="tel-btn-box">
-          <div
-            class="item success"
-            v-if="success"
-          >
-            <div
-              class="icon-box"
-              @click="answer"
-            >
+          <div class="item success" v-if="success">
+            <div class="icon-box" @click="answer">
               <Icon type="ios-call"></Icon>
             </div>
           </div>
-          <div
-            class="item fail"
-            v-if="fail"
-          >
-            <div
-              class="icon-box"
-              @click="hangup"
-            >
-              <Icon
-                class="fail-icon"
-                type="ios-call"
-              ></Icon>
+          <div class="item fail" v-if="fail">
+            <div class="icon-box" @click="hangup">
+              <Icon class="fail-icon" type="ios-call"></Icon>
             </div>
           </div>
         </div>
       </div>
     </div>
     <router-view></router-view>
-    <video
-      loop
-      ref="ring"
-      preload="auto"
-      style="position: absolute"
-      src="src/libs/ring.wav"
-    >
-    </video>
+    <video loop ref="ring" preload="auto" style="position: absolute" src="src/libs/ring.wav"></video>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 // import ring from '@/libs/ring.wav'
 export default {
   data() {
@@ -60,21 +32,19 @@ export default {
       fail: false,
       success: false,
       showTel: false,
-      telNoHid: '***********',
-      usrNameHid: '****',
+      telNoHid: "***********",
+      usrNameHid: "****",
       theme: this.$store.state.app.themeColor
-    }
+    };
   },
   created() {
-    if (localStorage.getItem('callData')) {
-      this.call(JSON.parse(localStorage.getItem('callData')))
+    if (localStorage.getItem("callData")) {
+      this.call(JSON.parse(localStorage.getItem("callData")));
     }
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
-    ...mapGetters([
-      'changeCallData'
-    ])
+    ...mapGetters(["changeCallData"])
   },
 
   methods: {
@@ -90,102 +60,99 @@ export default {
         url: obj.url
       };
       CallHelper.init(config, this.initCallback);
-
     },
     /**
-* 设置状态监听回调
-*/
+     * 设置状态监听回调
+     */
     stateCallback(data) {
-      this.$store.commit('changeCallData', data)
+      this.$store.commit("changeCallData", data);
     },
     /**
-    * 初始化方法回调是否成功
-    */
+     * 初始化方法回调是否成功
+     */
     initCallback(data) {
       if (data.successChange) {
-        localStorage.removeItem('callObj')
-        console.log('您已登录成功！app.vue');
+        localStorage.removeItem("callObj");
+        console.log("您已登录成功！app.vue");
       } else {
         // this.$Message.error('登录失败，请联系管理员！');
       }
     },
     answer() {
-      CallHelper.answer((data) => {
+      CallHelper.answer(data => {
         console.log(data);
-        this.success = false
-        this.fail = true
+        this.success = false;
+        this.fail = true;
       });
     },
     hangup() {
-      this.showTel = false
+      this.showTel = false;
       CallHelper.hangup();
-      this.fail = false
-      this.success = false
+      this.fail = false;
+      this.success = false;
       // 清空展示
-      localStorage.removeItem('callObj')
+      localStorage.removeItem("callObj");
     },
     play() {
-      this.$refs.ring.play()
+      this.$refs.ring.play();
     },
     pause1() {
       this.$refs.ring.pause();
     }
   },
-
   watch: {
     changeCallData(res) {
       if (res.msg) {
-        console.log('电话状态======>', res)
-        this.pause1()
+        console.log("电话状态======>", res);
+        this.pause1();
         switch (res.msg) {
-          case 'READY':
+          case "READY":
             // 坐席就绪
-            this.showTel = false
+            this.showTel = false;
             break;
-          case 'RINGING':
-
+          case "RINGING":
             // 坐席振铃
             if (res.data) {
-              const { direction, phoneNum } = res.data
-              if (direction == 'ob') {
+              const { direction, phoneNum } = res.data;
+              if (direction == "ob") {
                 // 呼出
-                console.log(localStorage.getItem('callObj'))
-            if (localStorage.getItem('callObj')) {
-              let callObj = JSON.parse(localStorage.getItem('callObj'))
-              console.log(callObj)
-              this.telNoHid = callObj.telNoHid || '***********'
-              this.usrNameHid = callObj.usrNameHid ||  '***'
-            }
-                this.answer()
+                console.log(localStorage.getItem("callObj"));
+                if (localStorage.getItem("callObj")) {
+                  let callObj = JSON.parse(localStorage.getItem("callObj"));
+                  console.log(callObj);
+                  this.telNoHid = callObj.telNoHid || "***********";
+                  this.usrNameHid = callObj.usrNameHid || "***";
+                }
+                this.answer();
               } else if ("ib" == direction) {
                 // 呼入
-                this.telNoHid = res.data.phoneNum || '***********',
-                this.usrNameHid = res.data.area || '***',
-                this.play()
-                this.fail = true
-                this.success = true
+                (this.telNoHid = res.data.phoneNum || "***********"),
+                  (this.usrNameHid = res.data.area || "***"),
+                  this.play();
+                this.fail = true;
+                this.success = true;
               }
             }
-            this.showTel = true
+            this.showTel = true;
             break;
-          case 'HANGUP':
+          case "HANGUP":
             // 坐席挂机
-            localStorage.removeItem('callObj')
-            this.showTel = false
-            this.fail = false
-            this.success = false
+            localStorage.removeItem("callObj");
+            this.showTel = false;
+            this.fail = false;
+            this.success = false;
             break;
 
           default:
             break;
         }
       } else {
-        this.$Message.error('拨打电话初始化异常')
+        this.$Message.error("拨打电话初始化异常");
       }
     }
   },
-  beforeDestroy() { },
-}
+  beforeDestroy() {}
+};
 </script>
 
 <style lang="less">

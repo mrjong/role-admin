@@ -31,6 +31,7 @@ import {
   case_collect_case_list, // 我的案件
   case_list
 } from '@/service/getData';
+let callFlag = false;
 export default {
   name: 'case_desc',
   components: {
@@ -1764,7 +1765,7 @@ export default {
       this.collectcode_getCollectRelate(); // 获取沟通状态
       this.case_detail_mail_statistics_list(); // 通话统计
       this.case_detail_case_identity_info(); // 查询案件详情身份信息
-    },1000);
+    },1500);
     // 催收信息
   },
   mounted() {
@@ -1832,6 +1833,9 @@ export default {
       if (data.successChange) {
         console.log(data);
         console.log('您已登录成功！desc_page');
+        if (!callFlag) {
+          return;
+        }
         this.call_kt_hung_on({
           callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
           callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
@@ -1840,6 +1844,9 @@ export default {
           toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
           toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid
         });
+        callFlag = false;
+        this.objCopy.mblNo = '';
+        this.objCopy.cntUserMblNo = '';
       } else {
         // this.$Message.error('登录失败，请联系管理员！');
       }
@@ -2217,6 +2224,7 @@ export default {
             this.$Message.info('请先挂断其他电话，再重试');
             return
           }
+          callFlag = true;
           var head = document.getElementsByTagName('head')[0];
           var script = document.createElement('script');
           script.type = 'text/javascript';

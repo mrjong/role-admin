@@ -588,10 +588,7 @@
                       title="显示明文"
                       type="md-eye"
                       v-if="plaintext"
-                      @click.native="syscommon_decrypt({
-                type:'MBL',
-                data:item&&item.cntUserMblNo
-            })"
+                      @click.native="syscommon_decrypt({type:'MBL', data:item&&item.cntUserMblNo})"
                     ></Icon>
                   </Poptip>
                   <span class="state" v-if="item.callStateName">{{item.callStateName}}</span>
