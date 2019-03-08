@@ -124,6 +124,9 @@ export default {
     this.login_code()
     localStorage.removeItem('callData')
     localStorage.removeItem('callObj')
+    this.$nextTick(() => {
+      document.oncontextmenu = new Function("event.returnValue=false");
+    });
   },
   methods: {
     async login_code() {

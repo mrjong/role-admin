@@ -143,27 +143,24 @@ export default {
             this.showTel = false
             break;
           case 'RINGING':
-            console.log(localStorage.getItem('callObj'))
-            if (localStorage.getItem('callObj')) {
-              let callObj = JSON.parse(localStorage.getItem('callObj'))
-              console.log(callObj)
-              this.telNoHid = callObj.telNoHid || this.telNoHid
-              this.usrNameHid = callObj.usrNameHid || this.usrNameHid
-            }
+
             // 坐席振铃
             if (res.data) {
               const { direction, phoneNum } = res.data
               if (direction == 'ob') {
                 // 呼出
+                console.log(localStorage.getItem('callObj'))
+            if (localStorage.getItem('callObj')) {
+              let callObj = JSON.parse(localStorage.getItem('callObj'))
+              console.log(callObj)
+              this.telNoHid = callObj.telNoHid || '***********'
+              this.usrNameHid = callObj.usrNameHid ||  '***'
+            }
                 this.answer()
               } else if ("ib" == direction) {
                 // 呼入
-                this.telNoHid = res.data.phoneNum
-                this.usrNameHid = res.data.area
-                localStorage.setItem('callObj',{
-                    telNoHid:res.data.phoneNum,
-                    usrNameHid:res.data.area
-                })
+                this.telNoHid = res.data.phoneNum || '***********',
+                this.usrNameHid = res.data.area || '***',
                 this.play()
                 this.fail = true
                 this.success = true

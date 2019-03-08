@@ -1765,11 +1765,12 @@ export default {
       this.case_detail_mail_statistics_list(); // 通话统计
       this.case_detail_case_identity_info(); // 查询案件详情身份信息
     },1000);
-
-    // this.$nextTick(() => {
-    //   document.oncontextmenu = new Function("event.returnValue=false");
-    // });
     // 催收信息
+  },
+  mounted() {
+    this.$nextTick(() => {
+      document.oncontextmenu = new Function("event.returnValue=false");
+    });
   },
   methods: {
     // 获取表格数据
@@ -1887,6 +1888,7 @@ export default {
           usrNameHid: obj.toCallUserHid
         };
         console.log(obj34);
+        localStorage.removeItem('callObj');
         localStorage.setItem('callObj', JSON.stringify(obj34));
       } else {
         this.$Message.error(res.message);
