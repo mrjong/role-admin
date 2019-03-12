@@ -249,7 +249,6 @@ export default {
       this.formItem = {};
       this.operTime=[],
       this.$refs[name].resetFields();
-      this.getList();
     },
     //查看详情
     handleDetail( obj) {

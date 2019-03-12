@@ -165,7 +165,6 @@ export default {
       this.loginTime= [],
       this.logoutTime= [],
       this.$refs[name].resetFields();
-      this.getList();
     },
     //查看详情
     async handleDetail( obj) {

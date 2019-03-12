@@ -179,7 +179,7 @@ export default {
       this.formItem = {};
       this.createTime = [];
       this.$refs[name].resetFields();
-      this.getList();
+      // this.getList();
     },
     //查看详情
     handleDetail( obj) {

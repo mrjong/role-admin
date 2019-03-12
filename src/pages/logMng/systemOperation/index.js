@@ -199,7 +199,7 @@ export default {
       this.formItem = {};
       this.startTime = [];
       this.$refs[name].resetFields();
-      this.getList();
+      // this.getList();
     },
     //查看详情
     async handleDetail( obj) {

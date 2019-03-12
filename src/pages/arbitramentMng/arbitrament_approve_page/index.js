@@ -579,8 +579,7 @@ export default {
       };
       this.$refs[name].resetFields();
       this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.getList();
+        if (valid ) {
         }
       });
     }
