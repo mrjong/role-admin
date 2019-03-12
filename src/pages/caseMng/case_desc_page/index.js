@@ -268,7 +268,10 @@ export default {
           align: 'center',
           key: 'perdMngRep',
           render: (h, params) => {
-            let perdMngRep = params.row.perdMngRep;
+            let perdMngRep =
+              parseFloat(params.row.perdMngRep)  +
+              parseFloat(params.row.perdWtdwRep) +
+              parseFloat(params.row.perdAprRep);
             perdMngRep = perdMngRep ? this.$options.filters['money'](perdMngRep) : perdMngRep;
             return h('span', perdMngRep);
           }
