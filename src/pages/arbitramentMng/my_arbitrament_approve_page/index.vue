@@ -262,7 +262,7 @@
                       style="width:100px;height:100px;line-height: 100px;"
                     >
                       <img
-                        :src="arb_detail_data&&prefix+arb_detail_data.voucherImg"
+                        :src="arb_detail_data&&prefix+arb_detail_data.voucherImg? prefix+arb_detail_data.voucherImg: ''"
                         style="vertical-align: top;"
                       >
                       <div

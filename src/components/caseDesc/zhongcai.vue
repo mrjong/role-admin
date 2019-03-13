@@ -194,7 +194,7 @@
                   <template>
                     <div class="demo-upload-list" v-for="item in uploadList2">
                       <template v-if="item.status === 'finished'">
-                        <img :src="item.url">
+                        <img :src="item.url?item.url:''">
                         <div class="demo-upload-list-cover">
                           <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
                           <Icon

@@ -100,18 +100,18 @@ export default {
 		model: {}
 	},
 	created() {
-		this.formItem.idAddress = this.zhongcai_data.idAddress;
+    this.formItem.idAddress = this.zhongcai_data.idAddress;
 		this.formItem.voucherNo = this.zhongcai_data.voucherNo;
 		this.formItem.standAgreeDate = this.zhongcai_data.standAgreeDate
-			? new Date(this.zhongcai_data.standAgreeDate)
-			: '';
+    ? new Date(this.zhongcai_data.standAgreeDate)
+    : '';
 		if (this.zhongcai_data.userGender) {
-			this.formItem.userGender = this.zhongcai_data.userGender;
-			this.$refs.formItem.validateField('userGender');
+      this.formItem.userGender = this.zhongcai_data.userGender;
+			// this.$refs.formItem.validateField('userGender');
 		}
 		if (this.zhongcai_data.userNation) {
-			this.formItem.userNation = this.zhongcai_data.userNation;
-			this.$refs.formItem.validateField('userNation');
+      this.formItem.userNation = this.zhongcai_data.userNation;
+			// this.$refs.formItem.validateField('userNation');
 		}
 	},
 	methods: {
@@ -121,6 +121,8 @@ export default {
 		},
 		// 详情带入  回显身份证图片
 		showImg() {
+      console.log(this.zhongcai_data);
+
 			if (this.zhongcai_data.routertype === 'my_zhongcai') {
 				if (this.zhongcai_data.idCardFront) {
 					this.formItem.idCardFront = this.zhongcai_data.idCardFront;
@@ -129,7 +131,7 @@ export default {
 						relativePath: this.zhongcai_data.idCardFront,
 						status: 'finished'
 					});
-					this.$refs.formItem.validateField('idCardFront');
+					// this.$refs.formItem.validateField('idCardFront');
 				}
 
 				if (this.zhongcai_data.idCardOpposite) {
@@ -139,16 +141,17 @@ export default {
 						relativePath: this.zhongcai_data.idCardOpposite,
 						status: 'finished'
 					});
-					this.$refs.formItem.validateField('idCardOpposite');
+					// this.$refs.formItem.validateField('idCardOpposite');
 				}
 				if (this.zhongcai_data.voucherImg) {
-					this.formItem.voucherImg = this.zhongcai_data.voucherImg;
+          console.log(this.zhongcai_data.voucherImg)
+          this.formItem.voucherImg = this.zhongcai_data.voucherImg;
 					this.uploadList2.push({
 						url: this.prefix + this.zhongcai_data.voucherImg,
 						relativePath: this.zhongcai_data.voucherImg,
 						status: 'finished'
 					});
-					this.$refs.formItem.validateField('voucherImg');
+					// this.$refs.formItem.validateField('voucherImg');
 				}
 				if (this.zhongcai_data.standImg) {
 					this.formItem.standImg = this.zhongcai_data.standImg;
@@ -157,9 +160,11 @@ export default {
 						relativePath: this.zhongcai_data.standImg,
 						status: 'finished'
 					});
-					this.$refs.formItem.validateField('standImg');
-				}
+					// this.$refs.formItem.validateField('standImg');
+        }
+
 			} else {
+        console.log(this.zhongcai_data.idCardFront)
 				if (this.zhongcai_data.idCardFront) {
 					this.arb_uploadUrl({
 						key: 'idCardFront',
