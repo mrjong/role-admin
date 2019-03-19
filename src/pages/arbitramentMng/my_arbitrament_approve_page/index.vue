@@ -224,7 +224,7 @@
                       style="width:100px;height:100px;line-height: 100px;"
                     >
                       <img
-                        :src="arb_detail_data&&prefix+arb_detail_data.idCardFront"
+                        :src="arb_detail_data.idCardFront?prefix+arb_detail_data.idCardFront:''"
                         style="vertical-align: top;"
                       >
                       <div
@@ -243,7 +243,7 @@
                       style="width:100px;height:100px;line-height: 100px;"
                     >
                       <img
-                        :src="arb_detail_data&&prefix+arb_detail_data.idCardOpposite"
+                        :src="arb_detail_data.idCardOpposite?prefix+arb_detail_data.idCardOpposite:''"
                         style="vertical-align: top;"
                       >
                       <div
@@ -262,7 +262,7 @@
                       style="width:100px;height:100px;line-height: 100px;"
                     >
                       <img
-                        :src="arb_detail_data&&prefix+arb_detail_data.voucherImg? prefix+arb_detail_data.voucherImg: ''"
+                        :src="arb_detail_data.voucherImg? prefix+arb_detail_data.voucherImg: ''"
                         style="vertical-align: top;"
                       >
                       <div
@@ -281,7 +281,7 @@
                       style="width:100px;height:100px;line-height: 100px;"
                     >
                       <img
-                        :src="arb_detail_data&&prefix+arb_detail_data.standImg"
+                        :src="arb_detail_data.standImg?prefix+arb_detail_data.standImg:''"
                         style="vertical-align: top;"
                       >
                       <div

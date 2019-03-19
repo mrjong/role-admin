@@ -244,7 +244,7 @@ export default {
           render: (h, params) => {
             const row = params.row;
             const createTime = row.createTime
-              ? this.$options.filters['formatDate'](row.createTime , 'YYYY-MM-DD hh:mm:ss')
+              ? this.$options.filters['formatDate'](row.createTime , 'YYYY-MM-DD HH:mm:ss')
               : row.createTime;
             return h('span', createTime);
           }
@@ -269,6 +269,7 @@ export default {
                         return;
                       }
                       window.sessionStorage.setItem('case_rule_item', JSON.stringify(params.row));
+                      window.sessionStorage.removeItem('collectRate');
                       this.$router.push({ name: 'case_update_distribute_page' });
                     }
                   }
@@ -373,6 +374,7 @@ export default {
     // 添加案件或者修改案件入口
     handeldBtnClick(type) {
       window.sessionStorage.removeItem('case_rule_item');
+      window.sessionStorage.removeItem('collectRate');
       this.$router.push({ name: 'case_add_distribute_page' });
     },
     handleSubmit(name) {
@@ -392,7 +394,7 @@ export default {
     },
     // 一键分配的方法
     handleBtnDistribute() {
-      console.log(this.$router.history);
+      window.sessionStorage.removeItem('collectRate');
       this.$router.push({ path: '/caseMng/case_key_distribute_page' });
     },
     // 选择日期回调

@@ -345,7 +345,7 @@ export default {
       this.button_loading = false;
       if (res.code === 1) {
         this.$Message.success("添加成功");
-        setTimeout(() => {
+         (() => {
           this.del(1);
         });
       } else {

@@ -1,7 +1,8 @@
 <template>
   <div class="panel_list">
-    <Row :gutter="8" class="detail-row">
-      <Col span="12" class="form-col">
+    <Row :gutter="4" class="key_distribute_row">
+      <!-- 左边表单 -->
+      <Col :span="remoneyRateFlag?'8':'12'" class="form-col">
         <!-- 检索条件 -->
         <Card class="vue-panel">
           <p slot="title" @click="showPanel=!showPanel">
@@ -129,8 +130,14 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-                <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
-                  <FormItem span="6">
+                <Col
+                  :xs="11"
+                  :sm="11"
+                  :md="remoneyRateFlag?11:8"
+                  :lg="remoneyRateFlag?11:8"
+                  span="10"
+                >
+                  <FormItem>
                     <Button
                       type="primary"
                       @click="handleQueryCases('formItem')"
@@ -140,20 +147,60 @@
                     >查询案件量</Button>
                   </FormItem>
                 </Col>
-                <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
-                  <div class="casesWrap">{{totalcases}}条案件</div>
+                <Col
+                  :xs="11"
+                  :sm="11"
+                  :md="remoneyRateFlag?11:8"
+                  :lg="remoneyRateFlag?11:8"
+                  span="10"
+                >
+                  <FormItem>
+                    <div class="casesWrap" style='width: 100px;'>{{totalcases}}条案件</div>
+                  </FormItem>
                 </Col>
               </Col>
-              <Col :xs="24" :sm="24" :md="12" :lg="12" span="6">
-                <FormItem span="6" label="案件状态:" prop="allotType">
-                  <RadioGroup v-model="formItem.allotType">
+              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+                <FormItem span="6" label="分配方式:" prop="allotType">
+                  <!-- <RadioGroup v-model="formItem.allotType">
                     <Radio
                       :label="item.itemCode"
                       v-for="item in getDirObj.ALLOT_TYPE"
                       :key="item.itemCode"
                     >{{ item.itemName }}</Radio>
-                  </RadioGroup>
+                  </RadioGroup>-->
+                  <Select
+                    size="small"
+                    clearable
+                    placeholder="请选择分配方式"
+                    v-model="formItem.allotType"
+                    @on-change="allotTypeChange"
+                  >
+                    <Option
+                      v-for="item in getDirObj.ALLOT_TYPE"
+                      :value="item.itemCode"
+                      :key="item.itemName"
+                    >{{ item.itemName }}</Option>
+                  </Select>
                 </FormItem>
+                <Col :md="24" :lg="24" span="10" v-if="formItem.allotType === '03'">
+                  <!-- <FormItem>
+                    <div style="font-size: 16px;">请设置分配参数</div>
+                  </FormItem>-->
+                  <FormItem span="10" label="逾期天数:">
+                    <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
+                      <Input size="small" disabled :value="3"></Input>
+                    </Col>
+                    <Col :xs="11" :sm="11" :md="2" :lg="2" span="2">
+                      <div class="text-center">-</div>
+                    </Col>
+                    <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
+                      <Input size="small" disabled :value="3"></Input>
+                    </Col>
+                  </FormItem>
+                  <FormItem span="10" label="案件比例上限:">
+                    <Input size="small" disabled :value="2.5"></Input>
+                  </FormItem>
+                </Col>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
                 <FormItem span="6" label="接收人员:" prop="allotNameList">
@@ -188,10 +235,10 @@
                     style="width:80px"
                     long
                     size="small"
-                    :loading='allot_loading'
+                    :loading="allot_loading"
                   >
-                  <span v-if="!allot_loading">分配</span>
-                  <span v-else>分配中...</span>
+                    <span v-if="!allot_loading">分配</span>
+                    <span v-else>分配中...</span>
                   </Button>
                   <Button
                     size="small"
@@ -204,13 +251,15 @@
           </Form>
         </Card>
       </Col>
-      <Col span="12" v-if="treeFlag === 0">
+      <!-- 中间tree -->
+      <Col :span="remoneyRateFlag?'8':'12'" v-if="treeFlag === 0">
         <Card class="vue-panel">
           <p slot="title" @click="showPanel2=!showPanel2">
             <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>人员组织树
           </p>
           <Tree
             :data="data5"
+            class="case_rule_tree"
             :render="renderContent"
             multiple
             show-checkbox
@@ -223,12 +272,13 @@
           </div>
         </Card>
       </Col>
-      <Col span="12" v-if="treeFlag === 1">
+      <Col :span="remoneyRateFlag?'8':'12'" v-if="treeFlag === 1">
         <Card class="vue-panel">
           <p slot="title" @click="showPanel2=!showPanel2">
             <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>公司组织树
           </p>
           <Tree
+            class="case_rule_tree"
             :data="data"
             :render="renderContent2"
             multiple
@@ -242,6 +292,39 @@
           </div>
         </Card>
       </Col>
+      <!-- 右边催收人员回款率card -->
+      <Col :span="remoneyRateFlag?'8':'0'" v-if="remoneyRateFlag">
+        <Card class="vue-panel">
+          <p slot="title">催收人员回款率</p>
+          <Form ref="remoneyRateForm" :model="remoneyRateForm" :label-width="120" class="remoney_rate_form">
+            <FormItem
+              v-for="(item, index) in remoneyRateForm.staffList"
+              :key="index"
+              :label="item.opUserName+':'"
+              :prop="'staffList.'+index+'.collectRate'"
+              :rules="[{required: true, message: '回款率不能为空'},{ message: '回款率只能是数字', trigger:'blur', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,}]"
+              style="margin-bottom: 8px"
+            >
+              <Row>
+                <Col span="18">
+                  <Input
+                    text="number"
+                    number
+                    size="small"
+                    v-model="item.collectRate"
+                    placeholder="请输入回款率"
+                    style="display: inline-block; width: 85%"
+                    @on-blur="rateBlur(index, item.collectRate)"
+                  ></Input>%
+                </Col>
+                <!-- <Col span="4" offset="1">
+                  <Button @click="handleRemove(index)">Delete</Button>
+                </Col>-->
+              </Row>
+            </FormItem>
+          </Form>
+        </Card>
+      </Col>
     </Row>
   </div>
 </template>
@@ -249,11 +332,14 @@
 <script>
 import formValidateFun from "@/mixin/formValidateFun";
 import sysDictionary from "@/mixin/sysDictionary";
+import qs from "qs";
+
 import {
   divide_allot_manual,
   collect_tree_children,
   collect_show_children,
-  allot_manualcounts
+  allot_manualcounts,
+  allot_divideCollectRate
 } from "@/service/getData";
 export default {
   name: "case_key_distribute_page",
@@ -312,11 +398,30 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      allot_loading: false,//分配按钮loading
+      allot_loading: false, //分配按钮loading
       totalcases: "0", //案件总数
-      treeFlag: "",
-      allotRoleIdList: [],
-      allotNameList: [],
+      treeFlag: "", //0 人员树 1 组织树
+      remoneyRateFlag: false, //回款率flag
+      divideRuleUserVos: [], //汇款率接口参数list
+      allotRoleIdList: [], //人员角色idlist
+      allotNameList: [], //人员名字list
+      // 一键分案的表单
+      formItem: {
+        prodTypeList: "",
+        perdCountList: [],
+        perdThisCountList: [],
+        ovdudaysMin: "",
+        ovdudaysMax: "",
+        ovduamtMin: "",
+        ovduamtMax: "",
+        allotType: "",
+        creditLevelList: [],
+        allotNameList: []
+      },
+      //催收员回款率的表单
+      remoneyRateForm: {
+        staffList: []
+      },
       ruleValidate: {
         prodTypeList: [
           {
@@ -385,26 +490,16 @@ export default {
           }
         ]
       },
-      formItem: {
-        prodTypeList: "",
-        perdCountList: [],
-        perdThisCountList: [],
-        ovdudaysMin: "",
-        ovdudaysMax: "",
-        ovduamtMin: "",
-        ovduamtMax: "",
-        allotType: "",
-        creditLevelList: [],
-        allotNameList: []
-      },
       data5: [],
-      data: [],
-      dataContact: []
+      data: []
     };
   },
   created() {
-    this.initTree("", "01");
+    // this.initTree("", "01");
     console.log(this.formItem);
+  },
+  destroyed() {
+    window.sessionStorage.removeItem("collectRate");
   },
   methods: {
     renderContent(h, { root, node, data }) {
@@ -489,10 +584,21 @@ export default {
       console.log(arr);
       this.allotRoleIdList = [];
       this.formItem.allotNameList = [];
+      this.divideRuleUserVos = [];
+      let stallObj = {};
       arr.forEach(item => {
         if (item.leafType === "04") {
+          stallObj = {
+            opRoleUuid: item.id,
+            opUserUuid: item.userUuid,
+            opUserName: item.name,
+            collectRate: "",
+            allotTotal: 0,
+            repayTotal: 0
+          };
           this.allotRoleIdList.push(item.id);
           this.formItem.allotNameList.push(item.name);
+          this.divideRuleUserVos.push(stallObj);
         }
       });
       console.log(this.formItem.allotNameList);
@@ -523,18 +629,50 @@ export default {
       }
       this.treeFlag = type;
     },
+    // 分配方式的回调
+    allotTypeChange(item) {
+      console.log(item);
+      if (item !== "03") {
+        this.remoneyRateFlag = false;
+      }
+    },
+    // 汇款率输入框的blur
+    rateBlur(index, value) {
+      if (typeof value == "number") {
+        this.remoneyRateForm.staffList[index].collectRate = value.toFixed(2);
+      } else {
+        this.remoneyRateForm.staffList[index].collectRate = "";
+      }
+      sessionStorage.setItem(
+        "collectRate",
+        JSON.stringify(this.remoneyRateForm.staffList)
+      );
+    },
     // 取消回退
     handleCancel() {
       window.history.go(-1);
     },
     // 分配提交
     handleSubmit(name) {
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          // this.getList();
-          this.divide_allot_manual();
+      if (this.formItem.allotType === "03") {
+        if (this.remoneyRateFlag) {
+          this.$refs.remoneyRateForm.validate(valid => {
+            if (valid) {
+              this.divide_allot_manual();
+            }
+          });
+        } else {
+          this.$Message.error("请填写回款率");
+          return;
         }
-      });
+      } else {
+        this.$refs[name].validate(valid => {
+          if (valid) {
+            // this.getList();
+            this.divide_allot_manual();
+          }
+        });
+      }
     },
     // tree取消回调
     cancel() {
@@ -543,7 +681,19 @@ export default {
     },
     // tree确定回调
     ok() {
-      this.treeFlag = false;
+      if (this.treeFlag === 0) {
+        if (this.formItem.allotType === "03") {
+          if (this.allotRoleIdList.length > 0) {
+            this.allot_divideCollectRate();
+          } else {
+            this.$Message.error("请先选择催收人员");
+          }
+        } else {
+          this.treeFlag = false;
+        }
+      } else {
+        this.treeFlag = false;
+      }
     },
     // 获取init tree数据
     async initTree(id, type) {
@@ -639,10 +789,23 @@ export default {
     // 一键分配接口
     async divide_allot_manual() {
       this.allot_loading = true;
-      const res = await divide_allot_manual({
-        ...this.formItem,
-        allotRoleIdList: this.allotRoleIdList
-      });
+      // this.formItem.prodTypeList = [this.formItem.prodTypeList];
+      const res = await divide_allot_manual(
+        {
+          ...this.formItem,
+          prodTypeList: [this.formItem.prodTypeList],
+          allotRoleIdList: this.allotRoleIdList,
+          allotUserList: this.remoneyRateForm.staffList,
+          allotFactor: "2.5"
+        },
+        {
+          transformRequest: [
+            function(data) {
+              return JSON.stringify(data); //利用对应方法转换格式
+            }
+          ]
+        }
+      );
       this.allot_loading = false;
       if (res.code === 1) {
         console.log(res);
@@ -674,6 +837,60 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+    },
+    //查询回款率的接口
+    async allot_divideCollectRate() {
+      let divideRulesVo = {
+        allotUserList: this.divideRuleUserVos,
+        overdueDays: "3"
+      };
+      console.log(divideRulesVo);
+      // divideRulesVo = JSON.stringify(divideRulesVo);
+      const res = await allot_divideCollectRate(divideRulesVo, {
+        transformRequest: [
+          function(data) {
+            return qs.stringify(data); //利用对应方法转换格式
+          }
+        ]
+      });
+      if (res.code === 1) {
+        this.remoneyRateFlag = true;
+        if (window.sessionStorage.getItem("collectRate")) {
+          let backArr = []; //待装返回的数据
+          let localArr = []; //本地的数据
+          let newArr = []; //交集的数据
+          let flag = false;
+          localArr = JSON.parse(window.sessionStorage.getItem("collectRate"));
+          this.remoneyRateForm.staffList = [];
+          for (let i = 0; i < res.data.length; i++) {
+            // 外层循环数据返回
+            flag = false;
+            for (let j = 0; j < localArr.length; j++) {
+              //内层循环
+              if (localArr[j].opUserName == res.data[i].opUserName) {
+                //如果暂存的数据有，则取暂存的数据
+                this.remoneyRateForm.staffList.push(localArr[j]);
+                flag = false;
+                break;
+              } else {
+                //如果没有的话，内层循环走一遍，标识符为true
+                flag = true;
+                continue;
+              }
+            }
+            // 内层循环走一遍之后，返回的数据在暂存的里面有没有的话，则push进一个新数组
+            if (flag) {
+              this.remoneyRateForm.staffList.push(res.data[i]);
+            }
+          }
+          // 过滤完的合并数组
+          // this.remoneyRateForm.staffList = newArr.concat(backArr);
+        } else {
+          this.remoneyRateForm.staffList = res.data;
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
     }
   }
 };
@@ -684,7 +901,12 @@ export default {
   margin-bottom: 5px;
   .casesWrap {
     line-height: 35px;
+    width: 100%;
   }
+}
+.case_rule_tree,.remoney_rate_form {
+  max-height: 580px;
+  overflow-y: auto;
 }
 </style>
 
