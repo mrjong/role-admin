@@ -155,7 +155,7 @@
                   span="10"
                 >
                   <FormItem>
-                    <div class="casesWrap" style='width: 100px;'>{{totalcases}}条案件</div>
+                    <div class="casesWrap" style="width: 100px;">{{totalcases}}条案件</div>
                   </FormItem>
                 </Col>
               </Col>
@@ -296,7 +296,12 @@
       <Col :span="remoneyRateFlag?'8':'0'" v-if="remoneyRateFlag">
         <Card class="vue-panel">
           <p slot="title">催收人员回款率</p>
-          <Form ref="remoneyRateForm" :model="remoneyRateForm" :label-width="120" class="remoney_rate_form">
+          <Form
+            ref="remoneyRateForm"
+            :model="remoneyRateForm"
+            :label-width="120"
+            class="remoney_rate_form"
+          >
             <FormItem
               v-for="(item, index) in remoneyRateForm.staffList"
               :key="index"
@@ -658,7 +663,12 @@ export default {
         if (this.remoneyRateFlag) {
           this.$refs.remoneyRateForm.validate(valid => {
             if (valid) {
-              this.divide_allot_manual();
+              this.$refs[name].validate(valid => {
+                if (valid) {
+                  // this.getList();
+                  this.divide_allot_manual();
+                }
+              });
             }
           });
         } else {
@@ -904,7 +914,8 @@ export default {
     width: 100%;
   }
 }
-.case_rule_tree,.remoney_rate_form {
+.case_rule_tree,
+.remoney_rate_form {
   max-height: 580px;
   overflow-y: auto;
 }
