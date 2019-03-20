@@ -262,6 +262,7 @@
             class="case_rule_tree"
             :render="renderContent"
             multiple
+            v-if="treeFlag === 0"
             show-checkbox
             @on-select-change="selectNode"
             @on-check-change="checkChangePerson"
@@ -282,6 +283,7 @@
             :data="data"
             :render="renderContent2"
             multiple
+            v-if="treeFlag === 1"
             show-checkbox
             @on-select-change="selectNode"
             @on-check-change="checkChangeOrz"
@@ -687,7 +689,8 @@ export default {
     // tree取消回调
     cancel() {
       this.treeFlag = false;
-      this.formItem.allotNameList = [];
+      this.remoneyRateFlag = false;
+      // this.formItem.allotNameList = [];
     },
     // tree确定回调
     ok() {
@@ -707,6 +710,7 @@ export default {
     },
     // 获取init tree数据
     async initTree(id, type) {
+      this.data = [];
       const res = await collect_show_children({
         status: 1,
         ids: this.allotRoleIdList
@@ -743,6 +747,7 @@ export default {
     },
     // 获取人员列表
     async collect_show_children() {
+      this.data5 = [];
       const res = await collect_show_children({
         status: 1,
         ids: this.allotRoleIdList
@@ -893,6 +898,10 @@ export default {
               this.remoneyRateForm.staffList.push(res.data[i]);
             }
           }
+          sessionStorage.setItem(
+            "collectRate",
+            JSON.stringify(this.remoneyRateForm.staffList)
+          );
           // 过滤完的合并数组
           // this.remoneyRateForm.staffList = newArr.concat(backArr);
         } else {
