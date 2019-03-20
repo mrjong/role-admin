@@ -160,6 +160,7 @@
                 clearable
                 filterable
                 placeholder="请选择电催中心"
+                @on-change='companyChange'
                 v-model="formItem.opCompayUuid"
               >
                 <Option
@@ -177,6 +178,7 @@
                 clearable
                 filterable
                 placeholder="请选择组别"
+                @on-change='departmentChange'
                 v-model="formItem.opOrganizationUuid"
               >
                 <Option

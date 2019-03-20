@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { case_list, cases_export,  } from '@/service/getData';
+import { case_list, cases_export, getLeafTypeList, collect_parent_children } from '@/service/getData';
 import util from '@/libs/util';
 import qs from 'qs';
 import Cookie from 'js-cookie';
@@ -256,7 +256,7 @@ export default {
                 },
                 [
                   h('span', {
-                  },params.row.billNo)
+                  }, params.row.billNo)
                 ]
               )
             ])
@@ -351,23 +351,24 @@ export default {
       if (item.type !== '03') {
         return;
       }
-      switch(item.url) {
-        case "query" : this.query = true;
-        break;
-        case "detail" : this.detail = true;
-        break;
-        case "export" : this.export_case = true;
-        break;
-        case "plaintext" : this.plaintext = true;
-        break;
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+        case "detail": this.detail = true;
+          break;
+        case "export": this.export_case = true;
+          break;
+        case "plaintext": this.plaintext = true;
+          break;
       }
     });
     Cookie.set('all_opt', this.all_opt);
     Cookie.set('plaintext', this.plaintext);
     Cookie.set('apply_arbitrament', this.apply_arbitrament);
     Cookie.set('apply_deduct', this.apply_deduct);
-    // this.getList();
-    console.log(this.$route)
+    this.collect_parent_children('02', '');
+    this.collect_parent_children('03', '');
+    this.collect_parent_children('04', '');
   },
   methods: {
     // table选中
@@ -396,6 +397,15 @@ export default {
       this.pageNo = 1;
       this.getList();
     },
+    // 电催中心change
+    companyChange(value) {
+      this.collect_parent_children('03', value);
+      this.collect_parent_children('04', value);
+    },
+    // 部门change
+    departmentChange(value) {
+      this.collect_parent_children('04', value);
+    },
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
@@ -422,7 +432,7 @@ export default {
       this.exportLoading = false;
       setTimeout(() => {
         this.getList();
-      },1000)
+      }, 1000)
     },
     // 获取表格数据
     async getList() {
@@ -445,6 +455,29 @@ export default {
         this.totalCase = res.data.summary.totalCount;
         this.totalOverdueAmt = res.data.summary.totalOverdueAmt;
         this.caseIds = [];
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 查询机构，公司，部门
+    async collect_parent_children(type, parent) {
+      const res = await collect_parent_children({
+        status: "1",
+        leafType: type,
+        parentId: parent || ""
+      });
+      if (res.code === 1) {
+        switch (type) {
+          case "02":
+            this.company_list_data = res.data;
+            break;
+          case "03":
+            this.department_list_data = res.data;
+            break;
+          case "04":
+            this.collect_list_data = res.data;
+            break;
+        }
       } else {
         this.$Message.error(res.message);
       }
