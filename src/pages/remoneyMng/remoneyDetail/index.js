@@ -256,7 +256,7 @@ export default {
     // 导出数据
     async exportData() {
       if (this.tableData.length === 0) {
-        this.$Message.info('当前无数据，无法导入');
+        this.$Message.info('当前无数据，无法导出');
         return;
       }
       this.export_case_loading = true;

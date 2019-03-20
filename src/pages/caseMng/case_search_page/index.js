@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { case_list, cases_export, getLeafTypeList, collect_parent_children } from '@/service/getData';
+import { case_list, query_export, getLeafTypeList, collect_parent_children } from '@/service/getData';
 import util from '@/libs/util';
 import qs from 'qs';
 import Cookie from 'js-cookie';
@@ -366,9 +366,9 @@ export default {
     Cookie.set('plaintext', this.plaintext);
     Cookie.set('apply_arbitrament', this.apply_arbitrament);
     Cookie.set('apply_deduct', this.apply_deduct);
-    this.collect_parent_children('02', '');
-    this.collect_parent_children('03', '');
-    this.collect_parent_children('04', '');
+    this.getLeafTypeList('02', '');
+    this.getLeafTypeList('03', '');
+    this.getLeafTypeList('04', '');
   },
   methods: {
     // table选中
@@ -399,12 +399,12 @@ export default {
     },
     // 电催中心change
     companyChange(value) {
-      this.collect_parent_children('03', value);
-      this.collect_parent_children('04', value);
+      this.getLeafTypeList('03', value);
+      this.getLeafTypeList('04', value);
     },
     // 部门change
     departmentChange(value) {
-      this.collect_parent_children('04', value);
+      this.getLeafTypeList('04', value);
     },
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
@@ -415,9 +415,13 @@ export default {
       });
     },
     // 案件导出
-    async cases_export() {
+    async query_export() {
+      if (this.tableData.length === 0) {
+        this.$Message.error('当前无数据，无法导出');
+        return;
+      }
       this.exportLoading = true;
-      const res = await cases_export(
+      const res = await query_export(
         {
           ...this.formItem,
           caseIds: this.caseIds,
@@ -460,9 +464,9 @@ export default {
       }
     },
     // 查询机构，公司，部门
-    async collect_parent_children(type, parent) {
-      const res = await collect_parent_children({
-        status: "1",
+    async getLeafTypeList(type, parent) {
+      const res = await getLeafTypeList({
+        // status: "1",
         leafType: type,
         parentId: parent || ""
       });
