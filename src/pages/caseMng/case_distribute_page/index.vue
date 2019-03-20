@@ -493,6 +493,7 @@
               <Input
                 type="text"
                 size="small"
+                :maxlength="100"
                 v-model.trim="messageFormItem.msgTitle"
                 placeholder="请输入标题"
               ></Input>
@@ -503,9 +504,9 @@
               <Input
                 type="textarea"
                 size="small"
-                :maxlength="100"
+                :maxlength="500"
                 v-model.trim="messageFormItem.msgContent"
-                placeholder="请输入100字以内内容"
+                placeholder="请输入500字以内内容"
               ></Input>
             </FormItem>
           </Col>
