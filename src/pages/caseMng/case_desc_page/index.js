@@ -358,6 +358,12 @@ export default {
           key: 'callUserTypeName'
         },
         {
+          title: '经办人',
+          align: 'center',
+          width: 100,
+          key: 'opUserName'
+        },
+        {
           title: '拨打状态',
           align: 'center',
           width: 100,

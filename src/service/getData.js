@@ -791,7 +791,7 @@ export const case_list = (obj) =>
 // 案件查询导出
 export const query_export = (obj, options) =>
   fetch({
-    url: '/query/export',
+    url: '/cases/query/export',
     method: 'POST',
     data: qs.stringify(obj),
     responseType: 'blob',

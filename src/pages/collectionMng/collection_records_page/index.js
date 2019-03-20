@@ -148,7 +148,7 @@ export default {
           }
         },
         {
-          title: '客户姓名',
+          title: '催收姓名',
           width: 120,
           key: 'userNmHid',
           align: 'center',

@@ -483,9 +483,9 @@ export default {
     Cookie.set('apply_arbitrament', this.apply_arbitrament);
     Cookie.set('apply_deduct', this.apply_deduct);
     // this.getList();
-    this.collect_parent_children('02', '');
-    this.collect_parent_children('03', '');
-    this.collect_parent_children('04', '');
+    this.getLeafTypeList('02', '');
+    this.getLeafTypeList('03', '');
+    this.getLeafTypeList('04', '');
   },
   methods: {
     renderContent(h, { root, node, data }) {
@@ -581,12 +581,12 @@ export default {
     },
     // 电催中心change
     companyChange(value) {
-      this.collect_parent_children('03', value);
-      this.collect_parent_children('04', value);
+      this.getLeafTypeList('03', value);
+      this.getLeafTypeList('04', value);
     },
     // 部门change
     departmentChange(value) {
-      this.collect_parent_children('04', value);
+      this.getLeafTypeList('04', value);
     },
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
@@ -716,9 +716,9 @@ export default {
       }
     },
     // 查询机构，公司，部门
-    async collect_parent_children(type, parent) {
-      const res = await collect_parent_children({
-        status: "1",
+    async getLeafTypeList(type, parent) {
+      const res = await getLeafTypeList({
+        // status: "1",
         leafType: type,
         parentId: parent || ""
       });
