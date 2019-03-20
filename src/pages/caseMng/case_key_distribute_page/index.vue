@@ -925,7 +925,7 @@ export default {
 }
 .case_rule_tree,
 .remoney_rate_form {
-  max-height: 580px;
+  max-height: 550px;
   overflow-y: auto;
 }
 </style>
