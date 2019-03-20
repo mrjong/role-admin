@@ -18,7 +18,9 @@ export default {
       query: false,//查询权限
       query_loading: false,//查询按钮loading
       export_case_loading: false,//导出按钮loading
-      opCompanyNameList: [],
+      company_list_data: [],//电催中心list
+      department_list_data: [],//组别list
+      collect_list_data: [],//经办人list
       startRepayDateRange: '', //实际还款日期区间
       shouldRepayDate: '',
       summary: {},
@@ -225,6 +227,13 @@ export default {
           width: widthMidVal
         },
         {
+          title: '组别',
+          key: 'opOrganizationName',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal
+        },
+        {
           title: '经办人',
           searchOperator: 'like',
           key: 'opUserName',
@@ -249,10 +258,21 @@ export default {
           break;
       }
     });
-    this.getLeafList();
+    this.getLeafTypeList('02', '');
+    this.getLeafTypeList('03', '');
+    this.getLeafTypeList('04', '');
     // this.getList();
   },
   methods: {
+    // 电催中心change
+    companyChange(value) {
+      this.getLeafTypeList('03', value);
+      this.getLeafTypeList('04', value);
+    },
+    // 部门change
+    departmentChange(value) {
+      this.getLeafTypeList('04', value);
+    },
     // 导出数据
     async exportData() {
       if (this.tableData.length === 0) {
@@ -271,15 +291,6 @@ export default {
       );
       this.export_case_loading = false;
       util.dowloadfile('回款明细', res);
-    },
-    async getLeafList() {
-      let res = await getLeafTypeList({
-        leafType: '02',
-      });
-      if (res && res.code === 1) {
-        console.log(res, '电催中心的接口结果');
-        this.opCompanyNameList = res.data;
-      }
     },
     // 改变日期区间的格式之后进行处理
     changeActDate(val1, val2) {
@@ -307,12 +318,8 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.pageNo = 1;
-          this.getList();
-        }
-      });
+      this.pageNo = 1;
+      this.getList();
     },
     // 获取表格数据
     async getList() {
@@ -338,6 +345,29 @@ export default {
         this.$Message.error(res.message);
       }
       // 试着处理数据和分页组件之间的关系,
+    },
+    // 查询机构，公司，部门
+    async getLeafTypeList(type, parent) {
+      const res = await getLeafTypeList({
+        // status: "1",
+        leafType: type,
+        parentId: parent || ""
+      });
+      if (res.code === 1) {
+        switch (type) {
+          case "02":
+            this.company_list_data = res.data;
+            break;
+          case "03":
+            this.department_list_data = res.data;
+            break;
+          case "04":
+            this.collect_list_data = res.data;
+            break;
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     // 重置
     clearForm(name) {

@@ -750,6 +750,7 @@ export default {
           ...this.formItem,
           caseIds: this.recycleCaseIds,
           preTotalCases: this.recycleCaseMounts,
+          caseStatus: '0'
         },
         {
           responseType: 'blob',

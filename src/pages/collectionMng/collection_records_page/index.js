@@ -154,6 +154,12 @@ export default {
           align: 'center',
         },
         {
+          title: '客户姓名',
+          width: 120,
+          key: 'customerNameHid',
+          align: 'center',
+        },
+        {
           title: '关系',
           width: 100,
           key: 'callUserTypeName',
