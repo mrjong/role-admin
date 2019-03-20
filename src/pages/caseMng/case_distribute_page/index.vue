@@ -515,9 +515,9 @@
               <Input
                 type="textarea"
                 size="small"
-                :maxlength="500"
+                :maxlength="100"
                 v-model.trim="messageFormItem.remark"
-                placeholder="请输入500字以内备注"
+                placeholder="请输入100字以内备注"
               ></Input>
             </FormItem>
           </Col>
