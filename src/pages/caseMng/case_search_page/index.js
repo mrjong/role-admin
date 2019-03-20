@@ -52,6 +52,9 @@ export default {
       apply_deduct: false,//案件详情申请划扣权限
       queryLoading: false,//查询按钮loading
       exportLoading: false,//导出loading
+      company_list_data: [],//电催中心list
+      department_list_data: [],//组别list
+      collect_list_data: [],//经办人list
       totalOverdueAmt: '',
       totalCase: '',
       caseMounts: '',
@@ -326,7 +329,12 @@ export default {
           align: 'center',
           key: 'opCompayName'
         },
-
+        {
+          title: '组别',
+          width: 120,
+          align: 'center',
+          key: 'opOrganizationName'
+        },
         {
           title: '经办人',
           width: 100,

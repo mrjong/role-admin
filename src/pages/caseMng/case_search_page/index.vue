@@ -153,6 +153,57 @@
               </Select>
             </FormItem>
           </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="电催中心:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择电催中心"
+                v-model="formItem.opCompayUuid"
+              >
+                <Option
+                  v-for="item in company_list_data"
+                  :value="item.id"
+                  :key="item.id"
+                >{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="组别:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择组别"
+                v-model="formItem.opOrganizationUuid"
+              >
+                <Option
+                  v-for="item in department_list_data"
+                  :value="item.id"
+                  :key="item.id"
+                >{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="经办人:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择经办人"
+                v-model="formItem.opUserUuid"
+              >
+                <Option
+                  v-for="(item,index) in collect_list_data"
+                  :value="item.id"
+                  :key="item.id + index"
+                >{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
               <Button type="primary" style="width:80px" long size="small" :loading="queryLoading" @click="handleSubmit('formItem')">

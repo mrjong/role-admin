@@ -38,6 +38,9 @@ export default {
     };
   },
   created() {
+    this.$Message.config({
+      duration: 2
+    })
     if (localStorage.getItem("callData")) {
       this.call(JSON.parse(localStorage.getItem("callData")));
     }
