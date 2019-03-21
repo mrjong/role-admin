@@ -94,8 +94,6 @@
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="手机号:" prop="mblNo">
               <Input
-                type="number"
-                number
                 size="small"
                 clearable
                 v-model.trim="formItem.mblNo"
@@ -109,8 +107,6 @@
                 <FormItem prop="minOverdueDays">
                   <Input
                     size="small"
-                    number
-                    type="number"
                     clearable
                     v-model.trim="formItem.minOverdueDays"
                   ></Input>
@@ -123,8 +119,6 @@
                 <FormItem prop="maxOverdueDays">
                   <Input
                     size="small"
-                    number
-                    type="number"
                     clearable
                     v-model.trim="formItem.maxOverdueDays"
                   ></Input>
@@ -136,7 +130,7 @@
             <FormItem label="逾期应还金额:">
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                 <FormItem prop="minOverdueAmt">
-                  <Input size="small" number clearable v-model.trim="formItem.minOverdueAmt"></Input>
+                  <Input size="small" clearable v-model.trim="formItem.minOverdueAmt"></Input>
                 </FormItem>
               </Col>
               <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -144,7 +138,7 @@
               </Col>
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                 <FormItem prop="maxOverdueAmt">
-                  <Input size="small" number clearable v-model.trim="formItem.maxOverdueAmt"></Input>
+                  <Input size="small" clearable v-model.trim="formItem.maxOverdueAmt"></Input>
                 </FormItem>
               </Col>
             </FormItem>
@@ -153,7 +147,7 @@
             <FormItem label="还款日期:">
               <DatePicker
                 type="daterange"
-                v-model="date"
+                v-model="formItem.date"
                 @on-change="dateChange"
                 :editable="false"
                 placeholder="请选择还款日期"

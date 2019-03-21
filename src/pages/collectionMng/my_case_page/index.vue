@@ -14,12 +14,11 @@
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="产品线:" prop="prodTypes">
+            <FormItem span="4" label="产品线:" prop="prodTypes">
               <Select
                 size="small"
                 clearable
                 multiple
-                filterable
                 placeholder="请选择产品线"
                 v-model="formItem.prodTypes"
               >
@@ -36,7 +35,6 @@
               <Select
                 size="small"
                 multiple
-                filterable
                 clearable
                 placeholder="请选择产品期数"
                 v-model="formItem.periodCounts"
@@ -114,7 +112,6 @@
                 size="small"
                 clearable
                 multiple
-                filterable
                 placeholder="请选择信用级别"
                 v-model="formItem.creditLevels"
               >

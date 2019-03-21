@@ -345,6 +345,11 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let case_search_form = window.sessionStorage.getItem('case_search_form');
+    if (case_search_form) {
+      this.formItem = JSON.parse(case_search_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -409,6 +414,7 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          window.sessionStorage.setItem('case_search_form', JSON.stringify(this.formItem));
           this.pageNo = 1;
           this.getList();
         };

@@ -451,6 +451,11 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let case_distribute_form = window.sessionStorage.getItem('case_distribute_form');
+    if (case_distribute_form) {
+      this.formItem = JSON.parse(case_distribute_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -591,6 +596,7 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          window.sessionStorage.setItem('case_distribute_form', JSON.stringify(this.formItem));
           this.pageNo = 1;
           this.getList();
         } else {
@@ -604,8 +610,8 @@ export default {
       this.getList();
     },
     // 日期变更回调
-    dateChange(arr, date) {
-      console.log(arr, date);
+    dateChange(arr) {
+      console.log(arr);
       this.formItem.beginDueDate = arr[0];
       this.formItem.endDueDate = arr[1];
     },
