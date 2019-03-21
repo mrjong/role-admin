@@ -224,6 +224,7 @@
                     style="width:80px;margin-left: 10px;"
                     long
                     size="small"
+                    v-if="formItem.allotType !=='03'"
                   >选择公司</Button>
                 </FormItem>
               </Col>
@@ -641,6 +642,10 @@ export default {
       console.log(item);
       if (item !== "03") {
         this.remoneyRateFlag = false;
+      } else {
+        if (this.treeFlag === 1) {
+          this.treeFlag = false;
+        }
       }
     },
     // 汇款率输入框的blur

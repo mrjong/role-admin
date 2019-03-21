@@ -250,6 +250,7 @@
           <Tree
             :data="data5"
             :render="renderContent"
+            class="case_rule_tree"
             multiple
             show-checkbox
             @on-select-change="selectNode"
@@ -269,6 +270,7 @@
           <Tree
             :data="data"
             :render="renderContent2"
+            class="case_rule_tree"
             multiple
             show-checkbox
             @on-select-change="selectNode"
@@ -928,6 +930,11 @@ export default {
 <style lang="less" scoped>
 .ivu-col {
   margin-bottom: 5px;
+}
+.case_rule_tree,
+.remoney_rate_form {
+  max-height: 550px;
+  overflow-y: auto;
 }
 </style>
 
