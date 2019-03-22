@@ -1,4 +1,5 @@
 import { system_handleList, system_handleDetail } from '@/service/getData';
+import { join } from 'path';
 export default {
   name: 'systemOperation',
   data() {
@@ -13,7 +14,7 @@ export default {
       queryLoading: false,
       formItem: {
       },
-      ruleValidate:{
+      ruleValidate: {
       },
       formValidate: {
       },
@@ -145,6 +146,10 @@ export default {
   },
   created() {
     // this.getList();
+    let log_case_systemOperation_form = window.sessionStorage.getItem('log_case_systemOperation_form');
+    if (log_case_systemOperation_form) {
+      this.formItem = JSON.parse(log_case_systemOperation_form);
+    }
   },
   methods: {
     // 改变日期区间的格式之后进行处理
@@ -155,7 +160,7 @@ export default {
     },
     // 页码改变的回调
     changePage(pageNo) { //默认带入一个参数是当前的页码数
-      console.log(pageNo,'当前的页码数量值');
+      console.log(pageNo, '当前的页码数量值');
       this.pageNo = pageNo;
       this.getList();
     },
@@ -166,30 +171,37 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
+      if (this.formItem.dateRange) {
+        this.formItem.dateRange = [
+          this.formItem.sysStartTime,
+          this.formItem.sysEndTime
+        ]
+      }
+      window.sessionStorage.setItem('log_case_systemOperation_form', JSON.stringify(this.formItem));
       this.pageNo = 1;
       this.getList();
     },
     // 获取表格数据
     async getList() {
-      if(this.formItem.minDuration){
+      if (this.formItem.minDuration) {
         this.formItem.minDuration = parseFloat(this.formItem.minDuration)
       }
-      if(this.formItem.maxDuration){
+      if (this.formItem.maxDuration) {
         this.formItem.maxDuration = parseFloat(this.formItem.maxDuration)
       }
       this.queryLoading = true;
-      let res= await system_handleList({
+      let res = await system_handleList({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formItem
       })
       this.queryLoading = false;
-      if(res && res.code === 1){
+      if (res && res.code === 1) {
         let data = res.data;
         this.tableData = data.content;
         this.total = data.totalElements //接口中在该条件下取得的数据量
         //data.page.numberOfElements  当前页面实际返回的数量
-      } else{
+      } else {
         this.$Message.error(res.message);
       }
     },
@@ -197,22 +209,22 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {};
-      this.startTime = [];
+      window.sessionStorage.removeItem('log_case_systemOperation_form');
       this.$refs[name].resetFields();
       // this.getList();
     },
     //查看详情
-    async handleDetail( obj) {
+    async handleDetail(obj) {
       this.formValidateInfo = obj
-      if(obj.startTime){
+      if (obj.startTime) {
         this.formValidateInfo.startTime = this.$options.filters['formatDate'](this.formValidateInfo.startTime, 'YYYY-MM-DD HH:mm:ss')
       }
-      if(obj.endTime){
+      if (obj.endTime) {
         this.formValidateInfo.endTime = this.$options.filters['formatDate'](this.formValidateInfo.endTime, 'YYYY-MM-DD HH:mm:ss')
       }
       this.modalSee = true;
     },
-    closeModal(){
+    closeModal() {
       this.modalSee = false;
     }
   }

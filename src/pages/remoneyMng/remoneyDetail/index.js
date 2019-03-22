@@ -224,14 +224,15 @@ export default {
           key: 'opCompayName',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: 180,
+          tooltip: true
         },
         {
           title: '组别',
           key: 'opOrganizationName',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthMidVal
+          width: 140
         },
         {
           title: '经办人',

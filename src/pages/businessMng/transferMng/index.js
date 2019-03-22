@@ -193,52 +193,15 @@ export default {
           align: alignCenter,
           width: widthMidVal
         },
-        // {
-        //   title: '操作',
-        //   width: 100,
-        //   key: 'edit',
-        //   render: (h, params) => {
-        //     return h('div', [
-        //       h(
-        //         'Poptip',
-        //         {
-        //           props: {
-        //             confirm: true,
-        //             title: '您确定要删除这条数据吗?',
-        //             transfer: true
-        //           },
-        //           on: {
-        //             'on-ok': () => {
-        //               this.deleteGoods(params.row.buffet_id);
-        //             }
-        //           }
-        //         },
-        //         [
-        //           h(
-        //             'a',
-        //             {
-        //               class: 'edit-btn',
-        //               props: {}
-        //             },
-        //             '删除'
-        //           ),
-        //           h(
-        //             'a',
-        //             {
-        //               class: 'edit-btn',
-        //               props: {}
-        //             },
-        //             '删除'
-        //           )
-        //         ]
-        //       )
-        //     ]);
-        //   }
-        // }
       ]
     };
   },
   created() {
+    //获取缓存的表单值
+    let transfer_manager_form = window.sessionStorage.getItem('transfer_manager_form');
+    if (transfer_manager_form) {
+      this.formValidate = JSON.parse(transfer_manager_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -276,6 +239,7 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
+      window.sessionStorage.setItem('transfer_manager_form', JSON.stringify(this.formValidate));
       this.pageNo = 1;
       this.getList();
     },
@@ -303,8 +267,8 @@ export default {
     },
     // 重置
     clearForm(name) {
-      this.applyDate = '';
       this.formValidate = {};
+      window.sessionStorage.removeItem('transfer_manager_form');
       this.$refs[name].resetFields();
     }
   }

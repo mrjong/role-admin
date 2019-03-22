@@ -10,14 +10,14 @@ export default {
     return {
       showPanel: false,
       showPanel2: false,
-      operTime:[],
+      operTime: [],
       getDirList: ['MSG_TYPE', '1_0_SUCCESS_FAIL'],
       getDirObj: {},
       modalSee: false,
       queryLoading: false,//查询按钮loading
       formItem: {
       },
-      ruleValidate:{
+      ruleValidate: {
       },
       formValidate: {
       },
@@ -197,6 +197,10 @@ export default {
     };
   },
   created() {
+    let log_case_messageMng_form = window.sessionStorage.getItem('log_case_messageMng_form');
+    if (log_case_messageMng_form) {
+      this.formItem = JSON.parse(log_case_messageMng_form);
+    }
   },
   methods: {
     // 改变日期区间的格式之后进行处理
@@ -207,7 +211,7 @@ export default {
     },
     // 页码改变的回调
     changePage(pageNo) { //默认带入一个参数是当前的页码数
-      console.log(pageNo,'当前的页码数量值');
+      console.log(pageNo, '当前的页码数量值');
       this.pageNo = pageNo;
       this.getList();
     },
@@ -218,28 +222,32 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
+      if (this.formItem.dateRange) {
+        this.formItem.dateRange = [
+          this.formItem.startSendTime,
+          this.formItem.endSendTime
+        ]
+      }
+      window.sessionStorage.setItem('log_case_messageMng_form', JSON.stringify(this.formItem));
       this.pageNo = 1;
       this.getList();
     },
     // 获取表格数据
     async getList() {
-//        if(this.formItem.operTime){
-//          this.formItem.operTime = this.$options.filters['formatDate'](this.formItem.operTime, 'YYYY-MM-DD')
-//        }
       this.queryLoading = true;
-      let res= await msg_list({
+      let res = await msg_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formItem
       })
       this.queryLoading = false;
       console.log(res)
-      if(res && res.code === 1){
+      if (res && res.code === 1) {
         let data = res.data;
         this.tableData = data.content;
         this.total = data.totalElements //接口中在该条件下取得的数据量
         //data.page.numberOfElements  当前页面实际返回的数量
-      } else{
+      } else {
         this.$Message.error(res.message);
       }
     },
@@ -247,17 +255,17 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {};
-      this.operTime=[],
+      window.sessionStorage.removeItem('log_case_messageMng_form');
       this.$refs[name].resetFields();
     },
     //查看详情
-    handleDetail( obj) {
+    handleDetail(obj) {
       this.formValidateInfo = obj;
       this.formValidateInfo.sendTime = this.$options.filters['formatDate'](this.formValidateInfo.sendTime, 'YYYY-MM-DD HH:mm:ss')
       this.formValidateInfo.createTime = this.$options.filters['formatDate'](this.formValidateInfo.createTime, 'YYYY-MM-DD HH:mm:ss')
       this.modalSee = true;
     },
-    closeModal(){
+    closeModal() {
       this.modalSee = false;
     }
   }

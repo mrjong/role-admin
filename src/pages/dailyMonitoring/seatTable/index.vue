@@ -18,7 +18,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="startRepayDateRange"
+                v-model="formValidate.startRepayDateRange"
                 format="yyyy-MM-dd"
                 type="datetimerange"
                 placement="bottom-start"
@@ -195,14 +195,6 @@ export default {
           width: widthVal
         },
         {
-          title: "还款期数",
-          searchOperator: "like",
-          key: "perdCnt",
-          className: "tableMainW",
-          align: alignCenter,
-          width: widthMidVal
-        },
-        {
           title: "有效接通总时长",
           searchOperator: "like",
           key: "effectiveTalkTimeStr",
@@ -211,7 +203,7 @@ export default {
           width: widthMidVal
         },
         {
-          title: "在案量",
+          title: "载案量",
           searchOperator: "like",
           key: "caseCount",
           className: "caseCount",
@@ -302,6 +294,11 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let daily_monitoring_seatTable_form = window.sessionStorage.getItem('daily_monitoring_seatTable_form');
+    if (daily_monitoring_seatTable_form) {
+      this.formValidate = JSON.parse(daily_monitoring_seatTable_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -333,7 +330,6 @@ export default {
     // 页码改变的回调
     changePage(pageNo) {
       //默认带入一个参数是当前的页码数
-      console.log(pageNo, "当前的页码数量值");
       this.pageNo = pageNo;
       this.getList();
     },
@@ -344,6 +340,7 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
+      window.sessionStorage.setItem('daily_monitoring_seatTable_form', JSON.stringify(this.formValidate));
       this.pageNo = 1;
       this.getList();
     },
@@ -369,7 +366,7 @@ export default {
     },
     async exportData() {
       if (this.tableData.length === 0) {
-        this.$Message.info("当前无数据，无法导入");
+        this.$Message.info("当前无数据，无法导出");
         return;
       }
       this.export_case_loading = true;
@@ -412,7 +409,7 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formValidate = {};
-      this.startRepayDateRange = "";
+      window.sessionStorage.removeItem('daily_monitoring_seatTable_form');
       this.$refs[name].resetFields();
     }
   }
