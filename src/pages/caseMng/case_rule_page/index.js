@@ -476,6 +476,7 @@ export default {
         prodTypeList: [],
         status: ''
       };
+      window.sessionStorage.removeItem('case_rule_form');
       this.$refs[name].resetFields();
     },
   },

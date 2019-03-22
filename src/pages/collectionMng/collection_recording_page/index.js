@@ -283,6 +283,11 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let collecttion_recording_form = window.sessionStorage.getItem('collecttion_recording_form');
+    if (collecttion_recording_form) {
+      this.formItem = JSON.parse(collecttion_recording_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -364,6 +369,7 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          window.sessionStorage.setItem('collecttion_recording_form', JSON.stringify(this.formItem));
           this.pageNo = 1;
           this.getList();
         }
@@ -372,6 +378,7 @@ export default {
     // 重置
     clearForm() {
       this.formItem = {};
+      window.sessionStorage.removeItem('collecttion_recording_form');
       this.pageNo = 1;
       this.getList();
     },

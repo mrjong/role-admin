@@ -198,7 +198,11 @@ export default {
     };
   },
   created() {
-    // this.getList();
+    //获取缓存的表单值
+    let remoney_system_form = window.sessionStorage.getItem('remoney_system_form');
+    if (remoney_system_form) {
+      this.formValidate = JSON.parse(remoney_system_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -216,9 +220,6 @@ export default {
     changeDange(val1, val2) {
       this.formValidate.startRepayDate = val1[0];
       this.formValidate.endRepayDate = val1[1];
-      console.log('123', this.formValidate);
-
-      //this.formValidate.startAndend[1].Date('yyyy-MM-dd');
     },
     // 页码改变的回调
     changePage(pageNo) { //默认带入一个参数是当前的页码数
@@ -235,6 +236,7 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          window.sessionStorage.setItem('remoney_system_form', JSON.stringify(this.formValidate))
           this.pageNo = 1;
           this.getList();
         }
@@ -269,7 +271,7 @@ export default {
       this.formValidate = {
         prdTyps:[]
       };
-      this.startAndend='';
+      window.sessionStorage.removeItem('remoney_system_form');
       this.$refs[name].resetFields();
     }
   }

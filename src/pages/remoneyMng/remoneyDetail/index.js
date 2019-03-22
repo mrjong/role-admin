@@ -245,6 +245,11 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let remoney_detail_form = window.sessionStorage.getItem('remoney_detail_form');
+    if (remoney_detail_form) {
+      this.formValidate = JSON.parse(remoney_detail_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -318,6 +323,7 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
+      window.sessionStorage.setItem('remoney_detail_form', JSON.stringify(this.formValidate))
       this.pageNo = 1;
       this.getList();
     },
@@ -372,8 +378,9 @@ export default {
     // 重置
     clearForm(name) {
       this.formValidate = {};
-      this.startRepayDateRange = '';
-      this.shouldRepayDate = '';
+      // this.startRepayDateRange = '';
+      // this.shouldRepayDate = '';
+      window.sessionStorage.removeItem('remoney_detail_form');
       this.$refs[name].resetFields();
     }
   }

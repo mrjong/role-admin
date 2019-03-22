@@ -441,6 +441,7 @@ export default {
         periodCounts: [],
         creditLevels: []
       };
+      window.sessionStorage.removeItem('my_case_form');
       this.$refs[name].resetFields();
     },
     // 获取表格数据

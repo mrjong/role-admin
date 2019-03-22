@@ -181,6 +181,11 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let remoney_user_form = window.sessionStorage.getItem('remoney_user_form');
+    if (remoney_user_form) {
+      this.formValidate = JSON.parse(remoney_user_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -199,8 +204,6 @@ export default {
     changeDange(val1, val2) {
       this.formValidate.startRepayDate = val1[0];
       this.formValidate.endRepayDate = val1[1];
-      console.log('123', this.formValidate);
-
     },
     // 页码改变的回调
     changePage(pageNo) {
@@ -214,9 +217,9 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
-      console.log('参数', this.formValidate);
       this.$refs[name].validate((valid) => {
         if (valid) {
+          window.sessionStorage.setItem('remoney_user_form', JSON.stringify(this.formValidate));
           this.pageNo = 1;
           this.getList();
         }
@@ -250,7 +253,7 @@ export default {
       this.formValidate = {
         prdTyps: []
       };
-      this.startAndend = '';
+      window.sessionStorage.removeItem('remoney_user_form');
       this.$refs[name].resetFields();
     }
   }

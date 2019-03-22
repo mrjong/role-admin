@@ -511,6 +511,7 @@ export default {
         caseStatus: '',
         creditLevels: [],
       };
+      window.sessionStorage.removeItem('case_search_form');
       this.$refs[name].resetFields();
     },
 

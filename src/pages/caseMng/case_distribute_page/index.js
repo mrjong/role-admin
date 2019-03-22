@@ -780,6 +780,7 @@ export default {
         creditLevels: [],
         opCompayUuid: '',
       };
+      window.sessionStorage.removeItem('case_distribute_form');
       this.$refs[name].resetFields();
     },
     // 批量分配接口

@@ -18,7 +18,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="startRepayDateRange"
+                v-model="formValidate.startRepayDateRange"
                 format="yyyy-MM-dd"
                 type="datetimerange"
                 placement="bottom-start"
@@ -32,7 +32,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="shouldRepayDate"
+                v-model="formValidate.shouldRepayDate"
                 format="yyyy-MM-dd"
                 type="datetimerange"
                 placement="bottom-start"
