@@ -88,6 +88,7 @@
                 size="small"
                 filterable
                 v-model="formItem.opCompayUuid"
+                @on-change='companyChange'
                 clearable
                 placeholder="请选择电催中心"
               >

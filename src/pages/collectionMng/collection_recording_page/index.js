@@ -346,8 +346,13 @@ export default {
       // you can use it to do something...
       // player.[methods]
     },
-    async getLeafTypeList() {
+    // 公司选择change
+    companyChange (value) {
+      this.getLeafTypeList(value)
+    },
+    async getLeafTypeList(id) {
       const res = await getLeafTypeList({
+        parentId: id || '',
         leafType: '04'
       });
       if (res.code === 1) {
