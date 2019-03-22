@@ -112,7 +112,8 @@ export default {
 				this.visible1 = true;
 			} else if (name === 'loginout') {
 				// 退出登录
-				const res = await logout();
+        const res = await logout();
+        window.sessionStorage.clear();
 				if (res.code === 1) {
 					this.$Message.success('退出成功');
                     util.clearAllCookie();
