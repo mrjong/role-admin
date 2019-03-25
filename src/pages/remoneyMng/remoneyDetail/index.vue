@@ -18,7 +18,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="startRepayDateRange"
+                v-model="formValidate.startRepayDateRange"
                 format="yyyy-MM-dd"
                 type="datetimerange"
                 placement="bottom-start"
@@ -32,7 +32,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="shouldRepayDate"
+                v-model="formValidate.shouldRepayDate"
                 format="yyyy-MM-dd"
                 type="datetimerange"
                 placement="bottom-start"
@@ -68,23 +68,49 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" prop="mblNo" label="经办人:">
-              <Input
-                size="small"
-                clearable
-                v-model.trim="formValidate.opUserName"
-                placeholder="请输入经办人姓名"
-              ></Input>
+            <FormItem span="6" label="电催中心:">
+              <Select size="small" v-model="formValidate.opCompayUuid" clearable
+                filterable placeholder="请选择电催中心" @on-change='companyChange'>
+                <Option
+                  v-for="item in company_list_data"
+                  :value="item.id"
+                  :key="item.id"
+                >{{item.name}}</Option>
+              </Select>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="电催中心:">
-              <Select size="small" v-model="formValidate.opCompayName">
+            <FormItem span="6" label="组别:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择组别"
+                @on-change='departmentChange'
+                v-model="formValidate.opOrganizationUuid"
+              >
                 <Option
-                  v-for="item in opCompanyNameList"
-                  :value="item.name"
+                  v-for="item in department_list_data"
+                  :value="item.id"
                   :key="item.id"
-                >{{item.name}}</Option>
+                >{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="经办人:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择经办人"
+                v-model="formValidate.opUserUuid"
+              >
+                <Option
+                  v-for="(item,index) in collect_list_data"
+                  :value="item.id"
+                  :key="item.id + index"
+                >{{ item.name }}</Option>
               </Select>
             </FormItem>
           </Col>

@@ -18,7 +18,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="dealTime"
+                v-model="formItem.dealTime"
                 format="yyyy-MM-dd"
                 type="datetimerange"
                 placement="bottom-start"
@@ -111,6 +111,7 @@ export default {
       export_case_loading: false, //导出按钮loading
       dealTime: "",
       formItem: {
+        dealTime: [],
         startDate: "",
         endDate: ""
       },
@@ -140,7 +141,7 @@ export default {
       },
       pageNo: 1,
       pageSize: 10,
-      total: 10,
+      total: 0,
       tableData: [],
       tableColumns: [
         {
@@ -211,6 +212,10 @@ export default {
     };
   },
   created() {
+    let daily_monitoring_callDetail_form = window.sessionStorage.getItem('daily_monitoring_callDetail_form');
+    if (daily_monitoring_callDetail_form) {
+      this.formItem = JSON.parse(daily_monitoring_callDetail_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -231,8 +236,6 @@ export default {
   methods: {
     // 改变日期区间的格式之后进行处理
     changeDate(val1, val2) {
-      console.log(val1, typeof val1);
-      console.log(val2, typeof val2);
       this.formItem.startDate = val1[0];
       this.formItem.endDate = val1[1];
       // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
@@ -251,6 +254,14 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
+      // 单独处理日期的缓存问题
+      if (this.formItem.dealTime) {
+        this.formItem.dealTime = [
+          this.formItem.startDate,
+          this.formItem.endDate
+        ]
+      };
+      window.sessionStorage.setItem('daily_monitoring_callDetail_form', JSON.stringify(this.formItem));
       this.pageNo = 1;
       this.getList();
     },
@@ -298,7 +309,8 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {};
-      (this.dealTime = ""), this.$refs[name].resetFields();
+      window.sessionStorage.removeItem('daily_monitoring_callDetail_form')
+      this.$refs[name].resetFields();
     }
   }
 };

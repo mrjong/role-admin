@@ -788,10 +788,19 @@ export const case_list = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-// 案件导出
-export const cases_export = (obj, options) =>
+// 案件查询导出
+export const query_export = (obj, options) =>
   fetch({
-    url: '/cases/export',
+    url: '/cases/query/export',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
+  });
+// 案件分配导出
+export const allot_export = (obj, options) =>
+  fetch({
+    url: '/cases/allot/export',
     method: 'POST',
     data: qs.stringify(obj),
     responseType: 'blob',

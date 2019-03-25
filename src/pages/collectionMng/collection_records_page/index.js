@@ -148,9 +148,15 @@ export default {
           }
         },
         {
-          title: '客户姓名',
+          title: '催收姓名',
           width: 120,
           key: 'userNmHid',
+          align: 'center',
+        },
+        {
+          title: '客户姓名',
+          width: 120,
+          key: 'customerNameHid',
           align: 'center',
         },
         {
@@ -317,6 +323,11 @@ export default {
     }
   },
   created() {
+    //获取缓存的表单值
+    let collecttion_records_form = window.sessionStorage.getItem('collecttion_records_form');
+    if (collecttion_records_form) {
+      this.formItem = JSON.parse(collecttion_records_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -370,6 +381,10 @@ export default {
       // you can use it to do something...
       // player.[methods]
     },
+    // 公司选择change
+    companyChange (value) {
+      this.getLeafTypeList(value)
+    },
     async case_collect_tape(id) {
       const res = await case_collect_tape(
         {
@@ -390,8 +405,9 @@ export default {
       this.$Modal.remove();
     },
 
-    async getLeafTypeList() {
+    async getLeafTypeList(id) {
       const res = await getLeafTypeList({
+        parentId: id || '',
         leafType: '04'
       });
       if (res.code === 1) {
@@ -411,9 +427,10 @@ export default {
       }
     },
     handleSubmit(name) {
-      this.pageNo = 1;
       this.$refs[name].validate((valid) => {
         if (valid) {
+          this.pageNo = 1;
+          window.sessionStorage.setItem('collecttion_records_form', JSON.stringify(this.formItem));
           this.getList();
         }
       });
@@ -421,6 +438,7 @@ export default {
     // 重置
     clearForm() {
       this.formItem = {};
+      window.sessionStorage.removeItem('collecttion_records_form');
       this.pageNo = 1;
       this.getList();
     },

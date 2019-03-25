@@ -161,7 +161,7 @@ export default {
       },
       pageNo: 1,
       pageSize: 10,
-      total: 10,
+      total: 0,
       tableData: [],
       tableColumns: [
         {
@@ -527,6 +527,11 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let overdue_payment_form = window.sessionStorage.getItem('overdue_payment_form');
+    if (overdue_payment_form) {
+      this.formItem = JSON.parse(overdue_payment_form);
+    }
     var createT = new Date();
     this.formItem.createDate = this.$options.filters["formatDate"](
       createT,
@@ -547,7 +552,6 @@ export default {
           break;
       }
     });
-    console.log(this.formItem, "qqqqqqqqqqqqqqqmmmmm");
     // this.getList();
   },
   methods: {
@@ -558,9 +562,6 @@ export default {
     },
     // 改变日期区间的格式之后进行处理
     changeDate(val1, val2) {
-      console.log(val1, typeof val1);
-      console.log(val2, typeof val2);
-
       this.formItem.createDate = val1;
       this.pageNo = 1;
       // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
@@ -579,12 +580,13 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
+      window.sessionStorage.setItem('overdue_payment_form', JSON.stringify(this.formItem));
       this.pageNo = 1;
       this.getList();
     },
     async exportData() {
       if (this.tableData.length === 0) {
-        this.$Message.info("当前无数据，无法导入");
+        this.$Message.info("当前无数据，无法导出");
         return;
       }
       this.export_case_loading = true;
@@ -638,6 +640,7 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {};
+      window.sessionStorage.removeItem('overdue_payment_form');
       this.formItem.createDate = this.$options.filters["formatDate"](
         new Date(),
         "YYYY-MM-DD"

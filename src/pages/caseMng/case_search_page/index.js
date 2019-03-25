@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { case_list, cases_export,  } from '@/service/getData';
+import { case_list, query_export, getLeafTypeList, collect_parent_children } from '@/service/getData';
 import util from '@/libs/util';
 import qs from 'qs';
 import Cookie from 'js-cookie';
@@ -52,6 +52,9 @@ export default {
       apply_deduct: false,//案件详情申请划扣权限
       queryLoading: false,//查询按钮loading
       exportLoading: false,//导出loading
+      company_list_data: [],//电催中心list
+      department_list_data: [],//组别list
+      collect_list_data: [],//经办人list
       totalOverdueAmt: '',
       totalCase: '',
       caseMounts: '',
@@ -253,7 +256,7 @@ export default {
                 },
                 [
                   h('span', {
-                  },params.row.billNo)
+                  }, params.row.billNo)
                 ]
               )
             ])
@@ -326,7 +329,12 @@ export default {
           align: 'center',
           key: 'opCompayName'
         },
-
+        {
+          title: '组别',
+          width: 120,
+          align: 'center',
+          key: 'opOrganizationName'
+        },
         {
           title: '经办人',
           width: 100,
@@ -337,29 +345,35 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let case_search_form = window.sessionStorage.getItem('case_search_form');
+    if (case_search_form) {
+      this.formItem = JSON.parse(case_search_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
       if (item.type !== '03') {
         return;
       }
-      switch(item.url) {
-        case "query" : this.query = true;
-        break;
-        case "detail" : this.detail = true;
-        break;
-        case "export" : this.export_case = true;
-        break;
-        case "plaintext" : this.plaintext = true;
-        break;
+      switch (item.url) {
+        case "query": this.query = true;
+          break;
+        case "detail": this.detail = true;
+          break;
+        case "export": this.export_case = true;
+          break;
+        case "plaintext": this.plaintext = true;
+          break;
       }
     });
     Cookie.set('all_opt', this.all_opt);
     Cookie.set('plaintext', this.plaintext);
     Cookie.set('apply_arbitrament', this.apply_arbitrament);
     Cookie.set('apply_deduct', this.apply_deduct);
-    // this.getList();
-    console.log(this.$route)
+    this.getLeafTypeList('02', '');
+    this.getLeafTypeList('03', '');
+    this.getLeafTypeList('04', '');
   },
   methods: {
     // table选中
@@ -388,18 +402,32 @@ export default {
       this.pageNo = 1;
       this.getList();
     },
+    // 电催中心change
+    companyChange(value) {
+      this.getLeafTypeList('03', value);
+      this.getLeafTypeList('04', value);
+    },
+    // 部门change
+    departmentChange(value) {
+      this.getLeafTypeList('04', value);
+    },
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          window.sessionStorage.setItem('case_search_form', JSON.stringify(this.formItem));
           this.pageNo = 1;
           this.getList();
         };
       });
     },
     // 案件导出
-    async cases_export() {
+    async query_export() {
+      if (this.tableData.length === 0) {
+        this.$Message.error('当前无数据，无法导出');
+        return;
+      }
       this.exportLoading = true;
-      const res = await cases_export(
+      const res = await query_export(
         {
           ...this.formItem,
           caseIds: this.caseIds,
@@ -414,7 +442,7 @@ export default {
       this.exportLoading = false;
       setTimeout(() => {
         this.getList();
-      },1000)
+      }, 1000)
     },
     // 获取表格数据
     async getList() {
@@ -441,6 +469,29 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 查询机构，公司，部门
+    async getLeafTypeList(type, parent) {
+      const res = await getLeafTypeList({
+        // status: "1",
+        leafType: type,
+        parentId: parent || ""
+      });
+      if (res.code === 1) {
+        switch (type) {
+          case "02":
+            this.company_list_data = res.data;
+            break;
+          case "03":
+            this.department_list_data = res.data;
+            break;
+          case "04":
+            this.collect_list_data = res.data;
+            break;
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
     // 重置
     clearForm(name) {
       this.pageNo = 1;
@@ -460,6 +511,7 @@ export default {
         caseStatus: '',
         creditLevels: [],
       };
+      window.sessionStorage.removeItem('case_search_form');
       this.$refs[name].resetFields();
     },
 

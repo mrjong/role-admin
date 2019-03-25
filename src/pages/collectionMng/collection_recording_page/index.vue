@@ -75,9 +75,9 @@
                 placeholder="请选择经办人"
               >
                 <Option
-                  v-for="item in getLeafTypeList_data"
+                  v-for="(item, index) in getLeafTypeList_data"
                   :value="item.id"
-                  :key="item.id"
+                  :key="item.id + index"
                 >{{ item.name }}</Option>
               </Select>
             </FormItem>
@@ -88,6 +88,7 @@
                 size="small"
                 filterable
                 v-model="formItem.opCompayUuid"
+                @on-change='companyChange'
                 clearable
                 placeholder="请选择电催中心"
               >

@@ -354,6 +354,11 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let my_case_form = window.sessionStorage.getItem('my_case_form');
+    if (my_case_form) {
+      this.formItem = JSON.parse(my_case_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -383,14 +388,15 @@ export default {
     Cookie.set('apply_deduct', this.apply_deduct);
     // 沟通状态
     this.collectcode_getListByCodeType();
+    this.getList();
   },
   methods: {
     // 获取表格数据
     async getList() {
-      if (!this.query) {
-        this.$Message.error('很抱歉，暂无权限查询');
-        return
-      };
+      // if (!this.query) {
+      //   this.$Message.error('很抱歉，暂无权限查询');
+      //   return
+      // };
       this.query_loading = true;
       const res = await case_collect_case_list({
         ...this.formItem,
@@ -422,6 +428,7 @@ export default {
       this.pageNo = 1;
       this.$refs[name].validate((valid) => {
         if (valid) {
+          window.sessionStorage.setItem('my_case_form', JSON.stringify(this.formItem));
           this.getList();
         }
       });
@@ -434,6 +441,7 @@ export default {
         periodCounts: [],
         creditLevels: []
       };
+      window.sessionStorage.removeItem('my_case_form');
       this.$refs[name].resetFields();
     },
     // 获取表格数据

@@ -45,7 +45,6 @@
               </Select>
             </FormItem>
           </Col>
-
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="案件编号:" prop="userNm">
               <Input size="small" clearable v-model="formItem.caseNo" placeholder="请输入案件编号"/>

@@ -115,7 +115,6 @@
     </Card>
     <Remodal
       v-model="parentData"
-      :parentData="parentData"
       :getDirObj="getDirObj"
       v-if="parentData.modal"
     ></Remodal>

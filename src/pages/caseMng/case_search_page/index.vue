@@ -153,6 +153,59 @@
               </Select>
             </FormItem>
           </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="电催中心:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择电催中心"
+                @on-change='companyChange'
+                v-model="formItem.opCompayUuid"
+              >
+                <Option
+                  v-for="item in company_list_data"
+                  :value="item.id"
+                  :key="item.id"
+                >{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="组别:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择组别"
+                @on-change='departmentChange'
+                v-model="formItem.opOrganizationUuid"
+              >
+                <Option
+                  v-for="item in department_list_data"
+                  :value="item.id"
+                  :key="item.id"
+                >{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="经办人:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择经办人"
+                v-model="formItem.opUserUuid"
+              >
+                <Option
+                  v-for="(item,index) in collect_list_data"
+                  :value="item.id"
+                  :key="item.id + index"
+                >{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
               <Button type="primary" style="width:80px" long size="small" :loading="queryLoading" @click="handleSubmit('formItem')">
@@ -175,7 +228,7 @@
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
         <span style="margin-left: 10px;">总共{{totalCase}}笔案件，</span>
         <span>总共逾期金额{{totalOverdueAmt}}元</span>
-        <Button class="fr vue-back-btn header-btn" type="primary" size="small" style="min-width: 80px" v-if="export_case" :loading='exportLoading' @click.stop="cases_export">
+        <Button class="fr vue-back-btn header-btn" type="primary" size="small" style="min-width: 80px" v-if="export_case" :loading='exportLoading' @click.stop="query_export">
           <span v-if="!exportLoading">导出数据</span>
           <span v-else>导出中...</span>
         </Button>

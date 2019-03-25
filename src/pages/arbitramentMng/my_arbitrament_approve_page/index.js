@@ -398,6 +398,11 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let my_arbitrament_approve_form = window.sessionStorage.getItem('my_arbitrament_approve_form');
+    if (my_arbitrament_approve_form) {
+      this.formItem = JSON.parse(my_arbitrament_approve_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -411,10 +416,6 @@ export default {
           break;
       }
     });
-    // this.$nextTick(() => {
-    //   document.oncontextmenu = new Function("event.returnValue=false");
-    // });
-    // this.getList();
   },
   methods: {
     passBack(type) {
@@ -563,6 +564,8 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          window.sessionStorage.setItem('my_arbitrament_approve_form', JSON.stringify(this.formItem));
+          this.pageNo = 1;
           this.getList();
         }
       });
@@ -620,6 +623,7 @@ export default {
       this.formItem = {
         productTypes: []
       };
+      window.sessionStorage.removeItem('my_arbitrament_approve_form');
       this.$refs[name].resetFields();
     }
   }

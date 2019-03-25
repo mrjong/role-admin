@@ -1,7 +1,8 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import Cookie from 'js-cookie';
-import { cases_allot_list, getLeafTypeList, collect_parent_children, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, collect_show_children, cases_case_sendwebmessage } from '@/service/getData';
+import util from '@/libs/util';
+import { cases_allot_list, getLeafTypeList, collect_parent_children, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, allot_export, collect_show_children, cases_case_sendwebmessage } from '@/service/getData';
 import qs from 'qs';
 
 export default {
@@ -54,18 +55,21 @@ export default {
       stop_urge: false,//停催权限
       regain_urge: false,//恢复催收权限
       send_message: false,//站内信权限
+      case_export: false,//导出权限
       all_opt: false,//案件详情全部操作权限
       plaintext: false,//案件详情查看明文权限
       apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
       queryLoading: false,//查询按钮loading
+      exportLoading: false,//案件导出loading
       recoverLoading: false,//回收按钮loading
       batch_distribute_loading: false,//批量分配分配按钮loading
       stop_urge_loading: false,//停催提交按钮loading
       regain_urge_loading: false,//恢复催收提交按钮loading
       send_message_loading: false,//批量发送站内信按钮loading
-      getLeafTypeList2_data: [],
-      getLeafTypeList_data: [],
+      company_list_data: [],//电催中心list
+      department_list_data: [],//组别list
+      collect_list_data: [],//经办人list
       data5: [],
       data: [],
       collectRoleIds: [],
@@ -431,6 +435,12 @@ export default {
           align: 'center',
         },
         {
+          title: '组别',
+          width: 120,
+          align: 'center',
+          key: 'opOrganizationName'
+        },
+        {
           title: '经办人',
           searchOperator: 'like',
           width: 150,
@@ -441,6 +451,11 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let case_distribute_form = window.sessionStorage.getItem('case_distribute_form');
+    if (case_distribute_form) {
+      this.formItem = JSON.parse(case_distribute_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -464,6 +479,8 @@ export default {
           break;
         case "plaintext": this.plaintext = true;
           break;
+        case "export": this.case_export = true;
+          break;
       }
     });
     Cookie.set('all_opt', this.all_opt);
@@ -471,8 +488,9 @@ export default {
     Cookie.set('apply_arbitrament', this.apply_arbitrament);
     Cookie.set('apply_deduct', this.apply_deduct);
     // this.getList();
-    this.getLeafTypeList()
-    this.getLeafTypeList2()
+    this.getLeafTypeList('02', '');
+    this.getLeafTypeList('03', '');
+    this.getLeafTypeList('04', '');
   },
   methods: {
     renderContent(h, { root, node, data }) {
@@ -566,9 +584,19 @@ export default {
       this.pageNo = 1;
       this.getList();
     },
+    // 电催中心change
+    companyChange(value) {
+      this.getLeafTypeList('03', value);
+      this.getLeafTypeList('04', value);
+    },
+    // 部门change
+    departmentChange(value) {
+      this.getLeafTypeList('04', value);
+    },
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          window.sessionStorage.setItem('case_distribute_form', JSON.stringify(this.formItem));
           this.pageNo = 1;
           this.getList();
         } else {
@@ -582,8 +610,8 @@ export default {
       this.getList();
     },
     // 日期变更回调
-    dateChange(arr, date) {
-      console.log(arr, date);
+    dateChange(arr) {
+      console.log(arr);
       this.formItem.beginDueDate = arr[0];
       this.formItem.endDueDate = arr[1];
     },
@@ -632,26 +660,7 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    async getLeafTypeList() {
-      const res = await getLeafTypeList({
-        leafType: '04'
-      });
-      if (res.code === 1) {
-        this.getLeafTypeList_data = res.data
-      } else {
-        this.$Message.error(res.message);
-      }
-    },
-    async getLeafTypeList2() {
-      const res = await getLeafTypeList({
-        leafType: '02'
-      });
-      if (res.code === 1) {
-        this.getLeafTypeList2_data = res.data
-      } else {
-        this.$Message.error(res.message);
-      }
-    },
+
     // 获取init tree数据
     async initTree(id, type) {
       const res = await collect_show_children({
@@ -712,35 +721,53 @@ export default {
         this.$Message.error(res.message)
       }
     },
-    // 动态获取表格数据
-    async collect_parent_children(id, type, callBack) {
-      const res = await collect_parent_children({ parentId: id, status: '1', leafType: type });
+    // 查询机构，公司，部门
+    async getLeafTypeList(type, parent) {
+      const res = await getLeafTypeList({
+        // status: "1",
+        leafType: type,
+        parentId: parent || ""
+      });
       if (res.code === 1) {
-        res.data.forEach(item => {
-          if (item.leafType != '04') {
-            item.disableCheckbox = true;
-          }
-        });
-        callBack(res.data)
+        switch (type) {
+          case "02":
+            this.company_list_data = res.data;
+            break;
+          case "03":
+            this.department_list_data = res.data;
+            break;
+          case "04":
+            this.collect_list_data = res.data;
+            break;
+        }
       } else {
-        this.$Message.error(res.message)
+        this.$Message.error(res.message);
       }
     },
-    // 异步加载tree数据
-    loadData(item, callBack) {
-      console.log(item, '----------------------')
-      this.nodeData = item;
-      let leafType;
-      if (item.leafType === '01') {
-        leafType = '02';
-      } else if (item.leafType === '02') {
-        leafType = '03';
-      } else if (item.leafType === '03') {
-        leafType = '04';
-      } else {
+    // 案件导出
+    async allot_export () {
+      if (this.tableData.length === 0) {
+        this.$Message.error('当前无数据，无法导出');
         return;
-      };
-      this.collect_parent_children(item.id, leafType, callBack);
+      }
+      this.exportLoading = true;
+      const res = await allot_export(
+        {
+          ...this.formItem,
+          caseIds: this.recycleCaseIds,
+          preTotalCases: this.recycleCaseMounts,
+          caseStatus: '0'
+        },
+        {
+          responseType: 'blob',
+          timeout: 120000,
+        }
+      );
+      util.dowloadfile('案件分配', res);
+      this.exportLoading = false;
+      setTimeout(() => {
+        this.getList();
+      }, 1000)
     },
     // 重置
     clearForm(name) {
@@ -753,6 +780,7 @@ export default {
         creditLevels: [],
         opCompayUuid: '',
       };
+      window.sessionStorage.removeItem('case_distribute_form');
       this.$refs[name].resetFields();
     },
     // 批量分配接口

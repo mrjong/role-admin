@@ -206,6 +206,11 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let relationship_maintain_form = window.sessionStorage.getItem('relationship_maintain_form');
+    if (relationship_maintain_form) {
+      this.formItem = JSON.parse(relationship_maintain_form);
+    }
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
       if (item.type !== '03') {
@@ -244,15 +249,9 @@ export default {
       this.getList();
     },
     handleUpdate(name) {
-      console.log(name);
+      window.sessionStorage.setItem('relationship_maintain_form', JSON.stringify(this.formItem));
       this.pageNo = 1;
       this.getList();
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          this.pageNo = 1;
-          this.getList();
-        }
-      });
     },
     // 获取表格数据
     async getList() {
@@ -305,6 +304,7 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {};
+      window.sessionStorage.removeItem('relationship_maintain_form');
       this.$refs[name].resetFields();
     }
   }

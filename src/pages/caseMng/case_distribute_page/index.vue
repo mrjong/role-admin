@@ -94,8 +94,6 @@
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="手机号:" prop="mblNo">
               <Input
-                type="number"
-                number
                 size="small"
                 clearable
                 v-model.trim="formItem.mblNo"
@@ -109,8 +107,6 @@
                 <FormItem prop="minOverdueDays">
                   <Input
                     size="small"
-                    number
-                    type="number"
                     clearable
                     v-model.trim="formItem.minOverdueDays"
                   ></Input>
@@ -123,8 +119,6 @@
                 <FormItem prop="maxOverdueDays">
                   <Input
                     size="small"
-                    number
-                    type="number"
                     clearable
                     v-model.trim="formItem.maxOverdueDays"
                   ></Input>
@@ -136,7 +130,7 @@
             <FormItem label="逾期应还金额:">
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                 <FormItem prop="minOverdueAmt">
-                  <Input size="small" number clearable v-model.trim="formItem.minOverdueAmt"></Input>
+                  <Input size="small" clearable v-model.trim="formItem.minOverdueAmt"></Input>
                 </FormItem>
               </Col>
               <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -144,7 +138,7 @@
               </Col>
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                 <FormItem prop="maxOverdueAmt">
-                  <Input size="small" number clearable v-model.trim="formItem.maxOverdueAmt"></Input>
+                  <Input size="small" clearable v-model.trim="formItem.maxOverdueAmt"></Input>
                 </FormItem>
               </Col>
             </FormItem>
@@ -153,7 +147,7 @@
             <FormItem label="还款日期:">
               <DatePicker
                 type="daterange"
-                v-model="date"
+                v-model="formItem.date"
                 @on-change="dateChange"
                 :editable="false"
                 placeholder="请选择还款日期"
@@ -195,10 +189,29 @@
                 clearable
                 filterable
                 placeholder="请选择电催中心"
+                @on-change="companyChange"
                 v-model="formItem.opCompayUuid"
               >
                 <Option
-                  v-for="item in getLeafTypeList2_data"
+                  v-for="item in company_list_data"
+                  :value="item.id"
+                  :key="item.id"
+                >{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="组别:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                @on-change="departmentChange"
+                placeholder="请选择组别"
+                v-model="formItem.opOrganizationUuid"
+              >
+                <Option
+                  v-for="item in department_list_data"
                   :value="item.id"
                   :key="item.id"
                 >{{ item.name }}</Option>
@@ -215,7 +228,7 @@
                 v-model="formItem.opUserUuid"
               >
                 <Option
-                  v-for="(item,index) in getLeafTypeList_data"
+                  v-for="(item,index) in collect_list_data"
                   :value="item.id"
                   :key="item.id + index"
                 >{{ item.name }}</Option>
@@ -224,7 +237,14 @@
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
-              <Button type="primary" style="width:80px" long size="small" :loading='queryLoading' @click="handleSubmit('formItem')">
+              <Button
+                type="primary"
+                style="width:80px"
+                long
+                size="small"
+                :loading="queryLoading"
+                @click="handleSubmit('formItem')"
+              >
                 <span v-if="!queryLoading">检索</span>
                 <span v-else>检索...</span>
               </Button>
@@ -244,18 +264,17 @@
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'" @click="showPanel2=!showPanel2"></Icon>检索结果
         <span style="margin-left: 10px;">总共{{total}}笔案件，</span>
         <span>总共逾期金额{{totalOverdueAmt}}元</span>
-        <!-- <Button
-          class="fr vue-back-btn header-btn"
-          type="primary"
-          size="small"
-          @click.stop="handeldBtnClick('4')"
-        >恢复催收</Button>
         <Button
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
-          @click.stop="handeldBtnClick('3')"
-        >停催</Button>-->
+          @click.stop="allot_export"
+          :loading="exportLoading"
+          v-if="case_export"
+        >
+          <span v-if="!exportLoading">案件导出</span>
+          <span v-else>导出中...</span>
+        </Button>
         <Button
           class="fr vue-back-btn header-btn"
           type="primary"
@@ -374,7 +393,7 @@
         ></Tree>
         <div slot="footer">
           <Button size="small" @click="cancel('2')">取消</Button>
-          <Button type="primary" size="small" :loading='batch_distribute_loading' @click="ok('2')">
+          <Button type="primary" size="small" :loading="batch_distribute_loading" @click="ok('2')">
             <span v-if="!batch_distribute_loading">确定</span>
             <span v-else>分配中...</span>
           </Button>
@@ -397,7 +416,7 @@
         </Alert>
         <div slot="footer">
           <Button size="small" @click="cancel('3')">取消</Button>
-          <Button type="primary" size="small" @click="ok('3')" :loading='recoverLoading'>
+          <Button type="primary" size="small" @click="ok('3')" :loading="recoverLoading">
             <span v-if="!recoverLoading">确定</span>
             <span v-else>回收中...</span>
           </Button>
@@ -428,7 +447,12 @@
         </Form>
         <div slot="footer">
           <Button size="small" @click="cancel('4')">取消</Button>
-          <Button type="primary" size="small" @click="ok('4', 'stopFormItem')" :loading='stop_urge_loading'>
+          <Button
+            type="primary"
+            size="small"
+            @click="ok('4', 'stopFormItem')"
+            :loading="stop_urge_loading"
+          >
             <span v-if="!stop_urge_loading">确定</span>
             <span v-else>停催中...</span>
           </Button>
@@ -464,7 +488,12 @@
         </Form>
         <div slot="footer">
           <Button size="small" @click="cancel('5')">取消</Button>
-          <Button type="primary" size="small" @click="ok('5', 'recoverFormItem')" :loading='regain_urge_loading'>
+          <Button
+            type="primary"
+            size="small"
+            @click="ok('5', 'recoverFormItem')"
+            :loading="regain_urge_loading"
+          >
             <span v-if="!regain_urge_loading">确定</span>
             <span v-else>恢复催收中...</span>
           </Button>
@@ -524,7 +553,12 @@
         </Form>
         <div slot="footer">
           <Button size="small" @click="cancel('6')">取消</Button>
-          <Button type="primary" size="small" @click="ok('6','messageFormItem')" :loading='send_message_loading'>
+          <Button
+            type="primary"
+            size="small"
+            @click="ok('6','messageFormItem')"
+            :loading="send_message_loading"
+          >
             <span v-if="!send_message_loading">确定</span>
             <span v-else>发送中...</span>
           </Button>

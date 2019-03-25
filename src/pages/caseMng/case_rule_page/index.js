@@ -344,6 +344,11 @@ export default {
     }
   },
   created() {
+    //获取缓存的表单值
+    let case_rule_form = window.sessionStorage.getItem('case_rule_form');
+    if (case_rule_form) {
+      this.formItem = JSON.parse(case_rule_form);
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -376,6 +381,7 @@ export default {
       this.$router.push({ name: 'case_add_distribute_page' });
     },
     handleSubmit(name) {
+      window.sessionStorage.setItem('case_rule_form', JSON.stringify(this.formItem));
       this.pageNo = 1;
       this.getList();
     },
@@ -470,6 +476,7 @@ export default {
         prodTypeList: [],
         status: ''
       };
+      window.sessionStorage.removeItem('case_rule_form');
       this.$refs[name].resetFields();
     },
   },

@@ -20,14 +20,13 @@
             :model="formItem"
             :label-width="90"
             :rules="ruleValidate"
-            disabled
           >
             <Row>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem span="4" label="姓名:" prop="name" disabled>
+                <FormItem span="4" label="姓名:" prop="name">
                   <Input
                     size="small"
-                    clearable
+                    :clearable="model.type !== '1'? true: false"
                     v-model="formItem.name"
                     placeholder="请输入姓名"
                     :disabled="model.type === '1'? true: false"
@@ -38,7 +37,7 @@
                 <FormItem span="4" label="账号:" prop="loginName">
                   <Input
                     size="small"
-                    clearable
+                    :clearable="model.type !== '1'? true: false"
                     v-model="formItem.loginName"
                     placeholder="请输入账号"
                     :maxlength="10"
@@ -52,7 +51,7 @@
                     size="small"
                     v-model="formItem.state"
                     filterable
-                    clearable
+                    :clearable="model.type === '1'? false: true"
                     placeholder="请选择账户状态"
                     :disabled="model.type === '1'? true: false"
                   >
@@ -69,7 +68,7 @@
                 <FormItem span="4" label="邮箱:" prop="email">
                   <Input
                     size="small"
-                    clearable
+                    :clearable="model.type !== '1'? true: false"
                     v-model="formItem.email"
                     placeholder="请输入邮箱"
                     :disabled="model.type === '1'? true: false"
@@ -80,7 +79,7 @@
                 <FormItem span="4" label="电话:" prop="mobile">
                   <Input
                     size="small"
-                    clearable
+                    :clearable="model.type !== '1'? true: false"
                     v-model="formItem.mobile"
                     placeholder="请输入电话号"
                     :disabled="model.type === '1'? true: false"
@@ -110,10 +109,9 @@
                 <FormItem span="4" label="创建人:" prop="createUser">
                   <Input
                     size="small"
-                    clearable
                     v-model="formItem.createUser"
                     placeholder="请输入创建人"
-                    :disabled="model.type === '1'? true: false"
+                    :disabled="true"
                   ></Input>
                 </FormItem>
               </Col>
@@ -121,10 +119,9 @@
                 <FormItem span="4" label="修改人:" prop="updateUser" v-if="model.type !== '0'">
                   <Input
                     size="small"
-                    clearable
                     v-model="formItem.updateUser"
                     placeholder="请输入修改人"
-                    :disabled="model.type === '1'? true: false"
+                    :disabled="true"
                   ></Input>
                 </FormItem>
               </Col>
@@ -251,7 +248,6 @@ export default {
   props: {
     model: {},
     getDirObj: {},
-    parentData: {}
   },
   watch: {
     model: function() {
@@ -260,9 +256,22 @@ export default {
     }
   },
   created() {
-    console.log(this.formItem);
+    console.log(this.model.userData);
     if (this.model.type === "1" || this.model.type === "2") {
-      this.formItem = this.model.userData;
+      // this.formItem = this.model.userData;
+      this.formItem = {
+        name: this.model.userData.name,
+        loginName: this.model.userData.loginName,
+        state: this.model.userData.state,
+        email: this.model.userData.email,
+        mobile: this.model.userData.mobile,
+        roleIds: this.model.userData.roleIds,
+        createUser: this.model.userData.createUser,
+        updateUser: this.model.userData.updateUser,
+        createTime: this.model.userData.createTime,
+        updateTime: this.model.userData.createTime,
+        uuid: this.model.userData.uuid,
+      }
       this.formItem.createTime = this.model.userData.createTime
           ? this.$options.filters["formatDate"](
               this.model.userData.createTime,
@@ -298,12 +307,6 @@ export default {
       });
       if (res.code === 1) {
         this.rolesData = res.data.content;
-        // setTimeout(() => {
-        //   this.formItem = {
-        //     ...this.parentData.userData,
-        //     state: this.parentData.userData.roleStatus
-        //   };
-        // }, 500);
       } else {
         this.$Message.error(res.message);
       }
@@ -353,15 +356,12 @@ export default {
       }
     },
     del(type) {
-      this.childrenData = this.model;
-      this.childrenData.modal = false;
+      // this.childrenData = this.model;
+      // this.childrenData.modal = false;
       if (type === 1) {
-        console.log(this.$parent.getList());
         this.$parent.getList();
       }
-      console.log(this.childrenData);
-      this.$emit("passBack", this.childrenData);
-      // this.$emit("getChildrenStatus", this.childrenData);
+      this.$emit("passBack", false);
     },
     // 重置
     clearForm(name) {
@@ -374,12 +374,6 @@ export default {
 </script>
 
  <style lang="less" scoped>
-// .ivu-modal {
-//   position: absolute;
-//   left: 50%;
-//   top: 50%;
-//   transform: translate(-50%, -50%);
-// }
 .user_info_form_modal {
   .vue-panel {
     border: none;

@@ -267,6 +267,11 @@ export default {
     };
   },
   created() {
+    //获取缓存的表单值
+    let system_role_form = window.sessionStorage.getItem('system_role_form');
+    if (system_role_form) {
+      this.formValidate = JSON.parse(system_role_form);
+    }
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
       if (item.type !== '03') {
@@ -393,6 +398,7 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          window.sessionStorage.setItem('system_role_form', JSON.stringify(this.formValidate));
           this.pageNo = 1;
           this.getList();
         }
@@ -497,6 +503,7 @@ export default {
     clearForm(name) {
       //这里可以不用改变当前的分页组件之中的页码数值
       this.formValidate = {};
+      window.sessionStorage.removeItem('system_role_form');
       this.$refs[name].resetFields();
     }
   }
