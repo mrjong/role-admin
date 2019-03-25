@@ -249,7 +249,7 @@ export default {
       this.getList();
     },
     handleUpdate(name) {
-      window.sessionStorage.setItem('relationship_maintain_form');
+      window.sessionStorage.setItem('relationship_maintain_form', JSON.stringify(this.formItem));
       this.pageNo = 1;
       this.getList();
     },

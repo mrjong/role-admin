@@ -43,7 +43,7 @@ export default {
       },
       pageNo: 1,
       pageSize: 10,
-      total: 100,
+      total: 0,
       repayOrdTyp: 'SR', //区分用户主动还款、系统代扣还款，UR：用户主动还款，SR：系统代扣还款
       tableData: [
       ],

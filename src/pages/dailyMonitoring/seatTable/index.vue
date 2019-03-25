@@ -21,6 +21,7 @@
                 v-model="formValidate.startRepayDateRange"
                 format="yyyy-MM-dd"
                 type="datetimerange"
+                :editable='false'
                 placement="bottom-start"
                 placeholder="请选择处理时间"
                 @on-change="changeActDate"
@@ -315,8 +316,10 @@ export default {
       }
     });
     // 此处注意刁颖顺序，因为是两级联动关系，必须等到拿到组别之后，在进行坐席接口调用
-    //this.getSeatTableList();
     this.groupListArr();
+    if (this.formValidate.parentRoleId && this.formValidate.parentRoleId != '') {
+      this.getSeatTableList(this.formValidate.parentRoleId);
+    }
     // this.getList();
   },
   methods: {
@@ -351,12 +354,10 @@ export default {
       let res = await monitor_groupList({});
       if (res && res.code === 1) {
         this.groupList = res.data;
-        console.log(this.groupList);
       }
     },
     async getSeatTableList(id) {
       //this.groupSeatList = [];
-      console.log(id, "idiiidiididdiidi");
       let res = await monitor_getAgentList({
         parentRoleId: id
       });
