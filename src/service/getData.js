@@ -1268,6 +1268,24 @@ export const call_moor_hung_up = (obj) =>
     data: qs.stringify(obj),
   })
 
+/*
+讯众外呼
+*/
+export const call_xz_hung_on = (obj) =>
+  fetch({
+    url: '/call/xz/hung_on',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
+// 讯众挂断
+export const call_xz_hung_off = (obj) =>
+  fetch({
+    url: '/call/xz/hung_off',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
 // 数据字典添加
 export const sysDictionary_save = (obj) =>
   fetch({
