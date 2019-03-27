@@ -422,7 +422,7 @@ export default {
           render: (h, params) => {
             const row = params.row;
             const allotDate = row.allotDate
-              ? this.$options.filters['formatDate'](row.allotDate, 'YYYY-MM-DD hh:mm:ss')
+              ? this.$options.filters['formatDate'](row.allotDate, 'YYYY-MM-DD HH:mm:ss')
               : row.allotDate;
             return h('span', allotDate);
           }

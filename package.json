@@ -7,8 +7,8 @@
     "init": "webpack --progress --config build/webpack.dev.config.js",
     "dev": "npm run clear && webpack-dev-server  --config build/webpack.dev.config.js --watch",
     "build": "webpack --progress --hide-modules --config build/webpack.prod.config.js",
+    "test": "webpack --progress --hide-modules --config build/webpack.test.config.js",
     "lint": "eslint --fix --ext .js,.vue src",
-    "test": "npm run lint",
     "clear": "rimraf ./dist"
   },
   "repository": {

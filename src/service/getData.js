@@ -868,11 +868,12 @@ export const divide_rules_add = (obj) =>
   });
 
 // 一键分配接口
-export const divide_allot_manual = (obj) =>
+export const divide_allot_manual = (obj, options) =>
   fetch({
     url: '/divide/allot/manual',
     method: 'POST',
-    data: qs.stringify(obj)
+    data: obj,
+    options
   });
 // 一键分配里面查询案件量接口
 export const allot_manualcounts = (obj) =>
@@ -920,6 +921,15 @@ export const divide_rules_his = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+
+// 分案规则回款率接口
+export const allot_divideCollectRate = (obj, options) =>
+  fetch({
+    url: '/divide/allot/divideCollectRate',
+    method: 'POST',
+    data: obj,
+    options
+  })
 /*
 *
 *
