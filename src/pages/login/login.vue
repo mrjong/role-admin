@@ -105,7 +105,6 @@ export default {
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7
       }).ciphertext.toString();
-      console.log(enc);
       return enc;
     },
     async login_code() {
@@ -187,7 +186,7 @@ export default {
           this.login_loading = false;
           if (res && res.code === 1) {
             Cookies.set("user", this.form.loginName);
-            Cookies.set("loginPwd", this.form.loginPwd);
+            // Cookies.set("loginPwd", this.form.loginPwd);
             Cookies.set("SXF-TOKEN", res.data.token);
             Cookies.set("userType", res.data.userType);
             this.$store.commit(
