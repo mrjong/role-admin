@@ -113,14 +113,12 @@ export default {
           sessionStorage.setItem("seatType", "KT");
           localStorage.setItem("callData", JSON.stringify(res.data));
           this.call(res.data);
-          this.loginSuccess(data);
         } else if (res.data.seatType === "XZ") {
           sessionStorage.setItem("seatType", "XZ");
-          this.loginSuccess(data);
         } else if (res.data.seatType === "RL") {
           sessionStorage.setItem("seatType", "RL");
-          this.loginSuccess(data);
         }
+        this.loginSuccess(data);
       } else {
         this.$Message.error(res.message);
       }
