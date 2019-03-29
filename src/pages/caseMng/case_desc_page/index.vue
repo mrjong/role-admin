@@ -16,7 +16,7 @@
     </div>
     <div class="panel-case-right">
       <Tooltip v-if="showBtn" content="点击查看" placement="left">
-        <div @click="isShow" class="txl-container">通讯录信息</div>
+        <div @click="isShow" class="txl-container">联系人信息</div>
       </Tooltip>
       <div class="case-desc-alert">
         <transition name="slide
