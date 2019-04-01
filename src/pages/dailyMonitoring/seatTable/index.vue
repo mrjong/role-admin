@@ -343,6 +343,10 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
+      this.formValidate.startRepayDateRange = [
+        this.formValidate.startDate,
+        this.formValidate.endDate
+      ]
       window.sessionStorage.setItem('daily_monitoring_seatTable_form', JSON.stringify(this.formValidate));
       this.pageNo = 1;
       this.getList();

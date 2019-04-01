@@ -236,6 +236,12 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          if (this.formValidate.startAndend) {
+            this.formValidate.startAndend = [
+              this.formValidate.startRepayDate,
+              this.formValidate.endRepayDate
+            ]
+          };
           window.sessionStorage.setItem('remoney_system_form', JSON.stringify(this.formValidate))
           this.pageNo = 1;
           this.getList();

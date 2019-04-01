@@ -67,9 +67,10 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="formItem.applyTimeLt"
+                v-model="applyTime"
                 format="yyyy-MM-dd"
                 type="daterange"
+                @on-change="changeApplyTime"
                 placement="bottom-start"
                 placeholder="请选择申请日期"
               ></DatePicker>
@@ -81,9 +82,10 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="formItem.approvalTimeLt"
+                v-model="approvalTime"
                 format="yyyy-MM-dd"
                 type="daterange"
+                @on-change="changeApprovalTime"
                 placement="bottom-start"
                 placeholder="请选择审核日期"
               ></DatePicker>

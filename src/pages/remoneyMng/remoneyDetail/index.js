@@ -324,6 +324,18 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
+      if (this.formValidate.startRepayDateRange) {
+        this.formValidate.startRepayDateRange = [
+          this.formValidate.startRepayDate,
+          this.formValidate.endRepayDate,
+        ]
+      };
+      if (this.formValidate.shouldRepayDate) {
+        this.formValidate.shouldRepayDate = [
+          this.formValidate.startDueDate,
+          this.formValidate.endDueDate,
+        ]
+      }
       window.sessionStorage.setItem('remoney_detail_form', JSON.stringify(this.formValidate))
       this.pageNo = 1;
       this.getList();

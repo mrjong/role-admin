@@ -30,6 +30,8 @@ export default {
       update: false,//编辑权限
       update_loading: false,//编辑按钮loading
       query_loading: false,//查询按钮loading
+      approvalTime: [],//审核时间区间
+      applyTime: [],//申请时间区间
       case_detail_remark_list_tableData: [],
       case_detail_remark_list_pageNo: 1,
       case_detail_remark_list_pageSize: 10,
@@ -402,6 +404,16 @@ export default {
     let my_arbitrament_approve_form = window.sessionStorage.getItem('my_arbitrament_approve_form');
     if (my_arbitrament_approve_form) {
       this.formItem = JSON.parse(my_arbitrament_approve_form);
+      // 获取缓存的申请时间
+      this.applyTime = [
+        JSON.parse(my_arbitrament_approve_form).applyTimeLt,
+        JSON.parse(my_arbitrament_approve_form).applyTimeBt,
+      ];
+      // 获取缓存的审核时间
+      this.approvalTime = [
+        JSON.parse(my_arbitrament_approve_form).approvalTimeLt,
+        JSON.parse(my_arbitrament_approve_form).approvalTimeBt,
+      ];
     }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
@@ -418,6 +430,16 @@ export default {
     });
   },
   methods: {
+    //申请时间监听
+    changeApplyTime(val) {
+      this.formItem.applyTimeLt = val[0];
+      this.formItem.applyTimeBt = val[1];
+    },
+    //审核时间监听
+    changeApprovalTime(val) {
+      this.formItem.approvalTimeLt = val[0];
+      this.formItem.approvalTimeBt = val[1];
+    },
     passBack(type) {
       this.modal[type] = false;
       this.del()
@@ -564,6 +586,18 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          if (this.applyTime) {
+            this.applyTime = [
+              this.formItem.applyTimeLt,
+              this.formItem.applyTimeBt
+            ]
+          };
+          if (this.approvalTime) {
+            this.approvalTime = [
+              this.formItem.approvalTimeLt,
+              this.formItem.approvalTimeBt
+            ]
+          }
           window.sessionStorage.setItem('my_arbitrament_approve_form', JSON.stringify(this.formItem));
           this.pageNo = 1;
           this.getList();
@@ -577,34 +611,10 @@ export default {
         return;
       };
       this.query_loading = true;
-      let applyTimeLt = '',
-        applyTimeBt = '';
-      if (this.formItem.applyTimeLt && this.formItem.applyTimeLt.length > 0) {
-        applyTimeLt = this.formItem.applyTimeLt[0]
-          ? dayjs(this.formItem.applyTimeLt[0]).format('YYYY-MM-DD')
-          : '';
-        applyTimeBt = this.formItem.applyTimeLt[1]
-          ? dayjs(this.formItem.applyTimeLt[1]).format('YYYY-MM-DD')
-          : '';
-      }
-      let approvalTimeLt = '',
-        approvalTimeBt = '';
-      if (this.formItem.approvalTimeLt && this.formItem.approvalTimeLt.length > 0) {
-        approvalTimeLt = this.formItem.approvalTimeLt[0]
-          ? dayjs(this.formItem.approvalTimeLt[0]).format('YYYY-MM-DD')
-          : '';
-        approvalTimeBt = this.formItem.approvalTimeLt[1]
-          ? dayjs(this.formItem.approvalTimeLt[1]).format('YYYY-MM-DD')
-          : '';
-      }
-      // delete this.formItem.approvalTimeLt;
-      // delete this.formItem.applyTimeLt;
+      delete this.formItem.applyTime;
+      delete this.formItem.approvalTime;
       const res = await arb_myArbList({
         ...this.formItem,
-        applyTimeLt,
-        approvalTimeLt,
-        approvalTimeBt,
-        applyTimeBt,
         pageNum: this.pageNo,
         pageSize: this.pageSize
       });
@@ -623,6 +633,8 @@ export default {
       this.formItem = {
         productTypes: []
       };
+      this.applyTime = [];
+      this.approvalTime = [];
       window.sessionStorage.removeItem('my_arbitrament_approve_form');
       this.$refs[name].resetFields();
     }
