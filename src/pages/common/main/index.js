@@ -6,6 +6,7 @@ import lockScreen from '@/components/lockscreen/lockscreen.vue';
 import messageTip from '@/components/message-tip.vue';
 import themeSwitch from '@/components/theme-switch/theme-switch.vue';
 import Cookies from 'js-cookie';
+import CryptoJS from "crypto-js";
 import util from '@/libs/util.js';
 import scrollBar from '@/components/scroll-bar/vue-scroller-bars';
 import { logout, findTreeByCurrentUser, reset_passWord } from '@/service/getData';
@@ -25,7 +26,22 @@ export default {
 			visible1: false,
 			shrink: false,
 			formItem: {},
-			ruleValidate: {},
+			ruleValidate: {
+        loginPwd: [
+          {
+            required: true,
+            message: "请填写旧密码",
+            trigger: "blur",
+          }
+        ],
+        newLoginPwd: [
+          {
+            required: true,
+            message: "请填写新密码",
+            trigger: "blur",
+          }
+        ],
+      },
 			userName: '',
 			isFullScreen: false,
 			openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
@@ -59,6 +75,16 @@ export default {
 		}
     },
 	methods: {
+    passWord(str) {
+      let key = CryptoJS.enc.Hex.parse("63666262663331373130363634393864");
+      let iv = CryptoJS.enc.Hex.parse("38313837386662346131393061333035");
+      let enc = CryptoJS.AES.encrypt(str, key, {
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+      }).ciphertext.toString();
+      return enc;
+    },
 		ok() {
 			this.$refs.formItem.validate((valid) => {
 				if (valid) {
@@ -69,8 +95,8 @@ export default {
 		async reset_passWord() {
 			const res = await reset_passWord({
 				loginName: Cookies.get('user'),
-				loginPwd: Cookies.get('loginPwd'),
-				newLoginPwd: this.formItem.newLoginPwd
+				loginPwd: this.passWord(this.formItem.loginPwd),
+				newLoginPwd: this.passWord(this.formItem.newLoginPwd)
 			});
 			if (res.code === 1) {
 				this.$Message.success('修改成功');

@@ -374,6 +374,12 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          if (this.formItem.csDate) {
+            this.formItem.csDate = [
+             this.formItem.beginDate,
+             this.formItem.endDate,
+            ]
+          }
           window.sessionStorage.setItem('collecttion_recording_form', JSON.stringify(this.formItem));
           this.pageNo = 1;
           this.getList();

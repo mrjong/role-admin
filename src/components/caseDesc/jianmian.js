@@ -7,11 +7,11 @@ export default {
       defaultList: [
         {
           name: 'a42bdcc1178e62b4694c830f028db5c0',
-          url: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
+          // url: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
         },
         {
           name: 'bc7521e033abdd1e92222d733590f104',
-          url: 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
+          // url: 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
         }
       ],
       imgName: '',
@@ -29,7 +29,7 @@ export default {
       this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
     },
     handleSuccess(res, file) {
-      file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
+      // file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
       file.name = '7eb99afb9d5f317c912f08b5212fd69a';
     },
     handleFormatError(file) {

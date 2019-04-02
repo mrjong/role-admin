@@ -596,6 +596,12 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          if (this.formItem.date) {
+            this.formItem.date = [
+              this.formItem.beginDueDate,
+              this.formItem.endDueDate
+            ]
+          }
           window.sessionStorage.setItem('case_distribute_form', JSON.stringify(this.formItem));
           this.pageNo = 1;
           this.getList();

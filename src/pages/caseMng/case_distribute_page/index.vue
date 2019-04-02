@@ -150,6 +150,7 @@
                 v-model="formItem.date"
                 @on-change="dateChange"
                 :editable="false"
+                size='small'
                 placeholder="请选择还款日期"
                 style="width: 100%"
               ></DatePicker>

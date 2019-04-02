@@ -43,7 +43,10 @@
               </div>
             </FormItem>
             <FormItem>
-              <Button @click="handleSubmit" type="primary" long>登录</Button>
+              <Button @click="handleSubmit" type="primary" long :loading='login_loading'>
+                <span v-if="!login_loading">登录</span>
+                <span v-else>登录中...</span>
+              </Button>
             </FormItem>
           </Form>
         </div>
@@ -54,7 +57,7 @@
 
 <script>
 import Cookies from "js-cookie";
-import md5 from "js-md5";
+import CryptoJS from "crypto-js";
 import { login, call_kt_get_seat, login_code } from "@/service/getData";
 
 export default {
@@ -62,6 +65,7 @@ export default {
     return {
       imageShow: "",
       key: "",
+      login_loading: false,//登录按钮loading
       form: {
         loginName: "",
         loginPwd: "",
@@ -93,6 +97,16 @@ export default {
     });
   },
   methods: {
+    passWord() {
+      let key = CryptoJS.enc.Hex.parse("63666262663331373130363634393864");
+      let iv = CryptoJS.enc.Hex.parse("38313837386662346131393061333035");
+      let enc = CryptoJS.AES.encrypt(this.form.loginPwd, key, {
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+      }).ciphertext.toString();
+      return enc;
+    },
     async login_code() {
       const res = await login_code();
       if (res.code === 1) {
@@ -162,15 +176,17 @@ export default {
     handleSubmit() {
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
+          this.login_loading = true;
           const res = await login({
             loginName: this.form.loginName,
-            loginPwd: this.form.loginPwd,
+            loginPwd: this.passWord(),
             code: this.form.loginPic,
             key: this.key
           });
+          this.login_loading = false;
           if (res && res.code === 1) {
             Cookies.set("user", this.form.loginName);
-            Cookies.set("loginPwd", this.form.loginPwd);
+            // Cookies.set("loginPwd", this.form.loginPwd);
             Cookies.set("SXF-TOKEN", res.data.token);
             Cookies.set("userType", res.data.userType);
             this.$store.commit(

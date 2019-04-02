@@ -222,11 +222,6 @@ export default {
       this.formValidate.applayDateBt = val1[1];
       console.log('123', this.formValidate);
     },
-    changeShouldDate(val1, val2) {
-      this.formValidate.applayDateLt = val1[0];
-      this.formValidate.applayDateBt = val1[1];
-      console.log('123', this.formValidate);
-    },
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
@@ -239,6 +234,12 @@ export default {
       this.getList();
     },
     handleSubmit(name) {
+      if (this.formValidate.applyDate) {
+        this.formValidate.applyDate = [
+          this.formValidate.applayDateLt,
+          this.formValidate.applayDateBt
+        ]
+      }
       window.sessionStorage.setItem('transfer_manager_form', JSON.stringify(this.formValidate));
       this.pageNo = 1;
       this.getList();
