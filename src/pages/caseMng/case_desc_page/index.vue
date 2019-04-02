@@ -826,7 +826,7 @@
       :caseNo="caseNo"
       :userId="userId"
     ></huakou>
-    <!-- 容联软电话 -->
+    <!-- 容联、讯众软电话 -->
     <div class="tel-box" v-if="showMoorTel">
       <div class="tel-box-desc">
         <div class="tel-num">{{moorToCallMblHid}}</div>
@@ -838,7 +838,10 @@
             </div>
           </div>-->
           <div class="item fail">
-            <div class="icon-box" @click="call_moor_hung_up">
+            <div class="icon-box" @click="call_moor_hung_up" v-if="seatType === 'RL'">
+              <Icon class="fail-icon" type="ios-call"></Icon>
+            </div>
+            <div class="icon-box" @click="call_xz_hung_off" v-else>
               <Icon class="fail-icon" type="ios-call"></Icon>
             </div>
           </div>

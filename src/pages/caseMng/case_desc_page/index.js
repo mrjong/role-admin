@@ -27,6 +27,8 @@ import {
   call_kt_hung_on, // 客天外拨
   call_moor_hung_on, // 容联外拨
   call_moor_hung_up,//容联挂断
+  call_xz_hung_on,//讯众接通
+  call_xz_hung_off,//讯众挂断
   syscommon_decrypt, // 明文展示
   case_collect_case_list, // 我的案件
   case_list
@@ -178,8 +180,8 @@ export default {
           key: 'perdMngAmt',
           render: (h, params) => {
             let perdMngAmt =
-              parseFloat(params.row.perdMngAmt)+
-              parseFloat(params.row.perdAprAmt)+
+              parseFloat(params.row.perdMngAmt) +
+              parseFloat(params.row.perdAprAmt) +
               parseFloat(params.row.perdWtdwAmt);
             perdMngAmt = perdMngAmt ? this.$options.filters['money'](perdMngAmt) : perdMngAmt;
             return h('span', perdMngAmt);
@@ -269,7 +271,7 @@ export default {
           key: 'perdMngRep',
           render: (h, params) => {
             let perdMngRep =
-              parseFloat(params.row.perdMngRep)  +
+              parseFloat(params.row.perdMngRep) +
               parseFloat(params.row.perdWtdwRep) +
               parseFloat(params.row.perdAprRep);
             perdMngRep = perdMngRep ? this.$options.filters['money'](perdMngRep) : perdMngRep;
@@ -1777,7 +1779,7 @@ export default {
       this.collectcode_getCollectRelate(); // 获取沟通状态
       this.case_detail_mail_statistics_list(); // 通话统计
       this.case_detail_case_identity_info(); // 查询案件详情身份信息
-    },1500);
+    }, 1500);
     // 催收信息
   },
   mounted() {
@@ -1797,22 +1799,22 @@ export default {
       if (res.code === 1) {
         this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
-        } else {
-          this.$Message.error(res.message);
-        }
-      },
-      // 获取表格数据
-      async case_collect_case_list() {
-        console.log(this.queryData, '---------------');
-        const res = await case_collect_case_list({
-          ...this.queryData,
-          id: this.caseNo,
-          pageNum: 1
-        });
-        if (res.code === 1) {
-          this.case_collect_case_list_data =
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 获取表格数据
+    async case_collect_case_list() {
+      console.log(this.queryData, '---------------');
+      const res = await case_collect_case_list({
+        ...this.queryData,
+        id: this.caseNo,
+        pageNum: 1
+      });
+      if (res.code === 1) {
+        this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
-          this.userId = res.data.page.content[0].userId;
+        this.userId = res.data.page.content[0].userId;
       } else {
         this.$Message.error(res.message);
       }
@@ -1911,7 +1913,36 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    // 容联外呼挂断方法
+    // 讯众外呼接口
+    async call_xz_hung_on(obj) {
+      const res = await call_xz_hung_on(obj);
+      if (res.code === 1) {
+        this.showMoorTel = true;
+        this.$Message.success('呼出成功');
+        this.actionId = res.data.actionId;
+        this.moorToCallMblHid = res.data.toCallMblHid;
+        this.moorToCallUser = res.data.toCallUserHid
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 讯众挂断接口
+    async call_xz_hung_off() {
+      const res = await call_xz_hung_off({
+        actionId: this.actionId
+      });
+      if (res.code === 1) {
+        this.showMoorTel = false;
+      } else {
+        this.$Message.error(res.message);
+        let timer;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          this.showMoorTel = false;
+        }, 2000);
+      }
+    },
+    // 容联挂断方法
     async call_moor_hung_up() {
       const res = await call_moor_hung_up();
       if (res.code === 1) {
@@ -2243,7 +2274,8 @@ export default {
           setTimeout(() => {
             this.call(JSON.parse(localStorage.getItem('callData')));
           }, 500)
-        } else {
+        } else if (this.seatType === 'RL') {
+          // 容联外呼传参
           this.call_kt_hung_on({
             callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
             callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
@@ -2251,6 +2283,17 @@ export default {
             toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
             toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
             toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid
+          });
+        } else if (this.seatType === 'XZ') {
+          // 讯众外呼传参
+          this.call_xz_hung_on({
+            callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+            callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
+            toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
+            toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
+            toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+            toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
+            userId: this.userId,
           });
         }
       } else {
