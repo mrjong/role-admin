@@ -31,7 +31,7 @@ import {
   call_xz_hung_off,//讯众挂断
   syscommon_decrypt, // 明文展示
   case_collect_case_list, // 我的案件
-  case_list
+  case_list,
 } from '@/service/getData';
 let callFlag = false;
 export default {
@@ -54,6 +54,7 @@ export default {
       apply_deduct: false,//案件详情申请划扣权限
       add_collect_loading: false,//添加催记按钮loading
       add_txl_loading: false,//添加通讯录提交按钮loading
+      breaks_data: {},//减免info入参
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -2294,6 +2295,7 @@ export default {
             toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
             toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
             userId: this.userId,
+            caseNo: this.caseNo,
           });
         }
       } else {
@@ -2314,6 +2316,13 @@ export default {
     },
     passBack(type) {
       this.modal[type] = false;
+    },
+    passBackBreaks(obj) {
+      console.log(obj)
+      this.modal.jianmian = obj.flag;
+      if (obj.status === 'ok') {
+        this.$Message.success('申请成功');
+      }
     },
     handOpen(type) {
       console.log(this.modal);
@@ -2343,6 +2352,11 @@ export default {
           idCardFront,
           idCardOpposite
         };
+      } else if (type === 'jianmian') {
+        this.breaks_data = {
+          caseNo: this.caseNo,
+          billNo: this.case_detail_case_base_info_Data.billNo,
+        }
       }
       this.modal[type] = true;
     },

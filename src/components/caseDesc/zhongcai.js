@@ -100,6 +100,7 @@ export default {
 		model: {}
 	},
 	created() {
+    console.log(this.zhongcai_data)
     this.formItem.idAddress = this.zhongcai_data.idAddress;
 		this.formItem.voucherNo = this.zhongcai_data.voucherNo;
 		this.formItem.standAgreeDate = this.zhongcai_data.standAgreeDate
