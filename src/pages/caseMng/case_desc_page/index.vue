@@ -68,6 +68,10 @@
             ></Icon>
           </Poptip>-->
           （{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
+          <!-- 信用进度按钮 -->
+          <span @click.stop="credit_panel = !credit_panel" style="line-height: 20px; height: 26px; display: inline-block">
+            <Icon :type="!credit_panel?'ios-arrow-dropup':'ios-arrow-dropdown'" size='20'></Icon><span>信用进度</span>
+          </span>
           <Button
             v-if="readType!=='read' && apply_arbitrament"
             @click.stop="handOpen('zhongcai')"
@@ -135,10 +139,7 @@
                         title="显示明文"
                         type="md-eye"
                         v-if="plaintext"
-                        @click.native="syscommon_decrypt({
-                type:'ID_CARD',
-                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNo
-            })"
+                        @click.native="syscommon_decrypt({type:'ID_CARD',data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.idNo})"
                       ></Icon>
                     </Poptip>
                   </span>
@@ -179,6 +180,9 @@
                 </div>
                 <div class="text-center card-text">{{item.imgTypeName}}</div>
               </div>
+            </Col>
+            <Col :xs="24" :sm="24" :md="24" :lg="24" style="padding-top: 40px" v-if="credit_panel">
+                <TimeLine v-if="credit_panel"></TimeLine>
             </Col>
           </Row>
         </div>

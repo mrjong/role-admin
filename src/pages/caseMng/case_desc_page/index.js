@@ -1,6 +1,7 @@
 import jianmian from '@/components/caseDesc/jianmian.vue';
 import huakou from '@/components/caseDesc/huakou.vue';
 import zhongcai from '@/components/caseDesc/zhongcai.vue';
+import TimeLine from '@/components/time_line_page';
 import qs from 'qs';
 import dayjs from 'dayjs';
 import Cookie from 'js-cookie';
@@ -39,7 +40,8 @@ export default {
   components: {
     jianmian,
     huakou,
-    zhongcai
+    zhongcai,
+    TimeLine
   },
   mixins: [sysDictionary],
   data() {
@@ -54,6 +56,7 @@ export default {
       apply_deduct: false,//案件详情申请划扣权限
       add_collect_loading: false,//添加催记按钮loading
       add_txl_loading: false,//添加通讯录提交按钮loading
+      credit_panel: false,//信用进度的折叠flag
       imglist: {},
       actionId: '',
       objCopy: {},

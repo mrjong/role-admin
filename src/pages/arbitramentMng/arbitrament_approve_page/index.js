@@ -20,6 +20,8 @@ export default {
       query_loading: false,//查询按钮loading
       audit_loading: false,//审核按钮loading
       reject_loading: false,//驳回按钮loading
+      upload_loading: false,//上传按钮loading
+      file_disabled: false,// 是否禁用上传
       applyTime: [],//申请时间区间
       approvalTime: [],//审核时间区间
       showModalType: '',
@@ -87,10 +89,11 @@ export default {
           }
         }
       ],
-      recoverFormItem: {},
-      showModal2: false,
-      showModal1: false,
-      ruleValidate2: {
+      reject_modal: false,//驳回的modal
+      arbitrament_modal: false,//仲裁详情的modal
+      upload_modal: false,//上传图片的modal
+      recoverFormItem: {},//驳回原因表单
+      reject_ruleValidate: {
         approvalRemark: [
           {
             required: true,
@@ -98,7 +101,7 @@ export default {
             trigger: 'blur'
           }
         ]
-      },
+      },//驳回校验
       ruleValidate: {
         idNo: [
           {
@@ -164,20 +167,24 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      formValidate3: {
-        items: [
-          {
-            value: '',
-            index: 1,
-            status: 1
-          }
-        ]
-      },
       formItem: {
         productTypes: []
       },
       tableData: [],
       tableColumns: [
+        {
+          type: 'selection',
+          width: 60,
+          align: 'center',
+          fixed: 'left',
+        },
+        {
+          type: 'index',
+          title: '序号',
+          width: 60,
+          align: 'center',
+          fixed: 'left',
+        },
         {
           title: '操作',
           width: 150,
@@ -218,6 +225,19 @@ export default {
                   }
                 },
                 '审核'
+              ),
+              h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.upload_modal = true;
+                    }
+                  }
+                },
+                '上传'
               )
             ]);
           }
@@ -423,6 +443,29 @@ export default {
     // this.getList();
   },
   methods: {
+    // 文件上传过程监听
+    file_progress(event, file, fileList) {
+      console.log(file);
+      this.$Spin.show();
+    },
+    // 文件上传成功监听
+    file_success(res, file, fileList) {
+      console.log(res);
+      this.$Spin.hide();
+    },
+    // 文件上传失败监听
+    file_error(error, file, fileList) {
+      console.log(error);
+      this.$Spin.hide();
+    },
+    // 上传文件的取消按钮
+    cancel() {
+      this.upload_modal = false;
+    },
+    //上传文件的提交
+    upload_submit() {
+
+    },
     //申请时间监听
     changeApplyTime(val) {
       this.formItem.applyTimeLt = val[0];
@@ -467,15 +510,15 @@ export default {
           this.arb_operateRecord();
         }
         this.arb_detail_data = res.data;
-        this.showModal1 = true;
+        this.arbitrament_modal = true;
       } else {
         this.shenheObj = {};
         this.$Message.error(res.message);
       }
     },
     rejectFunc() {
-      this.showModal1 = false;
-      this.showModal2 = true;
+      this.arbitrament_modal = false;
+      this.reject_modal = true;
     },
     arb_checkTest() {
       this.$refs.recoverFormItem.validate((valid) => {
@@ -504,8 +547,8 @@ export default {
       this.audit_loading = false;
       this.reject_loading = false;
       if (res.code === 1) {
-        this.showModal1 = false;
-        this.showModal2 = false;
+        this.arbitrament_modal = false;
+        this.reject_modal = false;
         this.$Message.success('操作成功！');
         this.recoverFormItem = {};
         setTimeout(() => {
@@ -519,14 +562,14 @@ export default {
       this.$refs.formItem.validate((valid) => {
         if (valid) {
         } else {
-          this.showModal1 = true;
+          this.arbitrament_modal = true;
         }
       });
     },
     del() {
-      this.showModal2 = false;
+      this.reject_modal = false;
       this.shenheObj = {};
-      this.showModal1 = false;
+      this.arbitrament_modal = false;
       this.showModalType = '';
     },
     // 页码改变的回调

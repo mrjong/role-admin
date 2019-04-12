@@ -101,7 +101,7 @@
                 style="width:80px"
                 long
                 size="small"
-                :loading='query_loading'
+                :loading="query_loading"
               >
                 <span v-if="!query_loading">检索</span>
                 <span v-else>检索中...</span>
@@ -143,13 +143,15 @@
         </div>
       </div>
     </Card>
+    <!-- 仲裁详情的modal -->
     <Modal
       class="jianmian"
       title="仲裁详情"
       width="90%"
-      v-model="showModal1"
+      v-model="arbitrament_modal"
       @on-cancel="del"
-      @on-ok="handleSubmit1">
+      @on-ok="handleSubmit1"
+    >
       <div class="alert-desc">
         <div class="panel-desc">
           <Form :label-width="120" class="panel_list">
@@ -316,19 +318,20 @@
         <Button size="small" @click="del">关闭</Button>
       </div>
       <div slot="footer" v-if="showModalType==='edit'">
-        <Button size="small" @click="arb_check('02')" :loading='audit_loading'>
+        <Button size="small" @click="arb_check('02')" :loading="audit_loading">
           <span v-if="!audit_loading">通过</span>
           <span v-else>审核中...</span>
         </Button>
         <Button type="primary" size="small" @click="rejectFunc">驳回</Button>
       </div>
     </Modal>
-    <Modal v-model="showModal2" width="800" title="提示" class-name="user_info_form_modal">
+    <!-- 驳回modal -->
+    <Modal v-model="reject_modal" width="800" title="提示" class-name="user_info_form_modal">
       <Form
         ref="recoverFormItem"
         :model="recoverFormItem"
         :label-width="120"
-        :rules="ruleValidate2"
+        :rules="reject_ruleValidate"
       >
         <FormItem span="4" label="驳回原因:" prop="approvalRemark">
           <Input
@@ -342,15 +345,46 @@
       </Form>
       <div slot="footer">
         <Button size="small" @click="del">取消</Button>
-        <Button type="primary" size="small" @click="arb_checkTest" :loading='reject_loading'>
+        <Button type="primary" size="small" @click="arb_checkTest" :loading="reject_loading">
           <span v-if="!reject_loading">确定</span>
           <span v-else>驳回中...</span>
         </Button>
       </div>
     </Modal>
+    <!-- 查看图片的modal -->
     <Modal title="查看图片" v-model="visible">
       <img :src="imgName" v-if="visible" style="width: 100%">
     </Modal>
+    <!-- 上传文件的modal -->
+    <div v-if="upload_modal">
+      <Modal title="上传文件" v-model="upload_modal" :mask-closable="false">
+        <Upload
+          type="drag"
+          action="//jsonplaceholder.typicode.com/posts/"
+          :on-error="file_error"
+          :on-success="file_success"
+          :on-progress="file_progress"
+          :max-size="5120"
+          :format="['pdf']"
+          :disabled="file_disabled"
+        >
+          <div style="padding: 20px 0">
+            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+            <p>
+              点击或者拖拽文件到此进行文件上传
+              <span style="color: #ed4014">（*仅限上传PDF格式文件）</span>
+            </p>
+          </div>
+        </Upload>
+        <div slot="footer">
+          <Button size="small" @click="upload_submit" :loading="upload_loading" type="primary">
+            <span v-if="!upload_loading">提交</span>
+            <span v-else>上传中...</span>
+          </Button>
+          <Button size="small" @click="cancel">取消</Button>
+        </div>
+      </Modal>
+    </div>
   </div>
 </template>
 <script src="./index.js"></script>
