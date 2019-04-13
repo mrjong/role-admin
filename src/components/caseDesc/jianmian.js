@@ -1,6 +1,7 @@
 import sysDictionary from '@/mixin/sysDictionary';
 import { relief_relieford_getreliefinfo, relief_relieford_applyrelief, relief_relieford_detailinfo, relief_relieford_updatereliefdetail } from '@/service/getData'
 import Cookie from 'js-cookie'
+
 export default {
   mixins: [sysDictionary],
   model: {
@@ -52,43 +53,24 @@ export default {
             required: true,
             message: '请输入减免金额',
             trigger: 'blur',
-            type: 'number'
           }
         ],
       },
       relief_counts: [],//减免期数list
       reliefPerdInfoVos: [],//每一期和类型对应的减免金额list
-      reliefTypeList: [
-        {
-          itemCode: 1,
-          itemName: '罚息减免'
-        },
-        {
-          itemCode: 2,
-          itemName: '利息减免'
-        },
-        {
-          itemCode: 3,
-          itemName: '服务费减免'
-        },
-        {
-          itemCode: 4,
-          itemName: '信审费减免'
-        },
-      ],//减免类型
       defaultList: [],
       imgName: '',
       overdue_info: {
-        billNo: 'BIL2017102715354800000248',//账单号
-        userNameHid: '**卓',//客户姓名
-        mblNoHid: '186****5566',//手机号
-        perdCnt: 6,//产品期数
-        ovduNums: [3, 4],//逾期期数
-        ovduFineAmt: 666,//逾期罚息
-        ovduItrtAmt: 888,//逾期利息
-        ovduMngAmt: 68,// 逾期服务费
-        ovduOvduAmt: 123.12,//逾期滞纳金
-        ovduAprAmt: 321.12,//逾期信审费
+        // billNo: 'BIL2017102715354800000248',//账单号
+        // userNameHid: '**卓',//客户姓名
+        // mblNoHid: '186****5566',//手机号
+        // perdCnt: 6,//产品期数
+        // ovduNums: [3, 4],//逾期期数
+        // ovduFineAmt: 666,//逾期罚息
+        // ovduItrtAmt: 888,//逾期利息
+        // ovduMngAmt: 68,// 逾期服务费
+        // ovduOvduAmt: 123.12,//逾期滞纳金
+        // ovduAprAmt: 321.12,//逾期信审费
       },//逾期展示信息
       visible: false,
       tableData: [],//表格数组
@@ -162,6 +144,9 @@ export default {
         },
       ],//表头
       uploadList: [],
+      reliefType: null,//减免类型关键字
+      perdNum: null,//减免期数关键字
+      reliefAmt: null,//减免金额关键字
     };
   },
   created() {
@@ -175,35 +160,18 @@ export default {
   methods: {
     // 添加减免记录，本地暂存
     handelAdd() {
-      let reliefType, perdNum, reliefAmt, obj = {};
-      // 校验类型
-      this.$refs.formItem.validateField('reliefType', (error) => {
-        if (!error) {
-          return reliefType = true;
-        } else {
-          return reliefType = false;
-        }
-      });
+      let {reliefType, perdNum, reliefAmt} = this, obj = {};
+      //校验类型
+      this.formitem_validateField('reliefType');
       //校验期数
-      this.$refs.formItem.validateField('perdNum', (error) => {
-        if (!error) {
-          return perdNum = true;
-        } else {
-          return perdNum = false;
-        }
-      });
+      this.formitem_validateField('perdNum');
       //校验金额
-      this.$refs.formItem.validateField('reliefAmt', (error) => {
-        if (!error) {
-          return reliefAmt = true;
-        } else {
-          return reliefAmt = false;
-        }
-      });
+      this.formitem_validateField('reliefAmt');
       // 类型，期数，金额校验通过后执行添加的逻辑
       if (reliefType && perdNum && reliefAmt) {
         if (this.reliefAmt_max < this.formItem.reliefAmt) {
           this.$Message.error(`减免最大金额不能超过${this.reliefAmt_max}`);
+          this.formItem.reliefAmt = this.reliefAmt_max;
           return;
         };
         Object.assign(obj, this.formItem)
@@ -222,14 +190,28 @@ export default {
         }
       }
     },
+    // 单独交验规则
+    formitem_validateField(type) {
+      this.$refs.formItem.validateField(type, (error) => {
+        if (!error) {
+          return this[type] = true;
+        } else {
+          return this[type] = false;
+        }
+      });
+    },
+    // 减免金额处理小数点
+    reliefAmt_blur(val) {
+      this.formItem.reliefAmt = Number(val).toFixed(2);
+    },
     // 减免类型selectchange
     reliefTypeSelectChange(obj) {
       console.log(obj);
       this.formItem.reliefTypeName = obj.label;
       this.reliefPerdInfoVos.forEach(item => {
         if (this.formItem.reliefType === item.reliefType && this.formItem.perdNum === String(item.perdNum)) {
-          this.formItem.reliefAmt = item.perdAmt;
-          this.reliefAmt_max = item.perdAmt;
+          this.formItem.reliefAmt = item.perdAmt.toFixed(2);
+          this.reliefAmt_max = (item.perdAmt).toFixed(2);
           return;
         }
       })
@@ -238,8 +220,8 @@ export default {
     perdNumSelectChange(val) {
       this.reliefPerdInfoVos.forEach(item => {
         if (this.formItem.reliefType === item.reliefType && this.formItem.perdNum === String(item.perdNum)) {
-          this.formItem.reliefAmt = item.perdAmt;
-          this.reliefAmt_max = item.perdAmt;
+          this.formItem.reliefAmt = item.perdAmt.toFixed(2);
+          this.reliefAmt_max = item.perdAmt.toFixed(2);
           return;
         }
       })
@@ -285,17 +267,17 @@ export default {
       }
     },
     handleFormatError(file) {
-			this.$Notice.warning({
-				title: '格式不正确',
-				desc: '请选择png,jpeg,jpg格式图片'
-			});
-		},
+      this.$Notice.warning({
+        title: '格式不正确',
+        desc: '请选择png,jpeg,jpg格式图片'
+      });
+    },
     handleMaxSize(file) {
-			this.$Notice.warning({
-				title: '大小限制',
-				desc: '图片大小不能超过5M'
-			});
-		},
+      this.$Notice.warning({
+        title: '大小限制',
+        desc: '图片大小不能超过5M'
+      });
+    },
     handleBeforeUpload() {
       const check = this.uploadList.length < 5;
       if (!check) {
@@ -307,7 +289,7 @@ export default {
     },
     // 关闭弹窗
     del() {
-      this.$emit('passBack', {flag:false});
+      this.$emit('passBack', { flag: false });
     },
     // 查询基础信息接口
     async relief_relieford_getreliefinfo() {
@@ -330,6 +312,7 @@ export default {
       if (res.code === 1) {
         this.overdue_info = res.data;
         this.formItem = res.data;
+        this.formItem.reliefAmt = this.formItem.reliefAmt.toFixed(2);
       } else {
         this.$Message.error(res.message);
       }
@@ -342,7 +325,7 @@ export default {
       });
       console.log(res);
       if (res.code === 1) {
-        this.$emit('passBack', {flag:false, status: 'ok'});
+        this.$emit('passBack', { flag: false, status: 'ok' });
       } else {
         this.$Message.error(res.message)
       }
@@ -373,7 +356,7 @@ export default {
       this.jianmian_loading = false
       console.log(res);
       if (res.code === 1) {
-        this.$emit('passBack', {flag:false, status: 'ok'});
+        this.$emit('passBack', { flag: false, status: 'ok' });
       } else {
         this.$Message.error(res.message)
       }

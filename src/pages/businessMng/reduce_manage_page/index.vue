@@ -23,7 +23,7 @@
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="产品线:">
-              <Select size="small" v-model="formValidate.prdTyp" placeholder="请选择产品线">
+              <Select size="small" v-model="formValidate.prodType" placeholder="请选择产品线">
                 <Option
                   v-for="item in getDirObj.PROD_TYPE"
                   :value="item.itemCode"
@@ -47,16 +47,16 @@
               <Input
                 size="small"
                 clearable
-                v-model.trim="formValidate.applyNo"
+                v-model.trim="formValidate.userName"
                 placeholder="请输入客户姓名"
               ></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6" v-if="tab_flag === 'reduce_mng_feedback'">
             <FormItem label="减免状态:">
-              <Select size="small" v-model="formValidate.repayOrdSts" placeholder="请选择减免状态">
+              <Select size="small" v-model="formValidate.reliefStatus" placeholder="请选择减免状态">
                 <Option
-                  v-for="item in getDirObj.REPAY_ORD_STS"
+                  v-for="item in getDirObj.RELIEF_STATUS"
                   :value="item.itemCode"
                   :key="item.itemCode"
                 >{{ item.itemName }}</Option>
@@ -65,7 +65,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="减免类型:">
-              <Select size="small" v-model="formValidate.repayOrdSts" placeholder="请选择减免类型">
+              <Select size="small" v-model="formValidate.reliefType" placeholder="请选择减免类型">
                 <Option
                   v-for="item in getDirObj.RELIEF_TYPE"
                   :value="item.itemCode"
@@ -105,13 +105,15 @@
           class="fr vue-back-btn header-btn"
           type="success"
           size="small"
-          @click.stop="submit_flag = !submit_flag"
+          v-if="submit_limt"
+          @click.stop="submit_click"
         >提交</Button>
         <Button
           class="fr vue-back-btn header-btn"
           size="small"
           type='error'
-          @click.stop="reject_flag = !reject_flag"
+          v-if="reject_limt"
+          @click.stop="reject_click"
         >驳回</Button>
       </p>
       <!-- 表格 -->
@@ -227,7 +229,7 @@
     <!-- 申请数据的详情 -->
     <ApplyDetail v-model="modal.apply" v-if="modal.apply" v-on:passBack="passBack('apply')" :apply_data='apply_data'></ApplyDetail>
     <!-- 反馈结果的详情 -->
-    <FeedbackDetail v-model="modal.feedback" v-if="modal.feedback" v-on:passBack="passBack('feedback')"></FeedbackDetail>
+    <FeedbackDetail v-model="modal.feedback" v-if="modal.feedback" v-on:passBack="passBack('feedback')" :feedback_data='feedback_data'></FeedbackDetail>
     <!-- 修改减免组件 -->
     <jianmian v-model="modal.breaks" v-if="modal.breaks" v-on:passBack="passBackBreaks" :edit_flag='false' :breaks_data='breaks_data'></jianmian>
   </div>

@@ -13,11 +13,11 @@
       <Row>
         <Col :xs="24" :sm="24" :md="12" :lg="12" span="6">
           <span class="feedback_detail_info_title">申请减免金额：</span>
-          <span class="feedback_detail_info_dec">1000.00</span>
+          <span class="feedback_detail_info_dec">{{reliefAmt}}</span>
         </Col>
         <Col :xs="24" :sm="24" :md="12" :lg="12" span="6">
           <span class="feedback_detail_info_title">申请减免类型：</span>
-          <span class="feedback_detail_info_dec">罚息减免</span>
+          <span class="feedback_detail_info_dec">{{reliefTypeName}}</span>
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
           <span class="feedback_detail_info_img_title">操作信息</span>
@@ -36,7 +36,7 @@
           <span class="feedback_detail_info_img_title">凭证信息</span>
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" span="24" class="img_col">
-          <img src="https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar" alt>
+          <img :src="file_url" alt>
         </Col>
       </Row>
     </Modal>
@@ -44,9 +44,13 @@
 </template>
 
 <script>
+import { relief_reliefFlow_getreliefflow } from '@/service/getData';
+import Cookie from 'js-cookie';
+
 export default {
   props: {
-    model: Boolean
+    model: Boolean,
+    feedback_data: {}
   },
   model: {
     prop: "model",
@@ -54,12 +58,20 @@ export default {
   },
   data() {
     return {
+      headers: {
+        'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
+        timeout: 120000,
+      },
+      prefix: '/admin/relief/relieford/images/',
+      reliefAmt: null,//减免金额
+      reliefTypeName: null,//减免类型
+      file_url: null,//图片地址
       tableData: [], //表格数据
       tableColumns: [
         {
           title: "操作人",
           searchOperator: "like",
-          key: "operator",
+          key: "auditLoginName",
           className: "tableMainW",
           align: "center",
           width: 100
@@ -67,15 +79,22 @@ export default {
         {
           title: "操作时间",
           searchOperator: "like",
-          key: "operationTime",
+          key: "updateTime",
           className: "tableMainW",
           align: "center",
-          width: 150
+          width: 150,
+          render:(h, params) => {
+            console.log(this.$options, 'opopopopo');
+            let res = params.row.updateTime;
+            res = res ? this.$options.filters['formatDate'](res, 'YYYY-MM-DD HH:mm:ss')
+              : res;
+            return h('span', res);
+          }
         },
         {
           title: "操作动作",
           searchOperator: "like",
-          key: "operationMotion",
+          key: "auditType",
           className: "tableMainW",
           align: "center",
           width: 150
@@ -83,7 +102,7 @@ export default {
         {
           title: "操作备注",
           searchOperator: "like",
-          key: "remark",
+          key: "auditRemark",
           className: "tableMainW",
           align: "center",
           width: 150
@@ -91,9 +110,28 @@ export default {
       ] //表头
     };
   },
+  created() {
+    const { reliefAmt, reliefTypeName } = this.feedback_data;
+    this.reliefAmt = reliefAmt;
+    this.reliefTypeName = reliefTypeName;
+    // _this.$options.filters['formatDate'](res,'YYYY-MM-DD HH:mm:ss')
+    this.file_url = this.prefix + this.feedback_data.reliefCertificate;
+    this.relief_reliefFlow_getreliefflow(this.feedback_data.reliefNo)
+  },
   methods: {
     del() {
       this.$emit("passBack", false);
+    },
+    //查看操作记录接口
+    async relief_reliefFlow_getreliefflow(id) {
+      const res = await relief_reliefFlow_getreliefflow({
+        reliefNo: id
+      });
+      if (res.code === 1) {
+        this.tableData = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
     }
   }
 };
@@ -119,6 +157,9 @@ export default {
 }
 .img_col {
   text-align: center;
+  img {
+    max-width: 350px;
+  }
 }
 </style>
 

@@ -52,6 +52,7 @@ export default {
       plaintext: false,//案件详情查看明文权限
       apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
+      apply_remission: false,//案件详情申请减免权限
       add_collect_loading: false,//添加催记按钮loading
       add_txl_loading: false,//添加通讯录提交按钮loading
       breaks_data: {},//减免info入参
@@ -1755,6 +1756,9 @@ export default {
     };
     if (Cookie.get('apply_deduct') === 'true') {
       this.apply_deduct = true;
+    };
+    if (Cookie.get('apply_remission') === 'true') {
+      this.apply_remission = true;
     };
     let params = location.hash.split('?');
     const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });

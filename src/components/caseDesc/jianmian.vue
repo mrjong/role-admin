@@ -219,6 +219,7 @@
                     clearable
                     type="number"
                     number
+                    @on-blur='reliefAmt_blur(formItem.reliefAmt)'
                     v-model="formItem.reliefAmt"
                     placeholder="请输入减免金额"
                   ></Input>

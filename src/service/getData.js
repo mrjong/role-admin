@@ -1469,24 +1469,31 @@ export const relief_relieford_refuserelief = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
-  // 减免管理反馈结果list接口
-  export const relief_relieford_resultlist = (obj) =>
-    fetch({
-      url: '/relief/relieford/resultlist',
-      method: 'POST',
-      data: qs.stringify(obj)
-    })
-  // 减免管理申请数据修改展示接口
-  export const relief_relieford_detailinfo = (obj) =>
-    fetch({
-      url: '/relief/relieford/detailinfo',
-      method: 'POST',
-      data: qs.stringify(obj)
-    })
-  // 减免管理申请数据修改接口
-  export const relief_relieford_updatereliefdetail = (obj) =>
-    fetch({
-      url: '/relief/relieford/updatereliefdetail',
-      method: 'POST',
-      data: qs.stringify(obj)
-    })
+// 减免管理反馈结果list接口
+export const relief_relieford_resultlist = (obj) =>
+  fetch({
+    url: '/relief/relieford/resultlist',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 减免管理申请数据修改展示接口
+export const relief_relieford_detailinfo = (obj) =>
+  fetch({
+    url: '/relief/relieford/detailinfo',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 减免管理申请数据修改接口
+export const relief_relieford_updatereliefdetail = (obj) =>
+  fetch({
+    url: '/relief/relieford/updatereliefdetail',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 减免管理反馈结果查看凭证接口
+export const relief_reliefFlow_getreliefflow = (obj) =>
+  fetch({
+    url: 'relief/reliefFlow/getreliefflow',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })

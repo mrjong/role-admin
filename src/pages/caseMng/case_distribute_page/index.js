@@ -58,8 +58,6 @@ export default {
       case_export: false,//导出权限
       all_opt: false,//案件详情全部操作权限
       plaintext: false,//案件详情查看明文权限
-      apply_arbitrament: false,//案件详情申请仲裁权限
-      apply_deduct: false,//案件详情申请划扣权限
       queryLoading: false,//查询按钮loading
       exportLoading: false,//案件导出loading
       recoverLoading: false,//回收按钮loading
@@ -485,8 +483,6 @@ export default {
     });
     Cookie.set('all_opt', this.all_opt);
     Cookie.set('plaintext', this.plaintext);
-    Cookie.set('apply_arbitrament', this.apply_arbitrament);
-    Cookie.set('apply_deduct', this.apply_deduct);
     // this.getList();
     this.getLeafTypeList('02', '');
     this.getLeafTypeList('03', '');

@@ -18,12 +18,15 @@ export default {
     var widthMidVal = 100;
     var _this = this;
     return {
-      getDirList: ['REPAY_ORD_STS', 'PROD_TYPE', 'RELIEF_TYPE'],
+      getDirList: ['RELIEF_STATUS', 'PROD_TYPE', 'RELIEF_TYPE'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
       apply_data: {},// 申请详情数据
-      query: false,//查询权限按钮
+      feedback_data: {},//反馈结果详情
+      update_limt: false,//修改权限
+      reject_limt: false,//驳回权限
+      submit_limt: false,//提交权限
       query_loading: false,//查询权限按钮loding
       applyDate: '', //申请日期区间
       reliefNos: [],//批量提交的list
@@ -92,7 +95,7 @@ export default {
                 },
                 '查看凭证'
               ),
-              h(
+              this.update_limt ? h(
                 'a',
                 {
                   class: 'edit-btn',
@@ -107,7 +110,7 @@ export default {
                   }
                 },
                 '修改'
-              ),
+              ) : null,
             ]);
           }
         },
@@ -312,6 +315,7 @@ export default {
                   props: {},
                   on: {
                     click: () => {
+                      this.feedback_data = params.row;
                       this.modal.feedback = true
                     }
                   }
@@ -539,9 +543,9 @@ export default {
   },
   created() {
     //获取缓存的表单值
-    let transfer_manager_form = window.sessionStorage.getItem('transfer_manager_form');
-    if (transfer_manager_form) {
-      this.formValidate = JSON.parse(transfer_manager_form);
+    let reduce_mng_apply_form = window.sessionStorage.getItem('reduce_mng_apply_form');
+    if (reduce_mng_apply_form) {
+      this.formValidate = JSON.parse(reduce_mng_apply_form);
     }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
@@ -550,7 +554,11 @@ export default {
         return;
       }
       switch (item.url) {
-        case "query": this.query = true;
+        case "update": this.update_limt = true;
+          break;
+        case "reject": this.reject_limt = true;
+          break;
+        case "submit": this.submit_limt = true;
           break;
       }
     });
@@ -579,21 +587,22 @@ export default {
     },
     // tab 所有点击
     tabClick(name) {
-      // this[`${name}_pageNo`] = 1;
-      // this[name]();
+      this.formValidate = {};
       this.tab_flag = name;
       this.pageNo = 1;
       if (name === 'reduce_mng_apply_data') {
+        let reduce_mng_apply_form = window.sessionStorage.getItem('reduce_mng_apply_form');
+        if (reduce_mng_apply_form) {
+          this.formValidate = JSON.parse(reduce_mng_apply_form);
+        }
         this.relief_relieford_reviewlist();
       } else {
+        let reduce_mng_feedback_form = window.sessionStorage.getItem('reduce_mng_feedback_form');
+        if (reduce_mng_feedback_form) {
+          this.formValidate = JSON.parse(reduce_mng_feedback_form);
+        }
         this.relief_relieford_resultlist();
       }
-    },
-    // 改变日期区间的格式之后进行处理
-    changeApplyDate(val1, val2) {
-      this.formValidate.applayDateLt = val1[0];
-      this.formValidate.applayDateBt = val1[1];
-      console.log('123', this.formValidate);
     },
     // 页码改变的回调
     changePage(pageNo) {
@@ -615,21 +624,16 @@ export default {
       }
     },
     handleSubmit(name) {
-      // if (this.formValidate.applyDate) {
-      //   this.formValidate.applyDate = [
-      //     this.formValidate.applayDateLt,
-      //     this.formValidate.applayDateBt
-      //   ]
-      // }
-      // window.sessionStorage.setItem('transfer_manager_form', JSON.stringify(this.formValidate));
       this.pageNo = 1;
       if (this.tab_flag === 'reduce_mng_apply_data') {
+        window.sessionStorage.setItem('reduce_mng_apply_form', JSON.stringify(this.formValidate));
         this.relief_relieford_reviewlist();
       } else {
+        window.sessionStorage.setItem('reduce_mng_feedback_form', JSON.stringify(this.formValidate));
         this.relief_relieford_resultlist();
       }
     },
-    rejectHandleSubmit (name) {
+    rejectHandleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.relief_relieford_refuserelief();
@@ -643,6 +647,22 @@ export default {
       } else {
         this.reject_flag = false;
       }
+    },
+    // 提交事件
+    submit_click() {
+      if (this.reduce_mng_apply_tableData.length < 1) {
+        this.$Message.error('暂无数据，无法提交');
+        return;
+      };
+      this.submit_flag = true;
+    },
+    //驳回事件
+    reject_click() {
+      if (this.reduce_mng_apply_tableData.length < 1) {
+        this.$Message.error('暂无数据，无法驳回');
+        return;
+      };
+      this.reject_flag = true;
     },
     // 获取申请数据表格数据
     async relief_relieford_reviewlist() {
@@ -691,6 +711,8 @@ export default {
       if (res.code === 1) {
         this.$Message.success('提交成功');
         this.submit_flag = false;
+        this.pageNo = 1;
+        this.relief_relieford_reviewlist;
       } else {
         this.$Message.error(res.message);
       }
@@ -709,6 +731,8 @@ export default {
       if (res.code === 1) {
         this.$Message.success('驳回成功');
         this.reject_flag = false;
+        this.pageNo = 1;
+        this.relief_relieford_reviewlist;
       } else {
         this.$Message.error(res.message);
       }
@@ -716,7 +740,11 @@ export default {
     // 重置
     clearForm(name) {
       this.formValidate = {};
-      window.sessionStorage.removeItem('transfer_manager_form');
+      if (this.tab_flag === 'reduce_mng_apply_data') {
+        window.sessionStorage.removeItem('reduce_mng_apply_form');
+      } else {
+        window.sessionStorage.removeItem('reduce_mng_feedback_form');
+      }
       this.$refs[name].resetFields();
     }
   }

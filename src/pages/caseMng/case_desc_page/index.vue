@@ -94,7 +94,7 @@
           >申请划扣</Button>
 
           <Button
-            v-if="readType!=='read'"
+            v-if="readType!=='read' && apply_remission"
             @click="handOpen('jianmian','申请减免')"
             class="fr vue-back-btn header-btn"
             type="primary"
