@@ -1030,7 +1030,7 @@ export default {
           }
         },
         {
-          title: '发送人',
+          title: '收件人',
           align: 'center',
           width: 150,
           key: 'userName'

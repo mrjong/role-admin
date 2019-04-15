@@ -854,7 +854,7 @@
         <Row>
           <Col :xs="24" :sm="24" :md="4" :lg="4" span="4">
             <p class="message_detail_title">发送时间：</p>
-            <p class="message_detail_title">发送人：</p>
+            <p class="message_detail_title">收件人：</p>
             <p class="message_detail_title">发送结果：</p>
             <p class="message_detail_title">发送内容：</p>
           </Col>
