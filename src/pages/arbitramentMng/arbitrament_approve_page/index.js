@@ -1,7 +1,7 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import dayjs from 'dayjs'
-import { arb_operateRecord, arb_list, arb_detail, arb_check } from '@/service/getData';
+import { arb_operateRecord, arb_list, arb_detail, arb_check, credit_pdf_upload, credit_case_execute } from '@/service/getData';
 export default {
   name: 'case_search_page',
   mixins: [formValidateFun, sysDictionary],
@@ -443,6 +443,12 @@ export default {
     // this.getList();
   },
   methods: {
+    // 申请执行接口
+    async apply_execute() {
+      const res = await credit_case_execute({
+
+      })
+    },
     // 文件上传过程监听
     file_progress(event, file, fileList) {
       console.log(file);

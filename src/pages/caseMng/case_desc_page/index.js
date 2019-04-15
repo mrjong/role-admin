@@ -32,7 +32,8 @@ import {
   call_xz_hung_off,//讯众挂断
   syscommon_decrypt, // 明文展示
   case_collect_case_list, // 我的案件
-  case_list
+  case_list,
+  credit_case_process, //获取时间轴接口
 } from '@/service/getData';
 let callFlag = false;
 export default {
@@ -1791,6 +1792,17 @@ export default {
     });
   },
   methods: {
+    // 获取时间轴
+    async get_credit_process() {
+      const res = await credit_case_process({
+        caseNo: this.caseNo
+      });
+      if (res.code === 1) {
+        this.credit_panel = true;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
     // 获取表格数据
     async case_list() {
       const res = await case_list({

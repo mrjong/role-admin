@@ -69,7 +69,7 @@
           </Poptip>-->
           （{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
           <!-- 信用进度按钮 -->
-          <span @click.stop="credit_panel = !credit_panel" style="line-height: 20px; height: 26px; display: inline-block">
+          <span @click.stop="get_credit_process" style="line-height: 20px; height: 26px; display: inline-block">
             <Icon :type="!credit_panel?'ios-arrow-dropup':'ios-arrow-dropdown'" size='20'></Icon><span>信用进度</span>
           </span>
           <Button
