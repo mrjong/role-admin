@@ -54,6 +54,8 @@ export default {
       apply_deduct: false,//案件详情申请划扣权限
       add_collect_loading: false,//添加催记按钮loading
       add_txl_loading: false,//添加通讯录提交按钮loading
+      message_detail_flag: false,//站内信modal是否显示
+      message_detail_data: {},//站内信modal展示的数据
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -993,7 +995,26 @@ export default {
           width: 100,
           align: 'center',
           type: 'index',
+          fixed: 'left',
           sortable: true
+        },
+        {
+          title: '操作',
+          width: 100,
+          align: 'center',
+          fixed: 'left',
+          render(h, params) {
+            return h('a', {
+              class: 'edit-btn',
+              props: {},
+              on: {
+                'click': () => {
+                  _this.message_detail_data = params.row;
+                  _this.message_detail_flag = true;
+                }
+              }
+            }, '查看')
+          },
         },
         {
           title: '发送时间',
@@ -1025,20 +1046,11 @@ export default {
           align: 'center',
           width: 400,
           key: 'sendContent',
+          ellipsis: true,
           render: (h, params) => {
             let sendContent = params.row.sendContent;
             return h(
-              'Tooltip',
-              {
-                style: {
-                  margin: '0 5px'
-                },
-                props: {
-                  content: sendContent,
-                  placement: 'top'
-                }
-              },
-              [h('div', {}, sendContent)]
+              'div', sendContent
             );
           }
         }

@@ -40,7 +40,7 @@
       </Form>
       <div slot="footer">
         <Button size="small" @click="closeTxl">关闭</Button>
-        <Button type="primary" size="small" @click="saveTxl" :loading='add_txl_loading'>
+        <Button type="primary" size="small" @click="saveTxl" :loading="add_txl_loading">
           <span v-if="!add_txl_loading">提交</span>
           <span v-else>添加中...</span>
         </Button>
@@ -228,7 +228,7 @@
                 type:'BANK_CARD',
                 data:case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNo
             })"
-                      ></Icon> -->
+                      ></Icon>-->
                     </Poptip>
                   </span>
                 </div>
@@ -580,7 +580,10 @@
                     <span>（{{item.cntRelTypName}}）</span>
                   </span>
                   <span class="tel" @click="handCall(item,'call','02')">
-                    <Tooltip :content="all_opt?'拨打':'暂无权限拨打'" placement="left">{{item.cntUserMblNoHid}}</Tooltip>
+                    <Tooltip
+                      :content="all_opt?'拨打':'暂无权限拨打'"
+                      placement="left"
+                    >{{item.cntUserMblNoHid}}</Tooltip>
                   </span>
                   <Poptip :content="mingwenData" v-if="item&&item.cntUserMblNoHid">
                     <Icon
@@ -598,7 +601,12 @@
                     content="编辑"
                     placement="left"
                   >
-                    <Icon @click.native="handCall(item,null,'02')" class="edit" type="md-create" v-if="all_opt"></Icon>
+                    <Icon
+                      @click.native="handCall(item,null,'02')"
+                      class="edit"
+                      type="md-create"
+                      v-if="all_opt"
+                    ></Icon>
                   </Tooltip>
                 </div>
               </div>
@@ -730,7 +738,12 @@
                   <Input size="small" v-model.trim="formValidate.userNmHid" placeholder="请输入沟通对象"></Input>
                 </FormItem>
                 <FormItem label="关系" prop="callUserType">
-                  <Select size="small" v-model="formValidate.callUserType" transfer placeholder="请选择关系">
+                  <Select
+                    size="small"
+                    v-model="formValidate.callUserType"
+                    transfer
+                    placeholder="请选择关系"
+                  >
                     <Option
                       v-for="item in getDirObj.CONTACT_REL_TYPE"
                       :value="item.itemCode"
@@ -792,7 +805,12 @@
                   ></Input>
                 </FormItem>
                 <FormItem style="margin-top:10px">
-                  <Button type="primary" size="small" @click="handleSubmit('formValidate')" :loading='add_collect_loading'>
+                  <Button
+                    type="primary"
+                    size="small"
+                    @click="handleSubmit('formValidate')"
+                    :loading="add_collect_loading"
+                  >
                     <span v-if="!add_collect_loading">提交</span>
                     <span v-else>提交中...</span>
                   </Button>
@@ -826,6 +844,29 @@
       :caseNo="caseNo"
       :userId="userId"
     ></huakou>
+    <div v-if="message_detail_flag" style="z-index: 1000">
+      <Modal
+        title="站内信信息"
+        class="message_detail"
+        v-model="message_detail_flag"
+        :footer-hide="true"
+      >
+        <Row>
+          <Col :xs="24" :sm="24" :md="4" :lg="4" span="4">
+            <p class="message_detail_title">发送时间：</p>
+            <p class="message_detail_title">发送人：</p>
+            <p class="message_detail_title">发送结果：</p>
+            <p class="message_detail_title">发送内容：</p>
+          </Col>
+          <Col :xs="24" :sm="24" :md="18" :lg="18" span="18">
+            <p class="message_detail_desc">{{message_detail_data.sendTime | formatDate}}</p>
+            <p class="message_detail_desc">{{message_detail_data.userName}}</p>
+            <p class="message_detail_desc">{{message_detail_data.sendStatus}}</p>
+            <p class="message_detail_desc">{{message_detail_data.sendContent}}</p>
+          </Col>
+        </Row>
+      </Modal>
+    </div>
     <!-- 容联、讯众软电话 -->
     <div class="tel-box" v-if="showMoorTel">
       <div class="tel-box-desc">
