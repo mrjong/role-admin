@@ -58,6 +58,7 @@ export default {
       add_collect_loading: false,//添加催记按钮loading
       add_txl_loading: false,//添加通讯录提交按钮loading
       credit_panel: false,//信用进度的折叠flag
+      time_line_data: {},//传给时间轴的数据
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -1798,6 +1799,7 @@ export default {
         caseNo: this.caseNo
       });
       if (res.code === 1) {
+        this.time_line_data = res.data;
         this.credit_panel = true;
       } else {
         this.$Message.error(res.message);

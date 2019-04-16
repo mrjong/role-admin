@@ -69,7 +69,7 @@
           </Poptip>-->
           （{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
           <!-- 信用进度按钮 -->
-          <span @click.stop="get_credit_process" style="line-height: 20px; height: 26px; display: inline-block">
+          <span @click.stop="get_credit_process" style="line-height: 20px; height: 26px; display: inline-block; font-weight: 500; color: #2d8cf0; margin-left: 10px; font-size: 13px; cursor: pointer;">
             <Icon :type="!credit_panel?'ios-arrow-dropup':'ios-arrow-dropdown'" size='20'></Icon><span>信用进度</span>
           </span>
           <Button
@@ -182,7 +182,7 @@
               </div>
             </Col>
             <Col :xs="24" :sm="24" :md="24" :lg="24" style="padding-top: 40px" v-if="credit_panel">
-                <TimeLine v-if="credit_panel"></TimeLine>
+                <TimeLine v-if="credit_panel" :time_line_data='time_line_data'></TimeLine>
             </Col>
           </Row>
         </div>

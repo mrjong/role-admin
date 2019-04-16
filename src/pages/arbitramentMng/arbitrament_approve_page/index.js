@@ -2,6 +2,8 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import dayjs from 'dayjs'
 import { arb_operateRecord, arb_list, arb_detail, arb_check, credit_pdf_upload, credit_case_execute } from '@/service/getData';
+import Cookie from 'js-cookie';
+
 export default {
   name: 'case_search_page',
   mixins: [formValidateFun, sysDictionary],
@@ -9,10 +11,17 @@ export default {
     console.log(this.GLOBAL);
     const _this = this;
     return {
+      headers: {
+				'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
+				timeout: 120000,
+			},
+			prefix_pdf_file: '/admin/credit/pdf/data',
       getDirList: ['PROD_TYPE', 'GENDER', 'APPROVAL_STATE'],
       getDirObj: {},
       showPanel: false,
       prefix: '/admin/arb/images/',
+      file_list: [],// 上传文件list
+      file_url: '',// 暂存的文件url
       arb_detail_data: {},
       showPanel2: false,
       query: false,//查询权限
@@ -233,6 +242,10 @@ export default {
                   props: {},
                   on: {
                     click: () => {
+                      this.file_data = {
+                        id: params.row.approvalId,
+                        caseNo: params.row.caseNo
+                      };
                       this.upload_modal = true;
                     }
                   }
@@ -452,25 +465,68 @@ export default {
     // 文件上传过程监听
     file_progress(event, file, fileList) {
       console.log(file);
-      this.$Spin.show();
+      // this.$Spin.show();
     },
     // 文件上传成功监听
     file_success(res, file, fileList) {
       console.log(res);
-      this.$Spin.hide();
+      console.log(file);
+      if (res.code === 1) {
+        this.fileList = fileList;
+        this.file_url = res.data;
+        this.file_disabled = true;
+      } else {
+        this.$Message.error(res.message);
+      }
+      // this.$Spin.hide();
     },
     // 文件上传失败监听
     file_error(error, file, fileList) {
       console.log(error);
-      this.$Spin.hide();
+      // this.$Spin.hide();
+    },
+    // 文件格式不正确
+    handleFormatError(file) {
+			this.$Notice.warning({
+				title: '格式不正确',
+				desc: '请选择PDF格式文件'
+			});
+    },
+    // 文件大小限制
+		handleMaxSize(file) {
+			this.$Notice.warning({
+				title: '大小限制',
+				desc: '图片大小不能超过5M'
+			});
+    },
+    // 移除文件
+    handleRemoveFile(file, fileList) {
+      console.log(fileList);
+      this.file_list = fileList;
+      this.file_url = '';
+      this.file_disabled = false;
     },
     // 上传文件的取消按钮
     cancel() {
       this.upload_modal = false;
     },
     //上传文件的提交
-    upload_submit() {
-
+    async upload_submit() {
+      if (this.file_url === '') {
+        this.$Message.error('暂无文件，请上传文件再提交');
+        return;
+      }
+      this.upload_loading = true;
+      const res = await credit_pdf_upload({
+        url: this.file_url
+      });
+      this.upload_loading = false;
+      if (res.code === 1) {
+        this.$Message.success('上传成功');
+        this.upload_modal = false;
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     //申请时间监听
     changeApplyTime(val) {

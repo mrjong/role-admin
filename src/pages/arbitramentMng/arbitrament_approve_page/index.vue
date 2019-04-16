@@ -366,11 +366,16 @@
       <Modal title="上传文件" v-model="upload_modal" :mask-closable="false">
         <Upload
           type="drag"
-          action="//jsonplaceholder.typicode.com/posts/"
+          :action="prefix_pdf_file"
           :on-error="file_error"
           :on-success="file_success"
           :on-progress="file_progress"
+          :on-format-error="handleFormatError"
+          :on-exceeded-size="handleMaxSize"
+          :on-remove='handleRemoveFile'
           :max-size="5120"
+          :data='file_data'
+          :headers="headers"
           :format="['pdf']"
           :disabled="file_disabled"
         >
