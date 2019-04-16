@@ -125,11 +125,21 @@
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
-        >申请执行</Button>
+          :loading='apply_loading'
+        >
+          <span v-if="!apply_loading">申请执行</span>
+          <span v-else>执行中...</span>
+        </Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-        <Table :data="tableData" border :columns="tableColumns" stripe></Table>
+        <Table
+          :data="tableData"
+          border
+          :columns="tableColumns"
+          stripe
+          @on-selection-change="changeSelect"
+        ></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div style="float: right;">
@@ -367,14 +377,16 @@
         <Upload
           type="drag"
           :action="prefix_pdf_file"
+          :before-upload="handleUpload"
+          ref="upload"
+          :show-upload-list="false"
           :on-error="file_error"
           :on-success="file_success"
           :on-progress="file_progress"
           :on-format-error="handleFormatError"
           :on-exceeded-size="handleMaxSize"
-          :on-remove='handleRemoveFile'
           :max-size="5120"
-          :data='file_data'
+          :data="file_data"
           :headers="headers"
           :format="['pdf']"
           :disabled="file_disabled"
@@ -387,8 +399,15 @@
             </p>
           </div>
         </Upload>
+        <div class="file_list_wrap" v-for="(item,index) in file_list">
+          {{item.name}}
+          <span @click="handleRemoveFile" style="float: right">
+            <Icon size="20" type="ios-close"/>
+          </span>
+          <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+        </div>
         <div slot="footer">
-          <Button size="small" @click="upload_submit" :loading="upload_loading" type="primary">
+          <Button size="small" @click="credit_pdf_data" :loading="upload_loading" type="primary">
             <span v-if="!upload_loading">提交</span>
             <span v-else>上传中...</span>
           </Button>

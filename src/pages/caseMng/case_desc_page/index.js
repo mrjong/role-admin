@@ -1795,6 +1795,10 @@ export default {
   methods: {
     // 获取时间轴
     async get_credit_process() {
+      if (this.credit_panel) {
+        this.credit_panel = false;
+        return;
+      }
       const res = await credit_case_process({
         caseNo: this.caseNo
       });

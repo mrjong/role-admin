@@ -1199,12 +1199,19 @@ export const credit_pdf_upload = (obj) =>
     method: 'POST',
     data: qs.stringify(obj),
   })
+export const credit_pdf_data = (obj) =>
+  fetch({
+    url: '/credit/pdf/data',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
 //仲裁申请执行接口
-export const credit_case_execute = (obj) =>
+export const credit_case_execute = (obj, options) =>
   fetch({
     url: '/credit/case/execute',
     method: 'POST',
-    data: qs.stringify(obj),
+    data: obj,
+    options
   })
 
 // 案件详情的获取时间轴接口

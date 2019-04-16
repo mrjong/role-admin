@@ -1,7 +1,7 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import dayjs from 'dayjs'
-import { arb_operateRecord, arb_list, arb_detail, arb_check, credit_pdf_upload, credit_case_execute } from '@/service/getData';
+import { arb_operateRecord, arb_list, arb_detail, arb_check, credit_pdf_upload, credit_case_execute, credit_pdf_data } from '@/service/getData';
 import Cookie from 'js-cookie';
 
 export default {
@@ -12,10 +12,10 @@ export default {
     const _this = this;
     return {
       headers: {
-				'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
-				timeout: 120000,
-			},
-			prefix_pdf_file: '/admin/credit/pdf/data',
+        'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
+        timeout: 120000,
+      },
+      prefix_pdf_file: '/admin/credit/pdf/data',
       getDirList: ['PROD_TYPE', 'GENDER', 'APPROVAL_STATE'],
       getDirObj: {},
       showPanel: false,
@@ -30,7 +30,9 @@ export default {
       audit_loading: false,//审核按钮loading
       reject_loading: false,//驳回按钮loading
       upload_loading: false,//上传按钮loading
+      apply_loading: false,// 申请执行按钮loading
       file_disabled: false,// 是否禁用上传
+      approve_list: [],// 申请执行勾选list
       applyTime: [],//申请时间区间
       approvalTime: [],//审核时间区间
       showModalType: '',
@@ -235,7 +237,7 @@ export default {
                 },
                 '审核'
               ),
-              h(
+              params.row.approvalState === '02' ? h(
                 'a',
                 {
                   class: 'edit-btn',
@@ -247,11 +249,12 @@ export default {
                         caseNo: params.row.caseNo
                       };
                       this.upload_modal = true;
+                      this.file_list = this.$refs.upload.fileList;
                     }
                   }
                 },
                 '上传'
-              )
+              ) : null
             ]);
           }
         },
@@ -455,12 +458,57 @@ export default {
     });
     // this.getList();
   },
+  mounted() {
+
+  },
   methods: {
+    // table勾选回调
+    changeSelect(arr) {
+      this.approve_list = [];
+      let obj = {};
+      arr.forEach(item => {
+        obj = {
+          id: item.approvalId,
+          caseNo: item.caseNo,
+        }
+        this.approve_list.push(obj);
+      });
+      console.log(this.approve_list)
+    },
     // 申请执行接口
     async apply_execute() {
-      const res = await credit_case_execute({
-
-      })
+      if (this.approve_list.length === 0) {
+        this.$Message.error('请先勾选案件');
+        return;
+      }
+      this.apply_loading = true;
+      const res = await credit_case_execute(
+        {
+          arbConditions: this.approve_list,
+        },
+        {
+          transformRequest: [
+            function (data) {
+              return JSON.stringify(data); //利用对应方法转换格式
+            }
+          ]
+        }
+      )
+      this.apply_loading = false;
+      console.log(res);
+      if (res.code === 1) {
+        this.$Message.success('操作成功');
+        this.getList();
+        this.approve_list = [];
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 上传之前的回调
+    handleUpload(file) {
+      console.log(file);
+      this.file_list.push(file);
+      return false;
     },
     // 文件上传过程监听
     file_progress(event, file, fileList) {
@@ -469,12 +517,13 @@ export default {
     },
     // 文件上传成功监听
     file_success(res, file, fileList) {
-      console.log(res);
-      console.log(file);
       if (res.code === 1) {
-        this.fileList = fileList;
-        this.file_url = res.data;
-        this.file_disabled = true;
+        // this.fileList = fileList;
+        // this.file_url = res.data;
+        // this.file_disabled = true;
+        this.$Message.success('上传成功');
+        this.upload_modal = false;
+        this.file_list = [];
       } else {
         this.$Message.error(res.message);
       }
@@ -487,46 +536,30 @@ export default {
     },
     // 文件格式不正确
     handleFormatError(file) {
-			this.$Notice.warning({
-				title: '格式不正确',
-				desc: '请选择PDF格式文件'
-			});
+      this.$Message.error('请选择PDF格式文件');
     },
     // 文件大小限制
-		handleMaxSize(file) {
-			this.$Notice.warning({
-				title: '大小限制',
-				desc: '图片大小不能超过5M'
-			});
+    handleMaxSize(file) {
+      this.$Message.error('图片大小不能超过5M');
     },
     // 移除文件
-    handleRemoveFile(file, fileList) {
-      console.log(fileList);
-      this.file_list = fileList;
-      this.file_url = '';
+    handleRemoveFile() {
+      this.file_list = [];
       this.file_disabled = false;
     },
     // 上传文件的取消按钮
     cancel() {
       this.upload_modal = false;
     },
-    //上传文件的提交
-    async upload_submit() {
-      if (this.file_url === '') {
+    // 文件提交
+    async credit_pdf_data() {
+      console.log(this.file_list);
+      if (this.file_list.length === 0) {
         this.$Message.error('暂无文件，请上传文件再提交');
         return;
       }
-      this.upload_loading = true;
-      const res = await credit_pdf_upload({
-        url: this.file_url
-      });
-      this.upload_loading = false;
-      if (res.code === 1) {
-        this.$Message.success('上传成功');
-        this.upload_modal = false;
-      } else {
-        this.$Message.error(res.message);
-      }
+      this.$refs.upload.post(this.file_list[0]);
+
     },
     //申请时间监听
     changeApplyTime(val) {
