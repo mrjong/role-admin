@@ -860,9 +860,9 @@
           </Col>
           <Col :xs="24" :sm="24" :md="18" :lg="18" span="18">
             <p class="message_detail_desc">{{message_detail_data.sendTime | formatDate}}</p>
-            <p class="message_detail_desc">{{message_detail_data.userName}}</p>
-            <p class="message_detail_desc">{{message_detail_data.sendStatus}}</p>
-            <p class="message_detail_desc">{{message_detail_data.sendContent}}</p>
+            <p class="message_detail_desc">{{message_detail_data.userName? message_detail_data.userName: ''}}</p>
+            <p class="message_detail_desc">{{message_detail_data.sendStatus? message_detail_data.sendStatus: ''}}</p>
+            <p class="message_detail_desc">{{message_detail_data.sendContent? message_detail_data.sendContent: ''}}</p>
           </Col>
         </Row>
       </Modal>
