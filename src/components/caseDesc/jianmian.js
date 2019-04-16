@@ -103,7 +103,8 @@ export default {
                   },
                   on: {
                     'on-ok': () => {
-                      this.tableData.splice(params.index);
+                      console.log(params.index)
+                      this.tableData.splice(params.index, 1);
                     }
                   }
                 },
@@ -144,9 +145,9 @@ export default {
         },
       ],//表头
       uploadList: [],
-      reliefType: null,//减免类型关键字
-      perdNum: null,//减免期数关键字
-      reliefAmt: null,//减免金额关键字
+      reliefType: false,//减免类型关键字
+      perdNum: false,//减免期数关键字
+      reliefAmt: false,//减免金额关键字
     };
   },
   created() {
@@ -157,23 +158,54 @@ export default {
       this.relief_relieford_detailinfo(this.breaks_data.id)
     }
   },
+  mounted() {
+    if (this.edit_flag) {
+      this.handelAdd();
+    }
+  },
   methods: {
     // 添加减免记录，本地暂存
     handelAdd() {
-      let {reliefType, perdNum, reliefAmt} = this, obj = {};
+      let { reliefType, perdNum, reliefAmt } = this, obj = {};
       //校验类型
-      this.formitem_validateField('reliefType');
+      this.$refs.formItem.validateField('reliefType', (error) => {
+        if (!error) {
+          return reliefType = true;
+        } else {
+          return reliefType = false;
+        }
+      });
       //校验期数
-      this.formitem_validateField('perdNum');
+      this.$refs.formItem.validateField('perdNum', (error) => {
+        if (!error) {
+          return perdNum = true;
+        } else {
+          return perdNum = false;
+        }
+      });
       //校验金额
-      this.formitem_validateField('reliefAmt');
+      this.$refs.formItem.validateField('reliefAmt', (error) => {
+        if (!error) {
+          return reliefAmt = true;
+        } else {
+          return reliefAmt = false;
+        }
+      });
+      // this.formitem_validateField('reliefType');
+      // this.formitem_validateField('perdNum');
+      // this.formitem_validateField('reliefAmt');
       // 类型，期数，金额校验通过后执行添加的逻辑
       if (reliefType && perdNum && reliefAmt) {
-        if (this.reliefAmt_max < this.formItem.reliefAmt) {
-          this.$Message.error(`减免最大金额不能超过${this.reliefAmt_max}`);
-          this.formItem.reliefAmt = this.reliefAmt_max;
+        if (this.reliefAmt_max > 0) {
+          if (this.reliefAmt_max < this.formItem.reliefAmt) {
+            this.$Message.error(`减免最大金额不能超过${this.reliefAmt_max}`);
+            this.$set(this.formItem, "reliefAmt", this.reliefAmt_max);
+            return;
+          }
+        } else if (this.formItem.reliefAmt <= 0) {
+          this.$Message.error(`减免金额不能为0`);
           return;
-        };
+        }
         Object.assign(obj, this.formItem)
         if (this.tableData.length > 0) {
           let result = this.tableData.some((item, index, arr) => {
@@ -189,6 +221,7 @@ export default {
           this.tableData.push(obj);
         }
       }
+
     },
     // 单独交验规则
     formitem_validateField(type) {
@@ -202,7 +235,7 @@ export default {
     },
     // 减免金额处理小数点
     reliefAmt_blur(val) {
-      this.formItem.reliefAmt = Number(val).toFixed(2);
+      this.$set(this.formItem, "reliefAmt", Number(val).toFixed(2));
     },
     // 减免类型selectchange
     reliefTypeSelectChange(obj) {
@@ -210,7 +243,7 @@ export default {
       this.formItem.reliefTypeName = obj.label;
       this.reliefPerdInfoVos.forEach(item => {
         if (this.formItem.reliefType === item.reliefType && this.formItem.perdNum === String(item.perdNum)) {
-          this.formItem.reliefAmt = item.perdAmt.toFixed(2);
+          this.$set(this.formItem, "reliefAmt", item.perdAmt.toFixed(2));
           this.reliefAmt_max = (item.perdAmt).toFixed(2);
           return;
         }
@@ -220,7 +253,7 @@ export default {
     perdNumSelectChange(val) {
       this.reliefPerdInfoVos.forEach(item => {
         if (this.formItem.reliefType === item.reliefType && this.formItem.perdNum === String(item.perdNum)) {
-          this.formItem.reliefAmt = item.perdAmt.toFixed(2);
+          this.$set(this.formItem, "reliefAmt", item.perdAmt.toFixed(2));
           this.reliefAmt_max = item.perdAmt.toFixed(2);
           return;
         }

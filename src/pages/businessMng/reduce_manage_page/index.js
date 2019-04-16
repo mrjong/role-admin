@@ -712,7 +712,7 @@ export default {
         this.$Message.success('提交成功');
         this.submit_flag = false;
         this.pageNo = 1;
-        this.relief_relieford_reviewlist;
+        this.relief_relieford_reviewlist();
       } else {
         this.$Message.error(res.message);
       }
@@ -732,7 +732,7 @@ export default {
         this.$Message.success('驳回成功');
         this.reject_flag = false;
         this.pageNo = 1;
-        this.relief_relieford_reviewlist;
+        this.relief_relieford_reviewlist();
       } else {
         this.$Message.error(res.message);
       }

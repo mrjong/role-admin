@@ -230,7 +230,7 @@
                   class="fr vue-back-btn header-btn"
                   type="success"
                   size="small"
-                  @click.stop="handelAdd"
+                  @click="handelAdd"
                   v-if="edit_flag"
                 >添加</Button>
               </Col>
