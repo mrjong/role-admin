@@ -155,7 +155,7 @@
                       style="display: inline-block;width:58px;"
                     >
                       <div style="width: 58px;height:58px;line-height: 58px;">
-                        <Icon size="1" type="plus"></Icon>
+                        <Icon size='28' type="md-add" />
                       </div>
                     </Upload>
                   </template>
