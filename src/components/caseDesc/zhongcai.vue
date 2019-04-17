@@ -67,6 +67,7 @@
                 <FormItem label="提前到期日期:" prop="standAgreeDate">
                   <DatePicker
                     size="small"
+                    :editable='false'
                     style="width:100%"
                     v-model="formItem.standAgreeDate"
                     format="yyyy-MM-dd"

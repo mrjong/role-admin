@@ -33,6 +33,7 @@ export default {
       apply_loading: false,// 申请执行按钮loading
       file_disabled: false,// 是否禁用上传
       approve_list: [],// 申请执行勾选list
+      show_file_list: false,// 显示上传的list
       applyTime: [],//申请时间区间
       approvalTime: [],//审核时间区间
       showModalType: '',
@@ -249,7 +250,8 @@ export default {
                         caseNo: params.row.caseNo
                       };
                       this.upload_modal = true;
-                      this.file_list = this.$refs.upload.fileList;
+                      // this.file_list = this.$refs.upload;
+                      console.log(this.$refs.upload);
                     }
                   }
                 },
@@ -458,9 +460,6 @@ export default {
     });
     // this.getList();
   },
-  mounted() {
-
-  },
   methods: {
     // table勾选回调
     changeSelect(arr) {
@@ -507,7 +506,13 @@ export default {
     // 上传之前的回调
     handleUpload(file) {
       console.log(file);
+      if (file.type != 'application/pdf') {
+        this.$Message.error('请选择PDF格式文件');
+        return;
+      }
+      this.show_file_list = true;
       this.file_list.push(file);
+      this.file_disabled = true;
       return false;
     },
     // 文件上传过程监听
@@ -518,16 +523,14 @@ export default {
     // 文件上传成功监听
     file_success(res, file, fileList) {
       if (res.code === 1) {
-        // this.fileList = fileList;
-        // this.file_url = res.data;
-        // this.file_disabled = true;
+        this.file_disabled = false;
         this.$Message.success('上传成功');
         this.upload_modal = false;
         this.file_list = [];
+        this.getList();
       } else {
         this.$Message.error(res.message);
       }
-      // this.$Spin.hide();
     },
     // 文件上传失败监听
     file_error(error, file, fileList) {
@@ -536,7 +539,7 @@ export default {
     },
     // 文件格式不正确
     handleFormatError(file) {
-      this.$Message.error('请选择PDF格式文件');
+      // this.$Message.error('请选择PDF格式文件');
     },
     // 文件大小限制
     handleMaxSize(file) {
@@ -550,6 +553,8 @@ export default {
     // 上传文件的取消按钮
     cancel() {
       this.upload_modal = false;
+      this.file_disabled = false;
+      this.file_list = [];
     },
     // 文件提交
     async credit_pdf_data() {
@@ -558,8 +563,9 @@ export default {
         this.$Message.error('暂无文件，请上传文件再提交');
         return;
       }
+      this.show_file_list = false;
       this.$refs.upload.post(this.file_list[0]);
-
+      this.file_list = [];
     },
     //申请时间监听
     changeApplyTime(val) {

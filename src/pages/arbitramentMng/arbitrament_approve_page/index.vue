@@ -379,7 +379,7 @@
           :action="prefix_pdf_file"
           :before-upload="handleUpload"
           ref="upload"
-          :show-upload-list="false"
+          :show-upload-list="true"
           :on-error="file_error"
           :on-success="file_success"
           :on-progress="file_progress"
@@ -395,16 +395,16 @@
             <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
             <p>
               点击或者拖拽文件到此进行文件上传
-              <span style="color: #ed4014">（*仅限上传PDF格式文件）</span>
+              <span style="color: #ed4014">（*仅限上传PDF格式文件,上传最大数量为1）</span>
             </p>
           </div>
         </Upload>
-        <div class="file_list_wrap" v-for="(item,index) in file_list">
+        <div class="file_list_wrap" v-for="(item,index) in file_list" v-if="show_file_list">
           {{item.name}}
           <span @click="handleRemoveFile" style="float: right">
             <Icon size="20" type="ios-close"/>
           </span>
-          <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+          <!-- <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress> -->
         </div>
         <div slot="footer">
           <Button size="small" @click="credit_pdf_data" :loading="upload_loading" type="primary">
