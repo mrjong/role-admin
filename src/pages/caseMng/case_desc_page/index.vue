@@ -181,7 +181,11 @@
                 <div class="text-center card-text">{{item.imgTypeName}}</div>
               </div>
             </Col>
-            <Col :xs="24" :sm="24" :md="24" :lg="24" style="padding-top: 40px" v-if="credit_panel">
+            <Col :xs="24" :sm="24" :md="24" :lg="24" style="padding-top: 40px">
+                <Spin fix v-if="time_loading">
+                  <Icon type="ios-loading" size='24' class="demo-spin-icon-load"></Icon>
+                  <div>Loading</div>
+                </Spin>
                 <TimeLine v-if="credit_panel" :time_line_data='time_line_data'></TimeLine>
             </Col>
           </Row>

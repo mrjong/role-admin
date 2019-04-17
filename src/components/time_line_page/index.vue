@@ -36,13 +36,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 60px 0 20px;
+  padding: 0 60px 0 40px;
   overflow-x: auto;
   height: 200px;
   flex-wrap: nowrap;
   .ivu-timeline-item {
-    flex: 1.5;
-    // width: 200px;
+    flex: 0 0 125px;
     // max-width: 200px;
     list-style: none;
     position: relative;
@@ -52,13 +51,13 @@ export default {
     .timeline_dec_top {
       position: absolute;
       top: -60px;
-      right: -75px;
+      right: -70px;
       z-index: 100;
     }
     .timeline_dec_bottom {
       position: absolute;
       bottom: -60px;
-      right: -75px;
+      right: -70px;
       z-index: 100;
     }
     .timeline_circle {

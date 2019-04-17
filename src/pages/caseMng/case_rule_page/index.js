@@ -91,7 +91,7 @@ export default {
           align: 'center',
           render: (h, params) => {
             return h('div', [
-              h(
+              params.row.ovdudaysMin? h(
                 'span',
                 {
                   class: 'edit-btn',
@@ -102,8 +102,8 @@ export default {
                   }
                 },
                 params.row.ovdudaysMin + '-'
-              ),
-              h(
+              ) : null,
+              params.row.ovdudaysMax? h(
                 'span',
                 {
                   class: 'edit-btn',
@@ -114,7 +114,7 @@ export default {
                   }
                 },
                 '-' + params.row.ovdudaysMax
-              ),
+              ): null,
             ]);
           }
         },
@@ -126,7 +126,7 @@ export default {
           align: 'center',
           render: (h, params) => {
             return h('div', [
-              h(
+              params.row.ovduamtMin? h(
                 'span',
                 {
                   class: 'edit-btn',
@@ -137,8 +137,8 @@ export default {
                   }
                 },
                 params.row.ovduamtMin + '-'
-              ),
-              h(
+              ): null,
+              params.row.ovduamtMax? h(
                 'span',
                 {
                   class: 'edit-btn',
@@ -149,7 +149,7 @@ export default {
                   }
                 },
                 '-' + params.row.ovduamtMax
-              ),
+              ): null,
             ]);
           }
         },
@@ -194,7 +194,7 @@ export default {
                 },
                 params.row.effectMinDt ? this.$options.filters['tableDate'](params.row.effectMinDt) : null
               ),
-              h(
+              (params.row.effectMinDt || params.row.effectMaxD)? h(
                 'span',
                 {
                   class: 'edit-btn',
@@ -205,7 +205,7 @@ export default {
                   }
                 },
                 '至'
-              ),
+              ): null,
               h(
                 'span',
                 {
