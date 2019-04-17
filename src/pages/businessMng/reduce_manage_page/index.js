@@ -160,6 +160,7 @@ export default {
           key: 'reliefRemark',
           className: 'tableMainW',
           align: alignCenter,
+          tooltip: true,
           width: widthVal
         },
         {
@@ -339,6 +340,7 @@ export default {
           key: 'faildReason',
           className: 'tableMainW',
           align: alignCenter,
+          tooltip: true,
           width: widthVal
         },
         {
@@ -387,6 +389,7 @@ export default {
           key: 'reliefRemark',
           className: 'tableMainW',
           align: alignCenter,
+          tooltip: true,
           width: widthVal
         },
         {
