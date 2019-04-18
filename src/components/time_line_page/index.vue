@@ -2,9 +2,16 @@
   <div class="panel_list">
     <ul class="time_line_wrap">
       <li class="ivu-timeline-item" v-for="(item,index) in list" :key="index">
-        <span :class="item.hasProgress?'timeline_line':'timeline_line_unproceed'" :style="{'visibility': index>0? 'visible': 'hidden'}"></span>
+        <span
+          :class="item.hasProgress?'timeline_line':'timeline_line_unproceed'"
+          :style="{'visibility': index>0? 'visible': 'hidden'}"
+          v-show="index>0"
+        ></span>
         <span :class="item.hasProgress?'timeline_circle':'timeline_circle_unproceed'"></span>
-        <div :class="(index + 1)%2 === 0?'timeline_dec_top':'timeline_dec_bottom'" v-if="item.hasProgress">
+        <div
+          :class="(index + 1)%2 === 0?'timeline_dec_top':'timeline_dec_bottom'"
+          v-if="item.hasProgress"
+        >
           <p class="time">{{item.showTime}}</p>
           <p class="content">{{item.progressTitle}}</p>
         </div>
@@ -19,32 +26,38 @@
 
 <script>
 export default {
-  props: ['time_line_data'],
-  data () {
+  props: ["time_line_data"],
+  data() {
     return {
       list: []
-    }
+    };
   },
   created() {
     this.list = this.time_line_data;
-  },
+  }
 };
 </script>
 
 <style lang="less" scoped>
+.time_line_wrap > li:nth-child(1) {
+  margin-left: 80px !important;
+}
 .time_line_wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 60px 0 40px;
+  padding: 0 80px 0 80px;
+  box-sizing: border-box;
   overflow-x: auto;
   height: 200px;
   flex-wrap: nowrap;
   .ivu-timeline-item {
-    flex: 0 0 125px;
+    flex: 0 0 130px;
     // max-width: 200px;
+    min-height: 33px;
     list-style: none;
     position: relative;
+    box-sizing: border-box;
     span {
       display: inline-block;
     }
@@ -73,12 +86,12 @@ export default {
       top: 7px;
     }
     .timeline_circle_unproceed {
-      color: #DDD;
+      color: #ddd;
       width: 13px;
       height: 13px;
       border: 1px solid transparent;
       border-radius: 50%;
-      border-color: #DDD;
+      border-color: #ddd;
       background-color: #fff;
       position: absolute;
       right: 0;
@@ -93,10 +106,11 @@ export default {
     .timeline_line_unproceed {
       // height: 1px;
       width: 100%;
-      border-bottom: 2px dashed #DDD;
+      border-bottom: 2px dashed #ddd;
       // background: #e8eaec;
     }
-    .content, .time {
+    .content,
+    .time {
       text-align: center;
       width: 150px;
     }
