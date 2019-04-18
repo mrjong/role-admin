@@ -5,7 +5,6 @@
         <span
           :class="item.hasProgress?'timeline_line':'timeline_line_unproceed'"
           :style="{'visibility': index>0? 'visible': 'hidden'}"
-          v-show="index>0"
         ></span>
         <span :class="item.hasProgress?'timeline_circle':'timeline_circle_unproceed'"></span>
         <div
@@ -40,36 +39,38 @@ export default {
 
 <style lang="less" scoped>
 .time_line_wrap > li:nth-child(1) {
-  margin-left: 80px !important;
+  margin-left: 130px !important;
 }
 .time_line_wrap {
+  // width: 150%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 80px 0 80px;
+  padding: 0 80px 0 100px;
   box-sizing: border-box;
   overflow-x: auto;
   height: 200px;
   flex-wrap: nowrap;
   .ivu-timeline-item {
-    flex: 0 0 130px;
-    // max-width: 200px;
+    flex: 0 0 125px;
     min-height: 33px;
     list-style: none;
     position: relative;
     box-sizing: border-box;
     span {
       display: inline-block;
+      // vertical-align: middle;
     }
+
     .timeline_dec_top {
       position: absolute;
-      top: -60px;
+      top: -40px;
       right: -70px;
       z-index: 100;
     }
     .timeline_dec_bottom {
       position: absolute;
-      bottom: -60px;
+      bottom: -40px;
       right: -70px;
       z-index: 100;
     }
@@ -111,6 +112,8 @@ export default {
     }
     .content,
     .time {
+      font-size: 12px;
+      color: #333;
       text-align: center;
       width: 150px;
     }
