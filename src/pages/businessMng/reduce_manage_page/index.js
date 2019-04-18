@@ -693,7 +693,9 @@ export default {
     async relief_relieford_resultlist() {
       this.query_loading = true;
       const res = await relief_relieford_resultlist({
-        ...this.formValidate
+        ...this.formValidate,
+        pageNum: this.pageNo,
+        pageSize: this.pageSize,
       });
       this.query_loading = false;
       if (res.code === 1) {
