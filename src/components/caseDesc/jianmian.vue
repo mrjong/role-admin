@@ -94,6 +94,7 @@
                   <Select
                     size="small"
                     placeholder="请选择减免原因"
+                    :clearable='edit_flag'
                     v-model="formItem.reliefReason"
                     :disabled="!edit_flag"
                   >
@@ -110,10 +111,11 @@
                   <Input
                     type="textarea"
                     size="small"
-                    clearable
+                    :clearable='edit_flag'
                     :rows="2"
+                    :maxlength="100"
                     v-model="formItem.reliefRemark"
-                    placeholder="请输入减免标记"
+                    placeholder="请输入100字以内的减免标记"
                     :disabled="!edit_flag"
                   ></Input>
                 </FormItem>
@@ -171,6 +173,7 @@
                     placeholder="请选择减免类型"
                     v-model="formItem.reliefType"
                     :disabled="!edit_flag"
+                    clearable
                     label-in-value
                     @on-change="reliefTypeSelectChange"
                   >
@@ -188,6 +191,7 @@
                     size="small"
                     placeholder="请选择减免期数"
                     v-model="formItem.perdNum"
+                    clearable
                     :disabled="!edit_flag"
                     label-in-value
                     @on-change="perdNumSelectChange"
