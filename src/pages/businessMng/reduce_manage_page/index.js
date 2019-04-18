@@ -714,6 +714,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success('提交成功');
         this.submit_flag = false;
+        this.reliefNos = [];
         this.pageNo = 1;
         this.relief_relieford_reviewlist();
       } else {
@@ -734,6 +735,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success('驳回成功');
         this.reject_flag = false;
+        this.reliefNos = [];
         this.pageNo = 1;
         this.relief_relieford_reviewlist();
       } else {
