@@ -39,6 +39,11 @@ export default {
     let _this = this;
 
     return {
+      headers: {
+				'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
+				timeout: 120000,
+      },
+      file_url: '/admin/cases/batch/import ',//文件上传地址
       getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PAY_OFF_STS'],
       getDirObj: {},
       showPanel: false,
@@ -52,6 +57,7 @@ export default {
       apply_deduct: false,//案件详情申请划扣权限
       queryLoading: false,//查询按钮loading
       exportLoading: false,//导出loading
+      import_data_loading: false,// 导入loading
       company_list_data: [],//电催中心list
       department_list_data: [],//组别list
       collect_list_data: [],//经办人list
@@ -419,6 +425,23 @@ export default {
           this.getList();
         };
       });
+    },
+    // 上传文件格式校验
+    handleFormatError(file) {
+			this.$Message.error('请选择Excel文件上传');
+    },
+    // 上传文件大小校验
+		handleMaxSize(file) {
+      this.$Message.error('文件大小不得超过1M');
+    },
+    // 文件上传成功
+    handleSuccess(res, file) {
+
+      if (res.code === 1) {
+        console.log(res)
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     // 案件导出
     async query_export() {

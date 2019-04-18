@@ -278,17 +278,13 @@ util.dowloadAudio = function (res) {
   const blob = new Blob([res], { type: type })
   const href = window.URL.createObjectURL(blob);
   return href;
-  //后台再header中传文件名
-  // const name = decodeURI(res.headers['content-disposition'].split('=')[1])
-  // downloadElement.href = href
-  // downloadElement.download = '录音';
-  // document.body.appendChild(downloadElement)
-  // downloadElement.click()
-  // document.body.removeChild(downloadElement) // 下载完成移除元素
-  // window.URL.revokeObjectURL(href) // 释放掉blob对象
 };
 util.fullscreenEvent = function (vm) {
   vm.$store.commit('initCachepage');
   // 全屏相关
 };
+// 处理导入文件的案件号分割
+util.slice_case_number = (arr, pageSize, pageNo) => {
+
+}
 export default util;

@@ -160,7 +160,7 @@
                 clearable
                 filterable
                 placeholder="请选择电催中心"
-                @on-change='companyChange'
+                @on-change="companyChange"
                 v-model="formItem.opCompayUuid"
               >
                 <Option
@@ -178,7 +178,7 @@
                 clearable
                 filterable
                 placeholder="请选择组别"
-                @on-change='departmentChange'
+                @on-change="departmentChange"
                 v-model="formItem.opOrganizationUuid"
               >
                 <Option
@@ -208,7 +208,14 @@
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
-              <Button type="primary" style="width:80px" long size="small" :loading="queryLoading" @click="handleSubmit('formItem')">
+              <Button
+                type="primary"
+                style="width:80px"
+                long
+                size="small"
+                :loading="queryLoading"
+                @click="handleSubmit('formItem')"
+              >
                 <span v-if="!queryLoading">检索</span>
                 <span v-else>检索中...</span>
               </Button>
@@ -228,10 +235,41 @@
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
         <span style="margin-left: 10px;">总共{{totalCase}}笔案件，</span>
         <span>总共逾期金额{{totalOverdueAmt}}元</span>
-        <Button class="fr vue-back-btn header-btn" type="primary" size="small" style="min-width: 80px" v-if="export_case" :loading='exportLoading' @click.stop="query_export">
+        <Button
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+          style="min-width: 80px"
+          v-if="export_case"
+          :loading="exportLoading"
+          @click.stop="query_export"
+        >
           <span v-if="!exportLoading">导出数据</span>
           <span v-else>导出中...</span>
         </Button>
+        <Upload
+          :action="file_url"
+          :show-upload-list="false"
+          :headers="headers"
+          :format="['xls', 'xlsx']"
+          :max-size="1024"
+          :on-success="handleSuccess"
+          :on-exceeded-size="handleMaxSize"
+          :on-format-error="handleFormatError"
+          class="fr"
+        >
+          <Button
+            icon="ios-cloud-upload-outline"
+            type="primary"
+            size="small"
+            style="min-width: 80px; padding: 2px 7px"
+            class="fr vue-back-btn header-btn"
+            :loading='import_data_loading'
+          >
+          <span v-if="!import_data_loading">导入查询</span>
+          <span v-else>导入中...</span>
+          </Button>
+        </Upload>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
