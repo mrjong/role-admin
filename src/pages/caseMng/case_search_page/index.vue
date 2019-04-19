@@ -224,6 +224,35 @@
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
+              <Upload
+                :action="file_url"
+                :show-upload-list="false"
+                :headers="headers"
+                :format="['xls', 'xlsx']"
+                :max-size="1024"
+                :on-error='handleError'
+                :on-success="handleSuccess"
+                :on-progress="handleProgress"
+                :on-exceeded-size="handleMaxSize"
+                :on-format-error="handleFormatError"
+                :disabled="import_data_loading"
+                style="display: inline-block; margin-left:8px"
+                :data='{
+                  pageType: 1
+                }'
+              >
+                <Button
+                  icon="ios-cloud-upload-outline"
+                  type="primary"
+                  size="small"
+                  style="min-width: 80px;"
+                  :loading="import_data_loading"
+                >
+                  <span v-if="!import_data_loading">导入查询</span>
+                  <span v-else>导入中...</span>
+                </Button>
+              </Upload>
+              <span style="line-height: 24px;color: #ed4014">（*导入查询和条件查询的数据没有关联）</span>
             </FormItem>
           </Col>
         </Row>
@@ -247,29 +276,6 @@
           <span v-if="!exportLoading">导出数据</span>
           <span v-else>导出中...</span>
         </Button>
-        <Upload
-          :action="file_url"
-          :show-upload-list="false"
-          :headers="headers"
-          :format="['xls', 'xlsx']"
-          :max-size="1024"
-          :on-success="handleSuccess"
-          :on-exceeded-size="handleMaxSize"
-          :on-format-error="handleFormatError"
-          class="fr"
-        >
-          <Button
-            icon="ios-cloud-upload-outline"
-            type="primary"
-            size="small"
-            style="min-width: 80px; padding: 2px 7px"
-            class="fr vue-back-btn header-btn"
-            :loading='import_data_loading'
-          >
-          <span v-if="!import_data_loading">导入查询</span>
-          <span v-else>导入中...</span>
-          </Button>
-        </Upload>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">

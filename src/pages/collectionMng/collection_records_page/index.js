@@ -2,7 +2,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import 'video.js/dist/video-js.css'
 import { videoPlayer } from 'vue-video-player'
-import { case_collect_collect_list, case_collect_collect_export, getLeafTypeList, case_collect_tape } from '@/service/getData';
+import { case_collect_collect_list, case_collect_collect_export, getLeafTypeList, case_collect_tape, cases_import_list } from '@/service/getData';
 import tablePage from '@/mixin/tablePage';
 import util from '@/libs/util';
 import 'video.js/dist/video-js.css';
@@ -20,6 +20,14 @@ export default {
   data() {
     const _this = this
     return {
+      headers: {
+				'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
+				timeout: 120000,
+      },
+      file_url: '/admin/cases/batch/import ',//文件上传地址
+      import_data_loading: false,// 导入loading
+      query_flag: false, // false 默认查getList  true查询cases_import_list
+      file_csaeIds: [],//上传文件返回的案件编号list集合
       playerOptions: {
         // videojs options
         muted: false,
@@ -404,7 +412,27 @@ export default {
       console.log(this.$Modal);
       this.$Modal.remove();
     },
-
+    // 页码改变的回调
+    changePage(pageNo) { //默认带入一个参数是当前的页码数
+      this.pageNo = pageNo;
+      if (this.query_flag) {
+        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize)
+        this.cases_import_list(caseIds);
+      } else {
+        this.getList();
+      }
+    },
+    // 切换每页条数时的回调
+    changeSize(pageSize) {
+      this.pageSize = pageSize;
+      this.pageNo = 1;
+      if (this.query_flag) {
+        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize)
+        this.cases_import_list(caseIds);
+      } else {
+        this.getList();
+      }
+    },
     async getLeafTypeList(id) {
       const res = await getLeafTypeList({
         parentId: id || '',
@@ -427,6 +455,7 @@ export default {
       }
     },
     handleSubmit(name) {
+      this.query_flag = false;
       this.$refs[name].validate((valid) => {
         if (valid) {
           if (this.formItem.csDate) {
@@ -448,6 +477,41 @@ export default {
       this.pageNo = 1;
       this.getList();
     },
+    // 上传文件格式校验
+    handleFormatError(file) {
+			this.$Message.error('请选择Excel文件上传');
+    },
+    // 上传文件大小校验
+		handleMaxSize(file) {
+      this.$Message.error('文件大小不得超过1M');
+    },
+    // 文件上传时
+    handleProgress() {
+      this.import_data_loading = true;
+    },
+    // 上传文件失败
+    handleError(error, file) {
+      console.log(error);
+      this.import_data_loading = false;
+    },
+    // 文件上传成功
+    handleSuccess(res, file) {
+      this.import_data_loading = false;
+      if (res.code === 1) {
+        console.log(res);
+        this.$set(this, 'file_csaeIds', res.data.caseNoList);
+        let caseIds ;
+        // 判断返回的案件号是否为空，空 不执行下面分页请求操作
+        if (res.data.caseNoList.length>0) {
+          caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize);
+          this.cases_import_list(caseIds);
+        } else {
+          this.$Message.error('暂时查询不到相关数据')
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
     async getList() {
       // if (!this.query) {
       //   this.$Message.error('很抱歉，暂无权限查询');
@@ -468,12 +532,28 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 根据导入条件进行查询
+    async cases_import_list(caseIds) {
+      this.query_flag = true;
+      console.log(caseIds)
+      const res = await cases_import_list({
+        caseIds: caseIds,
+      });
+      console.log(res);
+      if (res.code === 1) {
+        this.tableData = res.data;
+        this.total = this.file_csaeIds.length;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
     // 催收记录导出
     async case_collect_collect_export() {
       this.export_case_loading = true;
       const res = await case_collect_collect_export(
         {
-          ...this.formItem
+          ...this.formItem,
+          importQuery: this.query_flag? 1: null
         },
         {
           responseType: 'blob',
@@ -483,7 +563,12 @@ export default {
       util.dowloadfile('催收记录', res);
       this.export_case_loading = false;
       setTimeout(() => {
-        this.getList();
+        if (this.query_flag) {
+          let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize)
+          this.cases_import_list(caseIds);
+        } else {
+          this.getList();
+        }
       }, 1000)
     }
   }

@@ -1,6 +1,8 @@
-import { repay_repayDetail_list, repay_repayDetail_exportDown, getLeafTypeList } from '@/service/getData';
+import { repay_repayDetail_list, repay_repayDetail_exportDown, getLeafTypeList, cases_import_list } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 import util from '@/libs/util';
+import Cookie from 'js-cookie';
+
 export default {
   name: 'remoney_detail',
   mixins: [sysDictionary],
@@ -10,6 +12,14 @@ export default {
     var widthMidVal = 100;
     let $this = this;
     return {
+      headers: {
+				'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
+				timeout: 120000,
+      },
+      file_url: '/admin/cases/batch/import ',//文件上传地址
+      import_data_loading: false,// 导入loading
+      query_flag: false, // false 默认查getList  true查询cases_import_list
+      file_csaeIds: [],//上传文件返回的案件编号list集合
       getDirList: ['PAY_OFF_STS', 'ROLE_TYPE'],
       getDirObj: {},
       showPanel: false,
@@ -22,6 +32,7 @@ export default {
       department_list_data: [],//组别list
       collect_list_data: [],//经办人list
       startRepayDateRange: '', //实际还款日期区间
+      caseIds: [],//勾选的案件号数组list
       shouldRepayDate: '',
       summary: {},
       formValidate: {
@@ -270,6 +281,16 @@ export default {
     // this.getList();
   },
   methods: {
+    // table选中
+    changeSelect(selection) {
+      console.log('---------');
+      this.caseIds = [];
+      selection &&
+        selection.forEach((element) => {
+          this.caseIds.push(element.id);
+        });
+      console.log(this.caseIds);
+    },
     // 电催中心change
     companyChange(value) {
       this.getLeafTypeList('03', value);
@@ -288,7 +309,9 @@ export default {
       this.export_case_loading = true;
       const res = await repay_repayDetail_exportDown(
         {
-          ...this.formValidate
+          ...this.formValidate,
+          caseIds: (this.caseIds.length < 1 && this.query_flag) ? this.file_csaeIds : this.caseIds,
+          importQuery: this.query_flag? 1: null
         },
         {
           timeout: 120000,
@@ -311,34 +334,95 @@ export default {
       this.formValidate.startDueDate = val1[0];
       this.formValidate.endDueDate = val1[1];
     },
+    // 分配时间change
+    changeAllotDate(val1, val2) {
+      this.$set(this.formValidate, 'startAllotDate', val1);
+      this.$set(this.formValidate, 'endAllotDate', val2);
+    },
     // 页码改变的回调
     changePage(pageNo) { //默认带入一个参数是当前的页码数
-      console.log(pageNo, '当前的页码数量值');
       this.pageNo = pageNo;
-      this.getList();
+      if (this.query_flag) {
+        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize)
+        this.cases_import_list(caseIds);
+      } else {
+        this.getList();
+      }
     },
     // 切换每页条数时的回调
     changeSize(pageSize) {
       this.pageSize = pageSize;
       this.pageNo = 1;
-      this.getList();
+      if (this.query_flag) {
+        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize)
+        this.cases_import_list(caseIds);
+      } else {
+        this.getList();
+      }
     },
     handleSubmit(name) {
+      this.query_flag = false;
+      // 判断实际还款时间是否存在，存在即缓存
       if (this.formValidate.startRepayDateRange) {
         this.formValidate.startRepayDateRange = [
           this.formValidate.startRepayDate,
           this.formValidate.endRepayDate,
         ]
       };
+      // 判断应还款时间是否存在，存在即缓存
       if (this.formValidate.shouldRepayDate) {
         this.formValidate.shouldRepayDate = [
           this.formValidate.startDueDate,
           this.formValidate.endDueDate,
         ]
+      };
+      // 判断分配时间是否存在，存在即缓存
+      if (this.formValidate.allotDate) {
+        this.formValidate.allotDate = [
+          this.formValidate.startAllotDate,
+          this.formValidate.endAllotDate,
+        ]
       }
       window.sessionStorage.setItem('remoney_detail_form', JSON.stringify(this.formValidate))
       this.pageNo = 1;
       this.getList();
+    },
+    // 上传文件格式校验
+    handleFormatError(file) {
+			this.$Message.error('请选择Excel文件上传');
+    },
+    // 上传文件大小校验
+		handleMaxSize(file) {
+      this.$Message.error('文件大小不得超过1M');
+    },
+    // 文件上传时
+    handleProgress() {
+      this.import_data_loading = true;
+    },
+    // 上传文件失败
+    handleError(error, file) {
+      console.log(error);
+      this.import_data_loading = false;
+    },
+    // 文件上传成功
+    handleSuccess(res, file) {
+      this.import_data_loading = false;
+      if (res.code === 1) {
+        console.log(res);
+        this.$set(this, 'file_csaeIds', res.data.caseNoList);
+        this.total = res.data.caseNoList.length;
+        this.summary.sumRepayAmt = res.data.sumRepayAmt; //回款总金额
+        let caseIds ;
+        // 判断返回的案件号是否为空，空 不执行下面分页请求操作
+        if (res.data.caseNoList.length>0) {
+          caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize);
+          this.cases_import_list(caseIds);
+        } else {
+          this.$Message.error('暂时查询不到相关数据')
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     // 获取表格数据
     async getList() {
@@ -364,6 +448,21 @@ export default {
         this.$Message.error(res.message);
       }
       // 试着处理数据和分页组件之间的关系,
+    },
+    // 根据导入条件进行查询
+    async cases_import_list(caseIds) {
+      this.query_flag = true;
+      console.log(caseIds)
+      const res = await cases_import_list({
+        caseIds: caseIds,
+      });
+      console.log(res);
+      if (res.code === 1) {
+        this.tableData = res.data;
+        this.total = this.file_csaeIds.length;
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     // 查询机构，公司，部门
     async getLeafTypeList(type, parent) {

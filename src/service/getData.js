@@ -930,6 +930,14 @@ export const allot_divideCollectRate = (obj, options) =>
     data: obj,
     options
   })
+
+// 案件导入查询
+export const cases_import_list = (obj) =>
+  fetch({
+    url: '/cases/import/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 /*
 *
 *

@@ -124,6 +124,20 @@
               ></Input>
             </FormItem>
           </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="分配时间:">
+              <DatePicker
+                size="small"
+                style="width:100%"
+                v-model="formValidate.allotDate"
+                format="yyyy-MM-dd"
+                type="datetimerange"
+                placement="bottom-start"
+                placeholder="请选择分配时间区间"
+                @on-change="changeAllotDate"
+              ></DatePicker>
+            </FormItem>
+          </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
               <Button
@@ -142,6 +156,35 @@
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formValidate')"
               >重置</Button>
+              <Upload
+                :action="file_url"
+                :show-upload-list="false"
+                :headers="headers"
+                :format="['xls', 'xlsx']"
+                :max-size="1024"
+                :on-success="handleSuccess"
+                :on-error='handleError'
+                :on-progress="handleProgress"
+                :on-exceeded-size="handleMaxSize"
+                :on-format-error="handleFormatError"
+                :disabled="import_data_loading"
+                style="display: inline-block; margin-left:8px"
+                :data='{
+                  pageType: 3
+                }'
+              >
+                <Button
+                  icon="ios-cloud-upload-outline"
+                  type="primary"
+                  size="small"
+                  style="min-width: 80px;"
+                  :loading="import_data_loading"
+                >
+                  <span v-if="!import_data_loading">导入查询</span>
+                  <span v-else>导入中...</span>
+                </Button>
+              </Upload>
+              <span style="line-height: 24px;color: #ed4014">（*导入查询和条件查询的数据没有关联）</span>
             </FormItem>
           </Col>
         </Row>
@@ -163,14 +206,14 @@
         <div class="panel-desc">
           <Row :gutter="5">
             <div class="panel-desc-title fl mr10">回款数(笔)：
-              <span>{{summary.repayOrdDetailCount||0}}</span>
+              <span>{{summary.repayOrdDetailCount||total}}</span>
             </div>
             <div class="panel-desc-title fl mr10">还款金额(元)：
               <span>{{summary.sumRepayAmt||0.00}}</span>
             </div>
           </Row>
         </div>
-        <Table border :data="tableData" :columns="tableColumns" stripe class="tableBox"></Table>
+        <Table border :data="tableData" :columns="tableColumns" @on-selection-change="changeSelect" stripe class="tableBox"></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div style="float: right;">

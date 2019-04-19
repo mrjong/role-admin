@@ -284,7 +284,9 @@ util.fullscreenEvent = function (vm) {
   // 全屏相关
 };
 // 处理导入文件的案件号分割
-util.slice_case_number = (arr, pageSize, pageNo) => {
-
+util.slice_case_number = (arr, prevIndex, nextIndex) => {
+  let newArr = [];
+  newArr = arr.slice(prevIndex, nextIndex);
+  return newArr;
 }
 export default util;

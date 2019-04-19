@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { case_list, query_export, getLeafTypeList, collect_parent_children } from '@/service/getData';
+import { case_list, query_export, getLeafTypeList, cases_import_list } from '@/service/getData';
 import util from '@/libs/util';
 import qs from 'qs';
 import Cookie from 'js-cookie';
@@ -40,8 +40,8 @@ export default {
 
     return {
       headers: {
-				'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
-				timeout: 120000,
+        'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
+        timeout: 120000,
       },
       file_url: '/admin/cases/batch/import ',//文件上传地址
       getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PAY_OFF_STS'],
@@ -57,14 +57,16 @@ export default {
       apply_deduct: false,//案件详情申请划扣权限
       queryLoading: false,//查询按钮loading
       exportLoading: false,//导出loading
-      import_data_loading: false,// 导入loading
       company_list_data: [],//电催中心list
       department_list_data: [],//组别list
       collect_list_data: [],//经办人list
+      import_data_loading: false,// 导入loading
+      query_flag: false, // false 默认查getList  true查询cases_import_list
+      file_csaeIds: [],//上传文件返回的案件编号list集合
       totalOverdueAmt: '',
       totalCase: '',
       caseMounts: '',
-      caseIds: [],
+      caseIds: [],// 勾选的案件编号list集合
       ruleValidate: {
         idNo: [
           {
@@ -400,13 +402,23 @@ export default {
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
-      this.getList();
+      if (this.query_flag) {
+        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize)
+        this.cases_import_list(caseIds);
+      } else {
+        this.getList();
+      }
     },
     // 切换每页条数时的回调
     changeSize(pageSize) {
       this.pageSize = pageSize;
       this.pageNo = 1;
-      this.getList();
+      if (this.query_flag) {
+        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize)
+        this.cases_import_list(caseIds);
+      } else {
+        this.getList();
+      }
     },
     // 电催中心change
     companyChange(value) {
@@ -418,6 +430,7 @@ export default {
       this.getLeafTypeList('04', value);
     },
     handleSubmit(name) {
+      this.query_flag = false;
       this.$refs[name].validate((valid) => {
         if (valid) {
           window.sessionStorage.setItem('case_search_form', JSON.stringify(this.formItem));
@@ -428,17 +441,38 @@ export default {
     },
     // 上传文件格式校验
     handleFormatError(file) {
-			this.$Message.error('请选择Excel文件上传');
+      this.$Message.error('请选择Excel文件上传');
     },
     // 上传文件大小校验
-		handleMaxSize(file) {
+    handleMaxSize(file) {
       this.$Message.error('文件大小不得超过1M');
+    },
+    // 文件上传时
+    handleProgress() {
+      this.import_data_loading = true;
+    },
+    // 上传文件失败
+    handleError(error, file) {
+      console.log(error);
+      this.import_data_loading = false;
     },
     // 文件上传成功
     handleSuccess(res, file) {
-
+      this.import_data_loading = false;
       if (res.code === 1) {
-        console.log(res)
+        console.log(res);
+        this.$set(this, 'file_csaeIds', res.data.caseNoList);
+        // this.file_csaeIds = res.data;
+        this.totalOverdueAmt = res.data.totalOverDuoAmt;
+        this.totalCase = res.data.caseNoList.length;
+        let caseIds ;
+        // 判断返回的案件号是否为空，空 不执行下面分页请求操作
+        if (res.data.caseNoList.length>0) {
+          caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize);
+          this.cases_import_list(caseIds);
+        } else {
+          this.$Message.error('暂时查询不到相关数据')
+        }
       } else {
         this.$Message.error(res.message);
       }
@@ -453,8 +487,9 @@ export default {
       const res = await query_export(
         {
           ...this.formItem,
-          caseIds: this.caseIds,
+          caseIds: (this.caseIds.length < 1 && this.query_flag) ? this.file_csaeIds : this.caseIds,
           preTotalCases: this.totalCase,
+          importQuery: this.query_flag? 1: null
         },
         {
           responseType: 'blob',
@@ -464,7 +499,12 @@ export default {
       util.dowloadfile('案件查询', res);
       this.exportLoading = false;
       setTimeout(() => {
-        this.getList();
+        if (this.query_flag) {
+          let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
+          this.cases_import_list(caseIds);
+        } else {
+          this.getList();
+        }
       }, 1000)
     },
     // 获取表格数据
@@ -488,6 +528,21 @@ export default {
         this.totalCase = res.data.summary.totalCount;
         this.totalOverdueAmt = res.data.summary.totalOverdueAmt;
         this.caseIds = [];
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 根据导入条件进行查询
+    async cases_import_list(caseIds) {
+      this.query_flag = true;
+      console.log(caseIds)
+      const res = await cases_import_list({
+        caseIds: caseIds,
+      });
+      console.log(res);
+      if (res.code === 1) {
+        this.tableData = res.data;
+        this.total = this.file_csaeIds.length;
       } else {
         this.$Message.error(res.message);
       }
