@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { case_list, query_export, getLeafTypeList, cases_import_list } from '@/service/getData';
+import { case_list, query_export, getLeafTypeList, import_list } from '@/service/getData';
 import util from '@/libs/util';
 import qs from 'qs';
 import Cookie from 'js-cookie';
@@ -536,7 +536,7 @@ export default {
     async cases_import_list(caseIds) {
       this.query_flag = true;
       console.log(caseIds)
-      const res = await cases_import_list({
+      const res = await import_list('/cases',{
         caseIds: caseIds,
       });
       console.log(res);

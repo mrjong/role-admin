@@ -2,7 +2,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import Cookie from 'js-cookie';
 import util from '@/libs/util';
-import { cases_allot_list, getLeafTypeList, cases_import_list, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, allot_export, collect_show_children, cases_case_sendwebmessage } from '@/service/getData';
+import { cases_allot_list, getLeafTypeList, import_list, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, allot_export, collect_show_children, cases_case_sendwebmessage } from '@/service/getData';
 import qs from 'qs';
 
 export default {
@@ -727,7 +727,7 @@ export default {
     async cases_import_list(caseIds) {
       this.query_flag = true;
       console.log(caseIds)
-      const res = await cases_import_list({
+      const res = await import_list('/cases',{
         caseIds: caseIds,
       });
       console.log(res);

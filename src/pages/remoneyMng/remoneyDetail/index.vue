@@ -129,7 +129,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="formValidate.allotDate"
+                v-model="formValidate.allotDates"
                 format="yyyy-MM-dd"
                 type="datetimerange"
                 placement="bottom-start"

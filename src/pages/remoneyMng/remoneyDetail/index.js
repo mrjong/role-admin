@@ -1,4 +1,4 @@
-import { repay_repayDetail_list, repay_repayDetail_exportDown, getLeafTypeList, cases_import_list } from '@/service/getData';
+import { repay_repayDetail_list, repay_repayDetail_exportDown, getLeafTypeList, import_list } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 import util from '@/libs/util';
 import Cookie from 'js-cookie';
@@ -16,9 +16,9 @@ export default {
 				'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
 				timeout: 120000,
       },
-      file_url: '/admin/cases/batch/import ',//文件上传地址
+      file_url: '/admin/cases/batch/import',//文件上传地址
       import_data_loading: false,// 导入loading
-      query_flag: false, // false 默认查getList  true查询cases_import_list
+      query_flag: false, // false 默认查getList  true查询import_list
       file_csaeIds: [],//上传文件返回的案件编号list集合
       getDirList: ['PAY_OFF_STS', 'ROLE_TYPE'],
       getDirObj: {},
@@ -46,7 +46,9 @@ export default {
         opCompayName: '', // 电催中心,
         userNm: '', //客户姓名
         payOffSts: '',// 还款状态
+        allotDates: [],
       },
+
       ruleValidate: {
         //ruleValidate添加表单的校验规则，用来提示用户的输入法则，具体使用在表单里面 ：rule='ruleValidate'直接使用即可
         mblNo: [
@@ -306,6 +308,7 @@ export default {
         this.$Message.info('当前无数据，无法导出');
         return;
       }
+      this.formValidate.allotDate = undefined
       this.export_case_loading = true;
       const res = await repay_repayDetail_exportDown(
         {
@@ -335,9 +338,9 @@ export default {
       this.formValidate.endDueDate = val1[1];
     },
     // 分配时间change
-    changeAllotDate(val1, val2) {
-      this.$set(this.formValidate, 'startAllotDate', val1);
-      this.$set(this.formValidate, 'endAllotDate', val2);
+    changeAllotDate(val1) {
+      this.$set(this.formValidate, 'startAllotDate', val1[0]);
+      this.$set(this.formValidate, 'endAllotDate', val1[1]);
     },
     // 页码改变的回调
     changePage(pageNo) { //默认带入一个参数是当前的页码数
@@ -377,8 +380,8 @@ export default {
         ]
       };
       // 判断分配时间是否存在，存在即缓存
-      if (this.formValidate.allotDate) {
-        this.formValidate.allotDate = [
+      if (this.formValidate.allotDates) {
+        this.formValidate.allotDates = [
           this.formValidate.startAllotDate,
           this.formValidate.endAllotDate,
         ]
@@ -431,6 +434,7 @@ export default {
         return;
       }
       this.query_loading = true;
+      this.formValidate.allotDate = undefined
       let res = await repay_repayDetail_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
@@ -453,7 +457,7 @@ export default {
     async cases_import_list(caseIds) {
       this.query_flag = true;
       console.log(caseIds)
-      const res = await cases_import_list({
+      const res = await import_list('/repay/repayDetail' ,{
         caseIds: caseIds,
       });
       console.log(res);

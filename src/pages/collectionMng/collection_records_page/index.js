@@ -2,7 +2,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import 'video.js/dist/video-js.css'
 import { videoPlayer } from 'vue-video-player'
-import { case_collect_collect_list, case_collect_collect_export, getLeafTypeList, case_collect_tape, cases_import_list } from '@/service/getData';
+import { case_collect_collect_list, case_collect_collect_export, getLeafTypeList, case_collect_tape, import_list } from '@/service/getData';
 import tablePage from '@/mixin/tablePage';
 import util from '@/libs/util';
 import 'video.js/dist/video-js.css';
@@ -536,7 +536,7 @@ export default {
     async cases_import_list(caseIds) {
       this.query_flag = true;
       console.log(caseIds)
-      const res = await cases_import_list({
+      const res = await import_list('/case/collect',{
         caseIds: caseIds,
       });
       console.log(res);
