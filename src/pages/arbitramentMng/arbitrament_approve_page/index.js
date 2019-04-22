@@ -535,6 +535,7 @@ export default {
     // 文件上传失败监听
     file_error(error, file, fileList) {
       console.log(error);
+      this.$Message.error('文件上传失败，请重新上传');
       // this.$Spin.hide();
     },
     // 文件格式不正确

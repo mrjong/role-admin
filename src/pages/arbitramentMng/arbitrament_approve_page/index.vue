@@ -397,6 +397,7 @@
               点击或者拖拽文件到此进行文件上传
               <span style="color: #ed4014">（*仅限上传PDF格式文件,上传最大数量为1）</span>
             </p>
+            <p>文件命名格式：<span style="color: #ed4014">（2018）衢仲网字第1117号_张三_裁决书.pdf</span></p>
           </div>
         </Upload>
         <div class="file_list_wrap" v-for="(item,index) in file_list" v-if="show_file_list">
