@@ -224,22 +224,35 @@
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
+              <Button
+                size="small"
+                v-if="import_search"
+                icon="ios-cloud-download-outline"
+                type="primary"
+                style="min-width:80px;margin-left: 8px"
+                @click="download_import"
+                :loading="download_import_data"
+              >
+                <span v-if="!download_import_data">下载导入查询模板</span>
+                <span v-else>下载中...</span>
+              </Button>
               <Upload
+                v-if="import_search"
                 :action="file_url"
                 :show-upload-list="false"
                 :headers="headers"
                 :format="['xls', 'xlsx']"
                 :max-size="1024"
-                :on-error='handleError'
+                :on-error="handleError"
                 :on-success="handleSuccess"
                 :on-progress="handleProgress"
                 :on-exceeded-size="handleMaxSize"
                 :on-format-error="handleFormatError"
                 :disabled="import_data_loading"
                 style="display: inline-block; margin-left:8px"
-                :data='{
+                :data="{
                   pageType: 1
-                }'
+                }"
               >
                 <Button
                   icon="ios-cloud-upload-outline"
@@ -252,7 +265,7 @@
                   <span v-else>导入中...</span>
                 </Button>
               </Upload>
-              <span style="line-height: 24px;color: #ed4014">（*导入查询和条件查询的数据没有关联）</span>
+              <span style="line-height: 24px;color: #ed4014" v-if="import_search">（*导入查询和条件查询的数据没有关联）</span>
             </FormItem>
           </Col>
         </Row>

@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { case_list, query_export, getLeafTypeList, import_list } from '@/service/getData';
+import { case_list, query_export, getLeafTypeList, import_list, cases_download_template } from '@/service/getData';
 import util from '@/libs/util';
 import qs from 'qs';
 import Cookie from 'js-cookie';
@@ -55,8 +55,10 @@ export default {
       plaintext: false,//案件详情查看明文权限
       apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
+      import_search: false,// 导入查询权限
       queryLoading: false,//查询按钮loading
       exportLoading: false,//导出loading
+      download_import_data: false,// 下载导入查询的loading
       company_list_data: [],//电催中心list
       department_list_data: [],//组别list
       collect_list_data: [],//经办人list
@@ -373,6 +375,8 @@ export default {
           break;
         case "plaintext": this.plaintext = true;
           break;
+        case "import_search": this.import_search = true;
+          break;
       }
     });
     Cookie.set('all_opt', this.all_opt);
@@ -461,14 +465,16 @@ export default {
       this.import_data_loading = false;
       if (res.code === 1) {
         console.log(res);
+        this.tableData = [];
+        this.query_flag = true;
         this.$set(this, 'file_csaeIds', res.data.caseNoList);
         // this.file_csaeIds = res.data;
         this.totalOverdueAmt = res.data.totalOverDuoAmt;
         this.totalCase = res.data.caseNoList.length;
-        let caseIds ;
+        let caseIds;
         // 判断返回的案件号是否为空，空 不执行下面分页请求操作
-        if (res.data.caseNoList.length>0) {
-          caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize);
+        if (res.data.caseNoList.length > 0) {
+          caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
           this.cases_import_list(caseIds);
         } else {
           this.$Message.error('暂时查询不到相关数据')
@@ -476,6 +482,19 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+    },
+    // 下载导入查询模板
+    async download_import() {
+      this.download_import_data = true;
+      const res = await cases_download_template(
+        {},
+        {
+          responseType: 'blob',
+          timeout: 120000,
+        }
+      );
+      this.download_import_data = false;
+      util.dowloadfile('导入查询模板', res);
     },
     // 案件导出
     async query_export() {
@@ -489,7 +508,7 @@ export default {
           ...this.formItem,
           caseIds: (this.caseIds.length < 1 && this.query_flag) ? this.file_csaeIds : this.caseIds,
           preTotalCases: this.totalCase,
-          importQuery: this.query_flag? 1: null
+          importQuery: this.query_flag ? 1 : null
         },
         {
           responseType: 'blob',
@@ -536,7 +555,7 @@ export default {
     async cases_import_list(caseIds) {
       this.query_flag = true;
       console.log(caseIds)
-      const res = await import_list('/cases',{
+      const res = await import_list('/cases', {
         caseIds: caseIds,
       });
       console.log(res);

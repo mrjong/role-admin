@@ -2,7 +2,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import Cookie from 'js-cookie';
 import util from '@/libs/util';
-import { cases_allot_list, getLeafTypeList, import_list, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, allot_export, collect_show_children, cases_case_sendwebmessage } from '@/service/getData';
+import { cases_allot_list, getLeafTypeList, import_list, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, allot_export, collect_show_children, cases_case_sendwebmessage, cases_download_template } from '@/service/getData';
 import qs from 'qs';
 
 export default {
@@ -39,8 +39,8 @@ export default {
     let _this = this;
     return {
       headers: {
-				'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
-				timeout: 120000,
+        'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
+        timeout: 120000,
       },
       file_url: '/admin/cases/batch/import ',//文件上传地址
       import_data_loading: false,// 导入loading
@@ -68,6 +68,7 @@ export default {
       plaintext: false,//案件详情查看明文权限
       apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
+      import_search: false,//导入查询权限
       queryLoading: false,//查询按钮loading
       exportLoading: false,//案件导出loading
       recoverLoading: false,//回收按钮loading
@@ -75,6 +76,7 @@ export default {
       stop_urge_loading: false,//停催提交按钮loading
       regain_urge_loading: false,//恢复催收提交按钮loading
       send_message_loading: false,//批量发送站内信按钮loading
+      download_import_data: false,// 下载导入查询的loading
       company_list_data: [],//电催中心list
       department_list_data: [],//组别list
       collect_list_data: [],//经办人list
@@ -489,6 +491,8 @@ export default {
           break;
         case "export": this.case_export = true;
           break;
+        case "import_search": this.import_search = true;
+          break;
       }
     });
     Cookie.set('all_opt', this.all_opt);
@@ -585,7 +589,7 @@ export default {
     changePage(pageNo) {
       this.pageNo = pageNo;
       if (this.query_flag) {
-        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize)
+        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize)
         this.cases_import_list(caseIds);
       } else {
         this.getList();
@@ -596,7 +600,7 @@ export default {
       this.pageSize = pageSize;
       this.pageNo = 1;
       if (this.query_flag) {
-        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize)
+        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize)
         this.cases_import_list(caseIds);
       } else {
         this.getList();
@@ -631,10 +635,10 @@ export default {
     },
     // 上传文件格式校验
     handleFormatError(file) {
-			this.$Message.error('请选择Excel文件上传');
+      this.$Message.error('请选择Excel文件上传');
     },
     // 上传文件大小校验
-		handleMaxSize(file) {
+    handleMaxSize(file) {
       this.$Message.error('文件大小不得超过1M');
     },
     // 文件上传时
@@ -651,6 +655,8 @@ export default {
       this.import_data_loading = false;
       if (res.code === 1) {
         console.log(res);
+        this.tableData = [];
+        this.query_flag = true;
         this.$set(this, 'file_csaeIds', res.data.caseNoList);
         // this.file_csaeIds = res.data;
         this.totalOverdueAmt = res.data.totalOverDuoAmt;// 总金额
@@ -662,10 +668,10 @@ export default {
         this.recycleCaseIds = [];
         this.initStopCases = [];//初始化案件停催集合
         this.allotCaseMounts = this.totalCase - this.stopCaseMounts;//可分配案件总数
-        let caseIds ;
+        let caseIds;
         // 判断返回的案件号是否为空，空 不执行下面分页请求操作
-        if (res.data.caseNoList.length>0) {
-          caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize);
+        if (res.data.caseNoList.length > 0) {
+          caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
           this.cases_import_list(caseIds);
         }
       } else {
@@ -727,7 +733,7 @@ export default {
     async cases_import_list(caseIds) {
       this.query_flag = true;
       console.log(caseIds)
-      const res = await import_list('/cases',{
+      const res = await import_list('/cases', {
         caseIds: caseIds,
       });
       console.log(res);
@@ -825,8 +831,21 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 下载导入查询模板
+    async download_import() {
+      this.download_import_data = true;
+      const res = await cases_download_template(
+        {},
+        {
+          responseType: 'blob',
+          timeout: 120000,
+        }
+      );
+      this.download_import_data = false;
+      util.dowloadfile('导入查询模板', res);
+    },
     // 案件导出
-    async allot_export () {
+    async allot_export() {
       if (this.tableData.length === 0) {
         this.$Message.error('当前无数据，无法导出');
         return;
@@ -835,10 +854,10 @@ export default {
       const res = await allot_export(
         {
           ...this.formItem,
-          caseIds: this.recycleCaseIds.length<1 && this.query_flag? this.file_csaeIds: this.recycleCaseIds,
+          caseIds: this.recycleCaseIds.length < 1 && this.query_flag ? this.file_csaeIds : this.recycleCaseIds,
           preTotalCases: this.recycleCaseMounts,
           caseStatus: '0',
-          importQuery: this.query_flag? 1: null
+          importQuery: this.query_flag ? 1 : null
         },
         {
           responseType: 'blob',
@@ -876,9 +895,9 @@ export default {
       const res = await cases_batch_allot({
         ...this.formItem,
         collectRoleIds: this.collectRoleIds,
-        caseIds: this.allotCaseIds.length<1 && this.query_flag? this.file_csaeIds:this.allotCaseIds,
+        caseIds: this.allotCaseIds.length < 1 && this.query_flag ? this.file_csaeIds : this.allotCaseIds,
         preTotalCases: this.allotCaseMounts,
-        importQuery: this.query_flag? 1: null
+        importQuery: this.query_flag ? 1 : null
       });
       this.batch_distribute_loading = false;
       if (res.code === 1) {
@@ -898,10 +917,10 @@ export default {
     async cases_batch_recycle() {
       this.recoverLoading = true;
       const res = await cases_batch_recycle({
-        caseIds: this.recycleCaseIds.length<1 && this.query_flag? this.file_csaeIds: this.recycleCaseIds,
+        caseIds: this.recycleCaseIds.length < 1 && this.query_flag ? this.file_csaeIds : this.recycleCaseIds,
         ...this.formItem,
         preTotalCases: this.recycleCaseMounts,
-        importQuery: this.query_flag? 1: null
+        importQuery: this.query_flag ? 1 : null
       });
       this.recoverLoading = false;
       if (res.code === 1) {
@@ -957,9 +976,9 @@ export default {
       const res = await cases_case_sendwebmessage({
         ...this.formItem,
         ...this.messageFormItem,
-        caseIds: this.recycleCaseIds.length<1 && this.query_flag? this.file_csaeIds: this.recycleCaseIds,
+        caseIds: this.recycleCaseIds.length < 1 && this.query_flag ? this.file_csaeIds : this.recycleCaseIds,
         preTotalCases: this.recycleCaseMounts,
-        importQuery: this.query_flag? 1: null
+        importQuery: this.query_flag ? 1 : null
       });
       this.send_message_loading = false;
       if (res.code === 1) {

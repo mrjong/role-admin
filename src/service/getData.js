@@ -938,6 +938,16 @@ export const import_list = (url, obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+
+// 下载导入查询模板
+export const cases_download_template = (obj, options) =>
+  fetch({
+    url: '/cases/download/template',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
+  })
 /*
 *
 *

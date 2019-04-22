@@ -1,4 +1,4 @@
-import { repay_repayDetail_list, repay_repayDetail_exportDown, getLeafTypeList, import_list } from '@/service/getData';
+import { repay_repayDetail_list, repay_repayDetail_exportDown, getLeafTypeList, import_list, cases_download_template } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 import util from '@/libs/util';
 import Cookie from 'js-cookie';
@@ -26,8 +26,10 @@ export default {
       showPanel2: false,
       export_case: false,//导出权限
       query: false,//查询权限
+      import_search: false,//导入查询权限
       query_loading: false,//查询按钮loading
       export_case_loading: false,//导出按钮loading
+      download_import_data: false,// 下载导入查询的loading
       company_list_data: [],//电催中心list
       department_list_data: [],//组别list
       collect_list_data: [],//经办人list
@@ -275,6 +277,8 @@ export default {
           break;
         case "export": this.export_case = true;
           break;
+        case "import_search": this.import_search = true;
+          break;
       }
     });
     this.getLeafTypeList('02', '');
@@ -301,6 +305,19 @@ export default {
     // 部门change
     departmentChange(value) {
       this.getLeafTypeList('04', value);
+    },
+    // 下载导入查询模板
+    async download_import() {
+      this.download_import_data = true;
+      const res = await cases_download_template(
+        {},
+        {
+          responseType: 'blob',
+          timeout: 120000,
+        }
+      );
+      this.download_import_data = false;
+      util.dowloadfile('导入查询模板', res);
     },
     // 导出数据
     async exportData() {
@@ -412,6 +429,8 @@ export default {
       this.import_data_loading = false;
       if (res.code === 1) {
         console.log(res);
+        this.tableData = [];
+        this.query_flag = true;
         this.$set(this, 'file_csaeIds', res.data.caseNoList);
         this.total = res.data.caseNoList.length;
         this.summary.sumRepayAmt = res.data.sumRepayAmt; //回款总金额

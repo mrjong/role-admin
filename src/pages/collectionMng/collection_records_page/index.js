@@ -2,7 +2,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import 'video.js/dist/video-js.css'
 import { videoPlayer } from 'vue-video-player'
-import { case_collect_collect_list, case_collect_collect_export, getLeafTypeList, case_collect_tape, import_list } from '@/service/getData';
+import { case_collect_collect_list, case_collect_collect_export, getLeafTypeList, case_collect_tape, import_list, cases_download_template } from '@/service/getData';
 import tablePage from '@/mixin/tablePage';
 import util from '@/libs/util';
 import 'video.js/dist/video-js.css';
@@ -56,8 +56,10 @@ export default {
       plaintext: false,//案件详情查看明文权限
       apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
+      import_search: false,//导入查询权限
       query_loading: false,//查询按钮loading
       export_case_loading: false,//导出按钮loading
+      download_import_data: false,// 下载导入查询的loading
       ruleValidate: {
         idNo: [
           {
@@ -351,6 +353,8 @@ export default {
           break;
         case "plaintext": this.plaintext = true;
           break;
+        case "import_search": this.import_search = true;
+          break;
       }
     });
     Cookie.set('all_opt', this.all_opt);
@@ -499,6 +503,8 @@ export default {
       this.import_data_loading = false;
       if (res.code === 1) {
         console.log(res);
+        this.tableData = [];
+        this.query_flag = true;
         this.$set(this, 'file_csaeIds', res.data.caseNoList);
         let caseIds ;
         // 判断返回的案件号是否为空，空 不执行下面分页请求操作
@@ -546,6 +552,19 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+    },
+    // 下载导入查询模板
+    async download_import() {
+      this.download_import_data = true;
+      const res = await cases_download_template(
+        {},
+        {
+          responseType: 'blob',
+          timeout: 120000,
+        }
+      );
+      this.download_import_data = false;
+      util.dowloadfile('导入查询模板', res);
     },
     // 催收记录导出
     async case_collect_collect_export() {
