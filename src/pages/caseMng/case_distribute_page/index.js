@@ -673,6 +673,8 @@ export default {
         if (res.data.caseNoList.length > 0) {
           caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
           this.cases_import_list(caseIds);
+        } else {
+          this.$Message.error('暂时查询不到相关数据')
         }
       } else {
         this.$Message.error(res.message);
@@ -733,7 +735,7 @@ export default {
     async cases_import_list(caseIds) {
       this.query_flag = true;
       console.log(caseIds)
-      const res = await import_list('/cases', {
+      const res = await import_list('/cases/allot', {
         caseIds: caseIds,
       });
       console.log(res);

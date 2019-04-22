@@ -277,8 +277,8 @@ export default {
           break;
         case "export": this.export_case = true;
           break;
-        case "import_search": this.import_search = true;
-          break;
+        // case "import_search": this.import_search = true;
+        //   break;
       }
     });
     this.getLeafTypeList('02', '');

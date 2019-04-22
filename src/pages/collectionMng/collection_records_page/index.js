@@ -353,8 +353,8 @@ export default {
           break;
         case "plaintext": this.plaintext = true;
           break;
-        case "import_search": this.import_search = true;
-          break;
+        // case "import_search": this.import_search = true;
+        //   break;
       }
     });
     Cookie.set('all_opt', this.all_opt);
