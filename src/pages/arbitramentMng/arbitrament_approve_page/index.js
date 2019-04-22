@@ -222,7 +222,7 @@ export default {
                 'a',
                 {
                   style: {
-                    display: params.row.approvalState !== '02' && params.row.approvalState !== '03' ? 'inline-block' : 'none'
+                    display: params.row.approvalState === '01' && _this.audit ? 'inline-block' : 'none'
                   },
                   class: 'edit-btn',
                   props: {},
