@@ -591,6 +591,7 @@ export default {
       if (this.query_flag) {
         let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize)
         this.cases_import_list(caseIds);
+        caseIds = null;
       } else {
         this.getList();
       }
@@ -602,6 +603,7 @@ export default {
       if (this.query_flag) {
         let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize)
         this.cases_import_list(caseIds);
+        caseIds = null;
       } else {
         this.getList();
       }
@@ -673,6 +675,7 @@ export default {
         if (res.data.caseNoList.length > 0) {
           caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
           this.cases_import_list(caseIds);
+          caseIds = null;
         } else {
           this.$Message.error('暂时查询不到相关数据')
         }
@@ -718,7 +721,9 @@ export default {
         this.totalCase = res.data.summary.totalCount;//案件总数
         if (res.data.summary.stopCollectCount) {
           this.stopCaseMounts = res.data.summary.stopCollectCount;//停催总数
-        };
+        } else {
+          this.stopCaseMounts = 0;
+        }
         this.recycleCaseMounts = res.data.summary.totalCount;//回收案件总数
         this.totalOverdueAmt = res.data.summary.totalOverdueAmt;//总金额
         this.pageNo = res.data.page.number;
@@ -872,6 +877,7 @@ export default {
         if (this.query_flag) {
           let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
           this.cases_import_list(caseIds);
+          caseIds = null;
         } else {
           this.getList();
         }
@@ -907,6 +913,7 @@ export default {
         if (this.query_flag) {
           let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
           this.cases_import_list(caseIds);
+          caseIds = null;
         } else {
           this.getList();
         }
@@ -930,6 +937,7 @@ export default {
         if (this.query_flag) {
           let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
           this.cases_import_list(caseIds);
+          caseIds = null;
         } else {
           this.getList();
         }
@@ -950,6 +958,7 @@ export default {
         if (this.query_flag) {
           let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
           this.cases_import_list(caseIds);
+          caseIds = null;
         } else {
           this.getList();
         }
@@ -972,6 +981,7 @@ export default {
         if (this.query_flag) {
           let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
           this.cases_import_list(caseIds);
+          caseIds = null;
         } else {
           this.getList();
         }
@@ -998,6 +1008,7 @@ export default {
         if (this.query_flag) {
           let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
           this.cases_import_list(caseIds);
+          caseIds = null;
         } else {
           this.getList();
         }
