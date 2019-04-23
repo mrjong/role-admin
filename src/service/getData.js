@@ -1497,3 +1497,10 @@ export const relief_reliefFlow_getreliefflow = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+// 减免查询进度接口
+export const relief_relieford_result = (obj) =>
+  fetch({
+    url: '/relief/relieford/result',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })

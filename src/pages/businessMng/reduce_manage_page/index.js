@@ -1,4 +1,4 @@
-import { relief_relieford_reviewlist, relief_relieford_reviewrelief, relief_relieford_refuserelief, relief_relieford_resultlist } from '@/service/getData';
+import { relief_relieford_reviewlist, relief_relieford_reviewrelief, relief_relieford_refuserelief, relief_relieford_resultlist, relief_relieford_result } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 import ApplyDetail from './components/apply_tableData_detail_page';
 import FeedbackDetail from './components/feedback_tableData_detail_page';
@@ -302,12 +302,13 @@ export default {
         },
         {
           title: '操作',
-          width: 100,
+          width: 120,
           key: 'edit',
           align: 'center',
           fixed: 'left',
           render: (h, params) => {
-            const caseHandleStatus = params.row.caseHandleStatus;
+            const reliefStatus = params.row.reliefStatus;
+            console.log(reliefStatus)
             return h('div', [
               h(
                 'a',
@@ -323,6 +324,19 @@ export default {
                 },
                 '查看凭证'
               ),
+              reliefStatus === 'O'?h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.relief_relieford_result(params.row.reliefNo)
+                    }
+                  }
+                },
+                '更新进度'
+              ): null,
             ]);
           }
         },
@@ -704,6 +718,18 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+    },
+    // 更新进度接口
+    async relief_relieford_result(id) {
+      const res = await relief_relieford_result({
+        reliefNo: id,
+      });
+       if (res.code === 1) {
+         this.$Message.success('更新成功');
+         this.relief_relieford_resultlist();
+       } else {
+         this.$Message.error(res.message)
+       }
     },
     // 批量提交接口
     async relief_relieford_reviewrelief() {
