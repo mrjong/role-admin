@@ -287,6 +287,7 @@ util.fullscreenEvent = function (vm) {
 util.slice_case_number = (arr, prevIndex, nextIndex) => {
   let newArr = [];
   newArr = arr.slice(prevIndex, nextIndex);
+  arr = [];
   return newArr;
 }
 export default util;

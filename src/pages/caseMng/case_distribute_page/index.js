@@ -734,7 +734,6 @@ export default {
     // 根据导入条件进行查询
     async cases_import_list(caseIds) {
       this.query_flag = true;
-      console.log(caseIds)
       const res = await import_list('/cases/allot', {
         caseIds: caseIds,
       });
@@ -742,6 +741,7 @@ export default {
       if (res.code === 1) {
         this.tableData = res.data;
         this.total = this.file_csaeIds.length;
+        this.recycleCaseMounts = this.file_csaeIds.length;
         this.allotCaseIds = [];
         this.recycleCaseIds = [];
         this.initStopCases = [];//初始化案件停催集合
@@ -947,7 +947,12 @@ export default {
       });
       this.stop_urge_loading = false;
       if (res.code === 1) {
-        this.getList();
+        if (this.query_flag) {
+          let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
+          this.cases_import_list(caseIds);
+        } else {
+          this.getList();
+        }
         this.stopCollectionFlag = false;
         this.stopFormItem.operRemark = '';
         this.$Message.success('操作成功');
@@ -964,7 +969,12 @@ export default {
       });
       this.regain_urge_loading = false;
       if (res.code === 1) {
-        this.getList();
+        if (this.query_flag) {
+          let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
+          this.cases_import_list(caseIds);
+        } else {
+          this.getList();
+        }
         this.recoverCollectionFlag = false;
         this.recoverFormItem.operRemark = '';
         this.$Message.success('操作成功');
