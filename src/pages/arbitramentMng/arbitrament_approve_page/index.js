@@ -26,6 +26,7 @@ export default {
       showPanel2: false,
       query: false,//查询权限
       audit: false,//审核权限
+      upload: false,//上传权限
       query_loading: false,//查询按钮loading
       audit_loading: false,//审核按钮loading
       reject_loading: false,//驳回按钮loading
@@ -238,7 +239,7 @@ export default {
                 },
                 '审核'
               ),
-              params.row.approvalState === '02' ? h(
+              params.row.approvalState === '02' && _this.upload ? h(
                 'a',
                 {
                   class: 'edit-btn',
@@ -455,6 +456,8 @@ export default {
         case "query": this.query = true;
           break;
         case "audit": this.audit = true;
+          break;
+        case "upload": this.upload = true;
           break;
       }
     });
