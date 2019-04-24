@@ -2299,7 +2299,6 @@ export default {
             toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
             toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
             userId: this.userId,
-            caseNo: this.caseNo,
           });
         }
       } else {
