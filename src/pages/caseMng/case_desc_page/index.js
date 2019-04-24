@@ -2315,6 +2315,7 @@ export default {
       if (this.readType !== 'read') {
         this.collectType = tag;
         this.formValidate.userNmHid = obj.userNmHid || obj.cntUserNameHid;
+        this.formValidate.userNmClear = obj.userNmClear;
         this.userNmHidCopy = obj.userNmHid || obj.cntUserNameHid;
         this.mblNoHid = obj.mblNoHid || obj.cntUserMblNoHid;
         this.userNm = obj.userNm || obj.cntUserName;
