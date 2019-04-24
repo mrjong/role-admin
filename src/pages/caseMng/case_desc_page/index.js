@@ -89,7 +89,7 @@ export default {
       },
       getDirList: ['GENDER', 'NATION', 'CONTACT_REL_TYPE'],
       getDirObj: {},
-      userNmHidCopy: '',
+      userNmClearCopy: '',// 保存的明文名字
       telShow: false,
       mblNo: '',
       caseNo: '',
@@ -1069,7 +1069,7 @@ export default {
           key: 'userNm',
           render: (h, params) => {
             let callUserTypeName = params.row.callUserTypeName;
-            let userNm = params.row.userNm;
+            let userNm = params.row.userNmHid;
 
             return h('div', [
               h(
@@ -1266,7 +1266,7 @@ export default {
           key: 'userNm',
           render: (h, params) => {
             let callUserTypeName = params.row.callUserTypeName;
-            let userNm = params.row.userNm;
+            let userNm = params.row.userNmHid;
             return h('div', [
               h(
                 'span',
@@ -1463,7 +1463,7 @@ export default {
           key: 'userNmHid',
           render: (h, params) => {
             let callUserTypeName = params.row.callUserTypeName;
-            let userNm = params.row.userNm;
+            let userNm = params.row.userNmHid;
 
             return h('div', [
               h(
@@ -1615,13 +1615,13 @@ export default {
           }
         },
         {
-          title: '姓名（关系）',
+          title: '姓名(关系)',
           align: 'center',
           width: 130,
           key: 'userNm',
           render: (h, params) => {
             let callUserTypeName = params.row.callUserTypeName;
-            let userNm = params.row.userNm;
+            let userNm = params.row.userNmHid;
 
             return h('div', [
               h(
@@ -2253,7 +2253,7 @@ export default {
       this.add_collect_loading = false;
       // 重置初始化数据
       this.mblNo = '';
-      this.userNmHidCopy = '';
+      this.userNmClearCopy = '';
       this.mblNoHid = '';
       this.userNm = '';
       this.formValidate = {};
@@ -2315,8 +2315,8 @@ export default {
       if (this.readType !== 'read') {
         this.collectType = tag;
         this.formValidate.userNmHid = obj.userNmHid || obj.cntUserNameHid;
-        this.formValidate.userNmClear = obj.userNmClear;
-        this.userNmHidCopy = obj.userNmHid || obj.cntUserNameHid;
+        this.formValidate.userNmClear = obj.userNmClear || obj.cntUserNameClear;
+        this.userNmClearCopy = obj.userNmClear || obj.cntUserNameClear;
         this.mblNoHid = obj.mblNoHid || obj.cntUserMblNoHid;
         this.userNm = obj.userNm || obj.cntUserName;
         this.mblNo = obj.mblNo || obj.cntUserMblNo;
@@ -2402,9 +2402,9 @@ export default {
         mblNoHid: this.mblNoHid,
         caseNo: this.caseNo,
         collectType: this.collectType,
-        userNmHid: this.userNmHidCopy,
+        // userNmHid: this.userNmHidCopy,
         soundUuid: this.actionId,
-        userNmNew: this.formValidate.userNmHid === this.userNmHidCopy ? '' : this.formValidate.userNmHid
+        userNmNew: this.formValidate.userNmClear === this.userNmClearCopy ? '' : this.formValidate.userNmClear
       });
       this.add_collect_loading = false;
       if (res.code === 1) {
