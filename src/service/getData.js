@@ -1209,6 +1209,36 @@ export const arb_list = (obj, options) =>
     data: qs.stringify(obj),
     options
   });
+
+// 仲裁审批上传文档接口
+export const credit_pdf_upload = (obj) =>
+  fetch({
+    url: '/credit/pdf/upload',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+export const credit_pdf_data = (obj) =>
+  fetch({
+    url: '/credit/pdf/data',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+//仲裁申请执行接口
+export const credit_case_execute = (obj, options) =>
+  fetch({
+    url: '/credit/case/execute',
+    method: 'POST',
+    data: obj,
+    options
+  })
+
+// 案件详情的获取时间轴接口
+export const credit_case_process = (obj) =>
+  fetch({
+    url: '/credit/case/process',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
 /*
 *
 我的仲裁

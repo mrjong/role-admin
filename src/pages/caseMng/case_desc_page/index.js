@@ -1,6 +1,7 @@
 import jianmian from '@/components/caseDesc/jianmian.vue';
 import huakou from '@/components/caseDesc/huakou.vue';
 import zhongcai from '@/components/caseDesc/zhongcai.vue';
+import TimeLine from '@/components/time_line_page';
 import qs from 'qs';
 import dayjs from 'dayjs';
 import Cookie from 'js-cookie';
@@ -31,7 +32,8 @@ import {
   call_xz_hung_off,//讯众挂断
   syscommon_decrypt, // 明文展示
   case_collect_case_list, // 我的案件
-  case_list
+  case_list,
+  credit_case_process, //获取时间轴接口
 } from '@/service/getData';
 let callFlag = false;
 export default {
@@ -39,7 +41,8 @@ export default {
   components: {
     jianmian,
     huakou,
-    zhongcai
+    zhongcai,
+    TimeLine
   },
   mixins: [sysDictionary],
   data() {
@@ -56,6 +59,9 @@ export default {
       add_txl_loading: false,//添加通讯录提交按钮loading
       message_detail_flag: false,//站内信modal是否显示
       message_detail_data: {},//站内信modal展示的数据
+      credit_panel: false,//信用进度的折叠flag
+      time_loading: false,// 时间轴loading
+      time_line_data: {},//传给时间轴的数据
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -1800,6 +1806,25 @@ export default {
     });
   },
   methods: {
+    // 获取时间轴
+    async get_credit_process() {
+      if (this.credit_panel) {
+        this.credit_panel = false;
+        return;
+      }
+      this.time_loading = true;
+      const res = await credit_case_process({
+        caseNo: this.caseNo
+      });
+      if (res.code === 1) {
+        this.time_line_data = res.data;
+        this.time_loading = false;
+        this.credit_panel = true;
+      } else {
+        this.time_loading = false;
+        this.$Message.error(res.message);
+      }
+    },
     // 获取表格数据
     async case_list() {
       const res = await case_list({

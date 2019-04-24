@@ -1,7 +1,9 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import dayjs from 'dayjs'
-import { arb_operateRecord, arb_list, arb_detail, arb_check } from '@/service/getData';
+import { arb_operateRecord, arb_list, arb_detail, arb_check, credit_pdf_upload, credit_case_execute, credit_pdf_data } from '@/service/getData';
+import Cookie from 'js-cookie';
+
 export default {
   name: 'case_search_page',
   mixins: [formValidateFun, sysDictionary],
@@ -9,17 +11,30 @@ export default {
     console.log(this.GLOBAL);
     const _this = this;
     return {
+      headers: {
+        'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
+        timeout: 120000,
+      },
+      prefix_pdf_file: '/admin/credit/pdf/data',
       getDirList: ['PROD_TYPE', 'GENDER', 'APPROVAL_STATE'],
       getDirObj: {},
       showPanel: false,
       prefix: '/admin/arb/images/',
+      file_list: [],// 上传文件list
+      file_url: '',// 暂存的文件url
       arb_detail_data: {},
       showPanel2: false,
       query: false,//查询权限
       audit: false,//审核权限
+      upload: false,//上传权限
       query_loading: false,//查询按钮loading
       audit_loading: false,//审核按钮loading
       reject_loading: false,//驳回按钮loading
+      upload_loading: false,//上传按钮loading
+      apply_loading: false,// 申请执行按钮loading
+      file_disabled: false,// 是否禁用上传
+      approve_list: [],// 申请执行勾选list
+      show_file_list: false,// 显示上传的list
       applyTime: [],//申请时间区间
       approvalTime: [],//审核时间区间
       showModalType: '',
@@ -87,10 +102,11 @@ export default {
           }
         }
       ],
-      recoverFormItem: {},
-      showModal2: false,
-      showModal1: false,
-      ruleValidate2: {
+      reject_modal: false,//驳回的modal
+      arbitrament_modal: false,//仲裁详情的modal
+      upload_modal: false,//上传图片的modal
+      recoverFormItem: {},//驳回原因表单
+      reject_ruleValidate: {
         approvalRemark: [
           {
             required: true,
@@ -98,7 +114,7 @@ export default {
             trigger: 'blur'
           }
         ]
-      },
+      },//驳回校验
       ruleValidate: {
         idNo: [
           {
@@ -164,20 +180,24 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      formValidate3: {
-        items: [
-          {
-            value: '',
-            index: 1,
-            status: 1
-          }
-        ]
-      },
       formItem: {
         productTypes: []
       },
       tableData: [],
       tableColumns: [
+        {
+          type: 'selection',
+          width: 60,
+          align: 'center',
+          fixed: 'left',
+        },
+        {
+          type: 'index',
+          title: '序号',
+          width: 60,
+          align: 'center',
+          fixed: 'left',
+        },
         {
           title: '操作',
           width: 150,
@@ -203,7 +223,7 @@ export default {
                 'a',
                 {
                   style: {
-                    display: params.row.approvalState !== '02' && params.row.approvalState !== '03' ? 'inline-block' : 'none'
+                    display: params.row.approvalState === '01' && _this.audit ? 'inline-block' : 'none'
                   },
                   class: 'edit-btn',
                   props: {},
@@ -218,7 +238,26 @@ export default {
                   }
                 },
                 '审核'
-              )
+              ),
+              params.row.approvalState === '02' && _this.upload ? h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.file_data = {
+                        id: params.row.approvalId,
+                        caseNo: params.row.caseNo
+                      };
+                      this.upload_modal = true;
+                      // this.file_list = this.$refs.upload;
+                      console.log(this.$refs.upload);
+                    }
+                  }
+                },
+                '上传'
+              ) : null
             ]);
           }
         },
@@ -418,11 +457,120 @@ export default {
           break;
         case "audit": this.audit = true;
           break;
+        case "upload": this.upload = true;
+          break;
       }
     });
     // this.getList();
   },
   methods: {
+    // table勾选回调
+    changeSelect(arr) {
+      this.approve_list = [];
+      let obj = {};
+      arr.forEach(item => {
+        obj = {
+          id: item.approvalId,
+          caseNo: item.caseNo,
+        }
+        this.approve_list.push(obj);
+      });
+      console.log(this.approve_list)
+    },
+    // 申请执行接口
+    async apply_execute() {
+      if (this.approve_list.length === 0) {
+        this.$Message.error('请先勾选案件');
+        return;
+      }
+      this.apply_loading = true;
+      const res = await credit_case_execute(
+        {
+          arbConditions: this.approve_list,
+        },
+        {
+          transformRequest: [
+            function (data) {
+              return JSON.stringify(data); //利用对应方法转换格式
+            }
+          ]
+        }
+      )
+      this.apply_loading = false;
+      console.log(res);
+      if (res.code === 1) {
+        this.$Message.success('操作成功');
+        this.getList();
+        this.approve_list = [];
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 上传之前的回调
+    handleUpload(file) {
+      console.log(file);
+      if (file.type != 'application/pdf') {
+        this.$Message.error('请选择PDF格式文件');
+        return;
+      }
+      this.show_file_list = true;
+      this.file_list.push(file);
+      this.file_disabled = true;
+      return false;
+    },
+    // 文件上传过程监听
+    file_progress(event, file, fileList) {
+      console.log(file);
+      // this.$Spin.show();
+    },
+    // 文件上传成功监听
+    file_success(res, file, fileList) {
+      if (res.code === 1) {
+        this.file_disabled = false;
+        this.$Message.success('上传成功');
+        this.upload_modal = false;
+        this.file_list = [];
+        this.getList();
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 文件上传失败监听
+    file_error(error, file, fileList) {
+      console.log(error);
+      this.$Message.error('文件上传失败，请重新上传');
+      // this.$Spin.hide();
+    },
+    // 文件格式不正确
+    handleFormatError(file) {
+      // this.$Message.error('请选择PDF格式文件');
+    },
+    // 文件大小限制
+    handleMaxSize(file) {
+      this.$Message.error('图片大小不能超过5M');
+    },
+    // 移除文件
+    handleRemoveFile() {
+      this.file_list = [];
+      this.file_disabled = false;
+    },
+    // 上传文件的取消按钮
+    cancel() {
+      this.upload_modal = false;
+      this.file_disabled = false;
+      this.file_list = [];
+    },
+    // 文件提交
+    async credit_pdf_data() {
+      console.log(this.file_list);
+      if (this.file_list.length === 0) {
+        this.$Message.error('暂无文件，请上传文件再提交');
+        return;
+      }
+      this.show_file_list = false;
+      this.$refs.upload.post(this.file_list[0]);
+      this.file_list = [];
+    },
     //申请时间监听
     changeApplyTime(val) {
       this.formItem.applyTimeLt = val[0];
@@ -467,15 +615,15 @@ export default {
           this.arb_operateRecord();
         }
         this.arb_detail_data = res.data;
-        this.showModal1 = true;
+        this.arbitrament_modal = true;
       } else {
         this.shenheObj = {};
         this.$Message.error(res.message);
       }
     },
     rejectFunc() {
-      this.showModal1 = false;
-      this.showModal2 = true;
+      this.arbitrament_modal = false;
+      this.reject_modal = true;
     },
     arb_checkTest() {
       this.$refs.recoverFormItem.validate((valid) => {
@@ -504,8 +652,8 @@ export default {
       this.audit_loading = false;
       this.reject_loading = false;
       if (res.code === 1) {
-        this.showModal1 = false;
-        this.showModal2 = false;
+        this.arbitrament_modal = false;
+        this.reject_modal = false;
         this.$Message.success('操作成功！');
         this.recoverFormItem = {};
         setTimeout(() => {
@@ -519,14 +667,14 @@ export default {
       this.$refs.formItem.validate((valid) => {
         if (valid) {
         } else {
-          this.showModal1 = true;
+          this.arbitrament_modal = true;
         }
       });
     },
     del() {
-      this.showModal2 = false;
+      this.reject_modal = false;
       this.shenheObj = {};
-      this.showModal1 = false;
+      this.arbitrament_modal = false;
       this.showModalType = '';
     },
     // 页码改变的回调
