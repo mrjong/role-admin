@@ -125,6 +125,7 @@
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
+          v-if="execution"
           :loading='apply_loading'
         >
           <span v-if="!apply_loading">申请执行</span>
