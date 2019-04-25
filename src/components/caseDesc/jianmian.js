@@ -197,7 +197,7 @@ export default {
       // 类型，期数，金额校验通过后执行添加的逻辑
       if (reliefType && perdNum && reliefAmt) {
         if (this.reliefAmt_max > 0) {
-          if (this.reliefAmt_max < this.formItem.reliefAmt) {
+          if (Number(this.reliefAmt_max) < Number(this.formItem.reliefAmt)) {
             this.$Message.error(`减免最大金额不能超过${this.reliefAmt_max}`);
             this.$set(this.formItem, "reliefAmt", this.reliefAmt_max);
             return;
