@@ -94,7 +94,7 @@ export default {
         {
           title: "操作动作",
           searchOperator: "like",
-          key: "auditType",
+          key: "auditTypeName",
           className: "tableMainW",
           align: "center",
           width: 150
