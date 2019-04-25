@@ -351,7 +351,7 @@ export default {
           key: 'userNmHid',
           render: (h, params) => {
             return h('div', [
-              h('span', {}, params.row.userNmHid),
+              h('span', {}, params.row.userNmClear),
             ]);
           }
         },
@@ -1069,7 +1069,7 @@ export default {
           key: 'userNm',
           render: (h, params) => {
             let callUserTypeName = params.row.callUserTypeName;
-            let userNm = params.row.userNmHid;
+            let userNm = params.row.userNmClear;
 
             return h('div', [
               h(
@@ -1266,7 +1266,7 @@ export default {
           key: 'userNm',
           render: (h, params) => {
             let callUserTypeName = params.row.callUserTypeName;
-            let userNm = params.row.userNmHid;
+            let userNm = params.row.userNmClear;
             return h('div', [
               h(
                 'span',
@@ -1463,7 +1463,7 @@ export default {
           key: 'userNmHid',
           render: (h, params) => {
             let callUserTypeName = params.row.callUserTypeName;
-            let userNm = params.row.userNmHid;
+            let userNm = params.row.userNmClear;
 
             return h('div', [
               h(
@@ -1621,7 +1621,7 @@ export default {
           key: 'userNm',
           render: (h, params) => {
             let callUserTypeName = params.row.callUserTypeName;
-            let userNm = params.row.userNmHid;
+            let userNm = params.row.userNmClear;
 
             return h('div', [
               h(
