@@ -1,6 +1,7 @@
 import sysDictionary from '@/mixin/sysDictionary';
 import { relief_relieford_getreliefinfo, relief_relieford_applyrelief, relief_relieford_detailinfo, relief_relieford_updatereliefdetail } from '@/service/getData'
 import Cookie from 'js-cookie'
+import qs from 'qs';
 
 export default {
   mixins: [sysDictionary],
@@ -371,6 +372,7 @@ export default {
       }
       console.log(this.tableData);
       this.jianmian_loading = true;
+      // this.formItem.reliefRemark = JSON.stringify(this.formItem.reliefRemark);
       const res = await relief_relieford_applyrelief(
         {
           ...this.overdue_info,
@@ -381,7 +383,8 @@ export default {
         {
           transformRequest: [
             function (data) {
-              return JSON.stringify(data); //利用对应方法转换格式
+              let unicodeJson = qs.stringify(data); //利用对应方法转换格式
+              return unicodeJson; //利用对应方法转换格式
             }
           ]
         }
