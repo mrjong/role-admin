@@ -2,12 +2,16 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import Cookie from 'js-cookie';
 import util from '@/libs/util';
+import jianmian from '@/components/caseDesc/jianmian.vue';
 import { cases_allot_list, getLeafTypeList, collect_parent_children, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, allot_export, collect_show_children, cases_case_sendwebmessage } from '@/service/getData';
 import qs from 'qs';
 
 export default {
   name: 'case_distribute_page',
   mixins: [formValidateFun, sysDictionary],
+  components: {
+    jianmian,
+  },
   data() {
     const validate_money_start = (rule, value, callback) => {
       if (value && this.formItem.maxOverdueAmt && Number(value) > Number(this.formItem.maxOverdueAmt)) {
@@ -42,12 +46,14 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      distributeFlag: false,
-      distributeRoleFlag: false,
-      recycleFlag: false,
-      stopCollectionFlag: false,
-      recoverCollectionFlag: false,
-      messageFlag: false,
+      distributeFlag: false,//分配flag
+      distributeRoleFlag: false,//分配人员flag
+      recycleFlag: false,//回收flag
+      stopCollectionFlag: false,//停催flag
+      recoverCollectionFlag: false, //恢复催收flag
+      messageFlag: false,//站内信flag
+      breaks_flag: false,// 减免flag
+      breaks_data: {}, //减免的数据
       userType: Cookie.get("userType"),//获取人员类型 01 系统 02催收
       queryList: false,//查询权限
       batch_distribute: false,//批量分配权限
@@ -58,6 +64,7 @@ export default {
       case_export: false,//导出权限
       all_opt: false,//案件详情全部操作权限
       plaintext: false,//案件详情查看明文权限
+      apply_remission: false, //申请减免权限
       queryLoading: false,//查询按钮loading
       exportLoading: false,//案件导出loading
       recoverLoading: false,//回收按钮loading
@@ -213,7 +220,7 @@ export default {
         },
         {
           title: '操作',
-          width: 100,
+          width: 120,
           key: 'edit',
           align: 'center',
           fixed: 'left',
@@ -246,12 +253,27 @@ export default {
                   }
                 },
                 caseHandleStatus === 'SUSPEND' ? '恢复催收' : '停催'
-              )
+              ),
+              this.apply_remission?h('a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.breaks_data = {
+                        caseNo: params.row.id,
+                        billNo: params.row.billNo,
+                      };
+                      this.breaks_flag = true;
+                    }
+                  }
+                },'减免'
+              ): null
             ]);
           }
         },
         {
-          title: '案件编码',
+          title: '案件编号',
           width: 180,
           searchOperator: '=',
           key: 'id',
@@ -479,6 +501,8 @@ export default {
           break;
         case "export": this.case_export = true;
           break;
+        case "apply_remission": this.apply_remission = true;
+          break;
       }
     });
     Cookie.set('all_opt', this.all_opt);
@@ -624,6 +648,14 @@ export default {
         this.collect_show_children();
       } else {
         this.initTree();
+      }
+    },
+    // 减免的子组件回调
+    passBackBreaks(obj) {
+      console.log(obj)
+      this.breaks_flag = obj.flag;
+      if (obj.status === 'ok') {
+        this.$Message.success('申请成功');
       }
     },
     // 获取表格数据
