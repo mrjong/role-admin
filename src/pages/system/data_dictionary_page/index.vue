@@ -40,7 +40,7 @@
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
-              <FormItem span="4" label="字典项代码:" prop="sort">
+              <FormItem span="4" label="字典项代码:" prop="itemCode">
                 <Input size="small" v-model.trim="menuFormItem.itemCode" placeholder="请输入字典项代码"></Input>
               </FormItem>
             </Col>

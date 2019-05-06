@@ -55,6 +55,7 @@ export default {
       plaintext: false,//案件详情查看明文权限
       apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
+      apply_remission: false,//案件详情申请减免权限
       add_collect_loading: false,//添加催记按钮loading
       add_txl_loading: false,//添加通讯录提交按钮loading
       message_detail_flag: false,//站内信modal是否显示
@@ -62,6 +63,7 @@ export default {
       credit_panel: false,//信用进度的折叠flag
       time_loading: false,// 时间轴loading
       time_line_data: {},//传给时间轴的数据
+      breaks_data: {},//减免info入参
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -1773,6 +1775,9 @@ export default {
     if (Cookie.get('apply_deduct') === 'true') {
       this.apply_deduct = true;
     };
+    if (Cookie.get('apply_remission') === 'true') {
+      this.apply_remission = true;
+    };
     let params = location.hash.split('?');
     const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
     this.caseNo = window.atob(queryData.caseNotest);
@@ -2353,6 +2358,13 @@ export default {
     passBack(type) {
       this.modal[type] = false;
     },
+    passBackBreaks(obj) {
+      console.log(obj)
+      this.modal.jianmian = obj.flag;
+      if (obj.status === 'ok') {
+        this.$Message.success('申请成功');
+      }
+    },
     handOpen(type) {
       console.log(this.modal);
       if (type === 'zhongcai') {
@@ -2381,6 +2393,11 @@ export default {
           idCardFront,
           idCardOpposite
         };
+      } else if (type === 'jianmian') {
+        this.breaks_data = {
+          caseNo: this.caseNo,
+          billNo: this.case_detail_case_base_info_Data.billNo,
+        }
       }
       this.modal[type] = true;
     },

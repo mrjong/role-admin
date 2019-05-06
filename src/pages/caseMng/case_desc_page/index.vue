@@ -97,14 +97,14 @@
             :disabled="btnDisable"
           >申请划扣</Button>
 
-          <!-- <Button
-            v-if="readType!=='read'"
+          <Button
+            v-if="readType!=='read' && apply_remission"
             @click="handOpen('jianmian','申请减免')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
             :disabled="btnDisable"
-          >申请减免</Button>-->
+          >申请减免</Button>
           <Button
             class="fr vue-back-btn header-btn"
             type="primary"
@@ -455,7 +455,6 @@
                       <span>{{case_detail_address_info_Data&&case_detail_address_info_Data.usrProvAddr}}{{case_detail_address_info_Data&&case_detail_address_info_Data.usrCityAddr}}{{case_detail_address_info_Data&&case_detail_address_info_Data.usrDtlAddr}}</span>
                     </div>
                   </Col>
-
                   <Col :xs="24" :sm="24" :md="24" :lg="24">
                     <div class="panel-desc-title">
                       工作地址：
@@ -834,9 +833,7 @@
     <Modal title="查看图片" v-model="visible">
       <img :src="imgName" v-if="visible" style="width: 100%">
     </Modal>
-    <Modal class="jianmian" width="90%" v-model="modal.jianmian">
-      <jianmian></jianmian>
-    </Modal>
+    <jianmian v-model="modal.jianmian" v-if="modal.jianmian" v-on:passBack="passBackBreaks" :edit_flag='true' :breaks_data='breaks_data'></jianmian>
     <zhongcai
       :getDirObj="getDirObj"
       v-on:passBack="passBack('zhongcai')"

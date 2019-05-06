@@ -1,7 +1,7 @@
 import { deduct_list } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 export default {
-  name: 'transferMng',
+  name: 'transfer_mng_page',
   mixins: [sysDictionary],
   data() {
     var alignCenter = 'center';
