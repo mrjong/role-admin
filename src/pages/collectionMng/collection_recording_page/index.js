@@ -30,8 +30,6 @@ export default {
       download: false,//下载权限
       all_opt: false,//案件详情全部操作权限
       plaintext: false,//案件详情查看明文权限
-      apply_arbitrament: false,//案件详情申请仲裁权限
-      apply_deduct: false,//案件详情申请划扣权限
       query_loading: false,//查询权限按钮loading
       getLeafTypeList_data: [],
       getLeafTypeList2_data: [],
@@ -307,8 +305,6 @@ export default {
     });
     Cookie.set('all_opt', this.all_opt);
     Cookie.set('plaintext', this.plaintext);
-    Cookie.set('apply_arbitrament', this.apply_arbitrament);
-    Cookie.set('apply_deduct', this.apply_deduct);
     // this.getList();
     this.getLeafTypeList()
     this.getLeafTypeList2()

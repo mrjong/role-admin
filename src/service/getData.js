@@ -1477,3 +1477,78 @@ export const arb_uploadUrl = (obj) =>
     data: qs.stringify(obj)
   });
 
+/*
+减免管理相关接口
+*/
+
+// 查询减免基础信息接口
+export const relief_relieford_getreliefinfo = (obj) =>
+  fetch({
+    url: '/relief/relieford/getreliefinfo',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 减免申请提交接口
+export const relief_relieford_applyrelief = (obj, options) =>
+  fetch({
+    url: '/relief/relieford/applyrelief',
+    method: 'POST',
+    data: obj,
+    options
+  })
+// 减免管理申请数据的list接口
+export const relief_relieford_reviewlist = (obj) =>
+  fetch({
+    url: '/relief/relieford/reviewlist',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 减免管理申请数据批量提交接口
+export const relief_relieford_reviewrelief = (obj) =>
+  fetch({
+    url: '/relief/relieford/reviewrelief',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 减免管理申请数据批量驳回接口
+export const relief_relieford_refuserelief = (obj) =>
+  fetch({
+    url: '/relief/relieford/refuserelief',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 减免管理反馈结果list接口
+export const relief_relieford_resultlist = (obj) =>
+  fetch({
+    url: '/relief/relieford/resultlist',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 减免管理申请数据修改展示接口
+export const relief_relieford_detailinfo = (obj) =>
+  fetch({
+    url: '/relief/relieford/detailinfo',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 减免管理申请数据修改接口
+export const relief_relieford_updatereliefdetail = (obj) =>
+  fetch({
+    url: '/relief/relieford/updatereliefdetail',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 减免管理反馈结果查看凭证接口
+export const relief_reliefFlow_getreliefflow = (obj) =>
+  fetch({
+    url: 'relief/reliefFlow/getreliefflow',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 减免查询进度接口
+export const relief_relieford_result = (obj) =>
+  fetch({
+    url: '/relief/relieford/result',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })

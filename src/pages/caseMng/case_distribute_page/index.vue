@@ -608,6 +608,8 @@
         </div>
       </Modal>
     </div>
+    <!-- 减免组件 -->
+    <jianmian v-model="breaks_flag" v-if="breaks_flag" v-on:passBack="passBackBreaks" :edit_flag='true' :breaks_data='breaks_data'></jianmian>
   </div>
 </template>
 <script src='./index.js'></script>
