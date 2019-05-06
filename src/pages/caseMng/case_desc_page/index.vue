@@ -52,7 +52,7 @@
       <!-- 检索条件 -->
       <Card class="vue-panel case-desc">
         <p slot="title">
-          {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}
+          {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear}}
           <!-- <Poptip
             :content="mingwenData"
             v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
@@ -490,7 +490,7 @@
                 <div class="ivu-alert-copy ivu-alert-info">
                   <span class="name">
                     <span class="state-name">本人</span>
-                    {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid}}
+                    {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear}}
                     <!-- <Poptip
                       :content="mingwenData"
                       v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
@@ -513,6 +513,7 @@
                          callUserType:'00',
                          userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
                         userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
+                        userNmClear:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear,
                         userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
                         mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
                         mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
@@ -553,6 +554,7 @@
                         callUserType:'01',
                          userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
                         userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
+                        userNmClear:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear,
                         userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
                         mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
                         mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
@@ -742,7 +744,7 @@
                 :label-width="100"
               >
                 <FormItem label="沟通对象" prop="userNmHid">
-                  <Input size="small" v-model.trim="formValidate.userNmHid" placeholder="请输入沟通对象"></Input>
+                  <Input size="small" v-model.trim="formValidate.userNmClear" placeholder="请输入沟通对象"></Input>
                 </FormItem>
                 <FormItem label="关系" prop="callUserType">
                   <Select
