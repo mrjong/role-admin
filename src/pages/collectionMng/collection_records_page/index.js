@@ -2,7 +2,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import 'video.js/dist/video-js.css'
 import { videoPlayer } from 'vue-video-player'
-import { case_collect_collect_list, case_collect_collect_export, getLeafTypeList, case_collect_tape, import_list, cases_download_template } from '@/service/getData';
+import { case_collect_collect_list, case_collect_collect_export, getLeafTypeList, case_collect_tape, import_list, cases_download_template, collectcode_getListByCodeType } from '@/service/getData';
 import tablePage from '@/mixin/tablePage';
 import util from '@/libs/util';
 import 'video.js/dist/video-js.css';
@@ -48,6 +48,11 @@ export default {
       getDirObj: {},
       showPanel: false,
       productLineList: [],
+      collect_status_list: [], //沟通状态
+      call_status_list: [], //拨打状态
+      company_list_data: [],//电催中心list
+      department_list_data: [],//组别list
+      collect_list_data: [],//经办人list
       showPanel2: false,
       query: false,//查询权限
       export_case: false,//导出权限
@@ -58,6 +63,7 @@ export default {
       query_loading: false,//查询按钮loading
       export_case_loading: false,//导出按钮loading
       download_import_data: false,// 下载导入查询的loading
+      billNo: null,// 播放录音的账单号
       ruleValidate: {
         idNo: [
           {
@@ -88,8 +94,6 @@ export default {
       },
       formItem: {},
       tableData: [],
-      getLeafTypeList_data: [],
-      getLeafTypeList2_data: [],
       tableColumns: [
         {
           title: '序号',
@@ -107,7 +111,8 @@ export default {
           fixed: 'left',
           render: (h, params) => {
             const soundUuid = params.row.soundUuid;
-            return soundUuid?h('div', [
+            const bfFlag = params.row.bfFlag;
+            return bfFlag?h('div', [
               h(
                 'a',
                 {
@@ -122,6 +127,7 @@ export default {
                       //   return;
                       // }
                       this.case_collect_tape(soundUuid);
+                      this.billNo = params.row.billNo;
                       this.modal1 = true;
                     }
                   }
@@ -206,14 +212,20 @@ export default {
           }
         },
         {
+          title: '组别',
+          width: 120,
+          key: 'groupName',
+          align: 'center',
+        },
+        {
           title: '经办人',
           width: 120,
           key: 'opUserName',
           align: 'center',
         },
         {
-          title: '案件编码',
-          width: 180,
+          title: '案件编号',
+          width: 200,
           searchOperator: '=',
           key: 'caseNo',
           align: 'center',
@@ -258,7 +270,7 @@ export default {
         },
         {
           title: '账单号',
-          width: 180,
+          width: 200,
           sortable: true,
           key: 'billNo',
           align: 'center',
@@ -358,8 +370,11 @@ export default {
     Cookie.set('all_opt', this.all_opt);
     Cookie.set('plaintext', this.plaintext);
     // this.getList();
-    this.getLeafTypeList()
-    this.getLeafTypeList2()
+    this.collectcode_getListByCodeType(1);//获取沟通状态
+    this.collectcode_getListByCodeType(2);// 获取拨打状态
+    this.getLeafTypeList('02', '');
+    this.getLeafTypeList('03', '');
+    this.getLeafTypeList('04', '');
   },
   methods: {
     // 日历监听
@@ -389,9 +404,29 @@ export default {
       // you can use it to do something...
       // player.[methods]
     },
-    // 公司选择change
-    companyChange (value) {
-      this.getLeafTypeList(value)
+    // 电催中心change
+    companyChange(value) {
+      this.getLeafTypeList('03', value);
+      this.getLeafTypeList('04', value);
+    },
+    // 部门change
+    departmentChange(value) {
+      this.getLeafTypeList('04', value);
+    },
+    // 沟通状态
+    async collectcode_getListByCodeType(type) {
+      const res = await collectcode_getListByCodeType({
+        codeType: type === 1? 'COLLECT_STS': 'TALK_RESULT'
+      });
+      if (res.code === 1) {
+        if (type === 1) {
+          this.collect_status_list = res.data;
+        } else {
+          this.call_status_list = res.data;
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     async case_collect_tape(id) {
       const res = await case_collect_tape(
@@ -433,23 +468,25 @@ export default {
         this.getList();
       }
     },
-    async getLeafTypeList(id) {
+    // 查询机构，公司，部门
+    async getLeafTypeList(type, parent) {
       const res = await getLeafTypeList({
-        parentId: id || '',
-        leafType: '04'
+        // status: "1",
+        leafType: type,
+        parentId: parent || ""
       });
       if (res.code === 1) {
-        this.getLeafTypeList_data = res.data
-      } else {
-        this.$Message.error(res.message);
-      }
-    },
-    async getLeafTypeList2() {
-      const res = await getLeafTypeList({
-        leafType: '02'
-      });
-      if (res.code === 1) {
-        this.getLeafTypeList2_data = res.data
+        switch (type) {
+          case "02":
+            this.company_list_data = res.data;
+            break;
+          case "03":
+            this.department_list_data = res.data;
+            break;
+          case "04":
+            this.collect_list_data = res.data;
+            break;
+        }
       } else {
         this.$Message.error(res.message);
       }

@@ -66,36 +66,54 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="经办人:">
+            <FormItem span="6" label="电催中心:">
               <Select
                 size="small"
-                filterable
-                v-model="formItem.opUserUuid"
                 clearable
-                placeholder="请选择经办人"
+                filterable
+                placeholder="请选择电催中心"
+                @on-change="companyChange"
+                v-model="formItem.opCompayUuid"
               >
                 <Option
-                  v-for="(item, index) in getLeafTypeList_data"
+                  v-for="item in company_list_data"
                   :value="item.id"
-                  :key="item.id + index"
+                  :key="item.id"
                 >{{ item.name }}</Option>
               </Select>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="电催中心:">
+            <FormItem span="6" label="组别:">
               <Select
                 size="small"
-                filterable
-                v-model="formItem.opCompayUuid"
-                @on-change='companyChange'
                 clearable
-                placeholder="请选择电催中心"
+                filterable
+                @on-change="departmentChange"
+                placeholder="请选择组别"
+                v-model="formItem.opOrganizationUuid"
               >
                 <Option
-                  v-for="item in getLeafTypeList2_data"
+                  v-for="item in department_list_data"
                   :value="item.id"
                   :key="item.id"
+                >{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="经办人:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择经办人"
+                v-model="formItem.opUserUuid"
+              >
+                <Option
+                  v-for="(item,index) in collect_list_data"
+                  :value="item.id"
+                  :key="item.id + index"
                 >{{ item.name }}</Option>
               </Select>
             </FormItem>
@@ -130,7 +148,7 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-        <Table :data="tableData" :columns="tableColumns" stripe size="small" align="center"></Table>
+        <Table :data="tableData" border :columns="tableColumns" stripe size="small" align="center"></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div style="float: right;">
@@ -173,6 +191,7 @@
           @statechanged="playerStateChanged($event)"
           @ready="playerReadied"
         ></video-player>
+        <p style="text-align: center; font-size: 14px; color: #2d8cf0; font-weight: 500;margin-top: 20px">账单号：{{billNo}}</p>
       </Modal>
     </div>
   </div>
@@ -187,6 +206,11 @@
   width: 100%;
   box-sizing: border-box;
 }
+.video-player-box {
+  display: flex;
+  justify-content: center
+}
+
 </style>
 
 

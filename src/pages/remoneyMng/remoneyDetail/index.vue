@@ -23,6 +23,7 @@
                 type="datetimerange"
                 placement="bottom-start"
                 placeholder="请选择实际还款时间区间"
+                clearable
                 @on-change="changeActDate"
               ></DatePicker>
             </FormItem>
@@ -37,13 +38,14 @@
                 type="datetimerange"
                 placement="bottom-start"
                 placeholder="请选择应还款时间区间"
+                clearable
                 @on-change="changeDueDate"
               ></DatePicker>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="还款状态:">
-              <Select size="small" v-model="formValidate.payOffSts">
+              <Select size="small" clearable v-model="formValidate.payOffSts">
                 <Option
                   v-for="item in getDirObj.PAY_OFF_STS"
                   :value="item.itemCode"
@@ -134,6 +136,7 @@
                 type="datetimerange"
                 placement="bottom-start"
                 placeholder="请选择分配时间区间"
+                clearable
                 @on-change="changeAllotDate"
               ></DatePicker>
             </FormItem>
@@ -206,6 +209,8 @@
     <Card class="vue-panel-table">
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
+        <span style="margin-left: 10px;">总共{{summary.repayOrdDetailCount||total}}笔回款，</span>
+        <span>总共还款金额{{summary.sumRepayAmt||0}}元</span>
         <Button
           class="fr vue-back-btn header-btn"
           type="primary"
@@ -216,16 +221,6 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-        <div class="panel-desc">
-          <Row :gutter="5">
-            <div class="panel-desc-title fl mr10">回款数(笔)：
-              <span>{{summary.repayOrdDetailCount||total}}</span>
-            </div>
-            <div class="panel-desc-title fl mr10">还款金额(元)：
-              <span>{{summary.sumRepayAmt||0.00}}</span>
-            </div>
-          </Row>
-        </div>
         <Table border :data="tableData" :columns="tableColumns" @on-selection-change="changeSelect" stripe class="tableBox"></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">

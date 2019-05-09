@@ -28,6 +28,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
+                clearable
                 v-model="formValidate.startAndend"
                 format="yyyy-MM-dd"
                 type="datetimerange"
@@ -44,7 +45,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="订单状态:">
-              <Select size="small" v-model="formValidate.ordSts">
+              <Select size="small" clearable v-model="formValidate.ordSts">
                 <Option
                   v-for="item in getDirObj.ORD_STS"
                   :value="item.itemCode"
@@ -55,7 +56,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="产品类型:">
-              <Select size="small" v-model="formValidate.prdTyps" multiple>
+              <Select size="small" clearable v-model="formValidate.prdTyps" multiple>
                 <Option
                   v-for="item in getDirObj.AC_TYP"
                   :value="item.itemCode"

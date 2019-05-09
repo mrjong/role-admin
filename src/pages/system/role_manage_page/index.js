@@ -141,6 +141,8 @@ export default {
           key: 'description',
           width: widthMidVal,
           align: alignCenter,
+          ellipsis: true,
+          tooltip: true,
         },
         {
           title: '创建人',
