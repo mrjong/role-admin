@@ -76,7 +76,9 @@ export default {
           searchOperator: 'like',
           key: 'roleName',
           width: 150,
-          align: 'center'
+          align: 'center',
+          ellipsis: true,
+          tooltip: true,
         },
         {
           title: '状态',

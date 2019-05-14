@@ -31,9 +31,11 @@ export default {
       all_opt: false,//案件详情全部操作权限
       plaintext: false,//案件详情查看明文权限
       query_loading: false,//查询权限按钮loading
-      getLeafTypeList_data: [],
-      getLeafTypeList2_data: [],
+      company_list_data: [],//电催中心list
+      department_list_data: [],//组别list
+      collect_list_data: [],//经办人list
       modal1: false,
+      billNo: null, //录音显示的账单号
       playerOptions: {
         // videojs options
         muted: false,
@@ -103,6 +105,7 @@ export default {
                       //   return;
                       // }
                       this.case_collect_tape(actionId);
+                      this.billNo = params.row.billNo;
                       // this.case_collect_tape_link(soundUuid);
                       this.modal1 = true;
                     }
@@ -195,14 +198,20 @@ export default {
           align: 'center',
         },
         {
+          title: '组别',
+          width: 120,
+          key: 'groupName',
+          align: 'center',
+        },
+        {
           title: '经办人',
           width: 120,
           key: 'opUserName',
           align: 'center',
         },
         {
-          title: '案件编码',
-          width: 180,
+          title: '案件编号',
+          width: 200,
           searchOperator: '=',
           key: 'caseNo',
           align: 'center',
@@ -247,7 +256,7 @@ export default {
         },
         {
           title: '账单号',
-          width: 180,
+          width: 200,
           sortable: true,
           key: 'billNo',
           align: 'center',
@@ -265,7 +274,7 @@ export default {
                 },
                 [
                   h('span', {
-                  },params.row.billNo)
+                  }, params.row.billNo)
                 ]
               )
             ])
@@ -306,8 +315,9 @@ export default {
     Cookie.set('all_opt', this.all_opt);
     Cookie.set('plaintext', this.plaintext);
     // this.getList();
-    this.getLeafTypeList()
-    this.getLeafTypeList2()
+    this.getLeafTypeList('02', '');
+    this.getLeafTypeList('03', '');
+    this.getLeafTypeList('04', '');
   },
   computed: {
     player() {
@@ -342,27 +352,34 @@ export default {
       // you can use it to do something...
       // player.[methods]
     },
-    // 公司选择change
-    companyChange (value) {
-      this.getLeafTypeList(value)
+    // 电催中心change
+    companyChange(value) {
+      this.getLeafTypeList('03', value);
+      this.getLeafTypeList('04', value);
     },
-    async getLeafTypeList(id) {
+    // 部门change
+    departmentChange(value) {
+      this.getLeafTypeList('04', value);
+    },
+    // 查询机构，公司，部门
+    async getLeafTypeList(type, parent) {
       const res = await getLeafTypeList({
-        parentId: id || '',
-        leafType: '04'
+        // status: "1",
+        leafType: type,
+        parentId: parent || ""
       });
       if (res.code === 1) {
-        this.getLeafTypeList_data = res.data
-      } else {
-        this.$Message.error(res.message);
-      }
-    },
-    async getLeafTypeList2() {
-      const res = await getLeafTypeList({
-        leafType: '02'
-      });
-      if (res.code === 1) {
-        this.getLeafTypeList2_data = res.data
+        switch (type) {
+          case "02":
+            this.company_list_data = res.data;
+            break;
+          case "03":
+            this.department_list_data = res.data;
+            break;
+          case "04":
+            this.collect_list_data = res.data;
+            break;
+        }
       } else {
         this.$Message.error(res.message);
       }
@@ -372,8 +389,8 @@ export default {
         if (valid) {
           if (this.formItem.csDate) {
             this.formItem.csDate = [
-             this.formItem.beginDate,
-             this.formItem.endDate,
+              this.formItem.beginDate,
+              this.formItem.endDate,
             ]
           }
           window.sessionStorage.setItem('collecttion_recording_form', JSON.stringify(this.formItem));

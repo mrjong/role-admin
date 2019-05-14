@@ -151,6 +151,7 @@
                 @on-change="dateChange"
                 :editable="false"
                 size='small'
+                clearable
                 placeholder="请选择还款日期"
                 style="width: 100%"
               ></DatePicker>

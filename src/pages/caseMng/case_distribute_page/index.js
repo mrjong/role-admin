@@ -98,7 +98,7 @@ export default {
       allotCaseMounts: 0,
       recycleCaseMounts: 0,
       totalCase: 0,
-      totalOverdueAmt: '',
+      totalOverdueAmt: 0,
       ruleValidate: {
         idNo: [
           {
@@ -350,9 +350,11 @@ export default {
         },
         {
           title: '身份证归属地',
-          width: 150,
+          width: 160,
           align: 'center',
-          key: 'idAddr'
+          key: 'idAddr',
+          ellipsis: true,
+          tooltip: true,
         },
         {
           title: '手机号',

@@ -22,10 +22,10 @@ export default {
         dkorgOrdNo: '', // string 代扣订单号,
         usrNm: '', // 用户姓名,
         mblNo: '', // 手机号,
-        prdTyps:[],
+        prdTyps: [],
         ordSts: '', // 订单状态 借口中取,
         orgFnlMsg: '', //失败原因,
-        ordDt: '', // 还款时间,
+        ordDt: [], // 还款时间,
         prdTyp: '', //产品线01：还到02：随行付钱包 03：商户贷，调接口,
         rutCopyOrg: '', // 代扣通道,
         startRepayDate: '', //起始时间段
@@ -180,7 +180,7 @@ export default {
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal,
-          render(h,params){
+          render(h, params) {
             let res = params.row.repayOrdPrcp;
             res = res ? $this.$options.filters['money'](res) : res;
             return h('span', res);
@@ -202,7 +202,12 @@ export default {
     let remoney_system_form = window.sessionStorage.getItem('remoney_system_form');
     if (remoney_system_form) {
       this.formValidate = JSON.parse(remoney_system_form);
-    }
+    };
+    let today = new Date().toLocaleDateString();
+    today = today.replace(/\//g, '-');
+    this.formValidate.ordDt = [today, today];
+    this.formValidate.startRepayDate = today;
+    this.formValidate.endRepayDate = today;
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -223,7 +228,7 @@ export default {
     },
     // 页码改变的回调
     changePage(pageNo) { //默认带入一个参数是当前的页码数
-      console.log(pageNo,'当前的页码数量值');
+      console.log(pageNo, '当前的页码数量值');
       this.pageNo = pageNo;
       this.getList();
     },
@@ -236,8 +241,8 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          if (this.formValidate.startAndend) {
-            this.formValidate.startAndend = [
+          if (this.formValidate.ordDt) {
+            this.formValidate.ordDt = [
               this.formValidate.startRepayDate,
               this.formValidate.endRepayDate
             ]
@@ -254,18 +259,22 @@ export default {
         this.$Message.error('很抱歉，暂无权限查询');
         return;
       }
+      if (!this.formValidate.startRepayDate) {
+        this.$Message.error('请选择还款日期后再查询');
+        return;
+      }
       this.query_loading = true;
-      let res= await repay_repayUserOrSystem_list({
+      let res = await repay_repayUserOrSystem_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         repayOrdTyp: this.repayOrdTyp,
         ...this.formValidate
       })
       this.query_loading = false;
-      if(res && res.code === 1){
+      if (res && res.code === 1) {
         this.tableData = res.data.content;
         this.total = res.data.totalElements;
-      } else{
+      } else {
         this.$Message.error(res.message);
       }
       console.log(res)
@@ -275,8 +284,13 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formValidate = {
-        prdTyps:[]
+        prdTyps: []
       };
+      let today = new Date().toLocaleDateString();
+      today = today.replace(/\//g, '-');
+      this.formValidate.ordDt = [today, today];
+      this.formValidate.startRepayDate = today;
+      this.formValidate.endRepayDate = today;
       window.sessionStorage.removeItem('remoney_system_form');
       this.$refs[name].resetFields();
     }

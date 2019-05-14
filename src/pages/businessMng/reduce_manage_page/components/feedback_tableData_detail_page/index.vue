@@ -111,11 +111,11 @@ export default {
     };
   },
   created() {
-    const { reliefAmt, reliefTypeName } = this.feedback_data;
+    const { reliefAmt, reliefTypeName, reliefCertificate } = this.feedback_data;
     this.reliefAmt = reliefAmt;
     this.reliefTypeName = reliefTypeName;
     // _this.$options.filters['formatDate'](res,'YYYY-MM-DD HH:mm:ss')
-    this.file_url = this.prefix + this.feedback_data.reliefCertificate;
+    this.file_url = reliefCertificate ? this.prefix + this.feedback_data.reliefCertificate : '';
     this.relief_reliefFlow_getreliefflow(this.feedback_data.reliefNo)
   },
   methods: {

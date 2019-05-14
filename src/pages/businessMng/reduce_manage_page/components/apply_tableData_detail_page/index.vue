@@ -27,7 +27,7 @@
           <span class="apply_detail_info_img_title">凭证信息</span>
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" span="24" class="img_col">
-            <Spin v-if="!file_url">
+            <Spin v-if="file_url == null">
                 <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
                 <div>Loading</div>
             </Spin>
@@ -63,12 +63,12 @@ export default {
     };
   },
   created() {
-    const { applyTime, reliefAmt, reliefTypeName } = this.apply_data;
+    const { applyTime, reliefAmt, reliefTypeName, reliefCertificate } = this.apply_data;
     this.applyTime = applyTime;
     this.reliefAmt = reliefAmt;
     this.reliefTypeName = reliefTypeName;
     // _this.$options.filters['formatDate'](res,'YYYY-MM-DD HH:mm:ss')
-    this.file_url = this.prefix + this.apply_data.reliefCertificate;
+    this.file_url = reliefCertificate ? this.prefix + this.apply_data.reliefCertificate : '';
   },
   methods: {
     del() {

@@ -64,8 +64,8 @@ export default {
       import_data_loading: false,// 导入loading
       query_flag: false, // false 默认查getList  true查询cases_import_list
       file_csaeIds: [],//上传文件返回的案件编号list集合
-      totalOverdueAmt: '',
-      totalCase: '',
+      totalOverdueAmt: 0,
+      totalCase: 0,
       caseMounts: '',
       caseIds: [],// 勾选的案件编号list集合
       ruleValidate: {
@@ -232,7 +232,9 @@ export default {
           title: '身份证归属地',
           width: 150,
           align: 'center',
-          key: 'idAddr'
+          key: 'idAddr',
+          ellipsis: true,
+          tooltip: true,
         },
         {
           title: '手机号',

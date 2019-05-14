@@ -161,6 +161,8 @@
     <Card class="vue-panel-table">
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
+        <span style="margin-left: 10px;">总共{{summary.totalCount || 0}}笔案件，</span>
+        <span>总共逾期金额{{summary.totalOverdueAmt || 0}}元</span>
         <Button
           class="fr vue-back-btn header-btn"
           type="primary"
@@ -175,19 +177,6 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-        <div class="panel-desc">
-          <Row :gutter="5">
-            <div class="panel-desc-title fl mr10">
-              案件数(笔)：
-              <span>{{summary.totalCount || 0}}</span>
-            </div>
-
-            <div class="panel-desc-title fl mr10">
-              逾期金额(元)：
-              <span>{{summary.totalOverdueAmt | money}}</span>
-            </div>
-          </Row>
-        </div>
         <Table :data="tableData" :columns="tableColumns" stripe border></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">

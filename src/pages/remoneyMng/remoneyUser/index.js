@@ -18,7 +18,8 @@ export default {
       //代扣类型
       startAndend: '', //还款日期区间
       formValidate: {
-        prdTyps: []
+        prdTyps: [],
+        ordDt: [],
       },
       ruleValidate: {
         //ruleValidate添加表单的校验规则，用来提示用户的输入法则，具体使用在表单里面 ：rule='ruleValidate'直接使用即可
@@ -186,6 +187,11 @@ export default {
     if (remoney_user_form) {
       this.formValidate = JSON.parse(remoney_user_form);
     }
+    let today = new Date().toLocaleDateString();
+    today = today.replace(/\//g, '-');
+    this.formValidate.ordDt = [today, today];
+    this.formValidate.startRepayDate = today;
+    this.formValidate.endRepayDate = today;
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -219,8 +225,8 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          if (this.formValidate.startAndend) {
-            this.formValidate.startAndend = [
+          if (this.formValidate.ordDt) {
+            this.formValidate.ordDt = [
               this.formValidate.startRepayDate,
               this.formValidate.endRepayDate
             ]
@@ -235,6 +241,10 @@ export default {
     async getList() {
       if (!this.query) {
         this.$Message.error('很抱歉，暂无权限查询');
+        return;
+      }
+      if (!this.formValidate.startRepayDate) {
+        this.$Message.error('请选择还款日期后再查询');
         return;
       }
       this.query_loading = true;
@@ -259,6 +269,11 @@ export default {
       this.formValidate = {
         prdTyps: []
       };
+      let today = new Date().toLocaleDateString();
+      today = today.replace(/\//g, '-');
+      this.formValidate.ordDt = [today, today];
+      this.formValidate.startRepayDate = today;
+      this.formValidate.endRepayDate = today;
       window.sessionStorage.removeItem('remoney_user_form');
       this.$refs[name].resetFields();
     }
