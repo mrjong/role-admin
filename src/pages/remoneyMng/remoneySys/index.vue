@@ -29,7 +29,7 @@
                 size="small"
                 style="width:100%"
                 clearable
-                v-model="formValidate.startAndend"
+                v-model="formValidate.ordDt"
                 format="yyyy-MM-dd"
                 type="datetimerange"
                 placement="bottom-start"

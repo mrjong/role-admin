@@ -28,7 +28,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="formValidate.startAndend"
+                v-model="formValidate.ordDt"
                 clearable
                 format="yyyy-MM-dd"
                 type="datetimerange"
