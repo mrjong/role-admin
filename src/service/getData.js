@@ -971,7 +971,13 @@ export const case_detail_case_identity_info = (obj, options) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-
+// 案件详情获取图片接口
+export const case_detail_getimgurls = (obj, options) =>
+  fetch({
+    url: '/case/detail/getimgurls',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 /*
 *
 *

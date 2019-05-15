@@ -34,6 +34,7 @@ import {
   case_collect_case_list, // 我的案件
   case_list,
   credit_case_process, //获取时间轴接口
+  case_detail_getimgurls,//获取图片信息街口
 } from '@/service/getData';
 let callFlag = false;
 export default {
@@ -98,6 +99,7 @@ export default {
       getDirList: ['GENDER', 'NATION', 'CONTACT_REL_TYPE'],
       getDirObj: {},
       userNmClearCopy: '',// 保存的明文名字
+      img_list: [],//图片列表
       telShow: false,
       mblNo: '',
       caseNo: '',
@@ -1802,6 +1804,7 @@ export default {
       this.collectcode_getCollectRelate(); // 获取沟通状态
       this.case_detail_mail_statistics_list(); // 通话统计
       this.case_detail_case_identity_info(); // 查询案件详情身份信息
+      this.case_detail_getimgurls();
     }, 1500);
     // 催收信息
   },
@@ -2272,6 +2275,18 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 获取图片接口
+    async case_detail_getimgurls() {
+      const res = await case_detail_getimgurls({
+        caseNo: this.caseNo,
+      });
+      console.log(res);
+      if (res.code === 1) {
+        this.img_list = res.data;
+      } else {
+        this.$Message.error('获取图片异常')
+      }
+    },
     // tab 所有点击
     tabClick(name) {
       this[`${name}_pageNo`] = 1;
@@ -2371,12 +2386,8 @@ export default {
       if (type === 'zhongcai') {
         let idCardFront = '';
         let idCardOpposite = '';
-        if (
-          this.case_detail_case_identity_info_Data &&
-          this.case_detail_case_identity_info_Data.userImgList &&
-          this.case_detail_case_identity_info_Data.userImgList.length > 0
-        ) {
-          this.case_detail_case_identity_info_Data.userImgList.forEach((item) => {
+        if (this.img_list.length > 0) {
+          this.img_list.forEach((item) => {
             if (item.imgType == 1) {
               idCardFront = item.imgPath;
             } else if (item.imgType == 2) {
