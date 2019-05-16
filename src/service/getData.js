@@ -510,7 +510,14 @@ export const deduct_list = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-
+// 划扣导出
+export const repayinfo_exportlist = (obj, options) =>
+  fetch({
+    url: '/repayinfo/exportlist',
+    method: 'POST',
+    data: qs.stringify(obj),
+    options,
+  })
 // 系统管理系统角色相关接口
 // 查询接口
 export const system_role_list = (obj) =>
@@ -1231,7 +1238,14 @@ export const credit_case_execute = (obj, options) =>
     data: obj,
     options
   })
-
+export const arb_exportlist = (obj, options) =>
+  fetch({
+    url: '/arb/exportlist',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
+  })
 // 案件详情的获取时间轴接口
 export const credit_case_process = (obj) =>
   fetch({

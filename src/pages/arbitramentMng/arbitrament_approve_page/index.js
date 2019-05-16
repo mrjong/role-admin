@@ -1,7 +1,8 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import dayjs from 'dayjs'
-import { arb_operateRecord, arb_list, arb_detail, arb_check, credit_pdf_upload, credit_case_execute, credit_pdf_data } from '@/service/getData';
+import { arb_operateRecord, arb_list, arb_detail, arb_check, credit_pdf_upload, credit_case_execute, credit_pdf_data, arb_exportlist } from '@/service/getData';
+import util from '@/libs/util';
 import Cookie from 'js-cookie';
 
 export default {
@@ -480,6 +481,7 @@ export default {
           caseNo: item.caseNo,
         }
         this.approve_list.push(obj);
+        this.export_list.push(item.approvalId);
       });
       console.log(this.approve_list)
     },
@@ -490,7 +492,7 @@ export default {
         return;
       }
       this.export_case_loading = true;
-      const res = await repay_repayDetail_exportDown(
+      const res = await arb_exportlist(
         {
           ...this.formItem,
           ids: this.export_list,
@@ -501,7 +503,7 @@ export default {
         }
       );
       this.export_case_loading = false;
-      util.dowloadfile('回款明细', res);
+      util.dowloadfile('仲裁审批', res);
     },
     // 申请执行接口
     async apply_execute() {

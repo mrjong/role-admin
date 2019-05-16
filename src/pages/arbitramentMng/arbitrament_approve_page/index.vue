@@ -121,17 +121,6 @@
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
         <Button
-          @click.stop="exportData"
-          class="fr vue-back-btn header-btn"
-          type="primary"
-          size="small"
-          v-if="execution"
-          :loading='export_case_loading'
-        >
-          <span v-if="!export_case_loading">导出数据</span>
-          <span v-else>导出中...</span>
-        </Button>
-        <Button
           @click.stop="apply_execute"
           class="fr vue-back-btn header-btn"
           type="primary"
@@ -141,6 +130,17 @@
         >
           <span v-if="!apply_loading">申请执行</span>
           <span v-else>执行中...</span>
+        </Button>
+        <Button
+          @click.stop="exportData"
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+          v-if="execution"
+          :loading='export_case_loading'
+        >
+          <span v-if="!export_case_loading">导出数据</span>
+          <span v-else>导出中...</span>
         </Button>
       </p>
       <!-- 表格 -->
