@@ -41,7 +41,7 @@
                     v-model="formItem.loginName"
                     placeholder="请输入账号"
                     :maxlength="10"
-                    :disabled="model.type === '1'? true: false"
+                    :disabled="model.type != '0'? true: false"
                   ></Input>
                 </FormItem>
               </Col>
@@ -332,9 +332,7 @@ export default {
       this.button_loading = false;
       if (res.code === 1) {
         this.$Message.success("修改成功");
-        setTimeout(() => {
-          this.del(1);
-        });
+        this.$emit('passBack', {action: true});
       } else {
         this.$Message.error(res.message);
       }
@@ -348,19 +346,12 @@ export default {
       this.button_loading = false;
       if (res.code === 1) {
         this.$Message.success("添加成功");
-         (() => {
-          this.del(1);
-        });
+        this.$emit('passBack', {action: true});
       } else {
         this.$Message.error(res.message);
       }
     },
     del(type) {
-      // this.childrenData = this.model;
-      // this.childrenData.modal = false;
-      if (type === 1) {
-        this.$parent.getList();
-      }
       this.$emit("passBack", false);
     },
     // 重置

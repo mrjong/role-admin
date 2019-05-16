@@ -38,6 +38,8 @@ export default {
       show_file_list: false,// 显示上传的list
       applyTime: [],//申请时间区间
       approvalTime: [],//审核时间区间
+      export_case_loading: false,//导出loading
+      export_list: [],//导出的list
       showModalType: '',
       shenheObj: {},
       case_detail_remark_list_tableData: [],
@@ -470,6 +472,7 @@ export default {
     // table勾选回调
     changeSelect(arr) {
       this.approve_list = [];
+      this.export_list = [];
       let obj = {};
       arr.forEach(item => {
         obj = {
@@ -479,6 +482,26 @@ export default {
         this.approve_list.push(obj);
       });
       console.log(this.approve_list)
+    },
+    // 导出数据
+    async exportData() {
+      if (this.tableData.length === 0) {
+        this.$Message.info('当前无数据，无法导出');
+        return;
+      }
+      this.export_case_loading = true;
+      const res = await repay_repayDetail_exportDown(
+        {
+          ...this.formItem,
+          ids: this.export_list,
+        },
+        {
+          timeout: 120000,
+          responseType: "blob"
+        }
+      );
+      this.export_case_loading = false;
+      util.dowloadfile('回款明细', res);
     },
     // 申请执行接口
     async apply_execute() {

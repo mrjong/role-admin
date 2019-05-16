@@ -225,6 +225,15 @@ export default {
     // this.getList();
   },
   methods: {
+    // 接收回调
+    passBack(obj) {
+      if (obj.action) {
+        this.parentData.modal = false;
+        this.getList();
+      } else {
+        this.parentData.modal = false;
+      }
+    },
     // 切换每页条数时的回调
     changeSize(pageSize) {
       this.pageSize = pageSize;

@@ -21,7 +21,7 @@
               multiple
               placeholder="请选择机构负责人"
             >
-              <Option v-for="item in bossList" :value="item.uuid" :key="item.uuid">{{ item.name }}</Option>
+              <Option v-for="(item,index) in bossList" :value="item.uuid" :key="item.uuid + index">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -35,9 +35,9 @@
               placeholder="请选择上级机构"
             >
               <Option
-                v-for="item in organizationList"
+                v-for="(item,index) in organizationList"
                 :value="item.id"
-                :key="item.id"
+                :key="item.id + index"
               >{{ item.name }}</Option>
             </Select>
           </FormItem>
@@ -110,7 +110,7 @@
               @on-change="roleSelect"
               placeholder="请选择角色"
             >
-              <Option v-for="item in roleList" :value="item.id" :key="item.id">{{ item.name }}</Option>
+              <Option v-for="(item,index) in roleList" :value="item.id" :key="item.id + index">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -127,13 +127,13 @@
               <Option
                 v-for="(item,index) in companyList"
                 :value="item.id"
-                :key="item"
+                :key="item.id + index"
               >{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
         <!-- <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="parentData.type === '03'"> -->
-        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="departmentFlag">
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="departmentFlag && parentData.type != '02'">
           <FormItem label="部门:" span="4" prop="outfitId">
             <Select
               size="small"
@@ -142,7 +142,20 @@
               clearable
               placeholder="请选择部门"
             >
-              <Option v-for="item in departmentList" :value="item.id" :key="item.id">{{ item.name }}</Option>
+              <Option v-for="(item,index) in departmentList" :value="item.id" :key="item.id + index">{{ item.name }}</Option>
+            </Select>
+          </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="departmentFlag && parentData.type === '02'">
+          <FormItem label="部门:" span="4" >
+            <Select
+              size="small"
+              v-model="addStaffFormItem.outfitId"
+              filterable
+              clearable
+              placeholder="请选择部门"
+            >
+              <Option v-for="(item,index) in departmentList" :value="item.id" :key="item.id + index">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>

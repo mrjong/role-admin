@@ -117,6 +117,7 @@
       v-model="parentData"
       :getDirObj="getDirObj"
       v-if="parentData.modal"
+      @passBack='passBack'
     ></Remodal>
   </div>
 </template>

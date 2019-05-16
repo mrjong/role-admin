@@ -16,10 +16,10 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      query:  false,//查询权限
-      add:  false,//添加权限
-      delete:  false,//删除权限
-      update:  false,//修改权限
+      query: false,//查询权限
+      add: false,//添加权限
+      delete: false,//删除权限
+      update: false,//修改权限
       query_loading: false,//查询按钮loading
       parentData: {
         modal: false,
@@ -119,10 +119,8 @@ export default {
           align: 'center',
           width: 180,
           render: (h, params) => {
-            const row = params.row;
-            const createTime = row.createTime
-              ? this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
-              : row.createTime;
+            let createTime = params.row.createTime;
+            createTime = createTime ? this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss') : createTime;
             return h('span', createTime);
           }
         },
@@ -134,10 +132,8 @@ export default {
           align: 'center',
           width: 180,
           render: (h, params) => {
-            const row = params.row;
-            const updateTime = row.updateTime
-              ? this.$options.filters['formatDate'](updateTime, 'YYYY-MM-DD HH:mm:ss')
-              : row.updateTime;
+            let updateTime = params.row.updateTime;
+            updateTime = updateTime ? this.$options.filters['formatDate'](updateTime, 'YYYY-MM-DD HH:mm:ss') : updateTime;
             return h('span', updateTime);
           }
         },
@@ -163,8 +159,8 @@ export default {
           align: 'center',
           fixed: 'left',
           render: (h, params) => {
-            return this.delete || this.update?h('div', [
-              this.delete?h('Poptip', {
+            return this.delete || this.update ? h('div', [
+              this.delete ? h('Poptip', {
                 props: {
                   confirm: true,
                   title: '您确定要删除这条数据吗?',
@@ -184,8 +180,8 @@ export default {
                     '删除'
                   )
                 ],
-              ): null,
-              this.update?h('a',
+              ) : null,
+              this.update ? h('a',
                 {
                   class: 'edit-btn',
                   props: {},
@@ -198,8 +194,8 @@ export default {
                       }
                     }
                   }
-                }, '更改'): null
-            ]): h('span','无')
+                }, '更改') : null
+            ]) : h('span', '无')
           }
         },
       ]

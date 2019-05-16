@@ -187,7 +187,7 @@ export default {
         },
         {
           title: '拨打状态',
-          width: 120,
+          width: 100,
           key: 'collectResultName',
           align: 'center',
         },
@@ -197,7 +197,12 @@ export default {
           key: 'communicateResultName',
           align: 'center',
         },
-
+        {
+          title: '通话来源',
+          width: 100,
+          key: 'collectTypeName',
+          align: 'center',
+        },
         {
           title: '承诺还款时间',
           width: 150,
