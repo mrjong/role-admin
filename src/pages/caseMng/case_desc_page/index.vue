@@ -90,7 +90,7 @@
           >申请还款</Button>-->
           <Button
             v-if="readType!=='read' && apply_deduct"
-            @click.stop="handOpen('huakou')"
+            @click.stop="handOpen('huakou', case_collect_case_list_data&&case_collect_case_list_data.userId)"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"

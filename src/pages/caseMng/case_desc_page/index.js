@@ -2375,7 +2375,7 @@ export default {
         this.$Message.success('申请成功');
       }
     },
-    handOpen(type) {
+    handOpen(type, userId) {
       console.log(this.modal);
       if (type === 'zhongcai') {
         let idCardFront = '';
@@ -2408,6 +2408,8 @@ export default {
           caseNo: this.caseNo,
           billNo: this.case_detail_case_base_info_Data.billNo,
         }
+      } else if (type === 'huakou') {
+        this.$set(this, 'userId', userId);
       }
       this.modal[type] = true;
     },

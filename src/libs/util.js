@@ -93,7 +93,7 @@ util.setCurrentPath = function (vm, name) {
       });
     }
   });
-  console.log(name,'-----------------');
+  console.log(name, '-----------------');
   let currentPathArr = [];
   if (name === '/home') {
     currentPathArr = [
@@ -104,80 +104,80 @@ util.setCurrentPath = function (vm, name) {
       }
     ];
   } else
-   if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== '/home') {
-    currentPathArr = [
-      {
-        title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, '/home')),
-        path: '/home',
-        name: '/home'
-      },
-      {
-        title: title,
-        path: '',
-        name: name
-      }
-    ];
-  } else {
-    let currentPathObj = vm.$store.state.app.routers.filter((item) => {
-      if (item.children.length <= 1) {
-        return item.children[0].name === name;
-      } else {
-        let i = 0;
-        let childArr = item.children;
-        let len = childArr.length;
-        while (i < len) {
-          if (childArr[i].name === name) {
-            return true;
-          }
-          i++;
-        }
-        return false;
-      }
-    })[0];
-    if (currentPathObj.children.length <= 1 && currentPathObj.name === '/home') {
+    if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== '/home') {
       currentPathArr = [
         {
-          title: '首页',
-          path: '/home',
-          name: '/home'
-        }
-      ];
-    } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== '/home') {
-      currentPathArr = [
-        {
-          title: '首页',
+          title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, '/home')),
           path: '/home',
           name: '/home'
         },
         {
-          title: currentPathObj.title,
+          title: title,
           path: '',
           name: name
         }
       ];
     } else {
-      let childObj = currentPathObj.children.filter((child) => {
-        return child.name === name;
-      })[0];
-      currentPathArr = [
-        {
-          title: '首页',
-          path: '/home',
-          name: '/home'
-        },
-        {
-          title: currentPathObj.title,
-          path: '',
-          name: currentPathObj.name
-        },
-        {
-          title: childObj.title,
-          path: currentPathObj.path + '/' + childObj.path,
-          name: name
+      let currentPathObj = vm.$store.state.app.routers.filter((item) => {
+        if (item.children.length <= 1) {
+          return item.children[0].name === name;
+        } else {
+          let i = 0;
+          let childArr = item.children;
+          let len = childArr.length;
+          while (i < len) {
+            if (childArr[i].name === name) {
+              return true;
+            }
+            i++;
+          }
+          return false;
         }
-      ];
+      })[0];
+      if (currentPathObj.children.length <= 1 && currentPathObj.name === '/home') {
+        currentPathArr = [
+          {
+            title: '首页',
+            path: '/home',
+            name: '/home'
+          }
+        ];
+      } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== '/home') {
+        currentPathArr = [
+          {
+            title: '首页',
+            path: '/home',
+            name: '/home'
+          },
+          {
+            title: currentPathObj.title,
+            path: '',
+            name: name
+          }
+        ];
+      } else {
+        let childObj = currentPathObj.children.filter((child) => {
+          return child.name === name;
+        })[0];
+        currentPathArr = [
+          {
+            title: '首页',
+            path: '/home',
+            name: '/home'
+          },
+          {
+            title: currentPathObj.title,
+            path: '',
+            name: currentPathObj.name
+          },
+          {
+            title: childObj.title,
+            path: currentPathObj.path + '/' + childObj.path,
+            name: name
+          }
+        ];
+      }
     }
-  }
   vm.$store.commit('setCurrentPath', currentPathArr);
 
   return currentPathArr;
@@ -289,5 +289,14 @@ util.slice_case_number = (arr, prevIndex, nextIndex) => {
   newArr = arr.slice(prevIndex, nextIndex);
   arr = [];
   return newArr;
+}
+// 处理当前日期 xxxx-xx-xx
+util.getToday = () => {
+  let today = new Date();
+  let year = today.getFullYear();
+  let month = (today.getMonth() + 1) < 10 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1;
+  let day = today.getDate() < 10 ? '0' + today.getDate() : today.getDate();
+  today = `${year}-${month}-${day}`;
+  return today;
 }
 export default util;

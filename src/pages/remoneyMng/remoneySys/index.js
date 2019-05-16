@@ -1,5 +1,7 @@
 import { repay_repayUserOrSystem_list } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
+import util from '@/libs/util';
+
 export default {
   name: 'remoney_user',
   mixins: [sysDictionary],
@@ -203,11 +205,9 @@ export default {
     if (remoney_system_form) {
       this.formValidate = JSON.parse(remoney_system_form);
     };
-    let today = new Date().toLocaleDateString();
-    today = today.replace(/\//g, '-');
-    this.formValidate.ordDt = [today, today];
-    this.formValidate.startRepayDate = today;
-    this.formValidate.endRepayDate = today;
+    this.formValidate.ordDt = [util.getToday(), util.getToday()];
+    this.formValidate.startRepayDate = util.getToday();
+    this.formValidate.endRepayDate = util.getToday();
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -286,11 +286,9 @@ export default {
       this.formValidate = {
         prdTyps: []
       };
-      let today = new Date().toLocaleDateString();
-      today = today.replace(/\//g, '-');
-      this.formValidate.ordDt = [today, today];
-      this.formValidate.startRepayDate = today;
-      this.formValidate.endRepayDate = today;
+      this.formValidate.ordDt = [util.getToday(), util.getToday()];
+      this.formValidate.startRepayDate = util.getToday();
+      this.formValidate.endRepayDate = util.getToday();
       window.sessionStorage.removeItem('remoney_system_form');
       this.$refs[name].resetFields();
     }
