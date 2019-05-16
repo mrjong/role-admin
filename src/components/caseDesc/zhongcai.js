@@ -100,6 +100,7 @@ export default {
 		model: {}
 	},
 	created() {
+    console.log(this.zhongcai_data)
     if (this.zhongcai_data.routertype) {
       this.formItem.idAddress = this.zhongcai_data.idAddress;
       this.formItem.voucherNo = this.zhongcai_data.voucherNo;
@@ -114,7 +115,8 @@ export default {
 		if (this.zhongcai_data.userNation) {
       this.formItem.userNation = this.zhongcai_data.userNation;
 			// this.$refs.formItem.validateField('userNation');
-		}
+    }
+    this.showImg();
 	},
 	methods: {
 		handleView(name) {
@@ -132,7 +134,8 @@ export default {
 						url: this.prefix + this.zhongcai_data.idCardFront,
 						relativePath: this.zhongcai_data.idCardFront,
 						status: 'finished'
-					});
+          });
+          // this.$set(this.formItem, 'idCardFront', this.uploadList[0].relativePath)
 					// this.$refs.formItem.validateField('idCardFront');
 				}
 
@@ -143,7 +146,8 @@ export default {
 						url: this.prefix + this.zhongcai_data.idCardOpposite,
 						relativePath: this.zhongcai_data.idCardOpposite,
 						status: 'finished'
-					});
+          });
+          // this.$set(this.formItem, 'idCardOpposite', this.uploadList1[0].relativePath)
 					// this.$refs.formItem.validateField('idCardOpposite');
 				}
 				if (this.zhongcai_data.voucherImg) {
@@ -253,7 +257,8 @@ export default {
 						relativePath: res.data.relativePath,
 						status: 'finished'
 					}
-				];
+        ];
+        // this.$set(this.formItem, 'idCardFront', this.uploadList[0].relativePath)
 				file.url = res.data.relativePath;
 				this.$refs.formItem.validateField('idCardFront');
 			} else {
@@ -270,7 +275,8 @@ export default {
 						url: this.prefix + res.data.relativePath,
 						status: 'finished'
 					}
-				];
+        ];
+        // this.$set(this.formItem, 'idCardOpposite', this.uploadList1[0].relativePath)
 				file.url = res.data.relativePath;
 				this.$refs.formItem.validateField('idCardOpposite');
 			} else {
@@ -372,6 +378,6 @@ export default {
 		// }
     // this.uploadList2 = this.$refs.upload2.fileList;
 		// this.uploadList3 = this.$refs.upload3.fileList;
-		this.showImg();
+		// this.showImg();
 	}
 };

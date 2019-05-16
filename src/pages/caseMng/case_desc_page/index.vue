@@ -167,10 +167,10 @@
             <Col :xs="24" :sm="24" :md="12" :lg="12">
               <div
                 class="fl"
-                v-for="(item,index) in case_detail_case_identity_info_Data.userImgList"
+                v-for="(item,index) in img_list"
               >
                 <div class="demo-upload-list">
-                  <img :src="`/admin/img/mark/${item.imgPath}`" style="vertical-align: top;">
+                  <img :src="item.imgPath? `/admin/img/mark/${item.imgPath}`: null" style="vertical-align: top;">
                   <div
                     class="demo-upload-list-cover"
                     @click="handleView(`/admin/img/mark/${item.imgPath}`)"
