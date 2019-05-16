@@ -516,6 +516,7 @@ export const repayinfo_exportlist = (obj, options) =>
     url: '/repayinfo/exportlist',
     method: 'POST',
     data: qs.stringify(obj),
+    responseType: 'blob',
     options,
   })
 // 系统管理系统角色相关接口

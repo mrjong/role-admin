@@ -59,6 +59,7 @@
                   v-for="item in getDirObj.RELIEF_STATUS"
                   :value="item.itemCode"
                   :key="item.itemCode"
+                  v-if="item.itemCode != 'E'"
                 >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
@@ -149,10 +150,15 @@
         <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px;">
           <span>提示</span>
         </p>
-        <Alert show-icon type="warning">
+        <Alert show-icon type="warning" v-if="reliefNos.length < 1">
           <template
             slot="desc"
           >该操作将对所有结果审核通过，您确认要继续操作么?</template>
+        </Alert>
+        <Alert show-icon type="warning" v-else>
+          <template
+            slot="desc"
+          >该操作将对选中结果审核通过，您确认要继续操作么?</template>
         </Alert>
         <div slot="footer">
           <Button size="small" @click="cancel('1')">取消</Button>

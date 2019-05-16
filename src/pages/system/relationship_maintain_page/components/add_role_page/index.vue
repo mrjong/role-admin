@@ -223,7 +223,7 @@ export default {
       const res = await call_employee_add(this.formItem);
       this.add_loading = false;
       if (res.code === 1) {
-        this.$Message.success('修改成功');
+        this.$Message.success('添加成功');
         this.childrenData = {
           modal: false,
           type: "ok"
