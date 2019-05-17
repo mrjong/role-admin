@@ -86,12 +86,11 @@
                   ></Input>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="12" :lg="12" span="4">
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
                 <FormItem label="系统角色:" span="4" prop="roleIds">
                   <Select
                     size="small"
                     v-model="formItem.roleIds"
-                    filterable
                     multiple
                     :clearable="model.type !== '1'? true: false"
                     placeholder="请选择系统角色"
@@ -352,7 +351,7 @@ export default {
       }
     },
     del(type) {
-      this.$emit("passBack", false);
+      this.$emit("passBack", {action: false});
     },
     // 重置
     clearForm(name) {

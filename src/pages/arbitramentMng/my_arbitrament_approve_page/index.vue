@@ -13,21 +13,6 @@
         :rules="ruleValidate"
       >
         <Row>
-          <!-- <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="客户姓名:">
-              <Input size="small" clearable v-model="formItem.userNm" placeholder="请输入客户姓名"/>
-            </FormItem>
-          </Col>
-            <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="手机号:" prop="mblNo">
-              <Input size="small" clearable v-model="formItem.mblNo" placeholder="请输入手机号"/>
-            </FormItem>
-          </Col>
-           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="身份证号:" prop="idNo">
-              <Input size="small" clearable v-model="formItem.idNo" placeholder="请输入身份证号"/>
-            </FormItem>
-          </Col>-->
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="产品线:" prop="productTypes">
               <Select
@@ -70,6 +55,7 @@
                 v-model="applyTime"
                 format="yyyy-MM-dd"
                 type="daterange"
+                clearable
                 @on-change="changeApplyTime"
                 placement="bottom-start"
                 placeholder="请选择申请日期"
@@ -85,6 +71,7 @@
                 v-model="approvalTime"
                 format="yyyy-MM-dd"
                 type="daterange"
+                clearable
                 @on-change="changeApprovalTime"
                 placement="bottom-start"
                 placeholder="请选择审核日期"

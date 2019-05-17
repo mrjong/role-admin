@@ -54,6 +54,7 @@
                 size="small"
                 style="width:100%"
                 v-model="applyTime"
+                clearable
                 format="yyyy-MM-dd"
                 type="daterange"
                 @on-change="changeApplyTime"
@@ -71,6 +72,7 @@
                 v-model="approvalTime"
                 format="yyyy-MM-dd"
                 type="daterange"
+                clearable
                 @on-change="changeApprovalTime"
                 placement="bottom-start"
                 placeholder="请选择审核日期"

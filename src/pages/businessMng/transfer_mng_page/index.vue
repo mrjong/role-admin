@@ -15,7 +15,7 @@
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="产品线:">
-              <Select size="small" v-model="formValidate.prdTyp" placeholder="请选择产品线">
+              <Select size="small" clearable v-model="formValidate.prdTyp" placeholder="请选择产品线">
                 <Option
                   v-for="item in getDirObj.PROD_TYPE"
                   :value="item.itemCode"
@@ -36,7 +36,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="订单状态:">
-              <Select size="small" v-model="formValidate.repayOrdSts" placeholder="请选择订单状态">
+              <Select size="small" clearable v-model="formValidate.repayOrdSts" placeholder="请选择订单状态">
                 <Option
                   v-for="item in getDirObj.REPAY_ORD_STS"
                   :value="item.itemCode"
@@ -53,6 +53,7 @@
                 v-model="formValidate.applyDate"
                 format="yyyy-MM-dd"
                 type="datetimerange"
+                clearable
                 placement="bottom-start"
                 placeholder="请选择申请日期区间"
                 @on-change="changeApplyDate"
