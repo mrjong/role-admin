@@ -300,6 +300,7 @@ export default {
       if(res && res.code === 1){
         this.tableData = res.data.content;
         this.total = res.data.totalElements;
+        this.export_list = [];
       } else{
         this.$Message.error(res.message);
       }

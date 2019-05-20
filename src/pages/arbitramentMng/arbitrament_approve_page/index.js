@@ -766,6 +766,7 @@ export default {
       if (res.code === 1) {
         this.tableData = res.data.content;
         this.total = res.data.totalElements;
+        this.export_list = [];
         this.pageNo = res.data.number;
       } else {
         this.$Message.error(res.message);
