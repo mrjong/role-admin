@@ -1,5 +1,6 @@
-import { deduct_list } from '@/service/getData';
+import { deduct_list, repayinfo_exportlist } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
+import util from '@/libs/util';
 export default {
   name: 'transfer_mng_page',
   mixins: [sysDictionary],
@@ -18,6 +19,8 @@ export default {
       query: false,//查询权限按钮
       query_loading: false,//查询权限按钮loding
       applyDate: '', //申请日期区间
+      export_list: [],//导出list
+      export_case_loading: false,//导出loading
       formValidate: {
         // prdTyp: '14', //产品线01：还到02：随行付钱包 03：商户贷，调接口
         // caseNo:'',// 案件号
@@ -40,6 +43,13 @@ export default {
           width: 60,
           align: alignCenter,
           fixed: 'left',
+        },
+        {
+          type: 'index', // 通过给columns 数据设置 type:'index'
+          width: 60,
+          align: alignCenter,
+          fixed: 'left',
+          title: '序号'
         },
         {
           title: '申请流水号',
@@ -216,6 +226,34 @@ export default {
     // this.getList();
   },
   methods: {
+    // table勾选回调
+    changeSelect(arr) {
+      this.export_list = [];
+      arr.forEach(item => {
+        this.export_list.push(item.id);
+      });
+      console.log(this.approve_list)
+    },
+    // 导出数据
+    async exportData() {
+      if (this.tableData.length === 0) {
+        this.$Message.info('当前无数据，无法导出');
+        return;
+      }
+      this.export_case_loading = true;
+      const res = await repayinfo_exportlist(
+        {
+          ...this.formValidate,
+          ids: this.export_list,
+        },
+        {
+          timeout: 120000,
+          responseType: "blob"
+        }
+      );
+      this.export_case_loading = false;
+      util.dowloadfile('划扣管理', res);
+    },
     // 改变日期区间的格式之后进行处理
     changeApplyDate(val1, val2) {
       this.formValidate.applayDateLt = val1[0];
@@ -262,6 +300,7 @@ export default {
       if(res && res.code === 1){
         this.tableData = res.data.content;
         this.total = res.data.totalElements;
+        this.export_list = [];
       } else{
         this.$Message.error(res.message);
       }

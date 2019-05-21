@@ -25,13 +25,13 @@ export default {
         modal: false
       },
       ruleValidate: {
-        loginName: [
-          {
-            pattern: this.GLOBAL.loginCount,
-            message: "4到10位（字母，数字，下划线，减号)",
-            trigger: "blur"
-          }
-        ],
+        // loginName: [
+        //   {
+        //     pattern: this.GLOBAL.loginCount,
+        //     message: "4到10位（字母，数字，下划线，减号)",
+        //     trigger: "blur"
+        //   }
+        // ],
       },
       pageNo: 1,
       pageSize: 10,
@@ -225,6 +225,15 @@ export default {
     // this.getList();
   },
   methods: {
+    // 接收回调
+    passBack(obj) {
+      if (obj.action) {
+        this.parentData.modal = false;
+        this.getList();
+      } else {
+        this.parentData.modal = false;
+      }
+    },
     // 切换每页条数时的回调
     changeSize(pageSize) {
       this.pageSize = pageSize;
@@ -271,13 +280,9 @@ export default {
       console.log(this.parentData);
     },
     handleSubmit(name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          window.sessionStorage.setItem('system_user_form', JSON.stringify(this.formItem));
-          this.pageNo = 1;
-          this.getList();
-        }
-      });
+      window.sessionStorage.setItem('system_user_form', JSON.stringify(this.formItem));
+      this.pageNo = 1;
+      this.getList();
     },
     // 重置
     clearForm(name) {

@@ -39,14 +39,14 @@ export default {
 
 <style lang="less" scoped>
 .time_line_wrap > li:nth-child(1) {
-  margin-left: 130px !important;
+  margin-left: 150px !important;
 }
 .time_line_wrap {
   // width: 150%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 80px 0 100px;
+  padding: 0 80px 0 140px;
   box-sizing: border-box;
   overflow-x: auto;
   height: 200px;

@@ -65,6 +65,7 @@ export default {
       time_loading: false,// 时间轴loading
       time_line_data: {},//传给时间轴的数据
       breaks_data: {},//减免info入参
+      message_list_loading: false,//通讯录table loading
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -2157,12 +2158,14 @@ export default {
 
     // 通信记录统计
     async case_detail_mail_statistics_list() {
+      this.message_list_loading = true;
       const res = await case_detail_mail_statistics_list({
         caseNo: this.caseNo,
         userId: this.userId,
         pageNum: this.case_detail_mail_statistics_list_pageNo,
         pageSize: this.case_detail_mail_statistics_list_pageSize
       });
+      this.message_list_loading = false;
       if (res.code === 1) {
         this.case_detail_mail_statistics_list_tableData = res.data && res.data.content;
         this.case_detail_mail_statistics_list_pageSize = res.data.size;
@@ -2174,12 +2177,14 @@ export default {
 
     // 通话明细
     async case_detail_mail_detail_list() {
+      this.message_list_loading = true;
       const res = await case_detail_mail_detail_list({
         caseNo: this.caseNo,
         userId: this.userId,
         pageNum: this.case_detail_mail_detail_list_pageNo,
         pageSize: this.case_detail_mail_detail_list_pageSize
       });
+      this.message_list_loading = false;
       if (res.code === 1) {
         this.case_detail_mail_detail_list_tableData = res.data && res.data.content;
         this.case_detail_mail_detail_list_pageSize = res.data.size;
@@ -2191,12 +2196,14 @@ export default {
 
     // 通讯录
     async case_detail_mail_list() {
+      this.message_list_loading = true;
       const res = await case_detail_mail_list({
         caseNo: this.caseNo,
         userId: this.userId,
         pageNum: this.case_detail_mail_list_pageNo,
         pageSize: this.case_detail_mail_list_pageSize
       });
+      this.message_list_loading = false;
       if (res.code === 1) {
         this.case_detail_mail_list_tableData = res.data && res.data.content;
         this.case_detail_mail_list_pageSize = res.data.size;
@@ -2208,12 +2215,14 @@ export default {
 
     // 通话更新
     async case_detail_mail_list_appended() {
+      this.message_list_loading = true;
       const res = await case_detail_mail_list_appended({
         caseNo: this.caseNo,
         userId: this.userId,
         pageNum: this.case_detail_mail_list_appended_pageNo,
         pageSize: this.case_detail_mail_list_appended_pageSize
-      });
+      })
+      this.message_list_loading = false;
       if (res.code === 1) {
         this.case_detail_mail_list_appended_tableData = res.data && res.data.content;
         this.case_detail_mail_list_appended_pageSize = res.data.size;
@@ -2381,7 +2390,7 @@ export default {
         this.$Message.success('申请成功');
       }
     },
-    handOpen(type) {
+    handOpen(type, userId) {
       console.log(this.modal);
       if (type === 'zhongcai') {
         let idCardFront = '';
@@ -2410,6 +2419,8 @@ export default {
           caseNo: this.caseNo,
           billNo: this.case_detail_case_base_info_Data.billNo,
         }
+      } else if (type === 'huakou') {
+        this.$set(this, 'userId', userId);
       }
       this.modal[type] = true;
     },

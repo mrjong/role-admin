@@ -15,18 +15,18 @@
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="姓名:" prop="name">
+            <FormItem label="姓名:">
               <Input size="small" clearable v-model.trim="formItem.name" placeholder="请输入姓名"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="账号:" prop="loginName">
+            <FormItem label="账号:">
               <Input size="small" clearable v-model.trim="formItem.loginName" placeholder="请输入账号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="状态:" prop="state">
-              <Select size="small" placeholder="请选择状态" v-model="formItem.state">
+            <FormItem label="状态:">
+              <Select size="small" clearable placeholder="请选择状态" v-model="formItem.state">
                 <Option
                   v-for="item in getDirObj['1_0_AVAILABLE_DISABLE']"
                   :value="item.itemCode"
@@ -117,6 +117,7 @@
       v-model="parentData"
       :getDirObj="getDirObj"
       v-if="parentData.modal"
+      @passBack='passBack'
     ></Remodal>
   </div>
 </template>

@@ -234,7 +234,7 @@ export default {
           key: "overdueTotalCount",
           className: "caseCount",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "逾期累计天数",
@@ -242,7 +242,7 @@ export default {
           key: "overdueTotalDays",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "分期期数",
@@ -258,7 +258,7 @@ export default {
           key: "waitPerdNum",
           className: "tableMainW",
           align: alignCenter,
-          width: widthMidVal
+          width: 100
         },
         {
           title: "银行卡号",
@@ -282,7 +282,7 @@ export default {
           key: "billPrcpAmt",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "订单总金额",
@@ -290,7 +290,7 @@ export default {
           key: "billTotAmt",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "每期应还本金",
@@ -298,7 +298,7 @@ export default {
           key: "perdPrcpAmt",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "服务费",
@@ -306,7 +306,7 @@ export default {
           key: "billSerAmt",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "利息",
@@ -314,7 +314,7 @@ export default {
           key: "billItrtAmt",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "每期应还总金额",
@@ -322,7 +322,7 @@ export default {
           key: "perdTotAmt",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "账单类型",
@@ -393,7 +393,7 @@ export default {
           key: "usrBirthDt",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "性别",
@@ -401,7 +401,7 @@ export default {
           key: "usrGender",
           className: "tableMainW",
           align: alignCenter,
-          width: widthMidVal
+          width: 100
         },
         {
           title: "户籍地址",
@@ -409,7 +409,10 @@ export default {
           key: "idDtlAddr",
           className: "tableMainW",
           align: alignCenter,
-          width: widthMidVal
+          width: 200,
+          ellipsis: true,
+          tooltip: true
+
         },
         {
           title: "逾期状态",
@@ -433,7 +436,7 @@ export default {
           key: "perdNum",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "应还日期",
@@ -465,7 +468,7 @@ export default {
           key: "perdTotRep",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "减免金额",
@@ -473,7 +476,7 @@ export default {
           key: "drtFineAmt",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "实收利息",
@@ -481,7 +484,7 @@ export default {
           key: "perdItrtRep",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "实收罚息",
@@ -489,7 +492,7 @@ export default {
           key: "perdFineRep",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "逾期天数",
@@ -497,7 +500,7 @@ export default {
           key: "overdueDays",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "剩余本金",
@@ -505,7 +508,7 @@ export default {
           key: "billRemainPrcpAmt",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "放款次数",
@@ -513,7 +516,7 @@ export default {
           key: "ordSuccCount",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: 100
         },
         {
           title: "经办人",

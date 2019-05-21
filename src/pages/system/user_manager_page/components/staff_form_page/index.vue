@@ -63,7 +63,7 @@
               @on-change="roleSelect"
               :disabled="!formDisabled"
             >
-              <Option v-for="item in roleList" :value="item.id" :key="item.id">{{ item.name }}</Option>
+              <Option v-for="(item,index) in roleList" :value="item.id" :key="item.id + index">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -79,7 +79,7 @@
               placeholder="请选择公司"
               :disabled="!formDisabled"
             >
-              <Option v-for="item in companyList" :value="item.id" :key="item.id">{{ item.name }}</Option>
+              <Option v-for="(item,index) in companyList" :value="item.id" :key="item.id + index">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -95,7 +95,7 @@
               @on-change="outfitChange"
               :disabled="!formDisabled"
             >
-              <Option v-for="item in departmentList" :value="item.id" :key="item.id">{{ item.name }}</Option>
+              <Option v-for="(item,index) in departmentList" :value="item.id" :key="item.id + index">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -110,9 +110,9 @@
               :disabled="!formDisabled"
             >
               <Option
-                v-for="item in getDirObj['SEAT_TYPE']"
+                v-for="item,index in getDirObj['SEAT_TYPE']"
                 :value="item.itemCode"
-                :key="item.itemCode"
+                :key="item.itemCode + index"
               >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
@@ -426,12 +426,16 @@ export default {
   methods: {
     //公司变更联动部门变更
     companyChange(obj) {
-      this.staffFormItem.companyName = obj.label;
-      this.collect_user_list("03", obj.value);
+      if (obj) {
+        this.staffFormItem.companyName = obj.label;
+        this.collect_user_list("03", obj.value);
+      }
     },
     //部门变更
     outfitChange(obj) {
-      this.staffFormItem.outfitName = obj.label;
+      if (obj) {
+        this.staffFormItem.outfitName = obj.label;
+      }
     },
     // 选择角色变更
     roleSelect(item) {

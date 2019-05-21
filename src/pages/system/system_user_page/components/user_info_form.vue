@@ -41,7 +41,7 @@
                     v-model="formItem.loginName"
                     placeholder="请输入账号"
                     :maxlength="10"
-                    :disabled="model.type === '1'? true: false"
+                    :disabled="model.type != '0'? true: false"
                   ></Input>
                 </FormItem>
               </Col>
@@ -86,12 +86,11 @@
                   ></Input>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="12" :lg="12" span="4">
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
                 <FormItem label="系统角色:" span="4" prop="roleIds">
                   <Select
                     size="small"
                     v-model="formItem.roleIds"
-                    filterable
                     multiple
                     :clearable="model.type !== '1'? true: false"
                     placeholder="请选择系统角色"
@@ -332,9 +331,7 @@ export default {
       this.button_loading = false;
       if (res.code === 1) {
         this.$Message.success("修改成功");
-        setTimeout(() => {
-          this.del(1);
-        });
+        this.$emit('passBack', {action: true});
       } else {
         this.$Message.error(res.message);
       }
@@ -348,20 +345,13 @@ export default {
       this.button_loading = false;
       if (res.code === 1) {
         this.$Message.success("添加成功");
-         (() => {
-          this.del(1);
-        });
+        this.$emit('passBack', {action: true});
       } else {
         this.$Message.error(res.message);
       }
     },
     del(type) {
-      // this.childrenData = this.model;
-      // this.childrenData.modal = false;
-      if (type === 1) {
-        this.$parent.getList();
-      }
-      this.$emit("passBack", false);
+      this.$emit("passBack", {action: false});
     },
     // 重置
     clearForm(name) {

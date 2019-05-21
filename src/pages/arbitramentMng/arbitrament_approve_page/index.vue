@@ -54,6 +54,7 @@
                 size="small"
                 style="width:100%"
                 v-model="applyTime"
+                clearable
                 format="yyyy-MM-dd"
                 type="daterange"
                 @on-change="changeApplyTime"
@@ -71,6 +72,7 @@
                 v-model="approvalTime"
                 format="yyyy-MM-dd"
                 type="daterange"
+                clearable
                 @on-change="changeApprovalTime"
                 placement="bottom-start"
                 placeholder="请选择审核日期"
@@ -130,6 +132,17 @@
         >
           <span v-if="!apply_loading">申请执行</span>
           <span v-else>执行中...</span>
+        </Button>
+        <Button
+          @click.stop="exportData"
+          class="fr vue-back-btn header-btn"
+          type="primary"
+          size="small"
+          v-if="execution"
+          :loading='export_case_loading'
+        >
+          <span v-if="!export_case_loading">导出数据</span>
+          <span v-else>导出中...</span>
         </Button>
       </p>
       <!-- 表格 -->

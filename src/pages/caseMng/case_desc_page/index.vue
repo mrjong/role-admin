@@ -90,7 +90,7 @@
           >申请还款</Button>-->
           <Button
             v-if="readType!=='read' && apply_deduct"
-            @click.stop="handOpen('huakou')"
+            @click.stop="handOpen('huakou', case_collect_case_list_data&&case_collect_case_list_data.userId)"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
@@ -625,6 +625,7 @@
                     <div>
                       <Table
                         border
+                        :loading='message_list_loading'
                         :data="case_detail_mail_statistics_list_tableData"
                         :columns="case_detail_mail_statistics_list_tableColumns"
                         stripe
@@ -651,6 +652,7 @@
                     <div>
                       <Table
                         border
+                        :loading='message_list_loading'
                         :data="case_detail_mail_detail_list_tableData"
                         :columns="case_detail_mail_detail_list_tableColumns"
                         stripe
@@ -677,6 +679,7 @@
                     <div>
                       <Table
                         border
+                        :loading='message_list_loading'
                         :data="case_detail_mail_list_tableData"
                         :columns="case_detail_mail_list_tableColumns"
                         stripe
@@ -703,6 +706,7 @@
                     <div>
                       <Table
                         border
+                        :loading='message_list_loading'
                         :data="case_detail_mail_list_appended_tableData"
                         :columns="case_detail_mail_list_appended_tableColumns"
                         stripe

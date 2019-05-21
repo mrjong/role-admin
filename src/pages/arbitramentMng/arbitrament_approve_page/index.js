@@ -1,7 +1,8 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import dayjs from 'dayjs'
-import { arb_operateRecord, arb_list, arb_detail, arb_check, credit_pdf_upload, credit_case_execute, credit_pdf_data } from '@/service/getData';
+import { arb_operateRecord, arb_list, arb_detail, arb_check, credit_pdf_upload, credit_case_execute, credit_pdf_data, arb_exportlist } from '@/service/getData';
+import util from '@/libs/util';
 import Cookie from 'js-cookie';
 
 export default {
@@ -38,6 +39,8 @@ export default {
       show_file_list: false,// 显示上传的list
       applyTime: [],//申请时间区间
       approvalTime: [],//审核时间区间
+      export_case_loading: false,//导出loading
+      export_list: [],//导出的list
       showModalType: '',
       shenheObj: {},
       case_detail_remark_list_tableData: [],
@@ -470,6 +473,7 @@ export default {
     // table勾选回调
     changeSelect(arr) {
       this.approve_list = [];
+      this.export_list = [];
       let obj = {};
       arr.forEach(item => {
         obj = {
@@ -477,8 +481,29 @@ export default {
           caseNo: item.caseNo,
         }
         this.approve_list.push(obj);
+        this.export_list.push(item.approvalId);
       });
       console.log(this.approve_list)
+    },
+    // 导出数据
+    async exportData() {
+      if (this.tableData.length === 0) {
+        this.$Message.info('当前无数据，无法导出');
+        return;
+      }
+      this.export_case_loading = true;
+      const res = await arb_exportlist(
+        {
+          ...this.formItem,
+          ids: this.export_list,
+        },
+        {
+          timeout: 120000,
+          responseType: "blob"
+        }
+      );
+      this.export_case_loading = false;
+      util.dowloadfile('仲裁审批', res);
     },
     // 申请执行接口
     async apply_execute() {
@@ -741,6 +766,7 @@ export default {
       if (res.code === 1) {
         this.tableData = res.data.content;
         this.total = res.data.totalElements;
+        this.export_list = [];
         this.pageNo = res.data.number;
       } else {
         this.$Message.error(res.message);
