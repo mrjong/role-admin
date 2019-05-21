@@ -17,6 +17,7 @@ export default {
       modal12: false,
       modal11: false,
       query: false,//查询权限按钮
+      export_case: false,//导出权限
       query_loading: false,//查询权限按钮loding
       applyDate: '', //申请日期区间
       export_list: [],//导出list
@@ -220,6 +221,8 @@ export default {
       }
       switch (item.url) {
         case "query": this.query = true;
+          break;
+        case "export": this.export_case = true;
           break;
       }
     });
