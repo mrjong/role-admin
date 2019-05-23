@@ -247,17 +247,49 @@ export const monitor_overDueReports_exportDown = (obj, options) =>
     options
   });
 
-// 呼叫明细列表接口查询
-export const monitor_callDetail_list = (obj) =>
+// 容联呼叫明细列表接口查询
+export const rl_callDetail_list = (obj) =>
   fetch({
     url: '/monitor/callDetail/list',
     method: 'POST',
     data: qs.stringify(obj)
   });
-// 呼叫明细导出
-export const monitor_callDetail_exportDown = (obj, options) =>
+// 科天呼叫明细列表接口查询
+export const kt_callDetail_list = (obj) =>
+  fetch({
+    url: '/monitor/callKtDetail/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 讯众呼叫明细列表接口查询
+export const xz_callDetail_list = (obj) =>
+  fetch({
+    url: '/monitor/callXzDetail/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 容联呼叫明细导出
+export const rl_callDetail_exportDown = (obj, options) =>
   fetch({
     url: '/monitor/callDetail/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
+  });
+// 科天呼叫明细导出
+export const kt_callDetail_exportDown = (obj, options) =>
+  fetch({
+    url: '/monitor/callKtDetail/exportDown',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
+  });
+// 讯众呼叫明细导出
+export const xz_callDetail_exportDown = (obj, options) =>
+  fetch({
+    url: '/monitor/callXzDetail/exportDown',
     method: 'POST',
     data: qs.stringify(obj),
     responseType: 'blob',

@@ -1902,7 +1902,8 @@ export default {
           toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
           toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
           toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
-          toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid
+          toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
+          collectType: this.objCopy.collectType,
         });
         callFlag = false;
       } else {
@@ -1929,7 +1930,8 @@ export default {
         toCallMbl: obj.toCallMbl,
         toCallMblHid: obj.toCallMblHid,
         callUserType: obj.callUserType,
-        userId: this.userId
+        userId: this.userId,
+        collectType: obj.collectType,
       };
       if (this.seatType === 'KT') {
         obj2.actionId = callData.id;
@@ -2325,6 +2327,7 @@ export default {
       this.handleCancle();
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;
+        this.objCopy.collectType = tag;
         // type ['call] 拨打电话
         if (localStorage.getItem('callData') && this.seatType === 'KT') {
           if (localStorage.getItem('callObj')) {
@@ -2348,7 +2351,8 @@ export default {
             toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
             toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
             toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
-            toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid
+            toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
+            collectType: tag,
           });
         } else if (this.seatType === 'XZ') {
           // 讯众外呼传参
@@ -2361,6 +2365,7 @@ export default {
             toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
             userId: this.userId,
             caseNo: this.caseNo,
+            collectType: tag,
           });
         }
       } else {

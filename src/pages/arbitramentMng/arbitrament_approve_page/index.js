@@ -29,6 +29,7 @@ export default {
       audit: false,//审核权限
       upload: false,//上传权限
       execution: false, //申请执行权限
+      export_case: false,//导出权限
       query_loading: false,//查询按钮loading
       audit_loading: false,//审核按钮loading
       reject_loading: false,//驳回按钮loading
@@ -464,6 +465,8 @@ export default {
         case "upload": this.upload = true;
           break;
         case "execution": this.execution = true;
+          break;
+        case "export": this.export_case = true;
           break;
       }
     });

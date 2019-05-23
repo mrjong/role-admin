@@ -101,6 +101,7 @@
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
+          v-if="export_case"
           :loading='export_case_loading'
         >
           <span v-if="!export_case_loading">导出数据</span>
