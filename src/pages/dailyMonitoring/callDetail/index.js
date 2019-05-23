@@ -66,7 +66,22 @@ export default {
           key: "listIndex",
           fixed: "left"
         },
-
+        {
+          title: "呼叫日期",
+          searchOperator: "=",
+          key: "handleDate",
+          className: "tableMainW",
+          align: alignCenter,
+          width: widthVal
+        },
+        {
+          title: "外呼手机号",
+          searchOperator: "=",
+          key: "calledNo",
+          className: "tableMainW",
+          align: alignCenter,
+          width: widthVal
+        },
         {
           title: "案件号",
           searchOperator: "=",
@@ -82,22 +97,6 @@ export default {
           className: "tableMainW",
           align: alignCenter,
           width: 200
-        },
-        {
-          title: "处理日期",
-          searchOperator: "=",
-          key: "handleDate",
-          className: "tableMainW",
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: "外呼手机号",
-          searchOperator: "=",
-          key: "calledNo",
-          className: "tableMainW",
-          align: alignCenter,
-          width: widthVal
         },
         {
           title: "用户ID",
@@ -116,16 +115,16 @@ export default {
           width: widthVal
         },
         {
-          title: "通话结果",
-          key: "callState",
+          title: "通话时长",
+          searchOperator: "like",
+          key: "talkTime",
           className: "tableMainW",
           align: alignCenter,
           width: widthMidVal
         },
         {
-          title: "通话时长",
-          searchOperator: "like",
-          key: "talkTime",
+          title: "通话结果",
+          key: "callState",
           className: "tableMainW",
           align: alignCenter,
           width: widthMidVal
@@ -139,6 +138,14 @@ export default {
           width: widthMidVal
         },
         {
+          title: "坐席工号",
+          searchOperator: "like",
+          key: "agent",
+          className: "tableMainW",
+          align: alignCenter,
+          width: widthMidVal
+        },
+        {
           title: "坐席类型",
           searchOperator: "like",
           key: "seatTypeName",
@@ -146,14 +153,6 @@ export default {
           align: alignCenter,
           width: widthMidVal
         },
-        {
-          title: "坐席工号",
-          searchOperator: "like",
-          key: "agent",
-          className: "tableMainW",
-          align: alignCenter,
-          width: widthMidVal
-        }
       ]
     };
   },
