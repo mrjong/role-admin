@@ -157,6 +157,21 @@ export const announcement_list = (obj = {}) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+
+// 首页今日案件、本月案件、上月案件面板信息接口
+export const home_gethomecollectrate = (obj) =>
+  fetch({
+    url: '/home/gethomecollectrate',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 首页今日到期
+export const home_getthedaydata = (obj) =>
+  fetch({
+    url: '/home/getthedaydata',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 /*
 *
 * 查询用户主动还款&系统代扣的列表
