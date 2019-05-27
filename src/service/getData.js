@@ -172,6 +172,13 @@ export const home_getthedaydata = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+// 首页呼叫次数面板
+export const home_gethomecall = (obj) =>
+  fetch({
+    url: '/home/gethomecall',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 /*
 *
 * 查询用户主动还款&系统代扣的列表

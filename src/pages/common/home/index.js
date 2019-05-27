@@ -4,7 +4,8 @@ import {
   announcement_update,
   announcement_delete,
   home_gethomecollectrate,
-  home_getthedaydata
+  home_getthedaydata,
+  home_gethomecall
 } from '@/service/getData';
 // let speed = 10;//初始速度
 // let intNum = 0;//初始值
@@ -27,9 +28,16 @@ export default {
       charge_del: true,//罚息规则删除
       look_over_flag: false,//查看modal
       announcementContent: '',//modal 显示的内容
-      today_case: 388,//今日案件
-      today_return_money: 265,//今日回款
-      today_return_rate: 58,//今日回款率
+      today_case: {},//今日案件info
+      today_case_flag: true,
+      this_month: {},//本月案件info
+      this_month_flag: true,
+      last_month: {},//上月案件info
+      last_month_flag: true,
+      today_expire: {},//今日到期info
+      today_expire_flag: true,
+      yesterday: {},//昨日呼叫info
+      yesterday_flag: true,
       val: '',
       announcement_list3: [],
       announcement_list1: [],
@@ -296,24 +304,25 @@ export default {
     });
     window.$router = this.$router;
     this.announcement_list_fun();
-    this.numberGrow(this.today_case, 0, 10, 'today_case');
-    this.numberGrow(this.today_return_money, 0, 10, 'today_return_money');
-    this.numberGrow(this.today_return_rate, 0, 10, 'today_return_rate');
+    // this.numberGrow(this.today_case, 0, 10, 'today_case');
+    // this.numberGrow(this.today_return_money, 0, 10, 'today_return_money');
+    // this.numberGrow(this.today_return_rate, 0, 10, 'today_return_rate');
     this.home_gethomecollectrate('1');
     this.home_gethomecollectrate('2');
     this.home_gethomecollectrate('3');
-    this.home_getthedaydata()
+    this.home_getthedaydata();
+    this.home_gethomecall();
   },
   methods: {
     // 数字匀速增长
     numberGrow(num, intNum, speed, name) {
       clearInterval(timer);
-      timer = setInterval( () => {
+      timer = setInterval(() => {
         intNum = intNum + 1;//递增匀速
         if (intNum / num > 0.95) {
           speed = speed + 5;//变速
           this.numberGrow(num, intNum, speed, name);
-          console.log(intNum/num)
+          console.log(intNum / num)
           if (intNum / num > 1) {
             clearInterval(timer);
             speed = 10;
@@ -366,11 +375,46 @@ export default {
         type: type,// 1 本月；2 上月；3 今天；
       });
       console.log(res);
+      if (res.code === 1) {
+        switch (type) {
+          case '1':
+            this.this_month = res.data;
+            this.this_month_flag = false;
+            break;
+          case '2':
+            this.last_month = res.data;
+            this.last_month_flag = false;
+            break;
+          case '3':
+            this.today_case = res.data;
+            this.today_case_flag = false;
+            break;
+        }
+      } else {
+        this.$Message.error(res.message)
+      }
     },
     // 今日到期面板接口
     async home_getthedaydata() {
       const res = await home_getthedaydata();
-      console.log(res)
+      console.log(res);
+      if (res.code === 1) {
+        this.today_expire = res.data;
+        this.today_expire_flag = false;
+      } else {
+        this.$Message.error(res.message)
+      }
+    },
+    // 昨日呼叫次数统计
+    async home_gethomecall() {
+      const res = await home_gethomecall();
+      console.log(res);
+      if (res.code === 1) {
+        this.yesterday = res.data;
+        this.yesterday_flag = false;
+      } else {
+        this.$Message.error(res.message)
+      }
     },
     // 编辑公告
     async editAnnouncement(uuid, content) {

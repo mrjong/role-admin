@@ -8,18 +8,19 @@
             <div class="flex_box_wrap">
               <div class="board_left">
                 <p class="board_title">今日案件</p>
-                <p class="board_content other">{{today_case}}</p>
+                <p class="board_content other">{{today_case.caseCount}}</p>
               </div>
               <div class="board_middle">
                 <p class="board_title">今日回款</p>
-                <p class="board_content other">{{today_return_money}}</p>
+                <p class="board_content other">{{today_case.repayCount}}</p>
               </div>
               <div class="board_right">
                 <p class="board_title">今日回款率</p>
-                <p class="board_content other">{{today_return_rate}}%</p>
+                <p class="board_content other">{{today_case.collectRate}}%</p>
               </div>
             </div>
             <p class="order_line other">组内第3名</p>
+            <Spin fix v-if="today_case_flag"></Spin>
           </Card>
         </Col>
         <!-- 今日呼叫 -->
@@ -27,19 +28,20 @@
           <Card class="board_wrap last_bg" >
             <div class="flex_box_wrap">
               <div class="board_left">
-                <p class="board_title">今日呼叫次数</p>
-                <p class="board_content last">288</p>
+                <p class="board_title">昨日呼叫次数</p>
+                <p class="board_content last">{{yesterday.callCount}}</p>
               </div>
               <div class="board_middle">
-                <p class="board_title">今日接通次数</p>
-                <p class="board_content last">168</p>
+                <p class="board_title">昨日接通次数</p>
+                <p class="board_content last">{{yesterday.connectCount}}</p>
               </div>
               <div class="board_right">
-                <p class="board_title">今日接通率</p>
-                <p class="board_content last">58%</p>
+                <p class="board_title">昨日接通率</p>
+                <p class="board_content last">{{yesterday.connectRate}}%</p>
               </div>
             </div>
             <p class="order_line last">组内倒数第一名</p>
+            <Spin fix v-if="this_month_flag"></Spin>
           </Card>
         </Col>
         <!-- 本月统计 -->
@@ -48,18 +50,19 @@
             <div class="flex_box_wrap">
               <div class="board_left">
                 <p class="board_title">本月累计案件</p>
-                <p class="board_content first">288</p>
+                <p class="board_content first">{{this_month.caseCount}}</p>
               </div>
               <div class="board_middle">
                 <p class="board_title">本月累计还款</p>
-                <p class="board_content first">168</p>
+                <p class="board_content first">{{this_month.repayCount}}</p>
               </div>
               <div class="board_right">
                 <p class="board_title">本月回款率</p>
-                <p class="board_content first">50%</p>
+                <p class="board_content first">{{this_month.collectRate}}</p>
               </div>
             </div>
             <p class="order_line first">组内第一名</p>
+            <Spin fix v-if="this_month_flag"></Spin>
           </Card>
         </Col>
         <!-- 上月统计 -->
@@ -68,18 +71,19 @@
             <div class="flex_box_wrap">
               <div class="board_left">
                 <p class="board_title">上月累计案件</p>
-                <p class="board_content first">288</p>
+                <p class="board_content first">{{last_month.caseCount}}</p>
               </div>
               <div class="board_middle">
                 <p class="board_title">上月累计还款</p>
-                <p class="board_content first">168</p>
+                <p class="board_content first">{{last_month.repayCount}}</p>
               </div>
               <div class="board_right">
                 <p class="board_title">上月回款率</p>
-                <p class="board_content first">50%</p>
+                <p class="board_content first">{{last_month.collectRate}}</p>
               </div>
             </div>
             <p class="order_line first">组内第一名</p>
+            <Spin fix v-if="last_month_flag"></Spin>
           </Card>
         </Col>
       </Col>
@@ -89,18 +93,19 @@
           <div class="flex_box_wrap">
             <div class="board_left">
               <p class="board_title">今日到期</p>
-              <p class="board_content special">288</p>
+              <p class="board_content special">{{today_expire.caseCount}}</p>
             </div>
             <div class="board_middle">
               <p class="board_title">承诺还款</p>
-              <p class="board_content special">288</p>
+              <p class="board_content special">{{today_expire.casePromiseCount}}</p>
             </div>
             <div class="board_right">
               <p class="board_title">今日未催收</p>
-              <p class="board_content special">66</p>
+              <p class="board_content special">{{today_expire.caseNoDealCount}}</p>
             </div>
           </div>
-          <p class="order_line first">组内第一名</p>
+          <p class="order_line first" style="visibility: hidden">组内第一名</p>
+          <Spin fix v-if="today_expire_flag"></Spin>
         </Card>
       </Col>
       <!-- 公告栏 -->
