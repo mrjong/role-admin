@@ -69,8 +69,12 @@
           </Poptip>-->
           （{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
           <!-- 信用进度按钮 -->
-          <span @click.stop="get_credit_process" style="line-height: 20px; height: 26px; display: inline-block; font-weight: 500; color: #2d8cf0; margin-left: 10px; font-size: 13px; cursor: pointer;">
-            <Icon :type="!credit_panel?'ios-arrow-dropup':'ios-arrow-dropdown'" size='20'></Icon><span>信用进度</span>
+          <span
+            @click.stop="get_credit_process"
+            style="line-height: 20px; height: 26px; display: inline-block; font-weight: 500; color: #2d8cf0; margin-left: 10px; font-size: 13px; cursor: pointer;"
+          >
+            <Icon :type="!credit_panel?'ios-arrow-dropup':'ios-arrow-dropdown'" size="20"></Icon>
+            <span>信用进度</span>
           </span>
           <Button
             v-if="readType!=='read' && apply_arbitrament"
@@ -165,12 +169,12 @@
               </Col>
             </Col>
             <Col :xs="24" :sm="24" :md="12" :lg="12">
-              <div
-                class="fl"
-                v-for="(item,index) in img_list"
-              >
+              <div class="fl" v-for="(item,index) in img_list">
                 <div class="demo-upload-list">
-                  <img :src="item.imgPath? `/admin/img/mark/${item.imgPath}`: null" style="vertical-align: top;">
+                  <img
+                    :src="item.imgPath? `/admin/img/mark/${item.imgPath}`: null"
+                    style="vertical-align: top;"
+                  >
                   <div
                     class="demo-upload-list-cover"
                     @click="handleView(`/admin/img/mark/${item.imgPath}`)"
@@ -182,11 +186,11 @@
               </div>
             </Col>
             <Col :xs="24" :sm="24" :md="24" :lg="24" style="padding-top: 40px">
-                <Spin fix v-if="time_loading">
-                  <Icon type="ios-loading" size='24' class="demo-spin-icon-load"></Icon>
-                  <div>Loading</div>
-                </Spin>
-                <TimeLine v-if="credit_panel" :time_line_data='time_line_data'></TimeLine>
+              <Spin fix v-if="time_loading">
+                <Icon type="ios-loading" size="24" class="demo-spin-icon-load"></Icon>
+                <div>Loading</div>
+              </Spin>
+              <TimeLine v-if="credit_panel" :time_line_data="time_line_data"></TimeLine>
             </Col>
           </Row>
         </div>
@@ -519,10 +523,12 @@
                         mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
                     },'call','01')"
                   >
-                    <Tooltip
-                      :content="all_opt?'拨打':'暂无权限拨打'"
-                      placement="left"
-                    >{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid}}</Tooltip>
+                    <Badge :count="case_detail_case_identity_info_Data.callCount" class-name="badge_wrap_myself">
+                      <Tooltip
+                        :content="all_opt?'拨打':'暂无权限拨打'"
+                        placement="left"
+                      >{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid}}</Tooltip>
+                    </Badge>
                   </span>
                   <Poptip
                     :content="mingwenData"
@@ -589,10 +595,12 @@
                     <span>（{{item.cntRelTypName}}）</span>
                   </span>
                   <span class="tel" @click="handCall(item,'call','02')">
+                    <Badge :count="item.callCount" class-name="badge_wrap_myself">
                     <Tooltip
                       :content="all_opt?'拨打':'暂无权限拨打'"
                       placement="left"
                     >{{item.cntUserMblNoHid}}</Tooltip>
+                    </Badge>
                   </span>
                   <Poptip :content="mingwenData" v-if="item&&item.cntUserMblNoHid">
                     <Icon
@@ -625,7 +633,7 @@
                     <div>
                       <Table
                         border
-                        :loading='message_list_loading'
+                        :loading="message_list_loading"
                         :data="case_detail_mail_statistics_list_tableData"
                         :columns="case_detail_mail_statistics_list_tableColumns"
                         stripe
@@ -652,7 +660,7 @@
                     <div>
                       <Table
                         border
-                        :loading='message_list_loading'
+                        :loading="message_list_loading"
                         :data="case_detail_mail_detail_list_tableData"
                         :columns="case_detail_mail_detail_list_tableColumns"
                         stripe
@@ -679,7 +687,7 @@
                     <div>
                       <Table
                         border
-                        :loading='message_list_loading'
+                        :loading="message_list_loading"
                         :data="case_detail_mail_list_tableData"
                         :columns="case_detail_mail_list_tableColumns"
                         stripe
@@ -706,7 +714,7 @@
                     <div>
                       <Table
                         border
-                        :loading='message_list_loading'
+                        :loading="message_list_loading"
                         :data="case_detail_mail_list_appended_tableData"
                         :columns="case_detail_mail_list_appended_tableColumns"
                         stripe
@@ -839,7 +847,13 @@
     <Modal title="查看图片" v-model="visible">
       <img :src="imgName" v-if="visible" style="width: 100%">
     </Modal>
-    <jianmian v-model="modal.jianmian" v-if="modal.jianmian" v-on:passBack="passBackBreaks" :edit_flag='true' :breaks_data='breaks_data'></jianmian>
+    <jianmian
+      v-model="modal.jianmian"
+      v-if="modal.jianmian"
+      v-on:passBack="passBackBreaks"
+      :edit_flag="true"
+      :breaks_data="breaks_data"
+    ></jianmian>
     <zhongcai
       :getDirObj="getDirObj"
       v-on:passBack="passBack('zhongcai')"
@@ -856,12 +870,7 @@
       :userId="userId"
     ></huakou>
     <div v-if="message_detail_flag" style="z-index: 1000">
-      <Modal
-        title="站内信信息"
-        class="message_detail"
-        v-model="message_detail_flag"
-        :footer-hide="true"
-      >
+      <Modal title="站内信信息" class="message_detail" v-model="message_detail_flag" :footer-hide="true">
         <Row>
           <Col :xs="24" :sm="24" :md="4" :lg="4" span="4">
             <p class="message_detail_title">发送时间：</p>
@@ -871,9 +880,15 @@
           </Col>
           <Col :xs="24" :sm="24" :md="18" :lg="18" span="18">
             <p class="message_detail_desc">{{message_detail_data.sendTime | formatDate}}</p>
-            <p class="message_detail_desc">{{message_detail_data.userName? message_detail_data.userName: ''}}</p>
-            <p class="message_detail_desc">{{message_detail_data.sendStatus? message_detail_data.sendStatus: ''}}</p>
-            <p class="message_detail_desc">{{message_detail_data.sendContent? message_detail_data.sendContent: ''}}</p>
+            <p
+              class="message_detail_desc"
+            >{{message_detail_data.userName? message_detail_data.userName: ''}}</p>
+            <p
+              class="message_detail_desc"
+            >{{message_detail_data.sendStatus? message_detail_data.sendStatus: ''}}</p>
+            <p
+              class="message_detail_desc"
+            >{{message_detail_data.sendContent? message_detail_data.sendContent: ''}}</p>
           </Col>
         </Row>
       </Modal>

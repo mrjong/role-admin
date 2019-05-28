@@ -7,9 +7,11 @@ import {
   home_getthedaydata,
   home_gethomecall
 } from '@/service/getData';
+import util from '@/libs/util';
 // let speed = 10;//初始速度
 // let intNum = 0;//初始值
 let timer = null;
+let obj = {};
 export default {
   name: '/home',
   data() {
@@ -22,12 +24,13 @@ export default {
       other_del: false,//其他删除
       notice_del: false,//公告删除
       notice_add: false,//公告添加
-      notice_edit: true,//公告编辑
+      notice_edit: false,//公告编辑
       charge_add: false,//罚息规则添加
       charge_edit: false,//罚息规则编辑
-      charge_del: true,//罚息规则删除
+      charge_del: false,//罚息规则删除
       look_over_flag: false,//查看modal
       announcementContent: '',//modal 显示的内容
+      createTime: '',//创建时间
       today_case: {},//今日案件info
       today_case_flag: true,
       this_month: {},//本月案件info
@@ -126,7 +129,7 @@ export default {
         {
           title: '公告详情',
           key: 'announcementContent',
-          width: 420,
+          width: 300,
           render: (h, params) => {
             let announcementContent = params.row.announcementContent;
             return h('div', {
@@ -145,6 +148,17 @@ export default {
           }
         },
         {
+          key: 'createTime',
+          align: 'center',
+          width: 130,
+          render: (h, params) => {
+            let createTime = params.row.createTime;
+            console.log(createTime)
+            createTime = this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
+            return h('div',createTime)
+          },
+        },
+        {
           title: '操作',
           maxWidth: 125,
           minWidth: 75,
@@ -155,7 +169,9 @@ export default {
                 on: {
                   click: () => {
                     let announcementContent = params.row.announcementContent;
+                    let createTime = params.row.createTime;
                     this.announcementContent = announcementContent;
+                    this.createTime = this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
                     this.look_over_flag = true
                   }
                 }
@@ -296,9 +312,13 @@ export default {
           break;
         case "notice_add": this.notice_add = true;
           break;
+        case "notice_edit": this.notice_edit = true;
+          break;
         case "charge_add": this.charge_add = true;
           break;
         case "charge_edit": this.charge_edit = true;
+          break;
+        case "charge_del": this.charge_del = true;
           break;
       }
     });
@@ -315,27 +335,37 @@ export default {
   },
   methods: {
     // 数字匀速增长
-    numberGrow(num, intNum, speed, name) {
-      clearInterval(timer);
-      timer = setInterval(() => {
-        intNum = intNum + 1;//递增匀速
-        if (intNum / num > 0.95) {
-          speed = speed + 5;//变速
-          this.numberGrow(num, intNum, speed, name);
-          console.log(intNum / num)
-          if (intNum / num > 1) {
-            clearInterval(timer);
-            speed = 10;
-            intNum = 0;
-            console.log(timer);
+  async numberGrow(num, intNum, speed, name, wrap, timer) {
+      // timer = null;
+      obj[wrap+name] = {};
+      obj[wrap+name].num = num;
+      obj[wrap+name].intNum = intNum;
+      obj[wrap+name].speed = speed;
+      obj[wrap+name].timer = timer;
+      console.log(obj)
+      clearInterval(obj[wrap+name].timer);
+      obj[wrap+name].timer = await setInterval(() => {
+        obj[wrap+name].intNum = obj[wrap+name].intNum + 1;//递增匀速
+        this.$set(this[wrap], name, obj[wrap+name].intNum);
+        if (obj[wrap+name].intNum / obj[wrap+name].num > 0.95) {
+          obj[wrap+name].speed = obj[wrap+name].speed + 5;//变速
+          // this.numberGrow(obj[wrap+name].num, obj[wrap+name].intNum, obj[wrap+name].speed, name, wrap, obj[wrap+name].timer);
+          console.log(obj[wrap+name].intNum / obj[wrap+name].num)
+          if (obj[wrap+name].intNum / obj[wrap+name].num > 1) {
+            clearInterval(obj[wrap+name].timer);
+            obj[wrap+name].speed = 10;
+            obj[wrap+name].intNum = 0;
+            console.log(obj[wrap+name].timer);
+            this.$set(this[wrap], name, obj[wrap+name].num);
           } else {
-            this.$set(this, name, intNum);
+            console.log(this[wrap])
+            this.$set(this[wrap], name, obj[wrap+name].intNum);
           }
         } else {
-          this.$set(this, name, intNum);
+          // console.log(this[wrap].caseCount)
+          this.$set(this[wrap], name, obj[wrap+name].intNum);
         }
-      }, speed)
-      // clearInterval(timer);
+      }, obj[wrap+name].speed)
     },
     showAlert(type, uuid, val) {
       this.$Modal.confirm({
@@ -369,6 +399,21 @@ export default {
         }
       });
     },
+    // 处理排名名次的转换
+    numTransform(num) {
+      switch (num) {
+        case 0:
+          return '无';
+        case 999:
+          return '组内排名倒数第一名';
+        case 998:
+          return '组内排名倒数第二名';
+      };
+      // alert(util.NumberToChinese(num))
+      return `组内排名第${util.NumberToChinese(num)}名`
+
+
+    },
     // 首页今日案件、本月案件、上月案件面板信息接口
     async home_gethomecollectrate(type) {
       const res = await home_gethomecollectrate({
@@ -379,14 +424,23 @@ export default {
         switch (type) {
           case '1':
             this.this_month = res.data;
+            this.numberGrow(this.this_month.caseCount, 0, 10, 'caseCount', 'this_month', null);
+            this.numberGrow(this.this_month.repayCount, 0, 10, 'repayCount', 'this_month', null);
+            this.numberGrow(this.this_month.collectRate, 0, 10, 'collectRate', 'this_month', null);
             this.this_month_flag = false;
             break;
           case '2':
             this.last_month = res.data;
+            this.numberGrow(this.last_month.caseCount, 0, 10, 'caseCount', 'last_month', null);
+            this.numberGrow(this.last_month.repayCount, 0, 10, 'repayCount', 'last_month', null);
+            this.numberGrow(this.last_month.collectRate, 0, 10, 'collectRate', 'last_month', null);
             this.last_month_flag = false;
             break;
           case '3':
             this.today_case = res.data;
+            this.numberGrow(this.today_case.caseCount, 0, 10, 'caseCount', 'today_case', null);
+            this.numberGrow(this.today_case.repayCount, 0, 10, 'repayCount', 'today_case', null);
+            this.numberGrow(this.today_case.collectRate, 0, 10, 'collectRate', 'today_case', null);
             this.today_case_flag = false;
             break;
         }
@@ -400,6 +454,9 @@ export default {
       console.log(res);
       if (res.code === 1) {
         this.today_expire = res.data;
+        this.numberGrow(this.today_expire.caseCount, 0, 10, 'caseCount', 'today_expire', null);
+        this.numberGrow(this.today_expire.casePromiseCount, 0, 10, 'casePromiseCount', 'today_expire', null);
+        this.numberGrow(this.today_expire.caseNoDealCount, 0, 10, 'caseNoDealCount', 'today_expire', null);
         this.today_expire_flag = false;
       } else {
         this.$Message.error(res.message)
@@ -411,6 +468,9 @@ export default {
       console.log(res);
       if (res.code === 1) {
         this.yesterday = res.data;
+        this.numberGrow(this.yesterday.callCount, 0, 10, 'callCount', 'yesterday', null);
+        this.numberGrow(this.yesterday.connectCount, 0, 10, 'connectCount', 'yesterday', null);
+        this.numberGrow(this.yesterday.connectRate, 0, 10, 'connectRate', 'yesterday', null);
         this.yesterday_flag = false;
       } else {
         this.$Message.error(res.message)

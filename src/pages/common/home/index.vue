@@ -8,40 +8,40 @@
             <div class="flex_box_wrap">
               <div class="board_left">
                 <p class="board_title">今日案件</p>
-                <p class="board_content other">{{today_case.caseCount}}</p>
+                <p class="board_content" :class="[today_case.index === 1? 'first': today_case.index === 999 || today_case.index === 998? 'last' : 'other' ]">{{today_case.caseCount}}</p>
               </div>
               <div class="board_middle">
                 <p class="board_title">今日回款</p>
-                <p class="board_content other">{{today_case.repayCount}}</p>
+                <p class="board_content" :class="[today_case.index === 1? 'first': today_case.index === 999 || today_case.index === 998? 'last' : 'other' ]">{{today_case.repayCount}}</p>
               </div>
               <div class="board_right">
                 <p class="board_title">今日回款率</p>
-                <p class="board_content other">{{today_case.collectRate}}%</p>
+                <p class="board_content" :class="[today_case.index === 1? 'first': today_case.index === 999 || today_case.index === 998? 'last' : 'other' ]">{{today_case.collectRate}}%</p>
               </div>
             </div>
-            <p class="order_line other">组内第3名</p>
+            <p class="order_line" :class="[today_case.index === 0? 'hidden': 'show', today_case.index === 1? 'first': today_case.index === 999 || today_case.index === 998? 'last' : 'other' ]">{{numTransform(today_case.index)}}</p>
             <Spin fix v-if="today_case_flag"></Spin>
           </Card>
         </Col>
-        <!-- 今日呼叫 -->
+        <!-- 昨日呼叫 -->
         <Col :xs="24" :sm="24" :md="11" :lg="11" style="margin-right: 10px;">
           <Card class="board_wrap last_bg" >
             <div class="flex_box_wrap">
               <div class="board_left">
                 <p class="board_title">昨日呼叫次数</p>
-                <p class="board_content last">{{yesterday.callCount}}</p>
+                <p class="board_content" :class="[yesterday.index === 1? 'first': yesterday.index === 999 || yesterday.index === 998? 'last' : 'other' ]">{{yesterday.callCount}}</p>
               </div>
               <div class="board_middle">
                 <p class="board_title">昨日接通次数</p>
-                <p class="board_content last">{{yesterday.connectCount}}</p>
+                <p class="board_content" :class="[yesterday.index === 1? 'first': yesterday.index === 999 || yesterday.index === 998? 'last' : 'other' ]">{{yesterday.connectCount}}</p>
               </div>
               <div class="board_right">
                 <p class="board_title">昨日接通率</p>
-                <p class="board_content last">{{yesterday.connectRate}}%</p>
+                <p class="board_content" :class="[yesterday.index === 1? 'first': yesterday.index === 999 || yesterday.index === 998? 'last' : 'other' ]">{{yesterday.connectRate}}%</p>
               </div>
             </div>
-            <p class="order_line last">组内倒数第一名</p>
-            <Spin fix v-if="this_month_flag"></Spin>
+            <p class="order_line" :class="[yesterday.index === 0? 'hidden': 'show', yesterday.index === 1? 'first': yesterday.index === 999 || yesterday.index === 998? 'last' : 'other' ]">{{numTransform(yesterday.index)}}</p>
+            <Spin fix v-if="yesterday_flag"></Spin>
           </Card>
         </Col>
         <!-- 本月统计 -->
@@ -50,18 +50,18 @@
             <div class="flex_box_wrap">
               <div class="board_left">
                 <p class="board_title">本月累计案件</p>
-                <p class="board_content first">{{this_month.caseCount}}</p>
+                <p class="board_content"  :class="[this_month.index === 1? 'first': this_month.index === 999 || this_month.index === 998? 'last' : 'other' ]">{{this_month.caseCount}}</p>
               </div>
               <div class="board_middle">
                 <p class="board_title">本月累计还款</p>
-                <p class="board_content first">{{this_month.repayCount}}</p>
+                <p class="board_content"  :class="[this_month.index === 1? 'first': this_month.index === 999 || this_month.index === 998? 'last' : 'other' ]">{{this_month.repayCount}}</p>
               </div>
               <div class="board_right">
                 <p class="board_title">本月回款率</p>
-                <p class="board_content first">{{this_month.collectRate}}</p>
+                <p class="board_content" :class="[this_month.index === 1? 'first': this_month.index === 999 || this_month.index === 998? 'last' : 'other' ]">{{this_month.collectRate}}%</p>
               </div>
             </div>
-            <p class="order_line first">组内第一名</p>
+            <p class="order_line" :class="[this_month.index === 0? 'hidden': 'show', this_month.index === 1? 'first': this_month.index === 999 || this_month.index === 998? 'last' : 'other' ]">{{numTransform(this_month.index)}}</p>
             <Spin fix v-if="this_month_flag"></Spin>
           </Card>
         </Col>
@@ -71,18 +71,18 @@
             <div class="flex_box_wrap">
               <div class="board_left">
                 <p class="board_title">上月累计案件</p>
-                <p class="board_content first">{{last_month.caseCount}}</p>
+                <p class="board_content" :class="[last_month.index === 1? 'first': last_month.index === 999 || last_month.index === 998? 'last' : 'other' ]">{{last_month.caseCount}}</p>
               </div>
               <div class="board_middle">
                 <p class="board_title">上月累计还款</p>
-                <p class="board_content first">{{last_month.repayCount}}</p>
+                <p class="board_content" :class="[last_month.index === 1? 'first': last_month.index === 999 || last_month.index === 998? 'last' : 'other' ]">{{last_month.repayCount}}</p>
               </div>
               <div class="board_right">
                 <p class="board_title">上月回款率</p>
-                <p class="board_content first">{{last_month.collectRate}}</p>
+                <p class="board_content" :class="[last_month.index === 1? 'first': last_month.index === 999 || last_month.index === 998? 'last' : 'other' ]">{{last_month.collectRate}}%</p>
               </div>
             </div>
-            <p class="order_line first">组内第一名</p>
+            <p class="order_line" :class="[last_month.index === 0? 'hidden': 'show', last_month.index === 1? 'first': last_month.index === 999 || last_month.index === 998? 'last' : 'other' ]">{{numTransform(last_month.index)}}</p>
             <Spin fix v-if="last_month_flag"></Spin>
           </Card>
         </Col>
@@ -104,7 +104,7 @@
               <p class="board_content special">{{today_expire.caseNoDealCount}}</p>
             </div>
           </div>
-          <p class="order_line first" style="visibility: hidden">组内第一名</p>
+          <p class="order_line" style='visibility:hidden'>没有排名</p>
           <Spin fix v-if="today_expire_flag"></Spin>
         </Card>
       </Col>
@@ -199,6 +199,7 @@
     <Modal v-model="look_over_flag" :footer-hide='true' :mask-closable='false'>
       <p slot="header" style="text-align: center; lineght: 30px; font-size: 16px;">公告</p>
       <p class="notice_detail_content">{{announcementContent}}</p>
+      <p style="text-align: right; font-size: 14px; line-height: 26px;">{{createTime}}</p>
     </Modal>
   </div>
 </template>
