@@ -92,7 +92,7 @@
         <Card class="board_wrap first_bg" >
           <div class="flex_box_wrap">
             <div class="board_left">
-              <p class="board_title">今日到期</p>
+              <p class="board_title">今日在催</p>
               <p class="board_content special">{{today_expire.caseCount}}</p>
             </div>
             <div class="board_middle">
