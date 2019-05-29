@@ -178,6 +178,7 @@ export default {
             const id = params.row.id;
             const prdTyp = params.row.prdTyp;
             const userId = params.row.userId;
+            const eyeFlag = params.row.eyeFlag;
             return h('div', [
               h(
                 'Tooltip',
@@ -191,6 +192,18 @@ export default {
                   }
                 },
                 [
+                  h('Icon', {
+                    props: {
+                      type: 'ios-ionitron-outline',
+                      size: '16'
+                    },
+                    style: {
+                      'vertical-align': 'top',
+                      'margin-right': '5px',
+                      color: '#EF0D33',
+                      display: eyeFlag? 'inline-block': 'none'
+                    }
+                  }),
                   h(
                     'a',
                     {
@@ -210,7 +223,7 @@ export default {
                       }
                     },
                     params.row.id
-                  )
+                  ),
                 ]
               )
             ]);
