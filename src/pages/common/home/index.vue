@@ -131,6 +131,7 @@
               stripe
               :height='300'
               border
+              class="notice_table"
             ></Table>
             <div v-else class="home-no-data">暂无数据</div>
           </div>
@@ -165,6 +166,7 @@
               stripe
               :height='300'
               border
+              class="charge_table"
             ></Table>
             <div v-if="!announcement_list2||announcement_list2.length<=0" class="home-no-data">暂无数据</div>
           </div>

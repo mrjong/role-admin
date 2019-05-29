@@ -114,6 +114,7 @@
               size="small"
               :load-data="loadData"
               @on-change="areaSelect"
+              style="padding-top: 4px; height: 32px;"
               transfer
             ></Cascader>
           </FormItem>
@@ -411,7 +412,8 @@ export default {
     cancelStatus() {
       console.log(this.$parent);
       this.add_orz_loading = false;
-      this.$parent.roleModal = false;
+      // this.$parent.roleModal = false;
+      this.$parent.$parent.$parent.organizationModal = false;
     },
     // 提交保存修改
     handleSubmit(type, name) {

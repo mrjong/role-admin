@@ -82,6 +82,7 @@
               :load-data="loadData"
               @on-change="areaSelect"
               :disabled="!formDisabled"
+              style="padding-top: 4px; height: 32px;"
               transfer
             ></Cascader>
           </FormItem>

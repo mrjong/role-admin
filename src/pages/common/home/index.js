@@ -15,7 +15,6 @@ let obj = {};
 export default {
   name: '/home',
   data() {
-
     return {
       showPanel3: false,
       showPanel2: false,
@@ -55,7 +54,8 @@ export default {
         },
         {
           title: '公告详情',
-          width: 420,
+          // maxWidth: 500,
+          // minWidth: 350,
           key: 'announcementContent',
           ellipsis: true,
           render: (h, params) => {
@@ -73,8 +73,8 @@ export default {
         },
         {
           title: '操作',
-          maxWidth: 125,
-          minWidth: 75,
+          maxWidth: 120,
+          minWidth: 80,
           align: 'center',
           render: (h, params) => {
             return h('div', [
@@ -129,39 +129,40 @@ export default {
         {
           title: '公告详情',
           key: 'announcementContent',
-          width: 300,
+          // maxWidth: 500,
+          // minWidth: 350,
           render: (h, params) => {
             let announcementContent = params.row.announcementContent;
-            return h('div', {
-              style: {
-                lineHeight: '26px',
-                padding: '6px 3px',
-                fontSize: '14px',
-                whiteSpace: 'pre-wrap',
-                'display': '-webkit-box',
-                '-webkit-box-orient': 'vertical',
-                '-webkit-line-clamp': 2,
-                'text-overflow': 'ellipsis',
-                'overflow': 'hidden',
-              }
-            }, announcementContent)
+            let createTime = params.row.createTime;
+            createTime = this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
+            return h('div', [
+              h('div', {
+                style: {
+                  lineHeight: '26px',
+                  padding: '6px 3px',
+                  fontSize: '14px',
+                  whiteSpace: 'pre-wrap',
+                  'display': '-webkit-box',
+                  '-webkit-box-orient': 'vertical',
+                  '-webkit-line-clamp': 2,
+                  'text-overflow': 'ellipsis',
+                  'overflow': 'hidden',
+                }
+              }, announcementContent),
+              h('p', {
+                style: {
+                  'text-align': 'right',
+                  'font-size': '14px'
+                }
+              }, createTime)
+            ],
+            )
           }
         },
         {
-          key: 'createTime',
-          align: 'center',
-          width: 130,
-          render: (h, params) => {
-            let createTime = params.row.createTime;
-            console.log(createTime)
-            createTime = this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
-            return h('div',createTime)
-          },
-        },
-        {
           title: '操作',
-          maxWidth: 125,
-          minWidth: 75,
+          maxWidth: 120,
+          minWidth: 80,
           align: 'center',
           render: (h, params) => {
             return h('div', [
@@ -335,37 +336,41 @@ export default {
   },
   methods: {
     // 数字匀速增长
-  async numberGrow(num, intNum, speed, name, wrap, timer) {
+    async numberGrow(num, intNum, speed, name, wrap, timer, add_num) {
       // timer = null;
-      obj[wrap+name] = {};
-      obj[wrap+name].num = num;
-      obj[wrap+name].intNum = intNum;
-      obj[wrap+name].speed = speed;
-      obj[wrap+name].timer = timer;
+      if (num <= 0) {
+        return;
+      }
+      obj[wrap + name] = {};
+      obj[wrap + name].num = num;
+      obj[wrap + name].intNum = intNum;
+      obj[wrap + name].speed = speed;
+      obj[wrap + name].timer = timer;
+      obj[wrap + name].add_num = add_num;
       console.log(obj)
-      clearInterval(obj[wrap+name].timer);
-      obj[wrap+name].timer = await setInterval(() => {
-        obj[wrap+name].intNum = obj[wrap+name].intNum + 1;//递增匀速
-        this.$set(this[wrap], name, obj[wrap+name].intNum);
-        if (obj[wrap+name].intNum / obj[wrap+name].num > 0.95) {
-          obj[wrap+name].speed = obj[wrap+name].speed + 5;//变速
+      clearInterval(obj[wrap + name].timer);
+      obj[wrap + name].timer = await setInterval(() => {
+        obj[wrap + name].intNum = obj[wrap + name].intNum + obj[wrap + name].add_num;//递增匀速
+        this.$set(this[wrap], name, obj[wrap + name].intNum);
+        if (obj[wrap + name].intNum / obj[wrap + name].num > 0.95) {
+          obj[wrap + name].speed = obj[wrap + name].speed + 5;//变速
           // this.numberGrow(obj[wrap+name].num, obj[wrap+name].intNum, obj[wrap+name].speed, name, wrap, obj[wrap+name].timer);
-          console.log(obj[wrap+name].intNum / obj[wrap+name].num)
-          if (obj[wrap+name].intNum / obj[wrap+name].num > 1) {
-            clearInterval(obj[wrap+name].timer);
-            obj[wrap+name].speed = 10;
-            obj[wrap+name].intNum = 0;
-            console.log(obj[wrap+name].timer);
-            this.$set(this[wrap], name, obj[wrap+name].num);
+          console.log(obj[wrap + name].intNum / obj[wrap + name].num)
+          if (obj[wrap + name].intNum / obj[wrap + name].num > 1) {
+            clearInterval(obj[wrap + name].timer);
+            obj[wrap + name].speed = 10;
+            obj[wrap + name].intNum = 0;
+            console.log(obj[wrap + name].timer);
+            this.$set(this[wrap], name, obj[wrap + name].num);
           } else {
             console.log(this[wrap])
-            this.$set(this[wrap], name, obj[wrap+name].intNum);
+            this.$set(this[wrap], name, obj[wrap + name].intNum);
           }
         } else {
           // console.log(this[wrap].caseCount)
-          this.$set(this[wrap], name, obj[wrap+name].intNum);
+          this.$set(this[wrap], name, obj[wrap + name].intNum);
         }
-      }, obj[wrap+name].speed)
+      }, obj[wrap + name].speed)
     },
     showAlert(type, uuid, val) {
       this.$Modal.confirm({
@@ -424,23 +429,23 @@ export default {
         switch (type) {
           case '1':
             this.this_month = res.data;
-            this.numberGrow(this.this_month.caseCount, 0, 10, 'caseCount', 'this_month', null);
-            this.numberGrow(this.this_month.repayCount, 0, 10, 'repayCount', 'this_month', null);
-            this.numberGrow(this.this_month.collectRate, 0, 10, 'collectRate', 'this_month', null);
+            this.numberGrow(this.this_month.caseCount, 0, 1, 'caseCount', 'this_month', null, 50);
+            this.numberGrow(this.this_month.repayCount, 0, 1, 'repayCount', 'this_month', null, 50);
+            this.numberGrow(this.this_month.collectRate, 0, 5, 'collectRate', 'this_month', null, 1);
             this.this_month_flag = false;
             break;
           case '2':
             this.last_month = res.data;
-            this.numberGrow(this.last_month.caseCount, 0, 10, 'caseCount', 'last_month', null);
-            this.numberGrow(this.last_month.repayCount, 0, 10, 'repayCount', 'last_month', null);
-            this.numberGrow(this.last_month.collectRate, 0, 10, 'collectRate', 'last_month', null);
+            this.numberGrow(this.last_month.caseCount, 0, 1, 'caseCount', 'last_month', null, 50);
+            this.numberGrow(this.last_month.repayCount, 0, 1, 'repayCount', 'last_month', null, 50);
+            this.numberGrow(this.last_month.collectRate, 0, 2, 'collectRate', 'last_month', null, 1);
             this.last_month_flag = false;
             break;
           case '3':
             this.today_case = res.data;
-            this.numberGrow(this.today_case.caseCount, 0, 10, 'caseCount', 'today_case', null);
-            this.numberGrow(this.today_case.repayCount, 0, 10, 'repayCount', 'today_case', null);
-            this.numberGrow(this.today_case.collectRate, 0, 10, 'collectRate', 'today_case', null);
+            this.numberGrow(this.today_case.caseCount, 0, 3, 'caseCount', 'today_case', null, 4);
+            this.numberGrow(this.today_case.repayCount, 0, 3, 'repayCount', 'today_case', null, 4);
+            this.numberGrow(this.today_case.collectRate, 0, 5, 'collectRate', 'today_case', null, 1);
             this.today_case_flag = false;
             break;
         }
@@ -454,9 +459,9 @@ export default {
       console.log(res);
       if (res.code === 1) {
         this.today_expire = res.data;
-        this.numberGrow(this.today_expire.caseCount, 0, 10, 'caseCount', 'today_expire', null);
-        this.numberGrow(this.today_expire.casePromiseCount, 0, 10, 'casePromiseCount', 'today_expire', null);
-        this.numberGrow(this.today_expire.caseNoDealCount, 0, 10, 'caseNoDealCount', 'today_expire', null);
+        this.numberGrow(this.today_expire.caseCount, 0, 2, 'caseCount', 'today_expire', null, 4);
+        this.numberGrow(this.today_expire.casePromiseCount, 0, 2, 'casePromiseCount', 'today_expire', null, 4);
+        this.numberGrow(this.today_expire.caseNoDealCount, 0, 2, 'caseNoDealCount', 'today_expire', null, 4);
         this.today_expire_flag = false;
       } else {
         this.$Message.error(res.message)
@@ -468,9 +473,9 @@ export default {
       console.log(res);
       if (res.code === 1) {
         this.yesterday = res.data;
-        this.numberGrow(this.yesterday.callCount, 0, 10, 'callCount', 'yesterday', null);
-        this.numberGrow(this.yesterday.connectCount, 0, 10, 'connectCount', 'yesterday', null);
-        this.numberGrow(this.yesterday.connectRate, 0, 10, 'connectRate', 'yesterday', null);
+        this.numberGrow(this.yesterday.callCount, 0, 1, 'callCount', 'yesterday', null, 50);
+        this.numberGrow(this.yesterday.connectCount, 0, 1, 'connectCount', 'yesterday', null, 50);
+        this.numberGrow(this.yesterday.connectRate, 0, 5, 'connectRate', 'yesterday', null, 1);
         this.yesterday_flag = false;
       } else {
         this.$Message.error(res.message)
