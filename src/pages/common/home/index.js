@@ -57,7 +57,6 @@ export default {
           // maxWidth: 500,
           // minWidth: 350,
           key: 'announcementContent',
-          ellipsis: true,
           render: (h, params) => {
             let announcementContent = params.row.announcementContent;
             return h('span', {
@@ -66,7 +65,8 @@ export default {
                 lineHeight: '22px',
                 padding: '10px 5px',
                 fontSize: '14px',
-                whiteSpace: 'pre-wrap'
+                whiteSpace: 'pre-wrap',
+                'white-space': '-moz-pre-wrap',
               }
             }, announcementContent)
           }
@@ -137,6 +137,7 @@ export default {
             createTime = this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
             return h('div', [
               h('div', {
+                class: 'notice_wrap',
                 style: {
                   lineHeight: '26px',
                   padding: '6px 3px',
