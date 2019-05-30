@@ -1178,55 +1178,66 @@ export default {
             let callStateName = params.row.callStateName;
             let mblNoHid = params.row.mblNoHid;
             return h('div', [
-              h(
-                'a',
-                {
-                  props: {
-                    type: 'md-create'
-                  },
-                  on: {
-                    click: () => {
-                      _this.handCall(params.row, 'call', '03');
-                    }
-                  }
+              h('Badge', {
+                props: {
+                  count: params.row.callCount,
+                  className: 'badge_wrap'
                 },
-                `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
-              ),
-              this.plaintext ? h(
-                'Poptip',
-                {
-                  props: {
-                    content: _this.mingwenData,
-                    transfer: true,
-                  }
-                },
-                [
+                style: {
+                  height: '35px',
+                  lineHeight: '36px',
+                }
+              }, [
                   h(
-                    'span',
+                    'a',
                     {
+                      props: {
+                        type: 'md-create'
+                      },
                       on: {
                         click: () => {
-                          _this.syscommon_decrypt({
-                            type: 'MBL',
-                            data: params.row.mblNo
-                          });
+                          _this.handCall(params.row, 'call', '03');
                         }
-                      },
-                      style: {
-                        display: params.row.mblNoHid ? 'inline-block' : 'none'
+                      }
+                    },
+                    `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
+                  ),
+                  this.plaintext ? h(
+                    'Poptip',
+                    {
+                      props: {
+                        content: _this.mingwenData,
+                        transfer: true,
                       }
                     },
                     [
-                      h('Icon', {
-                        props: {
-                          type: 'md-eye'
+                      h(
+                        'span',
+                        {
+                          on: {
+                            click: () => {
+                              _this.syscommon_decrypt({
+                                type: 'MBL',
+                                data: params.row.mblNo
+                              });
+                            }
+                          },
+                          style: {
+                            display: params.row.mblNoHid ? 'inline-block' : 'none'
+                          }
                         },
-                        class: 'eye-class'
-                      })
+                        [
+                          h('Icon', {
+                            props: {
+                              type: 'md-eye'
+                            },
+                            class: 'eye-class'
+                          })
+                        ]
+                      )
                     ]
-                  )
-                ]
-              ) : null
+                  ) : null
+                ]),
             ]);
           }
         },
@@ -1369,56 +1380,65 @@ export default {
           render: (h, params) => {
             let callStateName = params.row.callStateName;
             let mblNoHid = params.row.mblNoHid;
-            return h('div', [
-              h(
-                'a',
-                {
-                  class: 'edit-btn',
-                  on: {
-                    click: () => {
-                      _this.handCall(params.row, 'call', '03');
+            return h('Badge', {
+              props: {
+                count: params.row.callCount,
+                className: 'badge_wrap'
+              },
+              style: {
+                height: '35px',
+                lineHeight: '36px',
+              }
+            }, [
+                h(
+                  'a',
+                  {
+                    class: 'edit-btn',
+                    on: {
+                      click: () => {
+                        _this.handCall(params.row, 'call', '03');
+                      }
                     }
-                  }
-                },
-                `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
-              ),
-              this.plaintext ? h(
-                'Poptip',
-                {
-                  props: {
-                    content: _this.mingwenData,
-                    transfer: true,
-                  }
-                },
-                [
-                  h(
-                    'span',
-                    {
-                      on: {
-                        click: () => {
-                          _this.syscommon_decrypt({
-                            type: 'MBL',
-                            data: params.row.mblNo
-                          });
+                  },
+                  `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
+                ),
+                this.plaintext ? h(
+                  'Poptip',
+                  {
+                    props: {
+                      content: _this.mingwenData,
+                      transfer: true,
+                    }
+                  },
+                  [
+                    h(
+                      'span',
+                      {
+                        on: {
+                          click: () => {
+                            _this.syscommon_decrypt({
+                              type: 'MBL',
+                              data: params.row.mblNo
+                            });
+                          }
+                        },
+                        style: {
+                          display: params.row.mblNoHid ? 'inline-block' : 'none'
                         }
                       },
-                      style: {
-                        display: params.row.mblNoHid ? 'inline-block' : 'none'
-                      }
-                    },
-                    [
-                      h('Icon', {
-                        props: {
-                          type: 'md-eye'
-                        },
+                      [
+                        h('Icon', {
+                          props: {
+                            type: 'md-eye'
+                          },
 
-                        class: 'eye-class'
-                      })
-                    ]
-                  )
-                ]
-              ) : null
-            ]);
+                          class: 'eye-class'
+                        })
+                      ]
+                    )
+                  ]
+                ) : null
+              ]);
           }
         },
         {
@@ -1533,56 +1553,65 @@ export default {
           render: (h, params) => {
             let callStateName = params.row.callStateName;
             let mblNoHid = params.row.mblNoHid;
-            return h('div', [
-              h(
-                'a',
-                {
-                  class: 'edit-btn',
-                  on: {
-                    click: () => {
-                      _this.handCall(params.row, 'call', '03');
+            return h('Badge', {
+              props: {
+                count: params.row.callCount,
+                className: 'badge_wrap'
+              },
+              style: {
+                height: '35px',
+                lineHeight: '36px',
+              }
+            }, [
+                h(
+                  'a',
+                  {
+                    class: 'edit-btn',
+                    on: {
+                      click: () => {
+                        _this.handCall(params.row, 'call', '03');
+                      }
                     }
-                  }
-                },
-                `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
-              ),
-              this.plaintext ? h(
-                'Poptip',
-                {
-                  props: {
-                    content: _this.mingwenData,
-                    transfer: true,
-                  }
-                },
-                [
-                  h(
-                    'span',
-                    {
-                      on: {
-                        click: () => {
-                          _this.syscommon_decrypt({
-                            type: 'MBL',
-                            data: params.row.mblNo
-                          });
+                  },
+                  `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
+                ),
+                this.plaintext ? h(
+                  'Poptip',
+                  {
+                    props: {
+                      content: _this.mingwenData,
+                      transfer: true,
+                    }
+                  },
+                  [
+                    h(
+                      'span',
+                      {
+                        on: {
+                          click: () => {
+                            _this.syscommon_decrypt({
+                              type: 'MBL',
+                              data: params.row.mblNo
+                            });
+                          }
+                        },
+                        style: {
+                          display: params.row.mblNoHid ? 'inline-block' : 'none'
                         }
                       },
-                      style: {
-                        display: params.row.mblNoHid ? 'inline-block' : 'none'
-                      }
-                    },
-                    [
-                      h('Icon', {
-                        props: {
-                          type: 'md-eye'
-                        },
+                      [
+                        h('Icon', {
+                          props: {
+                            type: 'md-eye'
+                          },
 
-                        class: 'eye-class'
-                      })
-                    ]
-                  )
-                ]
-              ) : null
-            ]);
+                          class: 'eye-class'
+                        })
+                      ]
+                    )
+                  ]
+                ) : null
+              ]);
           }
         },
       ],
@@ -1691,59 +1720,68 @@ export default {
           render: (h, params) => {
             let callStateName = params.row.callStateName;
             let mblNoHid = params.row.mblNoHid;
-            return h('div', [
-              h(
-                'a',
-                {
-                  class: 'edit-btn',
-                  props: {
-                    type: 'md-create'
-                  },
-                  on: {
-                    click: () => {
-                      _this.handCall(params.row, 'call', '03');
+            return h('Badge', {
+              props: {
+                count: params.row.callCount,
+                className: 'badge_wrap'
+              },
+              style: {
+                height: '35px',
+                lineHeight: '36px',
+              }
+            }, [
+                h(
+                  'a',
+                  {
+                    class: 'edit-btn',
+                    props: {
+                      type: 'md-create'
+                    },
+                    on: {
+                      click: () => {
+                        _this.handCall(params.row, 'call', '03');
+                      }
                     }
-                  }
-                },
-                `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
-              ),
-              this.plaintext ? h(
-                'Poptip',
-                {
-                  props: {
-                    content: _this.mingwenData,
-                    transfer: true,
-                  }
-                },
-                [
-                  h(
-                    'span',
-                    {
-                      on: {
-                        click: () => {
-                          _this.syscommon_decrypt({
-                            type: 'MBL',
-                            data: params.row.mblNo
-                          });
+                  },
+                  `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
+                ),
+                this.plaintext ? h(
+                  'Poptip',
+                  {
+                    props: {
+                      content: _this.mingwenData,
+                      transfer: true,
+                    }
+                  },
+                  [
+                    h(
+                      'span',
+                      {
+                        on: {
+                          click: () => {
+                            _this.syscommon_decrypt({
+                              type: 'MBL',
+                              data: params.row.mblNo
+                            });
+                          }
+                        },
+                        style: {
+                          display: params.row.mblNoHid ? 'inline-block' : 'none'
                         }
                       },
-                      style: {
-                        display: params.row.mblNoHid ? 'inline-block' : 'none'
-                      }
-                    },
-                    [
-                      h('Icon', {
-                        props: {
-                          type: 'md-eye'
-                        },
+                      [
+                        h('Icon', {
+                          props: {
+                            type: 'md-eye'
+                          },
 
-                        class: 'eye-class'
-                      })
-                    ]
-                  )
-                ]
-              ) : null
-            ]);
+                          class: 'eye-class'
+                        })
+                      ]
+                    )
+                  ]
+                ) : null
+              ]);
           }
         },
       ]
