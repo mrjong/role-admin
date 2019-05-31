@@ -70,6 +70,7 @@
           （{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
           <!-- 信用进度按钮 -->
           <span
+            v-if="case_detail_case_identity_info_Data.caseHandleStatus && case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
             @click.stop="get_credit_process"
             style="line-height: 20px; height: 26px; display: inline-block; font-weight: 500; color: #2d8cf0; margin-left: 10px; font-size: 13px; cursor: pointer;"
           >
@@ -77,7 +78,7 @@
             <span>信用进度</span>
           </span>
           <Button
-            v-if="readType!=='read' && apply_arbitrament"
+            v-if="readType!=='read' && apply_arbitrament && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
             @click.stop="handOpen('zhongcai')"
             class="fr vue-back-btn header-btn"
             type="primary"
@@ -93,7 +94,7 @@
             :disabled="btnDisable"
           >申请还款</Button>-->
           <Button
-            v-if="readType!=='read' && apply_deduct"
+            v-if="readType!=='read' && apply_deduct && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
             @click.stop="handOpen('huakou', case_collect_case_list_data&&case_collect_case_list_data.userId)"
             class="fr vue-back-btn header-btn"
             type="primary"
@@ -102,7 +103,7 @@
           >申请划扣</Button>
 
           <Button
-            v-if="readType!=='read' && apply_remission"
+            v-if="readType!=='read' && apply_remission && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
             @click="handOpen('jianmian','申请减免')"
             class="fr vue-back-btn header-btn"
             type="primary"
@@ -523,7 +524,10 @@
                         mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
                     },'call','01')"
                   >
-                    <Badge :count="case_detail_case_identity_info_Data.callCount" class-name="badge_wrap_myself">
+                    <Badge
+                      :count="case_detail_case_identity_info_Data.callCount"
+                      class-name="badge_wrap_myself"
+                    >
                       <Tooltip
                         :content="all_opt?'拨打':'暂无权限拨打'"
                         placement="left"
@@ -596,10 +600,10 @@
                   </span>
                   <span class="tel" @click="handCall(item,'call','02')">
                     <Badge :count="item.callCount" class-name="badge_wrap_myself">
-                    <Tooltip
-                      :content="all_opt?'拨打':'暂无权限拨打'"
-                      placement="left"
-                    >{{item.cntUserMblNoHid}}</Tooltip>
+                      <Tooltip
+                        :content="all_opt?'拨打':'暂无权限拨打'"
+                        placement="left"
+                      >{{item.cntUserMblNoHid}}</Tooltip>
                     </Badge>
                   </span>
                   <Poptip :content="mingwenData" v-if="item&&item.cntUserMblNoHid">

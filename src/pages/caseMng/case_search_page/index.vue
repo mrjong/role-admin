@@ -292,7 +292,7 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-        <Table :data="tableData" :columns="tableColumns" stripe @on-selection-change="changeSelect"></Table>
+        <Table :data="tableData" border :columns="tableColumns" stripe @on-selection-change="changeSelect"></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div style="float: right;">

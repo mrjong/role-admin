@@ -1831,7 +1831,8 @@ export default {
     delete queryData.seatType;
     delete queryData.userIdtest;
     if (queryData.readType === 'edit') {
-      this.case_collect_case_list(); // 我的案件
+      // this.case_collect_case_list(); // 我的案件
+      this.case_list()
     }
     delete queryData.readType;
     this.queryData = queryData;
@@ -1883,6 +1884,7 @@ export default {
       if (res.code === 1) {
         this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
+        this.userId = res.data.page.content[0].userId;
       } else {
         this.$Message.error(res.message);
       }
