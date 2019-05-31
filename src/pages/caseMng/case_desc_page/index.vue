@@ -73,7 +73,7 @@
             <Icon :type="!credit_panel?'ios-arrow-dropup':'ios-arrow-dropdown'" size='20'></Icon><span>信用进度</span>
           </span>
           <Button
-            v-if="readType!=='read' && apply_arbitrament"
+            v-if="readType!=='read' && apply_arbitrament && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
             @click.stop="handOpen('zhongcai')"
             class="fr vue-back-btn header-btn"
             type="primary"
@@ -89,7 +89,7 @@
             :disabled="btnDisable"
           >申请还款</Button>-->
           <Button
-            v-if="readType!=='read' && apply_deduct"
+            v-if="readType!=='read' && apply_deduct && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
             @click.stop="handOpen('huakou', case_collect_case_list_data&&case_collect_case_list_data.userId)"
             class="fr vue-back-btn header-btn"
             type="primary"
@@ -98,7 +98,7 @@
           >申请划扣</Button>
 
           <Button
-            v-if="readType!=='read' && apply_remission"
+            v-if="readType!=='read' && apply_remission && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
             @click="handOpen('jianmian','申请减免')"
             class="fr vue-back-btn header-btn"
             type="primary"

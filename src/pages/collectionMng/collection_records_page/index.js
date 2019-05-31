@@ -374,6 +374,9 @@ export default {
     });
     Cookie.set('all_opt', this.all_opt);
     Cookie.set('plaintext', this.plaintext);
+    Cookie.set('apply_arbitrament', false);
+    Cookie.set('apply_deduct', false);
+    Cookie.set('apply_remission', false);
     // this.getList();
     this.collectcode_getListByCodeType(1);//获取沟通状态
     this.collectcode_getListByCodeType(2);// 获取拨打状态
