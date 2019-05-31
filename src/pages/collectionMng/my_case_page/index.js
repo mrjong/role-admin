@@ -138,8 +138,8 @@ export default {
           align: 'center',
         },
         {
-          title: '案件编码',
-          width: 150,
+          title: '案件编号',
+          width: 180,
           key: 'id',
           align: 'center',
           fixed: 'left',
@@ -172,7 +172,7 @@ export default {
                       'vertical-align': 'top',
                       'margin-right': '5px',
                       color: '#EF0D33',
-                      display: eyeFlag? 'inline-block': 'none'
+                      display: !eyeFlag? 'inline-block': 'none'
                     }
                   }),
                   h(

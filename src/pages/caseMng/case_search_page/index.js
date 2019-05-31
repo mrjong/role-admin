@@ -171,7 +171,7 @@ export default {
           key: 'caseHandleStatusName'
         },
         {
-          title: '案件编码',
+          title: '案件编号',
           width: 180,
           key: 'id',
           align: 'center',
