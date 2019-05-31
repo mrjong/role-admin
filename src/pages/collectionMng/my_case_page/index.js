@@ -172,7 +172,7 @@ export default {
                       'vertical-align': 'top',
                       'margin-right': '5px',
                       color: '#EF0D33',
-                      display: !eyeFlag? 'inline-block': 'none'
+                      display: eyeFlag? 'inline-block': 'none'
                     }
                   }),
                   h(
