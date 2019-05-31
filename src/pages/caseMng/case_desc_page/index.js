@@ -66,6 +66,7 @@ export default {
       time_line_data: {},//传给时间轴的数据
       breaks_data: {},//减免info入参
       message_list_loading: false,//通讯录table loading
+      address_list_name: 'case_detail_mail_statistics_list',//通讯录默认name
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -1802,7 +1803,7 @@ export default {
       }
     }
   },
-  created() {
+  async created() {
     console.log(Cookie.get('all_opt'));
     if (Cookie.get('all_opt') === 'true') {
       this.all_opt = true;
@@ -1832,21 +1833,18 @@ export default {
     delete queryData.userIdtest;
     if (queryData.readType === 'edit') {
       // this.case_collect_case_list(); // 我的案件
-      this.case_list()
+      await this.case_list()
     }
     delete queryData.readType;
     this.queryData = queryData;
-    setTimeout(() => {
-      this.case_detail_remark_list(); // 催收信息
-      this.case_detail_urgent_contact(); // 紧急联系人
-      this.case_detail_case_base_info(); // 基本信息
-      this.case_detail_bindcard_list(); // 绑卡信息
-      this.collectcode_getCollectRelate(); // 获取沟通状态
-      this.case_detail_mail_statistics_list(); // 通话统计
-      this.case_detail_case_identity_info(); // 查询案件详情身份信息
-      this.case_detail_getimgurls();
-    }, 1500);
-    // 催收信息
+    this.case_detail_remark_list(); // 催收信息
+    this.case_detail_urgent_contact(); // 紧急联系人
+    this.case_detail_case_base_info(); // 基本信息
+    this.case_detail_bindcard_list(); // 绑卡信息
+    this.collectcode_getCollectRelate(); // 获取沟通状态
+    this.case_detail_mail_statistics_list(); // 通话统计
+    this.case_detail_case_identity_info(); // 查询案件详情身份信息
+    this.case_detail_getimgurls();
   },
   mounted() {
     this.$nextTick(() => {
@@ -1962,7 +1960,7 @@ export default {
     async call_kt_hung_on(obj) {
       this.telShow = true;
       let callData = JSON.parse(localStorage.getItem('callData'));
-      let obj2 = {
+      let params = {
         callno: obj.callno,
         caseNo: this.caseNo,
         toCallUser: obj.toCallUser,
@@ -1974,13 +1972,13 @@ export default {
         collectType: obj.collectType,
       };
       if (this.seatType === 'KT') {
-        obj2.actionId = callData.id;
+        params.actionId = callData.id;
       }
       let res = {};
       if (this.seatType === 'RL') {
-        res = await call_moor_hung_on(obj2);
+        res = await call_moor_hung_on(params);
       } else {
-        res = await call_kt_hung_on(obj2);
+        res = await call_kt_hung_on(params);
       }
       if (res.code === 1) {
         this.actionId = res.data.actionId;
@@ -1990,13 +1988,23 @@ export default {
           this.moorToCallMblHid = res.data.toCallMblHid;
           this.moorToCallUser = res.data.toCallUser
         }
-        let obj34 = {
+        let callObj = {
           telNoHid: obj.toCallMblHid,
           usrNameHid: obj.toCallUserHid
         };
-        console.log(obj34);
+        console.log(callObj);
         localStorage.removeItem('callObj');
-        localStorage.setItem('callObj', JSON.stringify(obj34));
+        localStorage.setItem('callObj', JSON.stringify(callObj));
+        let timer;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          if (params.collectType === '01')
+          this.case_detail_case_identity_info();
+          if (params.collectType === '02')
+          this.case_detail_urgent_contact();
+          if (params.collectType === '03')
+          this[this.address_list_name]();
+        }, 1500)
       } else {
         this.$Message.error(res.message);
       }
@@ -2009,7 +2017,17 @@ export default {
         this.$Message.success('呼出成功');
         this.actionId = res.data.actionId;
         this.moorToCallMblHid = res.data.toCallMblHid;
-        this.moorToCallUser = res.data.toCallUserHid
+        this.moorToCallUser = res.data.toCallUserHid;
+        let timer;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          if (obj.collectType === '01')
+          this.case_detail_case_identity_info();
+          if (obj.collectType === '02')
+          this.case_detail_urgent_contact();
+          if (obj.collectType === '03')
+          this[this.address_list_name]();
+        }, 1500)
       } else {
         this.$Message.error(res.message);
       }
@@ -2338,8 +2356,14 @@ export default {
         this.$Message.error('获取图片异常')
       }
     },
-    // tab 所有点击
+    // tab 所有点击（除通讯录以外的）
     tabClick(name) {
+      this[`${name}_pageNo`] = 1;
+      this[name]();
+    },
+    // tab 通讯录点击
+    tab_click_address(name) {
+      this.address_list_name = name;
       this[`${name}_pageNo`] = 1;
       this[name]();
     },

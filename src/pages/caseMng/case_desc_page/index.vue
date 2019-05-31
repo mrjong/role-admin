@@ -632,7 +632,7 @@
                 </div>
               </div>
               <div class="heighti">
-                <Tabs @on-click="tabClick" :animated="false" size="small">
+                <Tabs @on-click="tab_click_address" :animated="false" size="small">
                   <TabPane label="通话统计" name="case_detail_mail_statistics_list">
                     <div>
                       <Table
