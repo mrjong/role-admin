@@ -1171,7 +1171,7 @@ export default {
         {
           title: '手机(状态)',
           align: 'center',
-          width: 150,
+          width: 180,
           key: 'opUserName',
           fixed: 'left',
           render: (h, params) => {
@@ -1374,7 +1374,7 @@ export default {
         {
           title: '手机(状态)',
           align: 'center',
-          width: 150,
+          width: 180,
           key: 'mblNoHid',
           fixed: 'left',
           render: (h, params) => {
@@ -1547,7 +1547,7 @@ export default {
         {
           title: '手机(状态)',
           align: 'center',
-          width: 150,
+          width: 180,
           key: 'mblNoHid',
           fixed: 'left',
           render: (h, params) => {

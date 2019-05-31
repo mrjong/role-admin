@@ -338,7 +338,6 @@ export default {
   methods: {
     // 数字匀速增长
     async numberGrow(num, intNum, speed, name, wrap, timer, add_num) {
-      // timer = null;
       if (num <= 0) {
         return;
       }
@@ -417,8 +416,6 @@ export default {
       };
       // alert(util.NumberToChinese(num))
       return `组内排名第${util.NumberToChinese(num)}名`
-
-
     },
     // 首页今日案件、本月案件、上月案件面板信息接口
     async home_gethomecollectrate(type) {
@@ -430,22 +427,22 @@ export default {
         switch (type) {
           case '1':
             this.this_month = res.data;
-            this.numberGrow(this.this_month.caseCount, 0, 1, 'caseCount', 'this_month', null, 50);
-            this.numberGrow(this.this_month.repayCount, 0, 1, 'repayCount', 'this_month', null, 50);
-            this.numberGrow(this.this_month.collectRate, 0, 5, 'collectRate', 'this_month', null, 1);
+            this.numberGrow(this.this_month.caseCount, 0, 1, 'caseCount', 'this_month', null, 80);
+            this.numberGrow(this.this_month.repayCount, 0, 1, 'repayCount', 'this_month', null, 80);
+            this.numberGrow(this.this_month.collectRate, 0, 5, 'collectRate', 'this_month', null, 2);
             this.this_month_flag = false;
             break;
           case '2':
             this.last_month = res.data;
-            this.numberGrow(this.last_month.caseCount, 0, 1, 'caseCount', 'last_month', null, 50);
-            this.numberGrow(this.last_month.repayCount, 0, 1, 'repayCount', 'last_month', null, 50);
+            this.numberGrow(this.last_month.caseCount, 0, 1, 'caseCount', 'last_month', null, 80);
+            this.numberGrow(this.last_month.repayCount, 0, 1, 'repayCount', 'last_month', null, 80);
             this.numberGrow(this.last_month.collectRate, 0, 2, 'collectRate', 'last_month', null, 1);
             this.last_month_flag = false;
             break;
           case '3':
             this.today_case = res.data;
-            this.numberGrow(this.today_case.caseCount, 0, 3, 'caseCount', 'today_case', null, 4);
-            this.numberGrow(this.today_case.repayCount, 0, 3, 'repayCount', 'today_case', null, 4);
+            this.numberGrow(this.today_case.caseCount, 0, 3, 'caseCount', 'today_case', null, 5);
+            this.numberGrow(this.today_case.repayCount, 0, 3, 'repayCount', 'today_case', null, 5);
             this.numberGrow(this.today_case.collectRate, 0, 5, 'collectRate', 'today_case', null, 1);
             this.today_case_flag = false;
             break;
@@ -460,9 +457,9 @@ export default {
       console.log(res);
       if (res.code === 1) {
         this.today_expire = res.data;
-        this.numberGrow(this.today_expire.caseCount, 0, 2, 'caseCount', 'today_expire', null, 4);
-        this.numberGrow(this.today_expire.casePromiseCount, 0, 2, 'casePromiseCount', 'today_expire', null, 4);
-        this.numberGrow(this.today_expire.caseNoDealCount, 0, 2, 'caseNoDealCount', 'today_expire', null, 4);
+        this.numberGrow(this.today_expire.caseCount, 0, 1, 'caseCount', 'today_expire', null, 80);
+        this.numberGrow(this.today_expire.casePromiseCount, 0, 1, 'casePromiseCount', 'today_expire', null, 10);
+        this.numberGrow(this.today_expire.caseNoDealCount, 0, 1, 'caseNoDealCount', 'today_expire', null, 50);
         this.today_expire_flag = false;
       } else {
         this.$Message.error(res.message)
@@ -474,8 +471,8 @@ export default {
       console.log(res);
       if (res.code === 1) {
         this.yesterday = res.data;
-        this.numberGrow(this.yesterday.callCount, 0, 1, 'callCount', 'yesterday', null, 50);
-        this.numberGrow(this.yesterday.connectCount, 0, 1, 'connectCount', 'yesterday', null, 50);
+        this.numberGrow(this.yesterday.callCount, 0, 1, 'callCount', 'yesterday', null, 80);
+        this.numberGrow(this.yesterday.connectCount, 0, 1, 'connectCount', 'yesterday', null, 80);
         this.numberGrow(this.yesterday.connectRate, 0, 5, 'connectRate', 'yesterday', null, 1);
         this.yesterday_flag = false;
       } else {
