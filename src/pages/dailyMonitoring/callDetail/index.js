@@ -115,7 +115,7 @@ export default {
           width: widthVal
         },
         {
-          title: "通话时长",
+          title: "通话时长(s)",
           searchOperator: "like",
           key: "talkTime",
           className: "tableMainW",

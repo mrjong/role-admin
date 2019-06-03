@@ -293,6 +293,7 @@ export default {
             const id = params.row.id;
             const prdTyp = params.row.prdTyp;
             const userId = params.row.userId;
+            const eyeFlag = params.row.eyeFlag;
             return h('div', [
               h(
                 'Tooltip',
@@ -306,6 +307,18 @@ export default {
                   }
                 },
                 [
+                  h('Icon', {
+                    props: {
+                      type: 'ios-ionitron-outline',
+                      size: '16'
+                    },
+                    style: {
+                      'vertical-align': 'top',
+                      'margin-right': '5px',
+                      color: '#EF0D33',
+                      display: eyeFlag? 'inline-block': 'none'
+                    }
+                  }),
                   h(
                     'a',
                     {
@@ -521,6 +534,9 @@ export default {
     });
     Cookie.set('all_opt', this.all_opt);
     Cookie.set('plaintext', this.plaintext);
+    Cookie.set('apply_arbitrament', false);
+    Cookie.set('apply_deduct', false);
+    Cookie.set('apply_remission', false);
     // this.getList();
     this.getLeafTypeList('02', '');
     this.getLeafTypeList('03', '');

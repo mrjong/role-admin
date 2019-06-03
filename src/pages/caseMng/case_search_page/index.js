@@ -53,7 +53,9 @@ export default {
       export_case: false,//导出权限
       all_opt: false,//案件详情全部操作权限
       plaintext: false,//案件详情查看明文权限
+      apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
+      apply_remission: false,//案件详情申请减免权限
       import_search: false,// 导入查询权限
       queryLoading: false,//查询按钮loading
       exportLoading: false,//导出loading
@@ -169,7 +171,7 @@ export default {
           key: 'caseHandleStatusName'
         },
         {
-          title: '案件编码',
+          title: '案件编号',
           width: 180,
           key: 'id',
           align: 'center',
@@ -178,6 +180,8 @@ export default {
             const id = params.row.id;
             const prdTyp = params.row.prdTyp;
             const userId = params.row.userId;
+            const eyeFlag = params.row.eyeFlag;
+            let seatType = sessionStorage.getItem('seatType');
             return h('div', [
               h(
                 'Tooltip',
@@ -191,6 +195,18 @@ export default {
                   }
                 },
                 [
+                  h('Icon', {
+                    props: {
+                      type: 'ios-ionitron-outline',
+                      size: '16'
+                    },
+                    style: {
+                      'vertical-align': 'top',
+                      'margin-right': '5px',
+                      color: '#EF0D33',
+                      display: eyeFlag? 'inline-block': 'none'
+                    }
+                  }),
                   h(
                     'a',
                     {
@@ -201,16 +217,23 @@ export default {
                             _this.$Message.error('很抱歉，暂无权限查看详情');
                             return;
                           }
+                          // window.open(
+                          //   `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=edit&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+                          //     _this.formItem
+                          //   )}`
+                          // );
                           window.open(
-                            `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=read&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
-                              _this.formItem
-                            )}`
+                            `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=edit&userIdtest=${userId}&seatType=${seatType
+                              ? seatType
+                              : 'KT'}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+                                _this.formItem
+                              )}`
                           );
                         }
                       }
                     },
                     params.row.id
-                  )
+                  ),
                 ]
               )
             ]);
@@ -374,7 +397,15 @@ export default {
           break;
         case "export": this.export_case = true;
           break;
+          case "all_opt": this.all_opt = true;
+          break;
         case "plaintext": this.plaintext = true;
+          break;
+        case "apply_arbitrament": this.apply_arbitrament = true;
+          break;
+        case "apply_deduct": this.apply_deduct = true;
+          break;
+        case "apply_remission": this.apply_remission = true;
           break;
         case "import_search": this.import_search = true;
           break;
@@ -382,6 +413,9 @@ export default {
     });
     Cookie.set('all_opt', this.all_opt);
     Cookie.set('plaintext', this.plaintext);
+    Cookie.set('apply_arbitrament', this.apply_arbitrament);
+    Cookie.set('apply_deduct', this.apply_deduct);
+    Cookie.set('apply_remission', this.apply_remission);
     this.getLeafTypeList('02', '');
     this.getLeafTypeList('03', '');
     this.getLeafTypeList('04', '');
