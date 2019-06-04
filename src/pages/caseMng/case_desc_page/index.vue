@@ -48,7 +48,7 @@
     </Modal>
 
     <!-- 弹层 -->
-    <div class="case-left-container" :style="{paddingRight:showBtn?'25px':'370px'}">
+    <div class="case-left-container" :style="{paddingRight:showBtn?'25px':'385px'}">
       <!-- 检索条件 -->
       <Card class="vue-panel case-desc">
         <p slot="title">
@@ -482,7 +482,7 @@
         ">
           <div v-show="!showBtn" class="heighti">
             <Card
-              style="width:370px"
+              style="width:385px"
               class="heighti case-top-panel"
               :style="{height:!this.showBottom?'inherit':'calc(100% - 325px)'}"
             >
@@ -496,27 +496,13 @@
                   <span class="name">
                     <span class="state-name">本人</span>
                     {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear}}
-                    <!-- <Poptip
-                      :content="mingwenData"
-                      v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
-                    >
-                      <Icon
-                        class="eye-class"
-                        title="显示明文"
-                        type="md-eye"
-                        @click.native="syscommon_decrypt({
-                type:'NAME',
-                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm
-            })"
-                      ></Icon>
-                    </Poptip>-->
-                    <span>（本人）</span>
+                    <span>(本人)</span>
                   </span>
                   <span
                     class="tel"
                     @click="handCall({
-                         callUserType:'00',
-                         userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
+                        callUserType:'00',
+                        userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
                         userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
                         userNmClear:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear,
                         userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
@@ -543,10 +529,12 @@
                       title="显示明文"
                       type="md-eye"
                       v-if="plaintext"
-                      @click.native="syscommon_decrypt({
-                type:'MBL',
-                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
-            })"
+                      @click.native="syscommon_decrypt(
+                        {
+                          type:'MBL',
+                          data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
+                        }
+                      )"
                     ></Icon>
                   </Poptip>
                   <span
@@ -561,8 +549,8 @@
                   >
                     <Icon
                       @click.native="handCall({
-                        callUserType:'01',
-                         userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
+                        callUserType:'00',
+                        userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
                         userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
                         userNmClear:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear,
                         userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
@@ -582,21 +570,7 @@
                   <span class="state-name">紧急联系人</span>
                   <span class="name">
                     {{item.cntUserNameHid}}
-                    <!-- <Poptip
-                      :content="mingwenData"
-                      v-if="item&&item.cntUserNameHid"
-                    >
-                      <Icon
-                        class="eye-class"
-                        title="显示明文"
-                        type="md-eye"
-                        @click.native="syscommon_decrypt({
-                type:'NAME',
-                data:item&&item.cntUserName
-            })"
-                      ></Icon>
-                    </Poptip>-->
-                    <span>（{{item.cntRelTypName}}）</span>
+                    <span>({{item.cntRelTypName}})</span>
                   </span>
                   <span class="tel" @click="handCall(item,'call','02')">
                     <Badge :count="item.callCount" class-name="badge_wrap_myself">
@@ -616,6 +590,7 @@
                     ></Icon>
                   </Poptip>
                   <span class="state" v-if="item.callStateName">{{item.callStateName}}</span>
+                  <span class="state">用户来电</span>
                   <Tooltip
                     v-if="readType!=='read'"
                     class="edit-hover"
@@ -760,13 +735,19 @@
                 :label-width="100"
               >
                 <FormItem label="沟通对象" prop="userNmHid">
-                  <Input size="small" v-model.trim="formValidate.userNmClear" placeholder="请输入沟通对象"></Input>
+                  <Input
+                    size="small"
+                    clearable
+                    v-model.trim="formValidate.userNmClear"
+                    placeholder="请输入沟通对象"
+                  ></Input>
                 </FormItem>
                 <FormItem label="关系" prop="callUserType">
                   <Select
                     size="small"
                     v-model="formValidate.callUserType"
                     transfer
+                    clearable
                     placeholder="请选择关系"
                   >
                     <Option
@@ -783,6 +764,7 @@
                     v-model="formValidate.collectResult"
                     @on-change="SelectChange"
                     transfer
+                    clearable
                     placeholder="请选择拨打状态"
                   >
                     <Option
@@ -797,6 +779,7 @@
                   <Select
                     size="small"
                     transfer
+                    clearable
                     v-model="formValidate.communicateResult"
                     placeholder="请选择沟通状态"
                   >
@@ -814,6 +797,7 @@
                     style="width:100%;"
                     size="small"
                     transfer
+                    clearable
                     type="datetime"
                     format="yyyy-MM-dd HH:mm"
                     placeholder="请选择承诺还款时间"
@@ -826,6 +810,7 @@
                     type="textarea"
                     :autosize="{minRows: 2,maxRows: 2}"
                     :maxlength="249"
+                    clearable
                     placeholder="请输入备注，最大249个字符"
                   ></Input>
                 </FormItem>

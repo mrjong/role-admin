@@ -96,7 +96,7 @@ export default {
             message: '请输入正确手机号',
             trigger: 'blur'
           }
-        ]
+        ],
       },
       getDirList: ['GENDER', 'NATION', 'CONTACT_REL_TYPE'],
       getDirObj: {},
@@ -112,7 +112,7 @@ export default {
       showPanel2: false,
       imgName: '',
       visible: false,
-      showBottom: false,
+      showBottom: false,//添加、编辑催记弹窗
       value1: 1,
       modalTitle: '',
       visible1: false,
@@ -140,6 +140,13 @@ export default {
           {
             required: true,
             message: '请选择沟通状态',
+            trigger: 'change'
+          }
+        ],
+        callUserType: [
+          {
+            required: true,
+            message: '请选择关系',
             trigger: 'change'
           }
         ]
@@ -2440,6 +2447,7 @@ export default {
         this.collectType = tag;
         this.formValidate.userNmHid = obj.userNmHid || obj.cntUserNameHid;
         this.formValidate.userNmClear = obj.userNmClear || obj.cntUserNameClear;
+        this.formValidate.callUserType = obj.callUserType || obj.cntRelTyp;
         this.userNmClearCopy = obj.userNmClear || obj.cntUserNameClear;
         this.mblNoHid = obj.mblNoHid || obj.cntUserMblNoHid;
         this.userNm = obj.userNm || obj.cntUserName;
