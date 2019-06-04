@@ -1158,7 +1158,13 @@ export const collectcode_getCollectRelate = (obj, options) =>
     data: qs.stringify(obj),
     options
   });
-
+// 获取沟通状态
+export const collectcode_getCodeList = (obj, options) =>
+  fetch({
+    url: '/collectcode/getCodeList',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
 
 /*
 *

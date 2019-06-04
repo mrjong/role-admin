@@ -25,6 +25,7 @@ import {
   mail_list_add, // 新增通讯录
   case_remark_his_add, // 新增催记
   collectcode_getCollectRelate, // 获取沟通状态
+  collectcode_getCodeList, // 获取沟通状态
   collectcode_getListByCodeType,// 获取拨打状态
   call_kt_hung_on, // 客天外拨
   call_moor_hung_on, // 容联外拨
@@ -114,7 +115,8 @@ export default {
       imgName: '',
       visible: false,
       showBottom: false,//添加、编辑催记弹窗
-      value1: 1,
+      callUserType: '',//催记里面的关系
+      call_status: '',// 拨打状态暂存
       modalTitle: '',
       visible1: false,
       modal7: false,
@@ -573,47 +575,6 @@ export default {
             ]);
           }
         }
-        // {
-        // 	title: '实际还款人',
-        // 	align: 'center',
-        // 	width: 100,
-        // 	key: 'userNmHid',
-        // 	render: (h, params) => {
-        // 		return h('div', [
-        // 			h('span', {}, params.row.userNmHid),
-        // 			h(
-        // 				'Poptip',
-        // 				{
-        // 					props: {
-        // 						content: _this.mingwenData
-        // 					}
-        // 				},
-        // 				[
-        // 					h('Icon', {
-        // 						props: {
-        // 							type: 'md-eye'
-        // 						},
-        // 						on: {
-        // 							click: () => {
-        // 								_this.syscommon_decrypt({
-        // 									type: 'NAME',
-        // 									data: params.row.userNm
-        // 								});
-        // 							}
-        // 						},
-        // 						class: 'eye-class'
-        // 					})
-        // 				]
-        // 			)
-        // 		]);
-        // 	}
-        // },
-        // {
-        // 	title: '还款人关系',
-        // 	align: 'center',
-        // 	width: 100,
-        // 	key: ''
-        // }
       ],
 
       // 用户主动还款
@@ -1797,19 +1758,19 @@ export default {
     };
   },
   watch: {
-    collectcode_getCollectRelate_childItem() {
-      if (
-        this.collectcode_getCollectRelate_childItem &&
-        this.collectcode_getCollectRelate_childItem.length === 1
-      ) {
-        this.$set(
-          this.formValidate,
-          'communicateResult',
-          this.collectcode_getCollectRelate_childItem[0].codeKeyResult
-        );
-        this.$refs.formValidate.validateField('communicateResult');
-      }
-    }
+    // collectcode_getCollectRelate_childItem() {
+    //   if (
+    //     this.collectcode_getCollectRelate_childItem &&
+    //     this.collectcode_getCollectRelate_childItem.length === 1
+    //   ) {
+    //     this.$set(
+    //       this.formValidate,
+    //       'communicateResult',
+    //       this.collectcode_getCollectRelate_childItem[0].codeKeyResult
+    //     );
+    //     this.$refs.formValidate.validateField('communicateResult');
+    //   }
+    // }
   },
   async created() {
     console.log(Cookie.get('all_opt'));
@@ -2397,6 +2358,7 @@ export default {
         return;
       }
       console.log(obj, type, tag)
+      this.callUserType = (obj.callUserType || obj.cntRelTyp) === '00'? '1': '2';
       this.handleCancle();
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;
@@ -2562,16 +2524,6 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    case_detail_mail_list_changeSize() { },
-    // 获取沟通状态
-    async collectcode_getCollectRelate() {
-      const res = await collectcode_getCollectRelate({});
-      if (res.code === 1) {
-        this.collectcode_getCollectRelate_Data = res.data;
-      } else {
-        this.$Message.error(res.message);
-      }
-    },
     //获取拨打状态
     async collectcode_getListByCodeType() {
       const res = await collectcode_getListByCodeType({
@@ -2584,13 +2536,27 @@ export default {
         this.$Message.error('获取拨打状态异常')
       }
     },
-    SelectChange(code) {
-      this.$set(this.formValidate, 'communicateResult', '');
-      this.collectcode_getCollectRelate_Data.forEach((element) => {
-        if (element.code === code) {
-          this.collectcode_getCollectRelate_childItem = element.codeRelateDomains;
-        }
+    // 获取沟通状态
+    async collectcode_getCodeList(id, type) {
+      const res = await collectcode_getCodeList({
+        codeKeyOrigin: id,
+        relateType: type
       });
+      if (res.code === 1) {
+        this.collectcode_getCollectRelate_childItem = res.data;
+      } else {
+        this.$Message.error('获取沟通状态异常')
+      }
+    },
+    // 拨打状态change
+    SelectChange(code) {
+      this.call_status = code;
+      this.collectcode_getCodeList(code, this.callUserType)
+    },
+    // 关系状态change
+    select_relation(key) {
+      this.callUserType = key === '00'? '1': '2';
+      this.collectcode_getCodeList(this.call_status, this.callUserType)
     },
     // 新增催记按钮
     handleSubmit(name) {

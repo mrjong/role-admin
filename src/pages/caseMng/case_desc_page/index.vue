@@ -590,7 +590,6 @@
                     ></Icon>
                   </Poptip>
                   <span class="state" v-if="item.callStateName">{{item.callStateName}}</span>
-                  <span class="state">用户来电</span>
                   <Tooltip
                     v-if="readType!=='read'"
                     class="edit-hover"
@@ -746,6 +745,7 @@
                   <Select
                     size="small"
                     v-model="formValidate.callUserType"
+                    @on-change='select_relation'
                     transfer
                     clearable
                     placeholder="请选择关系"
