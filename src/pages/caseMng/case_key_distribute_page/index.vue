@@ -310,7 +310,7 @@
               :key="index"
               :label="item.opUserName+':'"
               :prop="'staffList.'+index+'.collectRate'"
-              :rules="[{required: true, message: '回款率不能为空'},{ message: '回款率只能是数字', trigger:'blur', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,},{ trigger:'blur', max: 3, message: '回款率最大为100%'}]"
+              :rules="[{required: true, message: '回款率不能为空'},{ message: '回款率只能是数字', trigger:'blur', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,},{ trigger:'blur', max: 100, message: '回款率最大为100%'}]"
               style="margin-bottom: 8px"
             >
               <Row>
@@ -904,6 +904,9 @@ export default {
               this.remoneyRateForm.staffList.push(res.data[i]);
             }
           }
+          this.remoneyRateForm.staffList.forEach(item => {
+            item.collectRate = item.collectRate.toFixed(2);
+          })
           sessionStorage.setItem(
             "collectRate",
             JSON.stringify(this.remoneyRateForm.staffList)
@@ -912,6 +915,9 @@ export default {
           // this.remoneyRateForm.staffList = newArr.concat(backArr);
         } else {
           this.remoneyRateForm.staffList = res.data;
+          this.remoneyRateForm.staffList.forEach(item => {
+            item.collectRate = item.collectRate.toFixed(2);
+          })
         }
       } else {
         this.$Message.error(res.message);
