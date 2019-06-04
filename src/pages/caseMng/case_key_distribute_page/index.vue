@@ -310,7 +310,7 @@
               :key="index"
               :label="item.opUserName+':'"
               :prop="'staffList.'+index+'.collectRate'"
-              :rules="[{required: true, message: '回款率不能为空'},{ message: '回款率只能是数字', trigger:'blur', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,}]"
+              :rules="[{required: true, message: '回款率不能为空'},{ message: '回款率只能是数字', trigger:'blur', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,},{ trigger:'blur', max: 100, message: '回款率最大为100%'}]"
               style="margin-bottom: 8px"
             >
               <Row>
@@ -341,7 +341,6 @@
 import formValidateFun from "@/mixin/formValidateFun";
 import sysDictionary from "@/mixin/sysDictionary";
 import qs from "qs";
-
 import {
   divide_allot_manual,
   collect_tree_children,
@@ -353,6 +352,7 @@ export default {
   name: "case_key_distribute_page",
   mixins: [formValidateFun, sysDictionary],
   data() {
+    const remoney_rate_max = (rule, value, callback) => {if (Number(value) > 100) {callback(new Error("回款率不能大于100%"));}callback();}
     const validate_money_start = (rule, value, callback) => {
       if (
         value &&
@@ -651,6 +651,7 @@ export default {
     // 汇款率输入框的blur
     rateBlur(index, value) {
       if (typeof value == "number") {
+        if (value <= 100)
         this.remoneyRateForm.staffList[index].collectRate = value.toFixed(2);
       } else {
         this.remoneyRateForm.staffList[index].collectRate = "";
@@ -903,6 +904,9 @@ export default {
               this.remoneyRateForm.staffList.push(res.data[i]);
             }
           }
+          this.remoneyRateForm.staffList.forEach(item => {
+            item.collectRate = item.collectRate.toFixed(2);
+          })
           sessionStorage.setItem(
             "collectRate",
             JSON.stringify(this.remoneyRateForm.staffList)
@@ -911,6 +915,9 @@ export default {
           // this.remoneyRateForm.staffList = newArr.concat(backArr);
         } else {
           this.remoneyRateForm.staffList = res.data;
+          this.remoneyRateForm.staffList.forEach(item => {
+            item.collectRate = item.collectRate.toFixed(2);
+          })
         }
       } else {
         this.$Message.error(res.message);

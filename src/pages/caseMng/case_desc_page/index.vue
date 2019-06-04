@@ -48,7 +48,7 @@
     </Modal>
 
     <!-- 弹层 -->
-    <div class="case-left-container" :style="{paddingRight:showBtn?'25px':'370px'}">
+    <div class="case-left-container" :style="{paddingRight:showBtn?'25px':'385px'}">
       <!-- 检索条件 -->
       <Card class="vue-panel case-desc">
         <p slot="title">
@@ -482,7 +482,7 @@
         ">
           <div v-show="!showBtn" class="heighti">
             <Card
-              style="width:370px"
+              style="width:385px"
               class="heighti case-top-panel"
               :style="{height:!this.showBottom?'inherit':'calc(100% - 325px)'}"
             >
@@ -510,7 +510,7 @@
             })"
                       ></Icon>
                     </Poptip>-->
-                    <span>（本人）</span>
+                    <span>(本人)&nbsp;</span>
                   </span>
                   <span
                     class="tel"
@@ -596,7 +596,7 @@
             })"
                       ></Icon>
                     </Poptip>-->
-                    <span>（{{item.cntRelTypName}}）</span>
+                    <span>({{item.cntRelTypName}})&nbsp;</span>
                   </span>
                   <span class="tel" @click="handCall(item,'call','02')">
                     <Badge :count="item.callCount" class-name="badge_wrap_myself">
