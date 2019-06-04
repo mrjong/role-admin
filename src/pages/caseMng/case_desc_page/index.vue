@@ -769,8 +769,8 @@
                   >
                     <Option
                       v-for="item in collectcode_getCollectRelate_Data"
-                      :value="item.code"
-                      :key="item.code"
+                      :value="item.codeKey"
+                      :key="item.codeKey"
                     >{{ item.codeName }}</Option>
                   </Select>
                 </FormItem>

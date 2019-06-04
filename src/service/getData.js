@@ -1136,7 +1136,8 @@ export const case_remark_his_add = (obj, options) =>
 /*
 *
 *
-沟通状态
+获取
+拨打状态
 * */
 export const collectcode_getListByCodeType = (obj, options) =>
   fetch({
@@ -1157,6 +1158,7 @@ export const collectcode_getCollectRelate = (obj, options) =>
     data: qs.stringify(obj),
     options
   });
+
 
 /*
 *
