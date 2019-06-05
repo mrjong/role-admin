@@ -566,10 +566,11 @@
                 <div
                   class="ivu-alert-copy ivu-alert-error"
                   v-for="(item,index) in case_detail_urgent_contact_Data"
+                  :key='item.id'
                 >
                   <span class="state-name">紧急联系人</span>
                   <span class="name">
-                    {{item.cntUserNameHid}}
+                    {{item.cntUserNameClear}}
                     <span>({{item.cntRelTypName}})</span>
                   </span>
                   <span class="tel" @click="handCall(item,'call','02')">

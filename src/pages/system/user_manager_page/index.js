@@ -277,17 +277,30 @@ export default {
       const res = await collect_tree_children({status: 1});
       if (res.code === 1) {
         // this.data5 = res.data;
-        res.data.forEach(item => {
-          item.expand = true;
-          item.children.forEach(item2 => {
-            item2.expand = true;
-          })
-        });
+        // res.data.forEach(item => {
+        //   item.expand = true;
+        //   item.children.forEach(item2 => {
+        //     item2.expand = true;
+        //   })
+        // });
+        await this.deal_tree_data(res.data);
         this.data5 = res.data;
         console.log(this.data5);
       } else {
         this.$Message.error(res.message);
       }
+    },
+    deal_tree_data(data) {
+      data.forEach(item => {
+        item.expand = true;
+        item.parent = item.parentUuid;
+        if (item.children.length === 0 || item.leafType === '04') {
+          item.children = [];
+          // delete item.children
+        } else if (item.children.length >= 0) {
+          this.deal_tree_data(item.children)
+        }
+      })
     },
     // 异步加载tree数据
     loadData(item, callBack) {
