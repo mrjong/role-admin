@@ -33,9 +33,8 @@
             :data="data5"
             :render="renderContent"
             v-if="!showPanel"
+            multiple
             :empty-text="query? '暂无数据': '暂无权限查看'"
-            @on-select-change="selectNode"
-            @on-toggle-expand="expandNode"
           ></Tree>
         </Card>
       </Col>

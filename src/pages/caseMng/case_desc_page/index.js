@@ -1997,7 +1997,7 @@ export default {
           this.case_detail_urgent_contact();
           if (obj.collectType === '03')
           this[this.address_list_name]();
-        }, 1500)
+        }, 1500);
       } else {
         this.$Message.error(res.message);
       }
@@ -2515,11 +2515,20 @@ export default {
       this.add_collect_loading = false;
       if (res.code === 1) {
         this.$Message.success('添加成功');
-        this.handleCancle();
-        setTimeout(() => {
+        let timer;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
           this.case_detail_remark_list_pageNo = 1;
           this.case_detail_remark_list();
-        }, 2000);
+          // debugger
+          if (this.collectType === '01')
+          this.case_detail_case_identity_info();
+          if (this.collectType === '02')
+          this.case_detail_urgent_contact();
+          if (this.collectType === '03')
+          this[this.address_list_name]();
+          this.handleCancle();
+        }, 1500);
       } else {
         this.$Message.error(res.message);
       }

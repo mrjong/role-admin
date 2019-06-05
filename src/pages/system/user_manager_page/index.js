@@ -6,7 +6,7 @@ import departmentForm from './components/department_form_page';
 import staffForm from './components/staff_form_page';
 import addRole from './components/add_staff_page';
 import addOrganization from './components/add_organization_page';
-import {  collect_parent_children, collect_tree_children } from '@/service/getData';
+import { collect_parent_children, collect_tree_children } from '@/service/getData';
 export default {
   components: {
     organizationForm,
@@ -43,8 +43,7 @@ export default {
       nodeData: {},
       parentData: {},
       dataContact: [],
-      data5: [
-      ],
+      data5: [],
       buttonProps: {
         type: 'primary',
         size: 'small',
@@ -114,7 +113,8 @@ export default {
       return h('span', {
         style: {
           display: 'inline-block',
-          width: '100%'
+          width: '94%',
+          boxSizing: 'border-box'
         },
       }, [
           h('span', [
@@ -130,9 +130,17 @@ export default {
               style: {
                 cursor: 'pointer'
               },
+              class: 'tree_title',
               on: {
                 'click': (e) => {
                   e.stopPropagation();
+                  let titleSpan = document.querySelectorAll('.tree_title');
+                  titleSpan.forEach((item) => {
+                    item.className = 'tree_title';
+                  });
+                  if (e.target.className.indexOf('ivu-tree-title-selected') === -1) {
+                    e.target.className = 'tree_title ivu-tree-title-selected';
+                  }
                   console.log(data);
                   this.nodeData = data;
                   // this.nodeId = data.nodeKey;
@@ -150,7 +158,7 @@ export default {
               marginRight: '20px'
             }
           }, [
-              data.leafType !== '04' && data.leafType !== '03' && this.add_org?
+              data.leafType !== '04' && data.leafType !== '03' && this.add_org ?
                 h('Button', {
                   props: Object.assign({}, this.buttonProps, {
                     // icon: 'ios-plus-empty'
@@ -180,9 +188,11 @@ export default {
                     this.addRole(data)
                   }
                 }
-              }, '添加人员') :null
-            ])
-        ]);
+              }, '添加人员') : null
+            ]
+          )
+        ]
+      );
     },
     addRole(data) {
       // const children = data.children || [];
@@ -274,7 +284,7 @@ export default {
         this.data5 = [];
         return;
       }
-      const res = await collect_tree_children({status: 1});
+      const res = await collect_tree_children({ status: 1 });
       if (res.code === 1) {
         // this.data5 = res.data;
         // res.data.forEach(item => {
@@ -283,8 +293,8 @@ export default {
         //     item2.expand = true;
         //   })
         // });
-        await this.deal_tree_data(res.data);
         this.data5 = res.data;
+        await this.deal_tree_data(this.data5);
         console.log(this.data5);
       } else {
         this.$Message.error(res.message);
@@ -293,9 +303,11 @@ export default {
     deal_tree_data(data) {
       data.forEach(item => {
         item.expand = true;
+        delete item.checked;
         item.parent = item.parentUuid;
         if (item.children.length === 0 || item.leafType === '04') {
           item.children = [];
+          // this.$set(item, 'children', new Array());
           // delete item.children
         } else if (item.children.length >= 0) {
           this.deal_tree_data(item.children)
@@ -319,7 +331,7 @@ export default {
       this.collect_parent_children(item.id, leafType, callBack);
       setTimeout(() => {
         this.collect_parent_children2(item.id, '04', callBack);
-      },0)
+      }, 0)
     },
   }
 };
