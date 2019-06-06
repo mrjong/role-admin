@@ -2555,6 +2555,9 @@ export default {
         relateType: type
       });
       if (res.code === 1) {
+        if (res.data.length === 1) {
+          this.$set(this.formValidate, 'communicateResult', res.data[0].codeKeyResult);
+        }
         this.collectcode_getCollectRelate_childItem = res.data;
       } else {
         this.$Message.error('获取沟通状态异常')
@@ -2567,7 +2570,11 @@ export default {
     },
     // 关系状态change
     select_relation(key) {
-      this.callUserType = key === '00' ? '1' : '2';
+      if (key) {
+        this.callUserType = key === '00' ? '1' : '2';
+      } else {
+        this.callUserType = '';
+      }
       this.collectcode_getCodeList(this.call_status, this.callUserType)
     },
     // 新增催记按钮
