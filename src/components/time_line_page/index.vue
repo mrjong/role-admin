@@ -15,12 +15,18 @@
         >
           <p class="time">{{item.showTime}}</p>
           <p class="content">{{item.progressTitle}}</p>
-          <p class="content message_success">短线发送成功</p>
+          <p
+            class="content"
+            :class="[item.smsStatus === 'F'? 'message_error': item.smsStatus === 'S'? 'message_success': item.smsStatus === 'W'? 'message_sending': '']"
+          >{{deal_message(item.smsStatus)}}</p>
         </div>
         <div :class="(index + 1)%2 === 0?'timeline_dec_top':'timeline_dec_bottom'" v-else>
           <p class="time">{{item.preShowTime}}</p>
           <p class="content">{{item.preProgressTitle}}</p>
-          <p class="content message_error">短信发送失败</p>
+          <p
+            class="content"
+            :class="[item.smsStatus === 'F'? 'message_error': item.smsStatus === 'S'? 'message_success': item.smsStatus === 'W'? 'message_sending': '']"
+          >{{deal_message(item.smsStatus)}}</p>
         </div>
       </li>
     </ul>
@@ -39,6 +45,24 @@ export default {
   created() {
     this.list = this.time_line_data.list;
     this.view_time = this.time_line_data.lastViewTime;
+  },
+  methods: {
+    deal_message(statu) {
+      switch (statu) {
+        case "F":
+          return "短信发送失败";
+          break;
+        case "S":
+          return "短信发送成功";
+          break;
+        case "W":
+          return "短信发送中";
+          break;
+        default:
+          return null;
+          break;
+      }
+    }
   }
 };
 </script>
