@@ -733,7 +733,7 @@
                 :rules="ruleValidate"
                 :label-width="100"
               >
-                <FormItem label="沟通对象" prop="userNmHid">
+                <FormItem label="沟通对象">
                   <Input
                     size="small"
                     clearable
@@ -791,7 +791,7 @@
                   </Select>
                 </FormItem>
 
-                <FormItem label="承诺还款时间" prop="date">
+                <FormItem label="承诺还款时间">
                   <DatePicker
                     placement="top"
                     style="width:100%;"
@@ -804,7 +804,7 @@
                     v-model="formValidate.promiseRepayDate"
                   ></DatePicker>
                 </FormItem>
-                <FormItem label="备注" prop="collectRmk">
+                <FormItem label="备注">
                   <Input
                     v-model.trim="formValidate.collectRmk"
                     type="textarea"

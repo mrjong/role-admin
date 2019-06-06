@@ -1759,7 +1759,10 @@ export default {
   },
   // watch: {
   //   collectcode_getCollectRelate_childItem() {
-  //     this.$set(this.formValidate, 'communicateResult', '');
+  //     if (this.collectcode_getCollectRelate_childItem.length === 0) {
+  //       this.$set(this.formValidate, 'communicateResult', '');
+  //       this.$refs.formValidate.resetFields();
+  //     }
   //     //  this.formValidate.validateField('communicateResult');
   //   }
   // },
@@ -2338,13 +2341,11 @@ export default {
       this.mblNoHid = '';
       this.userNm = '';
       // this.formValidate = {};
-      this.showBottom = false;
       this.collectType = '';
       this.collectcode_getCollectRelate_childItem = []
-      if (flag) {
-        this.formValidate.communicateResult = '';
-        this.$refs.formValidate.resetFields();
-      };
+      this.formValidate.communicateResult = '';
+      this.$refs.formValidate.resetFields();
+      this.showBottom = false;
       console.log(this.formValidate)
     },
 
@@ -2359,7 +2360,6 @@ export default {
       } else {
         this.callUserTyp = '';
       }
-      this.formValidate.communicateResult = '';
       console.log(this.callUserType)
       this.handleCancle();
       if (type === 'call' && this.readType !== 'read') {
