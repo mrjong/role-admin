@@ -2360,8 +2360,12 @@ export default {
         this.$Message.error('很抱歉，暂无权限拨打');
         return;
       }
-      console.log(obj, type, tag)
-      this.callUserType = (obj.callUserType || obj.cntRelTyp) === '00' ? '1' : '2';
+      if (obj.callUserType || obj.cntRelTyp) {
+        this.callUserType = (obj.callUserType || obj.cntRelTyp) === '00' ? '1' : '2';
+      } else {
+        this.callUserTyp = '';
+      }
+      console.log(this.callUserType)
       this.handleCancle();
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;
@@ -2566,10 +2570,12 @@ export default {
     // 拨打状态change
     SelectChange(code) {
       this.call_status = code;
-      this.collectcode_getCodeList(code, this.callUserType)
+      this.$set(this.formValidate, 'communicateResult', '');
+      this.collectcode_getCodeList(code, this.callUserType);
     },
     // 关系状态change
     select_relation(key) {
+      this.$set(this.formValidate, 'communicateResult', '');
       if (key) {
         this.callUserType = key === '00' ? '1' : '2';
       } else {
