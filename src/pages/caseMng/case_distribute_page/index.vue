@@ -377,7 +377,7 @@
         class-name="user_info_form_modal"
         :mask-closable="false"
       >
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px;">
           <span>提示</span>
         </p>
         <Alert show-icon type="warning">
@@ -452,7 +452,7 @@
         class-name="user_info_form_modal"
         :mask-closable="false"
       >
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px">
           <span>批量回收</span>
         </p>
         <Alert show-icon type="warning">
@@ -475,7 +475,7 @@
         class-name="user_info_form_modal"
         :mask-closable="false"
       >
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px">
           <span>案件停催</span>
         </p>
         <Form ref="stopFormItem" :model="stopFormItem" :label-width="90" :rules="ruleValidate1">
@@ -511,7 +511,7 @@
         class-name="user_info_form_modal"
         :mask-closable="false"
       >
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px">
           <span>恢复催收</span>
         </p>
         <Form
