@@ -496,27 +496,13 @@
                   <span class="name">
                     <span class="state-name">本人</span>
                     {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear}}
-                    <!-- <Poptip
-                      :content="mingwenData"
-                      v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
-                    >
-                      <Icon
-                        class="eye-class"
-                        title="显示明文"
-                        type="md-eye"
-                        @click.native="syscommon_decrypt({
-                type:'NAME',
-                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm
-            })"
-                      ></Icon>
-                    </Poptip>-->
                     <span>(本人)&nbsp;</span>
                   </span>
                   <span
                     class="tel"
                     @click="handCall({
-                         callUserType:'00',
-                         userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
+                        callUserType:'00',
+                        userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
                         userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
                         userNmClear:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear,
                         userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
@@ -543,10 +529,12 @@
                       title="显示明文"
                       type="md-eye"
                       v-if="plaintext"
-                      @click.native="syscommon_decrypt({
-                type:'MBL',
-                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
-            })"
+                      @click.native="syscommon_decrypt(
+                        {
+                          type:'MBL',
+                          data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
+                        }
+                      )"
                     ></Icon>
                   </Poptip>
                   <span
@@ -561,8 +549,8 @@
                   >
                     <Icon
                       @click.native="handCall({
-                        callUserType:'01',
-                         userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
+                        callUserType:'00',
+                        userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
                         userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
                         userNmClear:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear,
                         userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
@@ -581,21 +569,7 @@
                 >
                   <span class="state-name">紧急联系人</span>
                   <span class="name">
-                    {{item.cntUserNameHid}}
-                    <!-- <Poptip
-                      :content="mingwenData"
-                      v-if="item&&item.cntUserNameHid"
-                    >
-                      <Icon
-                        class="eye-class"
-                        title="显示明文"
-                        type="md-eye"
-                        @click.native="syscommon_decrypt({
-                type:'NAME',
-                data:item&&item.cntUserName
-            })"
-                      ></Icon>
-                    </Poptip>-->
+                    {{item.cntUserNameClear}}
                     <span>({{item.cntRelTypName}})&nbsp;</span>
                   </span>
                   <span class="tel" @click="handCall(item,'call','02')">
@@ -760,19 +734,26 @@
                 :label-width="100"
               >
                 <FormItem label="沟通对象" prop="userNmHid">
-                  <Input size="small" v-model.trim="formValidate.userNmClear" placeholder="请输入沟通对象"></Input>
+                  <Input
+                    size="small"
+                    clearable
+                    v-model.trim="formValidate.userNmClear"
+                    placeholder="请输入沟通对象"
+                  ></Input>
                 </FormItem>
                 <FormItem label="关系" prop="callUserType">
                   <Select
                     size="small"
                     v-model="formValidate.callUserType"
+                    @on-change='select_relation'
                     transfer
+                    clearable
                     placeholder="请选择关系"
                   >
                     <Option
-                      v-for="item in getDirObj.CONTACT_REL_TYPE"
+                      v-for="item,index in getDirObj.CONTACT_REL_TYPE"
                       :value="item.itemCode"
-                      :key="item.itemCode"
+                      :key="item.itemCode+index"
                     >{{ item.itemName }}</Option>
                   </Select>
                 </FormItem>
@@ -783,12 +764,13 @@
                     v-model="formValidate.collectResult"
                     @on-change="SelectChange"
                     transfer
+                    clearable
                     placeholder="请选择拨打状态"
                   >
                     <Option
-                      v-for="item in collectcode_getCollectRelate_Data"
-                      :value="item.code"
-                      :key="item.code"
+                      v-for="item,index in collectcode_getCollectRelate_Data"
+                      :value="item.codeKey"
+                      :key="item.codeKey+index"
                     >{{ item.codeName }}</Option>
                   </Select>
                 </FormItem>
@@ -797,13 +779,14 @@
                   <Select
                     size="small"
                     transfer
+                    clearable
                     v-model="formValidate.communicateResult"
                     placeholder="请选择沟通状态"
                   >
                     <Option
-                      v-for="item in collectcode_getCollectRelate_childItem"
+                      v-for="item,index in collectcode_getCollectRelate_childItem"
                       :value="item.codeKeyResult"
-                      :key="item.codeKeyResult"
+                      :key="item.codeKeyResult+index"
                     >{{ item.codeNameResult }}</Option>
                   </Select>
                 </FormItem>
@@ -814,6 +797,7 @@
                     style="width:100%;"
                     size="small"
                     transfer
+                    clearable
                     type="datetime"
                     format="yyyy-MM-dd HH:mm"
                     placeholder="请选择承诺还款时间"
@@ -826,6 +810,7 @@
                     type="textarea"
                     :autosize="{minRows: 2,maxRows: 2}"
                     :maxlength="249"
+                    clearable
                     placeholder="请输入备注，最大249个字符"
                   ></Input>
                 </FormItem>
