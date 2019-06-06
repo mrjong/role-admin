@@ -1757,21 +1757,12 @@ export default {
       ]
     };
   },
-  watch: {
-    // collectcode_getCollectRelate_childItem() {
-    //   if (
-    //     this.collectcode_getCollectRelate_childItem &&
-    //     this.collectcode_getCollectRelate_childItem.length === 1
-    //   ) {
-    //     this.$set(
-    //       this.formValidate,
-    //       'communicateResult',
-    //       this.collectcode_getCollectRelate_childItem[0].codeKeyResult
-    //     );
-    //     this.$refs.formValidate.validateField('communicateResult');
-    //   }
-    // }
-  },
+  // watch: {
+  //   collectcode_getCollectRelate_childItem() {
+  //     this.$set(this.formValidate, 'communicateResult', '');
+  //     //  this.formValidate.validateField('communicateResult');
+  //   }
+  // },
   async created() {
     console.log(Cookie.get('all_opt'));
     if (Cookie.get('all_opt') === 'true') {
@@ -2349,9 +2340,12 @@ export default {
       // this.formValidate = {};
       this.showBottom = false;
       this.collectType = '';
+      this.collectcode_getCollectRelate_childItem = []
       if (flag) {
+        this.formValidate.communicateResult = '';
         this.$refs.formValidate.resetFields();
       };
+      console.log(this.formValidate)
     },
 
     // 点击电话
@@ -2365,6 +2359,7 @@ export default {
       } else {
         this.callUserTyp = '';
       }
+      this.formValidate.communicateResult = '';
       console.log(this.callUserType)
       this.handleCancle();
       if (type === 'call' && this.readType !== 'read') {
@@ -2528,12 +2523,15 @@ export default {
           this.case_detail_remark_list_pageNo = 1;
           this.case_detail_remark_list();
           // debugger
-          if (this.collectType === '01')
+          if (this.collectType === '01') {
             this.case_detail_case_identity_info();
-          if (this.collectType === '02')
+          }
+          if (this.collectType === '02') {
             this.case_detail_urgent_contact();
-          if (this.collectType === '03')
+          }
+          if (this.collectType === '03') {
             this[this.address_list_name]();
+          }
           this.handleCancle(true);
         }, 1500);
       } else {
@@ -2560,7 +2558,8 @@ export default {
       });
       if (res.code === 1) {
         if (res.data.length === 1) {
-          this.$set(this.formValidate, 'communicateResult', res.data[0].codeKeyResult);
+          // this.$set(this.formValidate, 'communicateResult', res.data[0].codeKeyResult);
+          this.formValidate.communicateResult = res.data[0].codeKeyResult;
         }
         this.collectcode_getCollectRelate_childItem = res.data;
       } else {
@@ -2570,12 +2569,12 @@ export default {
     // 拨打状态change
     SelectChange(code) {
       this.call_status = code;
-      this.$set(this.formValidate, 'communicateResult', '');
+      this.formValidate.communicateResult = '';
       this.collectcode_getCodeList(code, this.callUserType);
     },
     // 关系状态change
     select_relation(key) {
-      this.$set(this.formValidate, 'communicateResult', '');
+      this.formValidate.communicateResult = '';
       if (key) {
         this.callUserType = key === '00' ? '1' : '2';
       } else {
