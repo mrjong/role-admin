@@ -15,10 +15,12 @@
         >
           <p class="time">{{item.showTime}}</p>
           <p class="content">{{item.progressTitle}}</p>
+          <p class="content message_success">短线发送成功</p>
         </div>
         <div :class="(index + 1)%2 === 0?'timeline_dec_top':'timeline_dec_bottom'" v-else>
           <p class="time">{{item.preShowTime}}</p>
           <p class="content">{{item.preProgressTitle}}</p>
+          <p class="content message_error">短信发送失败</p>
         </div>
       </li>
     </ul>
@@ -73,13 +75,13 @@ export default {
 
     .timeline_dec_top {
       position: absolute;
-      top: -40px;
+      top: -50px;
       right: -70px;
       z-index: 100;
     }
     .timeline_dec_bottom {
       position: absolute;
-      bottom: -40px;
+      bottom: -50px;
       right: -70px;
       z-index: 100;
     }
@@ -125,6 +127,15 @@ export default {
       color: #333;
       text-align: center;
       width: 150px;
+    }
+    .message_success {
+      color: #1dd37c;
+    }
+    .message_error {
+      color: #fe6666;
+    }
+    .message_sending {
+      color: #61aaed;
     }
   }
 }
