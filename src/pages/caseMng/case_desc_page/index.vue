@@ -824,7 +824,7 @@
                     <span v-if="!add_collect_loading">提交</span>
                     <span v-else>提交中...</span>
                   </Button>
-                  <Button size="small" @click="handleCancle()" style="margin-left: 8px">取消</Button>
+                  <Button size="small" @click="handleCancle(true)" style="margin-left: 8px">取消</Button>
                 </FormItem>
               </Form>
             </Card>

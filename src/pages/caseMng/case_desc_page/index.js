@@ -1969,11 +1969,11 @@ export default {
         clearTimeout(timer);
         timer = setTimeout(() => {
           if (params.collectType === '01')
-          this.case_detail_case_identity_info();
+            this.case_detail_case_identity_info();
           if (params.collectType === '02')
-          this.case_detail_urgent_contact();
+            this.case_detail_urgent_contact();
           if (params.collectType === '03')
-          this[this.address_list_name]();
+            this[this.address_list_name]();
         }, 1500)
       } else {
         this.$Message.error(res.message);
@@ -1992,11 +1992,11 @@ export default {
         clearTimeout(timer);
         timer = setTimeout(() => {
           if (obj.collectType === '01')
-          this.case_detail_case_identity_info();
+            this.case_detail_case_identity_info();
           if (obj.collectType === '02')
-          this.case_detail_urgent_contact();
+            this.case_detail_urgent_contact();
           if (obj.collectType === '03')
-          this[this.address_list_name]();
+            this[this.address_list_name]();
         }, 1500);
       } else {
         this.$Message.error(res.message);
@@ -2339,16 +2339,19 @@ export default {
     },
 
     // 取消催记
-    handleCancle() {
+    handleCancle(flag) {
       this.add_collect_loading = false;
       // 重置初始化数据
       this.mblNo = '';
       this.userNmClearCopy = '';
       this.mblNoHid = '';
       this.userNm = '';
-      this.formValidate = {};
+      // this.formValidate = {};
       this.showBottom = false;
       this.collectType = '';
+      if (flag) {
+        this.$refs.formValidate.resetFields();
+      };
     },
 
     // 点击电话
@@ -2358,7 +2361,7 @@ export default {
         return;
       }
       console.log(obj, type, tag)
-      this.callUserType = (obj.callUserType || obj.cntRelTyp) === '00'? '1': '2';
+      this.callUserType = (obj.callUserType || obj.cntRelTyp) === '00' ? '1' : '2';
       this.handleCancle();
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;
@@ -2522,12 +2525,12 @@ export default {
           this.case_detail_remark_list();
           // debugger
           if (this.collectType === '01')
-          this.case_detail_case_identity_info();
+            this.case_detail_case_identity_info();
           if (this.collectType === '02')
-          this.case_detail_urgent_contact();
+            this.case_detail_urgent_contact();
           if (this.collectType === '03')
-          this[this.address_list_name]();
-          this.handleCancle();
+            this[this.address_list_name]();
+          this.handleCancle(true);
         }, 1500);
       } else {
         this.$Message.error(res.message);
@@ -2564,7 +2567,7 @@ export default {
     },
     // 关系状态change
     select_relation(key) {
-      this.callUserType = key === '00'? '1': '2';
+      this.callUserType = key === '00' ? '1' : '2';
       this.collectcode_getCodeList(this.call_status, this.callUserType)
     },
     // 新增催记按钮
