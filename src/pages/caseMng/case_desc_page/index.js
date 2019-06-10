@@ -2557,6 +2557,9 @@ export default {
         relateType: type
       });
       if (res.code === 1) {
+        if (res.data.length === 0) {
+          this.$refs.formValidate.validateField('callUserType');
+        }
         if (res.data.length === 1) {
           // this.$set(this.formValidate, 'communicateResult', res.data[0].codeKeyResult);
           this.formValidate.communicateResult = res.data[0].codeKeyResult;
