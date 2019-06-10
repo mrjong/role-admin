@@ -2340,10 +2340,11 @@ export default {
       this.userNmClearCopy = '';
       this.mblNoHid = '';
       this.userNm = '';
-      // this.formValidate = {};
+      this.formValidate = {};
       this.collectType = '';
       this.collectcode_getCollectRelate_childItem = []
-      this.formValidate.communicateResult = '';
+      // this.formValidate.communicateResult = '';
+      // this.formValidate.callUserType = '';
       this.$refs.formValidate.resetFields();
       this.showBottom = false;
       console.log(this.formValidate)
@@ -2361,7 +2362,7 @@ export default {
         this.callUserTyp = '';
       }
       console.log(this.callUserType)
-      // this.handleCancle();
+      this.handleCancle();
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;
         this.objCopy.collectType = tag;
@@ -2410,10 +2411,14 @@ export default {
         this.actionId = '';
       }
       if (this.readType !== 'read') {
+        if (obj.callUserType || obj.cntRelTyp) {
+          this.formValidate.callUserType = obj.callUserType || obj.cntRelTyp;
+        } else {
+          this.handleCancle()
+        }
         this.collectType = tag;
         this.formValidate.userNmHid = obj.userNmHid || obj.cntUserNameHid;
         this.formValidate.userNmClear = obj.userNmClear || obj.cntUserNameClear;
-        this.formValidate.callUserType = obj.callUserType || obj.cntRelTyp;
         this.userNmClearCopy = obj.userNmClear || obj.cntUserNameClear;
         this.mblNoHid = obj.mblNoHid || obj.cntUserMblNoHid;
         this.userNm = obj.userNm || obj.cntUserName;
