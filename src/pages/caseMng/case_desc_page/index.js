@@ -2361,7 +2361,7 @@ export default {
         this.callUserTyp = '';
       }
       console.log(this.callUserType)
-      this.handleCancle();
+      // this.handleCancle();
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;
         this.objCopy.collectType = tag;
