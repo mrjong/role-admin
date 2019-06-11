@@ -2340,10 +2340,10 @@ export default {
       this.userNmClearCopy = '';
       this.mblNoHid = '';
       this.userNm = '';
-      this.formValidate = {};
+      // this.formValidate = {};
       this.collectType = '';
       this.collectcode_getCollectRelate_childItem = []
-      // this.formValidate.communicateResult = '';
+      this.formValidate.communicateResult = '';
       // this.formValidate.callUserType = '';
       this.$refs.formValidate.resetFields();
       this.showBottom = false;
@@ -2361,7 +2361,7 @@ export default {
       } else {
         this.callUserTyp = '';
       }
-      console.log(this.callUserType)
+      console.log(this.callUserType);
       this.handleCancle();
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;
@@ -2576,19 +2576,25 @@ export default {
     },
     // 拨打状态change
     SelectChange(code) {
+      console.log(code)
       this.call_status = code;
       this.formValidate.communicateResult = '';
-      this.collectcode_getCodeList(code, this.callUserType);
+      if (code) {
+        this.collectcode_getCodeList(code, this.callUserType);
+      }
     },
     // 关系状态change
     select_relation(key) {
+      console.log(key)
       this.formValidate.communicateResult = '';
       if (key) {
         this.callUserType = key === '00' ? '1' : '2';
       } else {
         this.callUserType = '';
       }
-      this.collectcode_getCodeList(this.call_status, this.callUserType)
+      if (key) {
+        this.collectcode_getCodeList(this.call_status, this.callUserType);
+      }
     },
     // 新增催记按钮
     handleSubmit(name) {
