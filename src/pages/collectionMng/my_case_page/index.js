@@ -222,19 +222,19 @@ export default {
         },
         {
           title: '产品线',
-          width: 120,
+          width: 100,
           align: 'center',
           key: 'prdName'
         },
         {
           title: '产品期数',
-          width: 120,
+          width: 100,
           align: 'center',
           key: 'perdCnt'
         },
         {
           title: '账单号',
-          width: 180,
+          width: 200,
           align: 'center',
           key: 'billNo',
           render(h, params) {
@@ -293,7 +293,7 @@ export default {
 
         {
           title: '信用级别',
-          width: 120,
+          width: 100,
           sortable: true,
           align: 'center',
           key: 'creditLevel'
