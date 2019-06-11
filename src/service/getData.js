@@ -760,6 +760,14 @@ export const case_detail_allot_list = (obj, options) =>
     data: qs.stringify(obj)
   });
 
+// 案件详情=>操作记录（指定案件）
+export const case_detail_getcaselog = (obj) =>
+ fetch({
+   url: '/case/detail/getcaselog',
+   method: 'POST',
+   data: qs.stringify(obj)
+ })
+
 /*
 *
 * 站内信息（指定案件）

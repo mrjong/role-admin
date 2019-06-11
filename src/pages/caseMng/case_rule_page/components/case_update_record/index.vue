@@ -7,7 +7,7 @@
       :mask-closable="false"
       @on-visible-change="close"
     >
-      <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
+      <p slot="header" style="color:#333; font-size: 20px; font-weight: 600; line-height: 12px;">
         <span>修改记录</span>
       </p>
       <!-- 表格 -->

@@ -399,27 +399,27 @@
                 </div>
               </div>
             </TabPane>
-            <TabPane label="操作记录" name="case_detail_allot_list">
+            <TabPane label="操作记录" name="case_detail_getcaselog">
               <div>
                 <Table
                   border
-                  :data="case_detail_allot_list_tableData"
-                  :columns="case_detail_allot_list_tableColumns"
+                  :data="case_detail_getcaselog_tableData"
+                  :columns="case_detail_getcaselog_tableColumns"
                   stripe
                 ></Table>
                 <!-- 分页 -->
                 <div class="vue-panel-page">
                   <div class="fr">
                     <Page
-                      :total="case_detail_allot_list_total"
+                      :total="case_detail_getcaselog_total"
                       show-total
                       size="small"
                       :page-size-opts="[10, 20, 30, 40]"
                       show-elevator
-                      :page-size="case_detail_allot_list_pageSize"
-                      :current.sync="case_detail_allot_list_pageNo"
-                      @on-page-size-change="changeSize('case_detail_allot_list')"
-                      @on-change="changePage('case_detail_allot_list')"
+                      :page-size="case_detail_getcaselog_pageSize"
+                      :current.sync="case_detail_getcaselog_pageNo"
+                      @on-page-size-change="changeSize('case_detail_getcaselog')"
+                      @on-change="changePage('case_detail_getcaselog')"
                     ></Page>
                   </div>
                 </div>
