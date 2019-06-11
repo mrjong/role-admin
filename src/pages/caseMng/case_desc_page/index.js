@@ -378,7 +378,7 @@ export default {
           }
         },
         {
-          title: '催收对象',
+          title: '关系',
           align: 'center',
           width: 100,
           key: 'callUserTypeName'
