@@ -732,6 +732,7 @@
                 :model="formValidate"
                 :rules="ruleValidate"
                 :label-width="100"
+                v-show="showBottom"
               >
                 <FormItem label="沟通对象">
                   <Input
