@@ -15,10 +15,18 @@
         >
           <p class="time">{{item.showTime}}</p>
           <p class="content">{{item.progressTitle}}</p>
+          <p
+            class="content"
+            :class="[item.smsStatus === 'F'? 'message_error': item.smsStatus === 'S'? 'message_success': item.smsStatus === 'W'? 'message_sending': '']"
+          >{{deal_message(item.smsStatus)}}</p>
         </div>
         <div :class="(index + 1)%2 === 0?'timeline_dec_top':'timeline_dec_bottom'" v-else>
           <p class="time">{{item.preShowTime}}</p>
           <p class="content">{{item.preProgressTitle}}</p>
+          <p
+            class="content"
+            :class="[item.smsStatus === 'F'? 'message_error': item.smsStatus === 'S'? 'message_success': item.smsStatus === 'W'? 'message_sending': '']"
+          >{{deal_message(item.smsStatus)}}</p>
         </div>
       </li>
     </ul>
@@ -37,6 +45,24 @@ export default {
   created() {
     this.list = this.time_line_data.list;
     this.view_time = this.time_line_data.lastViewTime;
+  },
+  methods: {
+    deal_message(statu) {
+      switch (statu) {
+        case "F":
+          return "短信发送失败";
+          break;
+        case "S":
+          return "短信发送成功";
+          break;
+        case "W":
+          return "短信发送中";
+          break;
+        default:
+          return null;
+          break;
+      }
+    }
   }
 };
 </script>
@@ -73,13 +99,13 @@ export default {
 
     .timeline_dec_top {
       position: absolute;
-      top: -40px;
+      top: -50px;
       right: -70px;
       z-index: 100;
     }
     .timeline_dec_bottom {
       position: absolute;
-      bottom: -40px;
+      bottom: -50px;
       right: -70px;
       z-index: 100;
     }
@@ -125,6 +151,15 @@ export default {
       color: #333;
       text-align: center;
       width: 150px;
+    }
+    .message_success {
+      color: #1dd37c;
+    }
+    .message_error {
+      color: #fe6666;
+    }
+    .message_sending {
+      color: #61aaed;
     }
   }
 }
