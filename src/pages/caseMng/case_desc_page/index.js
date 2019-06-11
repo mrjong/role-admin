@@ -2343,7 +2343,7 @@ export default {
       // this.formValidate = {};
       this.collectType = '';
       this.collectcode_getCollectRelate_childItem = []
-      this.formValidate.communicateResult = '';
+      this.formValidate.communicateResult = null;
       // this.formValidate.callUserType = '';
       this.$refs.formValidate.resetFields();
       this.showBottom = false;
@@ -2578,7 +2578,7 @@ export default {
     SelectChange(code) {
       console.log(code)
       this.call_status = code;
-      this.formValidate.communicateResult = '';
+      this.formValidate.communicateResult = null;
       if (code) {
         this.collectcode_getCodeList(code, this.callUserType);
       }
@@ -2586,7 +2586,7 @@ export default {
     // 关系状态change
     select_relation(key) {
       console.log(key)
-      this.formValidate.communicateResult = '';
+      this.formValidate.communicateResult = null;
       if (key) {
         this.callUserType = key === '00' ? '1' : '2';
       } else {
