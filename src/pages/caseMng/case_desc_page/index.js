@@ -899,7 +899,7 @@ export default {
           sortable: true
         },
         {
-          title: '分配时间',
+          title: '操作时间',
           align: 'center',
           key: 'allotDate',
           width: 200,
@@ -914,53 +914,24 @@ export default {
         {
           title: '操作人',
           align: 'center',
-          width: 150,
+          width: 120,
           key: 'allotUserName'
         },
         {
-          title: '分配前经办人',
+          title: '经办人',
           align: 'center',
-          width: 100,
+          width: 120,
           key: 'opUserNameOld'
         },
         {
-          title: '分配后经办人',
+          title: '详情',
           align: 'center',
-          width: 100,
-          key: 'opUserNameNew'
-        },
-        {
-          title: '备注',
-          align: 'center',
-          width: 400,
+          // width: 400,
+          tooltip: true,
           key: 'rmk',
           render: (h, params) => {
             let rmk = params.row.rmk;
-            return h('div', [
-              h(
-                'Tooltip',
-                {
-                  style: {
-                    margin: '0 5px',
-                  },
-                  props: {
-                    content: params.row.rmk,
-                    placement: 'top',
-                    maxWidth: "380",
-                    transfer: true,
-                  }
-                },
-                [h('div', {
-                  style: {
-                    cursor: 'pointer',
-                    width: '380px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }
-                }, params.row.rmk)]
-              ),
-            ])
+            return h('div', rmk)
           }
         }
       ],

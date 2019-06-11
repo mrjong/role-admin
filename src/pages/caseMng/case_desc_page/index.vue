@@ -399,7 +399,7 @@
                 </div>
               </div>
             </TabPane>
-            <TabPane label="分配信息" name="case_detail_allot_list">
+            <TabPane label="操作记录" name="case_detail_allot_list">
               <div>
                 <Table
                   border
