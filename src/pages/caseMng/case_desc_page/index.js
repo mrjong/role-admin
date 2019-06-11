@@ -1757,21 +1757,15 @@ export default {
       ]
     };
   },
-  watch: {
-    // collectcode_getCollectRelate_childItem() {
-    //   if (
-    //     this.collectcode_getCollectRelate_childItem &&
-    //     this.collectcode_getCollectRelate_childItem.length === 1
-    //   ) {
-    //     this.$set(
-    //       this.formValidate,
-    //       'communicateResult',
-    //       this.collectcode_getCollectRelate_childItem[0].codeKeyResult
-    //     );
-    //     this.$refs.formValidate.validateField('communicateResult');
-    //   }
-    // }
-  },
+  // watch: {
+  //   collectcode_getCollectRelate_childItem() {
+  //     if (this.collectcode_getCollectRelate_childItem.length === 0) {
+  //       this.$set(this.formValidate, 'communicateResult', '');
+  //       this.$refs.formValidate.resetFields();
+  //     }
+  //     //  this.formValidate.validateField('communicateResult');
+  //   }
+  // },
   async created() {
     console.log(Cookie.get('all_opt'));
     if (Cookie.get('all_opt') === 'true') {
@@ -1969,11 +1963,11 @@ export default {
         clearTimeout(timer);
         timer = setTimeout(() => {
           if (params.collectType === '01')
-          this.case_detail_case_identity_info();
+            this.case_detail_case_identity_info();
           if (params.collectType === '02')
-          this.case_detail_urgent_contact();
+            this.case_detail_urgent_contact();
           if (params.collectType === '03')
-          this[this.address_list_name]();
+            this[this.address_list_name]();
         }, 1500)
       } else {
         this.$Message.error(res.message);
@@ -1992,11 +1986,11 @@ export default {
         clearTimeout(timer);
         timer = setTimeout(() => {
           if (obj.collectType === '01')
-          this.case_detail_case_identity_info();
+            this.case_detail_case_identity_info();
           if (obj.collectType === '02')
-          this.case_detail_urgent_contact();
+            this.case_detail_urgent_contact();
           if (obj.collectType === '03')
-          this[this.address_list_name]();
+            this[this.address_list_name]();
         }, 1500);
       } else {
         this.$Message.error(res.message);
@@ -2339,7 +2333,7 @@ export default {
     },
 
     // 取消催记
-    handleCancle() {
+    handleCancle(flag) {
       this.add_collect_loading = false;
       // 重置初始化数据
       this.mblNo = '';
@@ -2347,8 +2341,13 @@ export default {
       this.mblNoHid = '';
       this.userNm = '';
       this.formValidate = {};
-      this.showBottom = false;
       this.collectType = '';
+      this.collectcode_getCollectRelate_childItem = []
+      // this.formValidate.communicateResult = '';
+      // this.formValidate.callUserType = '';
+      this.$refs.formValidate.resetFields();
+      this.showBottom = false;
+      console.log(this.formValidate)
     },
 
     // 点击电话
@@ -2357,8 +2356,12 @@ export default {
         this.$Message.error('很抱歉，暂无权限拨打');
         return;
       }
-      console.log(obj, type, tag)
-      this.callUserType = (obj.callUserType || obj.cntRelTyp) === '00'? '1': '2';
+      if (obj.callUserType || obj.cntRelTyp) {
+        this.callUserType = (obj.callUserType || obj.cntRelTyp) === '00' ? '1' : '2';
+      } else {
+        this.callUserTyp = '';
+      }
+      console.log(this.callUserType)
       this.handleCancle();
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;
@@ -2408,10 +2411,14 @@ export default {
         this.actionId = '';
       }
       if (this.readType !== 'read') {
+        if (obj.callUserType || obj.cntRelTyp) {
+          this.formValidate.callUserType = obj.callUserType || obj.cntRelTyp;
+        } else {
+          this.handleCancle()
+        }
         this.collectType = tag;
         this.formValidate.userNmHid = obj.userNmHid || obj.cntUserNameHid;
         this.formValidate.userNmClear = obj.userNmClear || obj.cntUserNameClear;
-        this.formValidate.callUserType = obj.callUserType || obj.cntRelTyp;
         this.userNmClearCopy = obj.userNmClear || obj.cntUserNameClear;
         this.mblNoHid = obj.mblNoHid || obj.cntUserMblNoHid;
         this.userNm = obj.userNm || obj.cntUserName;
@@ -2521,13 +2528,16 @@ export default {
           this.case_detail_remark_list_pageNo = 1;
           this.case_detail_remark_list();
           // debugger
-          if (this.collectType === '01')
-          this.case_detail_case_identity_info();
-          if (this.collectType === '02')
-          this.case_detail_urgent_contact();
-          if (this.collectType === '03')
-          this[this.address_list_name]();
-          this.handleCancle();
+          if (this.collectType === '01') {
+            this.case_detail_case_identity_info();
+          }
+          if (this.collectType === '02') {
+            this.case_detail_urgent_contact();
+          }
+          if (this.collectType === '03') {
+            this[this.address_list_name]();
+          }
+          this.handleCancle(true);
         }, 1500);
       } else {
         this.$Message.error(res.message);
@@ -2552,6 +2562,13 @@ export default {
         relateType: type
       });
       if (res.code === 1) {
+        if (res.data.length === 0) {
+          this.$refs.formValidate.validateField('callUserType');
+        }
+        if (res.data.length === 1) {
+          // this.$set(this.formValidate, 'communicateResult', res.data[0].codeKeyResult);
+          this.formValidate.communicateResult = res.data[0].codeKeyResult;
+        }
         this.collectcode_getCollectRelate_childItem = res.data;
       } else {
         this.$Message.error('获取沟通状态异常')
@@ -2560,11 +2577,17 @@ export default {
     // 拨打状态change
     SelectChange(code) {
       this.call_status = code;
-      this.collectcode_getCodeList(code, this.callUserType)
+      this.formValidate.communicateResult = '';
+      this.collectcode_getCodeList(code, this.callUserType);
     },
     // 关系状态change
     select_relation(key) {
-      this.callUserType = key === '00'? '1': '2';
+      this.formValidate.communicateResult = '';
+      if (key) {
+        this.callUserType = key === '00' ? '1' : '2';
+      } else {
+        this.callUserType = '';
+      }
       this.collectcode_getCodeList(this.call_status, this.callUserType)
     },
     // 新增催记按钮
