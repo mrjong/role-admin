@@ -2318,7 +2318,7 @@ export default {
       this.userNmClearCopy = '';
       this.mblNoHid = '';
       this.userNm = '';
-      // this.formValidate = {};
+      this.formValidate = {};
       this.collectType = '';
       this.collectcode_getCollectRelate_childItem = []
       this.formValidate.communicateResult = null;
