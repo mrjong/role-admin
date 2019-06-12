@@ -919,6 +919,12 @@ export default {
           key: 'operName'
         },
         {
+          title: '操作动作',
+          align: 'center',
+          width: 120,
+          key: 'operTypeName'
+        },
+        {
           title: '经办人',
           align: 'center',
           width: 120,
