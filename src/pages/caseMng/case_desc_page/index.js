@@ -2318,10 +2318,10 @@ export default {
       this.userNmClearCopy = '';
       this.mblNoHid = '';
       this.userNm = '';
-      this.formValidate = {};
       this.collectType = '';
       this.collectcode_getCollectRelate_childItem = []
       this.formValidate.communicateResult = null;
+      this.formValidate = {};
       // this.formValidate.callUserType = '';
       this.$refs.formValidate.resetFields();
       this.showBottom = false;
