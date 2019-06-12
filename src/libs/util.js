@@ -291,11 +291,17 @@ util.slice_case_number = (arr, prevIndex, nextIndex) => {
   return newArr;
 }
 // 处理当前日期 xxxx-xx-xx
-util.getToday = () => {
+util.getToday = (num) => {
+  // num 0=> today, 1=> tomorrow, -1=> yesterday
   let today = new Date();
   let year = today.getFullYear();
   let month = (today.getMonth() + 1) < 10 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1;
-  let day = today.getDate() < 10 ? '0' + today.getDate() : today.getDate();
+  let day;
+  if (num) {
+    day = today.getDate() < 10 ? '0' + (today.getDate() + num) : today.getDate() + num;
+  } else {
+    day = today.getDate() < 10 ? '0' + today.getDate() : today.getDate();
+  }
   today = `${year}-${month}-${day}`;
   return today;
 }

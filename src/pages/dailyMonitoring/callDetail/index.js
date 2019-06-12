@@ -163,9 +163,9 @@ export default {
     if (daily_monitoring_callDetail_form) {
       this.formItem = JSON.parse(daily_monitoring_callDetail_form);
     }
-    this.formItem.dealTime = [util.getToday(), util.getToday()];
-    this.formItem.startDate = util.getToday();
-    this.formItem.endDate = util.getToday();
+    this.formItem.dealTime = [util.getToday(-1), util.getToday(0)];
+    this.formItem.startDate = util.getToday(-1);
+    this.formItem.endDate = util.getToday(0);
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -312,9 +312,9 @@ export default {
       this.pageNo = 1;
       this.formItem = {};
       window.sessionStorage.removeItem("daily_monitoring_callDetail_form");
-      this.formItem.dealTime = [util.getToday(), util.getToday()];
-      this.formItem.startDate = util.getToday();
-      this.formItem.endDate = util.getToday();
+      this.formItem.dealTime = [util.getToday(-1), util.getToday(0)];
+      this.formItem.startDate = util.getToday(-1);
+      this.formItem.endDate = util.getToday(0);
       this.$refs[name].resetFields();
     }
   }
