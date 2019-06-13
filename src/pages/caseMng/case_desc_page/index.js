@@ -13,6 +13,7 @@ import {
   case_detail_system_repay_list, // 系统代扣
   case_detail_bindcard_list, // 绑卡信息
   case_detail_allot_list, // 分配
+  case_detail_getcaselog,// 操作记录
   case_detail_siteletter_list, // 站内
   case_detail_address_info, // 地址
   case_detail_mail_detail_list, // 通话明细
@@ -885,12 +886,12 @@ export default {
         }
       ],
 
-      // 分配信息
-      case_detail_allot_list_pageNo: 1,
-      case_detail_allot_list_pageSize: 10,
-      case_detail_allot_list_total: 0,
-      case_detail_allot_list_tableData: [],
-      case_detail_allot_list_tableColumns: [
+      // 操作记录
+      case_detail_getcaselog_pageNo: 1,
+      case_detail_getcaselog_pageSize: 10,
+      case_detail_getcaselog_total: 0,
+      case_detail_getcaselog_tableData: [],
+      case_detail_getcaselog_tableColumns: [
         {
           title: '序号',
           width: 100,
@@ -899,68 +900,45 @@ export default {
           sortable: true
         },
         {
-          title: '分配时间',
+          title: '操作时间',
           align: 'center',
-          key: 'allotDate',
+          key: 'operTime',
           width: 200,
           render: (h, params) => {
-            let allotDate = params.row.allotDate;
-            allotDate = allotDate
-              ? this.$options.filters['formatDate'](allotDate, 'YYYY-MM-DD HH:mm:ss')
-              : allotDate;
-            return h('span', allotDate);
+            let operTime = params.row.operTime;
+            operTime = operTime
+              ? this.$options.filters['formatDate'](operTime, 'YYYY-MM-DD HH:mm:ss')
+              : operTime;
+            return h('span', operTime);
           }
         },
         {
           title: '操作人',
           align: 'center',
-          width: 150,
-          key: 'allotUserName'
+          width: 120,
+          key: 'operName'
         },
         {
-          title: '分配前经办人',
+          title: '操作动作',
           align: 'center',
-          width: 100,
-          key: 'opUserNameOld'
+          width: 120,
+          key: 'operTypeName'
         },
         {
-          title: '分配后经办人',
+          title: '经办人',
           align: 'center',
-          width: 100,
-          key: 'opUserNameNew'
+          width: 120,
+          key: 'caseUserName'
         },
         {
-          title: '备注',
+          title: '详情',
           align: 'center',
-          width: 400,
-          key: 'rmk',
+          // width: 400,
+          tooltip: true,
+          key: 'operRemark',
           render: (h, params) => {
-            let rmk = params.row.rmk;
-            return h('div', [
-              h(
-                'Tooltip',
-                {
-                  style: {
-                    margin: '0 5px',
-                  },
-                  props: {
-                    content: params.row.rmk,
-                    placement: 'top',
-                    maxWidth: "380",
-                    transfer: true,
-                  }
-                },
-                [h('div', {
-                  style: {
-                    cursor: 'pointer',
-                    width: '380px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }
-                }, params.row.rmk)]
-              ),
-            ])
+            let operRemark = params.row.operRemark;
+            return h('div', operRemark)
           }
         }
       ],
@@ -2146,18 +2124,18 @@ export default {
       }
     },
 
-    // 分配信息
-    async case_detail_allot_list() {
-      const res = await case_detail_allot_list({
+    // 操作记录
+    async case_detail_getcaselog() {
+      const res = await case_detail_getcaselog({
         caseNo: this.caseNo,
         userId: this.userId,
-        pageNum: this.case_detail_allot_list_pageNo,
-        pageSize: this.case_detail_allot_list_pageSize
+        pageNum: this.case_detail_getcaselog_pageNo,
+        pageSize: this.case_detail_getcaselog_pageSize
       });
       if (res.code === 1) {
-        this.case_detail_allot_list_tableData = res.data && res.data.content;
-        this.case_detail_allot_list_pageSize = res.data.size;
-        this.case_detail_allot_list_total = res.data.totalElements;
+        this.case_detail_getcaselog_tableData = res.data && res.data.content;
+        this.case_detail_getcaselog_pageSize = res.data.size;
+        this.case_detail_getcaselog_total = res.data.totalElements;
       } else {
         this.$Message.error(res.message);
       }
@@ -2340,10 +2318,10 @@ export default {
       this.userNmClearCopy = '';
       this.mblNoHid = '';
       this.userNm = '';
-      // this.formValidate = {};
       this.collectType = '';
       this.collectcode_getCollectRelate_childItem = []
       this.formValidate.communicateResult = null;
+      this.formValidate = {};
       // this.formValidate.callUserType = '';
       this.$refs.formValidate.resetFields();
       this.showBottom = false;
@@ -2496,7 +2474,7 @@ export default {
     },
     // 切换每页条数时的回调
     changeSize(pageSize, name) {
-      console.log(this.case_detail_allot_list_pageSize);
+      console.log(this.case_detail_getcaselog_pageSize);
       console.log(pageSize, name);
       this.pageSize = pageSize;
       this.pageNo = 1;

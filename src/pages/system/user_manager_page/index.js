@@ -286,30 +286,19 @@ export default {
       }
       const res = await collect_tree_children({ status: 1 });
       if (res.code === 1) {
-        // this.data5 = res.data;
-        // res.data.forEach(item => {
-        //   item.expand = true;
-        //   item.children.forEach(item2 => {
-        //     item2.expand = true;
-        //   })
-        // });
+        await this.deal_tree_data(res.data);
         this.data5 = res.data;
-        await this.deal_tree_data(this.data5);
-        console.log(this.data5);
+        console.log(res.data);
       } else {
         this.$Message.error(res.message);
       }
     },
     deal_tree_data(data) {
       data.forEach(item => {
-        item.expand = true;
-        delete item.checked;
-        item.parent = item.parentUuid;
         if (item.children.length === 0 || item.leafType === '04') {
           item.children = [];
-          // this.$set(item, 'children', new Array());
-          // delete item.children
         } else if (item.children.length >= 0) {
+          item.expand = true;
           this.deal_tree_data(item.children)
         }
       })
