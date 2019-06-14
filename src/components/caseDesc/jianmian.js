@@ -78,7 +78,7 @@ export default {
       tableColumns: [
         {
           title: '序号',
-          width: 100,
+          width: 80,
           searchOperator: '=',
           sortable: true,
           type: 'index',
@@ -87,7 +87,7 @@ export default {
         },
         {
           title: '操作',
-          width: 150,
+          width: 130,
           key: 'edit',
           align: 'center',
           fixed: 'left',
@@ -126,21 +126,21 @@ export default {
         {
           title: '减免类型',
           searchOperator: 'like',
-          width: 200,
+          width: 180,
           key: 'reliefTypeName',
           align: 'center',
         },
         {
           title: '减免期数',
           searchOperator: 'like',
-          width: 200,
+          width: 180,
           key: 'perdNum',
           align: 'center',
         },
         {
           title: '减免金额',
           searchOperator: 'like',
-          width: 200,
+          width: 180,
           key: 'reliefAmt',
           align: 'center',
         },
