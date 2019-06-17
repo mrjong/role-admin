@@ -464,11 +464,14 @@ export default {
       this.apply_loading = false;
       console.log(res);
       if (res.code === 1) {
-        this.$Message.success('操作成功');
         this.getList();
+        this.$Message.success('操作成功');
         this.approve_list = [];
       } else {
-        this.$Message.error(res.message);
+        this.$Message.error({
+          content: res.message,
+          duration: 4
+        });
       }
     },
     // 上传之前的回调
