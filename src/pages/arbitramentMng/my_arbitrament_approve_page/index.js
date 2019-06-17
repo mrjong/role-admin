@@ -403,6 +403,35 @@ export default {
         }
       });
     },
+    // 查看详情
+    async arb_detail(obj, type) {
+      const res = await arb_detail({
+        approvalId: obj.approvalId
+      });
+      if (res.code === 1) {
+        if (type === 'edit') {
+          this.zhongcai_set_data = {
+            idNoHid: res.data.idCardNoHid,
+            billNo: res.data.billNo,
+            userNmHid: res.data.userNameHid,
+            caseNo: res.data.caseNo,
+            voucherNo: res.data.voucherNo,
+            idAddress: res.data.idAddress,
+            userGender: res.data.userGender,
+            userNation: res.data.userNation,
+            idCardFront: res.data.idCardFront,
+            idCardOpposite: res.data.idCardOpposite,
+            voucherImg: res.data.voucherImg,
+            standImg: res.data.standImg,
+            routertype: 'my_zhongcai',
+            standAgreeDate: res.data.standAgreeDate
+          };
+          this.modal['zhongcai'] = true;
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
     // 获取表格数据
     async getList() {
       if (!this.query) {
