@@ -34,14 +34,12 @@
               </Col>
               <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem label="订单号:" prop="defType">
-                  <!-- <span class="desc-label">{{arb_detail_data&&arb_detail_data.billNo}}</span> -->
-                  <span class="desc-label">BILL2019011219182200068868</span>
+                  <span class="desc-label">{{arb_detail_data&&arb_detail_data.billNo}}</span>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem label="案件编号:" prop="defType">
-                  <!-- <span class="desc-label">{{arb_detail_data&&arb_detail_data.caseNo}}</span> -->
-                  <span class="desc-label">20190312011245144163</span>
+                  <span class="desc-label">{{arb_detail_data&&arb_detail_data.caseNo}}</span>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="12" :lg="12">
