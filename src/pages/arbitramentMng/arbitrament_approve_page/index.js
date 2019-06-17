@@ -201,7 +201,7 @@ export default {
           }
         },
         {
-          title: '案件状态',
+          title: '仲裁状态',
           width: 120,
           align: 'center',
           key: 'approvalStateName'

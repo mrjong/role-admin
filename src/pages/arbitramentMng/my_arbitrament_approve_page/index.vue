@@ -79,8 +79,8 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="审核状态:" prop="approvalState">
-              <Select size="small" clearable placeholder="请选择审核状态" v-model="formItem.approvalState">
+            <FormItem span="6" label="仲裁状态:" prop="approvalState">
+              <Select size="small" clearable placeholder="请选择仲裁状态" v-model="formItem.approvalState">
                 <Option
                   v-for="item in getDirObj.APPROVAL_STATE"
                   :value="item.itemCode"
