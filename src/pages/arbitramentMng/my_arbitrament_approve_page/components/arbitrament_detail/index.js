@@ -167,6 +167,7 @@ export default {
       });
       if (res.code === 1) {
         this.shenheObj = obj;
+        this.repay_repayDetail_list();
         if (type === 'edit') {
           this.showModalType = 'edit';
         } else {
