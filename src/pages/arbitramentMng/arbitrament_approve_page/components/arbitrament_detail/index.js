@@ -228,16 +228,13 @@ export default {
     },
     // 审核
     async arb_check(type) {
-      let approvalRemark = '';
       if (type === '03') {
         this.reject_loading = true;
-        approvalRemark = this.recoverFormItem.approvalRemark;
       } else if (type === '02') {
         this.audit_loading = true;
-        approvalRemark = "仲裁审核通过"
       }
       const res = await arb_check({
-        approvalRemark,
+        approvalRemark: type === '03'? this.recoverFormItem.approvalRemark: null,
         approvalState: type,
         approvalId: this.shenheObj.approvalId,
         caseNo: this.shenheObj.caseNo,
