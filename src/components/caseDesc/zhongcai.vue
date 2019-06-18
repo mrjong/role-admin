@@ -3,7 +3,7 @@
     <Modal
       title="申请仲裁"
       class="jianmian"
-      width="90%"
+      width="600"
       @on-visible-change="del"
       v-model="model"
       @on-ok="handleSubmit"
@@ -18,29 +18,27 @@
             :rules="ruleValidate"
           >
             <Row :gutter="10">
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
-                <FormItem label="订单号:" prop="defType">
-                  <span class="desc-label">{{zhongcai_data.billNo}}</span>
-                </FormItem>
-              </Col>
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
-                <FormItem label="案件编号:" prop="defType">
-                  <span class="desc-label">{{zhongcai_data.caseNo}}</span>
-                </FormItem>
-              </Col>
-
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
-                <FormItem label="身份证号:" prop="defType">
-                  <span class="desc-label">{{zhongcai_data.idNoHid}}</span>
-                </FormItem>
-              </Col>
-
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem label="客户姓名:" prop="defType">
                   <span class="desc-label">{{zhongcai_data.userNmHid}}</span>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
+                <FormItem label="身份证号:" prop="defType">
+                  <span class="desc-label">{{zhongcai_data.idNoHid}}</span>
+                </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
+                <FormItem label="订单号:" prop="defType">
+                  <span class="desc-label">{{zhongcai_data.billNo}}</span>
+                </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
+                <FormItem label="案件编号:" prop="defType">
+                  <span class="desc-label">{{zhongcai_data.caseNo}}</span>
+                </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem label="性别:" prop="userGender">
                   <Select size="small" clearable placeholder="请选择性别" v-model="formItem.userGender">
                     <Option
@@ -52,7 +50,7 @@
                 </FormItem>
               </Col>
 
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem label="民族:" prop="userNation">
                   <Select size="small" placeholder="请选择民族" v-model="formItem.userNation">
                     <Option
@@ -63,7 +61,7 @@
                   </Select>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
+              <Col :xs="24" :sm="24" :md="24" :lg="24">
                 <FormItem label="提前到期日期:" prop="standAgreeDate">
                   <DatePicker
                     size="small"
@@ -78,7 +76,7 @@
                 </FormItem>
               </Col>
 
-              <Col :xs="24" :sm="24" :md="16" :lg="16">
+              <Col :xs="24" :sm="24" :md="24" :lg="24">
                 <FormItem label="打款凭证流水号:" prop="voucherNo">
                   <Input
                     size="small"
@@ -92,7 +90,7 @@
               <Col :xs="24" :sm="24" :md="24" :lg="24">
                 <FormItem class="mt5" label="身份证地址:" prop="idAddress">
                   <Input
-                    type="textarea"
+                    type="text"
                     size="small"
                     clearable
                     v-model="formItem.idAddress"
@@ -100,7 +98,7 @@
                   ></Input>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="24" :lg="24">
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem span="6" class="mt15" label="身份证正面:" prop="idCardFront">
                   <template>
                     <div class="demo-upload-list" v-for="item in uploadList">
@@ -145,7 +143,7 @@
                 </FormItem>
               </Col>
 
-              <Col :xs="24" :sm="24" :md="24" :lg="24">
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem span="6" class="mt15" label="身份证反面:" prop="idCardOpposite">
                   <template>
                     <div class="demo-upload-list" v-for="item in uploadList1">
@@ -190,7 +188,7 @@
                 </FormItem>
               </Col>
 
-              <Col :xs="24" :sm="24" :md="24" :lg="24">
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem span="6" class="mt15" label="打款凭证:" prop="voucherImg">
                   <template>
                     <div class="demo-upload-list" v-for="item in uploadList2">
@@ -235,7 +233,7 @@
                 </FormItem>
               </Col>
 
-              <Col :xs="24" :sm="24" :md="24" :lg="24">
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem span="6" class="mt15" label="提前到期通知:" prop="standImg">
                   <template>
                     <div class="demo-upload-list" v-for="item in uploadList3">

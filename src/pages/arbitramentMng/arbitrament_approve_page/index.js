@@ -1,13 +1,16 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import dayjs from 'dayjs'
-import { arb_operateRecord, arb_list, arb_detail, arb_check, credit_pdf_upload, credit_case_execute, credit_pdf_data, arb_exportlist } from '@/service/getData';
+import { arb_list, credit_case_execute, credit_pdf_data, arb_exportlist } from '@/service/getData';
+import arbitramentDeatil from './components/arbitrament_detail';
 import util from '@/libs/util';
 import Cookie from 'js-cookie';
 
 export default {
   name: 'case_search_page',
   mixins: [formValidateFun, sysDictionary],
+  components: {
+    arbitramentDeatil
+  },
   data() {
     console.log(this.GLOBAL);
     const _this = this;
@@ -23,7 +26,6 @@ export default {
       prefix: '/admin/arb/images/',
       file_list: [],// 上传文件list
       file_url: '',// 暂存的文件url
-      arb_detail_data: {},
       showPanel2: false,
       query: false,//查询权限
       audit: false,//审核权限
@@ -42,84 +44,9 @@ export default {
       approvalTime: [],//审核时间区间
       export_case_loading: false,//导出loading
       export_list: [],//导出的list
-      showModalType: '',
-      shenheObj: {},
-      case_detail_remark_list_tableData: [],
-      case_detail_remark_list_pageNo: 1,
-      case_detail_remark_list_pageSize: 10,
-      case_detail_remark_list_total: 0,
-      case_detail_remark_list_tableColumns: [
-        {
-          title: '操作人',
-          align: 'center',
-          key: 'approvalName'
-        },
-        {
-          title: '操作时间',
-          align: 'center',
-          key: 'approvalTime',
-          width: 200,
-          render: (h, params) => {
-            let approvalTime = params.row.approvalTime;
-            approvalTime = approvalTime
-              ? this.$options.filters['formatDate'](approvalTime, 'YYYY-MM-DD HH:mm:ss')
-              : approvalTime;
-            return h('span', approvalTime);
-          }
-        },
-        {
-          title: '操作',
-          align: 'center',
-          key: 'approvalStateName'
-        },
-        {
-          title: '备注',
-          align: 'center',
-          width: 400,
-          key: 'approvalRmk',
-          render: (h, params) => {
-            let approvalRmk = params.row.approvalRmk;
-            return h('div', [
-              h(
-                'Tooltip',
-                {
-                  style: {
-                    margin: '0 5px',
-                  },
-                  props: {
-                    content: approvalRmk,
-                    placement: 'top',
-                    maxWidth: "380",
-                    transfer: true,
-                  }
-                },
-                [h('div', {
-                  style: {
-                    cursor: 'pointer',
-                    width: '380px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }
-                }, approvalRmk)]
-              ),
-            ])
-          }
-        }
-      ],
-      reject_modal: false,//驳回的modal
       arbitrament_modal: false,//仲裁详情的modal
+      arbitrament_data: {},
       upload_modal: false,//上传图片的modal
-      recoverFormItem: {},//驳回原因表单
-      reject_ruleValidate: {
-        approvalRemark: [
-          {
-            required: true,
-            message: '请输入驳回原因',
-            trigger: 'blur'
-          }
-        ]
-      },//驳回校验
       ruleValidate: {
         idNo: [
           {
@@ -180,8 +107,6 @@ export default {
           }
         ]
       },
-      imgName: '',
-      visible: false,
       pageNo: 1,
       pageSize: 10,
       total: 0,
@@ -218,7 +143,11 @@ export default {
                   props: {},
                   on: {
                     click: () => {
-                      _this.arb_detail(params.row);
+                      _this.arbitrament_data = {
+                        data: params.row,
+                      }
+                      _this.arbitrament_modal = true;
+                      // _this.arb_detail(params.row);
                     }
                   }
                 },
@@ -238,13 +167,18 @@ export default {
                         _this.$Message.error('很抱歉，暂无审核权限');
                         return;
                       }
-                      _this.arb_detail(params.row, 'edit');
+                      _this.arbitrament_data = {
+                        data: params.row,
+                        edit: 'edit'
+                      }
+                      _this.arbitrament_modal = true;
+                      // _this.arb_detail(params.row, 'edit');
                     }
                   }
                 },
                 '审核'
               ),
-              params.row.approvalState === '02' && _this.upload ? h(
+              !params.row.uploadStatus && _this.upload ? h(
                 'a',
                 {
                   class: 'edit-btn',
@@ -267,7 +201,7 @@ export default {
           }
         },
         {
-          title: '案件状态',
+          title: '仲裁状态',
           width: 120,
           align: 'center',
           key: 'approvalStateName'
@@ -530,11 +464,14 @@ export default {
       this.apply_loading = false;
       console.log(res);
       if (res.code === 1) {
-        this.$Message.success('操作成功');
         this.getList();
+        this.$Message.success('操作成功');
         this.approve_list = [];
       } else {
-        this.$Message.error(res.message);
+        this.$Message.error({
+          content: res.message,
+          duration: 4
+        });
       }
     },
     // 上传之前的回调
@@ -591,6 +528,13 @@ export default {
       this.file_disabled = false;
       this.file_list = [];
     },
+    // 子组件的回调
+    passBack(obj) {
+      this.arbitrament_modal = false;
+      if (obj.flag) {
+        this.getList();
+      }
+    },
     // 文件提交
     async credit_pdf_data() {
       console.log(this.file_list);
@@ -612,102 +556,7 @@ export default {
       this.formItem.approvalTimeLt = val[0];
       this.formItem.approvalTimeBt = val[1];
     },
-    handleView(name) {
-      this.imgName = name;
-      this.visible = true;
-    },
-    // 获取表格数据
-    async arb_operateRecord() {
-      const res = await arb_operateRecord({
-        caseNo: this.shenheObj.caseNo,
-        pageNum: this.case_detail_remark_list_pageNo,
-        pageSize: this.case_detail_remark_list_pageSize
-      });
-      if (res.code === 1) {
-        this.case_detail_remark_list_tableData = res.data && res.data.content;
-        this.case_detail_remark_list_pageSize = res.data.size;
-        this.case_detail_remark_list_total = res.data.totalElements;
-      } else {
-        this.$Message.error(res.message);
-      }
-    },
-    // 查看详情
-    async arb_detail(obj, type) {
-      this.del()
-      const res = await arb_detail({
-        approvalId: obj.approvalId
-      });
-      if (res.code === 1) {
-        this.shenheObj = obj;
-        if (type === 'edit') {
-          this.showModalType = 'edit';
-        } else {
-          this.case_detail_remark_list_pageNo = 1;
-          this.arb_operateRecord();
-        }
-        this.arb_detail_data = res.data;
-        this.arbitrament_modal = true;
-      } else {
-        this.shenheObj = {};
-        this.$Message.error(res.message);
-      }
-    },
-    rejectFunc() {
-      this.arbitrament_modal = false;
-      this.reject_modal = true;
-    },
-    arb_checkTest() {
-      this.$refs.recoverFormItem.validate((valid) => {
-        if (valid) {
-          this.arb_check('03');
-        }
-      });
-    },
-    // 审核
-    async arb_check(type) {
-      let approvalRemark = '';
-      if (type === '03') {
-        this.reject_loading = true;
-        approvalRemark = this.recoverFormItem.approvalRemark;
-      } else if (type === '02') {
-        this.audit_loading = true;
-        approvalRemark = "仲裁审核通过"
-      }
-      const res = await arb_check({
-        approvalRemark,
-        approvalState: type,
-        approvalId: this.shenheObj.approvalId,
-        caseNo: this.shenheObj.caseNo,
-        billNo: this.shenheObj.billNo
-      });
-      this.audit_loading = false;
-      this.reject_loading = false;
-      if (res.code === 1) {
-        this.arbitrament_modal = false;
-        this.reject_modal = false;
-        this.$Message.success('操作成功！');
-        this.recoverFormItem = {};
-        setTimeout(() => {
-          this.getList();
-        }, 2000);
-      } else {
-        this.$Message.error(res.message);
-      }
-    },
-    handleSubmit1() {
-      this.$refs.formItem.validate((valid) => {
-        if (valid) {
-        } else {
-          this.arbitrament_modal = true;
-        }
-      });
-    },
-    del() {
-      this.reject_modal = false;
-      this.shenheObj = {};
-      this.arbitrament_modal = false;
-      this.showModalType = '';
-    },
+
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
@@ -719,17 +568,7 @@ export default {
       this.pageNo = 1;
       this.getList();
     },
-    // 页码改变的回调
-    changePage_remark(pageNo) {
-      this.case_detail_remark_list_pageNo = pageNo;
-      this.arb_operateRecord();
-    },
-    // 切换每页条数时的回调
-    changeSize_remark(pageSize) {
-      this.case_detail_remark_list_pageSize = pageSize;
-      this.case_detail_remark_list_pageNo = 1;
-      this.arb_operateRecord();
-    },
+
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {

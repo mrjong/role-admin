@@ -202,7 +202,6 @@ export const repay_repayUserOrSystem_exportDown = (obj) =>
   });
 
 // 回款明细列表查询接口
-
 export const repay_repayDetail_list = (obj, options) =>
   fetch({
     url: '/repay/repayDetail/list',
@@ -762,11 +761,11 @@ export const case_detail_allot_list = (obj, options) =>
 
 // 案件详情=>操作记录（指定案件）
 export const case_detail_getcaselog = (obj) =>
- fetch({
-   url: '/case/detail/getcaselog',
-   method: 'POST',
-   data: qs.stringify(obj)
- })
+  fetch({
+    url: '/case/detail/getcaselog',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 
 /*
 *

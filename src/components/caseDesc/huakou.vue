@@ -2,8 +2,8 @@
   <div>
     <Modal
       title="申请划扣"
-      class="jianmian"
-      width="90%"
+      class="huakou"
+      width="600"
       @on-visible-change="del"
       v-model="model"
       @on-ok="handleSubmit"
@@ -13,38 +13,45 @@
         <div class="panel-desc">
           <Row :gutter="10">
             <Col>
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
-                <div class="panel-desc-title">账单号：
+              <Col :xs="24" :sm="24" :md="24" :lg="24">
+                <div>
+                  <span class="panel-desc-title">账单号:</span>
                   <span>{{repayinfo_getApplyInfo_data.billNo}}</span>
                 </div>
               </Col>
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
-                <div class="panel-desc-title">客户姓名：
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
+                <div>
+                  <span class="panel-desc-title">客户姓名:</span>
                   <span>{{repayinfo_getApplyInfo_data.userName}}</span>
                 </div>
               </Col>
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
-                <div class="panel-desc-title">手机号：
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
+                <div>
+                  <span class="panel-desc-title">手机号:</span>
                   <span>{{repayinfo_getApplyInfo_data.mblNo}}</span>
                 </div>
               </Col>
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
-                <div class="panel-desc-title">产品期数：
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
+                <div>
+                  <span class="panel-desc-title">产品期数:</span>
                   <span>{{repayinfo_getApplyInfo_data.perdNum}}</span>
                 </div>
               </Col>
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
-                <div class="panel-desc-title">逾期期数：
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
+                <div>
+                  <span class="panel-desc-title">逾期期数:</span>
                   <span>{{repayinfo_getApplyInfo_data.ovduPerdNum}}</span>
                 </div>
               </Col>
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
-                <div class="panel-desc-title">账单总金额：
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
+                <div>
+                  <span class="panel-desc-title">账单总金额:</span>
                   <span>{{repayinfo_getApplyInfo_data.billTotAmt | money}}</span>
                 </div>
               </Col>
-              <Col :xs="24" :sm="24" :md="8" :lg="8">
-                <div class="panel-desc-title">逾期应还金额：
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
+                <div>
+                  <span class="panel-desc-title">逾期应还金额:</span>
                   <span>{{repayinfo_getApplyInfo_data.overdueAmt | money}}</span>
                 </div>
               </Col>
@@ -64,7 +71,7 @@
             :rules="ruleValidate"
           >
             <Row>
-              <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+              <Col :xs="24" :sm="24" :md="6" :lg="12" span="12">
                 <FormItem span="6" label="还款金额:" prop="repayAmount">
                   <Input
                     size="small"
@@ -74,7 +81,7 @@
                   ></Input>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+              <Col :xs="24" :sm="24" :md="6" :lg="12" span="12">
                 <FormItem span="6" label="还款账户:" prop="agrNo">
                   <Select
                     size="small"
@@ -92,7 +99,7 @@
                 </FormItem>
               </Col>
 
-              <Col :xs="24" :sm="24" :md="12" :lg="12" span="6" class="mt5">
+              <Col :xs="24" :sm="24" :md="12" :lg="24" :span="24" class="mt5">
                 <FormItem span="6" label="申请备注:" prop="applayRemarks">
                   <Input
                     size="small"

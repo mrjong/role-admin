@@ -2,7 +2,7 @@
   <div>
     <Modal
       class="jianmian"
-      width="1000"
+      width="800"
       v-model="model"
       @on-visible-change="del"
       title="申请减免"
@@ -89,7 +89,7 @@
             :rules="ruleValidate"
           >
             <Row>
-              <Col :xs="24" :sm="24" :md="8" :lg="8" span="6">
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="6">
                 <FormItem span="6" label="减免原因:" prop="reliefReason">
                   <Select
                     size="small"
@@ -106,7 +106,7 @@
                   </Select>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="14" :lg="14" span="14">
+               <Col :xs="24" :sm="24" :md="16" :lg="16" :span="16">
                 <FormItem span="6" label="减免标记:">
                   <Input
                     type="textarea"
@@ -120,7 +120,7 @@
                   ></Input>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="8" :lg="8" span="8" v-if="edit_flag">
+              <Col :xs="24" :sm="24" :md="24" :lg="24" span="8" v-if="edit_flag">
                 <FormItem span="6" label="减免附件:">
                   <template>
                     <div class="demo-upload-list" v-for="item in uploadList">
@@ -163,6 +163,7 @@
                   </template>
                 </FormItem>
               </Col>
+
               <Col :xs="24" :sm="24" :md="24" :lg="24" span="24" style="margin-bottom: 5px;">
                 <div class="alert-title" style="margin: 0 -10px">减免信息</div>
               </Col>
@@ -174,6 +175,7 @@
                     v-model="formItem.reliefType"
                     :disabled="!edit_flag"
                     clearable
+                    transfer
                     label-in-value
                     @on-change="reliefTypeSelectChange"
                   >
@@ -194,6 +196,7 @@
                     clearable
                     :disabled="!edit_flag"
                     label-in-value
+                    transfer
                     @on-change="perdNumSelectChange"
                   >
                     <Option
@@ -246,7 +249,7 @@
           :data="tableData"
           :columns="tableColumns"
           stripe
-          width="850"
+          width="750"
           style="margin: 10px auto"
           v-if="edit_flag"
         ></Table>
