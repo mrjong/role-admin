@@ -48,7 +48,7 @@
     </Modal>
 
     <!-- 弹层 -->
-    <div class="case-left-container" :style="{paddingRight:showBtn?'25px':'385px'}">
+    <div class="case-left-container" :style="{paddingRight:showBtn?'25px':'480px'}">
       <!-- 检索条件 -->
       <Card class="vue-panel case-desc">
         <p slot="title">
@@ -253,7 +253,7 @@
               </Row>
             </div>
           </Form>
-          <Table :row-class-name="rowClassName" :data="tableData" :columns="tableColumns" stripe></Table>
+          <Table :row-class-name="rowClassName" :data="tableData" border :columns="tableColumns" stripe></Table>
         </div>
       </Card>
 
@@ -482,7 +482,7 @@
         ">
           <div v-show="!showBtn" class="heighti">
             <Card
-              style="width:385px"
+              style="width: 480px"
               class="heighti case-top-panel"
               :style="{height:!this.showBottom?'inherit':'calc(100% - 325px)'}"
             >

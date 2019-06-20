@@ -209,8 +209,8 @@
     <Card class="vue-panel-table">
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
-        <span style="margin-left: 10px;">总共{{summary.repayOrdDetailCount||total}}笔回款，</span>
-        <span>总共还款金额{{summary.sumRepayAmt||0}}元</span>
+        <span style="margin-left: 10px;font-weight: 400">案件数（笔）: {{summary.repayOrdDetailCount||total}}，</span>
+        <span style="font-weight: 400">案件金额（元）: {{summary.sumRepayAmt| money}}</span>
         <Button
           class="fr vue-back-btn header-btn"
           type="primary"

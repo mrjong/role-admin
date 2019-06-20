@@ -1,9 +1,12 @@
 const path = require('path');
 const os = require('os');
+
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HappyPack = require('happypack');
 var happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+// const cheerio = require('cheerio');
+// const fs = require('fs');
 function resolve(dir) {
     return path.join(__dirname, dir);
 }
@@ -77,7 +80,21 @@ module.exports = {
             loaders: ['babel-loader'],
             threadPool: happyThreadPool,
             verbose: true
-        })
+        }),
+        // 其他插件
+      //   function(){
+      //     this.plugin('done', stats => {
+      //         fs.readFile('./index.html', (err, data) => {
+      //             const $ = cheerio.load(data.toString());
+      //             $('script[src*=dest]').attr('src', '/dist/vender-base.'+stats.hash+'.js');
+      //             $('script[src*=dest]').attr('src', '/dist/vender-exten.'+stats.hash+'.js');
+      //             $('script[src*=dest]').attr('src', '/dist/main.'+stats.hash+'.js');
+      //             fs.writeFile('./index.html', $.html(), err => {
+      //                 !err && console.log('Set has success: '+stats.hash)
+      //             })
+      //         })
+      //     })
+      // }
     ],
     resolve: {
         extensions: ['.vue','.js'],

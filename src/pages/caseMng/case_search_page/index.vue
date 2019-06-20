@@ -275,8 +275,8 @@
     <Card class="vue-panel-table">
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
-        <span style="margin-left: 10px;">总共{{totalCase}}笔案件，</span>
-        <span>总共逾期金额{{totalOverdueAmt}}元</span>
+        <span style="margin-left: 10px; font-weight: 400">案件数（笔）: {{totalCase}}，</span>
+        <span style="font-weight: 400">案件金额（元）: {{totalOverdueAmt | money}}</span>
         <Button
           class="fr vue-back-btn header-btn"
           type="primary"
