@@ -726,7 +726,7 @@
                 </Tabs>
               </div>
             </Card>
-            <Card class="case-bottom-panel" :style="{bottom:this.showBottom?'0px':'-1000px'}">
+            <Card class="case-bottom-panel" :style="{bottom:this.showBottom?'0px':'-1000px', width: '480px'}">
               <Form
                 ref="formValidate"
                 :model="formValidate"
