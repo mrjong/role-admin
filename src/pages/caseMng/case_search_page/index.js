@@ -261,13 +261,13 @@ export default {
         },
         {
           title: '手机号',
-          width: 120,
+          width: 100,
           align: 'center',
           key: 'mblNoHid'
         },
         {
           title: '产品线',
-          width: 120,
+          width: 100,
           align: 'center',
           key: 'prdName'
         },
@@ -298,7 +298,7 @@ export default {
         },
         {
           title: '逾期金额',
-          width: 120,
+          width: 100,
           sortable: true,
           align: 'center',
           key: 'overdueAmt',
@@ -317,7 +317,7 @@ export default {
         },
         {
           title: '分期期数',
-          width: 120,
+          width: 100,
           sortable: true,
           align: 'center',
           key: 'perdCnt'
@@ -331,14 +331,14 @@ export default {
         },
         {
           title: '信用级别',
-          width: 150,
+          width: 120,
           sortable: true,
           align: 'center',
           key: 'creditLevel'
         },
         {
           title: '还款状态',
-          width: 150,
+          width: 120,
           sortable: true,
           align: 'center',
           key: 'caseStatusName'

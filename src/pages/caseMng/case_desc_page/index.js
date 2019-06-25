@@ -166,13 +166,13 @@ export default {
         },
         {
           title: '逾期天数',
-          width: 100,
+          width: 80,
           align: 'center',
           key: 'overdueDays'
         },
         {
           title: '还款日',
-          width: 150,
+          width: 120,
           align: 'center',
           key: 'perdDueDt',
           render: (h, params) => {
@@ -189,7 +189,7 @@ export default {
         },
         {
           title: '应还利息',
-          width: 150,
+          width: 100,
           align: 'center',
           key: 'perdItrtAmt',
           render: (h, params) => {
@@ -200,7 +200,7 @@ export default {
         },
         {
           title: '应还服务费',
-          width: 150,
+          width: 100,
           align: 'center',
           key: 'perdMngAmt',
           render: (h, params) => {
@@ -214,7 +214,7 @@ export default {
         },
         {
           title: '应还罚息',
-          width: 150,
+          width: 100,
           align: 'center',
           key: 'perdFineAmt',
           render: (h, params) => {
@@ -225,7 +225,7 @@ export default {
         },
         {
           title: '应还滞纳金',
-          width: 150,
+          width: 100,
           align: 'center',
           key: 'perdOvduAmt',
           render: (h, params) => {
@@ -247,7 +247,7 @@ export default {
         },
         {
           title: '已还总金额',
-          width: 150,
+          width: 100,
           align: 'center',
           key: 'perdTotRep',
           render: (h, params) => {
@@ -258,7 +258,7 @@ export default {
         },
         {
           title: '未还总金额',
-          width: 150,
+          width: 100,
           align: 'center',
           key: 'perdTotSur',
           render: (h, params) => {
@@ -269,7 +269,7 @@ export default {
         },
         {
           title: '已还本金',
-          width: 150,
+          width: 100,
           align: 'center',
           key: 'perdPrcpRep',
           render: (h, params) => {
@@ -280,7 +280,7 @@ export default {
         },
         {
           title: '已还利息',
-          width: 150,
+          width: 100,
           align: 'center',
           key: 'perdItrtRep',
           render: (h, params) => {
@@ -291,7 +291,7 @@ export default {
         },
         {
           title: '已还服务费',
-          width: 150,
+          width: 100,
           align: 'center',
           key: 'perdMngRep',
           render: (h, params) => {
@@ -305,7 +305,7 @@ export default {
         },
         {
           title: '已还罚息',
-          width: 150,
+          width: 100,
           align: 'center',
           key: 'perdFineRep',
           render: (h, params) => {
@@ -316,7 +316,7 @@ export default {
         },
         {
           title: '已还滞纳金',
-          width: 150,
+          width: 100,
           align: 'center',
           key: 'perdOvduRep',
           render: (h, params) => {
@@ -338,7 +338,7 @@ export default {
       case_detail_remark_list_tableColumns: [
         {
           title: '序号',
-          width: 100,
+          width: 60,
           align: 'center',
           type: 'index',
           sortable: true
@@ -347,7 +347,7 @@ export default {
           title: '催收时间',
           align: 'center',
           key: 'remarkDate',
-          width: 200,
+          width: 180,
           render: (h, params) => {
             let remarkDate = params.row.remarkDate;
             remarkDate = remarkDate
@@ -359,7 +359,7 @@ export default {
         {
           title: '催收电话',
           align: 'center',
-          width: 150,
+          width: 120,
           key: 'mblNoHid',
           render: (h, params) => {
             return h('div', [
@@ -403,6 +403,17 @@ export default {
           key: 'communicateResultName'
         },
         {
+          title: '备注',
+          align: 'center',
+          width: 280,
+          key: 'collectRmk',
+          tooltip: true,
+          render: (h, params) => {
+            let collectRmk = params.row.collectRmk;
+            return h('div', collectRmk)
+          }
+        },
+        {
           title: '通话来源',
           align: 'center',
           width: 100,
@@ -411,7 +422,7 @@ export default {
         {
           title: '承诺还款时间',
           align: 'center',
-          width: 200,
+          width: 180,
           key: 'promiseRepayDate',
           render: (h, params) => {
             let promiseRepayDate = params.row.promiseRepayDate;
@@ -421,40 +432,7 @@ export default {
             return h('span', promiseRepayDate);
           }
         },
-        {
-          title: '备注',
-          align: 'center',
-          width: 400,
-          key: 'collectRmk',
-          render: (h, params) => {
-            let collectRmk = params.row.collectRmk;
-            return h('div', [
-              h(
-                'Tooltip',
-                {
-                  style: {
-                    margin: '0 5px',
-                  },
-                  props: {
-                    content: collectRmk,
-                    placement: 'top',
-                    maxWidth: "380",
-                    transfer: true,
-                  }
-                },
-                [h('div', {
-                  style: {
-                    cursor: 'pointer',
-                    width: '380px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }
-                }, collectRmk)]
-              ),
-            ])
-          }
-        }
+
       ],
 
       // 回款信息
@@ -465,7 +443,7 @@ export default {
       case_detail_repay_ord_list_tableColumns: [
         {
           title: '序号',
-          width: 100,
+          width: 60,
           align: 'center',
           type: 'index',
           sortable: true
@@ -500,7 +478,7 @@ export default {
           title: '还款时间',
           align: 'center',
           key: 'repayDate',
-          width: 200,
+          width: 180,
           render: (h, params) => {
             let repayDate = params.row.repayDate;
             repayDate = repayDate
@@ -512,7 +490,7 @@ export default {
         {
           title: '还款金额',
           align: 'center',
-          width: 150,
+          width: 100,
           key: 'repayAmt',
           render: (h, params) => {
             let repayAmt = params.row.repayAmt;
@@ -586,7 +564,7 @@ export default {
       case_detail_user_repay_list_tableColumns: [
         {
           title: '序号',
-          width: 100,
+          width: 60,
           align: 'center',
           type: 'index',
           sortable: true
@@ -594,7 +572,7 @@ export default {
         {
           title: '还款金额',
           align: 'center',
-          width: 150,
+          width: 100,
           key: 'repayOrdAmt',
           render: (h, params) => {
             let repayOrdAmt = params.row.repayOrdAmt;
@@ -611,7 +589,7 @@ export default {
         {
           title: '失败原因',
           align: 'center',
-          width: 400,
+          width: 280,
           key: 'orgFnlMsg',
           render: (h, params) => {
             let orgFnlMsg = params.row.orgFnlMsg;
@@ -681,7 +659,7 @@ export default {
       case_detail_system_repay_list_tableColumns: [
         {
           title: '序号',
-          width: 100,
+          width: 60,
           align: 'center',
           type: 'index',
           sortable: true
@@ -689,7 +667,7 @@ export default {
         {
           title: '还款金额',
           align: 'center',
-          width: 150,
+          width: 100,
           key: 'repayOrdAmt',
           render: (h, params) => {
             let repayOrdAmt = params.row.repayOrdAmt;
@@ -706,29 +684,20 @@ export default {
         {
           title: '失败原因',
           align: 'center',
-          width: 400,
+          width: 280,
+          tooltip: true,
           key: 'orgFnlMsg',
           render: (h, params) => {
             let orgFnlMsg = params.row.orgFnlMsg;
             return h(
-              'Tooltip',
-              {
-                style: {
-                  margin: '0 5px'
-                },
-                props: {
-                  content: params.row.orgFnlMsg,
-                  placement: 'top'
-                }
-              },
-              [h('div', {}, params.row.orgFnlMsg)]
+              'div', orgFnlMsg
             );
           }
         },
         {
           title: '还款日期',
           align: 'center',
-          width: 100,
+          width: 120,
           key: 'ordDt',
           render: (h, params) => {
             let ordDt = params.row.ordDt;
@@ -776,7 +745,7 @@ export default {
       case_detail_bindcard_list_tableColumns: [
         {
           title: '序号',
-          width: 100,
+          width: 60,
           align: 'center',
           type: 'index',
           sortable: true
@@ -784,7 +753,7 @@ export default {
         {
           title: '用户姓名',
           align: 'center',
-          width: 150,
+          width: 100,
           key: 'usrNmHid',
           render: (h, params) => {
             return h('div', [
@@ -795,13 +764,13 @@ export default {
         {
           title: '卡类型',
           align: 'center',
-          width: 150,
+          width: 100,
           key: 'crdAcTypName'
         },
         {
           title: '银行',
           align: 'center',
-          width: 150,
+          width: 100,
           key: 'corpOrgNm'
         },
         {
@@ -818,7 +787,7 @@ export default {
         {
           title: '银行卡后四位',
           align: 'center',
-          width: 150,
+          width: 100,
           key: 'crdNoLast'
         },
         {
@@ -855,7 +824,7 @@ export default {
         {
           title: '状态',
           align: 'center',
-          width: 150,
+          width: 100,
           key: 'agrEffFlgName'
         },
         {
@@ -881,7 +850,7 @@ export default {
         {
           title: '业务类型',
           align: 'center',
-          width: 150,
+          width: 100,
           key: 'businessName'
         }
       ],
@@ -951,7 +920,7 @@ export default {
       case_detail_siteletter_list_tableColumns: [
         {
           title: '序号',
-          width: 100,
+          width: 60,
           align: 'center',
           type: 'index',
           fixed: 'left',
@@ -991,7 +960,7 @@ export default {
         {
           title: '收件人',
           align: 'center',
-          width: 150,
+          width: 100,
           key: 'userName'
         },
         {
@@ -1024,7 +993,7 @@ export default {
         {
           title: '姓名（关系）',
           align: 'center',
-          width: 100,
+          width: 140,
           key: 'userNm',
           render: (h, params) => {
             let callUserTypeName = params.row.callUserTypeName;
@@ -1040,41 +1009,6 @@ export default {
                 },
                 `${userNm === null ? '' : userNm}${callUserTypeName === null ? '' : '(' + callUserTypeName + ')'}`
               )
-              // h(
-              // 	'Poptip',
-              // 	{
-              // 		props: {
-              // 			content: _this.mingwenData
-              // 		}
-              // 	},
-              // 	[
-              // 		h(
-              // 			'span',
-              // 			{
-              // 				on: {
-              // 					click: () => {
-              // 						_this.syscommon_decrypt({
-              // 							type: 'NAME',
-              // 							data: params.row.userNm
-              // 						});
-              // 					}
-              // 				},
-              // 				style: {
-              // 					display: params.row.userNmHid ? 'inline-block' : 'none'
-              // 				}
-              // 			},
-              // 			[
-              // 				h('Icon', {
-              // 					props: {
-              // 						type: 'md-eye'
-              // 					},
-
-              // 					class: 'eye-class'
-              // 				})
-              // 			]
-              // 		)
-              // 	]
-              // )
             ]);
           }
         },
@@ -1082,7 +1016,7 @@ export default {
           title: '通话次数',
           align: 'center',
           key: 'count',
-          width: 60
+          width: 80
         },
         {
           title: '操作',
@@ -1119,7 +1053,7 @@ export default {
         {
           title: '手机(状态)',
           align: 'center',
-          width: 180,
+          // width: 180,
           key: 'opUserName',
           fixed: 'left',
           render: (h, params) => {
@@ -1232,7 +1166,7 @@ export default {
         {
           title: '姓名（关系）',
           align: 'center',
-          width: 100,
+          width: 120,
           key: 'userNm',
           render: (h, params) => {
             let callUserTypeName = params.row.callUserTypeName;
@@ -1247,41 +1181,6 @@ export default {
                 },
                 `${userNm === null ? '' : userNm}${callUserTypeName === null ? '' : '(' + callUserTypeName + ')'}`
               )
-              // h(
-              // 	'Poptip',
-              // 	{
-              // 		props: {
-              // 			content: _this.mingwenData
-              // 		}
-              // 	},
-              // 	[
-              // 		h(
-              // 			'span',
-              // 			{
-              // 				on: {
-              // 					click: () => {
-              // 						_this.syscommon_decrypt({
-              // 							type: 'NAME',
-              // 							data: params.row.userNm
-              // 						});
-              // 					}
-              // 				},
-              // 				style: {
-              // 					display: params.row.userNmHid ? 'inline-block' : 'none'
-              // 				}
-              // 			},
-              // 			[
-              // 				h('Icon', {
-              // 					props: {
-              // 						type: 'md-eye'
-              // 					},
-
-              // 					class: 'eye-class'
-              // 				})
-              // 			]
-              // 		)
-              // 	]
-              // )
             ]);
           }
         },
@@ -1289,7 +1188,7 @@ export default {
           title: '通话时长(时间)',
           align: 'center',
           key: 'count',
-          width: 125,
+          width: 130,
           render: (h, params) => {
             let callTime = params.row.callTime;
             let callDuration = params.row.callDuration;
@@ -1438,7 +1337,7 @@ export default {
         {
           title: '姓名（关系）',
           align: 'center',
-          width: 120,
+          width: 140,
           key: 'userNmHid',
           render: (h, params) => {
             let callUserTypeName = params.row.callUserTypeName;
@@ -1454,48 +1353,13 @@ export default {
                 },
                 `${userNm === null ? '' : userNm}${callUserTypeName === null ? '' : '(' + callUserTypeName + ')'}`
               )
-              // h(
-              // 	'Poptip',
-              // 	{
-              // 		props: {
-              // 			content: _this.mingwenData
-              // 		}
-              // 	},
-              // 	[
-              // 		h(
-              // 			'span',
-              // 			{
-              // 				on: {
-              // 					click: () => {
-              // 						_this.syscommon_decrypt({
-              // 							type: 'NAME',
-              // 							data: params.row.userNm
-              // 						});
-              // 					}
-              // 				},
-              // 				style: {
-              // 					display: params.row.userNmHid ? 'inline-block' : 'none'
-              // 				}
-              // 			},
-              // 			[
-              // 				h('Icon', {
-              // 					props: {
-              // 						type: 'md-eye'
-              // 					},
-
-              // 					class: 'eye-class'
-              // 				})
-              // 			]
-              // 		)
-              // 	]
-              // )
             ]);
           }
         },
         {
           title: '手机(状态)',
           align: 'center',
-          width: 180,
+          // width: 180,
           key: 'mblNoHid',
           fixed: 'left',
           render: (h, params) => {
@@ -1605,7 +1469,7 @@ export default {
         {
           title: '姓名(关系)',
           align: 'center',
-          width: 130,
+          width: 150,
           key: 'userNm',
           render: (h, params) => {
             let callUserTypeName = params.row.callUserTypeName;
@@ -1621,48 +1485,13 @@ export default {
                 },
                 `${userNm === null ? '' : userNm}${callUserTypeName === null ? '' : '(' + callUserTypeName + ')'}`
               )
-              // h(
-              // 	'Poptip',
-              // 	{
-              // 		props: {
-              // 			content: _this.mingwenData
-              // 		}
-              // 	},
-              // 	[
-              // 		h(
-              // 			'span',
-              // 			{
-              // 				style: {
-              // 					display: params.row.userNmHid ? 'inline-block' : 'none'
-              // 				},
-              // 				on: {
-              // 					click: () => {
-              // 						_this.syscommon_decrypt({
-              // 							type: 'NAME',
-              // 							data: params.row.userNm
-              // 						});
-              // 					}
-              // 				}
-              // 			},
-              // 			[
-              // 				h('Icon', {
-              // 					props: {
-              // 						type: 'md-eye'
-              // 					},
-
-              // 					class: 'eye-class'
-              // 				})
-              // 			]
-              // 		)
-              // 	]
-              // )
             ]);
           }
         },
         {
           title: '手机(状态)',
           align: 'center',
-          width: 170,
+          // width: 170,
           key: 'mblNoHid',
           fixed: 'left',
           render: (h, params) => {
