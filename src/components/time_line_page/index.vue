@@ -2,7 +2,7 @@
   <div class="panel_list">
     <p v-if="view_time" class="time_line_view_time">最近查看时间：{{view_time | formatDate}}</p>
     <p v-else class="time_line_view_time">最近无查看记录</p>
-    <p class="time_line_view_time" style="color: red" v-if="login_count">总操作次数：{{login_count}}</p>
+    <p class="time_line_view_time" v-if="login_count">总操作次数：{{login_count}}</p>
     <ul class="time_line_wrap">
       <li class="ivu-timeline-item" v-for="(item,index) in list" :key="index">
         <span
