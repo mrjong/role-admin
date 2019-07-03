@@ -166,6 +166,13 @@ export default {
           }
         },
         {
+          title: '产品期数',
+          key: 'perdNum',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal,
+        },
+        {
           title: '客户姓名',
           searchOperator: 'like',
           key: 'userNmHid',
