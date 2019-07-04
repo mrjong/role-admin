@@ -167,7 +167,6 @@ export default {
         prodTypes: [],
         periodCounts: [],
         maxPerdCnts: [],
-        creditLevels: [],
         opCompayUuid: '',
       },
       messageFormItem: {},
@@ -264,7 +263,7 @@ export default {
                 },
                 caseHandleStatus === 'SUSPEND' ? '恢复催收' : '停催'
               ),
-              this.apply_remission?h('a',
+              this.apply_remission ? h('a',
                 {
                   class: 'edit-btn',
                   props: {},
@@ -277,8 +276,8 @@ export default {
                       this.breaks_flag = true;
                     }
                   }
-                },'减免'
-              ): null
+                }, '减免'
+              ) : null
             ]);
           }
         },
@@ -316,7 +315,7 @@ export default {
                       'vertical-align': 'top',
                       'margin-right': '5px',
                       color: '#EF0D33',
-                      display: eyeFlag? 'inline-block': 'none'
+                      display: eyeFlag ? 'inline-block' : 'none'
                     }
                   }),
                   h(
@@ -492,6 +491,12 @@ export default {
           key: 'opUserName',
           align: 'center',
         },
+        {
+          title: '是否提交仲裁',
+          width: 100,
+          align: 'center',
+          key: 'isSubmitName'
+        },
       ]
     };
   },
@@ -661,8 +666,8 @@ export default {
         if (valid) {
           if (this.formItem.date) {
             this.formItem.date = [
-              this.formItem.beginDueDate,
-              this.formItem.endDueDate
+              this.formItem.beginAllotDate,
+              this.formItem.endAllotDate
             ]
           }
           window.sessionStorage.setItem('case_distribute_form', JSON.stringify(this.formItem));
@@ -729,8 +734,8 @@ export default {
     // 日期变更回调
     dateChange(arr) {
       console.log(arr);
-      this.formItem.beginDueDate = arr[0];
-      this.formItem.endDueDate = arr[1];
+      this.formItem.beginAllotDate = arr[0];
+      this.formItem.endAllotDate = arr[1];
     },
     // 点击出现tree
     selectTreeNode(type) {
@@ -937,7 +942,6 @@ export default {
         prodTypes: [],
         periodCounts: [],
         maxPerdCnts: [],
-        creditLevels: [],
         opCompayUuid: '',
       };
       window.sessionStorage.removeItem('case_distribute_form');
