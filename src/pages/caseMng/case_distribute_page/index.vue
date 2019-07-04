@@ -237,6 +237,23 @@
               </Select>
             </FormItem>
           </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem label="登录状态:">
+            <Select
+              size="small"
+              clearable
+              filterable
+              placeholder="请选择登录状态"
+              v-model="formItem.appLoginStatus"
+            >
+              <Option
+                v-for="(item,index) in getDirObj.APP_LOGIN_STATUS"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
               <Button

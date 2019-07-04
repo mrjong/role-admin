@@ -44,7 +44,7 @@ export default {
         timeout: 120000,
       },
       file_url: '/admin/cases/batch/import ',//文件上传地址
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PAY_OFF_STS'],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PAY_OFF_STS', 'APP_LOGIN_STATUS'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,

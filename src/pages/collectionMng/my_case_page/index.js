@@ -45,7 +45,7 @@ export default {
     const _this = this;
     return {
       getDirObj2: {},
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'TALK_RESULT'],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'TALK_RESULT', 'APP_LOGIN_STATUS'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
