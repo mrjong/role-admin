@@ -44,7 +44,7 @@ export default {
         timeout: 120000,
       },
       file_url: '/admin/cases/batch/import ',//文件上传地址
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PAY_OFF_STS'],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PAY_OFF_STS', 'APP_LOGIN_STATUS'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -147,7 +147,6 @@ export default {
         id: '',
         billNo: '',
         caseStatus: '',
-        creditLevels: [],
       },
       tableData: [],
       tableColumns: [
@@ -375,6 +374,12 @@ export default {
           align: 'center',
           key: 'opUserName'
         },
+        {
+          title: '是否提交仲裁',
+          width: 100,
+          align: 'center',
+          key: 'isSubmitName'
+        },
       ]
     };
   },
@@ -457,6 +462,12 @@ export default {
         this.getList();
       }
     },
+    // 日期变更回调
+    dateChange(arr) {
+      console.log(arr);
+      this.formItem.beginAllotDate = arr[0];
+      this.formItem.endAllotDate = arr[1];
+    },
     // 电催中心change
     companyChange(value) {
       this.getLeafTypeList('03', value);
@@ -470,6 +481,12 @@ export default {
       this.query_flag = false;
       this.$refs[name].validate((valid) => {
         if (valid) {
+          if (this.formItem.date) {
+            this.formItem.date = [
+              this.formItem.beginAllotDate,
+              this.formItem.endAllotDate
+            ]
+          }
           window.sessionStorage.setItem('case_search_form', JSON.stringify(this.formItem));
           this.pageNo = 1;
           this.getList();
@@ -639,7 +656,6 @@ export default {
         id: '',
         billNo: '',
         caseStatus: '',
-        creditLevels: [],
       };
       window.sessionStorage.removeItem('case_search_form');
       this.$refs[name].resetFields();

@@ -144,7 +144,7 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="还款日期:">
+            <FormItem label="分配日期:">
               <DatePicker
                 type="daterange"
                 v-model="formItem.date"
@@ -152,7 +152,7 @@
                 :editable="false"
                 size='small'
                 clearable
-                placeholder="请选择还款日期"
+                placeholder="请选择分配日期"
                 style="width: 100%"
               ></DatePicker>
             </FormItem>
@@ -165,23 +165,6 @@
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="账单号:">
               <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入账单号"/>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="信用级别:">
-              <Select
-                size="small"
-                multiple
-                clearable
-                placeholder="请选择信用级别"
-                v-model="formItem.creditLevels"
-              >
-                <Option
-                  v-for="item in getDirObj.CREDIT_LEVEL"
-                  :value="item.itemCode"
-                  :key="item.itemName"
-                >{{ item.itemName }}</Option>
-              </Select>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -236,6 +219,23 @@
                 >{{ item.name }}</Option>
               </Select>
             </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem label="登录状态:">
+            <Select
+              size="small"
+              clearable
+              filterable
+              placeholder="请选择登录状态"
+              v-model="formItem.appLoginStatus"
+            >
+              <Option
+                v-for="(item,index) in getDirObj.APP_LOGIN_STATUS"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>

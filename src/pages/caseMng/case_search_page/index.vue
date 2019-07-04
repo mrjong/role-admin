@@ -137,20 +137,17 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="信用级别:">
-              <Select
-                size="small"
+            <FormItem span="6" label="分配日期:">
+              <DatePicker
+                type="daterange"
+                v-model="formItem.date"
+                @on-change="dateChange"
+                :editable="false"
+                size='small'
                 clearable
-                placeholder="请选择信用级别"
-                multiple
-                v-model="formItem.creditLevels"
-              >
-                <Option
-                  v-for="item in getDirObj.CREDIT_LEVEL"
-                  :value="item.itemCode"
-                  :key="item.itemName"
-                >{{ item.itemName }}</Option>
-              </Select>
+                placeholder="请选择分配日期"
+                style="width: 100%"
+              ></DatePicker>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -205,6 +202,23 @@
                 >{{ item.name }}</Option>
               </Select>
             </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem label="登录状态:">
+            <Select
+              size="small"
+              clearable
+              filterable
+              placeholder="请选择登录状态"
+              v-model="formItem.appLoginStatus"
+            >
+              <Option
+                v-for="(item,index) in getDirObj.APP_LOGIN_STATUS"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>

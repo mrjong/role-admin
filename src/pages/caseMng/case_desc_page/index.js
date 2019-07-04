@@ -408,10 +408,6 @@ export default {
           width: 280,
           key: 'collectRmk',
           tooltip: true,
-          render: (h, params) => {
-            let collectRmk = params.row.collectRmk;
-            return h('div', collectRmk)
-          }
         },
         {
           title: '通话来源',
