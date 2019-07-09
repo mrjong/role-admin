@@ -1,10 +1,10 @@
 <template>
   <div class="panel_list">
-    <Row :gutter="4" class="key_distribute_row">
+    <Row :gutter="0" class="key_distribute_row">
       <!-- 左边表单 -->
-      <Col :span="remoneyRateFlag?'8':'12'" class="form-col">
+      <Col :span="initFlag? '24': remoneyRateFlag?'8':'12'" class="form-col">
         <!-- 检索条件 -->
-        <Card class="vue-panel">
+        <Card class="vue-panel" :style="{height: screenHeight - 10 + 'px'}">
           <p slot="title" @click="showPanel=!showPanel">
             <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
           </p>
@@ -14,9 +14,10 @@
             :model="formItem"
             :label-width="95"
             :rules="ruleValidate"
+            :style="{'width': initFlag? '60%': '100%', margin: initFlag?'0 auto': '0'}"
           >
             <Row>
-              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+              <Col :xs="24" :sm="24" :md="initFlag?24:16" :lg="initFlag?24:16" span="6" style="margin: 0 auto">
                 <FormItem span="6" label="产品线:" prop="prodTypeList">
                   <Select
                     size="small"
@@ -32,7 +33,7 @@
                   </Select>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+              <Col :xs="24" :sm="24" :md="initFlag?24:16" :lg="initFlag?24:16" span="6">
                 <FormItem label="产品期数:">
                   <Select
                     size="small"
@@ -49,7 +50,7 @@
                   </Select>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+              <Col :xs="24" :sm="24" :md="initFlag?24:16" :lg="initFlag?24:16" span="6">
                 <FormItem label="到期期数:">
                   <Select
                     size="small"
@@ -66,7 +67,7 @@
                   </Select>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+              <Col :xs="24" :sm="24" :md="initFlag?24:16" :lg="initFlag?24:16" span="6">
                 <FormItem label="逾期天数:">
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovdudaysMin">
@@ -95,7 +96,7 @@
                   </Col>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+              <Col :xs="24" :sm="24" :md="initFlag?24:16" :lg="initFlag?24:16" span="6">
                 <FormItem label="逾期应还金额:">
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovduamtMin">
@@ -112,7 +113,7 @@
                   </Col>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+              <Col :xs="24" :sm="24" :md="initFlag?24:16" :lg="initFlag?24:16" span="6">
                 <FormItem span="6" label="信用级别:">
                   <Select
                     size="small"
@@ -129,7 +130,7 @@
                   </Select>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+              <Col :xs="24" :sm="24" :md="initFlag?24:16" :lg="initFlag?24:16" span="6">
                 <Col
                   :xs="11"
                   :sm="11"
@@ -159,7 +160,7 @@
                   </FormItem>
                 </Col>
               </Col>
-              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+              <Col :xs="24" :sm="24" :md="initFlag?24:16" :lg="initFlag?24:16" span="6">
                 <FormItem span="6" label="分配方式:" prop="allotType">
                   <!-- <RadioGroup v-model="formItem.allotType">
                     <Radio
@@ -202,7 +203,7 @@
                   </FormItem>
                 </Col>
               </Col>
-              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+              <Col :xs="24" :sm="24" :md="initFlag?24:16" :lg="initFlag?24:16" span="6">
                 <FormItem span="6" label="接收人员:" prop="allotNameList">
                   <Input
                     size="small"
@@ -211,6 +212,10 @@
                     placeholder="请选择接收人员"
                     disabled
                   ></Input>
+                </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="initFlag?24:16" :lg="initFlag?24:16" span="6">
+                <FormItem span="6">
                   <Button
                     type="primary"
                     @click="selectTreeNode(0)"
@@ -254,7 +259,7 @@
       </Col>
       <!-- 中间tree -->
       <Col :span="remoneyRateFlag?'8':'12'" v-if="treeFlag === 0">
-        <Card class="vue-panel">
+        <Card class="vue-panel" :style="{height: screenHeight - 10 + 'px'}">
           <p slot="title" @click="showPanel2=!showPanel2">
             <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>人员组织树
           </p>
@@ -265,6 +270,7 @@
             multiple
             v-if="treeFlag === 0"
             show-checkbox
+            :style="{height: screenHeight - 100 + 'px', 'overflow-y': 'auto','margin-bottom': '10px'}"
             @on-select-change="selectNode"
             @on-check-change="checkChangePerson"
           ></Tree>
@@ -275,7 +281,7 @@
         </Card>
       </Col>
       <Col :span="remoneyRateFlag?'8':'12'" v-if="treeFlag === 1">
-        <Card class="vue-panel">
+        <Card class="vue-panel" :style="{height: screenHeight - 10 + 'px'}">
           <p slot="title" @click="showPanel2=!showPanel2">
             <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>公司组织树
           </p>
@@ -286,6 +292,7 @@
             multiple
             v-if="treeFlag === 1"
             show-checkbox
+            :style="{height: screenHeight - 100 + 'px', 'overflow-y': 'auto', 'margin-bottom': '10px'}"
             @on-select-change="selectNode"
             @on-check-change="checkChangeOrz"
           ></Tree>
@@ -297,13 +304,14 @@
       </Col>
       <!-- 右边催收人员回款率card -->
       <Col :span="remoneyRateFlag?'8':'0'" v-if="remoneyRateFlag">
-        <Card class="vue-panel">
+        <Card class="vue-panel" :style="{height: screenHeight -10 + 'px'}">
           <p slot="title">催收人员回款率</p>
           <Form
             ref="remoneyRateForm"
             :model="remoneyRateForm"
             :label-width="120"
             class="remoney_rate_form"
+            :style="{maxHeight: screenHeight - 90 + 'px', 'overflow-y': 'auto'}"
           >
             <FormItem
               v-for="(item, index) in remoneyRateForm.staffList"
@@ -352,7 +360,12 @@ export default {
   name: "case_key_distribute_page",
   mixins: [formValidateFun, sysDictionary],
   data() {
-    const remoney_rate_max = (rule, value, callback) => {if (Number(value) > 100) {callback(new Error("回款率不能大于100%"));}callback();}
+    const remoney_rate_max = (rule, value, callback) => {
+      if (Number(value) > 100) {
+        callback(new Error("回款率不能大于100%"));
+      }
+      callback();
+    };
     const validate_money_start = (rule, value, callback) => {
       if (
         value &&
@@ -406,10 +419,12 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      screenHeight: 0, //屏幕高度
       allot_loading: false, //分配按钮loading
       totalcases: "0", //案件总数
       treeFlag: "", //0 人员树 1 组织树
       remoneyRateFlag: false, //回款率flag
+      initFlag: true, //初始化flag
       divideRuleUserVos: [], //汇款率接口参数list
       allotRoleIdList: [], //人员角色idlist
       allotNameList: [], //人员名字list
@@ -503,7 +518,9 @@ export default {
     };
   },
   created() {
-    // this.initTree("", "01");
+    let clientHeight = document.documentElement.clientHeight;
+    let bodyHeight = document.body.clientHeight;
+    this.$set(this, "screenHeight", clientHeight);
     console.log(this.formItem);
   },
   destroyed() {
@@ -516,7 +533,7 @@ export default {
         {
           style: {
             display: "inline-block",
-            width: "94%",
+            width: "90%",
             boxSizing: "border-box"
           }
         },
@@ -555,7 +572,7 @@ export default {
         {
           style: {
             display: "inline-block",
-            width: "94%",
+            width: "90%",
             boxSizing: "border-box"
           }
         },
@@ -635,6 +652,7 @@ export default {
       } else {
         this.initTree();
       }
+      this.initFlag = false;
       this.treeFlag = type;
     },
     // 分配方式的回调
@@ -643,16 +661,16 @@ export default {
       if (item !== "03") {
         this.remoneyRateFlag = false;
       } else {
-        if (this.treeFlag === 1) {
-          this.treeFlag = false;
-        }
+        // if (this.treeFlag === 1) {
+        //   this.treeFlag = false;
+        // }
       }
     },
     // 汇款率输入框的blur
     rateBlur(index, value) {
       if (typeof value == "number") {
         if (value <= 100)
-        this.remoneyRateForm.staffList[index].collectRate = value.toFixed(2);
+          this.remoneyRateForm.staffList[index].collectRate = value.toFixed(2);
       } else {
         this.remoneyRateForm.staffList[index].collectRate = "";
       }
@@ -696,6 +714,7 @@ export default {
     cancel() {
       this.treeFlag = false;
       this.remoneyRateFlag = false;
+      this.initFlag = true;
       // this.formItem.allotNameList = [];
     },
     // tree确定回调
@@ -709,9 +728,11 @@ export default {
           }
         } else {
           this.treeFlag = false;
+          this.initFlag = true;
         }
       } else {
         this.treeFlag = false;
+        this.initFlag = true;
       }
     },
     // 获取init tree数据
@@ -840,12 +861,24 @@ export default {
     },
     // 校验查询案件量的参数
     handleQueryCases(name) {
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          // this.getList();
-          this.queryCases();
+      let prodTypeList = false;
+      this.$refs.formItem.validateField('prodTypeList', (error) => {
+        if (!error) {
+          return prodTypeList = true;
+        } else {
+          return prodTypeList = false;
         }
       });
+      // this.$refs.formItem.validateField('allotType', (error) => {
+      //   if (!error) {
+      //     return allotType = true;
+      //   } else {
+      //     return allotType = false;
+      //   }
+      // });
+      if (prodTypeList ) {
+        this.queryCases();
+      }
     },
     //查询案件量
     async queryCases() {
@@ -886,6 +919,9 @@ export default {
           for (let i = 0; i < res.data.length; i++) {
             // 外层循环数据返回
             flag = false;
+            if (typeof res.data[i].collectRate == "number") {
+              res.data[i].collectRate = res.data[i].collectRate.toFixed(2);
+            }
             for (let j = 0; j < localArr.length; j++) {
               //内层循环
               if (localArr[j].opUserName == res.data[i].opUserName) {
@@ -904,9 +940,13 @@ export default {
               this.remoneyRateForm.staffList.push(res.data[i]);
             }
           }
-          this.remoneyRateForm.staffList.forEach(item => {
-            item.collectRate = item.collectRate.toFixed(2);
-          })
+          // this.remoneyRateForm.staffList.forEach(item => {
+          //   console.log(item.collectRate);
+          //   if (typeof item.collectRate === "number") {
+          //     item.collectRate = item.collectRate.toFixed(2);
+          //   }
+          // });
+          console.log(this.remoneyRateForm.staffList);
           sessionStorage.setItem(
             "collectRate",
             JSON.stringify(this.remoneyRateForm.staffList)
@@ -917,7 +957,7 @@ export default {
           this.remoneyRateForm.staffList = res.data;
           this.remoneyRateForm.staffList.forEach(item => {
             item.collectRate = item.collectRate.toFixed(2);
-          })
+          });
         }
       } else {
         this.$Message.error(res.message);
@@ -934,11 +974,6 @@ export default {
     line-height: 35px;
     width: 100%;
   }
-}
-.case_rule_tree,
-.remoney_rate_form {
-  max-height: 550px;
-  overflow-y: auto;
 }
 </style>
 
