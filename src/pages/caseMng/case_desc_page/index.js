@@ -16,6 +16,7 @@ import {
   case_detail_getcaselog,// 操作记录
   case_detail_siteletter_list, // 站内
   case_detail_address_info, // 地址
+
   case_detail_mail_detail_list, // 通话明细
   case_detail_mail_list, // 通讯录（指定案件）
   case_detail_mail_list_appended, // 定案件后追加的
@@ -329,6 +330,7 @@ export default {
       ],
       case_detail_address_info_Data: {},
       // 催收信息
+      case_detail_remark_list_spin: false,
       tableData: [],
       case_detail_remark_list_pageNo: 1,
       case_detail_remark_list_pageSize: 10,
@@ -432,6 +434,7 @@ export default {
       ],
 
       // 回款信息
+      case_detail_repay_ord_list_spin: false,
       case_detail_repay_ord_list_pageNo: 1,
       case_detail_repay_ord_list_pageSize: 10,
       case_detail_repay_ord_list_total: 0,
@@ -553,6 +556,7 @@ export default {
       ],
 
       // 用户主动还款
+      case_detail_user_repay_list_spin: false,
       case_detail_user_repay_list_pageNo: 1,
       case_detail_user_repay_list_pageSize: 10,
       case_detail_user_repay_list_total: 0,
@@ -648,6 +652,7 @@ export default {
       ],
 
       // 系统代扣还款
+      case_detail_system_repay_list_spin: false,
       case_detail_system_repay_list_pageNo: 1,
       case_detail_system_repay_list_pageSize: 10,
       case_detail_system_repay_list_total: 0,
@@ -734,6 +739,7 @@ export default {
       ],
 
       // 用户绑卡信息
+      case_detail_bindcard_list_spin: false,
       case_detail_bindcard_list_pageNo: 1,
       case_detail_bindcard_list_pageSize: 10,
       case_detail_bindcard_list_total: 0,
@@ -852,6 +858,7 @@ export default {
       ],
 
       // 操作记录
+      case_detail_getcaselog_spin: false,
       case_detail_getcaselog_pageNo: 1,
       case_detail_getcaselog_pageSize: 10,
       case_detail_getcaselog_total: 0,
@@ -909,6 +916,7 @@ export default {
       ],
 
       // 站内信记录
+      case_detail_siteletter_list_spin: false,
       case_detail_siteletter_list_pageNo: 1,
       case_detail_siteletter_list_pageSize: 10,
       case_detail_siteletter_list_total: 0,
@@ -979,7 +987,8 @@ export default {
           }
         }
       ],
-
+      //地址信息spin
+      case_detail_address_info_spin: false,
       // 通话统计
       case_detail_mail_statistics_list_pageNo: 1,
       case_detail_mail_statistics_list_pageSize: 10,
@@ -1870,12 +1879,14 @@ export default {
     // 催收信息
     async case_detail_remark_list() {
       console.log(this.caseNo);
+      this.case_detail_remark_list_spin = true
       const res = await case_detail_remark_list({
         caseNo: this.caseNo,
         userId: this.userId,
         pageNum: this.case_detail_remark_list_pageNo,
         pageSize: this.case_detail_remark_list_pageSize
       });
+      this.case_detail_remark_list_spin = false
       if (res.code === 1) {
         this.case_detail_remark_list_tableData = res.data && res.data.content;
         this.case_detail_remark_list_pageSize = res.data.size;
@@ -1886,11 +1897,13 @@ export default {
     },
     // 回款信息
     async case_detail_repay_ord_list() {
+      this.case_detail_repay_ord_list_spin = true
       const res = await case_detail_repay_ord_list({
         userId: this.userId,
         pageNum: this.case_detail_repay_ord_list_pageNo,
         pageSize: this.case_detail_repay_ord_list_pageSize
       });
+      this.case_detail_repay_ord_list_spin = false
       if (res.code === 1) {
         this.case_detail_repay_ord_list_tableData = res.data && res.data.content;
         this.case_detail_repay_ord_list_pageSize = res.data.size;
@@ -1901,12 +1914,14 @@ export default {
     },
     // 用户主动还款
     async case_detail_user_repay_list() {
+      this.case_detail_user_repay_list_spin = true
       const res = await case_detail_user_repay_list({
         caseNo: this.caseNo,
         userId: this.userId,
         pageNum: this.case_detail_user_repay_list_pageNo,
         pageSize: this.case_detail_user_repay_list_pageSize
       });
+      this.case_detail_user_repay_list_spin = false
       if (res.code === 1) {
         this.case_detail_user_repay_list_tableData = res.data && res.data.content;
         this.case_detail_user_repay_list_pageSize = res.data.size;
@@ -1917,12 +1932,14 @@ export default {
     },
     // 系统代扣还款
     async case_detail_system_repay_list() {
+      this.case_detail_system_repay_list_spin = true
       const res = await case_detail_system_repay_list({
         caseNo: this.caseNo,
         userId: this.userId,
         pageNum: this.case_detail_system_repay_list_pageNo,
         pageSize: this.case_detail_system_repay_list_pageSize
       });
+      this.case_detail_system_repay_list_spin = false
       if (res.code === 1) {
         this.case_detail_system_repay_list_tableData = res.data && res.data.content;
         this.case_detail_system_repay_list_pageSize = res.data.size;
@@ -1934,12 +1951,14 @@ export default {
 
     // 用户绑卡信息
     async case_detail_bindcard_list() {
+      this.case_detail_bindcard_list_spin = true
       const res = await case_detail_bindcard_list({
         caseNo: this.caseNo,
         userId: this.userId,
         pageNum: this.case_detail_bindcard_list_pageNo,
         pageSize: this.case_detail_bindcard_list_pageSize
       });
+      this.case_detail_bindcard_list_spin = false
       if (res.code === 1) {
         this.case_detail_bindcard_list_tableData = res.data && res.data.content;
         this.case_detail_bindcard_list_pageSize = res.data.size;
@@ -1951,12 +1970,14 @@ export default {
 
     // 操作记录
     async case_detail_getcaselog() {
+      this.case_detail_getcaselog_spin = true
       const res = await case_detail_getcaselog({
         caseNo: this.caseNo,
         userId: this.userId,
         pageNum: this.case_detail_getcaselog_pageNo,
         pageSize: this.case_detail_getcaselog_pageSize
       });
+      this.case_detail_getcaselog_spin = false
       if (res.code === 1) {
         this.case_detail_getcaselog_tableData = res.data && res.data.content;
         this.case_detail_getcaselog_pageSize = res.data.size;
@@ -1968,12 +1989,14 @@ export default {
 
     // 站内信记录
     async case_detail_siteletter_list() {
+      this.case_detail_siteletter_list_spin = true
       const res = await case_detail_siteletter_list({
         caseNo: this.caseNo,
         userId: this.userId,
         pageNum: this.case_detail_siteletter_list_pageNo,
         pageSize: this.case_detail_siteletter_list_pageSize
       });
+      this.case_detail_siteletter_list_spin = false
       if (res.code === 1) {
         this.case_detail_siteletter_list_tableData = res.data && res.data.content;
         this.case_detail_siteletter_list_pageSize = res.data.size;
@@ -2074,10 +2097,13 @@ export default {
 
     // 地址信息
     async case_detail_address_info() {
+      this.case_detail_address_info_spin = true
       const res = await case_detail_address_info({
         caseNo: this.caseNo,
         userId: this.userId
       });
+      this.case_detail_address_info_spin = false
+
       if (res.code === 1) {
         this.case_detail_address_info_Data = res.data;
       } else {
