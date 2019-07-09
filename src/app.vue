@@ -25,6 +25,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import util from '@/libs/util';
 // import ring from '@/libs/ring.wav'
 export default {
   data() {
@@ -43,6 +44,18 @@ export default {
     })
     if (localStorage.getItem("callData")) {
       this.call(JSON.parse(localStorage.getItem("callData")));
+    };
+    let websocket = window.sessionStorage.getItem('websocket');
+    if (websocket) {
+      util.websocket();
+      if (document.hidden !== undefined) {
+      document.addEventListener('visibilitychange', () => {
+        console.log(document.hidden);
+        console.log('12321321312adadadadadasda------------')
+        // true 表示离开  false表示回来，再进行初始化
+        util.websocket();
+      })
+    }
     }
   },
   computed: {
