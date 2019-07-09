@@ -270,7 +270,7 @@
             multiple
             v-if="treeFlag === 0"
             show-checkbox
-            :style="{height: screenHeight - 90 + 'px', 'overflow-y': 'auto'}"
+            :style="{height: screenHeight - 100 + 'px', 'overflow-y': 'auto','margin-bottom': '10px'}"
             @on-select-change="selectNode"
             @on-check-change="checkChangePerson"
           ></Tree>
@@ -292,7 +292,7 @@
             multiple
             v-if="treeFlag === 1"
             show-checkbox
-            :style="{height: screenHeight - 90 + 'px', 'overflow-y': 'auto'}"
+            :style="{height: screenHeight - 100 + 'px', 'overflow-y': 'auto', 'margin-bottom': '10px'}"
             @on-select-change="selectNode"
             @on-check-change="checkChangeOrz"
           ></Tree>
@@ -974,11 +974,6 @@ export default {
     line-height: 35px;
     width: 100%;
   }
-}
-.case_rule_tree,
-.remoney_rate_form {
-  // max-height: 550px;
-  overflow-y: auto;
 }
 </style>
 
