@@ -1,20 +1,20 @@
 import {
-  rl_callDetail_list,
-  kt_callDetail_list,
-  xz_callDetail_list,
-  rl_callDetail_exportDown,
-  kt_callDetail_exportDown,
-  xz_callDetail_exportDown
+  call_record_list,
+  call_record_export
 } from "@/service/getData";
 import util from "@/libs/util";
+import sysDictionary from '@/mixin/sysDictionary';
+
 export default {
   name: "overduePayment",
-  //mixins: [sysDictionary, formValidateFun],
+  mixins: [sysDictionary],
   data() {
     var alignCenter = "center";
     var widthVal = 150;
     var widthMidVal = 100;
     return {
+      getDirList: ['SEAT_TYPE'],
+      getDirObj: {},
       showPanel: false,
       showPanel2: false,
       export_case: false, //导出权限
@@ -25,8 +25,8 @@ export default {
       dealTime: "",
       formItem: {
         dealTime: [],
-        startDate: "",
-        endDate: ""
+        callStartDate: "",
+        callEndDate: ""
       },
       ruleValidate: {
         overdueDaysLt: [
@@ -69,15 +69,22 @@ export default {
         {
           title: "呼叫日期",
           searchOperator: "=",
-          key: "handleDate",
+          key: "callTime",
           className: "tableMainW",
           align: alignCenter,
-          width: widthVal
+          width: widthVal,
+          render: (h, params) => {
+            const row = params.row;
+            const callTime = row.callTime
+              ? this.$options.filters['formatDate'](row.callTime, 'YYYY-MM-DD')
+              : row.callTime;
+            return h('span', callTime);
+          }
         },
         {
           title: "外呼手机号",
           searchOperator: "=",
-          key: "calledNo",
+          key: "toCallMblHid",
           className: "tableMainW",
           align: alignCenter,
           width: widthVal
@@ -101,7 +108,7 @@ export default {
         {
           title: "用户ID",
           searchOperator: "like",
-          key: "calledUserId",
+          key: "userId",
           className: "tableMainW",
           align: alignCenter,
           width: widthVal
@@ -117,14 +124,14 @@ export default {
         {
           title: "通话时长(s)",
           searchOperator: "like",
-          key: "talkTime",
+          key: "callDurat",
           className: "tableMainW",
           align: alignCenter,
           width: widthMidVal
         },
         {
           title: "通话结果",
-          key: "callState",
+          key: "callStatusName",
           className: "tableMainW",
           align: alignCenter,
           width: widthMidVal
@@ -132,7 +139,23 @@ export default {
         {
           title: "坐席姓名",
           searchOperator: "like",
-          key: "agentName",
+          key: "callUserName",
+          className: "tableMainW",
+          align: alignCenter,
+          width: widthMidVal
+        },
+        {
+          title: "电催中心",
+          searchOperator: "like",
+          key: "companyName",
+          className: "tableMainW",
+          align: alignCenter,
+          width: widthMidVal
+        },
+        {
+          title: "组别",
+          searchOperator: "like",
+          key: "organizationName",
           className: "tableMainW",
           align: alignCenter,
           width: widthMidVal
@@ -140,7 +163,7 @@ export default {
         {
           title: "坐席工号",
           searchOperator: "like",
-          key: "agent",
+          key: "callno",
           className: "tableMainW",
           align: alignCenter,
           width: widthMidVal
@@ -164,8 +187,8 @@ export default {
       this.formItem = JSON.parse(daily_monitoring_callDetail_form);
     }
     this.formItem.dealTime = [util.getToday(-1), util.getToday(0)];
-    this.formItem.startDate = util.getToday(-1);
-    this.formItem.endDate = util.getToday(0);
+    this.formItem.callStartDate = util.getToday(-1);
+    this.formItem.callEndDate = util.getToday(0);
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -193,8 +216,8 @@ export default {
     },
     // 改变日期区间的格式之后进行处理
     changeDate(val1, val2) {
-      this.formItem.startDate = val1[0];
-      this.formItem.endDate = val1[1];
+      this.formItem.callStartDate = val1[0];
+      this.formItem.callEndDate = val1[1];
       // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
     },
     // 页码改变的回调
@@ -214,8 +237,8 @@ export default {
       // 单独处理日期的缓存问题
       if (this.formItem.dealTime) {
         this.formItem.dealTime = [
-          this.formItem.startDate,
-          this.formItem.endDate
+          this.formItem.callStartDate,
+          this.formItem.callEndDate
         ];
       };
       window.sessionStorage.setItem(
@@ -240,23 +263,25 @@ export default {
         timeout: 120000,
         responseType: "blob"
       };
-      switch (type) {
-        // 科天导出
-        case 'KT_CALL_DETAIL':
-          res = await kt_callDetail_exportDown(obj, options);
-          util.dowloadfile("科天呼叫明细", res);
-          break;
-        // 容联导出
-        case 'RL_CALL_DETAIL':
-          res = await rl_callDetail_exportDown(obj, options);
-          util.dowloadfile("容联呼叫明细", res);
-          break;
-        // 讯众导出
-        case 'XZ_CALL_DETAIL':
-          res = await xz_callDetail_exportDown(obj, options);
-          util.dowloadfile("讯众呼叫明细", res);
-          break;
-      }
+      // switch (type) {
+      //   // 科天导出
+      //   case 'KT_CALL_DETAIL':
+      //     res = await kt_callDetail_exportDown(obj, options);
+      //     util.dowloadfile("科天呼叫明细", res);
+      //     break;
+      //   // 容联导出
+      //   case 'RL_CALL_DETAIL':
+      //     res = await rl_callDetail_exportDown(obj, options);
+      //     util.dowloadfile("容联呼叫明细", res);
+      //     break;
+      //   // 讯众导出
+      //   case 'XZ_CALL_DETAIL':
+      //     res = await xz_callDetail_exportDown(obj, options);
+      //     util.dowloadfile("讯众呼叫明细", res);
+      //     break;
+      // }
+      res = await call_record_export(obj, options);
+      util.dowloadfile("呼叫明细", res);
       this.export_case_loading = false;
     },
     // 获取表格数据
@@ -265,38 +290,43 @@ export default {
         this.$Message.error("很抱歉，暂无权限查询");
         return;
       }
-      if (!this.formItem.startDate) {
+      if (!this.formItem.callStartDate) {
         this.$Message.error('请选择呼叫日期后再查询');
         return;
       }
       this.query_loading = true;
       let res;
-      switch (type) {
-        // 科天
-        case 'KT_CALL_DETAIL':
-          res = await kt_callDetail_list({
-            pageNum: this.pageNo,
-            pageSize: this.pageSize,
-            ...this.formItem
-          });
-          break;
-        // 容联
-        case 'RL_CALL_DETAIL':
-          res = await rl_callDetail_list({
-            pageNum: this.pageNo,
-            pageSize: this.pageSize,
-            ...this.formItem
-          });
-          break;
-        // 讯众
-        case 'XZ_CALL_DETAIL':
-          res = await xz_callDetail_list({
-            pageNum: this.pageNo,
-            pageSize: this.pageSize,
-            ...this.formItem
-          });
-          break;
-      };
+      // switch (type) {
+      //   // 科天
+      //   case 'KT_CALL_DETAIL':
+      //     res = await kt_callDetail_list({
+      //       pageNum: this.pageNo,
+      //       pageSize: this.pageSize,
+      //       ...this.formItem
+      //     });
+      //     break;
+      //   // 容联
+      //   case 'RL_CALL_DETAIL':
+      //     res = await rl_callDetail_list({
+      //       pageNum: this.pageNo,
+      //       pageSize: this.pageSize,
+      //       ...this.formItem
+      //     });
+      //     break;
+      //   // 讯众
+      //   case 'XZ_CALL_DETAIL':
+      //     res = await xz_callDetail_list({
+      //       pageNum: this.pageNo,
+      //       pageSize: this.pageSize,
+      //       ...this.formItem
+      //     });
+      //     break;
+      // };
+      res = await call_record_list({
+        pageNum: this.pageNo,
+        pageSize: this.pageSize,
+        ...this.formItem
+      })
       this.query_loading = false;
       if (res && res.code === 1) {
         let data = res.data;
@@ -313,8 +343,8 @@ export default {
       this.formItem = {};
       window.sessionStorage.removeItem("daily_monitoring_callDetail_form");
       this.formItem.dealTime = [util.getToday(-1), util.getToday(0)];
-      this.formItem.startDate = util.getToday(-1);
-      this.formItem.endDate = util.getToday(0);
+      this.formItem.callStartDate = util.getToday(-1);
+      this.formItem.callEndDate = util.getToday(0);
       this.$refs[name].resetFields();
     }
   }
