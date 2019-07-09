@@ -1,6 +1,6 @@
 <template>
   <div class="panel_list">
-    <Row :gutter="4" class="key_distribute_row">
+    <Row :gutter="0" class="key_distribute_row">
       <!-- 左边表单 -->
       <Col :span="initFlag? '24': remoneyRateFlag?'8':'12'" class="form-col">
         <!-- 检索条件 -->
@@ -14,7 +14,7 @@
             :model="formItem"
             :label-width="95"
             :rules="ruleValidate"
-            :style="{'width': initFlag? '60%': '100%', margin: '0 auto'}"
+            :style="{'width': initFlag? '60%': '100%', margin: initFlag?'0 auto': '0'}"
           >
             <Row>
               <Col :xs="24" :sm="24" :md="initFlag?24:16" :lg="initFlag?24:16" span="6" style="margin: 0 auto">
@@ -212,6 +212,10 @@
                     placeholder="请选择接收人员"
                     disabled
                   ></Input>
+                </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="initFlag?24:16" :lg="initFlag?24:16" span="6">
+                <FormItem span="6">
                   <Button
                     type="primary"
                     @click="selectTreeNode(0)"
@@ -857,7 +861,7 @@ export default {
     },
     // 校验查询案件量的参数
     handleQueryCases(name) {
-      let prodTypeList = false, allotType = false;
+      let prodTypeList = false;
       this.$refs.formItem.validateField('prodTypeList', (error) => {
         if (!error) {
           return prodTypeList = true;
@@ -865,14 +869,14 @@ export default {
           return prodTypeList = false;
         }
       });
-      this.$refs.formItem.validateField('allotType', (error) => {
-        if (!error) {
-          return allotType = true;
-        } else {
-          return allotType = false;
-        }
-      });
-      if (prodTypeList && allotType ) {
+      // this.$refs.formItem.validateField('allotType', (error) => {
+      //   if (!error) {
+      //     return allotType = true;
+      //   } else {
+      //     return allotType = false;
+      //   }
+      // });
+      if (prodTypeList ) {
         this.queryCases();
       }
     },
