@@ -368,10 +368,10 @@ util.NumberToChinese = (num) =>{
 
   websocket.onopen = function() {
     //         setMessageInnerHTML("WebSocket连接成功");
-    websocket.send("我是从客户端发出去的消息");
-    websocket.send("我是从客户端发出去的消息2");
-    websocket.send("我是从客户端发出去的消息3");
-    websocket.send("我是从客户端发出去的消息4");
+    // websocket.send("我是从客户端发出去的消息");
+    // websocket.send("我是从客户端发出去的消息2");
+    // websocket.send("我是从客户端发出去的消息3");
+    // websocket.send("我是从客户端发出去的消息4");
   }; //接收到消息的回调方法
   websocket.onmessage = (event) => {
     //         setMessageInnerHTML(event.data);
