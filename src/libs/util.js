@@ -360,7 +360,9 @@ util.NumberToChinese = (num) =>{
 }
 
  util.websocket = () => {
-  let websocket = new WebSocket(`ws://172.18.40.44:8080/websocket/${Cookie.get('user')}`);
+  // let websocket = new WebSocket(`ws://172.18.40.44:8080/websocket/${Cookie.get('user')}`);
+  console.log(window.location.host)
+  let websocket = new WebSocket(`ws://${window.location.host}/websocket/${Cookie.get('user')}`);
   //连接发生错误的回调方法
   websocket.onerror = function() {
     //         setMessageInnerHTML("WebSocket连接发生错误");
