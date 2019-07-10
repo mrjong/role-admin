@@ -76,7 +76,7 @@ export default {
           render: (h, params) => {
             const row = params.row;
             const callTime = row.callTime
-              ? this.$options.filters['formatDate'](row.callTime, 'YYYY-MM-DD')
+              ? this.$options.filters['formatDate'](row.callTime, 'YYYY-MM-DD HH:mm:ss')
               : row.callTime;
             return h('span', callTime);
           }
