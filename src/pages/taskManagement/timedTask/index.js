@@ -238,7 +238,9 @@ export default {
             ...this.formValidateInfo
           }).then(res=>{
             if(res.code === 1){
-              this.getList()
+              this.$Message.info({content:item.key+ '成功', onClose: ()=>{
+                this.getList()
+              }})
             }else {
               this.$Message.info(res.message)
             }
@@ -264,6 +266,8 @@ export default {
               item.api({
                 id: data.id
               }).then(res=>{
+                debugger
+                console.log(res)
                 if(res.code === 1){
                   this.$Message.info({content:res.data, onClose: ()=>{
                     this.getList()
@@ -271,8 +275,6 @@ export default {
                 }else {
                   this.$Message.info(res.message)
                 }
-              }).catch(err=>{
-                this.$Message.info(err.message)
               })
             }
           })

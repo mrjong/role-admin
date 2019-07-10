@@ -75,7 +75,7 @@ export default {
           width: widthVal
         },
         {
-          title: '是否成功',
+          title: '执行状态',
           key: 'isSuccessName',
           className: 'tableMainW',
           align: alignCenter,
