@@ -130,24 +130,24 @@
   </div>
 </template>
 <script src="./index.js"></script>
-<style lang="less">
+<style lang="less" scoped>
 .tdetail-row,
 .detail-col {
   position: relative;
 }
 .tree-col {
-  .ivu-tree {
+  /deep/  .ivu-tree {
     height: 620px;
     overflow-y: auto;
   }
 }
-.ivu-modal {
+/deep/ .ivu-modal {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
-.detail-col {
+/deep/ .detail-col {
   position: relative;
   .ivu-form {
     overflow: hidden;

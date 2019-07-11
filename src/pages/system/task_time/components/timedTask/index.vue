@@ -1,14 +1,7 @@
 <template>
   <div class="panel_list">
     <!-- 检索条件 -->
-    <Card class="vue-panel">
-      <p
-        slot="title"
-        @click="showPanel=!showPanel"
-      >
-        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>
-        检索条件
-      </p>
+    <Card class="vue-panel" style="border-top-left-radius: 0px; border-bottom-right-radius: 0px">
       <Form
         v-if="!showPanel"
         ref="formItem"
