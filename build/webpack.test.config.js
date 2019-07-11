@@ -13,8 +13,8 @@ const package = require('../package.json');
 
 fs.open('./build/env.js', 'w', function(err, fd) {
     const buf = 'export default "production";';
-    fs.write(fd, buf, 0, buf.length, 0, function(err, written, buffer) {});//线上nginx打包
-    // fs.write(fd, buf, 0, 'utf-8', function(err, written, buffer) {});//本地运行 npn run test
+    fs.write(fd, buf, 0, buf.length, 0, function(err, written, buffer) {});
+    // fs.write(fd, buf, 0, 'utf-8', function(err, written, buffer) {});
 });
 
 module.exports = merge(webpackBaseConfig, {
@@ -41,9 +41,7 @@ module.exports = merge(webpackBaseConfig, {
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: '"production"'
-            },
-            // 全局配置websocket的地址
-            LOCALHOST: '"wss://"+window.location.host+"/admin/websocket"'
+            }
         }),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
@@ -52,6 +50,15 @@ module.exports = merge(webpackBaseConfig, {
                 drop_console: true
             }
         }),
+        // new UglifyJsParallelPlugin({
+        //     workers: os.cpus().length,
+        //     mangle: true,
+        //     compressor: {
+        //       warnings: false,
+        //       drop_console: true,
+        //       drop_debugger: true
+        //      }
+        // }),
         new CopyWebpackPlugin([
             {
                 from: 'td_icon.ico',
