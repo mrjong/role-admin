@@ -268,6 +268,22 @@ export const monitor_overDueReports_exportDown = (obj, options) =>
     options
   });
 
+// 呼叫明细合并后的列表接口
+export const call_record_list = (obj) =>
+  fetch({
+    url: '/call/record/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+// 呼叫明细合并后的导出接口
+export const call_record_export = (obj, options) =>
+  fetch({
+    url: '/call/record/export',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
+  })
 // 容联呼叫明细列表接口查询
 export const rl_callDetail_list = (obj) =>
   fetch({
