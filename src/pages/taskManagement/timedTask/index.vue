@@ -186,14 +186,14 @@
               <Row class="eachRow" style="margin-bottom: 20px;">
                 <Col span="22">
                 <FormItem label="任务名称:" style="display: flex; align-items: center;" prop="jobName">
-                  <Input  clearable v-model.trim="formValidateInfo.jobName" placeholder="请输入任务名称"/>
+                  <Input  clearable v-model.trim="formValidateInfo.jobName" placeholder="请输入任务名称" ref="jobName"/>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow" style="margin-bottom: 20px;">
                 <Col span="22">
                 <FormItem label="任务类名:" style="display: flex; align-items: center;" prop="jobClass">
-                  <Input clearable v-model.trim="formValidateInfo.jobClass" placeholder="请输入任务类名"/>
+                  <Input clearable v-model.trim="formValidateInfo.jobClass" placeholder="请输入任务类名" ref="jobClass"/>
                 </FormItem>
                 </Col>
               </Row>
@@ -213,21 +213,21 @@
               <Row class="eachRow" style="margin-bottom: 20px;">
                 <Col span="22">
                 <FormItem label="任务方法名:" style="display: flex; align-items: center;" prop="jobMethod">
-                  <Input clearable v-model.trim="formValidateInfo.jobMethod" placeholder="请输入任务方法名"/>
+                  <Input clearable v-model.trim="formValidateInfo.jobMethod" placeholder="请输入任务方法名" ref="jobMethod"/>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow" style="margin-bottom: 20px;">
                 <Col span="22">
                 <FormItem label="IP地址:" style="display: flex; align-items: center;" prop="ipAddress">
-                  <Input clearable v-model.trim="formValidateInfo.ipAddress" placeholder="请输入IP地址"/>
+                  <Input clearable v-model.trim="formValidateInfo.ipAddress" placeholder="请输入IP地址" ref="ipAddress"/>
                 </FormItem>
                 </Col>
               </Row>
               <Row class="eachRow" style="margin-bottom: 20px;">
                 <Col span="22">
                 <FormItem label="CRON表达式:" style="display: flex; align-items: center;" prop="cronExpression">
-                  <Input clearable v-model.trim="formValidateInfo.cronExpression" placeholder="请输入cron表达式"/>
+                  <Input clearable v-model.trim="formValidateInfo.cronExpression" placeholder="请输入cron表达式" ref="cronExpression"/>
                 </FormItem>
                 </Col>
               </Row>

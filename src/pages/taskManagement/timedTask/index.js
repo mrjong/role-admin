@@ -7,6 +7,7 @@ export default {
     var alignCenter = 'center';
     var widthVal = 180;
     var widthMidVal = 130;
+
     return {
       getDirList: ['EXECUTION_NUMBER', 'TASK_STATUS'],
       getDirObj: {},
@@ -29,7 +30,7 @@ export default {
           {
             required: true,
             message: '请输入任务类名',
-            trigger: 'blur'
+            trigger: 'blur',
           }
         ],
         jobMethod: [
@@ -81,7 +82,8 @@ export default {
           key: 'jobClass',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: 300,
+          tooltip: true
         },
         {
           title: '任务方法名',
@@ -232,29 +234,52 @@ export default {
       }
     },
     closeModal(flag){
-      this.task_api.forEach(item=>{
-        if(flag && flag === item.key){
-          item.api({
-            ...this.formValidateInfo
-          }).then(res=>{
-            if(res.code === 1){
-              this.$Message.info({content:item.key+ '成功', onClose: ()=>{
-                this.getList()
-              }})
-            }else {
-              this.$Message.info(res.message)
+      this.$refs['formValidate'].validate((valid) => {
+        if (valid) {
+          this.task_api.forEach(item=>{
+            if(flag && flag === item.key){
+              item.api({
+                ...this.formValidateInfo
+              }).then(res=>{
+                switch(res.code) {
+                  case 1:
+                    this.dialogFormVisible = false;
+                    this.$Message.info({content:item.key+ '成功', onClose: ()=>{
+                      this.getList()
+                    }})
+                    break
+                  // case 2000001:
+                  //   this.$refs['jobName'].focus()
+                  //   this.$refs['jobName'].blur()
+                  //   break
+                  // case 2000002:
+                  //   this.$refs['jobClass'].focus()
+                  //   this.$refs['jobClass'].blur()
+                  //   break
+                  // case 2000003:
+                  //   this.$refs['jobMethod'].focus()
+                  //   this.$refs['jobMethod'].blur()
+                  //   break
+                  // case 2000004:
+                  //   this.$refs['cronExpression'].focus()
+                  //   this.$refs['cronExpression'].blur()
+                  //   break
+                  default:
+                    this.$Message.info(res.message)
+                }
+              }).catch(err=>{
+                this.$Message.info(err.message)
+              })
             }
-          }).catch(err=>{
-            this.$Message.info(err.message)
           })
+        } else {
         }
       })
-      this.dialogFormVisible = false;
-    },
 
+    },
     //渲染行高度
     rowStyle(){
-      return 'aa'
+      return 'row_style'
     },
     open(content='', text='', data= {}){
       this.$Modal.confirm({
@@ -266,8 +291,6 @@ export default {
               item.api({
                 id: data.id
               }).then(res=>{
-                debugger
-                console.log(res)
                 if(res.code === 1){
                   this.$Message.info({content:res.data, onClose: ()=>{
                     this.getList()

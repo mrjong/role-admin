@@ -56,16 +56,9 @@ export default {
         },
         {
           title: '执行时间',
-          key: 'executionTime',
+          key: 'executionTimeStr',
           className: 'tableMainW',
           align: alignCenter,
-          render: (h, params) => {
-            let executionTime = params.row.executionTime;
-            executionTime = executionTime
-              ? this.$options.filters['formatDate'](executionTime, 'YYYY-MM-DD HH:mm:ss')
-              : executionTime;
-            return h('span', executionTime);
-          }
         },
         {
           title: '执行数据量',
@@ -144,7 +137,7 @@ export default {
     },
     //渲染行高度
     rowStyle(){
-      return 'aa'
+      return 'row_style'
     },
   }
 };
