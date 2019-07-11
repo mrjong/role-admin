@@ -46,7 +46,7 @@ module.exports = merge(webpackBaseConfig, {
         NODE_ENV: '"production"'
       },
       // 全局配置websocket的地址
-      LOCALHOST: '`wss://${window.location.host}/websocket`'
+      LOCALHOST: '`wss://${window.location.host}/admin/websocket`'
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
