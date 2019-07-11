@@ -262,8 +262,8 @@ export default {
       this.$refs[name].resetFields();
       // this.getList();
     },
-    handleClick(data, flag) {
-      console.log(data)
+    handleClick(originalData, flag) {
+      let data = JSON.parse(JSON.stringify(originalData))
       switch(flag) {
         case 'open':
           console.log('开始')
@@ -288,6 +288,10 @@ export default {
       }
     },
     closeModal(flag){
+      if(!flag){
+        this.dialogFormVisible = false;
+        return
+      }
       this.$refs['formValidate'].validate((valid) => {
         if (valid) {
           this.task_api.forEach(item=>{
@@ -329,7 +333,6 @@ export default {
         } else {
         }
       })
-
     },
     //渲染行高度
     rowStyle(){
