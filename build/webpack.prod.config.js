@@ -24,10 +24,6 @@ module.exports = merge(webpackBaseConfig, {
     chunkFilename: '[name].[hash].chunk.js'
   },
   plugins: [
-    // 全局配置websocket的地址
-    new webpack.DefinePlugin({
-      LOCALHOST: '`wss://${window.location.host}/websocket`'
-    }),
     new cleanWebpackPlugin(['dist/*'], {
       root: path.resolve(__dirname, '../')
     }),
@@ -46,7 +42,7 @@ module.exports = merge(webpackBaseConfig, {
         NODE_ENV: '"production"'
       },
       // 全局配置websocket的地址
-      LOCALHOST: '`wss://${window.location.host}/admin/websocket`'
+      LOCALHOST: '"wss://"+window.location.host+"/admin/websocket"'
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
