@@ -5,7 +5,7 @@ export default {
     TaskDetails,
     TimedTask
   },
-  name: 'task_time ',
+  name: 'task_time',
   data() {
     return {
     };

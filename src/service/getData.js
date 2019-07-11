@@ -1545,18 +1545,64 @@ export const system_handleDetail = (obj) =>
     data: qs.stringify(obj)
   });
 
-// 定时任务日志管理
+// 定时任务管理列表
 export const timed_taskList = (obj) =>
   fetch({
     url: '/quartz/list',
     method: 'POST',
     data: qs.stringify(obj)
   });
-
-// 定时任务日志详情
-export const timed_taskDetail = (obj) =>
+// 定时任务管理列表详情
+export const timed_task_detail_list = (obj) =>
   fetch({
-    url: '/quartz/detail',
+    url: '/quartz/detail/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+// 定时任务管理添加
+export const timed_task_add = (obj) =>
+  fetch({
+    url: '/quartz/save',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 定时任务管理删除
+export const timed_task_delete = (obj) =>
+  fetch({
+    url: '/quartz/delete',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 定时任务管理修改
+export const timed_task_update = (obj) =>
+  fetch({
+    url: '/quartz/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 定时任务管理开启
+export const timed_task_open = (obj) =>
+  fetch({
+    url: '/quartz/open',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 定时任务关闭
+export const timed_task_close = (obj) =>
+  fetch({
+    url: '/quartz/close',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
+
+// 定时任务执行
+export const timed_task_run = (obj) =>
+  fetch({
+    url: '/quartz/run',
     method: 'POST',
     data: qs.stringify(obj)
   });
