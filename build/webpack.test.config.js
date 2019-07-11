@@ -50,15 +50,10 @@ module.exports = merge(webpackBaseConfig, {
                 drop_console: true
             }
         }),
-        // new UglifyJsParallelPlugin({
-        //     workers: os.cpus().length,
-        //     mangle: true,
-        //     compressor: {
-        //       warnings: false,
-        //       drop_console: true,
-        //       drop_debugger: true
-        //      }
-        // }),
+        // 全局配置websocket的地址
+        new webpack.DefinePlugin({
+          LOCALHOST: '`wss://${window.location.host}/websocket`'
+        }),
         new CopyWebpackPlugin([
             {
                 from: 'td_icon.ico',

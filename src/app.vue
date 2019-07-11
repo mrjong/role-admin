@@ -50,8 +50,6 @@ export default {
       util.websocket();
       if (document.hidden !== undefined) {
       document.addEventListener('visibilitychange', () => {
-        console.log(document.hidden);
-        console.log('12321321312adadadadadasda------------')
         // true 表示离开  false表示回来，再进行初始化
         util.websocket();
       })
