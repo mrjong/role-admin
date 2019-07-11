@@ -6,6 +6,8 @@ import qs from 'qs';
 import dayjs from 'dayjs';
 import Cookie from 'js-cookie';
 import sysDictionary from '@/mixin/sysDictionary';
+import util from '@/libs/util';
+
 import {
   case_detail_remark_list, // 催收
   case_detail_repay_ord_list, // 回款
@@ -1610,6 +1612,15 @@ export default {
       // this.case_collect_case_list(); // 我的案件
       await this.case_list()
     }
+    // 监听多个详情页切换
+    // if (document.hidden !== undefined) {
+    //   document.addEventListener('visibilitychange', () => {
+    //     console.log(document.hidden);
+    //     console.log('12321321312adadadadadasda------------')
+    //     // true 表示离开  false表示回来，再进行初始化
+    //     util.websocket();
+    //   })
+    // }
     delete queryData.readType;
     this.queryData = queryData;
     this.case_detail_remark_list(); // 催收信息
