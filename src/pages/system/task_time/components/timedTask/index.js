@@ -1,5 +1,53 @@
 import { timed_taskList, timed_task_add, timed_task_update, timed_task_open, timed_task_close, timed_task_run,timed_task_delete } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
+var noPassJobName = false
+var noPassJobClass = false
+var noPassJobMethod = false
+var noPassCronExpression = false
+const validateJobName = (rule, value, callback) => {
+  if (!value) {
+    callback(new Error());
+  } else if (noPassJobName) {
+    noPassJobName= false
+    rule.message = '任务名称不正确'
+    callback(new Error());
+  } else {
+    callback();
+  }
+};
+const validateJobClass = (rule, value, callback) => {
+  if (!value) {
+    callback(new Error());
+  } else if (noPassJobClass) {
+    rule.message = '任务类别不正确'
+    noPassJobClass= false
+    callback(new Error());
+  } else {
+    callback();
+  }
+};
+const validateJobMethod = (rule, value, callback) => {
+  if (!value) {
+    callback(new Error());
+  } else if (noPassJobMethod) {
+    noPassJobMethod= false
+    rule.message = '任务方法名不正确'
+    callback(new Error());
+  } else {
+    callback();
+  }
+};
+const validateCronExpression = (rule, value, callback) => {
+  if (!value) {
+    callback(new Error());
+  } else if (noPassCronExpression) {
+    rule.message = '任务表达式不正确'
+    noPassCronExpression = false
+    callback(new Error());
+  } else {
+    callback();
+  }
+};
 export default {
   name: 'timedTask',
   mixins: [sysDictionary],
@@ -23,7 +71,8 @@ export default {
           {
             required: true,
             message: '请输入任务名称',
-            trigger: 'blur'
+            trigger: 'blur',
+            validator: validateJobName,
           }
         ],
         jobClass: [
@@ -31,13 +80,16 @@ export default {
             required: true,
             message: '请输入任务类名',
             trigger: 'blur',
+            validator: validateJobClass,
           }
         ],
         jobMethod: [
           {
             required: true,
             message: '请输入任务方法名',
-            trigger: 'blur'
+            trigger: 'blur',
+            validator: validateJobMethod,
+
           }
         ],
         ipAddress: [
@@ -51,7 +103,9 @@ export default {
           {
             required: true,
             message: '请输入CRON表达式',
-            trigger: 'blur'
+            trigger: 'blur',
+            validator: validateCronExpression,
+
           }
         ],
         executionNumber: [
@@ -78,6 +132,20 @@ export default {
           key: 'jobName'
         },
         {
+          title: '任务状态',
+          key: 'isLockName',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
+        {
+          title: 'cron表达式',
+          key: 'cronExpression',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthVal
+        },
+        {
           title: '任务类名',
           key: 'jobClass',
           className: 'tableMainW',
@@ -95,20 +163,6 @@ export default {
         {
           title: 'IP地址',
           key: 'ipAddress',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: 'cron表达式',
-          key: 'cronExpression',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '任务状态',
-          key: 'isLockName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
@@ -208,8 +262,8 @@ export default {
       this.$refs[name].resetFields();
       // this.getList();
     },
-    handleClick(data, flag) {
-      console.log(data)
+    handleClick(originalData, flag) {
+      let data = JSON.parse(JSON.stringify(originalData))
       switch(flag) {
         case 'open':
           console.log('开始')
@@ -234,6 +288,10 @@ export default {
       }
     },
     closeModal(flag){
+      if(!flag){
+        this.dialogFormVisible = false;
+        return
+      }
       this.$refs['formValidate'].validate((valid) => {
         if (valid) {
           this.task_api.forEach(item=>{
@@ -248,22 +306,22 @@ export default {
                       this.getList()
                     }})
                     break
-                  // case 2000001:
-                  //   this.$refs['jobName'].focus()
-                  //   this.$refs['jobName'].blur()
-                  //   break
-                  // case 2000002:
-                  //   this.$refs['jobClass'].focus()
-                  //   this.$refs['jobClass'].blur()
-                  //   break
-                  // case 2000003:
-                  //   this.$refs['jobMethod'].focus()
-                  //   this.$refs['jobMethod'].blur()
-                  //   break
-                  // case 2000004:
-                  //   this.$refs['cronExpression'].focus()
-                  //   this.$refs['cronExpression'].blur()
-                  //   break
+                  case 2000001:
+                    noPassJobName = true
+                    this.$refs['formValidate'].validate((valid) => {})
+                    break
+                  case 2000002:
+                    noPassJobClass = true
+                    this.$refs['formValidate'].validate((valid) => {})
+                    break
+                  case 2000003:
+                    noPassJobMethod = true
+                    this.$refs['formValidate'].validate((valid) => {})
+                    break
+                  case 2000004:
+                    noPassCronExpression = true
+                    this.$refs['formValidate'].validate((valid) => {})
+                    break
                   default:
                     this.$Message.info(res.message)
                 }
@@ -275,7 +333,6 @@ export default {
         } else {
         }
       })
-
     },
     //渲染行高度
     rowStyle(){
