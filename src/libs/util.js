@@ -298,7 +298,7 @@ util.getToday = (num) => {
   let month = (today.getMonth() + 1) < 10 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1;
   let day;
   if (num) {
-    day = today.getDate() < 10 ? '0' + (today.getDate() + num) : today.getDate() + num;
+    day = today.getDate() + num < 10 ? '0' + (today.getDate() + num) : today.getDate() + num;
   } else {
     day = today.getDate() < 10 ? '0' + today.getDate() : today.getDate();
   }

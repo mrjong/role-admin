@@ -3,12 +3,12 @@
     <!-- 检索条件 -->
     <Card class="vue-panel">
       <p slot="title">
-        <!-- <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件 -->
-        <Tabs type="card" @on-click="tabClick" size="small" :animated="true">
+        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
+        <!-- <Tabs type="card" @on-click="tabClick" size="small" :animated="true">
           <TabPane label="科天" name="KT_CALL_DETAIL"></TabPane>
           <TabPane label="容联" name="RL_CALL_DETAIL"></TabPane>
           <TabPane label="讯众" name="XZ_CALL_DETAIL"></TabPane>
-        </Tabs>
+        </Tabs> -->
       </p>
       <Form
         v-if="!showPanel"
@@ -31,6 +31,28 @@
                 :confirm='false'
                 @on-change="changeDate"
               ></DatePicker>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="坐席姓名:">
+              <Input size="small" clearable v-model.trim="formItem.callUserName" placeholder="请输入坐席姓名"/>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="坐席类型:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择坐席类型"
+                v-model="formItem.seatType"
+              >
+                <Option
+                  v-for="item in getDirObj.SEAT_TYPE"
+                  :value="item.itemCode"
+                  :key="item.itemCode + 1"
+                >{{ item.itemName }}</Option>
+              </Select>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
