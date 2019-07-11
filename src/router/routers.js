@@ -19,6 +19,5 @@ export default {
   ...dailyMontiorRouter,
   ...businessMngRouter,
   ...logMngRouter,
-  ...commonRouter,
-  ...taskManagementRouter
+  ...commonRouter
 };

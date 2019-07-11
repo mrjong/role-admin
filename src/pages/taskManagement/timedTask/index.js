@@ -1,16 +1,11 @@
-import { timed_taskList, timed_task_add, timed_task_update, timed_task_open, timed_task_close, timed_task_run,timed_task_delete } from '@/service/getData';
-import sysDictionary from '@/mixin/sysDictionary';
+import { timed_taskList, timed_taskDetail } from '@/service/getData';
 export default {
   name: 'timedTask',
-  mixins: [sysDictionary],
   data() {
     var alignCenter = 'center';
     var widthVal = 180;
     var widthMidVal = 130;
-
     return {
-      getDirList: ['EXECUTION_NUMBER', 'TASK_STATUS'],
-      getDirObj: {},
       showPanel: false,
       showPanel2: false,
       modalSee: false,
@@ -19,56 +14,16 @@ export default {
       formItem: {
       },
       ruleValidate:{
-        jobName: [
-          {
-            required: true,
-            message: '请输入任务名称',
-            trigger: 'blur'
-          }
-        ],
-        jobClass: [
-          {
-            required: true,
-            message: '请输入任务类名',
-            trigger: 'blur',
-          }
-        ],
-        jobMethod: [
-          {
-            required: true,
-            message: '请输入任务方法名',
-            trigger: 'blur'
-          }
-        ],
-        ipAddress: [
-          {
-            required: true,
-            message: '请输入IP地址',
-            trigger: 'blur'
-          }
-        ],
-        cronExpression: [
-          {
-            required: true,
-            message: '请输入CRON表达式',
-            trigger: 'blur'
-          }
-        ],
-        executionNumber: [
-          {
-            required: true,
-            message: '请选择执行次数',
-            trigger: 'change',
-          }
-        ]
       },
-      formValidate: {},
+      formValidate: {
+      },
       formValidateInfo: {
       },
       pageNo: 1,
       pageSize: 10,
       total: 0,
       tableData: [
+
       ],
       tableColumns: [
         {
@@ -80,14 +35,6 @@ export default {
         {
           title: '任务类名',
           key: 'jobClass',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: 300,
-          tooltip: true
-        },
-        {
-          title: '任务方法名',
-          key: 'jobMethod',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
@@ -107,66 +54,91 @@ export default {
           width: widthVal
         },
         {
-          title: '任务状态',
+          title: '是否开启',
           key: 'isLockName',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthMidVal,
         },
         {
-          title: '执行次数',
-          key: 'executionNumberName',
+          title: '创建人',
+          key: 'createUser',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthMidVal,
+        },
+        {
+          title: '创建时间',
+          key: 'createTime',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal,
+          render: (h, params) => {
+            let remarkDate = params.row.createTime;
+            remarkDate = remarkDate
+              ? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
+              : remarkDate;
+            return h('span', remarkDate);
+          }
+        },
+        {
+          title: '修改人',
+          key: 'updateUser',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal,
+        },
+        {
+          title: '修改时间',
+          key: 'updateTime',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal,
+          render: (h, params) => {
+            let remarkDate = params.row.updateTime;
+            remarkDate = remarkDate
+              ? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
+              : remarkDate;
+            return h('span', remarkDate);
+          }
         },
         {
           title: '操作',
-          slot: 'handle',
           key: 'edit',
-          className: 'tableMainHandle',
-          width: 280,
+          width: 180,
           fixed: 'left',
           align: 'center',
+          render: (h, params) => {
+            const obj = params.row;
+            return h('div', [
+              h(
+                'a',
+                {
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.handleDetail(obj);
+                    }
+                  }
+                },
+                '查看'
+              ),
+            ]);
+          }
         }
-      ],
-      add_handle: true, //添加
-      dialogFormVisible: false,
-      title: '',
-      task_api: [
-        {
-          api: timed_task_add,
-          key: '添加'
-        },
-        {
-          api: timed_task_update,
-          key: '修改'
-        },
-        {
-          api: timed_task_open,
-          key: '开始'
-        },
-        {
-          api: timed_task_close,
-          key: '关闭'
-        },
-        {
-          api: timed_task_run,
-          key: '执行'
-        },
-        {
-          api: timed_task_delete,
-          key: '删除'
-        },
       ]
     };
-
   },
   created() {
     // this.getList();
   },
   methods: {
-
+    // 改变日期区间的格式之后进行处理
+    changeDate(val1) {
+      this.formItem.startCreateTime = val1[0];
+      this.formItem.endCreateTime = val1[1];
+      // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
+    },
     // 页码改变的回调
     changePage(pageNo) { //默认带入一个参数是当前的页码数
       console.log(pageNo,'当前的页码数量值');
@@ -196,6 +168,7 @@ export default {
         let data = res.data;
         this.tableData = data.content;
         this.total = data.totalElements //接口中在该条件下取得的数据量
+        //data.page.numberOfElements  当前页面实际返回的数量
       } else{
         this.$Message.error(res.message);
       }
@@ -208,124 +181,15 @@ export default {
       this.$refs[name].resetFields();
       // this.getList();
     },
-    handleClick(data, flag) {
-      console.log(data)
-      switch(flag) {
-        case 'open':
-          console.log('开始')
-          this.open('此操作将开始该任务, 是否继续?', '开始', data)
-          break;
-        case 'close':
-          console.log('关闭')
-          this.open('此操作将关闭该任务, 是否继续?', '关闭', data)
-          break;
-        case 'update':
-          console.log('修改')
-          this.showTask('update', data)
-          break;
-        case 'execute':
-          console.log('执行')
-          this.open('此操作将执行该任务, 是否继续?', '执行', data)
-          break;
-        case 'delete':
-          console.log('删除')
-          this.open('此操作将删除该任务, 是否继续?', '删除', data)
-          break;
-      }
+    //查看详情
+    handleDetail( obj) {
+      this.formValidateInfo = obj;
+      this.formValidateInfo.createTime = this.$options.filters['formatDate'](this.formValidateInfo.createTime, 'YYYY-MM-DD HH:mm:ss')
+      this.formValidateInfo.updateTime = this.$options.filters['formatDate'](this.formValidateInfo.updateTime, 'YYYY-MM-DD HH:mm:ss')
+      this.modalSee = true;
     },
-    closeModal(flag){
-      this.$refs['formValidate'].validate((valid) => {
-        if (valid) {
-          this.task_api.forEach(item=>{
-            if(flag && flag === item.key){
-              item.api({
-                ...this.formValidateInfo
-              }).then(res=>{
-                switch(res.code) {
-                  case 1:
-                    this.dialogFormVisible = false;
-                    this.$Message.info({content:item.key+ '成功', onClose: ()=>{
-                      this.getList()
-                    }})
-                    break
-                  // case 2000001:
-                  //   this.$refs['jobName'].focus()
-                  //   this.$refs['jobName'].blur()
-                  //   break
-                  // case 2000002:
-                  //   this.$refs['jobClass'].focus()
-                  //   this.$refs['jobClass'].blur()
-                  //   break
-                  // case 2000003:
-                  //   this.$refs['jobMethod'].focus()
-                  //   this.$refs['jobMethod'].blur()
-                  //   break
-                  // case 2000004:
-                  //   this.$refs['cronExpression'].focus()
-                  //   this.$refs['cronExpression'].blur()
-                  //   break
-                  default:
-                    this.$Message.info(res.message)
-                }
-              }).catch(err=>{
-                this.$Message.info(err.message)
-              })
-            }
-          })
-        } else {
-        }
-      })
-
-    },
-    //渲染行高度
-    rowStyle(){
-      return 'row_style'
-    },
-    open(content='', text='', data= {}){
-      this.$Modal.confirm({
-        title: '提示',
-        content: content,
-        onOk: () => {
-          this.task_api.forEach(item=>{
-            if(text && text === item.key){
-              item.api({
-                id: data.id
-              }).then(res=>{
-                if(res.code === 1){
-                  this.$Message.info({content:res.data, onClose: ()=>{
-                    this.getList()
-                  }})
-                }else {
-                  this.$Message.info(res.message)
-                }
-              })
-            }
-          })
-        },
-        onCancel: () => {
-          this.$Message.info( '已取消'+ text + '操作');
-        }
-      });
-    },
-
-    showTask(flag, data) {
-      this.$refs['formValidate'].resetFields();
-      if(flag === 'add'){
-        this.title = '添加'
-        this.formValidateInfo = {}
-      } else {
-        this.title = '修改'
-        console.log(data)
-        this.formValidateInfo = data
-      }
-      this.dialogFormVisible=true
-      setTimeout(()=>{
-        // document.querySelector('.bottom').childNodes.forEach((item, index)=>{
-        //   if(index !== 0){
-        //     item.style.display= 'none'
-        //   }
-        // })
-      },300)
-    },
+    closeModal(){
+      this.modalSee = false;
+    }
   }
 };
