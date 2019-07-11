@@ -8,7 +8,7 @@ export default {
     var widthVal = 180;
     var widthMidVal = 130;
     return {
-      getDirList: ['1_0_SUCCESS_FAIL'],
+      getDirList: ['EXECUTION_STS'],
       getDirObj: {},
       queryLoading: false,
       formItem: {
@@ -63,7 +63,7 @@ export default {
         },
         {
           title: '执行状态',
-          key: 'isSuccessName',
+          key: 'executionStsName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal

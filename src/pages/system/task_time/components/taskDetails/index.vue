@@ -52,9 +52,9 @@
           </Col>
           <Col :xs="24" :sm="24" :md="8" :lg="8" span="6">
           <FormItem label="执行状态:" style="display: flex; align-items: center;">
-            <Select size="small" clearable placeholder="请选择执行状态" v-model="formItem.isSuccess">
+            <Select size="small" clearable placeholder="请选择执行状态" v-model="formItem.executionSts">
               <Option
-                v-for="item in getDirObj['1_0_SUCCESS_FAIL']"
+                v-for="item in getDirObj['EXECUTION_STS']"
                 :value="item.itemCode"
                 :key="item.itemCode"
               >{{ item.itemName }}</Option>
