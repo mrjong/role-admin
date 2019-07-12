@@ -385,7 +385,7 @@ util.websocket = () => {
           title: "案件停催啦~",
           message: h('span', { style: 'color: #ed4014; font-weight: 600' }, data.msgContent),
           type: "error",
-          duration: 0,
+          duration: 5000,
           position: 'bottom-left'
         });
         break;
@@ -394,7 +394,7 @@ util.websocket = () => {
           title: "案件解锁啦~",
           message: h('span', { style: 'color: #409eff; font-weight: 600' }, data.msgContent),
           type: "info",
-          duration: 0,
+          duration: 5000,
           position: 'bottom-left',
           customClass: 'notice-info'
         });
@@ -404,7 +404,7 @@ util.websocket = () => {
           title: "结清啦~",
           message: h('span', { style: 'color: #67c23a; font-weight: 600' }, data.msgContent),
           type: "success",
-          duration: 0,
+          duration: 5000,
           position: 'bottom-left'
         });
         break;
