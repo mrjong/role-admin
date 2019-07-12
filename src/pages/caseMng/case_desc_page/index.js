@@ -1105,7 +1105,8 @@ export default {
                             click: () => {
                               _this.syscommon_decrypt({
                                 type: 'MBL',
-                                data: params.row.mblNo
+                                data: params.row.mblNo,
+                                tripartite: 'tripartite'
                               });
                             }
                           },
@@ -1270,7 +1271,8 @@ export default {
                           click: () => {
                             _this.syscommon_decrypt({
                               type: 'MBL',
-                              data: params.row.mblNo
+                              data: params.row.mblNo,
+                              tripartite: 'tripartite'
                             });
                           }
                         },
@@ -1408,7 +1410,8 @@ export default {
                           click: () => {
                             _this.syscommon_decrypt({
                               type: 'MBL',
-                              data: params.row.mblNo
+                              data: params.row.mblNo,
+                              tripartite: 'tripartite'
                             });
                           }
                         },
@@ -1543,7 +1546,8 @@ export default {
                           click: () => {
                             _this.syscommon_decrypt({
                               type: 'MBL',
-                              data: params.row.mblNo
+                              data: params.row.mblNo,
+                              tripartite: 'tripartite'
                             });
                           }
                         },
