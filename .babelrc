@@ -1,5 +1,24 @@
 {
-    "presets": ["stage-3", "env"],
-    "plugins": ["transform-runtime", "syntax-dynamic-import"],
-    "comments": false
+  "presets": [
+    "stage-3",
+    "env",
+    [
+      "es2015",
+      {
+        "modules": false
+      }
+    ]
+  ],
+  "plugins": [
+    "transform-runtime",
+    "syntax-dynamic-import",
+    [
+      "component",
+      {
+        "libraryName": "element-ui",
+        "styleLibraryName": "theme-chalk"
+      }
+    ]
+  ],
+  "comments": false
 }

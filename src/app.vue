@@ -25,7 +25,10 @@
 
 <script>
 import { mapGetters } from "vuex";
-import util from '@/libs/util';
+import util from "@/libs/util";
+// import { Notification } from "element-ui";
+// let _this = new Vue();
+// const h = _this.$createElement;
 // import ring from '@/libs/ring.wav'
 export default {
   data() {
@@ -38,22 +41,45 @@ export default {
       theme: this.$store.state.app.themeColor
     };
   },
-  created() {
-    this.$Message.config({
-      duration: 2
-    })
+  async created() {
+    // this.$Message.config({
+    //   duration: 2
+    // });
+  //   const h = this.$createElement;
+  //   await Notification({
+  //   title: "案件停催啦~",
+  //   message: h('span', { style: 'color: #FF4040; font-weight: 600', }, '我是一条info消息'),
+  //   type: "error",
+  //   duration: 0,
+  //   position: 'bottom-left',
+  // });
+  // await Notification({
+  //   title: "案件解锁啦~",
+  //   message: h('span', { style: 'color: #409eff' }, '我是一条info信息'),
+  //   type: "info",
+  //   duration: 0,
+  //   position: 'bottom-left',
+  //   customClass: 'notice-info'
+  // });
+  // await Notification({
+  //   title: "结清啦~",
+  //   message: h('span', { style: 'color: #67c23a' }, '我是一条info信息'),
+  //   type: "success",
+  //   duration: 0,
+  //   position: 'bottom-left'
+  // });
     if (localStorage.getItem("callData")) {
       this.call(JSON.parse(localStorage.getItem("callData")));
-    };
-    let websocket = window.sessionStorage.getItem('websocket');
+    }
+    let websocket = window.sessionStorage.getItem("websocket");
     if (websocket) {
       util.websocket();
       if (document.hidden !== undefined) {
-      document.addEventListener('visibilitychange', () => {
-        // true 表示离开  false表示回来，再进行初始化
-        util.websocket();
-      })
-    }
+        document.addEventListener("visibilitychange", () => {
+          // true 表示离开  false表示回来，再进行初始化
+          util.websocket();
+        });
+      }
     }
   },
   computed: {
@@ -242,6 +268,11 @@ body {
         }
       }
     }
+  }
+}
+.notice-info {
+  .el-notification__icon {
+    color: #409eff;
   }
 }
 </style>

@@ -6,16 +6,12 @@ import App from './app.vue';
 import 'iview/dist/styles/iview.css';
 import filters from '@/filters';
 import validate from '@/libs/validate';
-// import common from '@/libs/common';
-// Object.keys(common).forEach(k => {
-//     Vue.prototype[`${k}`] = common[k];
-// });
+
 Vue.prototype.GLOBAL = validate;
 Object.keys(filters).forEach((k) => {
   Vue.filter(k, filters[k]);
 });
 Vue.use(iView);
-
 new Vue({
   el: '#app',
   router: router,

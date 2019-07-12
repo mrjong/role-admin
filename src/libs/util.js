@@ -1,10 +1,9 @@
-// import axios from 'axios';
-// import env from '../../build/env';
-// import semver from 'semver';
-// import packjson from '../../package.json';
+
 import Cookie from 'js-cookie';
 import Vue from 'vue';
+import { Notification } from "element-ui";
 let _this = new Vue();
+const h = _this.$createElement;
 let util = {};
 util.title = function (title, vm) {
   let iTitle = '贷后管理系统';
@@ -334,7 +333,7 @@ function SectionToChinese(section) {
   return chnStr;
 }
 
-util.NumberToChinese = (num) =>{
+util.NumberToChinese = (num) => {
   var unitPos = 0;
   var strIns = '', chnStr = '';
   var needZero = false;
@@ -359,16 +358,17 @@ util.NumberToChinese = (num) =>{
   return chnStr;
 }
 
- util.websocket = () => {
+util.websocket = () => {
   //  地址配置在webpack
   let websocket = new WebSocket(`${LOCALHOST}/${Cookie.get('user')}`);
+  // let websocket = new WebSocket(`wss://fcs-front-test.vbillbank.com/admin/websocket/${Cookie.get('user')}`);
   console.log(LOCALHOST)
   //连接发生错误的回调方法
-  websocket.onerror = function() {
+  websocket.onerror = function () {
     //         setMessageInnerHTML("WebSocket连接发生错误");
   }; //连接成功建立的回调方法
 
-  websocket.onopen = function() {
+  websocket.onopen = function () {
     //         setMessageInnerHTML("WebSocket连接成功");
     // websocket.send("我是从客户端发出去的消息");
     // websocket.send("我是从客户端发出去的消息2");
@@ -378,19 +378,46 @@ util.NumberToChinese = (num) =>{
   websocket.onmessage = (event) => {
     //         setMessageInnerHTML(event.data);
     console.log(event.data);
-    _this.$Notice.info({
-      title: '站内信消息',
-      desc: event.data,
-      duration: 5
-    });
+    let data = JSON.parse(event.data);
+    switch (data.msgType) {
+      case '01':
+        Notification({
+          title: "案件停催啦~",
+          message: h('span', { style: 'color: #ed4014; font-weight: 600' }, data.msgContent),
+          type: "error",
+          duration: 0,
+          position: 'bottom-left'
+        });
+        break;
+      case '02':
+        Notification({
+          title: "案件解锁啦~",
+          message: h('span', { style: 'color: #409eff; font-weight: 600' }, data.msgContent),
+          type: "info",
+          duration: 0,
+          position: 'bottom-left',
+          customClass: 'notice-info'
+        });
+        break;
+      case '03':
+        Notification({
+          title: "结清啦~",
+          message: h('span', { style: 'color: #67c23a; font-weight: 600' }, data.msgContent),
+          type: "success",
+          duration: 0,
+          position: 'bottom-left'
+        });
+        break;
+    }
+
   }; //连接关闭的回调方法
 
-  websocket.onclose = function() {
+  websocket.onclose = function () {
     //         setMessageInnerHTML("WebSocket连接关闭");
   }; //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
 
-  window.onbeforeunload = function() {
+  window.onbeforeunload = function () {
     closeWebSocket();
   };
- }
+}
 export default util;
