@@ -25,6 +25,10 @@
 
 <script>
 import { mapGetters } from "vuex";
+import util from "@/libs/util";
+// import { Notification } from "element-ui";
+// let _this = new Vue();
+// const h = _this.$createElement;
 // import ring from '@/libs/ring.wav'
 export default {
   data() {
@@ -37,12 +41,23 @@ export default {
       theme: this.$store.state.app.themeColor
     };
   },
-  created() {
-    this.$Message.config({
-      duration: 2
-    })
+  async created() {
+    // this.$Message.config({
+    //   duration: 2
+    // });
+    const h = this.$createElement;
     if (localStorage.getItem("callData")) {
       this.call(JSON.parse(localStorage.getItem("callData")));
+    }
+    let websocket = window.sessionStorage.getItem("websocket");
+    if (websocket) {
+      util.websocket();
+      if (document.hidden !== undefined) {
+        document.addEventListener("visibilitychange", () => {
+          // true 表示离开  false表示回来，再进行初始化
+          util.websocket();
+        });
+      }
     }
   },
   computed: {
@@ -231,6 +246,33 @@ body {
         }
       }
     }
+  }
+}
+.notice-info {
+  background: #409eff;
+  border: none;
+}
+.notice-error {
+  background: #ff6666;
+  border: none;
+}
+.notice-success {
+  // background: #67c23a;
+  background: rgb(138, 204, 120);;
+  border: none;
+}
+.notice-success, .notice-error, .notice-info {
+  .el-notification__title {
+    color: #fff;
+  }
+  .el-notification__icon {
+    color: #fff;
+    line-height: 52px;
+    height: 52px;
+    font-size: 28px;
+  }
+   .el-icon-close {
+    color: #fff;
   }
 }
 </style>

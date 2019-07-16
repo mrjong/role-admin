@@ -59,6 +59,7 @@
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import { login, call_kt_get_seat, login_code } from "@/service/getData";
+import util from '@/libs/util';
 
 export default {
   data() {
@@ -90,6 +91,7 @@ export default {
   },
   created() {
     this.login_code();
+    sessionStorage.removeItem('websocket');
     localStorage.removeItem("callData");
     localStorage.removeItem("callObj");
     this.$nextTick(() => {
@@ -168,6 +170,8 @@ export default {
     },
     loginSuccess(res) {
       this.$Message.success("登录成功!");
+      window.sessionStorage.setItem('websocket', true);
+      util.websocket();
       window.$router = this.$router;
       this.$router.push({
         path: "/home/home/home"
