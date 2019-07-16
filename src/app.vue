@@ -45,29 +45,7 @@ export default {
     // this.$Message.config({
     //   duration: 2
     // });
-  //   const h = this.$createElement;
-  //   await Notification({
-  //   title: "案件停催啦~",
-  //   message: h('span', { style: 'color: #FF4040; font-weight: 600', }, '我是一条info消息'),
-  //   type: "error",
-  //   duration: 0,
-  //   position: 'bottom-left',
-  // });
-  // await Notification({
-  //   title: "案件解锁啦~",
-  //   message: h('span', { style: 'color: #409eff' }, '我是一条info信息'),
-  //   type: "info",
-  //   duration: 0,
-  //   position: 'bottom-left',
-  //   customClass: 'notice-info'
-  // });
-  // await Notification({
-  //   title: "结清啦~",
-  //   message: h('span', { style: 'color: #67c23a' }, '我是一条info信息'),
-  //   type: "success",
-  //   duration: 0,
-  //   position: 'bottom-left'
-  // });
+    const h = this.$createElement;
     if (localStorage.getItem("callData")) {
       this.call(JSON.parse(localStorage.getItem("callData")));
     }
@@ -271,8 +249,30 @@ body {
   }
 }
 .notice-info {
+  background: #409eff;
+  border: none;
+}
+.notice-error {
+  background: #ff6666;
+  border: none;
+}
+.notice-success {
+  // background: #67c23a;
+  background: rgb(138, 204, 120);;
+  border: none;
+}
+.notice-success, .notice-error, .notice-info {
+  .el-notification__title {
+    color: #fff;
+  }
   .el-notification__icon {
-    color: #409eff;
+    color: #fff;
+    line-height: 52px;
+    height: 52px;
+    font-size: 28px;
+  }
+   .el-icon-close {
+    color: #fff;
   }
 }
 </style>

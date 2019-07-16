@@ -382,17 +382,18 @@ util.websocket = () => {
     switch (data.msgType) {
       case '01':
         Notification({
-          title: "案件停催啦~",
-          message: h('span', { style: 'color: #ed4014; font-weight: 600' }, data.msgContent),
+          title: data.msgTitle,
+          message: h('span', { style: 'color: #fff; font-weight: 600' }, data.msgContent),
           type: "error",
           duration: 5000,
-          position: 'bottom-left'
+          position: 'bottom-left',
+          customClass: 'notice-error'
         });
         break;
       case '02':
         Notification({
-          title: "案件解锁啦~",
-          message: h('span', { style: 'color: #409eff; font-weight: 600' }, data.msgContent),
+          title: data.msgTitle,
+          message: h('span', { style: 'color: #fff; font-weight: 600' }, data.msgContent),
           type: "info",
           duration: 5000,
           position: 'bottom-left',
@@ -401,11 +402,12 @@ util.websocket = () => {
         break;
       case '03':
         Notification({
-          title: "结清啦~",
-          message: h('span', { style: 'color: #67c23a; font-weight: 600' }, data.msgContent),
+          title: data.msgTitle,
+          message: h('span', { style: 'color: #fff; font-weight: 600' }, data.msgContent),
           type: "success",
           duration: 5000,
-          position: 'bottom-left'
+          position: 'bottom-left',
+          customClass: 'notice-success'
         });
         break;
     }
