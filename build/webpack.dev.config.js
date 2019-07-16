@@ -22,6 +22,9 @@ module.exports = merge(webpackBaseConfig, {
         chunkFilename: '[name].chunk.js'
     },
     plugins: [
+        new webpack.DefinePlugin({
+          LOCALHOST: '"ws://172.18.40.44:8080/websocket"'
+        }),
         new ExtractTextPlugin({
             filename: '[name].css',
             allChunks: true

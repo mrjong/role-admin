@@ -40,7 +40,9 @@ module.exports = merge(webpackBaseConfig, {
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: '"production"'
-            }
+            },
+            // 全局配置websocket的地址
+            LOCALHOST: '"wss://"+window.location.host+"/admin/websocket"'
         }),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
