@@ -5,7 +5,7 @@ import qs from 'qs';
  */
 export const login = (obj = {}) =>
   fetch({
-    url: '/login',
+    url: '/system/login',
     method: 'POST',
     data: qs.stringify(obj)
   });
@@ -15,7 +15,7 @@ export const login = (obj = {}) =>
  */
 export const logout = (obj = {}) =>
   fetch({
-    url: '/logout',
+    url: '/system/logout',
     method: 'POST',
     data: qs.stringify(obj)
   });
@@ -1279,7 +1279,7 @@ export const wkProcessTask_approval_list = (obj, options) =>
 * */
 export const getLeafTypeList = (obj, options) =>
   fetch({
-    url: '/getLeafTypeList',
+    url: '/collect/getLeafTypeList',
     method: 'POST',
     data: qs.stringify(obj),
     options
