@@ -77,7 +77,7 @@ export default {
           width: widthVal
         },
         {
-          title: '还款金额',
+          title: '申请金额',
           searchOperator: 'like',
           key: 'repayAmount',
           className: 'tableMainW',
@@ -85,6 +85,19 @@ export default {
           width: widthMidVal,
           render(h,params){
             let res = params.row.repayAmount;
+            res = res ? _this.$options.filters['money'](res) : res;
+            return h('span', res);
+          }
+        },
+        {
+          title: '还款金额',
+          searchOperator: 'like',
+          key: 'repayActualAmount',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal,
+          render(h,params){
+            let res = params.row.repayActualAmount;
             res = res ? _this.$options.filters['money'](res) : res;
             return h('span', res);
           }
