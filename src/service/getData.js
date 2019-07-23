@@ -1704,3 +1704,10 @@ export const relief_relieford_result = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+// 申请仲裁反显接口
+export const apply_arbitration_reverse = (obj) =>
+  fetch({
+    url: '/arb/getArbApplyImage',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
