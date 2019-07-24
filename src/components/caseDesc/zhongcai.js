@@ -119,13 +119,17 @@ export default {
     this.showImg();
     apply_arbitration_reverse({caseNo: this.zhongcai_data.caseNo}).then(res=>{
       if(res.code === 1){
-        this.uploadList3.push({
-          url: this.prefix + res.data.advanceDueNoticeRelativePath,
-          relativePath: res.data.advanceDueNoticeRelativePath,
-          status: 'finished'
-        });
-        this.$set(this.formItem, 'standImg', res.data.advanceDueNoticeDate);
-        this.$set(this.formItem, 'standAgreeDate', res.data.advanceDueNoticeDate);
+        if(res.data.advanceDueNoticeDate){
+          this.uploadList3.push({
+            url: this.prefix + res.data.advanceDueNoticeRelativePath,
+            relativePath: res.data.advanceDueNoticeRelativePath,
+            status: 'finished'
+          });
+          this.$set(this.formItem, 'standImg', res.data.advanceDueNoticeDate);
+        }
+        if( res.data.advanceDueNoticeDate){
+          this.$set(this.formItem, 'standAgreeDate', res.data.advanceDueNoticeDate);
+        }
       } else {
         this.$Message.error(res.message);
       }
