@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 export default {
 	data() {
 		return {
+		  arbitrateTitle: this.zhongcai_data.title ? this.zhongcai_data.title  : '申请仲裁',
 			headers: {
 				'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
 				timeout: 120000,
@@ -230,9 +231,9 @@ export default {
 			}
 		},
 		del() {
-			this.childrenModel = !this.model;
+      this.childrenModel = !this.model;
 			this.$emit('passBack', this.childrenModel);
-			// this.$emit("getChildrenStatus", this.childrenData);
+			this.$emit("getChildrenStatus", this.childrenData);
 		},
 		handleRemove(file, type) {
 			console.log(file);
