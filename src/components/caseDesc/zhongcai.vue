@@ -1,12 +1,12 @@
 <template>
   <div>
     <Modal
-      title="申请仲裁"
+      :title="arbitrateTitle"
       class="jianmian"
       width="600"
       @on-visible-change="del"
-      v-model="model"
-      @on-ok="handleSubmit"
+      :value="model"
+      :mask-closable="false"
     >
       <div class="alert-desc">
         <div class="panel-desc">

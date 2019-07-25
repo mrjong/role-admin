@@ -5,7 +5,7 @@
       class="arbitrament_detail"
       title="仲裁详情"
       width="600"
-      v-model="model"
+      :value="model"
       @on-visible-change='del'
 >
       <div class="alert-desc">
