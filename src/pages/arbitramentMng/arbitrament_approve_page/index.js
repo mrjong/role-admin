@@ -178,7 +178,7 @@ export default {
                 },
                 '审核'
               ),
-              !params.row.uploadStatus && _this.upload ? h(
+              params.row.uploadStatus && _this.upload ? h(
                 'a',
                 {
                   class: 'edit-btn',
@@ -205,6 +205,12 @@ export default {
           width: 120,
           align: 'center',
           key: 'approvalStateName'
+        },
+        {
+          title: '标的金额',
+          width: 120,
+          align: 'center',
+          key: 'caseAmt'
         },
         {
           title: '案件编号',

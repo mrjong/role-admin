@@ -130,7 +130,7 @@ export default {
                 'a',
                 {
                   style: {
-                    display: params.row.approvalState === '03' ? 'inline-block' : 'none'
+                    display: params.row.approvalState === '03' || params.row.approvalState === '08'? 'inline-block' : 'none'
                   },
                   class: 'edit-btn',
                   props: {},
@@ -144,7 +144,7 @@ export default {
                     }
                   }
                 },
-                '编辑'
+                '修改'
               )
             ]);
           }
@@ -154,6 +154,12 @@ export default {
           width: 120,
           align: 'center',
           key: 'approvalStateName'
+        },
+        {
+          title: '标的金额',
+          width: 120,
+          align: 'center',
+          key: 'caseAmt'
         },
         {
           title: '案件编号',
@@ -411,6 +417,7 @@ export default {
       if (res.code === 1) {
         if (type === 'edit') {
           this.zhongcai_set_data = {
+            title: '请修改',
             idNoHid: res.data.idCardNoHid,
             billNo: res.data.billNo,
             userNmHid: res.data.userNameHid,
