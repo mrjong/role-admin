@@ -1,4 +1,4 @@
-import { arb_apply, arb_uploadUrl } from '@/service/getData';
+import { arb_apply, arb_uploadUrl, apply_arbitration_reverse } from '@/service/getData';
 import Cookie from 'js-cookie';
 import dayjs from 'dayjs';
 export default {
@@ -117,6 +117,27 @@ export default {
 			// this.$refs.formItem.validateField('userNation');
     }
     this.showImg();
+    if (!this.zhongcai_data.title) {
+      apply_arbitration_reverse({caseNo: this.zhongcai_data.caseNo}).then(res=>{
+        if(res.code === 1){
+          if(res.data.advanceDueNoticeDate){
+            this.uploadList3.push({
+              url: this.prefix + res.data.advanceDueNoticeRelativePath,
+              relativePath: res.data.advanceDueNoticeRelativePath,
+              status: 'finished'
+            });
+            this.$set(this.formItem, 'standImg', res.data.advanceDueNoticeDate);
+          }
+          if( res.data.advanceDueNoticeDate){
+            this.$set(this.formItem, 'standAgreeDate', res.data.advanceDueNoticeDate);
+          }
+        } else {
+          this.$Message.error(res.message);
+        }
+      }).catch(err=>{
+        this.$Message.error(err.message);
+      })
+    }
 	},
 	methods: {
 		handleView(name) {
