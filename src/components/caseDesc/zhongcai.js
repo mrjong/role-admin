@@ -117,25 +117,27 @@ export default {
 			// this.$refs.formItem.validateField('userNation');
     }
     this.showImg();
-    apply_arbitration_reverse({caseNo: this.zhongcai_data.caseNo}).then(res=>{
-      if(res.code === 1){
-        if(res.data.advanceDueNoticeDate){
-          this.uploadList3.push({
-            url: this.prefix + res.data.advanceDueNoticeRelativePath,
-            relativePath: res.data.advanceDueNoticeRelativePath,
-            status: 'finished'
-          });
-          this.$set(this.formItem, 'standImg', res.data.advanceDueNoticeDate);
+    if (!this.zhongcai_data.title) {
+      apply_arbitration_reverse({caseNo: this.zhongcai_data.caseNo}).then(res=>{
+        if(res.code === 1){
+          if(res.data.advanceDueNoticeDate){
+            this.uploadList3.push({
+              url: this.prefix + res.data.advanceDueNoticeRelativePath,
+              relativePath: res.data.advanceDueNoticeRelativePath,
+              status: 'finished'
+            });
+            this.$set(this.formItem, 'standImg', res.data.advanceDueNoticeDate);
+          }
+          if( res.data.advanceDueNoticeDate){
+            this.$set(this.formItem, 'standAgreeDate', res.data.advanceDueNoticeDate);
+          }
+        } else {
+          this.$Message.error(res.message);
         }
-        if( res.data.advanceDueNoticeDate){
-          this.$set(this.formItem, 'standAgreeDate', res.data.advanceDueNoticeDate);
-        }
-      } else {
-        this.$Message.error(res.message);
-      }
-    }).catch(err=>{
-      this.$Message.error(err.message);
-    })
+      }).catch(err=>{
+        this.$Message.error(err.message);
+      })
+    }
 	},
 	methods: {
 		handleView(name) {
