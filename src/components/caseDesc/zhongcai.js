@@ -191,10 +191,14 @@ export default {
 					// this.$refs.formItem.validateField('idCardOpposite');
 				}
 				if (this.zhongcai_data.voucherImg) {
+          let flag = false;
+          if (this.zhongcai_data.voucherImg.indexOf('.pdf')) {
+            flag = true;
+          }
           this.$set(this.formItem, 'voucherImg', this.zhongcai_data.voucherImg);
           // this.formItem.voucherImg = this.zhongcai_data.voucherImg;
 					this.uploadList2.push({
-						url: this.prefix + this.zhongcai_data.voucherImg,
+						url: !flag?this.prefix + this.zhongcai_data.voucherImg: PDF_IMG,
 						relativePath: this.zhongcai_data.voucherImg,
 						status: 'finished'
 					});

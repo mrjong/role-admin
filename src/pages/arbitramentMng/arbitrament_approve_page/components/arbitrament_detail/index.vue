@@ -103,15 +103,24 @@
                       style="width:100px;height:100px;line-height: 100px;"
                     >
                       <img
-                        :src="arb_detail_data.voucherImg?prefix+arb_detail_data.voucherImg: ''"
+                        :src="arb_detail_data.pdfImg?arb_detail_data.pdfImg: arb_detail_data.voucherImg?prefix+arb_detail_data.voucherImg: ''"
                         style="vertical-align: top;"
                       >
                       <div
                         class="demo-upload-list-cover"
+                        v-if="arb_detail_data.pdfImg"
+                        @click="handleView(arb_detail_data&&arb_detail_data.pdfImg)"
+                      >
+                        <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
+                      </div>
+                      <div
+                        class="demo-upload-list-cover"
+                        v-else
                         @click="handleView(arb_detail_data&&prefix+arb_detail_data.voucherImg)"
                       >
                         <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
                       </div>
+
                     </div>
                     <div class="text-center card-text">打款凭证</div>
                   </div>
