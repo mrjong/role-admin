@@ -4,10 +4,10 @@
     <Modal
       class="arbitrament_detail"
       title="仲裁详情"
-      width="600"
+      width="670"
       :value="model"
-      @on-visible-change='del'
->
+      @on-visible-change="del"
+    >
       <div class="alert-desc">
         <div class="panel-desc">
           <Form :label-width="120" class="panel_list">
@@ -67,7 +67,7 @@
                       <img
                         :src="arb_detail_data.idCardFront?prefix+arb_detail_data.idCardFront:''"
                         style="vertical-align: top;"
-                      >
+                      />
                       <div
                         class="demo-upload-list-cover"
                         @click="handleView(prefix+arb_detail_data.idCardFront)"
@@ -86,7 +86,7 @@
                       <img
                         :src="arb_detail_data.idCardOpposite?prefix+arb_detail_data.idCardOpposite: ''"
                         style="vertical-align: top;"
-                      >
+                      />
                       <div
                         class="demo-upload-list-cover"
                         @click="handleView(arb_detail_data&&prefix+arb_detail_data.idCardOpposite)"
@@ -103,11 +103,19 @@
                       style="width:100px;height:100px;line-height: 100px;"
                     >
                       <img
-                        :src="arb_detail_data.voucherImg?prefix+arb_detail_data.voucherImg: ''"
+                        :src="arb_detail_data.pdfImg?arb_detail_data.pdfImg: arb_detail_data.voucherImg?prefix+arb_detail_data.voucherImg: ''"
                         style="vertical-align: top;"
-                      >
+                      />
                       <div
                         class="demo-upload-list-cover"
+                        v-if="arb_detail_data.pdfImg"
+                        @click="handleView(arb_detail_data&&arb_detail_data.pdfImg)"
+                      >
+                        <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
+                      </div>
+                      <div
+                        class="demo-upload-list-cover"
+                        v-else
                         @click="handleView(arb_detail_data&&prefix+arb_detail_data.voucherImg)"
                       >
                         <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
@@ -124,7 +132,7 @@
                       <img
                         :src="arb_detail_data.standImg?prefix+arb_detail_data.standImg:''"
                         style="vertical-align: top;"
-                      >
+                      />
                       <div
                         class="demo-upload-list-cover"
                         @click="handleView(arb_detail_data&&prefix+arb_detail_data.standImg)"
@@ -133,6 +141,25 @@
                       </div>
                     </div>
                     <div class="text-center card-text">提前到期通知</div>
+                  </div>
+
+                  <div class="fl">
+                    <div
+                      class="demo-upload-list"
+                      style="width:100px;height:100px;line-height: 100px;"
+                    >
+                      <img
+                        :src="arb_detail_data.creditorImg?prefix+arb_detail_data.creditorImg:''"
+                        style="vertical-align: top;"
+                      />
+                      <div
+                        class="demo-upload-list-cover"
+                        @click="handleView(arb_detail_data&&prefix+arb_detail_data.creditorImg)"
+                      >
+                        <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
+                      </div>
+                    </div>
+                    <div class="text-center card-text">债权转让通知</div>
                   </div>
                 </FormItem>
               </Col>
@@ -145,7 +172,7 @@
                 :columns="returned_money_list_tableColumns"
                 width="590"
                 style="margin: 0 auto"
-                no-data-text='申请仲裁后暂无回款'
+                no-data-text="申请仲裁后暂无回款"
                 stripe
               ></Table>
               <div class="alert-title">操作明细</div>
@@ -154,7 +181,7 @@
                   border
                   :data="case_detail_remark_list_tableData"
                   :columns="case_detail_remark_list_tableColumns"
-                  width='590'
+                  width="590"
                   style="margin: 0 auto"
                   stripe
                 ></Table>
@@ -173,7 +200,7 @@
                       @on-change="changePage_remark"
                     ></Page>
                   </div>
-                </div> -->
+                </div>-->
               </div>
             </Row>
           </Form>
@@ -185,7 +212,7 @@
     </Modal>
     <!-- 查看图片的modal -->
     <Modal title="查看图片" v-model="visible">
-      <img :src="imgName" v-if="visible" style="width: 100%">
+      <img :src="imgName" v-if="visible" style="width: 100%" />
     </Modal>
   </div>
 </template>

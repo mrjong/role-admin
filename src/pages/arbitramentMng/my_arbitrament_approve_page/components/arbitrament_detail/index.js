@@ -1,4 +1,5 @@
 import { arb_check, arb_operateRecord, arb_detail, repay_repayDetail_list} from '@/service/getData'
+import PDF_IMG from '@/assets/images/pdf.png'
 
 export default {
   model: {
@@ -173,6 +174,10 @@ export default {
         } else {
           this.case_detail_remark_list_pageNo = 1;
           this.arb_operateRecord();
+        }
+        // 临时处理pdf展示文件
+        if (res.data.voucherImg.indexOf('.pdf') != -1) {
+          res.data.pdfImg = PDF_IMG;
         }
         this.arb_detail_data = res.data;
       } else {

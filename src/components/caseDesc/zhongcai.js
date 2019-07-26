@@ -1,6 +1,7 @@
 import { arb_apply, arb_uploadUrl, apply_arbitration_reverse } from '@/service/getData';
 import Cookie from 'js-cookie';
 import dayjs from 'dayjs';
+import PDF_IMG from '@/assets/images/pdf.png'
 export default {
 	data() {
 		return {
@@ -76,19 +77,28 @@ export default {
 						message: '请上传提前到期通知',
 						trigger: 'blur'
 					}
-				]
+				],
+        creditorImg: [
+          {
+            required: true,
+            message: '请上传债权转让通知',
+            trigger: 'blur'
+          }
+        ]
 			},
 			productTimeList: [],
 			defaultList: [],
 			defaultList1: [],
 			defaultList2: [],
 			defaultList3: [],
+			defaultList4: [],
 			imgName: '',
 			visible: false,
 			uploadList: [],
 			uploadList1: [],
 			uploadList2: [],
-			uploadList3: []
+			uploadList3: [],
+			uploadList4: []
 		};
 	},
 	model: {
@@ -121,13 +131,21 @@ export default {
     if (!this.zhongcai_data.title) {
       apply_arbitration_reverse({caseNo: this.zhongcai_data.caseNo}).then(res=>{
         if(res.code === 1){
-          if(res.data.advanceDueNoticeDate){
+          if(res.data.advanceDueNoticeRelativePath){
             this.uploadList3.push({
               url: this.prefix + res.data.advanceDueNoticeRelativePath,
               relativePath: res.data.advanceDueNoticeRelativePath,
               status: 'finished'
             });
-            this.$set(this.formItem, 'standImg', res.data.advanceDueNoticeDate);
+            this.$set(this.formItem, 'standImg', res.data.advanceDueNoticeRelativePath);
+          }
+          if( res.data.creditorImgRelativePath){
+            this.uploadList4.push({
+              url: this.prefix + res.data.creditorImgRelativePath,
+              relativePath: res.data.creditorImgRelativePath,
+              status: 'finished'
+            });
+            this.$set(this.formItem, 'creditorImg', res.data.creditorImgRelativePath);
           }
           if( res.data.advanceDueNoticeDate){
             this.$set(this.formItem, 'standAgreeDate', res.data.advanceDueNoticeDate);
@@ -173,10 +191,14 @@ export default {
 					// this.$refs.formItem.validateField('idCardOpposite');
 				}
 				if (this.zhongcai_data.voucherImg) {
+          let flag = false;
+          if (this.zhongcai_data.voucherImg.indexOf('.pdf')) {
+            flag = true;
+          }
           this.$set(this.formItem, 'voucherImg', this.zhongcai_data.voucherImg);
           // this.formItem.voucherImg = this.zhongcai_data.voucherImg;
 					this.uploadList2.push({
-						url: this.prefix + this.zhongcai_data.voucherImg,
+						url: !flag?this.prefix + this.zhongcai_data.voucherImg: PDF_IMG,
 						relativePath: this.zhongcai_data.voucherImg,
 						status: 'finished'
 					});
@@ -191,6 +213,17 @@ export default {
 						status: 'finished'
 					});
 					// this.$refs.formItem.validateField('standImg');
+        }
+        //rrrrr
+        if (this.zhongcai_data.creditorImg) {
+          // this.formItem.standImg = this.zhongcai_data.standImg;
+          this.$set(this.formItem, 'creditorImg', this.zhongcai_data.creditorImg);
+          this.uploadList4.push({
+            url: this.prefix + this.zhongcai_data.creditorImg,
+            relativePath: this.zhongcai_data.creditorImg,
+            status: 'finished'
+          });
+          // this.$refs.formItem.validateField('standImg');
         }
 
 			} else {
@@ -235,7 +268,8 @@ export default {
 				idCardFront: this.uploadList[0].relativePath,
 				idCardOpposite: this.uploadList1[0].relativePath,
 				voucherImg: this.uploadList2[0].relativePath,
-				standImg: this.uploadList3[0].relativePath
+				standImg: this.uploadList3[0].relativePath,
+        creditorImg: this.uploadList4[0].relativePath
 			};
 			if (this.formItem.standAgreeDate) {
 				obj.standAgreeDate = dayjs(this.formItem.standAgreeDate).format('YYYY-MM-DD');
@@ -259,16 +293,24 @@ export default {
 		handleRemove(file, type) {
 			console.log(file);
 			this.uploadList.splice(this.uploadList.indexOf(file), 1);
+      this.formItem.idCardFront = ''
 		},
 		handleRemove1(file, type) {
 			this.uploadList1.splice(this.uploadList1.indexOf(file), 1);
+      this.formItem.idCardOpposite = ''
 		},
 		handleRemove2(file, type) {
 			this.uploadList2.splice(this.uploadList2.indexOf(file), 1);
+      this.formItem.voucherImg = ''
 		},
 		handleRemove3(file, type) {
 			this.uploadList3.splice(this.uploadList3.indexOf(file), 1);
+      this.formItem.standImg = ''
 		},
+    handleRemove4(file, type) {
+      this.uploadList4.splice(this.uploadList4.indexOf(file), 1);
+      this.formItem.creditorImg = ''
+    },
 		handleSuccess(res, file) {
 			console.log(res, '-----------------');
 			if (res.code === 1) {
@@ -335,16 +377,28 @@ export default {
 			}
 		},
 		handleSuccess2(res, file) {
-			console.log(res, '-----------------');
+      console.log(file, '-----------------');
+      console.log(res.data.relativePath.indexOf('.pdf'))
 			if (res.code === 1) {
-				this.formItem.voucherImg = res.data.relativePath;
-				this.uploadList2 = [
-					{
-						url: this.prefix + res.data.relativePath,
-						relativePath: res.data.relativePath,
-						status: 'finished'
-					}
-				];
+        if (res.data.relativePath.indexOf('.pdf') != -1) {
+          this.formItem.voucherImg = PDF_IMG;
+          this.uploadList2 = [
+            {
+              url: PDF_IMG,
+              relativePath: res.data.relativePath,
+              status: 'finished'
+            }
+          ];
+        } else {
+          this.formItem.voucherImg = res.data.relativePath;
+          this.uploadList2 = [
+            {
+              url: this.prefix + res.data.relativePath,
+              relativePath: res.data.relativePath,
+              status: 'finished'
+            }
+          ];
+        }
 				file.url = res.data.relativePath;
 				this.$refs.formItem.validateField('voucherImg');
 			} else {
@@ -368,6 +422,24 @@ export default {
 				this.$Message.error(res.message);
 			}
 		},
+
+    handleSuccess4(res, file) {
+      console.log(res, '-----------------');
+      if (res.code === 1) {
+        this.formItem.creditorImg = res.data.relativePath;
+        this.uploadList4 = [
+          {
+            url: this.prefix + res.data.relativePath,
+            relativePath: res.data.relativePath,
+            status: 'finished'
+          }
+        ];
+        file.url = res.data.relativePath;
+        this.$refs.formItem.validateField('creditorImg');
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
 
 		handleFormatError(file) {
 			this.$Notice.warning({
