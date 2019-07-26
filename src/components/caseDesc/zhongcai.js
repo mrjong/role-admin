@@ -1,6 +1,7 @@
 import { arb_apply, arb_uploadUrl, apply_arbitration_reverse } from '@/service/getData';
 import Cookie from 'js-cookie';
 import dayjs from 'dayjs';
+import PDF_IMG from '@/assets/images/pdf.png'
 export default {
 	data() {
 		return {
@@ -372,16 +373,28 @@ export default {
 			}
 		},
 		handleSuccess2(res, file) {
-			console.log(res, '-----------------');
+      console.log(file, '-----------------');
+      console.log(res.data.relativePath.indexOf('.pdf'))
 			if (res.code === 1) {
-				this.formItem.voucherImg = res.data.relativePath;
-				this.uploadList2 = [
-					{
-						url: this.prefix + res.data.relativePath,
-						relativePath: res.data.relativePath,
-						status: 'finished'
-					}
-				];
+        if (res.data.relativePath.indexOf('.pdf') != -1) {
+          this.formItem.voucherImg = PDF_IMG;
+          this.uploadList2 = [
+            {
+              url: PDF_IMG,
+              relativePath: res.data.relativePath,
+              status: 'finished'
+            }
+          ];
+        } else {
+          this.formItem.voucherImg = res.data.relativePath;
+          this.uploadList2 = [
+            {
+              url: this.prefix + res.data.relativePath,
+              relativePath: res.data.relativePath,
+              status: 'finished'
+            }
+          ];
+        }
 				file.url = res.data.relativePath;
 				this.$refs.formItem.validateField('voucherImg');
 			} else {

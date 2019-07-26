@@ -214,7 +214,7 @@
                       :show-upload-list="false"
                       :default-file-list="defaultList2"
                       :on-success="handleSuccess2"
-                      :format="['jpg','jpeg','png']"
+                      :format="['jpg','jpeg','png', 'pdf']"
                       :on-format-error="handleFormatError"
                       type="drag"
                       :data="{
