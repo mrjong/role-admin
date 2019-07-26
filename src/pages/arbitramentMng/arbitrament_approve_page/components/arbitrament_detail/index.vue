@@ -4,7 +4,7 @@
     <Modal
       class="arbitrament_detail"
       title="仲裁详情"
-      width="600"
+      width="670"
       v-model="model"
       @on-visible-change="del"
     >
@@ -133,6 +133,24 @@
                       </div>
                     </div>
                     <div class="text-center card-text">提前到期通知</div>
+                  </div>
+                  <div class="fl">
+                    <div
+                      class="demo-upload-list"
+                      style="width:100px;height:100px;line-height: 100px;"
+                    >
+                      <img
+                        :src="arb_detail_data.creditorImg?prefix+arb_detail_data.creditorImg:''"
+                        style="vertical-align: top;"
+                      >
+                      <div
+                        class="demo-upload-list-cover"
+                        @click="handleView(arb_detail_data&&prefix+arb_detail_data.creditorImg)"
+                      >
+                        <i class="ivu-icon ivu-icon-ios-eye-outline"></i>
+                      </div>
+                    </div>
+                    <div class="text-center card-text">债权转让通知</div>
                   </div>
                 </FormItem>
               </Col>

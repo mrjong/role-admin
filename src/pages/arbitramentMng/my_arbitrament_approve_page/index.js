@@ -430,6 +430,7 @@ export default {
             idCardOpposite: res.data.idCardOpposite,
             voucherImg: res.data.voucherImg,
             standImg: res.data.standImg,
+            creditorImg: res.data.creditorImg,
             routertype: 'my_zhongcai',
             standAgreeDate: res.data.standAgreeDate
           };

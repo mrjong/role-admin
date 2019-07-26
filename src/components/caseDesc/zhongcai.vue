@@ -277,6 +277,51 @@
                   </template>
                 </FormItem>
               </Col>
+
+              <Col :xs="24" :sm="24" :md="12" :lg="12">
+              <FormItem span="6" class="mt15" label="债权转让通知:" prop="creditorImg">
+                <template>
+                  <div class="demo-upload-list" v-for="item in uploadList4">
+                    <template v-if="item.status === 'finished'">
+                      <img :src="item.url">
+                      <div class="demo-upload-list-cover">
+                        <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
+                        <Icon
+                          type="ios-trash-outline"
+                          @click.native="handleRemove4(item,'upload4')"
+                        ></Icon>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                    </template>
+                  </div>
+                  <Upload
+                    :on-exceeded-size="handleMaxSize"
+                    v-show="uploadList4.length ===0 "
+                    ref="upload4"
+                    :show-upload-list="false"
+                    :default-file-list="defaultList4"
+                    :on-success="handleSuccess4"
+                    :format="['jpg','jpeg','png']"
+                    :max-size="1024*9.9"
+                    :on-format-error="handleFormatError"
+                    type="drag"
+                    :data="{
+                    imgType: 'creditorImg',
+                    caseNo:zhongcai_data.caseNo
+                    }"
+                    :headers="headers"
+                    action="/admin/arb/upload"
+                    style="display: inline-block;width:58px;"
+                  >
+                    <div style="width: 58px;height:58px;line-height: 58px;">
+                      <Icon size="20" type="md-add"></Icon>
+                    </div>
+                  </Upload>
+                </template>
+              </FormItem>
+              </Col>
             </Row>
           </Form>
         </div>
