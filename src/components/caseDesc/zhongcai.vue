@@ -101,14 +101,14 @@
               <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem span="6" class="mt15" label="身份证正面:" prop="idCardFront">
                   <template>
-                    <div class="demo-upload-list" v-for="item in uploadList">
+                    <div class="demo-upload-list" v-for="item in uploadList_cardFront">
                       <template v-if="item.status === 'finished'">
                         <img :src="item.url">
                         <div class="demo-upload-list-cover">
                           <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
                           <Icon
                             type="ios-trash-outline"
-                            @click.native="handleRemove(item,'upload')"
+                            @click.native="handleRemove_cardFront(item,'upload')"
                           ></Icon>
                         </div>
                       </template>
@@ -117,11 +117,11 @@
                       </template>
                     </div>
                     <Upload
-                      v-show="uploadList.length ===0"
+                      v-show="uploadList_cardFront.length ===0"
                       ref="upload"
                       :show-upload-list="false"
-                      :default-file-list="defaultList"
-                      :on-success="handleSuccess"
+                      :default-file-list="defaultList_cardFront"
+                      :on-success="handleSuccess_cardFront"
                       :format="['jpg','jpeg','png']"
                       :on-format-error="handleFormatError"
                       type="drag"
@@ -146,14 +146,14 @@
               <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem span="6" class="mt15" label="身份证反面:" prop="idCardOpposite">
                   <template>
-                    <div class="demo-upload-list" v-for="item in uploadList1">
+                    <div class="demo-upload-list" v-for="item in uploadList_cardOpposite">
                       <template v-if="item.status === 'finished'">
                         <img :src="item.url">
                         <div class="demo-upload-list-cover">
                           <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
                           <Icon
                             type="ios-trash-outline"
-                            @click.native="handleRemove1(item,'upload1')"
+                            @click.native="handleRemove_cardOpposite(item,'upload1')"
                           ></Icon>
                         </div>
                       </template>
@@ -162,12 +162,12 @@
                       </template>
                     </div>
                     <Upload
-                      v-show="uploadList1.length ===0 "
+                      v-show="uploadList_cardOpposite.length ===0 "
                       ref="upload1"
                       :max-size="1024*9.9"
                       :show-upload-list="false"
-                      :default-file-list="defaultList1"
-                      :on-success="handleSuccess1"
+                      :default-file-list="defaultList_cardOpposite"
+                      :on-success="handleSuccess_cardOpposite"
                       :format="['jpg','jpeg','png']"
                       :on-exceeded-size="handleMaxSize"
                       :on-format-error="handleFormatError"
@@ -191,14 +191,14 @@
               <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem span="6" class="mt15" label="打款凭证:" prop="voucherImg">
                   <template>
-                    <div class="demo-upload-list" v-for="item in uploadList2">
+                    <div class="demo-upload-list" v-for="item in uploadList_voucherImg">
                       <template v-if="item.status === 'finished'">
                         <img :src="item.url?item.url:''">
                         <div class="demo-upload-list-cover">
                           <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
                           <Icon
                             type="ios-trash-outline"
-                            @click.native="handleRemove2(item,'upload2')"
+                            @click.native="handleRemove_voucherImg(item,'upload2')"
                           ></Icon>
                         </div>
                       </template>
@@ -207,13 +207,13 @@
                       </template>
                     </div>
                     <Upload
-                      v-show="uploadList2.length ===0 "
+                      v-show="uploadList_voucherImg.length ===0 "
                       ref="upload2"
                       :on-exceeded-size="handleMaxSize"
                       :max-size="1024*9.9"
                       :show-upload-list="false"
-                      :default-file-list="defaultList2"
-                      :on-success="handleSuccess2"
+                      :default-file-list="defaultList_voucherImg"
+                      :on-success="handleSuccess_voucherImg"
                       :format="['jpg','jpeg','png', 'pdf']"
                       :on-format-error="handleFormatError"
                       type="drag"
@@ -236,14 +236,14 @@
               <Col :xs="24" :sm="24" :md="12" :lg="12">
                 <FormItem span="6" class="mt15" label="提前到期通知:" prop="standImg">
                   <template>
-                    <div class="demo-upload-list" v-for="item in uploadList3">
+                    <div class="demo-upload-list" v-for="item in uploadList_standImg">
                       <template v-if="item.status === 'finished'">
                         <img :src="item.url">
                         <div class="demo-upload-list-cover">
                           <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
                           <Icon
                             type="ios-trash-outline"
-                            @click.native="handleRemove3(item,'upload3')"
+                            @click.native="handleRemove_standImg(item,'upload3')"
                           ></Icon>
                         </div>
                       </template>
@@ -253,11 +253,11 @@
                     </div>
                     <Upload
                       :on-exceeded-size="handleMaxSize"
-                      v-show="uploadList3.length ===0 "
+                      v-show="uploadList_standImg.length ===0 "
                       ref="upload3"
                       :show-upload-list="false"
-                      :default-file-list="defaultList3"
-                      :on-success="handleSuccess3"
+                      :default-file-list="defaultList_standImg"
+                      :on-success="handleSuccess_standImg"
                       :format="['jpg','jpeg','png']"
                       :max-size="1024*9.9"
                       :on-format-error="handleFormatError"
@@ -281,14 +281,14 @@
               <Col :xs="24" :sm="24" :md="12" :lg="12">
               <FormItem span="6" class="mt15" label="债权转让通知:" prop="creditorImg">
                 <template>
-                  <div class="demo-upload-list" v-for="item in uploadList4">
+                  <div class="demo-upload-list" v-for="item in uploadList_creditorImg">
                     <template v-if="item.status === 'finished'">
                       <img :src="item.url">
                       <div class="demo-upload-list-cover">
                         <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
                         <Icon
                           type="ios-trash-outline"
-                          @click.native="handleRemove4(item,'upload4')"
+                          @click.native="handleRemove_creditorImg(item,'upload4')"
                         ></Icon>
                       </div>
                     </template>
@@ -298,11 +298,11 @@
                   </div>
                   <Upload
                     :on-exceeded-size="handleMaxSize"
-                    v-show="uploadList4.length ===0 "
+                    v-show="uploadList_creditorImg.length ===0 "
                     ref="upload4"
                     :show-upload-list="false"
-                    :default-file-list="defaultList4"
-                    :on-success="handleSuccess4"
+                    :default-file-list="defaultList_creditorImg"
+                    :on-success="handleSuccess_creditorImg"
                     :format="['jpg','jpeg','png']"
                     :max-size="1024*9.9"
                     :on-format-error="handleFormatError"
