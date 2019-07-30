@@ -1628,6 +1628,13 @@ export const arb_uploadUrl = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
+// 获取打款凭证
+export const arb_getVoucherInfo = (obj) =>
+  fetch({
+    url: '/arb/getVoucherInfo',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 
 /*
 减免管理相关接口
