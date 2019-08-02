@@ -44,7 +44,8 @@ export default {
     console.log(this.GLOBAL);
     const _this = this;
     return {
-      getDirObj2: {},
+      collect_status_list: [],
+      call_status_list: [],
       getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'TALK_RESULT', 'APP_LOGIN_STATUS'],
       getDirObj: {},
       showPanel: false,
@@ -403,11 +404,30 @@ export default {
     Cookie.set('apply_arbitrament', this.apply_arbitrament);
     Cookie.set('apply_deduct', this.apply_deduct);
     Cookie.set('apply_remission', this.apply_remission);
-    // 沟通状态
-    this.collectcode_getListByCodeType();
+    this.collectcode_getListByCodeType(1);//获取沟通状态
+    this.collectcode_getListByCodeType(2);// 获取拨打状态
     this.getList();
   },
   methods: {
+    // 日期变更回调
+    dateChange(val, key) {
+      switch (key) {
+        case 'collect_Date':
+          this.formItem.beginLastCollectDate = val[0];
+          this.formItem.endLastCollectDate = val[1];
+          break;
+        case 'distribute_Date':
+          this.formItem.beginAllotDate = val[0];
+          this.formItem.endAllotDate = val[1];
+          break;
+        case 'login_Date':
+          this.formItem.beginAppLoginDate = val[0];
+          this.formItem.endAppLoginDate = val[1];
+          break;
+        default:
+          break;
+      }
+    },
     // 获取表格数据
     async getList() {
       // if (!this.query) {
@@ -431,12 +451,16 @@ export default {
       }
     },
     // 沟通状态
-    async collectcode_getListByCodeType() {
+    async collectcode_getListByCodeType(type) {
       const res = await collectcode_getListByCodeType({
-        codeType: 'COLLECT_STS'
+        codeType: type === 1? 'COLLECT_STS': 'TALK_RESULT'
       });
       if (res.code === 1) {
-        this.getDirObj2 = res.data;
+        if (type === 1) {
+          this.collect_status_list = res.data;
+        } else {
+          this.call_status_list = res.data;
+        }
       } else {
         this.$Message.error(res.message);
       }
@@ -456,12 +480,15 @@ export default {
       this.formItem = {
         prodTypes: [],
         periodCounts: [],
-        creditLevels: []
+        creditLevels: [],
+        login_Date: [],
+        distribute_Date: [],
+        collect_Date: [],
       };
       window.sessionStorage.removeItem('my_case_form');
       this.$refs[name].resetFields();
     },
-    // 获取表格数据
+    // 导出
     async case_collect_case_list_export() {
       this.export_case_loading = true;
       const res = await case_collect_case_list_export(

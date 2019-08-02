@@ -137,15 +137,43 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="最后催收时间:">
+              <DatePicker
+                type="daterange"
+                v-model="formItem.collect_Date"
+                @on-change="dateChange($event, 'collect_Date')"
+                :editable="false"
+                size='small'
+                clearable
+                placeholder="请选择最后催收时间"
+                style="width: 100%"
+              ></DatePicker>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="分配日期:">
               <DatePicker
                 type="daterange"
-                v-model="formItem.date"
-                @on-change="dateChange"
+                v-model="formItem.distribute_Date"
+                @on-change="dateChange($event, 'distribute_Date')"
                 :editable="false"
                 size='small'
                 clearable
                 placeholder="请选择分配日期"
+                style="width: 100%"
+              ></DatePicker>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="APP登录时间:">
+              <DatePicker
+                type="daterange"
+                v-model="formItem.login_Date"
+                @on-change="dateChange($event, 'login_Date')"
+                :editable="false"
+                size='small'
+                clearable
+                placeholder="请选择登录时间"
                 style="width: 100%"
               ></DatePicker>
             </FormItem>
@@ -219,6 +247,34 @@
               >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="拨打状态:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择拨打状态"
+                v-model="formItem.talkResult"
+              >
+               <Option
+                  v-for="(item,index) in call_status_list"
+                  :value="item.codeKey"
+                  :key="item.codeKey + index"
+                >{{ item.codeName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="沟通结果:" prop="collectResult">
+              <Select size="small" clearable placeholder="请选择沟通结果" v-model="formItem.collectResult">
+                <Option
+                  v-for="item in collect_status_list"
+                  :value="item.codeKey"
+                  :key="item.codeKey"
+                >{{ item.codeName }}</Option>
+              </Select>
+            </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>

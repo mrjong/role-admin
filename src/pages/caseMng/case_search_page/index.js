@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { case_list, query_export, getLeafTypeList, import_list, cases_download_template } from '@/service/getData';
+import { case_list, query_export, getLeafTypeList, import_list, cases_download_template, collectcode_getListByCodeType } from '@/service/getData';
 import util from '@/libs/util';
 import qs from 'qs';
 import Cookie from 'js-cookie';
@@ -48,6 +48,8 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      collect_status_list: [],
+      call_status_list: [],
       query: false,//案件查询权限
       detail: false,//c查看案件详情权限
       export_case: false,//导出权限
@@ -215,12 +217,7 @@ export default {
                           if (!_this.detail) {
                             _this.$Message.error('很抱歉，暂无权限查看详情');
                             return;
-                          }
-                          // window.open(
-                          //   `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=edit&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
-                          //     _this.formItem
-                          //   )}`
-                          // );
+                          };
                           window.open(
                             `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=edit&userIdtest=${userId}&seatType=${seatType
                               ? seatType
@@ -375,6 +372,52 @@ export default {
           key: 'opUserName'
         },
         {
+          title: '最后催收时间',
+          width: 150,
+          align: 'center',
+          key: 'lastCurrentCollectDate',
+          render: (h, params) => {
+            let lastCurrentCollectDate = params.row.lastCurrentCollectDate;
+            lastCurrentCollectDate = lastCurrentCollectDate
+              ? this.$options.filters['formatDate'](lastCurrentCollectDate, 'YYYY-MM-DD HH:mm:ss')
+              : lastCurrentCollectDate;
+            return h('span', lastCurrentCollectDate);
+          }
+        },
+        {
+          title: '借款人拨打状态',
+          width: 120,
+          align: 'center',
+          key: 'lastCurrentCollectResultName'
+        },
+
+        {
+          title: '借款人沟通结果',
+          width: 120,
+          align: 'center',
+          key: 'lastCurrentCollectStsName'
+        },
+        {
+          title: '承诺还款时间',
+          width: 130,
+          sortable: true,
+          align: 'center',
+          key: 'promiseRepayDate',
+          render: (h, params) => {
+            let promiseRepayDate = params.row.promiseRepayDate;
+            promiseRepayDate = promiseRepayDate
+              ? this.$options.filters['formatDate'](promiseRepayDate, 'YYYY-MM-DD HH:mm:ss')
+              : promiseRepayDate;
+            return h('span', promiseRepayDate);
+          }
+        },
+        {
+          title: '紧急联系人拨打状态',
+          width: 120,
+          align: 'center',
+          key: 'lastCntCollectResultName'
+        },
+        {
           title: '是否提交仲裁',
           width: 100,
           align: 'center',
@@ -424,6 +467,8 @@ export default {
     this.getLeafTypeList('02', '');
     this.getLeafTypeList('03', '');
     this.getLeafTypeList('04', '');
+    this.collectcode_getListByCodeType(1);//获取沟通状态
+    this.collectcode_getListByCodeType(2);// 获取拨打状态
   },
   methods: {
     // table选中
@@ -463,10 +508,23 @@ export default {
       }
     },
     // 日期变更回调
-    dateChange(arr) {
-      console.log(arr);
-      this.formItem.beginAllotDate = arr[0];
-      this.formItem.endAllotDate = arr[1];
+    dateChange(val, key) {
+      switch (key) {
+        case 'collect_Date':
+          this.formItem.beginLastCollectDate = val[0];
+          this.formItem.endLastCollectDate = val[1];
+          break;
+        case 'distribute_Date':
+          this.formItem.beginAllotDate = val[0];
+          this.formItem.endAllotDate = val[1];
+          break;
+        case 'login_Date':
+          this.formItem.beginAppLoginDate = val[0];
+          this.formItem.endAppLoginDate = val[1];
+          break;
+        default:
+          break;
+      }
     },
     // 电催中心change
     companyChange(value) {
@@ -481,8 +539,8 @@ export default {
       this.query_flag = false;
       this.$refs[name].validate((valid) => {
         if (valid) {
-          if (this.formItem.date) {
-            this.formItem.date = [
+          if (this.formItem.distribute_Date) {
+            this.formItem.distribute_Date = [
               this.formItem.beginAllotDate,
               this.formItem.endAllotDate
             ]
@@ -528,6 +586,21 @@ export default {
           this.cases_import_list(caseIds);
         } else {
           this.$Message.error('暂时查询不到相关数据')
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 沟通状态
+    async collectcode_getListByCodeType(type) {
+      const res = await collectcode_getListByCodeType({
+        codeType: type === 1? 'COLLECT_STS': 'TALK_RESULT'
+      });
+      if (res.code === 1) {
+        if (type === 1) {
+          this.collect_status_list = res.data;
+        } else {
+          this.call_status_list = res.data;
         }
       } else {
         this.$Message.error(res.message);

@@ -10,13 +10,13 @@
       >
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
-            <FormItem span="6" label="手机号码:" prop="mblNo">
+            <FormItem span="6" label="电话号码:" prop="mblNo">
               <Input
-                :maxlength="11"
+                :maxlength="15"
                 size="small"
                 clearable
                 v-model.trim="formItem2.mblNo"
-                placeholder="请输入手机号码"
+                placeholder="请输入手机号或座机号"
               ></Input>
             </FormItem>
           </Col>
@@ -175,7 +175,7 @@
                   <img
                     :src="item.imgPath? `/admin/img/mark/${item.imgPath}`: null"
                     style="vertical-align: top;"
-                  >
+                  />
                   <div
                     class="demo-upload-list-cover"
                     @click="handleView(`/admin/img/mark/${item.imgPath}`)"
@@ -253,7 +253,13 @@
               </Row>
             </div>
           </Form>
-          <Table :row-class-name="rowClassName" :data="tableData" border :columns="tableColumns" stripe></Table>
+          <Table
+            :row-class-name="rowClassName"
+            :data="tableData"
+            border
+            :columns="tableColumns"
+            stripe
+          ></Table>
         </div>
       </Card>
 
@@ -263,7 +269,6 @@
           <Tabs @on-click="tabClick" type="card" size="small" :animated="false">
             <TabPane label="催收信息" name="case_detail_remark_list">
               <div>
-
                 <Table
                   border
                   :data="case_detail_remark_list_tableData"
@@ -576,7 +581,7 @@
                 </div>
                 <div
                   class="ivu-alert-copy ivu-alert-error"
-                  v-for="(item,index) in case_detail_urgent_contact_Data"
+                  v-for="(item,index) in case_detail_urgent_contact_Data.userContactList"
                 >
                   <span class="state-name">紧急联系人</span>
                   <span class="name">
@@ -623,6 +628,7 @@
                       <Table
                         border
                         :loading="message_list_loading"
+                        max-height="500"
                         :data="case_detail_mail_statistics_list_tableData"
                         :columns="case_detail_mail_statistics_list_tableColumns"
                         stripe
@@ -633,6 +639,7 @@
                           <Page
                             :total="case_detail_mail_statistics_list_total"
                             show-total
+                            show-sizer
                             size="small"
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
@@ -652,6 +659,7 @@
                         :loading="message_list_loading"
                         :data="case_detail_mail_detail_list_tableData"
                         :columns="case_detail_mail_detail_list_tableColumns"
+                        max-height="500"
                         stripe
                       ></Table>
                       <!-- 分页 -->
@@ -660,6 +668,7 @@
                           <Page
                             :total="case_detail_mail_detail_list_total"
                             show-total
+                            show-sizer
                             size="small"
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
@@ -679,6 +688,7 @@
                         :loading="message_list_loading"
                         :data="case_detail_mail_list_tableData"
                         :columns="case_detail_mail_list_tableColumns"
+                        max-height="500"
                         stripe
                       ></Table>
                       <!-- 分页 -->
@@ -687,6 +697,7 @@
                           <Page
                             :total="case_detail_mail_list_total"
                             show-total
+                            show-sizer
                             size="small"
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
@@ -699,7 +710,8 @@
                       </div>
                     </div>
                   </TabPane>
-                  <TabPane label="通话更新" name="case_detail_mail_list_appended">
+
+                  <TabPane class="call_update" :icon="case_detail_urgent_contact_Data.isMailAppend || case_detail_mail_list_appended_tableData.length >0? 'md-person-add': ''" label="通话更新" name="case_detail_mail_list_appended">
                     <div>
                       <Table
                         border
@@ -707,6 +719,7 @@
                         :data="case_detail_mail_list_appended_tableData"
                         :columns="case_detail_mail_list_appended_tableColumns"
                         stripe
+                        max-height="500"
                       ></Table>
                       <!-- 分页 -->
                       <div class="vue-panel-page">
@@ -714,6 +727,7 @@
                           <Page
                             :total="case_detail_mail_list_appended_total"
                             show-total
+                            show-sizer
                             size="small"
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
@@ -737,7 +751,10 @@
                 </Tabs>
               </div>
             </Card>
-            <Card class="case-bottom-panel" :style="{bottom:this.showBottom?'0px':'-1000px', width: '480px'}">
+            <Card
+              class="case-bottom-panel"
+              :style="{bottom:this.showBottom?'0px':'-1000px', width: '480px'}"
+            >
               <Form
                 ref="formValidate"
                 :model="formValidate"
@@ -757,7 +774,7 @@
                   <Select
                     size="small"
                     v-model="formValidate.callUserType"
-                    @on-change='select_relation'
+                    @on-change="select_relation"
                     transfer
                     clearable
                     placeholder="请选择关系"
@@ -846,7 +863,7 @@
     </div>
     <!-- 弹层 -->
     <Modal title="查看图片" v-model="visible">
-      <img :src="imgName" v-if="visible" style="width: 100%">
+      <img :src="imgName" v-if="visible" style="width: 100%" />
     </Modal>
     <jianmian
       v-model="modal.jianmian"

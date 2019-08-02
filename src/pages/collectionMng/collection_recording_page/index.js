@@ -1,4 +1,4 @@
-import { case_collect_record_file_list, getLeafTypeList, case_collect_tape_download, case_collect_tape, case_collect_tape_link } from '@/service/getData';
+import { case_collect_record_file_list, getLeafTypeList, case_collect_tape_download, case_collect_tape, case_collect_tape_link, collectcode_getListByCodeType } from '@/service/getData';
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import tablePage from '@/mixin/tablePage';
@@ -25,6 +25,8 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
+      collect_status_list: [], //沟通状态
+      call_status_list: [], //拨打状态
       query: false,//查询权限
       play: false,//播放权限
       download: false,//下载权限
@@ -198,6 +200,18 @@ export default {
           align: 'center',
         },
         {
+          title: '拨打状态',
+          width: 100,
+          key: 'collectResultName',
+          align: 'center',
+        },
+        {
+          title: '沟通结果',
+          width: 100,
+          key: 'communicateResultName',
+          align: 'center',
+        },
+        {
           title: '组别',
           width: 120,
           key: 'groupName',
@@ -318,6 +332,8 @@ export default {
     Cookie.set('apply_deduct', false);
     Cookie.set('apply_remission', false);
     // this.getList();
+    this.collectcode_getListByCodeType(1);//获取沟通状态
+    this.collectcode_getListByCodeType(2);// 获取拨打状态
     this.getLeafTypeList('02', '');
     this.getLeafTypeList('03', '');
     this.getLeafTypeList('04', '');
@@ -409,6 +425,22 @@ export default {
       this.pageNo = 1;
       this.getList();
     },
+    // 沟通状态
+    async collectcode_getListByCodeType(type) {
+      const res = await collectcode_getListByCodeType({
+        codeType: type === 1? 'COLLECT_STS': 'TALK_RESULT'
+      });
+      if (res.code === 1) {
+        if (type === 1) {
+          this.collect_status_list = res.data;
+        } else {
+          this.call_status_list = res.data;
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 列表
     async getList() {
       // if (!this.query) {
       //   this.$Message.error('很抱歉，暂无权限查询');

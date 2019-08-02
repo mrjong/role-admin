@@ -300,7 +300,7 @@ export default {
       this.caseIds = [];
       selection &&
         selection.forEach((element) => {
-          this.caseIds.push(element.id);
+          this.caseIds.push(element.uuid);
         });
       console.log(this.caseIds);
     },
@@ -472,6 +472,7 @@ export default {
         this.tableData = data.page.content;
         this.total = data.page.totalElements //接口中在该条件下取得的数据量
         this.summary = data.summary;
+        this.caseIds = [];
         //data.page.size  数据的大小
         //data.page.numberOfElements  当前页面实际返回的数量
       } else {
@@ -489,6 +490,7 @@ export default {
       console.log(res);
       if (res.code === 1) {
         this.tableData = res.data;
+        this.caseIds = [];
         this.total = this.file_csaeIds.length;
       } else {
         this.$Message.error(res.message);
