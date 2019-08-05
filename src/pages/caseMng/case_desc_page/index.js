@@ -56,9 +56,9 @@ export default {
       // 手机号码校验
       const mblNo = /^1\d{10}$/;
       // 座机号校验
-      const isMobile = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
+      const isMobile = /^([0-9]{3,4})?[0-9]{7,8}$/;
       if (!mblNo.test(value) && !isMobile.test(value)) {
-        return callback(new Error('请输入正确的电话号'))
+        return callback(new Error('请输入正确格式的座机号或手机号'))
       } else {
         return callback();
       }
