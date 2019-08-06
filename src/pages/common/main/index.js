@@ -59,7 +59,8 @@ export default {
 			return this.$store.state.app.currentPath; // 当前面包屑数组
 		},
 		avatorPath() {
-			return localStorage.avatorImgPath;
+      // return localStorage.avatorImgPath;
+      return 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565095877898&di=c485a6e7f8c397c4671a4e0b18799e5d&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20190806%2F63eb83f209ea4f34bfd9d3b304dc4764.JPG'
 		},
 		cachePage() {
 			return this.$store.state.app.cachePage;
