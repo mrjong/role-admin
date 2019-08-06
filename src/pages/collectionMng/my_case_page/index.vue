@@ -49,17 +49,17 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="客户姓名:" prop="userNm">
-              <Input size="small" clearable v-model.trim="formItem.userNm" placeholder="请输入客户姓名"/>
+              <Input size="small" clearable v-model.trim="formItem.userNm" placeholder="请输入客户姓名" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="身份证号:" prop="idNo">
-              <Input size="small" clearable v-model.trim="formItem.idNo" placeholder="请输入身份证号"/>
+              <Input size="small" clearable v-model.trim="formItem.idNo" placeholder="请输入身份证号" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="手机号:" prop="mblNo">
-              <Input size="small" clearable v-model.trim="formItem.mblNo" placeholder="请输入手机号"/>
+              <Input size="small" clearable v-model.trim="formItem.mblNo" placeholder="请输入手机号" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -98,12 +98,12 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="案件编号:" prop="id">
-              <Input size="small" clearable v-model.trim="formItem.id" placeholder="请输入案件编号"/>
+              <Input size="small" clearable v-model.trim="formItem.id" placeholder="请输入案件编号" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="账单号:" prop="billNo">
-              <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入账单号"/>
+              <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入账单号" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -124,10 +124,10 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="沟通状态:" prop="collectSts">
-              <Select size="small" clearable placeholder="请选择沟通状态" v-model="formItem.collectSts">
+            <FormItem span="6" label="沟通结果:" prop="collectResult">
+              <Select size="small" clearable placeholder="请选择沟通结果" v-model="formItem.collectResult">
                 <Option
-                  v-for="item in getDirObj2"
+                  v-for="item in collect_status_list"
                   :value="item.codeKey"
                   :key="item.codeKey"
                 >{{ item.codeName }}</Option>
@@ -135,21 +135,80 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-          <FormItem label="登录状态:">
-            <Select
-              size="small"
-              clearable
-              filterable
-              placeholder="请选择登录状态"
-              v-model="formItem.appLoginStatus"
-            >
-              <Option
-                v-for="(item,index) in getDirObj.APP_LOGIN_STATUS"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
-            </Select>
-          </FormItem>
+            <FormItem label="拨打状态:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择拨打状态"
+                v-model="formItem.talkResult"
+              >
+               <Option
+                  v-for="(item,index) in call_status_list"
+                  :value="item.codeKey"
+                  :key="item.codeKey + index"
+                >{{ item.codeName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="登录状态:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择登录状态"
+                v-model="formItem.appLoginStatus"
+              >
+                <Option
+                  v-for="(item,index) in getDirObj.APP_LOGIN_STATUS"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="最后催收时间:">
+              <DatePicker
+                type="daterange"
+                v-model="formItem.collect_Date"
+                @on-change="dateChange($event, 'collect_Date')"
+                :editable="false"
+                size='small'
+                clearable
+                placeholder="请选择最后催收时间"
+                style="width: 100%"
+              ></DatePicker>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="分配时间:">
+              <DatePicker
+                type="daterange"
+                v-model="formItem.distribute_Date"
+                @on-change="dateChange($event, 'distribute_Date')"
+                :editable="false"
+                size='small'
+                clearable
+                placeholder="请选择分配时间"
+                style="width: 100%"
+              ></DatePicker>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="APP登录时间:">
+              <DatePicker
+                type="daterange"
+                v-model="formItem.login_Date"
+                @on-change="dateChange($event, 'login_Date')"
+                :editable="false"
+                size='small'
+                clearable
+                placeholder="请选择登录时间"
+                style="width: 100%"
+              ></DatePicker>
+            </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>

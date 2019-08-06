@@ -52,6 +52,17 @@ export default {
   mixins: [sysDictionary],
   data() {
     const _this = this;
+    const call_number_validator = (rule, value, callback) => {
+      // 手机号码校验
+      const mblNo = /^1\d{10}$/;
+      // 座机号校验
+      const isMobile = /^([0-9]{3,4})?[0-9]{7,8}$/;
+      if (!mblNo.test(value) && !isMobile.test(value)) {
+        return callback(new Error('请输入正确格式的座机号或手机号'))
+      } else {
+        return callback();
+      }
+    }
     return {
       moorToCallMblHid: '',//容联电话呼叫成功显示的电话密文
       moorToCallUser: '',//容联电话呼叫成功显示的姓名
@@ -92,14 +103,15 @@ export default {
         mblNo: [
           {
             required: true,
-            message: '请输入手机号码',
-            trigger: 'blur'
+            message: '请输入电话号码',
+            trigger: 'blur',
+            validator: call_number_validator,
           },
-          {
-            pattern: this.GLOBAL.mblNo,
-            message: '请输入正确手机号',
-            trigger: 'blur'
-          }
+          // {
+          //   pattern: this.GLOBAL.isMobile,
+          //   message: '请输入正确座机号',
+          //   trigger: 'blur'
+          // },
         ],
       },
       getDirList: ['GENDER', 'NATION', 'CONTACT_REL_TYPE'],
@@ -991,7 +1003,7 @@ export default {
       case_detail_address_info_spin: false,
       // 通话统计
       case_detail_mail_statistics_list_pageNo: 1,
-      case_detail_mail_statistics_list_pageSize: 10,
+      case_detail_mail_statistics_list_pageSize: 20,
       case_detail_mail_statistics_list_total: 0,
       case_detail_mail_statistics_list_tableData: [],
       case_detail_mail_statistics_list_tableColumns: [
@@ -1133,7 +1145,7 @@ export default {
 
       // 通话明细
       case_detail_mail_detail_list_pageNo: 1,
-      case_detail_mail_detail_list_pageSize: 10,
+      case_detail_mail_detail_list_pageSize: 20,
       case_detail_mail_detail_list_total: 0,
       case_detail_mail_detail_list_tableData: [],
       case_detail_mail_detail_list_tableColumns: [
@@ -1305,7 +1317,7 @@ export default {
 
       // 通讯录
       case_detail_mail_list_pageNo: 1,
-      case_detail_mail_list_pageSize: 10,
+      case_detail_mail_list_pageSize: 20,
       case_detail_mail_list_total: 0,
       case_detail_mail_list_tableData: [],
       case_detail_mail_list_tableColumns: [
@@ -1438,7 +1450,7 @@ export default {
 
       // 通话更新
       case_detail_mail_list_appended_pageNo: 1,
-      case_detail_mail_list_appended_pageSize: 10,
+      case_detail_mail_list_appended_pageSize: 20,
       case_detail_mail_list_appended_total: 0,
       case_detail_mail_list_appended_tableData: [],
       case_detail_mail_list_appended_tableColumns: [

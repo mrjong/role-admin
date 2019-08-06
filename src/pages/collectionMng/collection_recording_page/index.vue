@@ -118,6 +118,40 @@
               </Select>
             </FormItem>
           </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="沟通状态:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择沟通状态"
+                v-model="formItem.collectSts"
+              >
+                <Option
+                  v-for="(item,index) in collect_status_list"
+                  :value="item.codeKey"
+                  :key="item.codeKey + index"
+                >{{ item.codeName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="拨打状态:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择拨打状态"
+                v-model="formItem.talkResult"
+              >
+               <Option
+                  v-for="(item,index) in call_status_list"
+                  :value="item.codeKey"
+                  :key="item.codeKey + index"
+                >{{ item.codeName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
               <Button
