@@ -62,32 +62,20 @@ export default {
       defaultList: [],
       imgName: '',
       overdue_info: {
-        // billNo: 'BIL2017102715354800000248',//账单号
-        // userNameHid: '**卓',//客户姓名
-        // mblNoHid: '186****5566',//手机号
-        // perdCnt: 6,//产品期数
-        // ovduNums: [3, 4],//逾期期数
-        // ovduFineAmt: 666,//逾期罚息
-        // ovduItrtAmt: 888,//逾期利息
-        // ovduMngAmt: 68,// 逾期服务费
-        // ovduOvduAmt: 123.12,//逾期滞纳金
-        // ovduAprAmt: 321.12,//逾期信审费
       },//逾期展示信息
       visible: false,
       tableData: [],//表格数组
       tableColumns: [
         {
           title: '序号',
-          width: 80,
-          searchOperator: '=',
-          sortable: true,
+          width: 70,
           type: 'index',
           align: 'center',
           fixed: 'left'
         },
         {
           title: '操作',
-          width: 130,
+          width: 100,
           key: 'edit',
           align: 'center',
           fixed: 'left',
@@ -126,25 +114,77 @@ export default {
         {
           title: '减免类型',
           searchOperator: 'like',
-          width: 180,
+          width: 150,
           key: 'reliefTypeName',
           align: 'center',
         },
         {
           title: '减免期数',
           searchOperator: 'like',
-          width: 180,
+          width: 150,
           key: 'perdNum',
           align: 'center',
         },
         {
           title: '减免金额',
           searchOperator: 'like',
-          width: 180,
+          width: 150,
           key: 'reliefAmt',
           align: 'center',
         },
       ],//表头
+      tableData_repayment: [],//还款
+      tableColumns_repayment: [
+        {
+          title: '期数',
+          width: 65,
+          key: 'perdNum',
+          align: 'center',
+          fixed: 'left'
+        },
+        {
+          title: '当前账单总金额',
+          searchOperator: 'like',
+          align: 'center',
+          width: 125,
+          key: 'perdTotAmt',
+          render: (h, params) => {
+            let perdTotAmt = params.row.perdTotAmt;
+            perdTotAmt = perdTotAmt ? this.$options.filters['money'](perdTotAmt) : perdTotAmt;
+            return h('span', perdTotAmt);
+          }
+        },
+        {
+          title: '剩余应还金额',
+          searchOperator: 'like',
+          align: 'center',
+          key: 'perdTotSur',
+          render: (h, params) => {
+            let perdTotSur = params.row.perdTotSur;
+            perdTotSur = perdTotSur ? this.$options.filters['money'](perdTotSur) : perdTotSur;
+            return h('span', perdTotSur);
+          }
+        },
+        {
+          title: '总减免金额',
+          searchOperator: 'like',
+          key: 'reliefAmt',
+          align: 'center',
+        },
+        {
+          title: '还款金额',
+          searchOperator: 'like',
+          key: 'repayAmt',
+          align: 'center',
+          slot: 'repayAmt',
+        },
+        {
+          title: '还款状态',
+          searchOperator: 'like',
+          key: 'overdueFlgName',
+          align: 'center',
+        },
+      ],
       uploadList: [],
       reliefType: false,//减免类型关键字
       perdNum: false,//减免期数关键字
@@ -157,7 +197,11 @@ export default {
       this.relief_relieford_getreliefinfo();
     } else {
       this.relief_relieford_detailinfo(this.breaks_data.id)
-    }
+    };
+    this.tableData_repayment = this.breaks_data.tableData;
+    this.tableData_repayment.forEach(item => {
+      item.reliefAmt = 0;
+    })
   },
   mounted() {
     if (this.edit_flag) {
@@ -220,7 +264,30 @@ export default {
           return
         } else {
           this.tableData.push(obj);
-        }
+        };
+        // 处理右侧还款信息的表单联动
+        this.tableData.forEach(i => {
+          // var reliefAmt = 0;
+          this.tableData_repayment.forEach((j,index) => {
+            if (Number(i.perdNum) == Number(j.perdNum)) {
+              j.reliefAmt += Number(i.reliefAmt);
+              // this.tableData_repayment[index].reliefAmt = j.reliefAmt;
+              this.$set(this.tableData_repayment, index, j)
+            }
+          })
+        });
+        // for (let i = 0; i < this.tableData.length; i++) {
+        //   for (let j = 0; j < this.tableData_repayment.length; j++) {
+        //     if (Number(i.perdNum) == Number(j.perdNum)) {
+        //       j.reliefAmt = Number(i.reliefAmt)
+        //     }
+        //   }
+        // }
+        console.log(this.tableData_repayment);
+        this.$set(this, 'tableData_repayment', this.tableData_repayment);
+        // this.$nextTick(() => {
+
+        // })
       }
 
     },
@@ -323,7 +390,7 @@ export default {
     },
     // 关闭弹窗
     del() {
-      this.$emit('passBack', { flag: false });
+      this.$emit('passBack', { flag: false, name: 'gathering' });
     },
     // 查询基础信息接口
     async relief_relieford_getreliefinfo() {
@@ -359,7 +426,7 @@ export default {
       });
       console.log(res);
       if (res.code === 1) {
-        this.$emit('passBack', { flag: false, status: 'ok' });
+        this.$emit('passBack', { flag: false, status: 'ok', name: 'gathering' });
       } else {
         this.$Message.error(res.message)
       }
@@ -392,7 +459,7 @@ export default {
       this.jianmian_loading = false
       console.log(res);
       if (res.code === 1) {
-        this.$emit('passBack', { flag: false, status: 'ok' });
+        this.$emit('passBack', { flag: false, status: 'ok', name: 'gathering' });
       } else {
         this.$Message.error(res.message)
       }

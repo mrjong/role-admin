@@ -323,7 +323,7 @@ export default {
     },
     // 关闭弹窗
     del() {
-      this.$emit('passBack', { flag: false });
+      this.$emit('passBack', { flag: false, name: 'jianmian' });
     },
     // 查询基础信息接口
     async relief_relieford_getreliefinfo() {
@@ -359,7 +359,7 @@ export default {
       });
       console.log(res);
       if (res.code === 1) {
-        this.$emit('passBack', { flag: false, status: 'ok' });
+        this.$emit('passBack', { flag: false, status: 'ok', name: 'jianmian' });
       } else {
         this.$Message.error(res.message)
       }
@@ -392,7 +392,7 @@ export default {
       this.jianmian_loading = false
       console.log(res);
       if (res.code === 1) {
-        this.$emit('passBack', { flag: false, status: 'ok' });
+        this.$emit('passBack', { flag: false, status: 'ok', name: 'jianmian' });
       } else {
         this.$Message.error(res.message)
       }

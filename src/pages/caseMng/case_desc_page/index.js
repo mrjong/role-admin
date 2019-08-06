@@ -1,7 +1,7 @@
 import jianmian from '@/components/caseDesc/jianmian.vue';
 import huakou from '@/components/caseDesc/huakou.vue';
 import zhongcai from '@/components/caseDesc/zhongcai.vue';
-import QRcode from '@/components/caseDesc/QR-code.vue';
+import gathering from '@/components/caseDesc/gathering.vue';
 import TimeLine from '@/components/time_line_page';
 import qs from 'qs';
 import dayjs from 'dayjs';
@@ -49,7 +49,7 @@ export default {
     huakou,
     zhongcai,
     TimeLine,
-    QRcode
+    gathering,
   },
   mixins: [sysDictionary],
   data() {
@@ -86,6 +86,7 @@ export default {
         jianmian: false,
         zhongcai: false,
         QR_CODE: false,
+        gathering: false,
       },
       formItem2: {},
       tabName: '',
@@ -2265,7 +2266,7 @@ export default {
     },
     passBackBreaks(obj) {
       console.log(obj)
-      this.modal.jianmian = obj.flag;
+      this.modal[obj.name] = obj.flag;
       if (obj.status === 'ok') {
         this.$Message.success('申请成功');
       }
@@ -2301,6 +2302,12 @@ export default {
         }
       } else if (type === 'huakou') {
         this.$set(this, 'userId', userId);
+      } else if (type === 'gathering') {
+        this.breaks_data = {
+          caseNo: this.caseNo,
+          billNo: this.case_detail_case_base_info_Data.billNo,
+          tableData: this.tableData
+        }
       }
       this.modal[type] = true;
     },

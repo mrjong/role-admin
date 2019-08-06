@@ -79,7 +79,7 @@
           </span>
           <Button
             v-if="readType!=='read'"
-            @click="handOpen('QR_CODE')"
+            @click="handOpen('gathering')"
             class="fr vue-back-btn header-btn"
             type="primary"
             size="small"
@@ -857,13 +857,13 @@
       <img :src="imgName" v-if="visible" style="width: 100%" />
     </Modal>
     <!-- 收款二维码 -->
-    <QRcode
-      v-model="modal.QR_CODE"
-      v-if="modal.QR_CODE"
+    <gathering
+      v-model="modal.gathering"
+      v-if="modal.gathering"
       v-on:passBack="passBackBreaks"
       :edit_flag="true"
       :breaks_data="breaks_data"
-    ></QRcode>
+    ></gathering>
     <!-- 减免 -->
     <jianmian
       v-model="modal.jianmian"
