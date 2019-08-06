@@ -1,6 +1,6 @@
 <template>
   <div class="panel_list p5">
-    <Modal title="新增通讯录" v-model="modal7">
+    <Modal title="新增通讯录" v-model="address_list_modal">
       <Form
         ref="formItem2"
         :model="formItem2"
@@ -78,6 +78,14 @@
             <span>信用进度</span>
           </span>
           <Button
+            v-if="readType!=='read'"
+            @click="handOpen('QR_CODE')"
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+            :disabled="btnDisable"
+          >收款二维码</Button>
+          <Button
             v-if="readType!=='read' && apply_arbitrament && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
             @click.stop="handOpen('zhongcai')"
             class="fr vue-back-btn header-btn"
@@ -85,14 +93,6 @@
             size="small"
             :disabled="btnDisable"
           >申请仲裁</Button>
-          <!-- <Button
-            v-if="readType!=='read'"
-            @click="handOpen('huankuan','申请还款')"
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-            :disabled="btnDisable"
-          >申请还款</Button>-->
           <Button
             v-if="readType!=='read' && apply_deduct && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
             @click.stop="handOpen('huakou', case_collect_case_list_data&&case_collect_case_list_data.userId)"
@@ -175,7 +175,7 @@
                   <img
                     :src="item.imgPath? `/admin/img/mark/${item.imgPath}`: null"
                     style="vertical-align: top;"
-                  >
+                  />
                   <div
                     class="demo-upload-list-cover"
                     @click="handleView(`/admin/img/mark/${item.imgPath}`)"
@@ -253,7 +253,13 @@
               </Row>
             </div>
           </Form>
-          <Table :row-class-name="rowClassName" :data="tableData" border :columns="tableColumns" stripe></Table>
+          <Table
+            :row-class-name="rowClassName"
+            :data="tableData"
+            border
+            :columns="tableColumns"
+            stripe
+          ></Table>
         </div>
       </Card>
 
@@ -263,7 +269,6 @@
           <Tabs @on-click="tabClick" type="card" size="small" :animated="false">
             <TabPane label="催收信息" name="case_detail_remark_list">
               <div>
-
                 <Table
                   border
                   :data="case_detail_remark_list_tableData"
@@ -737,7 +742,10 @@
                 </Tabs>
               </div>
             </Card>
-            <Card class="case-bottom-panel" :style="{bottom:this.showBottom?'0px':'-1000px', width: '480px'}">
+            <Card
+              class="case-bottom-panel"
+              :style="{bottom:this.showBottom?'0px':'-1000px', width: '480px'}"
+            >
               <Form
                 ref="formValidate"
                 :model="formValidate"
@@ -757,7 +765,7 @@
                   <Select
                     size="small"
                     v-model="formValidate.callUserType"
-                    @on-change='select_relation'
+                    @on-change="select_relation"
                     transfer
                     clearable
                     placeholder="请选择关系"
@@ -846,8 +854,17 @@
     </div>
     <!-- 弹层 -->
     <Modal title="查看图片" v-model="visible">
-      <img :src="imgName" v-if="visible" style="width: 100%">
+      <img :src="imgName" v-if="visible" style="width: 100%" />
     </Modal>
+    <!-- 收款二维码 -->
+    <QRcode
+      v-model="modal.QR_CODE"
+      v-if="modal.QR_CODE"
+      v-on:passBack="passBackBreaks"
+      :edit_flag="true"
+      :breaks_data="breaks_data"
+    ></QRcode>
+    <!-- 减免 -->
     <jianmian
       v-model="modal.jianmian"
       v-if="modal.jianmian"
@@ -855,6 +872,7 @@
       :edit_flag="true"
       :breaks_data="breaks_data"
     ></jianmian>
+    <!-- 仲裁 -->
     <zhongcai
       :getDirObj="getDirObj"
       v-on:passBack="passBack('zhongcai')"
@@ -862,6 +880,7 @@
       v-if="modal.zhongcai"
       :zhongcai_data="zhongcai_set_data"
     ></zhongcai>
+    <!-- 划扣 -->
     <huakou
       v-on:passBack="passBack('huakou')"
       v-model="modal.huakou"
@@ -870,6 +889,7 @@
       :caseNo="caseNo"
       :userId="userId"
     ></huakou>
+    <!-- 站内信详情 -->
     <div v-if="message_detail_flag" style="z-index: 1000">
       <Modal title="站内信信息" class="message_detail" v-model="message_detail_flag" :footer-hide="true">
         <Row>

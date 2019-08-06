@@ -1,6 +1,7 @@
 import jianmian from '@/components/caseDesc/jianmian.vue';
 import huakou from '@/components/caseDesc/huakou.vue';
 import zhongcai from '@/components/caseDesc/zhongcai.vue';
+import QRcode from '@/components/caseDesc/QR-code.vue';
 import TimeLine from '@/components/time_line_page';
 import qs from 'qs';
 import dayjs from 'dayjs';
@@ -47,7 +48,8 @@ export default {
     jianmian,
     huakou,
     zhongcai,
-    TimeLine
+    TimeLine,
+    QRcode
   },
   mixins: [sysDictionary],
   data() {
@@ -82,7 +84,8 @@ export default {
       modal: {
         huakou: false,
         jianmian: false,
-        zhongcai: false
+        zhongcai: false,
+        QR_CODE: false,
       },
       formItem2: {},
       tabName: '',
@@ -121,15 +124,11 @@ export default {
       call_status: '',// 拨打状态暂存
       modalTitle: '',
       visible1: false,
-      modal7: false,
+      address_list_modal: false,
       queryData: {},
       collectcode_getCollectRelate_Data: [],
       collectcode_getCollectRelate_childItem: [],
-      modal12: false,
-      inputGrid: '',
-      modal11: false,
       formValidate: {},
-      formValidate2: {},
       case_detail_case_identity_info_Data: {},
       zhongcai_set_data: {},
       case_detail_urgent_contact_Data: {},
@@ -1869,16 +1868,16 @@ export default {
       if (res.code === 1) {
         // 更新list
         this.case_detail_mail_list_appended();
-        this.modal7 = false;
+        this.address_list_modal = false;
       } else {
         this.$Message.error(res.message);
       }
     },
     closeTxl() {
-      this.modal7 = false;
+      this.address_list_modal = false;
     },
     addtxl() {
-      this.modal7 = true;
+      this.address_list_modal = true;
     },
     // 催收信息
     async case_detail_remark_list() {
