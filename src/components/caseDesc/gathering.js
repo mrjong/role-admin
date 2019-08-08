@@ -230,6 +230,7 @@ export default {
           // 增加减免的联动
           this.tableData.forEach((j) => {
             if (Number(i.perdNum) === Number(j.perdNum)) {
+              i.error_flag = false;
               reliefAmt += Number(j.reliefAmt);
               i.reliefAmt = reliefAmt.toFixed(2);
               i.repayAmt = Number(i.perdTotSur) - i.reliefAmt;
@@ -239,6 +240,7 @@ export default {
         } else {
           // 删除减免的联动
           if (Number(i.perdNum) === Number(row[0].perdNum)) {
+            i.error_flag = false;
             reliefAmt = Number(i.reliefAmt) - Number(row[0].reliefAmt);
             i.reliefAmt = reliefAmt.toFixed(2);
             i.repayAmt = i.reliefAmt > 0 ? Number(i.perdTotSur) - i.reliefAmt : 0;
