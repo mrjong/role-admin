@@ -2,6 +2,8 @@ import jianmian from '@/components/caseDesc/jianmian.vue';
 import huakou from '@/components/caseDesc/huakou.vue';
 import zhongcai from '@/components/caseDesc/zhongcai.vue';
 import gathering from '@/components/caseDesc/gathering.vue';
+import QRdetail from '@/components/caseDesc/QR_code_detail.vue';
+import QRcode from '@/components/caseDesc/QR_code.vue';
 import TimeLine from '@/components/time_line_page';
 import qs from 'qs';
 import dayjs from 'dayjs';
@@ -40,6 +42,7 @@ import {
   case_list,
   credit_case_process, //获取时间轴接口
   case_detail_getimgurls,//获取图片信息街口
+  offlineScanPay_apply,//判断二维码是否生成
 } from '@/service/getData';
 let callFlag = false;
 export default {
@@ -50,6 +53,8 @@ export default {
     zhongcai,
     TimeLine,
     gathering,
+    QRdetail,
+    QRcode
   },
   mixins: [sysDictionary],
   data() {
@@ -87,6 +92,7 @@ export default {
         zhongcai: false,
         QR_CODE: false,
         gathering: false,
+        QR_code_detail: false,
       },
       formItem2: {},
       tabName: '',
@@ -2268,7 +2274,19 @@ export default {
       console.log(obj)
       this.modal[obj.name] = obj.flag;
       if (obj.status === 'ok') {
-        this.$Message.success('申请成功');
+        switch (obj.name) {
+          case 'QR_code_detail':
+            this.breaks_data = {
+              caseNo: this.caseNo,
+            }
+            this.modal.QR_CODE = true;
+            break;
+          case 'jianmian':
+            this.$Message.success('申请成功');
+            break;
+          default:
+            break;
+        }
       }
     },
     handOpen(type, userId) {
@@ -2307,9 +2325,32 @@ export default {
           caseNo: this.caseNo,
           billNo: this.case_detail_case_base_info_Data.billNo,
           tableData: this.tableData
-        }
+        };
+        this.offlineScanPay_apply(type);
+        return;
       }
       this.modal[type] = true;
+    },
+    async offlineScanPay_apply(name) {
+      const res = await offlineScanPay_apply({
+        caseNo: this.caseNo,
+      })
+      if (res.code === 3000001) {
+        // 新创建收款码
+        this.breaks_data = {
+          caseNo: this.caseNo,
+          billNo: this.case_detail_case_base_info_Data.billNo,
+          tableData: this.tableData
+        };
+        this.modal[name] = true;
+      } else {
+        this.breaks_data = {
+          caseNo: this.caseNo,
+          billNo: this.case_detail_case_base_info_Data.billNo,
+          data: res.data,
+        }
+        this.modal.QR_code_detail = true;
+      }
     },
     handleView(name) {
       this.imgName = name;

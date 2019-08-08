@@ -1,5 +1,5 @@
 import sysDictionary from '@/mixin/sysDictionary';
-import { relief_relieford_getreliefinfo, relief_relieford_applyrelief, relief_relieford_detailinfo, relief_relieford_updatereliefdetail } from '@/service/getData'
+import { relief_relieford_getreliefinfo, relief_relieford_applyrelief, relief_relieford_detailinfo, relief_relieford_updatereliefdetail, offlineScanPay_generate } from '@/service/getData'
 import Cookie from 'js-cookie'
 import qs from 'qs';
 
@@ -23,6 +23,7 @@ export default {
       prefix: '/admin/relief/relieford/images/',
       getDirList: ['RELIEF_REASON', 'RELIEF_TYPE'],
       getDirObj: {},
+      error_text: '',//错误提示的文字
       jianmian_loading: false,//减免提交loading
       reliefAmt_max: 0,//当前减免记录最大金额
       file_url_list: {},//存放图片路径
@@ -93,7 +94,8 @@ export default {
                   on: {
                     'on-ok': () => {
                       console.log(params.index)
-                      this.tableData.splice(params.index, 1);
+                      let row = this.tableData.splice(params.index, 1);
+                      this.deal_table_repayment('reduce', row);
                     }
                   }
                 },
@@ -181,7 +183,7 @@ export default {
         {
           title: '还款状态',
           searchOperator: 'like',
-          key: 'overdueFlgName',
+          key: 'perdStsName',
           align: 'center',
         },
       ],
@@ -189,6 +191,9 @@ export default {
       reliefType: false,//减免类型关键字
       perdNum: false,//减免期数关键字
       reliefAmt: false,//减免金额关键字
+      detailList: [],//发送的还款详情list
+      totReliefAmt: 0,//减免总额
+      totRepayAmt: 0,//还款总额
     };
   },
   created() {
@@ -198,10 +203,16 @@ export default {
     } else {
       this.relief_relieford_detailinfo(this.breaks_data.id)
     };
-    this.tableData_repayment = this.breaks_data.tableData;
-    this.tableData_repayment.forEach(item => {
-      item.reliefAmt = 0;
+    // 初始化table数据
+    this.breaks_data.tableData.forEach(item => {
+      if (item.perdSts === '0' || item.perdSts === '1') {
+        item.error_flag = false;
+        item.reliefAmt = 0.00;
+        item.repayAmt = 0;
+        this.tableData_repayment.push(item);
+      }
     })
+    // this.tableData_repayment = this.breaks_data.tableData;
   },
   mounted() {
     if (this.edit_flag) {
@@ -209,6 +220,34 @@ export default {
     }
   },
   methods: {
+    // 处理左右表单联动
+    deal_table_repayment(type, row) {
+      // 处理右侧还款信息的表单联动
+      this.totRepayAmt = 0;
+      this.tableData_repayment.forEach((i, index) => {
+        let reliefAmt = 0;
+        if (type === 'add') {
+          // 增加减免的联动
+          this.tableData.forEach((j) => {
+            if (Number(i.perdNum) === Number(j.perdNum)) {
+              reliefAmt += Number(j.reliefAmt);
+              i.reliefAmt = reliefAmt.toFixed(2);
+              i.repayAmt = Number(i.perdTotSur) - i.reliefAmt;
+              this.$set(this.tableData_repayment, index, i)
+            }
+          });
+        } else {
+          // 删除减免的联动
+          if (Number(i.perdNum) === Number(row[0].perdNum)) {
+            reliefAmt = Number(i.reliefAmt) - Number(row[0].reliefAmt);
+            i.reliefAmt = reliefAmt.toFixed(2);
+            i.repayAmt = i.reliefAmt > 0 ? Number(i.perdTotSur) - i.reliefAmt : 0;
+            this.$set(this.tableData_repayment, index, i)
+          }
+        }
+        this.totRepayAmt += i.repayAmt;
+      });
+    },
     // 添加减免记录，本地暂存
     handelAdd() {
       let { reliefType, perdNum, reliefAmt } = this, obj = {};
@@ -236,9 +275,6 @@ export default {
           return reliefAmt = false;
         }
       });
-      // this.formitem_validateField('reliefType');
-      // this.formitem_validateField('perdNum');
-      // this.formitem_validateField('reliefAmt');
       // 类型，期数，金额校验通过后执行添加的逻辑
       if (reliefType && perdNum && reliefAmt) {
         if (this.reliefAmt_max > 0) {
@@ -260,34 +296,12 @@ export default {
             this.$Message.error(`当前添加的减免信息已经存在，请勿重复添加`);
           } else {
             this.tableData.push(obj);
-          }
-          return
+          };
+          // return
         } else {
           this.tableData.push(obj);
         };
-        // 处理右侧还款信息的表单联动
-        this.tableData.forEach(i => {
-          // var reliefAmt = 0;
-          this.tableData_repayment.forEach((j,index) => {
-            if (Number(i.perdNum) == Number(j.perdNum)) {
-              j.reliefAmt += Number(i.reliefAmt);
-              // this.tableData_repayment[index].reliefAmt = j.reliefAmt;
-              this.$set(this.tableData_repayment, index, j)
-            }
-          })
-        });
-        // for (let i = 0; i < this.tableData.length; i++) {
-        //   for (let j = 0; j < this.tableData_repayment.length; j++) {
-        //     if (Number(i.perdNum) == Number(j.perdNum)) {
-        //       j.reliefAmt = Number(i.reliefAmt)
-        //     }
-        //   }
-        // }
-        console.log(this.tableData_repayment);
-        this.$set(this, 'tableData_repayment', this.tableData_repayment);
-        // this.$nextTick(() => {
-
-        // })
+        this.deal_table_repayment('add');
       }
 
     },
@@ -304,6 +318,32 @@ export default {
     // 减免金额处理小数点
     reliefAmt_blur(val) {
       this.$set(this.formItem, "reliefAmt", Number(val).toFixed(2));
+    },
+    // 处理还款金额
+    repayAmt_blur(row, index, event) {
+      if (Number(event.target.value) + Number(row.reliefAmt) > Number(row.perdTotSur)) {
+        row.error_flag = true;
+        this.error_text = '金额填写有误'
+        this.$set(this.tableData_repayment, index, row);
+        return
+      } else {
+        row.error_flag = false;
+        this.$set(this.tableData_repayment, index, row);
+      }
+      // 处理为空的字符串
+      if (event.target.value === '') {
+        row.repayAmt = 0;
+      };
+      this.$set(this.tableData_repayment, index, row);
+      this.totReliefAmt = 0;
+      this.totRepayAmt = 0;
+      this.tableData_repayment.forEach(item => {
+        item.remainTotAmt = item.perdTotSur;//处理剩余应还金额
+        this.totRepayAmt += Number(item.repayAmt)
+        if (Number(item.reliefAmt) > 0) {
+          this.totReliefAmt += Number(item.reliefAmt);
+        }
+      })
     },
     // 减免类型selectchange
     reliefTypeSelectChange(obj) {
@@ -338,21 +378,31 @@ export default {
       this.uploadList.splice(this.uploadList.indexOf(file), 1);
     },
     handleSubmit(name) {
-      console.log(this.formItem);
-      this.$refs.formItem.validate((valid) => {
-        console.log(valid, '----------------');
-        if (valid) {
-          if (this.edit_flag) {
-            this.relief_relieford_applyrelief();
-          } else {
-            this.relief_relieford_updatereliefdetail();
+      // 判断左边减免是否有数据，没有的话直接提交还款信息，否则校验减免信息
+      let submit_flag = true;
+      if (this.tableData.length > 0) {
+        this.$refs.formItem.validate((valid) => {
+          if (valid) {
+            this.tableData_repayment.forEach(item => {
+              if (item.error_flag) {
+                submit_flag = false;
+              }
+            })
           }
-        }
-      });
+        });
+      } else {
+        this.tableData_repayment.forEach(item => {
+          if (item.error_flag) {
+            submit_flag = false;
+          }
+        })
+      };
+      console.log(submit_flag)
+      submit_flag && this.deal_send_data();
+
     },
     handleSuccess(res, file) {
       if (res.code === 1) {
-        // this.formItem.idCardFront = res.data.relativePath;
         this.uploadList = [
           {
             url: this.prefix + res.data.relativePath,
@@ -362,7 +412,6 @@ export default {
         ];
         file.url = res.data.relativePath;
         this.file_url_list = res.data;
-        // this.$refs.formItem.validateField('idCardFront');
       } else {
         this.$Message.error(res.message);
       }
@@ -392,6 +441,19 @@ export default {
     del() {
       this.$emit('passBack', { flag: false, name: 'gathering' });
     },
+    // 处理发送前的数据
+    deal_send_data() {
+      this.detailList = [];
+      this.totReliefAmt = 0;
+      this.tableData_repayment.forEach(item => {
+        item.remainTotAmt = item.perdTotSur;//处理剩余应还金额
+        if (Number(item.reliefAmt) > 0) {
+          this.totReliefAmt += Number(item.reliefAmt);
+          // this.detailList.push(item);
+        }
+      })
+      this.offlineScanPay_generate()
+    },
     // 查询基础信息接口
     async relief_relieford_getreliefinfo() {
       const res = await relief_relieford_getreliefinfo(this.breaks_data);
@@ -418,34 +480,43 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    // 减免数据修改
-    async relief_relieford_updatereliefdetail() {
-      const res = await relief_relieford_updatereliefdetail({
-        id: this.breaks_data.id,
-        reliefAmt: this.formItem.reliefAmt
-      });
-      console.log(res);
-      if (res.code === 1) {
-        this.$emit('passBack', { flag: false, status: 'ok', name: 'gathering' });
-      } else {
-        this.$Message.error(res.message)
-      }
-    },
+    // // 减免数据修改
+    // async relief_relieford_updatereliefdetail() {
+    //   const res = await relief_relieford_updatereliefdetail({
+    //     id: this.breaks_data.id,
+    //     reliefAmt: this.formItem.reliefAmt
+    //   });
+    //   console.log(res);
+    //   if (res.code === 1) {
+    //     this.$emit('passBack', { flag: false, status: 'ok', name: 'gathering' });
+    //   } else {
+    //     this.$Message.error(res.message)
+    //   }
+    // },
     // 减免申请接口
-    async relief_relieford_applyrelief() {
-      if (this.tableData.length < 1) {
-        this.$Message.error('暂无减免信息，请添加后再提交');
+    async offlineScanPay_generate() {
+      if (this.totRepayAmt === 0) {
+        this.$Message.error('还款金额不能为0');
         return;
       }
       console.log(this.tableData);
       this.jianmian_loading = true;
       // this.formItem.reliefRemark = JSON.stringify(this.formItem.reliefRemark);
-      const res = await relief_relieford_applyrelief(
+      const res = await offlineScanPay_generate(
         {
-          ...this.overdue_info,
+          caseNo: this.overdue_info.caseNo,
+          billNo: this.overdue_info.billNo,
+          userNmHid: this.overdue_info.userNameHid,
+          userMblNoHid: this.overdue_info.mblNoHid,
+          billPerdInfos: this.overdue_info.billPerdInfos,
+          totReliefAmt: this.totReliefAmt,
+          totRepayAmt: this.totRepayAmt,
           ...this.formItem,
+          reliefStatus: 'O',
+          reliefOrigin: 'OS',
           reliefLists: this.tableData,
-          ...this.file_url_list
+          ...this.file_url_list,
+          detailList: this.tableData_repayment,
         },
         {
           transformRequest: [

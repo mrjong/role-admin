@@ -856,7 +856,7 @@
     <Modal title="查看图片" v-model="visible">
       <img :src="imgName" v-if="visible" style="width: 100%" />
     </Modal>
-    <!-- 收款二维码 -->
+    <!-- 新建收款二维码 -->
     <gathering
       v-model="modal.gathering"
       v-if="modal.gathering"
@@ -864,6 +864,21 @@
       :edit_flag="true"
       :breaks_data="breaks_data"
     ></gathering>
+    <!-- 收款详情 -->
+    <QRdetail
+      v-model="modal.QR_code_detail"
+      v-if="modal.QR_code_detail"
+      v-on:passBack="passBackBreaks"
+      :edit_flag="true"
+      :breaks_data="breaks_data"
+    ></QRdetail>
+    <!-- 二维码下载页 -->
+    <QRcode
+      v-model="modal.QR_CODE"
+      v-if="modal.QR_CODE"
+      v-on:passBack="passBackBreaks"
+      :breaks_data="breaks_data"
+    ></QRcode>
     <!-- 减免 -->
     <jianmian
       v-model="modal.jianmian"

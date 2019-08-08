@@ -378,6 +378,8 @@ export default {
           ...this.overdue_info,
           ...this.formItem,
           reliefLists: this.tableData,
+          reliefStatus: 'E',
+          reliefOrigin: 'REF',
           ...this.file_url_list
         },
         {

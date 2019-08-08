@@ -50,7 +50,7 @@
                 :rules="ruleValidate"
               >
                 <Row>
-                  <Col :xs="24" :sm="24" :md="10" :lg="10" span="6">
+                  <Col :xs="24" :sm="24" :md="14" :lg="14" span="6" style="margin-bottom: 10px;">
                     <FormItem span="6" label="减免原因:" prop="reliefReason">
                       <Select
                         size="small"
@@ -67,7 +67,7 @@
                       </Select>
                     </FormItem>
                   </Col>
-                  <Col :xs="24" :sm="24" :md="16" :lg="16" :span="16">
+                  <Col :xs="24" :sm="24" :md="14" :lg="14" :span="16">
                     <FormItem span="6" label="减免标记:">
                       <Input
                         type="textarea"
@@ -236,18 +236,20 @@
                     clearable
                     type="number"
                     number
-                    @on-blur="reliefAmt_blur(formItem.reliefAmt)"
-                    v-model="row.perdTotSur-row.reliefAmt"
+                    @on-blur="repayAmt_blur(row, index, $event)"
+                    v-model="row.repayAmt"
                     placeholder="还款金额"
+                    :class="{'ivu-form-item-error': row.error_flag}"
                   ></Input>
+                  <div v-if="row.error_flag" class="error-tip">{{error_text}}</div>
                 </div>
-                <div v-else>{{Number(row.perdTotSur-row.reliefAmt)}}</div>
+                <div v-else>{{Number(row.repayAmt).toFixed(2)}}</div>
               </template>
             </Table>
           </div>
         </Col>
       </Row>
-      <div slot="footer">
+      <div slot="footer" class="gathering_footer">
         <Button size="small" @click="del">关闭</Button>
         <Button
           type="primary"
@@ -255,9 +257,10 @@
           @click="handleSubmit('formItem')"
           :loading="jianmian_loading"
         >
-          <span v-if="!jianmian_loading">提交</span>
-          <span v-else>提交中...</span>
+          <span v-if="!jianmian_loading">生成</span>
+          <span v-else>生成中...</span>
         </Button>
+        <span style="font-size:14px; color: #333; line-height: 24px; margin-left: 10px;">还款总额：{{(totRepayAmt).toFixed(2)}}</span>
       </div>
     </Modal>
     <Modal title="查看图片" v-model="visible">

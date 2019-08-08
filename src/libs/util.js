@@ -280,6 +280,7 @@ util.dowloadAudio = function (res) {
   const href = window.URL.createObjectURL(blob);
   return href;
 };
+
 util.fullscreenEvent = function (vm) {
   vm.$store.commit('initCachepage');
   // 全屏相关
