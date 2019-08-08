@@ -160,6 +160,36 @@
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+        <FormItem label="呼叫方案:" span="4" >
+          <Select
+            size="small"
+            v-model="addStaffFormItem.outfitId"
+            filterable
+            clearable
+            placeholder="请选择呼叫方案"
+          >
+            <Option v-for="(item,index) in departmentList" :value="item.id" :key="item.id + index">{{ item.name }}</Option>
+          </Select>
+        </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+        <FormItem label="方案/专线:" span="4" prop="seatType">
+          <Select
+            size="small"
+            v-model="addStaffFormItem.seatType"
+            filterable
+            clearable
+            placeholder="请选择方案或专线"
+          >
+            <Option
+              v-for="item in getDirObj['SEAT_TYPE']"
+              :value="item.itemCode"
+              :key="item.itemCode"
+            >{{ item.itemName }}</Option>
+          </Select>
+        </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem label="坐席类型:" span="4" prop="seatType">
             <Select
               size="small"

@@ -20,6 +20,9 @@
     </div>
     <router-view></router-view>
     <video loop ref="ring" preload="auto" style="position: absolute" src="src/libs/ring.wav"></video>
+    <audio id="playaudio" src="./libs/ring1.wav" loop="loop" style="display: none"></audio>
+    <video id="my-video" muted="muted" style="display:none"></video>
+    <video id="peer-video" style="display:none"></video>
   </div>
 </template>
 
@@ -49,6 +52,7 @@ export default {
     if (localStorage.getItem("callData")) {
       this.call(JSON.parse(localStorage.getItem("callData")));
     }
+
     let websocket = window.sessionStorage.getItem("websocket");
     if (websocket) {
       util.websocket();
