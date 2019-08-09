@@ -18,6 +18,7 @@ export default {
       QR_CODE_INFO: {},
       htmlUrl: '',
       download_loading: false,
+      failure_loading: false
     }
   },
   created() {
@@ -51,6 +52,7 @@ export default {
       this.$emit('passBack', { flag: false, name: 'QR_CODE' });
 
     },
+    // 获取信息
     async offlineScanPay_detail() {
       const res = await offlineScanPay_detail({
         caseNo: this.breaks_data.caseNo
@@ -64,11 +66,11 @@ export default {
     },
     // 失效二维码
     async offlineScanPay_invalid() {
-      this.jianmian_loading = true;
+      this.failure_loading = true;
       const res = await offlineScanPay_invalid({
         caseNo: this.breaks_data.caseNo,
       });
-      this.jianmian_loading = false;
+      this.failure_loading = false;
       if (res.code === 1) {
         this.$Message.success('二维码已失效');
         clearTimeout(timer)
