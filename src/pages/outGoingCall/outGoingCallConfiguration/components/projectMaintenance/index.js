@@ -6,7 +6,8 @@ export default {
   data() {
     return {
       project: ['苹果'],
-      isAction: false,
+      isAction: 1,
+      isAction1: 1,
       cc: true,
       showAddModel: '',
       projectFlag: 'primary',
@@ -49,6 +50,12 @@ export default {
       }else {
         this.showAddModel = 'line'
       }
-    }
+    },
+    dd(a) {
+      this.isAction = a
+    },
+    dd2(a) {
+      this.isAction1 = a
+    },
   }
 };

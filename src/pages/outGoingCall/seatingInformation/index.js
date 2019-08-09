@@ -1,4 +1,4 @@
-import { } from '@/service/getData';
+import {seats_config_list, seats_config_add, seats_config_update } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 import AddChannel from './components/addChannel/index.vue'
 import SeatsMg from './components/seatsMg/index.vue'
@@ -29,6 +29,7 @@ export default {
       showPhone: false,
       formItem: {
       },
+      updateChannel: {},
       ruleValidate:{
         jobName: [
           {
@@ -89,6 +90,12 @@ export default {
       tableColumns: [
         {
           title: '渠道名称',
+          align: alignCenter,
+          width: widthVal,
+          key: 'jobName'
+        },
+        {
+          title: '渠道类型',
           align: alignCenter,
           width: widthVal,
           key: 'jobName'
@@ -177,8 +184,28 @@ export default {
       this.getList();
     },
     // 获取表格数据
-    async getList() {
-
+    async getList(type) {
+      console.log(this.formItem)
+      if (!this.query) {
+        this.$Message.error("很抱歉，暂无权限查询");
+        return;
+      }
+      this.query_loading = true;
+      let res;
+      res = await seats_config_list({
+        pageNum: this.pageNo,
+        pageSize: this.pageSize,
+        ...this.formItem
+      })
+      this.query_loading = false;
+      if (res && res.code === 1) {
+        let data = res.data;
+        this.tableData = data.content;
+        this.total = data.totalElements; //接口中在该条件下取得的数据量
+        //data.page.numberOfElements  当前页面实际返回的数量
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     // 重置
     clearForm(name) {
@@ -192,6 +219,7 @@ export default {
       let data = JSON.parse(JSON.stringify(originalData))
       switch(flag) {
         case 'update':
+          this.updateChannel = data
           this.showAddChannel = true
           break;
         case 'seatsMg':
@@ -211,7 +239,6 @@ export default {
       return 'row_style'
     },
     passBack(){
-      debugger
       this.showAddChannel = false
       this.showSeatsMg = false
       this.showPhone = false

@@ -15,9 +15,9 @@
       </Button>
     </p>
     <div style="width: 70%; margin: auto">
-      <el-carousel :interval="4000" type="card" height="500px" arrow="always" indicator-position="none" :autoplay="false" v-if="projectFlag ==='primary'">
-      <el-carousel-item v-for="item in 6" :key="item">
-        <Card class="carousel-card" >
+      <el-carousel :interval="4000" type="card" height="500px" arrow="always" indicator-position="none" :autoplay="true" v-if="projectFlag ==='primary'" @change="dd2">
+      <el-carousel-item v-for="item, index in 6" :key="index">
+        <Card class="carousel-card">
           <p slot="title" @click="aa">方案{{item}}</p>
           <div style="font-weight: 700; font-size: 16px; padding-top: 30px; margin-left: 30px;">第一优先渠道:</div>
           <div style="margin-left: 130px; margin-top: 10px">
@@ -64,7 +64,7 @@
           <div style="display: flex">
             <div style="flex: 1"></div>
             <Button size="small"
-                    style="width:80px;     margin-top: 30px;"
+                    style="width:80px; margin-top: 30px;"
                     @click="showAddChannel=true"
                     type="primary">修改
             </Button>
@@ -73,9 +73,16 @@
         </Card>
       </el-carousel-item>
       </el-carousel>
-      <el-carousel :interval="4000" type="card" height="500px" arrow="always" indicator-position="none" :autoplay="cc" v-else>
-        <el-carousel-item v-for="item in 6" :key="item">
-          <Card class="carousel-card" >
+      <el-carousel
+        :interval="4000"
+        type="card" height="400px"
+        arrow="always" indicator-position="none"
+        :autoplay="cc"
+        v-else
+        @change="dd"
+      >
+        <el-carousel-item v-for="item, index in 6" :key="index">
+          <Card class="carousel-card" style="height: 300px">
             <p slot="title">专线{{item}}</p>
             <div style="padding-top: 30px; margin-left: 30px;">
               <div style="margin-bottom: 20px">
@@ -90,36 +97,10 @@
                 <span style="font-weight: 700; font-size: 16px">号码: </span>
                 <span>17777777777 ；17777777778</span>
               </div>
-              <div style="font-weight: 700; font-size: 16px; margin-top: 20px; ">
-                <span style="width: 120px; display: inline-block">属地外呼:</span>
-                <i-switch >
-                  <span slot="open">开</span>
-                  <span slot="close">关</span>
-                </i-switch>
-                <span style="width: 30px;display: inline-block"></span>
-                <span style="width: 120px; display: inline-block">优先手机号外呼:</span>
-                <i-switch >
-                  <span slot="open">开</span>
-                  <span slot="close">关</span>
-                </i-switch>
-              </div>
-              <div style="font-weight: 700; font-size: 16px; margin-top: 20px; ">
-                <span style="width: 120px; display: inline-block">15天渠道故障率:</span>
-                <i-switch >
-                  <span slot="open">开</span>
-                  <span slot="close">关</span>
-                </i-switch>
-                <span style="width: 30px;display: inline-block"></span>
-                <span style="width: 120px; display: inline-block">30天渠道故障率:</span>
-                <i-switch >
-                  <span slot="open">开</span>
-                  <span slot="close">关</span>
-                </i-switch>
-              </div>
               <div style="display: flex">
                 <div style="flex: 1"></div>
                 <Button size="small"
-                        style="width:80px;     margin-top: 30px;"
+                        style="width:80px;     margin-top: 20px;"
                         @click="showAddChannel=true"
                         type="primary">修改
                 </Button>

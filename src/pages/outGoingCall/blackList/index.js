@@ -1,6 +1,5 @@
 import {
-  call_record_list,
-  call_record_export
+  black_list
 } from "@/service/getData";
 import util from "@/libs/util";
 import sysDictionary from '@/mixin/sysDictionary';
@@ -22,11 +21,8 @@ export default {
       query_loading: false, //查询按钮loading
       export_case_loading: false, //导出按钮loading
       tab_flag: 'KT_CALL_DETAIL', //默认展示科天的
-      dealTime: "",
+      blackTime: [],
       formItem: {
-        blackTime: '',
-        callStartDate: "",
-        callEndDate: ""
       },
       ruleValidate: {
         overdueDaysLt: [
@@ -144,8 +140,8 @@ export default {
     },
     // 改变日期区间的格式之后进行处理
     changeDate(val1, val2) {
-      this.formItem.callStartDate = val1[0];
-      this.formItem.callEndDate = val1[1];
+      this.formItem.startDate  = val1[0];
+      this.formItem.endDate = val1[1];
       // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
     },
     // 页码改变的回调
@@ -163,8 +159,6 @@ export default {
     },
     handleSubmit(name, type) {
       // 单独处理日期的缓存问题
-      this.formItem.blackTime = this.$options.filters['formatDate'](this.formItem.blackTime, 'YYYY-MM-DD')
-      console.log(this.formItem)
       this.pageNo = 1;
       this.getList(type);
     },
@@ -189,17 +183,14 @@ export default {
     },
     // 获取表格数据
     async getList(type) {
+      console.log(this.formItem)
       if (!this.query) {
         this.$Message.error("很抱歉，暂无权限查询");
         return;
       }
-      if (!this.formItem.callStartDate) {
-        this.$Message.error('请选择呼叫日期后再查询');
-        return;
-      }
       this.query_loading = true;
       let res;
-      res = await call_record_list({
+      res = await black_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formItem

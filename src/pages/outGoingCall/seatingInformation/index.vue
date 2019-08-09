@@ -15,7 +15,7 @@
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
           <FormItem label="渠道名称:" >
-            <Select size="small" clearable placeholder="请选择呼叫类型" v-model="formItem.isLock" style="margin-top: 5px">
+            <Select size="small" clearable placeholder="请选择渠道名称" v-model="formItem.channelCode" style="margin-top: 5px">
               <Option
                 v-for="item in getDirObj['TASK_STATUS']"
                 :value="item.itemCode"
@@ -26,7 +26,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
           <FormItem label="渠道类型:" >
-            <Select size="small" clearable placeholder="请选择渠道类型" v-model="formItem.isLock" style="margin-top: 5px">
+            <Select size="small" clearable placeholder="请选择渠道类型" v-model="formItem.channelSecondaryCode" style="margin-top: 5px">
               <Option
                 v-for="item in getDirObj['TASK_STATUS']"
                 :value="item.itemCode"
@@ -133,7 +133,7 @@
             ></Page>
           </div>
         </div>
-        <AddChannel :showAddChannel="showAddChannel" @passBack="passBack"/>
+        <AddChannel :showAddChannel="showAddChannel" @passBack="passBack" :formData="updateChannel"/>
         <SeatsMg :showSeatsMg="showSeatsMg" @passBack="passBack"/>
         <Phone :showPhone="showPhone" @passBack="passBack"/>
       </div>

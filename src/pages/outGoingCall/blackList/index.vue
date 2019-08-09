@@ -15,7 +15,7 @@
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
           <FormItem label="手机号:">
-            <Input size="small" clearable v-model.trim="formItem.callUserName" placeholder="请输入手机号"/>
+            <Input size="small" clearable v-model.trim="formItem.mblNo" placeholder="请输入手机号"/>
           </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -24,8 +24,8 @@
               size="small"
               clearable
               filterable
-              placeholder="请选择坐席类型"
-              v-model="formItem.seatType"
+              placeholder="请选择呼叫类型"
+              v-model="formItem.channelCode"
             >
               <Option
                 v-for="item in getDirObj.SEAT_TYPE"
@@ -40,9 +40,9 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="formItem.blackTime"
+                v-model="blackTime"
                 format="yyyy-MM-dd"
-                type="date"
+                type="daterange"
                 placement="bottom-start"
                 placeholder="请选择呼叫时间"
                 :confirm='false'
@@ -52,7 +52,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="账单号:">
-              <Input size="small" clearable v-model.trim="formItem.callUserName" placeholder="请输入坐席姓名"/>
+              <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入账单号"/>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">

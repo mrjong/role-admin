@@ -4,7 +4,7 @@ import sysDictionary from '@/mixin/sysDictionary';
 export default {
   name: 'AddChannel',
   mixins: [sysDictionary],
-  props: ["showAddChannel"],
+  props: ["showAddChannel", 'updateChannel'],
   data() {
     var alignCenter = 'center';
     var widthVal = 180;
@@ -13,15 +13,7 @@ export default {
     return {
       getDirList: ['EXECUTION_NUMBER', 'TASK_STATUS'],
       getDirObj: {},
-      formData: {
-        name: '',
-        url: '',
-        owner: '',
-        type: '',
-        approver: '',
-        date: '',
-        desc: ''
-      },
+      formData: this.updateChannel ? this.updateChannel : {},
       value3: false,
       styles: {
         height: 'calc(100% - 55px)',
@@ -77,8 +69,6 @@ export default {
         ]
       },
       formValidate: {},
-      formValidateInfo: {
-      },
       pageNo: 1,
       pageSize: 10,
       total: 0,
@@ -146,7 +136,6 @@ export default {
       ],
       add_handle: true, //添加
       dialogFormVisible: false,
-      title: '',
       task_api: [
       ],
       phoneType: ''
@@ -158,10 +147,6 @@ export default {
   },
   methods: {
 
-    handleSubmit(name) {
-      this.pageNo = 1;
-      this.getList();
-    },
     // 获取表格数据
     async getList() {
 
@@ -175,6 +160,7 @@ export default {
       // this.getList();
     },
     handleSubmit(flag) {
+      console.log(this.formData)
       this.$emit("passBack", flag);
     },
     change() {

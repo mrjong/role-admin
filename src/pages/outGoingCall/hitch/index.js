@@ -1,5 +1,5 @@
 import {
-  call_record_list,
+  hitch_list,
   call_record_export
 } from "@/service/getData";
 import util from "@/libs/util";
@@ -22,9 +22,8 @@ export default {
       query_loading: false, //查询按钮loading
       export_case_loading: false, //导出按钮loading
       tab_flag: 'KT_CALL_DETAIL', //默认展示科天的
-      dealTime: "",
+      dealTime: [],
       formItem: {
-        dealTime: [],
       },
       ruleValidate: {
         overdueDaysLt: [
@@ -113,15 +112,6 @@ export default {
     };
   },
   created() {
-    let daily_monitoring_callDetail_form = window.sessionStorage.getItem(
-      "daily_monitoring_callDetail_form"
-    );
-    if (daily_monitoring_callDetail_form) {
-      this.formItem = JSON.parse(daily_monitoring_callDetail_form);
-    }
-    this.formItem.dealTime = [util.getToday(-1), util.getToday(0)];
-    this.formItem.callStartDate = util.getToday(-1);
-    this.formItem.callEndDate = util.getToday(0);
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -149,8 +139,8 @@ export default {
     },
     // 改变日期区间的格式之后进行处理
     changeDate(val1, val2) {
-      this.formItem.callStartDate = val1[0];
-      this.formItem.callEndDate = val1[1];
+      this.formItem.startDate  = val1[0];
+      this.formItem.endDate = val1[1];
       // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
     },
     // 页码改变的回调
@@ -167,18 +157,8 @@ export default {
       this.getList(this.tab_flag);
     },
     handleSubmit(name, type) {
-      // 单独处理日期的缓存问题
-      if (this.formItem.dealTime) {
-        this.formItem.dealTime = [
-          this.formItem.callStartDate,
-          this.formItem.callEndDate
-        ];
-      };
-      window.sessionStorage.setItem(
-        "daily_monitoring_callDetail_form",
-        JSON.stringify(this.formItem)
-      );
       this.pageNo = 1;
+      console.log(this.formItem)
       this.getList(type);
     },
     // 导出
@@ -196,23 +176,6 @@ export default {
         timeout: 120000,
         responseType: "blob"
       };
-      // switch (type) {
-      //   // 科天导出
-      //   case 'KT_CALL_DETAIL':
-      //     res = await kt_callDetail_exportDown(obj, options);
-      //     util.dowloadfile("科天呼叫明细", res);
-      //     break;
-      //   // 容联导出
-      //   case 'RL_CALL_DETAIL':
-      //     res = await rl_callDetail_exportDown(obj, options);
-      //     util.dowloadfile("容联呼叫明细", res);
-      //     break;
-      //   // 讯众导出
-      //   case 'XZ_CALL_DETAIL':
-      //     res = await xz_callDetail_exportDown(obj, options);
-      //     util.dowloadfile("讯众呼叫明细", res);
-      //     break;
-      // }
       res = await call_record_export(obj, options);
       util.dowloadfile("呼叫明细", res);
       this.export_case_loading = false;
@@ -223,39 +186,9 @@ export default {
         this.$Message.error("很抱歉，暂无权限查询");
         return;
       }
-      if (!this.formItem.callStartDate) {
-        this.$Message.error('请选择呼叫日期后再查询');
-        return;
-      }
       this.query_loading = true;
       let res;
-      // switch (type) {
-      //   // 科天
-      //   case 'KT_CALL_DETAIL':
-      //     res = await kt_callDetail_list({
-      //       pageNum: this.pageNo,
-      //       pageSize: this.pageSize,
-      //       ...this.formItem
-      //     });
-      //     break;
-      //   // 容联
-      //   case 'RL_CALL_DETAIL':
-      //     res = await rl_callDetail_list({
-      //       pageNum: this.pageNo,
-      //       pageSize: this.pageSize,
-      //       ...this.formItem
-      //     });
-      //     break;
-      //   // 讯众
-      //   case 'XZ_CALL_DETAIL':
-      //     res = await xz_callDetail_list({
-      //       pageNum: this.pageNo,
-      //       pageSize: this.pageSize,
-      //       ...this.formItem
-      //     });
-      //     break;
-      // };
-      res = await call_record_list({
+      res = await hitch_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formItem
@@ -274,10 +207,6 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {};
-      window.sessionStorage.removeItem("daily_monitoring_callDetail_form");
-      this.formItem.dealTime = [util.getToday(-1), util.getToday(0)];
-      this.formItem.callStartDate = util.getToday(-1);
-      this.formItem.callEndDate = util.getToday(0);
       this.$refs[name].resetFields();
     }
   }

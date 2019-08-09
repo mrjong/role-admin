@@ -20,7 +20,7 @@
               clearable
               filterable
               placeholder="请选择渠道名称"
-              v-model="formItem.seatType"
+              v-model="formItem.channelCode"
             >
               <Option
                 v-for="item in getDirObj.SEAT_TYPE"
@@ -35,7 +35,7 @@
               <DatePicker
                 size="small"
                 style="width:100%"
-                v-model="formItem.dealTime"
+                v-model="dealTime"
                 format="yyyy-MM-dd"
                 type="daterange"
                 placement="bottom-start"

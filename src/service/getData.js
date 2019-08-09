@@ -1712,4 +1712,42 @@ export const apply_arbitration_reverse = (obj) =>
     data: qs.stringify(obj)
   })
 
+//  黑名单
+export const black_list = (obj) =>
+  fetch({
+    url: '/rout/black/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 
+//  故障率
+export const hitch_list = (obj) =>
+  fetch({
+    url: '/rout/error/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//  坐席信息维护查询
+export const seats_config_list = (obj) =>
+  fetch({
+    url: '/rout/config/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//  坐席信息维护添加
+export const seats_config_add = (obj) =>
+  fetch({
+    url: '/rout/config/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//  坐席信息维护修改
+export const seats_config_update = (obj) =>
+  fetch({
+    url: '/rout/config/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })

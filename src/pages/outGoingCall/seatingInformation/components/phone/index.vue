@@ -3,6 +3,7 @@
     :value="showPhone"
     :footer-hide="true"
     @on-cancel="handle_cancel"
+    :mask-closable="false"
     >
     <div class="tel-box-desc">
       <div class="tel-btn-box" style="display: flex">
