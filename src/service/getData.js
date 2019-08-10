@@ -1731,7 +1731,7 @@ export const hitch_list = (obj) =>
 //  坐席信息维护查询
 export const seats_config_list = (obj) =>
   fetch({
-    url: '/rout/config/list',
+    url: '/call/channel/list',
     method: 'POST',
     data: qs.stringify(obj)
   })
@@ -1739,7 +1739,7 @@ export const seats_config_list = (obj) =>
 //  坐席信息维护添加
 export const seats_config_add = (obj) =>
   fetch({
-    url: '/rout/config/add',
+    url: '/call/channel/add',
     method: 'POST',
     data: qs.stringify(obj)
   })
@@ -1747,7 +1747,32 @@ export const seats_config_add = (obj) =>
 //  坐席信息维护修改
 export const seats_config_update = (obj) =>
   fetch({
-    url: '/rout/config/update',
+    url: '/call/channel/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+//  路由信息方案专线列表查新
+export const rout_plan_project_list = (obj) =>
+  fetch({
+    url: '/rout/plan/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//  路由信息方案专线列表添加
+export const rout_plan_project_add = (obj) =>
+  fetch({
+    url: '/rout/plan/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   路由信息方案专线列表修改
+export const rout_plan_project_update = (obj) =>
+  fetch({
+    url: 'rout/plan/update',
     method: 'POST',
     data: qs.stringify(obj)
   })

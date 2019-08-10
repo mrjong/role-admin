@@ -24,6 +24,57 @@
           >
             <Row>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+              <FormItem label="用户名称:" span="4" prop="seatType">
+                <Select
+                  size="small"
+                  v-model="formItem.seatType"
+                  filterable
+                  clearable
+                  placeholder="请选择用户名称"
+                >
+                  <Option
+                    v-for="item in getDirObj['SEAT_TYPE']"
+                    :value="item.itemCode"
+                    :key="item.itemCode"
+                  >{{ item.itemName }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+              <FormItem label="呼叫方式:" span="4" prop="seatType">
+                <Select
+                  size="small"
+                  v-model="formItem.seatType"
+                  filterable
+                  clearable
+                  placeholder="请选择呼叫方式"
+                >
+                  <Option
+                    v-for="item in getDirObj['SEAT_TYPE']"
+                    :value="item.itemCode"
+                    :key="item.itemCode"
+                  >{{ item.itemName }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+              <FormItem label="方案/专线:" span="4" prop="seatType">
+                <Select
+                  size="small"
+                  v-model="formItem.seatType"
+                  filterable
+                  clearable
+                  placeholder="请选择方案/专线"
+                >
+                  <Option
+                    v-for="item in getDirObj['SEAT_TYPE']"
+                    :value="item.itemCode"
+                    :key="item.itemCode"
+                  >{{ item.itemName }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
                 <FormItem label="坐席类型:" span="4" prop="seatType">
                   <Select
                     size="small"
@@ -48,11 +99,6 @@
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
                 <FormItem span="4" label="登陆账号:" prop="loginId">
                   <Input size="small" clearable v-model="formItem.loginId" :maxlength="10" placeholder="请输入登陆账号"></Input>
-                </FormItem>
-              </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem span="4" label="员工编号:" prop="empno">
-                  <Input size="small" clearable v-model="formItem.empno" placeholder="请输入员工编号"></Input>
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">

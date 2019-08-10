@@ -92,31 +92,31 @@ export default {
           title: '渠道名称',
           align: alignCenter,
           width: widthVal,
-          key: 'jobName'
+          key: 'channelName'
         },
         {
           title: '渠道类型',
           align: alignCenter,
           width: widthVal,
-          key: 'jobName'
+          key: 'channelSecondaryName'
         },
         {
           title: '状态',
-          key: 'isLockName',
+          key: 'statusName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
         },
         {
           title: '号码类型',
-          key: 'cronExpression',
+          key: 'explicitTypeName',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
         },
         {
           title: '坐席数量',
-          key: 'jobClass',
+          key: 'loginName',
           className: 'tableMainW',
           align: alignCenter,
           width: 300,
@@ -124,21 +124,21 @@ export default {
         },
         {
           title: '号码数量',
-          key: 'jobMethod',
+          key: 'explicitCount',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
         },
         {
           title: '地域盲区',
-          key: 'ipAddress',
+          key: 'deadAreaatus',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
         },
         {
           title: '创建时间',
-          key: 'executionNumberName',
+          key: 'createTime',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
@@ -186,10 +186,10 @@ export default {
     // 获取表格数据
     async getList(type) {
       console.log(this.formItem)
-      if (!this.query) {
-        this.$Message.error("很抱歉，暂无权限查询");
-        return;
-      }
+      // if (!this.query) {
+      //   this.$Message.error("很抱歉，暂无权限查询");
+      //   return;
+      // }
       this.query_loading = true;
       let res;
       res = await seats_config_list({

@@ -1,4 +1,4 @@
-import OutGoingCallMaintenance from './components/outGoingCallMaintenance';
+import OutGoingCallMaintenance from './components/relationship_maintain_page';
 import ProjectMaintenance from './components/projectMaintenance';
 export default {
   components: {

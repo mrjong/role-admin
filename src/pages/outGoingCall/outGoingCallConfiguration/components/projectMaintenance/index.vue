@@ -15,24 +15,22 @@
       </Button>
     </p>
     <div style="width: 70%; margin: auto">
-      <el-carousel :interval="4000" type="card" height="500px" arrow="always" indicator-position="none" :autoplay="true" v-if="projectFlag ==='primary'" @change="dd2">
-      <el-carousel-item v-for="item, index in 6" :key="index">
+      <el-carousel :interval="4000" type="card" height="500px" arrow="always" indicator-position="none" :autoplay="true" v-if="projectFlag ==='primary'" @change="dd" ref="carousel">
+      <el-carousel-item v-for="item, index in projectList" :key="index">
         <Card class="carousel-card">
-          <p slot="title" @click="aa">方案{{item}}</p>
+          <p slot="title" @click="aa">{{item.planName}}</p>
           <div style="font-weight: 700; font-size: 16px; padding-top: 30px; margin-left: 30px;">第一优先渠道:</div>
           <div style="margin-left: 130px; margin-top: 10px">
             <CheckboxGroup v-model="project">
-              <Checkbox label="香蕉"></Checkbox>
-              <Checkbox label="苹果"></Checkbox>
-              <Checkbox label="西瓜"></Checkbox>
+              <Checkbox v-for="itemChild in item.channelTwo" :label="itemChild.i" :key="itemChild.i">
+              </Checkbox>
             </CheckboxGroup>
           </div>
           <div style="font-weight: 700; font-size: 16px; margin-top: 20px; margin-left: 30px;">第二优先渠道:</div>
           <div style="margin-left: 130px; margin-top: 10px">
             <CheckboxGroup v-model="project">
-              <Checkbox label="香蕉"></Checkbox>
-              <Checkbox label="苹果"></Checkbox>
-              <Checkbox label="西瓜"></Checkbox>
+              <Checkbox v-for="itemChild in item.channelTwo" :label="itemChild.i" :key="itemChild.i">
+              </Checkbox>
             </CheckboxGroup>
           </div>
           <div style="font-weight: 700; font-size: 16px; margin-top: 20px; margin-left: 30px;">
@@ -65,6 +63,7 @@
             <div style="flex: 1"></div>
             <Button size="small"
                     style="width:80px; margin-top: 30px;"
+                    v-if="isAction === index"
                     @click="showAddChannel=true"
                     type="primary">修改
             </Button>
@@ -78,12 +77,13 @@
         type="card" height="400px"
         arrow="always" indicator-position="none"
         :autoplay="cc"
-        v-else
         @change="dd"
+        v-else
+        ref="carousel"
       >
         <el-carousel-item v-for="item, index in 6" :key="index">
           <Card class="carousel-card" style="height: 300px">
-            <p slot="title">专线{{item}}</p>
+            <p slot="title">专线{{index}}</p>
             <div style="padding-top: 30px; margin-left: 30px;">
               <div style="margin-bottom: 20px">
                 <span style="font-weight: 700; font-size: 16px">渠道: </span>
@@ -102,6 +102,7 @@
                 <Button size="small"
                         style="width:80px;     margin-top: 20px;"
                         @click="showAddChannel=true"
+                        v-if="isAction === index"
                         type="primary">修改
                 </Button>
               </div>

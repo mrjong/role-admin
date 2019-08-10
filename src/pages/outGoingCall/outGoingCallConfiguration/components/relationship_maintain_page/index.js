@@ -247,6 +247,7 @@ export default {
       if (item.type !== '03') {
         return;
       }
+
       switch (item.url) {
         case "query": this.query = true;
           break;

@@ -1,4 +1,4 @@
-import { } from '@/service/getData';
+import {seats_config_add } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 
 export default {
@@ -11,10 +11,11 @@ export default {
     var widthMidVal = 130;
 
     return {
-      getDirList: ['EXECUTION_NUMBER', 'TASK_STATUS'],
+      getDirList: ['SEAT_TYPE'],
       getDirObj: {},
-      formData: this.updateChannel ? this.updateChannel : {},
-      value3: false,
+      formData: this.updateChannel ? this.updateChannel : {
+        channelCode: '1',
+      },
       styles: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -159,8 +160,11 @@ export default {
       this.$refs[name].resetFields();
       // this.getList();
     },
-    handleSubmit(flag) {
+    async handleSubmit(flag) {
       console.log(this.formData)
+      await seats_config_add(this.formData).then(res=>{
+        console.log(res)
+      })
       this.$emit("passBack", flag);
     },
     change() {

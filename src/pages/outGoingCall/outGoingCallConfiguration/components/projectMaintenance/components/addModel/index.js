@@ -1,4 +1,4 @@
-import { } from '@/service/getData';
+import {rout_plan_project_add } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 
 export default {
@@ -11,18 +11,19 @@ export default {
     var widthMidVal = 130;
 
     return {
-      getDirList: ['EXECUTION_NUMBER', 'TASK_STATUS'],
+      getDirList: ['SEAT_TYPE'],
       getDirObj: {},
       project: ['苹果'],
       addLoading: false,
       formData: {
-        name: '',
-        url: '',
-        owner: '',
-        type: '',
-        approver: '',
-        date: '',
-        desc: ''
+        planType: '1',
+        territorialCallStatus: 1,
+        phoneCallStatus: 1,
+        failureRateStatus: 1,
+        connectionRateStatus: 1,
+      },
+      formData2: {
+
       },
       ruleValidate:{
         jobName: [
@@ -82,13 +83,28 @@ export default {
     };
 
   },
+  watch: {
+    showAddModel: function () {
+
+    }
+  },
   created() {
     // this.getList();
   },
   methods: {
-    handleSubmit(flag) {
+    async handleSubmit(flag) {
+      console.log(this.formData)
+      const res = await rout_plan_project_add(this.formData);
+      if (res.code === 1) {
+        console.log(res.data)
+        // this.projectList = res.data
+      } else {
+        this.$Message.error(res.message)
+      }
       this.$emit("passBack", flag);
     },
+    // getChannelTwo(data) {
+    // },
     change() {
 
     },

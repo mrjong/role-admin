@@ -14,8 +14,11 @@
           <FormItem label="渠道名称:" label-position="top">
             <div style="display: flex; align-items: center;">
               <Select v-model="formData.channelName" placeholder="please choose the approver" style="margin-right: 20px">
-                <Option value="jobs">北京</Option>
-                <Option value="ive">云南</Option>
+                <Option
+                  v-for="item in getDirObj['SEAT_TYPE']"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
               </Select>
             </div>
           </FormItem>
@@ -36,8 +39,15 @@
           <Col span="24">
           <FormItem label="号码类型:" label-position="top">
             <RadioGroup v-model="formData.explicitType" style="display: flex; margin-top: 3px;">
-              <Radio label="固话"></Radio>
-              <Radio label="手机电话"></Radio>
+              <Radio label="1">
+                <span>固话</span>
+              </Radio>
+              <Radio label="2">
+                <span>手机电话</span>
+              </Radio>
+              <Radio label="3">
+                <span>虚拟号码</span>
+              </Radio>
             </RadioGroup>
             <div>说明：渠道提供的外显号码的类型</div>
           </FormItem>
@@ -51,7 +61,7 @@
                 <Option value="jobs">北京</Option>
                 <Option value="ive">云南</Option>
               </Select>
-              <i-switch style="width: 53px">
+              <i-switch style="width: 53px" :true-value="1" :false-value="0" >
                 <span slot="open">开</span>
                 <span slot="close">关</span>
               </i-switch>

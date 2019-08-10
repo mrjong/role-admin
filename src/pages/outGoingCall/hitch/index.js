@@ -6,7 +6,7 @@ import util from "@/libs/util";
 import sysDictionary from '@/mixin/sysDictionary';
 
 export default {
-  name: "overduePayment",
+  name: "hitch",
   mixins: [sysDictionary],
   data() {
     var alignCenter = "center";
@@ -114,6 +114,7 @@ export default {
   created() {
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    debugger
     buttonPermissionList.forEach(item => {
       if (item.type !== "03") {
         return;

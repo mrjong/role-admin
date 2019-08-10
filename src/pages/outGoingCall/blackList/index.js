@@ -5,7 +5,7 @@ import util from "@/libs/util";
 import sysDictionary from '@/mixin/sysDictionary';
 
 export default {
-  name: "overduePayment",
+  name: "blackList",
   mixins: [sysDictionary],
   data() {
     var alignCenter = "center";
