@@ -68,6 +68,7 @@ export default {
       apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
       apply_remission: false,//案件详情申请减免权限
+      APPLY_QR_CODE: false,//收款二维码权限
       add_collect_loading: false,//添加催记按钮loading
       add_txl_loading: false,//添加通讯录提交按钮loading
       message_detail_flag: false,//站内信modal是否显示
@@ -1605,6 +1606,9 @@ export default {
     if (Cookie.get('apply_remission') === 'true') {
       this.apply_remission = true;
     };
+    if (Cookie.get('APPLY_QR_CODE') === 'true') {
+      this.APPLY_QR_CODE = true;
+    };
     let params = location.hash.split('?');
     const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
     this.caseNo = window.atob(queryData.caseNotest);
@@ -2284,6 +2288,9 @@ export default {
           case 'jianmian':
             this.$Message.success('申请成功');
             break;
+          case 'gathering':
+            this.$Message.success('二维码生成成功');
+            break;
           default:
             break;
         }
@@ -2331,6 +2338,7 @@ export default {
       }
       this.modal[type] = true;
     },
+    // 判断是否存在二维码
     async offlineScanPay_apply(name) {
       const res = await offlineScanPay_apply({
         caseNo: this.caseNo,
@@ -2343,6 +2351,8 @@ export default {
           tableData: this.tableData
         };
         this.modal[name] = true;
+      } else if (res.code === 3000002) {
+        this.$Message.info('二维码正在失效中，请稍后重试！')
       } else {
         this.breaks_data = {
           caseNo: this.caseNo,

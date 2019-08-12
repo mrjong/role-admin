@@ -275,7 +275,7 @@ export default {
       });
       this.jianmian_loading = false;
       if (res.code === 1) {
-        this.$Message.success('二维码已失效');
+        this.$Message.success(res.data);
         clearTimeout(timer)
         var timer = setTimeout(() => {
           this.$emit('passBack', { flag: false, name: 'QR_code_detail', });

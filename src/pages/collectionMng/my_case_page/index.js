@@ -57,6 +57,7 @@ export default {
       apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
       apply_remission: false,//案件详情申请减免权限
+      APPLY_QR_CODE: false,//收款二维码权限
       query_loading: false,//查询按钮loading
       export_case_loading: false,//导出按钮loading
       summary: {},
@@ -396,6 +397,8 @@ export default {
           break;
         case "apply_remission": this.apply_remission = true;
           break;
+        case "APPLY_QR_CODE": this.APPLY_QR_CODE = true;
+          break;
       }
     });
     Cookie.set('all_opt', this.all_opt);
@@ -403,6 +406,7 @@ export default {
     Cookie.set('apply_arbitrament', this.apply_arbitrament);
     Cookie.set('apply_deduct', this.apply_deduct);
     Cookie.set('apply_remission', this.apply_remission);
+    Cookie.set('APPLY_QR_CODE', this.APPLY_QR_CODE);
     // 沟通状态
     this.collectcode_getListByCodeType();
     this.getList();

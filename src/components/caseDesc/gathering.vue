@@ -245,6 +245,9 @@
                 </div>
                 <div v-else>{{Number(row.repayAmt).toFixed(2)}}</div>
               </template>
+              <template slot-scope="{ row, column, index }" slot="reliefAmt">
+                <div >{{Number(row.reliefAmt).toFixed(2)}}</div>
+              </template>
             </Table>
           </div>
         </Col>

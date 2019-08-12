@@ -18,7 +18,8 @@ export default {
       QR_CODE_INFO: {},
       htmlUrl: '',
       download_loading: false,
-      failure_loading: false
+      failure_loading: false,
+      spinShow: true,
     }
   },
   created() {
@@ -42,7 +43,7 @@ export default {
         a.download = "收款码"; // 设置图片名称
         a.href = url; // 将生成的URL设置为a.href属性
         a.dispatchEvent(event); // 触发a的单击事件
-        document.body.removeChild(a); // 下载完成移除元素
+        // document.body.removeChild(a); // 下载完成移除元素
         this.download_loading = false;
       })
     },
@@ -60,6 +61,8 @@ export default {
       console.log(res);
       if (res.code === 1) {
         this.QR_CODE_INFO = res.data;
+        this.QR_CODE_INFO.qrCodeInfo = this.QR_CODE_INFO.qrCodeInfo? 'data:image/png;base64,'+ this.QR_CODE_INFO.qrCodeInfo :'';
+        this.spinShow = false;
       } else {
         this.$Message.error(res.message);
       }
@@ -72,7 +75,7 @@ export default {
       });
       this.failure_loading = false;
       if (res.code === 1) {
-        this.$Message.success('二维码已失效');
+        this.$Message.success(res.data);
         clearTimeout(timer)
         var timer = setTimeout(() => {
           this.$emit('passBack', { flag: false, name: 'QR_CODE', });

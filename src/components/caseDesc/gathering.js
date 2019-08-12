@@ -172,6 +172,7 @@ export default {
           searchOperator: 'like',
           key: 'reliefAmt',
           align: 'center',
+          slot: 'reliefAmt'
         },
         {
           title: '还款金额',
@@ -232,8 +233,11 @@ export default {
             if (Number(i.perdNum) === Number(j.perdNum)) {
               i.error_flag = false;
               reliefAmt += Number(j.reliefAmt);
-              i.reliefAmt = reliefAmt.toFixed(2);
-              i.repayAmt = Number(i.perdTotSur) - i.reliefAmt;
+              i.reliefAmt = reliefAmt;
+              // i.repayAmt = Number(i.perdTotSur - i.reliefAmt).toFixed(2);
+              i.repayAmt = Number(i.perdTotSur - i.reliefAmt);
+              // i.repayAmt = Number(i.repayAmt).toFixed(2);
+              console.log(i.repayAmt)
               this.$set(this.tableData_repayment, index, i)
             }
           });
@@ -242,8 +246,9 @@ export default {
           if (Number(i.perdNum) === Number(row[0].perdNum)) {
             i.error_flag = false;
             reliefAmt = Number(i.reliefAmt) - Number(row[0].reliefAmt);
-            i.reliefAmt = reliefAmt.toFixed(2);
-            i.repayAmt = i.reliefAmt > 0 ? Number(i.perdTotSur) - i.reliefAmt : 0;
+            // i.reliefAmt = reliefAmt.toFixed(2);
+            i.reliefAmt = reliefAmt;
+            i.repayAmt = i.reliefAmt > 0 ? Number(i.perdTotSur) - Number(i.reliefAmt): 0;
             this.$set(this.tableData_repayment, index, i)
           }
         }
@@ -482,26 +487,13 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    // // 减免数据修改
-    // async relief_relieford_updatereliefdetail() {
-    //   const res = await relief_relieford_updatereliefdetail({
-    //     id: this.breaks_data.id,
-    //     reliefAmt: this.formItem.reliefAmt
-    //   });
-    //   console.log(res);
-    //   if (res.code === 1) {
-    //     this.$emit('passBack', { flag: false, status: 'ok', name: 'gathering' });
-    //   } else {
-    //     this.$Message.error(res.message)
-    //   }
-    // },
     // 减免申请接口
     async offlineScanPay_generate() {
       if (this.totRepayAmt === 0) {
         this.$Message.error('还款金额不能为0');
         return;
       }
-      console.log(this.tableData);
+      console.log(this.tableData_repayment);
       this.jianmian_loading = true;
       // this.formItem.reliefRemark = JSON.stringify(this.formItem.reliefRemark);
       const res = await offlineScanPay_generate(
@@ -512,7 +504,7 @@ export default {
           userMblNoHid: this.overdue_info.mblNoHid,
           billPerdInfos: this.overdue_info.billPerdInfos,
           totReliefAmt: this.totReliefAmt,
-          totRepayAmt: this.totRepayAmt,
+          totRepayAmt: Number(this.totRepayAmt.toFixed(2)),
           ...this.formItem,
           reliefStatus: 'O',
           reliefOrigin: 'OS',

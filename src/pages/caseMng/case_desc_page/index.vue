@@ -78,7 +78,7 @@
             <span>信用进度</span>
           </span>
           <Button
-            v-if="readType!=='read'"
+            v-if="readType!=='read' && APPLY_QR_CODE && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
             @click="handOpen('gathering')"
             class="fr vue-back-btn header-btn"
             type="primary"
