@@ -141,7 +141,14 @@ export default {
           key: 'createTime',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthVal,
+          render: (h, params) => {
+            let createDate = params.row.createTime;
+            createDate = createDate
+              ? this.$options.filters['formatDate'](createDate, 'YYYY-MM-DD HH:mm:ss')
+              : createDate;
+            return h('span', createDate);
+          }
         },
         {
           title: '操作',
@@ -219,6 +226,7 @@ export default {
       let data = JSON.parse(JSON.stringify(originalData))
       switch(flag) {
         case 'update':
+          debugger
           this.updateChannel = data
           this.showAddChannel = true
           break;

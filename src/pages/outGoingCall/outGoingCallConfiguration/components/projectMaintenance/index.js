@@ -60,6 +60,7 @@ export default {
       }
     },
     passBack() {
+      debugger
       this.showAddModel = ''
     },
     addModel() {
@@ -68,13 +69,9 @@ export default {
       }else {
         this.showAddModel = 'line'
       }
-      console.log(this.showAddModel)
     },
     dd(a) {
       this.isAction = a
-    },
-    dd2(a) {
-      this.isAction1 = a
     },
   }
 };

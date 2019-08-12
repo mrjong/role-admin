@@ -13,9 +13,7 @@ export default {
     return {
       getDirList: ['SEAT_TYPE'],
       getDirObj: {},
-      formData: this.updateChannel ? this.updateChannel : {
-        channelCode: '1',
-      },
+      formData: this.updateChannel ? this.updateChannel : {},
       styles: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -69,72 +67,9 @@ export default {
           }
         ]
       },
-      formValidate: {},
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      tableData: [
-      ],
-      tableColumns: [
-        {
-          title: '渠道名称',
-          align: alignCenter,
-          width: widthVal,
-          key: 'jobName'
-        },
-        {
-          title: '状态',
-          key: 'isLockName',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '号码类型',
-          key: 'cronExpression',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '坐席数量',
-          key: 'jobClass',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: 300,
-          tooltip: true
-        },
-        {
-          title: '号码数量',
-          key: 'jobMethod',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '地域盲区',
-          key: 'ipAddress',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '创建时间',
-          key: 'executionNumberName',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        },
-        {
-          title: '操作',
-          slot: 'handle',
-          key: 'edit',
-          className: 'tableMainHandle',
-          width: 280,
-          fixed: 'left',
-          align: 'center',
-        }
-      ],
       add_handle: true, //添加
       dialogFormVisible: false,
       task_api: [
@@ -144,13 +79,21 @@ export default {
 
   },
   created() {
+    console.log(this.updateChannel)
     // this.getList();
+  },
+  watch: {
+    updateChannel: function (value) {
+      debugger
+      console.log(value)
+    }
   },
   methods: {
 
-    // 获取表格数据
-    async getList() {
-
+    selectChannel(value) {
+      console.log(value)
+      this.formData.channelCode = value.value
+      this.formData.channelName = value.label
     },
     // 重置
     clearForm(name) {
@@ -165,6 +108,7 @@ export default {
       await seats_config_add(this.formData).then(res=>{
         console.log(res)
       })
+      this.formData = {}
       this.$emit("passBack", flag);
     },
     change() {

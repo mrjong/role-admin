@@ -133,7 +133,7 @@
             ></Page>
           </div>
         </div>
-        <AddChannel :showAddChannel="showAddChannel" @passBack="passBack" :formData="updateChannel"/>
+        <AddChannel :showAddChannel="showAddChannel" @passBack="passBack" :updateChannel="updateChannel"/>
         <SeatsMg :showSeatsMg="showSeatsMg" @passBack="passBack"/>
         <Phone :showPhone="showPhone" @passBack="passBack"/>
       </div>

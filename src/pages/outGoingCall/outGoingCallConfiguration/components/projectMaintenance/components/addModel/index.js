@@ -84,8 +84,9 @@ export default {
 
   },
   watch: {
-    showAddModel: function () {
-
+    showAddModel: function (value) {
+      debugger
+      console.log(value)
     }
   },
   created() {
@@ -93,6 +94,7 @@ export default {
   },
   methods: {
     async handleSubmit(flag) {
+      this.$emit("passBack", flag);
       console.log(this.formData)
       const res = await rout_plan_project_add(this.formData);
       if (res.code === 1) {
@@ -101,7 +103,7 @@ export default {
       } else {
         this.$Message.error(res.message)
       }
-      this.$emit("passBack", flag);
+
     },
     // getChannelTwo(data) {
     // },

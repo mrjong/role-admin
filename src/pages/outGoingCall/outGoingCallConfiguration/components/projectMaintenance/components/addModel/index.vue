@@ -2,7 +2,7 @@
   <div class="panel_list">
     <!-- 检索条件 -->
     <Modal
-      :value="showAddModel==='project'"
+     :value="showAddModel==='project'"
       width="720"
       :closable="false"
       title="添加方案"

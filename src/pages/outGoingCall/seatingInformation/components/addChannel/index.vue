@@ -13,7 +13,7 @@
           <Col span="10">
           <FormItem label="渠道名称:" label-position="top">
             <div style="display: flex; align-items: center;">
-              <Select v-model="formData.channelName" placeholder="please choose the approver" style="margin-right: 20px">
+              <Select @on-change="selectChannel" placeholder="请选择渠道名称" style="margin-right: 20px" :label-in-value="true">
                 <Option
                   v-for="item in getDirObj['SEAT_TYPE']"
                   :value="item.itemCode"
@@ -26,11 +26,11 @@
           <Col span="14">
           <FormItem label="渠道类型:" label-position="top">
             <div style="display: flex; align-items: center;">
-              <Input v-model="formData.channelSecondaryName" placeholder="please " style="margin-right: 20px; width: 70%"/>
-              <i-switch>
-                <span slot="open">开</span>
-                <span slot="close">关</span>
-              </i-switch>
+              <Input v-model="formData.channelSecondaryName" placeholder="请输入渠道类型" style="margin-right: 20px; width: 70%"/>
+              <!--<i-switch>-->
+                <!--<span slot="open">开</span>-->
+                <!--<span slot="close">关</span>-->
+              <!--</i-switch>-->
             </div>
           </FormItem>
           </Col>
@@ -57,14 +57,14 @@
           <Col span="24">
           <FormItem label="地域盲区:" label-position="top">
             <div style="display: flex; align-items: center;">
-              <Select v-model="formData.areas" placeholder="please choose the approver" style="margin-right: 20px">
+              <Select v-model="formData.areas" placeholder="请选择地域盲区" style="margin-right: 20px">
                 <Option value="jobs">北京</Option>
                 <Option value="ive">云南</Option>
               </Select>
-              <i-switch style="width: 53px" :true-value="1" :false-value="0" >
-                <span slot="open">开</span>
-                <span slot="close">关</span>
-              </i-switch>
+              <!--<i-switch style="width: 53px" :true-value="1" :false-value="0" >-->
+                <!--<span slot="open">开</span>-->
+                <!--<span slot="close">关</span>-->
+              <!--</i-switch>-->
             </div>
             <div>说明：被叫号码归属地为地域盲区，则呼叫时自动排除此线路。</div>
           </FormItem>

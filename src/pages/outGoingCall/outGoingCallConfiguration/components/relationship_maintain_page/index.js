@@ -287,10 +287,10 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      if (!this.query) {
-        this.$Message.error('很抱歉，暂无查询权限');
-        return;
-      }
+      // if (!this.query) {
+      //   this.$Message.error('很抱歉，暂无查询权限');
+      //   return;
+      // }
       this.query_loading = true;
       const res = await call_employee_list({
         ...this.formItem,

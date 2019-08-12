@@ -22,15 +22,13 @@
           <div style="font-weight: 700; font-size: 16px; padding-top: 30px; margin-left: 30px;">第一优先渠道:</div>
           <div style="margin-left: 130px; margin-top: 10px">
             <CheckboxGroup v-model="project">
-              <Checkbox v-for="itemChild in item.channelTwo" :label="itemChild.i" :key="itemChild.i">
-              </Checkbox>
+              <Checkbox v-for="itemChild in item.channelTwo" :label="itemChild.i"></Checkbox>
             </CheckboxGroup>
           </div>
           <div style="font-weight: 700; font-size: 16px; margin-top: 20px; margin-left: 30px;">第二优先渠道:</div>
           <div style="margin-left: 130px; margin-top: 10px">
             <CheckboxGroup v-model="project">
-              <Checkbox v-for="itemChild in item.channelTwo" :label="itemChild.i" :key="itemChild.i">
-              </Checkbox>
+              <Checkbox v-for="itemChild in item.channelTwo" :label="itemChild.i"></Checkbox>
             </CheckboxGroup>
           </div>
           <div style="font-weight: 700; font-size: 16px; margin-top: 20px; margin-left: 30px;">
@@ -62,13 +60,12 @@
           <div style="display: flex">
             <div style="flex: 1"></div>
             <Button size="small"
-                    style="width:80px; margin-top: 30px;"
+                    style="width:80px; margin-top: 50px;"
                     v-if="isAction === index"
                     @click="showAddChannel=true"
                     type="primary">修改
             </Button>
           </div>
-
         </Card>
       </el-carousel-item>
       </el-carousel>
