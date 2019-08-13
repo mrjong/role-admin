@@ -17,7 +17,7 @@ export default {
     var widthMidVal = 130;
 
     return {
-      getDirList: ['EXECUTION_NUMBER', 'TASK_STATUS'],
+      getDirList: ['EXECUTION_NUMBER', 'SEAT_TYPE'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -29,64 +29,14 @@ export default {
       showPhone: false,
       formItem: {
       },
-      updateChannel: {},
+      updateChannelData: {},
+      seatsData: {},
       ruleValidate:{
-        jobName: [
-          {
-            required: true,
-            message: '请输入任务名称',
-            trigger: 'blur',
-          }
-        ],
-        jobClass: [
-          {
-            required: true,
-            message: '请输入任务类名',
-            trigger: 'blur',
-          }
-        ],
-        jobMethod: [
-          {
-            required: true,
-            message: '请输入任务方法名',
-            trigger: 'blur',
-
-          }
-        ],
-        ipAddress: [
-          {
-            required: true,
-            message: '请输入IP地址',
-            trigger: 'blur'
-          }
-        ],
-        cronExpression: [
-          {
-            required: true,
-            message: '请输入CRON表达式',
-            trigger: 'blur',
-
-          }
-        ],
-        executionNumber: [
-          {
-            required: true,
-            message: '请选择执行次数',
-            trigger: 'change',
-          }
-        ]
-      },
-      formValidate: {},
-      formValidateInfo: {
       },
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      tableData: [
-        {
-          jobName: '333'
-        }
-      ],
+      tableData: [],
       tableColumns: [
         {
           title: '渠道名称',
@@ -116,7 +66,7 @@ export default {
         },
         {
           title: '坐席数量',
-          key: 'loginName',
+          key: 'seatCount',
           className: 'tableMainW',
           align: alignCenter,
           width: 300,
@@ -131,7 +81,7 @@ export default {
         },
         {
           title: '地域盲区',
-          key: 'deadAreaatus',
+          key: 'deadArea',
           className: 'tableMainW',
           align: alignCenter,
           width: widthVal
@@ -226,15 +176,14 @@ export default {
       let data = JSON.parse(JSON.stringify(originalData))
       switch(flag) {
         case 'update':
-          debugger
-          this.updateChannel = data
+          this.updateChannelData = data
           this.showAddChannel = true
           break;
         case 'seatsMg':
+          this.seatsData = data
           this.showSeatsMg = true
           break;
         case 'faultDebugger':
-          debugger
           this.showPhone = true
           break;
       }
@@ -246,10 +195,15 @@ export default {
     rowStyle(){
       return 'row_style'
     },
-    passBack(){
+    passBack(flag){
+      if(flag){
+        this.getList()
+      }
       this.showAddChannel = false
       this.showSeatsMg = false
       this.showPhone = false
+      this.updateChannelData = {}
+      this.seatsData = {}
     },
 
     showTask(flag, data) {

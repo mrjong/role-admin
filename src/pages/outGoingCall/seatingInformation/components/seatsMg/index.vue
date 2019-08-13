@@ -8,34 +8,35 @@
       @on-close="closeDrawer"
       :styles="styles"
     >
-      <Tabs value="TimedTask" style="background: #fff; border-radius: 4px;" >
-        <TabPane label="坐席编号（10）" name="TimedTask">
+      <Tabs value="Seats" style="background: #fff; border-radius: 4px;" @on-click="changeTab">
+        <TabPane :label="'坐席编号（'+tableDataSeats.length+'）'" name="Seats">
           <Card class="vue-panel" style="margin-bottom: 30px;" :dis-hover="true">
-            <Form :model="formData" :label-width="80" >
+            <Form :model="formData" :label-width="80" :rules="seatsRuleValidate">
               <Row>
                 <Col span="12">
-                <FormItem label="坐席编号:">
-                  <Input size="small" clearable v-model.trim="formData.billNo" placeholder="请输入坐席编号"/>
+                <FormItem label="坐席编号:" prop="seatNo">
+                  <Input size="small" clearable v-model.trim="formData.seatNo" placeholder="请输入坐席编号"/>
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="账号:">
-                  <Input size="small" clearable v-model.trim="formData.billNo" placeholder="请输入账号"/>
+                <FormItem label="账号:" prop="loginName">
+                  <Input size="small" clearable v-model.trim="formData.loginName" placeholder="请输入账号"/>
                 </FormItem>
                 </Col>
               </Row>
               <Row>
                 <Col span="12">
-                <FormItem label="密码:">
-                  <Input size="small" clearable v-model.trim="formData.billNo" placeholder="请输入密码"/>
+                <FormItem label="密码:" prop="passWord">
+                  <Input size="small" clearable v-model.trim="formData.passWord" placeholder="请输入密码"/>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem style="text-align: right">
                   <Button size="small"
                           style="width:80px"
-                          @click="showAddChannel=true"
+                          @click="handleSubmitSeats"
                           type="primary"
+                          :loading="add_loading"
                           v-if="add_handle" >添加
                   </Button>
                 </FormItem>
@@ -45,47 +46,34 @@
           </Card>
           <Card class="vue-panel"  :dis-hover="true">
             <p slot="title" style="display: flex; align-items: center;">
-              <Input placeholder="Enter something..." search size="small" style="width: 30%; "/>
+              <Input placeholder="请输入坐席编号" search size="small" style="width: 30%; " @on-search="getListSeats" v-model="seatsNo" enter-button="Search"/>
               <span style="flex: 1"></span>
               <span>
-            <Button size="small" style="width:80px" @click="showTask('add')" v-if="add_handle">删除</Button>
-            <Button size="small" style="width:80px" @click="showTask('add')" v-if="add_handle" type="primary">导入</Button>
+            <Button size="small" style="width:80px" v-if="add_handle" @click="deleteSeats">删除</Button>
+            <Button size="small" style="width:80px" v-if="add_handle" type="primary">导入</Button>
           </span>
             </p>
-            <Table border ref="selection" :columns="tableColumns" :data="tableData"   size="small"></Table>
-            <div class="vue-panel-page">
-              <div style="float: right;">
-                <Page
-                  :total="total"
-                  show-total
-                  size="small"
-                  :page-size-opts="[10, 20, 50, 100]"
-                  show-elevator
-                  show-sizer
-                  :page-size="pageSize"
-                  :current="pageNo"
-                  @on-page-size-change="changeSize"
-                  @on-change="changePage"
-                ></Page>
-              </div>
-            </div>
+            <Table border ref="selection" :columns="tableColumnsSeats" :data="tableDataSeats"   size="small" @on-selection-change="selectItem">
+
+            </Table>
           </Card>
         </TabPane>
-        <TabPane label="外显号码（10）" name="TaskDetails">
+        <TabPane :label="'外显号码（'+tableDataExplicitNumber.length+'）'" name="explicitNumber">
           <Card class="vue-panel" :dis-hover="true" style="margin-bottom: 30px;">
-            <Form :model="formData" :label-width="80" >
+            <Form :label-width="80" >
               <Row>
                 <Col span="12">
                 <FormItem label="号码:">
-                  <Input size="small" clearable v-model.trim="formData.billNo" placeholder="请输入号码"/>
+                  <Input size="small" clearable v-model.trim="explicitNumber" placeholder="请输入号码"/>
                 </FormItem>
                 </Col>
                 <Col span="12">
                 <FormItem style="text-align: right">
                   <Button size="small"
                           style="width:80px"
-                          @click="showAddChannel=true"
+                          @click="handleSubmitExplicit"
                           type="primary"
+                          :loading="add_loading_explicit"
                           v-if="add_handle" >添加
                   </Button>
                 </FormItem>
@@ -96,30 +84,14 @@
           <div style="height: 100%; background: #fff">
           <Card class="vue-panel" :dis-hover="true">
             <p slot="title" style="display: flex; align-items: center;">
-              <Input placeholder="Enter something..." size="small" style="width: 30%; " search/>
+              <Input placeholder="Enter something..." size="small" style="width: 30%; " search v-model="explicitNumberSearch" enter-button="Search" @on-search="getListExplicit" />
               <span style="flex: 1"></span>
               <span>
-            <Button size="small" style="width:80px" @click="showTask('add')">删除</Button>
-            <Button size="small" style="width:80px" @click="showTask('add')" type="primary">导入</Button>
+            <Button size="small" style="width:80px" @click="deleteExplicit">删除</Button>
+            <Button size="small" style="width:80px" type="primary">导入</Button>
           </span>
             </p>
-            <Table border ref="selection" :columns="tableColumns2" :data="tableData" size="small"></Table>
-            <div class="vue-panel-page">
-              <div style="float: right;">
-                <Page
-                  :total="total"
-                  show-total
-                  size="small"
-                  :page-size-opts="[10, 20, 50, 100]"
-                  show-elevator
-                  show-sizer
-                  :page-size="pageSize"
-                  :current="pageNo"
-                  @on-page-size-change="changeSize"
-                  @on-change="changePage"
-                ></Page>
-              </div>
-            </div>
+            <Table border ref="selection" :columns="tableColumnsExplicitNumber" :data="tableDataExplicitNumber" size="small" @on-selection-change="selectItem"></Table>
           </Card>
           </div>
         </TabPane>

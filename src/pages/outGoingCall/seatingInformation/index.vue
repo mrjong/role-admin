@@ -17,7 +17,7 @@
           <FormItem label="渠道名称:" >
             <Select size="small" clearable placeholder="请选择渠道名称" v-model="formItem.channelCode" style="margin-top: 5px">
               <Option
-                v-for="item in getDirObj['TASK_STATUS']"
+                v-for="item in getDirObj['SEAT_TYPE']"
                 :value="item.itemCode"
                 :key="item.itemCode"
               >{{ item.itemName }}</Option>
@@ -133,8 +133,8 @@
             ></Page>
           </div>
         </div>
-        <AddChannel :showAddChannel="showAddChannel" @passBack="passBack" :updateChannel="updateChannel"/>
-        <SeatsMg :showSeatsMg="showSeatsMg" @passBack="passBack"/>
+        <AddChannel :showAddChannel="showAddChannel" @passBack="passBack" :updateChannel="updateChannelData"/>
+        <SeatsMg :showSeatsMg="showSeatsMg" @passBack="passBack" :seatsData="seatsData"/>
         <Phone :showPhone="showPhone" @passBack="passBack"/>
       </div>
     </Card>

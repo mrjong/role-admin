@@ -13,7 +13,7 @@
           <Col span="10">
           <FormItem label="渠道名称:" label-position="top">
             <div style="display: flex; align-items: center;">
-              <Select @on-change="selectChannel" placeholder="请选择渠道名称" style="margin-right: 20px" :label-in-value="true">
+              <Select @on-change="selectChannel" placeholder="请选择渠道名称" style="margin-right: 20px" :label-in-value="true" v-model="formData.channelCode">
                 <Option
                   v-for="item in getDirObj['SEAT_TYPE']"
                   :value="item.itemCode"
@@ -57,7 +57,7 @@
           <Col span="24">
           <FormItem label="地域盲区:" label-position="top">
             <div style="display: flex; align-items: center;">
-              <Select v-model="formData.areas" placeholder="请选择地域盲区" style="margin-right: 20px">
+              <Select v-model="formData.deadArea" placeholder="请选择地域盲区" style="margin-right: 20px">
                 <Option value="jobs">北京</Option>
                 <Option value="ive">云南</Option>
               </Select>

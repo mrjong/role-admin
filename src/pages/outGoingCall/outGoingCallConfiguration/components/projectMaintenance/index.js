@@ -1,16 +1,18 @@
 import AddModel from './components/addModel'
 import { rout_plan_project_list } from '@/service/getData';
-
+import sysDictionary from '@/mixin/sysDictionary';
 export default {
   components: {
     AddModel
   },
+  mixins: [sysDictionary],
   data() {
     return {
-      project: ['苹果'],
+      getDirList: ['SEAT_TYPE'],
+      getDirObj: {},
+      project: [],
       projectList: [{},{}],
       isAction: 0,
-      cc: true,
       showAddModel: '',
       projectFlag: 'primary',
       lineFlag: 'default',
@@ -40,16 +42,13 @@ export default {
     callback() {
 
     },
-    aa(){
-      this.cc = false
-    },
+
     setActiveItem(index) {
       this.$refs.carousel.setActiveItem(index);
     },
     handle_checkout(falg) {
       this.isAction = 1
       this.setActiveItem(this.isAction)
-      console.log(this.isAction )
       if(falg === 'project'){
         this.projectFlag =  'primary'
         this.lineFlag =  'default'
@@ -60,8 +59,8 @@ export default {
       }
     },
     passBack() {
-      debugger
       this.showAddModel = ''
+      this.getList()
     },
     addModel() {
       if(this.projectFlag==='primary'){
@@ -70,8 +69,8 @@ export default {
         this.showAddModel = 'line'
       }
     },
-    dd(a) {
-      this.isAction = a
+    changeItemCarousel(value) {
+      this.isAction = value
     },
   }
 };

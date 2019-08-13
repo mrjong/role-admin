@@ -9,19 +9,19 @@
       @on-ok="handleSubmit('Submit')"
       @on-cancel="handleSubmit('Cancel')"
     >
-      <Form :model="formData" style="padding: 5%" label-position="left" :label-width="100">
+      <Form :model="formDataProject" style="padding: 5%" label-position="left" :label-width="100"  :rules="ruleValidateProject">
         <Row :gutter="32">
           <Col span="16">
-          <FormItem label="方案名称:">
-              <Input size="small" clearable v-model="formData.planName" placeholder="请输入方案名称"/>
+          <FormItem label="方案名称:" prop="planName">
+              <Input size="small" clearable v-model="formDataProject.planName" placeholder="请输入方案名称"/>
           </FormItem>
           </Col>
         </Row>
         <Row :gutter="32">
           <Col span="12">
-          <FormItem label="第一优先渠道:" >
+          <FormItem label="第一优先渠道:" prop="channelOne">
             <div style="display: flex; align-items: center;">
-              <CheckboxGroup v-model="formData.channelOne" >
+              <CheckboxGroup v-model="formDataProject.channelOne" >
                 <Checkbox :label="item.itemCode" v-for="item in getDirObj['SEAT_TYPE']">
                   <span>{{ item.itemName }}</span>
                 </Checkbox>
@@ -31,7 +31,7 @@
           </Col>
           <Col span="12">
           <FormItem label="第二选择渠道:" >
-            <CheckboxGroup v-model="formData.channelTwo">
+            <CheckboxGroup v-model="formDataProject.channelTwo">
               <Checkbox :label="item.itemCode" v-for="item in getDirObj['SEAT_TYPE']">
                 <span>{{ item.itemName }}</span>
               </Checkbox>
@@ -43,7 +43,7 @@
           <Col span="12">
           <FormItem label="属地外呼:" :label-width="120">
             <div style="display: flex; align-items: center; padding-top: 7px">
-              <i-switch v-model="formData.territorialCallStatus" :true-value="1" :false-value="0">
+              <i-switch v-model="formDataProject.territorialCallStatus" :true-value="1" :false-value="0">
                 <span slot="open">开</span>
                 <span slot="close">关</span>
               </i-switch>
@@ -53,7 +53,7 @@
           <Col span="12">
           <FormItem label="优先手机号码外呼:" :label-width="120">
             <div style="display: flex; align-items: center; padding-top: 7px">
-              <i-switch  v-model="formData.phoneCallStatus" :true-value="1" :false-value="0">
+              <i-switch  v-model="formDataProject.phoneCallStatus" :true-value="1" :false-value="0">
                 <span slot="open">开</span>
                 <span slot="close">关</span>
               </i-switch>
@@ -65,7 +65,7 @@
           <Col span="12">
           <FormItem label="15天渠道故障率:" :label-width="120">
             <div style="display: flex; align-items: center; padding-top: 7px">
-              <i-switch  v-model="formData.failureRateStatus" :true-value="1" :false-value="0">
+              <i-switch  v-model="formDataProject.failureRateStatus" :true-value="1" :false-value="0">
                 <span slot="open">开</span>
                 <span slot="close">关</span>
               </i-switch>
@@ -75,7 +75,7 @@
           <Col span="12">
           <FormItem label="30天渠道接通率:" :label-width="120">
             <div style="display: flex; align-items: center; padding-top: 7px">
-              <i-switch  v-model="formData.connectionRateStatus" :true-value="1" :false-value="0">
+              <i-switch  v-model="formDataProject.connectionRateStatus" :true-value="1" :false-value="0">
                 <span slot="open">开</span>
                 <span slot="close">关</span>
               </i-switch>
@@ -94,20 +94,26 @@
       @on-ok="handleSubmit('Submit')"
       @on-cancel="handleSubmit('Cancel')"
     >
-      <Form :label-width="80" :model="formData2" style="padding: 5%">
+      <Form :label-width="80" :model="formDataLine" style="padding: 5%" :rules="ruleValidateLine">
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
-          <FormItem label="专线名称:">
-            <Input size="small" clearable v-model="formData.specialLine" placeholder="请输入专线名称"/>
+          <FormItem label="专线名称:" prop="specialLine">
+            <Input size="small" clearable v-model="formDataLine.specialLine" placeholder="请输入专线名称"/>
           </FormItem>
           </Col>
         </Row>
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
-          <FormItem label="选择渠道:">
-            <Select size="small" clearable placeholder="请选择渠道" v-model="formData.isLock" >
+          <FormItem label="选择渠道:" prop="seatType">
+            <Select
+              size="small"
+              v-model="formDataLine.seatType"
+              filterable
+              clearable
+              placeholder="请选择坐席类型"
+            >
               <Option
-                v-for="item in getDirObj['TASK_STATUS']"
+                v-for="item in getDirObj['SEAT_TYPE']"
                 :value="item.itemCode"
                 :key="item.itemCode"
               >{{ item.itemName }}</Option>
@@ -118,7 +124,7 @@
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
           <FormItem label="选择坐席:" >
-            <Select size="small" clearable placeholder="请选择坐席" v-model="formData.isLock" >
+            <Select size="small" clearable placeholder="请选择坐席" v-model="formDataLine.isLock" >
               <Option
                 v-for="item in getDirObj['TASK_STATUS']"
                 :value="item.itemCode"
@@ -131,7 +137,7 @@
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
           <FormItem label="选择号码:" >
-            <Select size="small" clearable placeholder="请选择号码" v-model="formData.isLock" >
+            <Select size="small" clearable placeholder="请选择号码" v-model="formDataLine.isLock" >
               <Option
                 v-for="item in getDirObj['TASK_STATUS']"
                 :value="item.itemCode"

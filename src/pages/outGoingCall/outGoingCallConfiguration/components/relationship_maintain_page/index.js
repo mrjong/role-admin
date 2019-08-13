@@ -83,35 +83,35 @@ export default {
         {
           title: '用户角色',
           searchOperator: 'like',
-          key: 'userName',
+          key: 'userTypeName',
+          align: 'center',
+          width: 120,
+        },
+        {
+          title: '方案名称',
+          searchOperator: 'like',
+          key: 'planName',
           align: 'center',
           width: 120,
         },
         {
           title: '外呼方案',
           searchOperator: 'like',
-          key: 'userName',
+          key: 'callTypeName',
           align: 'center',
           width: 120,
         },
         {
           title: '所属电催中心',
           searchOperator: 'like',
-          key: 'userName',
+          key: 'opCompayName',
           align: 'center',
           width: 120,
         },
         {
           title: '所属组别',
           searchOperator: 'like',
-          key: 'userName',
-          align: 'center',
-          width: 120,
-        },
-        {
-          title: '备注',
-          searchOperator: 'like',
-          key: 'userName',
+          key: 'opOrganizationName',
           align: 'center',
           width: 120,
         },
@@ -287,10 +287,10 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      // if (!this.query) {
-      //   this.$Message.error('很抱歉，暂无查询权限');
-      //   return;
-      // }
+      if (!this.query) {
+        this.$Message.error('很抱歉，暂无查询权限');
+        return;
+      }
       this.query_loading = true;
       const res = await call_employee_list({
         ...this.formItem,

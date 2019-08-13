@@ -1,4 +1,4 @@
-import {seats_config_add } from '@/service/getData';
+import {seats_config_add, seats_config_update } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 
 export default {
@@ -13,7 +13,8 @@ export default {
     return {
       getDirList: ['SEAT_TYPE'],
       getDirObj: {},
-      formData: this.updateChannel ? this.updateChannel : {},
+      formData: {},
+      updateFlag: false,
       styles: {
         height: 'calc(100% - 55px)',
         overflow: 'auto',
@@ -79,21 +80,25 @@ export default {
 
   },
   created() {
-    console.log(this.updateChannel)
     // this.getList();
   },
   watch: {
     updateChannel: function (value) {
-      debugger
-      console.log(value)
+      if(Object.keys(value).length !== 0){
+        this.updateFlag = true
+        this.formData = value
+      } else {
+        this.updateFlag = false
+      }
     }
   },
   methods: {
 
     selectChannel(value) {
-      console.log(value)
-      this.formData.channelCode = value.value
-      this.formData.channelName = value.label
+      if(value){
+        this.formData.channelCode = value.value
+        this.formData.channelName = value.label
+      }
     },
     // 重置
     clearForm(name) {
@@ -104,12 +109,28 @@ export default {
       // this.getList();
     },
     async handleSubmit(flag) {
-      console.log(this.formData)
-      await seats_config_add(this.formData).then(res=>{
-        console.log(res)
-      })
+      if(flag === 'Submit'){
+        if(!this.updateFlag){
+          await seats_config_add(this.formData).then(res=>{
+            if(res.code ===1){
+              this.$emit("passBack", 'change');
+            }
+          })
+        }else {
+          await seats_config_update(this.formData).then(res=>{
+            if(res.code ===1){
+              this.$emit("passBack", 'change');
+            }
+          })
+        }
+      } else {
+        this.$emit("passBack");
+      }
       this.formData = {}
-      this.$emit("passBack", flag);
+
+      console.log(this.updateChannel)
+
+
     },
     change() {
 

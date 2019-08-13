@@ -1776,3 +1776,70 @@ export const rout_plan_project_update = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+
+//   路由信息方案专线列表修改
+export const system_user_call_users = (obj) =>
+  fetch({
+    url: 'system/user/callusers',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+//   路由信息方案专线列表
+export const rout_plan_planList = (obj) =>
+  fetch({
+    url: 'rout/plan/planlist',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+
+//   添加坐席池接口
+export const rout_seatPool_add = (obj) =>
+  fetch({
+    url: '/rout/seatpool/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   删除坐席池接口
+export const rout_seatPool_delete = (obj) =>
+  fetch({
+    url: '/rout/seatpool/delete',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   删除外显号码接口
+export const rout_explicit_delete = (obj) =>
+  fetch({
+    url: '/rout/explicit/delete',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   添加外显号码接口
+export const rout_explicit_add = (obj) =>
+  fetch({
+    url: '/rout/explicit/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+//   外显号码列表
+export const rout_explicit_list = (obj) =>
+  fetch({
+    url: '/rout/explicit/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   坐席池列表接口
+export const rout_seatPool_list = (obj) =>
+  fetch({
+    url: '/rout/seatpool/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
