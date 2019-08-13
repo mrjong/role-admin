@@ -2289,7 +2289,14 @@ export default {
             this.$Message.success('申请成功');
             break;
           case 'gathering':
-            this.$Message.success('二维码生成成功');
+            this.breaks_data = {
+              caseNo: this.caseNo,
+            }
+            this.modal.QR_CODE = true;
+            clearTimeout(timer);
+            var timer = setTimeout(() => {
+              this.$Message.success('二维码生成成功');
+            }, 1000)
             break;
           default:
             break;

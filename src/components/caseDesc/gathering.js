@@ -235,7 +235,7 @@ export default {
               reliefAmt += Number(j.reliefAmt);
               i.reliefAmt = reliefAmt;
               // i.repayAmt = Number(i.perdTotSur - i.reliefAmt).toFixed(2);
-              i.repayAmt = Number(i.perdTotSur - i.reliefAmt);
+              i.repayAmt = Number(i.perdTotSur) - i.reliefAmt;
               // i.repayAmt = Number(i.repayAmt).toFixed(2);
               console.log(i.repayAmt)
               this.$set(this.tableData_repayment, index, i)
@@ -454,9 +454,9 @@ export default {
       this.totReliefAmt = 0;
       this.tableData_repayment.forEach(item => {
         item.remainTotAmt = item.perdTotSur;//处理剩余应还金额
+        item.repayAmt > 0 && (item.repayAmt = Number(item.repayAmt.toFixed(2)));
         if (Number(item.reliefAmt) > 0) {
           this.totReliefAmt += Number(item.reliefAmt);
-          // this.detailList.push(item);
         }
       })
       this.offlineScanPay_generate()
