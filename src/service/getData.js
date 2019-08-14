@@ -1878,3 +1878,12 @@ export const call_channel_edit = (obj) =>
     data: qs.stringify(obj)
   })
 
+
+//   坐席监控列表
+export const call_record_callDataList = (obj) =>
+  fetch({
+    url: '/call/record/callDataList',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+

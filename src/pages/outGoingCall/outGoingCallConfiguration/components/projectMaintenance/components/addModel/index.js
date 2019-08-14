@@ -36,13 +36,14 @@ export default {
             trigger: 'blur',
           }
         ],
-        // channelOne: [
-        //   {
-        //     required: true,
-        //     message: '请选择第一优先渠道',
-        //     trigger: 'change',
-        //   }
-        // ],
+        channelOne: [
+          {
+            required: true,
+            message: '请选择第一优先渠道',
+            trigger: 'change',
+            type: 'array',
+          }
+        ],
       },
       ruleValidateLine:{
         specialLine: [
@@ -83,7 +84,6 @@ export default {
           this.getChannelType('update')
         }
       } else {
-        debugger
         this.updateFlag = false
       }
     },
@@ -103,12 +103,17 @@ export default {
       this.seatsList = []
       if(flag === 'Submit'){
         if(!this.updateFlag){
-          const res = await rout_plan_project_add(this.formDataProject);
-          if (res.code === 1) {
-            this.$emit("passBack", 'change');
-          } else {
-            this.$Message.error(res.message)
-          }
+          this.$refs['formDataProject'].validate((valid) => {
+            if (valid) {
+              rout_plan_project_add(this.formDataProject).then(res=>{
+                if (res.code === 1) {
+                  this.$emit("passBack", 'change');
+                } else {
+                  this.$Message.error(res.message)
+                }
+              })
+            }
+          })
         } else {
           const res = await rout_plan_project_update(this.formDataProject);
           if (res.code === 1) {
@@ -118,7 +123,7 @@ export default {
           }
         }
       } else {
-        this.$emit("passBack");
+        // this.$emit("passBack");
       }
       this.formDataProject= {
         planType: '1',
@@ -140,7 +145,6 @@ export default {
           if(flag === 'update'){
             res.data.forEach(item=>{
               if(this.formDataLine.specialLine === item.channelCode){
-                debugger
                 this.numberList = item.explicitPoolDomains
                 this.seatsList = item.fcsSeatPoolDomains
               }

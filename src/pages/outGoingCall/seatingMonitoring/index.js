@@ -1,6 +1,7 @@
 import {
-  call_record_list,
-  call_record_export
+  call_record_callDataList,
+  getLeafTypeList,
+  call_channel_list
 } from "@/service/getData";
 import util from "@/libs/util";
 import sysDictionary from '@/mixin/sysDictionary';
@@ -17,38 +18,16 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      export_case: true, //导出权限
       query: false, //查询权限
       query_loading: false, //查询按钮loading
       export_case_loading: false, //导出按钮loading
-      tab_flag: 'KT_CALL_DETAIL', //默认展示科天的
+      company_list_data: [],//电催中心list
+      department_list_data: [],//组别list
+      collect_list_data: [],//经办人list
+      channelType: [],
       dealTime: "",
       formItem: {
         dealTime: [],
-      },
-      ruleValidate: {
-        overdueDaysLt: [
-          {
-            pattern: this.GLOBAL.num,
-            message: "逾期天数为正整数",
-            trigger: "blur"
-          },
-          {
-            validator: this.validate_yqts_start,
-            trigger: "blur"
-          }
-        ],
-        overdueDaysBt: [
-          {
-            pattern: this.GLOBAL.num,
-            message: "逾期天数为正整数",
-            trigger: "blur"
-          },
-          {
-            validator: this.validate_yqts_end,
-            trigger: "blur"
-          }
-        ]
       },
       pageNo: 1,
       pageSize: 10,
@@ -67,22 +46,15 @@ export default {
         {
           title: "电催中心",
           searchOperator: "=",
-          key: "callTime",
+          key: "opCompayName",
           className: "tableMainW",
           align: alignCenter,
           width: widthVal,
-          render: (h, params) => {
-            const row = params.row;
-            const callTime = row.callTime
-              ? this.$options.filters['formatDate'](row.callTime, 'YYYY-MM-DD HH:mm:ss')
-              : row.callTime;
-            return h('span', callTime);
-          }
         },
         {
           title: "组别",
           searchOperator: "=",
-          key: "toCallMblHid",
+          key: "opOrganizationName",
           className: "tableMainW",
           align: alignCenter,
           width: widthVal
@@ -90,7 +62,7 @@ export default {
         {
           title: "姓名",
           searchOperator: "=",
-          key: "caseNo",
+          key: "userName",
           className: "tableMainW",
           align: alignCenter,
           width: 200
@@ -98,7 +70,7 @@ export default {
         {
           title: "点击量",
           searchOperator: "=",
-          key: "billNo",
+          key: "clickCount",
           className: "tableMainW",
           align: alignCenter,
           width: 200
@@ -106,7 +78,7 @@ export default {
         {
           title: "呼出成功量",
           searchOperator: "like",
-          key: "userId",
+          key: "successCount",
           className: "tableMainW",
           align: alignCenter,
           width: widthVal
@@ -114,7 +86,7 @@ export default {
         {
           title: "故障量",
           searchOperator: "like",
-          key: "collectTypeName",
+          key: "errorCount",
           className: "tableMainW",
           align: alignCenter,
           width: widthVal
@@ -122,14 +94,14 @@ export default {
         {
           title: "接通量",
           searchOperator: "like",
-          key: "callDurat",
+          key: "connectCount",
           className: "tableMainW",
           align: alignCenter,
           width: widthMidVal
         },
         {
           title: "通话时长",
-          key: "callStatusName",
+          key: "callDurate",
           className: "tableMainW",
           align: alignCenter,
         }
@@ -153,6 +125,10 @@ export default {
       }
     });
     // this.getList();
+    this.getChannelType()
+    this.getLeafTypeList('02', '');
+    this.getLeafTypeList('03', '');
+    this.getLeafTypeList('04', '');
   },
   methods: {
     tabClick(name) {
@@ -164,8 +140,8 @@ export default {
     },
     // 改变日期区间的格式之后进行处理
     changeDate(val1, val2) {
-      this.formItem.callStartDate = val1[0];
-      this.formItem.callEndDate = val1[1];
+      this.formItem.startDate = val1[0];
+      this.formItem.endDate = val1[1];
       // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
     },
     // 页码改变的回调
@@ -185,35 +161,12 @@ export default {
       // 单独处理日期的缓存问题
       if (this.formItem.dealTime) {
         this.formItem.dealTime = [
-          this.formItem.callStartDate,
-          this.formItem.callEndDate
+          this.formItem.startDate,
+          this.formItem.endDate
         ];
       };
-      window.sessionStorage.setItem(
-        "daily_monitoring_callDetail_form",
-        JSON.stringify(this.formItem)
-      );
       this.pageNo = 1;
       this.getList(type);
-    },
-    // 导出
-    async exportData(type) {
-      // if (this.tableData.length === 0) {
-      //   this.$Message.info("当前无数据，无法导入");
-      //   return;
-      // }
-      // this.export_case_loading = true;
-      // let res;
-      // let obj = {
-      //   ...this.formItem
-      // };
-      // let options = {
-      //   timeout: 120000,
-      //   responseType: "blob"
-      // };
-      // res = await call_record_export(obj, options);
-      // util.dowloadfile("呼叫明细", res);
-      // this.export_case_loading = false;
     },
     // 获取表格数据
     async getList(type) {
@@ -222,8 +175,16 @@ export default {
       //   return;
       // }
       this.query_loading = true;
+      if(!this.formItem.channelCode){
+        this.formItem.type= ''
+      }
+      this.channelType.forEach(item=>{
+        if(this.formItem.channelCode === item.channelCode){
+          this.formItem.type = item.type
+        }
+      })
       let res;
-      res = await call_record_list({
+      res = await call_record_callDataList({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formItem
@@ -238,6 +199,48 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 电催中心change
+    companyChange(value) {
+      this.getLeafTypeList('03', value);
+      this.getLeafTypeList('04', value);
+    },
+    // 部门change
+    departmentChange(value) {
+      this.getLeafTypeList('04', value);
+    },
+    //组别
+    async getLeafTypeList(type, parent) {
+      const res = await getLeafTypeList({
+        leafType: type,
+        parentId: parent || ""
+      });
+      if (res.code === 1) {
+        switch (type) {
+          case "02":
+            this.company_list_data = res.data;
+            break;
+          case "03":
+            this.department_list_data = res.data;
+            break;
+          case "04":
+            this.collect_list_data = res.data;
+            break;
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+
+    getChannelType(){
+      call_channel_list({type: 'ALL'}).then(res=>{
+        if (res && res.code === 1) {
+          this.channelType = res.data;
+        } else {
+          this.$Message.error(res.message);
+        }
+      })
+    },
+
     // 重置
     clearForm(name) {
       this.pageNo = 1;

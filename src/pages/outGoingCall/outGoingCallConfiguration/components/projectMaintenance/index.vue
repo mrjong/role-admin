@@ -15,7 +15,9 @@
       </Button>
     </p>
     <div style="width: 70%; margin: auto">
-      <el-carousel :interval="4000" type="card" height="500px" arrow="always" indicator-position="none"  v-if="projectFlag ==='primary'" @change="changeItemCarousel" ref="carousel">
+      <!--<div v-if="projectList.length === 0 && projectFlag ==='primary'" class="none_class">暂无方案</div>-->
+      <!--<div v-if="lineList.length === 0 && projectFlag !=='primary'" class="none_class">暂无专线</div>-->
+      <el-carousel :interval="4000" type="card" height="500px" arrow="always" indicator-position="none"  v-if="projectFlag ==='primary'" @change="changeItemCarousel" ref="carousel" v-show="projectList.length !== 0 ">
       <el-carousel-item v-for="item, index in projectList" :key="index">
         <Card class="carousel-card">
           <p slot="title">{{item.planName}}</p>

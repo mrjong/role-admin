@@ -10,7 +10,6 @@
         ref="formItem"
         :model="formItem"
         :label-width="90"
-        :rules="ruleValidate"
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -20,13 +19,14 @@
                 clearable
                 filterable
                 placeholder="请选择呼叫类型"
-                v-model="formItem.seatType"
+                v-model="formItem.channelCode"
+                @on-change="getSeatType"
               >
                 <Option
-                  v-for="item in getDirObj.SEAT_TYPE"
-                  :value="item.itemCode"
-                  :key="item.itemCode + 1"
-                >{{ item.itemName }}</Option>
+                  v-for="item in channelType"
+                  :value="item.channelCode"
+                  :key="item.channelCode + 1"
+                >{{ item.channelName }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -37,13 +37,14 @@
               clearable
               filterable
               placeholder="请选择电催中心"
-              v-model="formItem.seatType"
+              @on-change="companyChange"
+              v-model="formItem.opCompanyId"
             >
               <Option
-                v-for="item in getDirObj.SEAT_TYPE"
-                :value="item.itemCode"
-                :key="item.itemCode + 1"
-              >{{ item.itemName }}</Option>
+                v-for="item in company_list_data"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -54,13 +55,31 @@
               clearable
               filterable
               placeholder="请选择组别"
-              v-model="formItem.seatType"
+              @on-change="departmentChange"
+              v-model="formItem.opOrganizationId"
             >
               <Option
-                v-for="item in getDirObj.SEAT_TYPE"
-                :value="item.itemCode"
-                :key="item.itemCode + 1"
-              >{{ item.itemName }}</Option>
+                v-for="item in department_list_data"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.name }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem label="姓名:">
+            <Select
+              size="small"
+              clearable
+              filterable
+              placeholder="请选择姓名"
+              v-model="formItem.loginName"
+            >
+              <Option
+                v-for="(item,index) in collect_list_data"
+                :value="item.id"
+                :key="item.id + index"
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -77,11 +96,6 @@
               :confirm='false'
               @on-change="changeDate"
             ></DatePicker>
-          </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-          <FormItem label="姓名:">
-            <Input size="small" clearable v-model.trim="formItem.callUserName" placeholder="请输入姓名"/>
           </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
@@ -110,17 +124,6 @@
     <Card class="vue-panel-table">
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
-        <Button
-          class="fr vue-back-btn header-btn"
-          type="primary"
-          size="small"
-          @click.stop="exportData(tab_flag)"
-          v-if="export_case"
-          :loading="export_case_loading"
-        >
-          <span v-if="!export_case_loading">导出数据</span>
-          <span v-else>导出中...</span>
-        </Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">

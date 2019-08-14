@@ -9,7 +9,7 @@
       @on-ok="handleSubmit('Submit')"
       @on-cancel="handleSubmit('Cancel')"
     >
-      <Form :model="formDataProject" style="padding: 5%" label-position="left" :label-width="100"  :rules="ruleValidateProject">
+      <Form ref="formDataProject" :model="formDataProject" style="padding: 5%" label-position="left" :label-width="100"  :rules="ruleValidateProject">
         <Row :gutter="32">
           <Col span="16">
           <FormItem label="方案名称:" prop="planName">
