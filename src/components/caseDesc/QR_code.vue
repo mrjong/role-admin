@@ -13,7 +13,7 @@
         <Spin size="large" fix v-if="spinShow"></Spin>
         <img :src="QR_CODE_INFO.qrCodeInfo" style="width: 300px; margin: 0 auto;" />
         <p class="qr_code_text">{{QR_CODE_INFO.userNmHid}}（{{QR_CODE_INFO.lastUserMblNo}}）</p>
-        <p class="qr_code_text">金额：{{QR_CODE_INFO.totReliefAmt}}元</p>
+        <p class="qr_code_text">金额：{{QR_CODE_INFO.totRepayAmt}}元</p>
       </div>
       <div slot="footer" class="gathering_footer">
         <Button size="small" @click="offlineScanPay_invalid" :loading="failure_loading">
