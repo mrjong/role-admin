@@ -2300,8 +2300,16 @@ export default {
         }
       }
     },
-    handOpen(type, userId) {
-      console.log(this.modal);
+    async handOpen(type, userId) {
+      // 时时判断当前案件是否出催，是的话不走下面的逻辑
+      await this.case_detail_case_identity_info();
+      if (this.case_detail_case_identity_info_Data.caseHandleStatus === 'OUT') {
+        this.$Message.inof({
+          content: '当前案件已出催！',
+          duration: 3
+        });
+        return;
+      };
       if (type === 'zhongcai') {
         let idCardFront = '';
         let idCardOpposite = '';
