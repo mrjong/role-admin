@@ -395,6 +395,8 @@ export default {
                 submit_flag = false;
               }
             })
+          } else {
+            submit_flag = valid;
           }
         });
       } else {
