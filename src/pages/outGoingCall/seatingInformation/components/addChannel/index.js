@@ -1,4 +1,4 @@
-import {seats_config_add, seats_config_update } from '@/service/getData';
+import {seats_config_add, seats_config_update,  } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 
 export default {
@@ -11,7 +11,7 @@ export default {
     var widthMidVal = 130;
 
     return {
-      getDirList: ['SEAT_TYPE'],
+      getDirList: ['SEAT_TYPE', 'PROVINCE_AREA'],
       getDirObj: {},
       formData: {},
       updateFlag: false,
@@ -127,10 +127,7 @@ export default {
         this.$emit("passBack");
       }
       this.formData = {}
-
       console.log(this.updateChannel)
-
-
     },
     change() {
 

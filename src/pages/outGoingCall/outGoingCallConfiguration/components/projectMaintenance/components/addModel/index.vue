@@ -5,7 +5,7 @@
      :value="showAddModel==='project'"
       width="720"
       :closable="false"
-      title="添加方案"
+      title="添加/修改方案"
       @on-ok="handleSubmit('Submit')"
       @on-cancel="handleSubmit('Cancel')"
     >
@@ -43,7 +43,7 @@
           <Col span="12">
           <FormItem label="属地外呼:" :label-width="120">
             <div style="display: flex; align-items: center; padding-top: 7px">
-              <i-switch v-model="formDataProject.territorialCallStatus" :true-value="1" :false-value="0">
+              <i-switch v-model="formDataProject.territorialCallStatus" :true-value="'1'" :false-value="'0'">
                 <span slot="open">开</span>
                 <span slot="close">关</span>
               </i-switch>
@@ -53,7 +53,7 @@
           <Col span="12">
           <FormItem label="优先手机号码外呼:" :label-width="120">
             <div style="display: flex; align-items: center; padding-top: 7px">
-              <i-switch  v-model="formDataProject.phoneCallStatus" :true-value="1" :false-value="0">
+              <i-switch  v-model="formDataProject.phoneCallStatus" :true-value="'1'" :false-value="'0'" >
                 <span slot="open">开</span>
                 <span slot="close">关</span>
               </i-switch>
@@ -65,7 +65,7 @@
           <Col span="12">
           <FormItem label="15天渠道故障率:" :label-width="120">
             <div style="display: flex; align-items: center; padding-top: 7px">
-              <i-switch  v-model="formDataProject.failureRateStatus" :true-value="1" :false-value="0">
+              <i-switch  v-model="formDataProject.failureRateStatus" :true-value="'1'" :false-value="'0'">
                 <span slot="open">开</span>
                 <span slot="close">关</span>
               </i-switch>
@@ -75,7 +75,7 @@
           <Col span="12">
           <FormItem label="30天渠道接通率:" :label-width="120">
             <div style="display: flex; align-items: center; padding-top: 7px">
-              <i-switch  v-model="formDataProject.connectionRateStatus" :true-value="1" :false-value="0">
+              <i-switch  v-model="formDataProject.connectionRateStatus" :true-value="'1'" :false-value="'0'">
                 <span slot="open">开</span>
                 <span slot="close">关</span>
               </i-switch>
@@ -91,32 +91,31 @@
       :closable="false"
       title="添加专线"
       :footer-hide="true"
-      @on-ok="handleSubmit('Submit')"
-      @on-cancel="handleSubmit('Cancel')"
     >
       <Form :label-width="80" :model="formDataLine" style="padding: 5%" :rules="ruleValidateLine">
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
-          <FormItem label="专线名称:" prop="specialLine">
-            <Input size="small" clearable v-model="formDataLine.specialLine" placeholder="请输入专线名称"/>
+          <FormItem label="专线名称:" prop="planName">
+            <Input size="small" clearable v-model="formDataLine.planName" placeholder="请输入专线名称"/>
           </FormItem>
           </Col>
         </Row>
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
-          <FormItem label="选择渠道:" prop="seatType">
+          <FormItem label="选择渠道:" prop="specialLine">
             <Select
               size="small"
-              v-model="formDataLine.seatType"
+              v-model="formDataLine.specialLine"
               filterable
               clearable
-              placeholder="请选择坐席类型"
+              placeholder="请选择渠道类型"
+              @on-change="getChangeChannel"
             >
               <Option
-                v-for="item in getDirObj['SEAT_TYPE']"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
+                v-for="item in channelType"
+                :value="item.channelCode"
+                :key="item.channelCode"
+              >{{ item.channelName }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -124,12 +123,12 @@
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
           <FormItem label="选择坐席:" >
-            <Select size="small" clearable placeholder="请选择坐席" v-model="formDataLine.isLock" >
+            <Select size="small" clearable placeholder="请选择坐席" v-model="formDataLine.callNoList" multiple>
               <Option
-                v-for="item in getDirObj['TASK_STATUS']"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
+                v-for="item in seatsList"
+                :value="item.seatNo"
+                :key="item.seatNo"
+              >{{ item.seatNo }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -137,12 +136,12 @@
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
           <FormItem label="选择号码:" >
-            <Select size="small" clearable placeholder="请选择号码" v-model="formDataLine.isLock" >
+            <Select size="small" clearable placeholder="请选择号码" v-model="formDataLine.explicitList" multiple>
               <Option
-                v-for="item in getDirObj['TASK_STATUS']"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
+                v-for="item in numberList"
+                :value="item.explicitNumber"
+                :key="item.explicitNumber"
+              >{{ item.explicitNumber }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -151,7 +150,7 @@
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="12" style="display: flex; justify-content: space-around">
             <Button
               type="primary"
-              @click="handleSubmit('Submit')"
+              @click="handleSubmitLine('Submit')"
               style="width:80px; margin-left: 20px"
               long
               size="small"
@@ -163,7 +162,7 @@
             <Button
               size="small"
               style="width:80px;margin-left: 8px"
-              @click="handleSubmit('Cancel')"
+              @click="handleSubmitLine('Cancel')"
             >取消</Button>
           </Col>
         </Row>

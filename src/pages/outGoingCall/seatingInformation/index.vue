@@ -28,10 +28,10 @@
           <FormItem label="渠道类型:" >
             <Select size="small" clearable placeholder="请选择渠道类型" v-model="formItem.channelSecondaryCode" style="margin-top: 5px">
               <Option
-                v-for="item in getDirObj['TASK_STATUS']"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
+                v-for="item in channelType"
+                :value="item.channelCode"
+                :key="item.channelCode"
+              >{{ item.channelName }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -78,7 +78,7 @@
                   @click="showAddChannel=true"
                   v-if="add_handle" type="primary">添加
           </Button>
-          <Button size="small" style="width:80px" @click="showTask('add')" v-if="add_handle">导出</Button>
+          <Button size="small" style="width:80px" v-if="add_handle">导出</Button>
         </span>
       </p>
       <!-- 表格 -->

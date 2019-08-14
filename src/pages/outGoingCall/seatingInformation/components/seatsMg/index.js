@@ -107,20 +107,6 @@ export default {
     console.log(this.seatsData)
   },
   methods: {
-    //添加
-    async handleSubmitSeats() {
-      this.add_loading = true;
-      this.formData.configId = this.seatsData.id
-      let res = await rout_seatPool_add({
-        ...this.formData,
-      })
-      this.add_loading = false;
-      if (res.code === 1) {
-        this.getListSeats();
-      } else {
-        this.$Message.error(res.message);
-      }
-    },
 
     async handleSubmitExplicit() {
       this.add_loading_explicit = true;
@@ -131,6 +117,7 @@ export default {
       })
       this.add_loading_explicit = false;
       if (res.code === 1) {
+        this.explicitNumber= ''
         this.getListExplicit();
       } else {
         this.$Message.error(res.message);
@@ -171,6 +158,7 @@ export default {
       })
       this.add_loading = false;
       if (res.code === 1) {
+        this.formData= {}
         this.getListSeats();
       } else {
         this.$Message.error(res.message);

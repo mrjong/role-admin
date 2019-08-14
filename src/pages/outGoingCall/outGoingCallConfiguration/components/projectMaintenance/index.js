@@ -1,5 +1,5 @@
 import AddModel from './components/addModel'
-import { rout_plan_project_list } from '@/service/getData';
+import { rout_plan_project_list,  } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 export default {
   components: {
@@ -11,11 +11,13 @@ export default {
       getDirList: ['SEAT_TYPE'],
       getDirObj: {},
       project: [],
-      projectList: [{},{}],
+      projectList: [],
+      lineList: [],
       isAction: 0,
       showAddModel: '',
       projectFlag: 'primary',
       lineFlag: 'default',
+      rowData: {},
       Option: {
         autoplay: 3000,
         speed: 100,
@@ -31,10 +33,16 @@ export default {
   methods: {
     // 获取表格数据
     async getList() {
-      const res = await rout_plan_project_list({ planType: '1'});
+      let planType = this.lineFlag === 'primary' ? '2' : '1'
+      const res = await rout_plan_project_list({ planType: planType});
       if (res.code === 1) {
         console.log(res.data)
-        this.projectList = res.data
+        if(this.lineFlag === 'primary'){
+          this.lineList = res.data
+        } else {
+          this.projectList = res.data
+        }
+
       } else {
         this.$Message.error(res.message)
       }
@@ -55,12 +63,14 @@ export default {
       } else {
         this.lineFlag =  'primary'
         this.projectFlag =  'default'
-
       }
-    },
-    passBack() {
-      this.showAddModel = ''
       this.getList()
+    },
+    passBack(flag) {
+      this.showAddModel = ''
+      if(flag){
+        this.getList()
+      }
     },
     addModel() {
       if(this.projectFlag==='primary'){
@@ -71,6 +81,10 @@ export default {
     },
     changeItemCarousel(value) {
       this.isAction = value
+    },
+    goUpdate(data, flag) {
+      this.showAddModel = flag
+      this.rowData = JSON.parse(JSON.stringify(data))
     },
   }
 };

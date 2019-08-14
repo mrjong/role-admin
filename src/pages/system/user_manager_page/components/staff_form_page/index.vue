@@ -100,6 +100,41 @@
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+        <FormItem label="呼叫方案:" span="4" >
+          <Select
+            size="small"
+            v-model="staffFormItem.callType"
+            clearable
+            placeholder="请选择呼叫方案"
+            :disabled="!formDisabled"
+          >
+            <Option
+              v-for="item in getDirObj['CALL_TYPE']"
+              :value="item.itemCode"
+              :key="item.itemCode"
+            >{{ item.itemName }}</Option>
+          </Select>
+        </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="staffFormItem.callType === '2'">
+        <FormItem label="方案/专线:" span="4" prop="seatType" >
+          <Select
+            size="small"
+            v-model="staffFormItem.planId"
+            filterable
+            clearable
+            placeholder="请选择方案或专线"
+            :disabled="!formDisabled"
+          >
+            <Option
+              v-for="item in planList"
+              :value="item.id"
+              :key="item.id"
+            >{{ item.planName }}</Option>
+          </Select>
+        </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="staffFormItem.callType === '1'">
           <FormItem span="4" label="坐席名称:">
             <Select
               size="small"
@@ -117,7 +152,7 @@
             </Select>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="staffFormItem.callType === '1'">
           <FormItem span="4" label="坐席号:">
             <Input size="small" v-model="staffFormItem.callno" :disabled="!formDisabled"></Input>
           </FormItem>
@@ -270,7 +305,8 @@ import {
   collect_user_clerk_update,
   collect_status_change,
   system_user_reset,
-  collect_user_clerk_info
+  collect_user_clerk_info,
+  rout_plan_planList
 } from "@/service/getData";
 export default {
   props: ["parentData"],
@@ -288,7 +324,7 @@ export default {
       callback();
     };
     return {
-      getDirList: ["SEAT_TYPE"],
+      getDirList: ["SEAT_TYPE", 'CALL_TYPE'],
       getDirObj: {},
       update_loading: false, //修改提交的loading
       status_loading: false, //状态修改提交的loading
@@ -370,7 +406,8 @@ export default {
       },
       companyList: [],
       departmentList: [],
-      roleList: []
+      roleList: [],
+      planList: []
     };
   },
   created() {
@@ -396,11 +433,16 @@ export default {
     this.staffFormItem.status = String(this.parentData.nodeData.status);
     this.collect_user_list("03", this.staffFormItem.companyId);
     this.collect_user_clerk_info(this.parentData.nodeData.name);
+    this.routPlanPlanList()
   },
   watch: {
+    staffFormItem(val) {
+      console.log(val.callType)
+    },
     parentData() {
       this.collect_user_list("02");
       this.system_role_list();
+      console.log(this.parentData.nodeData)
       this.staffFormItem.id = this.parentData.nodeData.id;
       this.staffFormItem.name = this.parentData.nodeData.name;
       this.staffFormItem.loginName = this.parentData.nodeData.loginName;
@@ -420,8 +462,10 @@ export default {
       this.staffFormItem.status = String(this.parentData.nodeData.status);
       this.collect_user_list("03", this.staffFormItem.companyId);
       this.collect_user_clerk_info(this.parentData.nodeData.name);
+      this.routPlanPlanList()
       this.formDisabled = false; //切换不同催收员，表单disabled重置
-    }
+    },
+
   },
   methods: {
     //公司变更联动部门变更
@@ -467,6 +511,7 @@ export default {
       this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
       this.staffFormItem.status = String(this.parentData.nodeData.status);
       this.collect_user_clerk_info(this.parentData.nodeData.name);
+      this.routPlanPlanList()
       this.formDisabled = true;
     },
     // 设置状态变更
@@ -590,6 +635,8 @@ export default {
         this.staffFormItem.callno = res.data.callno;
         this.staffFormItem.remark = res.data.remark;
         this.staffFormItem.userUuid = res.data.userUuid;
+        this.$set(this.staffFormItem, 'callType', res.data.callType);
+        this.$set(this.staffFormItem, 'planId', res.data.planId);
         this.staffFormItem.createTime = res.data.createTime
           ? this.$options.filters["formatDate"](
               res.data.createTime,
@@ -621,7 +668,16 @@ export default {
     cancel2() {
       this.modal2 = false;
       this.reset_pwd_loading = false;
-    }
+    },
+    // 查询路由方案列表
+    async routPlanPlanList() {
+      const res = await rout_plan_planList({userType: ''});
+      if (res.code === 1) {
+        this.planList = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
   }
 };
 </script>

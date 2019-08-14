@@ -114,7 +114,6 @@ export default {
   created() {
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
-    debugger
     buttonPermissionList.forEach(item => {
       if (item.type !== "03") {
         return;
@@ -183,10 +182,10 @@ export default {
     },
     // 获取表格数据
     async getList(type) {
-      if (!this.query) {
-        this.$Message.error("很抱歉，暂无权限查询");
-        return;
-      }
+      // if (!this.query) {
+      //   this.$Message.error("很抱歉，暂无权限查询");
+      //   return;
+      // }
       this.query_loading = true;
       let res;
       res = await hitch_list({

@@ -65,7 +65,7 @@ export default {
         {
           title: "手机号",
           searchOperator: "=",
-          key: "callTime",
+          key: "mblNoHid",
           className: "tableMainW",
           align: alignCenter,
           width: widthVal,
@@ -73,22 +73,22 @@ export default {
         {
           title: "拉黑时间",
           searchOperator: "=",
-          key: "toCallMblHid",
+          key: "createTime",
           className: "tableMainW",
           align: alignCenter,
           width: widthVal,
           render: (h, params) => {
             const row = params.row;
-            const callTime = row.callTime
-              ? this.$options.filters['formatDate'](row.callTime, 'YYYY-MM-DD HH:mm:ss')
-              : row.callTime;
+            const callTime = row.createTime
+              ? this.$options.filters['formatDate'](row.createTime, 'YYYY-MM-DD HH:mm:ss')
+              : row.createTime;
             return h('span', callTime);
           }
         },
         {
           title: "呼叫类型",
           searchOperator: "=",
-          key: "caseNo",
+          key: "channelCodeName",
           className: "tableMainW",
           align: alignCenter,
           width: 300
@@ -104,7 +104,7 @@ export default {
         {
           title: "号码来源",
           searchOperator: "like",
-          key: "userId",
+          key: "collectTypeName",
           className: "tableMainW",
           align: alignCenter,
 

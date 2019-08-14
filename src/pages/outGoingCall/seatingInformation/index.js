@@ -1,4 +1,4 @@
-import {seats_config_list, seats_config_add, seats_config_update } from '@/service/getData';
+import {seats_config_list, seats_config_add, seats_config_update, call_channel_list, call_channel_edit } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 import AddChannel from './components/addChannel/index.vue'
 import SeatsMg from './components/seatsMg/index.vue'
@@ -31,8 +31,8 @@ export default {
       },
       updateChannelData: {},
       seatsData: {},
-      ruleValidate:{
-      },
+      ruleValidate:{},
+      channelType: [],
       pageNo: 1,
       pageSize: 10,
       total: 0,
@@ -121,6 +121,7 @@ export default {
   },
   created() {
     // this.getList();
+    this.getChannelType()
   },
   methods: {
 
@@ -176,8 +177,7 @@ export default {
       let data = JSON.parse(JSON.stringify(originalData))
       switch(flag) {
         case 'update':
-          this.updateChannelData = data
-          this.showAddChannel = true
+          this.updateRowData(data.id)
           break;
         case 'seatsMg':
           this.seatsData = data
@@ -186,6 +186,17 @@ export default {
         case 'faultDebugger':
           this.showPhone = true
           break;
+      }
+    },
+
+    async updateRowData(id) {
+      let res;
+      res = await call_channel_edit({id: id})
+      if (res && res.code === 1) {
+        this.updateChannelData = res.data
+        this.showAddChannel = true
+      } else {
+        this.$Message.error(res.message);
       }
     },
     closeModal(flag){
@@ -206,8 +217,15 @@ export default {
       this.seatsData = {}
     },
 
-    showTask(flag, data) {
-
+    async getChannelType() {
+      let res;
+      res = await call_channel_list({
+      })
+      if (res && res.code === 1) {
+        this.channelType = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
     },
   }
 };

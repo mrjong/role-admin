@@ -1843,3 +1843,38 @@ export const rout_seatPool_list = (obj) =>
     data: qs.stringify(obj)
   })
 
+
+//   渠道类型列表
+export const call_channel_list = (obj) =>
+  fetch({
+    url: '/call/channel/channelList',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+//   选择坐席列表
+export const rout_explicit_getExplicitList = (obj) =>
+  fetch({
+    url: '/rout/explicit/getExplicitList',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   选择号码列表
+export const rout_seatpool_getCallNos = (obj) =>
+  fetch({
+    url: '/rout/seatpool/getCallNos',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+//   选择号码列表
+export const call_channel_edit = (obj) =>
+  fetch({
+    url: '/call/channel/edit',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+

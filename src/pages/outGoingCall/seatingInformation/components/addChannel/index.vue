@@ -57,9 +57,13 @@
           <Col span="24">
           <FormItem label="地域盲区:" label-position="top">
             <div style="display: flex; align-items: center;">
-              <Select v-model="formData.deadArea" placeholder="请选择地域盲区" style="margin-right: 20px">
-                <Option value="jobs">北京</Option>
-                <Option value="ive">云南</Option>
+              <Select  placeholder="请选择地域盲区" style="margin-right: 20px" v-model="formData.areas" >
+                <Option
+                  v-for="item in getDirObj['PROVINCE_AREA']"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}
+                </Option>
               </Select>
               <!--<i-switch style="width: 53px" :true-value="1" :false-value="0" >-->
                 <!--<span slot="open">开</span>-->

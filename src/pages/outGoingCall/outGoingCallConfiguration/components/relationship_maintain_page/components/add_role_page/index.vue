@@ -47,7 +47,7 @@
                   v-model="formItem.callType"
                   filterable
                   clearable
-                  placeholder="请选择呼叫方式"
+                  placeholder="请选择呼叫方案"
                 >
                   <Option
                     v-for="item in getDirObj['CALL_TYPE']"
