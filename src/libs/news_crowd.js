@@ -13,7 +13,7 @@ function param(data){
   return url ? url:'';
 }
 
-let obj = {compid: '830058', agentid: '9999', fenji: '8300589999', fenjiMima: '00c351677029d3840898d241bc542fb9', wstype: 'ws', serverid: ''}
+let obj = {compid: '830058', agentid: '9999', fenji: '8300589999', fenjiMima: '00c351677029d3840898d241bc542fb9', wstype: 'ws', serverid: '', mima: 'aa123456'}
 /**
  * 登录
  */
@@ -44,7 +44,7 @@ export const init = () => {
   cti.CTIConnectedEvent = function () {//cti服务器连接成功事件
     cti.AgentLogin(obj.agentid, obj.fenjiMima, obj.fenji, obj.compid)
     console.log(sip_server, sip_port)
-    sip_client.ConnentSocket(obj.fenji,'aa123456',sip_server, sip_port);//连接sip软电话
+    sip_client.ConnentSocket(obj.fenji, obj.mima,sip_server, sip_port);//连接sip软电话
     cti.CheckWSS ()
   }
   sip_client.sipPhoneConnectedEvent=function(){
@@ -54,7 +54,7 @@ export const init = () => {
       cti.AgentLogout();
       cti.CtiDisconnect();//断开cti连接
     }
-    sip_client.loginMessage(obj.fenji, 'aa123456', sip_server + ':' + sip_port);
+    sip_client.loginMessage(obj.fenji, obj.mima, sip_server + ':' + sip_port);
   }
   sip_client.extLoginEvent=function(extlogin){
     if (extlogin===0) {
