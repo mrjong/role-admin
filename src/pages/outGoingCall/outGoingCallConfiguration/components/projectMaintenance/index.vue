@@ -24,7 +24,7 @@
           <div style="font-weight: 700; font-size: 16px; padding-top: 30px; margin-left: 30px;">第一优先渠道:</div>
           <div style="margin-left: 130px; margin-top: 10px">
             <CheckboxGroup  v-model="item.channelOne">
-              <Checkbox :label="items.itemCode" v-for="items in getDirObj['SEAT_TYPE']" disabled>
+              <Checkbox :label="items.itemCode" v-for="items in getDirObj['SEAT_TYPE']" disabled :key="items.itemCode">
                 <span>{{ items.itemName }}</span>
               </Checkbox>
             </CheckboxGroup>
@@ -32,7 +32,7 @@
           <div style="font-weight: 700; font-size: 16px; margin-top: 20px; margin-left: 30px;">第二优先渠道:</div>
           <div style="margin-left: 130px; margin-top: 10px">
             <CheckboxGroup  v-model="item.channelTwo">
-              <Checkbox :label="items.itemCode" v-for="items in getDirObj['SEAT_TYPE']" disabled>
+              <Checkbox :label="items.itemCode" v-for="items in getDirObj['SEAT_TYPE']" disabled :key="items.itemCode">
                 <span>{{ items.itemName }}</span>
               </Checkbox>
             </CheckboxGroup>
@@ -69,8 +69,7 @@
                     style="width:80px; margin-top: 30px;"
                     v-if="isAction === index"
                     @click="goUpdate(item, 'project')"
-                    type="primary">修改
-            </Button>
+                    type="primary">修改</Button>
           </div>
         </Card>
       </el-carousel-item>
@@ -104,6 +103,7 @@
                 <Button size="small"
                         style="width:80px;     margin-top: 20px;"
                         @click="goUpdate(item, 'line')"
+                        v-if="isAction === index"
                         type="primary">修改
                 </Button>
               </div>

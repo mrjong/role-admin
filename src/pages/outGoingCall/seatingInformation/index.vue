@@ -94,22 +94,36 @@
           <template slot-scope="{ row, index }" slot="handle" >
               <div style="padding: 5px">
                 <Button
-                  style="width: 80px"
+                  style="width: 22%"
                   size="small"
                   @click="handleClick(row, 'update')">
                   修改
                 </Button>
                 <Button
-                  style="width: 80px"
+                  style="width: 22%"
                   size="small"
                   @click="handleClick(row, 'seatsMg')">
                   管理坐席
                 </Button>
                 <Button
-                  style="width: 80px"
+                  style="width: 22%"
                   size="small"
                   @click="handleClick(row, 'faultDebugger')">
                   故障调试
+                </Button>
+                <Button
+                  style="width: 22%"
+                  size="small"
+                  v-if="row.status === '0'"
+                  @click="handleClick(row, 'open')">
+                  开启
+                </Button>
+                <Button
+                  style="width: 22%"
+                  size="small"
+                  v-if="row.status === '1'"
+                  @click="handleClick(row, 'close')">
+                  关闭
                 </Button>
               </div>
 

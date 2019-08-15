@@ -6,8 +6,6 @@
       width="720"
       :closable="false"
       title="添加/修改方案"
-      @on-ok="handleSubmit('Submit')"
-      @on-cancel="handleSubmit('Cancel')"
     >
       <Form ref="formDataProject" :model="formDataProject" style="padding: 5%" label-position="left" :label-width="100"  :rules="ruleValidateProject">
         <Row :gutter="32">
@@ -22,7 +20,7 @@
           <FormItem label="第一优先渠道:" prop="channelOne">
             <div style="display: flex; align-items: center;">
               <CheckboxGroup v-model="formDataProject.channelOne" >
-                <Checkbox :label="item.itemCode" v-for="item in getDirObj['SEAT_TYPE']">
+                <Checkbox :label="item.itemCode" v-for="item in getDirObj['SEAT_TYPE']" :key="item.itemCode">
                   <span>{{ item.itemName }}</span>
                 </Checkbox>
               </CheckboxGroup>
@@ -32,7 +30,7 @@
           <Col span="12">
           <FormItem label="第二选择渠道:" >
             <CheckboxGroup v-model="formDataProject.channelTwo">
-              <Checkbox :label="item.itemCode" v-for="item in getDirObj['SEAT_TYPE']">
+              <Checkbox :label="item.itemCode" v-for="item in getDirObj['SEAT_TYPE']" :key="item.itemCode">
                 <span>{{ item.itemName }}</span>
               </Checkbox>
             </CheckboxGroup>
@@ -84,12 +82,22 @@
           </Col>
         </Row>
       </Form>
+      <div slot="footer">
+        <Button size="small"
+                style="width:80px; height: 30px"
+                @click="handleCancelProject()"
+                >取消</Button>
+        <Button size="small"
+                style="width:80px; height: 30px"
+                @click="handleSubmitProject()"
+                type="primary">确定</Button>
+      </div>
     </Modal>
     <Modal
       :value="showAddModel==='line'"
       width="520"
       :closable="false"
-      title="添加专线"
+      title="添加/修改专线"
       :footer-hide="true"
     >
       <Form :label-width="80" :model="formDataLine" style="padding: 5%" :rules="ruleValidateLine">
@@ -122,7 +130,7 @@
         </Row>
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
-          <FormItem label="选择坐席:" >
+          <FormItem label="选择坐席:" prop="callNoList">
             <Select size="small" clearable placeholder="请选择坐席" v-model="formDataLine.callNoList" multiple>
               <Option
                 v-for="item in seatsList"
@@ -135,7 +143,7 @@
         </Row>
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
-          <FormItem label="选择号码:" >
+          <FormItem label="选择号码:" prop="explicitList">
             <Select size="small" clearable placeholder="请选择号码" v-model="formDataLine.explicitList" multiple>
               <Option
                 v-for="item in numberList"
@@ -150,7 +158,7 @@
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="12" style="display: flex; justify-content: space-around">
             <Button
               type="primary"
-              @click="handleSubmitLine('Submit')"
+              @click="handleSubmitLine()"
               style="width:80px; margin-left: 20px"
               long
               size="small"
@@ -162,7 +170,7 @@
             <Button
               size="small"
               style="width:80px;margin-left: 8px"
-              @click="handleSubmitLine('Cancel')"
+              @click="handleCancelLine()"
             >取消</Button>
           </Col>
         </Row>

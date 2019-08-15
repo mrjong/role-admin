@@ -2,9 +2,6 @@
   <div class="panel_list">
     <!-- 检索条件 -->
     <Card class="vue-panel">
-      <p slot="title">
-        <Icon :type="!showPanel?'chevron-down':'chevron-up'" @click="showPanel=!showPanel"></Icon>检索条件
-      </p>
       <Form
         v-if="!showPanel"
         ref="formItem"

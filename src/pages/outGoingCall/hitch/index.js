@@ -17,37 +17,10 @@ export default {
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
-      export_case: true, //导出权限
       query: false, //查询权限
       query_loading: false, //查询按钮loading
-      export_case_loading: false, //导出按钮loading
-      tab_flag: 'KT_CALL_DETAIL', //默认展示科天的
       dealTime: [],
       formItem: {
-      },
-      ruleValidate: {
-        overdueDaysLt: [
-          {
-            pattern: this.GLOBAL.num,
-            message: "逾期天数为正整数",
-            trigger: "blur"
-          },
-          {
-            validator: this.validate_yqts_start,
-            trigger: "blur"
-          }
-        ],
-        overdueDaysBt: [
-          {
-            pattern: this.GLOBAL.num,
-            message: "逾期天数为正整数",
-            trigger: "blur"
-          },
-          {
-            validator: this.validate_yqts_end,
-            trigger: "blur"
-          }
-        ]
       },
       pageNo: 1,
       pageSize: 10,
@@ -66,7 +39,7 @@ export default {
         {
           title: "渠道名称",
           searchOperator: "=",
-          key: "toCallMblHid",
+          key: "channelCodeName",
           className: "tableMainW",
           align: alignCenter,
           width: widthVal
@@ -74,14 +47,14 @@ export default {
         {
           title: "故障时间",
           searchOperator: "=",
-          key: "callTime",
+          key: "createTime",
           className: "tableMainW",
           align: alignCenter,
           width: widthVal,
           render: (h, params) => {
             const row = params.row;
-            const callTime = row.callTime
-              ? this.$options.filters['formatDate'](row.callTime, 'YYYY-MM-DD HH:mm:ss')
+            const callTime = row.createTime
+              ? this.$options.filters['formatDate'](row.createTime, 'YYYY-MM-DD HH:mm:ss')
               : row.callTime;
             return h('span', callTime);
           }
@@ -89,14 +62,14 @@ export default {
         {
           title: "开启时间",
           searchOperator: "=",
-          key: "callTime",
+          key: "endTime",
           className: "tableMainW",
           align: alignCenter,
           width: widthVal,
           render: (h, params) => {
             const row = params.row;
-            const callTime = row.callTime
-              ? this.$options.filters['formatDate'](row.callTime, 'YYYY-MM-DD HH:mm:ss')
+            const callTime = row.endTime
+              ? this.$options.filters['formatDate'](row.endTime, 'YYYY-MM-DD HH:mm:ss')
               : row.callTime;
             return h('span', callTime);
           }
@@ -104,9 +77,12 @@ export default {
         {
           title: "故障时长",
           searchOperator: "=",
-          key: "caseNo",
+          key: "durationSecond",
           className: "tableMainW",
           align: alignCenter,
+          render: (h, params) => {
+            return h('span', params.row.durationSecond+ '秒');
+          }
         },
       ]
     };
@@ -130,13 +106,6 @@ export default {
     // this.getList();
   },
   methods: {
-    tabClick(name) {
-      this.tab_flag = name;
-      this.tableData = [];
-      this.total = 0;
-      this.pageNo = 1;
-      this.getList(name);
-    },
     // 改变日期区间的格式之后进行处理
     changeDate(val1, val2) {
       this.formItem.startDate  = val1[0];
@@ -148,40 +117,22 @@ export default {
       //默认带入一个参数是当前的页码数
       console.log(pageNo, "当前的页码数量值");
       this.pageNo = pageNo;
-      this.getList(this.tab_flag);
+      this.getList();
     },
     // 切换每页条数时的回调
     changeSize(pageSize) {
       this.pageSize = pageSize;
       this.pageNo = 1;
-      this.getList(this.tab_flag);
+      this.getList();
     },
     handleSubmit(name, type) {
       this.pageNo = 1;
       console.log(this.formItem)
       this.getList(type);
     },
-    // 导出
-    async exportData(type) {
-      if (this.tableData.length === 0) {
-        this.$Message.info("当前无数据，无法导入");
-        return;
-      }
-      this.export_case_loading = true;
-      let res;
-      let obj = {
-        ...this.formItem
-      };
-      let options = {
-        timeout: 120000,
-        responseType: "blob"
-      };
-      res = await call_record_export(obj, options);
-      util.dowloadfile("呼叫明细", res);
-      this.export_case_loading = false;
-    },
+
     // 获取表格数据
-    async getList(type) {
+    async getList() {
       // if (!this.query) {
       //   this.$Message.error("很抱歉，暂无权限查询");
       //   return;
@@ -207,6 +158,7 @@ export default {
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {};
+      this.dealTime = []
       this.$refs[name].resetFields();
     }
   }

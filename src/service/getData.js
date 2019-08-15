@@ -1887,3 +1887,12 @@ export const call_record_callDataList = (obj) =>
     data: qs.stringify(obj)
   })
 
+
+//   渠道信息维护开启关闭接口
+export const call_channel_updateStatus = (obj) =>
+  fetch({
+    url: '/call/channel/updateStatus',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
