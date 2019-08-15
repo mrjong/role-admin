@@ -214,9 +214,6 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    closeModal(flag){
-
-    },
     //渲染行高度
     rowStyle(){
       return 'row_style'
@@ -234,8 +231,7 @@ export default {
 
     async getChannelType() {
       let res;
-      res = await call_channel_list({
-      })
+      res = await call_channel_list({})
       if (res && res.code === 1) {
         this.channelType = res.data;
       } else {

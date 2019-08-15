@@ -5,40 +5,30 @@
       :value="showAddChannel"
       width="720"
       :closable="false"
-      @on-ok="handleSubmit('Submit')"
-      @on-cancel="handleSubmit('Cancel')"
     >
-      <Form :model="formData" style="padding-top: 50px; padding-left: 20px">
+      <Form :model="formData" style="padding-top: 50px; padding-left: 20px" :rules="ruleValidate" ref="formData" :label-width="80">
         <Row :gutter="32">
-          <Col span="10">
-          <FormItem label="渠道名称:" label-position="top">
-            <div style="display: flex; align-items: center;">
-              <Select @on-change="selectChannel" placeholder="请选择渠道名称" style="margin-right: 20px" :label-in-value="true" v-model="formData.channelCode">
+          <Col span="12">
+          <FormItem label="渠道名称:"  prop="channelCode">
+              <Select @on-change="selectChannel" placeholder="请选择渠道名称" style="margin-right: 20px; width: 70%" :label-in-value="true" v-model="formData.channelCode">
                 <Option
                   v-for="item in getDirObj['SEAT_TYPE']"
                   :value="item.itemCode"
                   :key="item.itemCode"
                 >{{ item.itemName }}</Option>
               </Select>
-            </div>
           </FormItem>
           </Col>
-          <Col span="14">
-          <FormItem label="渠道类型:" label-position="top">
-            <div style="display: flex; align-items: center;">
+          <Col span="12">
+          <FormItem label="渠道类型:" prop="channelSecondaryName">
               <Input v-model="formData.channelSecondaryName" placeholder="请输入渠道类型" style="margin-right: 20px; width: 70%"/>
-              <!--<i-switch>-->
-                <!--<span slot="open">开</span>-->
-                <!--<span slot="close">关</span>-->
-              <!--</i-switch>-->
-            </div>
           </FormItem>
           </Col>
         </Row>
         <Row :gutter="32">
           <Col span="24">
-          <FormItem label="号码类型:" label-position="top">
-            <RadioGroup v-model="formData.explicitType" style="display: flex; margin-top: 3px;">
+          <FormItem label="号码类型:"  prop="explicitType">
+            <RadioGroup v-model="formData.explicitType" style=" margin-top: 3px;">
               <Radio label="1">
                 <span>固话</span>
               </Radio>
@@ -54,9 +44,8 @@
           </Col>
         </Row>
         <Row :gutter="32">
-          <Col span="24">
-          <FormItem label="地域盲区:" label-position="top">
-            <div style="display: flex; align-items: center;">
+          <Col span="22">
+          <FormItem label="地域盲区:" prop="areas">
               <Select  placeholder="请选择地域盲区" style="margin-right: 20px" v-model="formData.areas" >
                 <Option
                   v-for="item in getDirObj['PROVINCE_AREA']"
@@ -65,16 +54,21 @@
                 >{{ item.itemName }}
                 </Option>
               </Select>
-              <!--<i-switch style="width: 53px" :true-value="1" :false-value="0" >-->
-                <!--<span slot="open">开</span>-->
-                <!--<span slot="close">关</span>-->
-              <!--</i-switch>-->
-            </div>
             <div>说明：被叫号码归属地为地域盲区，则呼叫时自动排除此线路。</div>
           </FormItem>
           </Col>
         </Row>
       </Form>
+      <div slot="footer">
+        <Button size="small"
+                style="width:80px; height: 30px"
+                @click="handleCancel('Cancel')"
+        >取消</Button>
+        <Button size="small"
+                style="width:80px; height: 30px"
+                @click="handleSubmit('Submit')"
+                type="primary">确定</Button>
+      </div>
     </Modal>
   </div>
 </template>

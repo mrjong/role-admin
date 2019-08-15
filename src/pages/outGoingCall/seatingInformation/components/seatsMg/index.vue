@@ -8,11 +8,11 @@
       @on-close="closeDrawer"
       :styles="styles"
     >
-      <Tabs value="Seats" style="background: #fff; border-radius: 4px;" @on-click="changeTab">
+      <Tabs value="Seats" style="background: #fff; border-radius: 4px;">
         <TabPane :label="'坐席编号（'+tableDataSeats.length+'）'" name="Seats">
           <Card class="vue-panel" style="margin-bottom: 30px;" :dis-hover="true">
-            <Form :model="formData" :label-width="80" :rules="seatsRuleValidate">
-              <Row>
+            <Form :model="formData" :label-width="80" :rules="seatsRuleValidate" ref="formData">
+              <Row style="height: 55px">
                 <Col span="12">
                 <FormItem label="坐席编号:" prop="seatNo">
                   <Input size="small" clearable v-model.trim="formData.seatNo" placeholder="请输入坐席编号"/>
@@ -24,7 +24,7 @@
                 </FormItem>
                 </Col>
               </Row>
-              <Row>
+              <Row style="height: 55px">
                 <Col span="12">
                 <FormItem label="密码:" prop="passWord">
                   <Input size="small" clearable v-model.trim="formData.passWord" placeholder="请输入密码"/>
@@ -60,7 +60,7 @@
         </TabPane>
         <TabPane :label="'外显号码（'+tableDataExplicitNumber.length+'）'" name="explicitNumber">
           <Card class="vue-panel" :dis-hover="true" style="margin-bottom: 30px;">
-            <Form :label-width="80" >
+            <Form :label-width="80">
               <Row>
                 <Col span="12">
                 <FormItem label="号码:">

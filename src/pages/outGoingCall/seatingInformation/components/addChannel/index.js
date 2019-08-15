@@ -15,72 +15,42 @@ export default {
       getDirObj: {},
       formData: {},
       updateFlag: false,
-      styles: {
-        height: 'calc(100% - 55px)',
-        overflow: 'auto',
-        paddingBottom: '53px',
-        paddingTop: '53px',
-        position: 'static',
-      },
       ruleValidate:{
-        jobName: [
+        channelCode: [
           {
             required: true,
-            message: '请输入任务名称',
-            trigger: 'blur',
-          }
-        ],
-        jobClass: [
-          {
-            required: true,
-            message: '请输入任务类名',
-            trigger: 'blur',
-          }
-        ],
-        jobMethod: [
-          {
-            required: true,
-            message: '请输入任务方法名',
-            trigger: 'blur',
-
-          }
-        ],
-        ipAddress: [
-          {
-            required: true,
-            message: '请输入IP地址',
-            trigger: 'blur'
-          }
-        ],
-        cronExpression: [
-          {
-            required: true,
-            message: '请输入CRON表达式',
-            trigger: 'blur',
-
-          }
-        ],
-        executionNumber: [
-          {
-            required: true,
-            message: '请选择执行次数',
+            message: '请选择渠道名称',
             trigger: 'change',
           }
-        ]
+        ],
+        // channelSecondaryName: [
+        //   {
+        //     required: true,
+        //     message: '请输入渠道类型',
+        //     trigger: 'blur',
+        //   }
+        // ],
+        explicitType: [
+          {
+            required: true,
+            message: '请选择号码类别',
+            trigger: 'change',
+          }
+        ],
+        // areas: [
+        //   {
+        //     required: true,
+        //     message: '请选择地域盲区',
+        //     trigger: 'change',
+        //   }
+        // ],
       },
-      pageNo: 1,
-      pageSize: 10,
-      total: 0,
       add_handle: true, //添加
-      dialogFormVisible: false,
-      task_api: [
-      ],
-      phoneType: ''
     };
 
   },
   created() {
-    // this.getList();
+
   },
   watch: {
     updateChannel: function (value) {
@@ -93,47 +63,38 @@ export default {
     }
   },
   methods: {
-
     selectChannel(value) {
-      if(value){
+      if (value) {
         this.formData.channelCode = value.value
         this.formData.channelName = value.label
       }
     },
-    // 重置
-    clearForm(name) {
-      this.pageNo = 1;
-      this.formItem = {};
-      this.createTime = [];
-      this.$refs[name].resetFields();
-      // this.getList();
-    },
-    async handleSubmit(flag) {
-      if(flag === 'Submit'){
-        if(!this.updateFlag){
-          await seats_config_add(this.formData).then(res=>{
-            if(res.code ===1){
-              this.$emit("passBack", 'change');
-            }
-          })
-        }else {
-          await seats_config_update(this.formData).then(res=>{
-            if(res.code ===1){
-              this.$emit("passBack", 'change');
-            }
-          })
+    async handleSubmit() {
+      this.$refs['formData'].validate((valid) => {
+        if (valid) {
+          if (!this.updateFlag) {
+            seats_config_add(this.formData).then(res => {
+              if (res.code === 1) {
+                this.$emit("passBack", 'change');
+                this.$refs['formData'].resetFields();
+                this.formData = {}
+              }
+            })
+          } else {
+            seats_config_update(this.formData).then(res => {
+              if (res.code === 1) {
+                this.$emit("passBack", 'change');
+                this.$refs['formData'].resetFields();
+              }
+            })
+          }
+        } else {
+          this.$Message.error('请检查必填项');
         }
-      } else {
-        this.$emit("passBack");
-      }
-      this.formData = {}
-      console.log(this.updateChannel)
+      })
     },
-    change() {
-
-    },
-    closeModal(flag){
-
-    },
+    handleCancel() {
+      this.$emit("passBack");
+    }
   }
 };

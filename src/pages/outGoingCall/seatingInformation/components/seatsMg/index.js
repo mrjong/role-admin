@@ -1,17 +1,13 @@
 import { rout_seatPool_add, rout_seatPool_list, rout_explicit_add, rout_explicit_list, rout_seatPool_delete,rout_explicit_delete } from '@/service/getData';
-import sysDictionary from '@/mixin/sysDictionary';
 
 export default {
   name: 'SeatsMg',
-  mixins: [sysDictionary],
   props: ["showSeatsMg", 'seatsData'],
   data() {
     var alignCenter = 'center';
     var widthVal = 180;
     var widthMidVal = 130;
     return {
-      getDirList: ['EXECUTION_NUMBER', 'TASK_STATUS'],
-      getDirObj: {},
       add_loading: false,
       query_loading: false,
       add_loading_explicit: false,
@@ -30,7 +26,7 @@ export default {
         seatNo: [
           {
             required: true,
-            message: '请输入任务名称',
+            message: '请输入坐席编号',
             trigger: 'blur',
           }
         ],
@@ -87,11 +83,6 @@ export default {
         },
       ],
       add_handle: true, //添加
-      dialogFormVisible: false,
-      title: '',
-      task_api: [
-      ],
-      phoneType: ''
     };
 
   },
@@ -109,6 +100,10 @@ export default {
   methods: {
 
     async handleSubmitExplicit() {
+      if(!this.explicitNumber){
+        this.$Message.error('请输入外显号码');
+        return
+      }
       this.add_loading_explicit = true;
       this.formData.configId = this.seatsData.id
       let res = await rout_explicit_add({
@@ -149,20 +144,28 @@ export default {
       }
     },
 
-    //添加外显号码
+    //添加坐席
     async handleSubmitSeats() {
-      this.add_loading = true;
-      this.formData.configId = this.seatsData.id
-      let res = await rout_seatPool_add({
-        ...this.formData,
+      this.$refs['formData'].validate((valid) => {
+        if(valid){
+          this.add_loading = true;
+          this.formData.configId = this.seatsData.id
+          rout_seatPool_add({
+            ...this.formData,
+          }).then(res=>{
+            this.add_loading = false;
+            if (res.code === 1) {
+              this.formData= {}
+              this.getListSeats();
+            } else {
+              this.$Message.error(res.message);
+            }
+          })
+        } else {
+          this.$Message.error('请填写必填项');
+        }
       })
-      this.add_loading = false;
-      if (res.code === 1) {
-        this.formData= {}
-        this.getListSeats();
-      } else {
-        this.$Message.error(res.message);
-      }
+
     },
     // 获取表格数据
     async getListSeats() {
@@ -210,15 +213,6 @@ export default {
       value.forEach(item=>{
         this.ids.push(item.id)
       })
-    },
-
-    //渲染行高度
-    rowStyle(){
-      return 'row_style'
-    },
-
-    changeTab(val){
-      console.log(val)
     },
 
   }

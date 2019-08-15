@@ -78,7 +78,6 @@
                   @click="showAddChannel=true"
                   v-if="add_handle" type="primary">添加
           </Button>
-          <Button size="small" style="width:80px" v-if="add_handle">导出</Button>
         </span>
       </p>
       <!-- 表格 -->
