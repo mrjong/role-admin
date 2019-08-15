@@ -2,7 +2,7 @@
   <div class="panel_list">
     <!-- 检索条件 -->
     <Modal
-     :value="showAddModel==='project'"
+     :value="showAddModel.name==='project'"
       width="720"
       :closable="false"
       title="添加/修改方案"
@@ -94,13 +94,13 @@
       </div>
     </Modal>
     <Modal
-      :value="showAddModel==='line'"
+      :value="showAddModel.name==='line'"
       width="520"
       :closable="false"
       title="添加/修改专线"
       :footer-hide="true"
     >
-      <Form :label-width="80" :model="formDataLine" style="padding: 5%" :rules="ruleValidateLine">
+      <Form :label-width="80" :model="formDataLine" style="padding: 5%" :rules="ruleValidateLine" ref="formDataLine">
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
           <FormItem label="专线名称:" prop="planName">

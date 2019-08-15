@@ -92,11 +92,11 @@
               </div>
               <div style="margin-bottom: 20px">
                 <span style="font-weight: 700; font-size: 16px">坐席: </span>
-                <span>{{item.explicitList && item.explicitList.toString()}}</span>
+                <span>{{item.callNoList && item.callNoList.toString()}}</span>
               </div>
               <div style="margin-bottom: 20px">
                 <span style="font-weight: 700; font-size: 16px">号码: </span>
-                <span>{{item.callNoList && item.callNoList.toString()}} </span>
+                <span>{{item.explicitList && item.explicitList.toString()}} </span>
               </div>
               <div style="display: flex">
                 <div style="flex: 1"></div>

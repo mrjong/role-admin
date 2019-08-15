@@ -50,7 +50,7 @@
               <span style="flex: 1"></span>
               <span>
             <Button size="small" style="width:80px" v-if="add_handle" @click="deleteSeats">删除</Button>
-            <Button size="small" style="width:80px" v-if="add_handle" type="primary">导入</Button>
+            <!--<Button size="small" style="width:80px" v-if="add_handle" type="primary">导入</Button>-->
           </span>
             </p>
             <Table border ref="selection" :columns="tableColumnsSeats" :data="tableDataSeats"   size="small" @on-selection-change="selectItem">
@@ -84,11 +84,11 @@
           <div style="height: 100%; background: #fff">
           <Card class="vue-panel" :dis-hover="true">
             <p slot="title" style="display: flex; align-items: center;">
-              <Input placeholder="Enter something..." size="small" style="width: 30%; " search v-model="explicitNumberSearch" enter-button="Search" @on-search="getListExplicit" />
+              <Input placeholder="请输入号码" size="small" style="width: 30%; " search v-model="explicitNumberSearch" enter-button="Search" @on-search="getListExplicit" />
               <span style="flex: 1"></span>
               <span>
             <Button size="small" style="width:80px" @click="deleteExplicit">删除</Button>
-            <Button size="small" style="width:80px" type="primary">导入</Button>
+            <!--<Button size="small" style="width:80px" type="primary">导入</Button>-->
           </span>
             </p>
             <Table border ref="selection" :columns="tableColumnsExplicitNumber" :data="tableDataExplicitNumber" size="small" @on-selection-change="selectItem"></Table>

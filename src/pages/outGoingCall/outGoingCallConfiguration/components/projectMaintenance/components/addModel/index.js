@@ -68,14 +68,14 @@ export default {
             type: 'array'
           }
         ],
-        explicitList: [
-          {
-            required: true,
-            message: '请选择号码',
-            trigger: 'change',
-            type: 'array'
-          }
-        ],
+        // explicitList: [
+        //   {
+        //     required: true,
+        //     message: '请选择号码',
+        //     trigger: 'change',
+        //     type: 'array'
+        //   }
+        // ],
       },
       add_handle: true, //添加
     };
@@ -84,19 +84,21 @@ export default {
   watch: {
     rowData: function (value) {
       if(Object.keys(value).length !== 0){
-        this.updateFlag = true
-        if(this.showAddModel==='project'){
+        if(this.showAddModel.name==='project'){
           this.formDataProject = this.rowData
         } else {
           this.formDataLine = this.rowData
           this.getChannelType('update')
         }
-      } else {
-        this.updateFlag = false
       }
     },
     showAddModel: function (val) {
-      if(!this.formDataLine.specialLine && val !==''){
+      if(val.type === 'update'){
+        this.updateFlag = true
+      } else {
+        this.updateFlag = false
+      }
+      if(!this.formDataLine.specialLine && Object.keys(val).length !== 0){
         this.getChannelType('add')
       }
     }
@@ -124,6 +126,11 @@ export default {
               }
             })
           } else {
+            this.formDataProject.channelTwo.forEach((item, index)=>{
+              if(item === 'null'){
+                this.formDataProject.channelTwo.splice(index,1)
+              }
+            })
             rout_plan_project_update(this.formDataProject).then(res=>{
               if (res.code === 1) {
                 this.$emit("passBack", 'change');
@@ -193,7 +200,6 @@ export default {
           }
         })
       }
-      console.log(this.numberList)
     },
     async handleSubmitLine() {
       this.$refs['formDataLine'].validate((valid) => {
@@ -202,27 +208,28 @@ export default {
             rout_plan_project_add(this.formDataLine).then(res => {
               if (res.code === 1) {
                 this.$emit("passBack", 'change');
-                this.formDataLine= {
-                  planType: '2',
-                }
+                this.$refs['formDataLine'].resetFields();
+                this.formDataLine= { planType: '2'}
               } else {
                 this.$Message.error(res.message)
               }
             })
-
           } else {
+            this.formDataLine.explicitList.forEach((item, index)=>{
+              if(item === 'null'){
+                this.formDataLine.explicitList.splice(index,1)
+              }
+            })
             rout_plan_project_update(this.formDataLine).then(res => {
               if (res.code === 1) {
                 this.$emit("passBack", 'change');
-                this.formDataLine= {
-                  planType: '2',
-                }
+                this.$refs['formDataLine'].resetFields();
+                this.formDataLine= { planType: '2'}
               } else {
                 this.$Message.error(res.message)
               }
             })
           }
-          this.$refs['formDataLine'].resetFields();
         } else {
           this.$Message.error('请检查必填项')
         }
