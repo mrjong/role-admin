@@ -1404,9 +1404,9 @@ export const arb_apply = (obj, options) =>
 /*
     客天登录
 * */
-export const call_kt_get_seat = (obj, options) =>
+export const callout_get_seat = (obj, options) =>
   fetch({
-    url: '/call/kt/get_seat',
+    url: '/callout/get_seat',
     method: 'POST',
     data: qs.stringify(obj),
     options
