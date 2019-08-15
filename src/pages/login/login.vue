@@ -48,6 +48,10 @@
                 <span v-else>登录中...</span>
               </Button>
             </FormItem>
+            <!--<div @click="ss">呼出</div>-->
+            <!--<div @click="cc">挂断</div>-->
+            <!--<div @click="ee">保持</div>-->
+            <!--<div @click="aa">接回</div>-->
           </Form>
         </div>
       </Card>
@@ -60,7 +64,7 @@ import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import { login, callout_get_seat, login_code } from "@/service/getData";
 import util from '@/libs/util';
-
+import {init, callOut, hangUp, retriveCall, holdCall} from '@/libs/news_crowd'
 export default {
   data() {
     return {
@@ -90,6 +94,7 @@ export default {
     };
   },
   created() {
+//    init()
     this.login_code();
     sessionStorage.removeItem('websocket');
     localStorage.removeItem("callData");
@@ -109,6 +114,20 @@ export default {
       }).ciphertext.toString();
       return enc;
     },
+
+//    ss() {
+//      callOut()
+//    },
+//
+//    cc() {
+//      hangUp()
+//    },
+//    ee(){
+//      holdCall()
+//    },
+//    aa() {
+//      retriveCall()
+//    },
     async login_code() {
       const res = await login_code();
       if (res.code === 1) {

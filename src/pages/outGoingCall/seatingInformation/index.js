@@ -1,4 +1,4 @@
-import {seats_config_list, seats_config_add, seats_config_update, call_channel_list, call_channel_edit } from '@/service/getData';
+import {seats_config_list, seats_config_add, seats_config_update, call_channel_list, call_channel_edit, call_channel_updateStatus } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 import AddChannel from './components/addChannel/index.vue'
 import SeatsMg from './components/seatsMg/index.vue'
@@ -105,7 +105,7 @@ export default {
           slot: 'handle',
           key: 'edit',
           className: 'tableMainHandle',
-          width: 280,
+          width: 380,
           fixed: 'left',
           align: 'center',
         }
@@ -171,7 +171,6 @@ export default {
       this.formItem = {};
       this.createTime = [];
       this.$refs[name].resetFields();
-      // this.getList();
     },
     handleClick(originalData, flag) {
       let data = JSON.parse(JSON.stringify(originalData))
@@ -186,6 +185,22 @@ export default {
         case 'faultDebugger':
           this.showPhone = true
           break;
+        case 'open':
+          this.callChannelUpdateStatus(data)
+          break;
+        case 'close':
+          this.callChannelUpdateStatus(data)
+          break;
+      }
+    },
+    //  开启关闭渠道
+    async callChannelUpdateStatus(data) {
+      let res;
+      res = await call_channel_updateStatus({id: data.id, status: data.status==='1' ? '0' : '1'})
+      if (res && res.code === 1) {
+        this.getList()
+      } else {
+        this.$Message.error(res.message);
       }
     },
 

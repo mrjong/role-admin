@@ -14,7 +14,7 @@ export default {
       projectList: [],
       lineList: [],
       isAction: 0,
-      showAddModel: '',
+      showAddModel: {},
       projectFlag: 'primary',
       lineFlag: 'default',
       rowData: {},
@@ -67,23 +67,23 @@ export default {
       this.getList()
     },
     passBack(flag) {
-      this.showAddModel = ''
+      this.showAddModel = {}
       if(flag){
         this.getList()
       }
     },
     addModel() {
       if(this.projectFlag==='primary'){
-        this.showAddModel = 'project'
+        this.showAddModel = {name: 'project', type: 'add'}
       }else {
-        this.showAddModel = 'line'
+        this.showAddModel = {name: 'line', type: 'add'}
       }
     },
     changeItemCarousel(value) {
       this.isAction = value
     },
     goUpdate(data, flag) {
-      this.showAddModel = flag
+      this.showAddModel = {name: flag, type: 'update'}
       this.rowData = JSON.parse(JSON.stringify(data))
     },
   }

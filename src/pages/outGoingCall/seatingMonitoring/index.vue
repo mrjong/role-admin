@@ -20,7 +20,6 @@
                 filterable
                 placeholder="请选择呼叫类型"
                 v-model="formItem.channelCode"
-                @on-change="getSeatType"
               >
                 <Option
                   v-for="item in channelType"

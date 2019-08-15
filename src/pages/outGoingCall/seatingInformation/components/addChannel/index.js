@@ -135,16 +135,5 @@ export default {
     closeModal(flag){
 
     },
-    //渲染行高度
-    rowStyle(){
-      return 'row_style'
-    },
-    open(content='', text='', data= {}){
-
-    },
-
-    showTask(flag, data) {
-
-    },
   }
 };

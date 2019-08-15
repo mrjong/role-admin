@@ -10,7 +10,6 @@
         ref="formItem"
         :model="formItem"
         :label-width="90"
-        :rules="ruleValidate"
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -49,7 +48,7 @@
             <FormItem>
               <Button
                 type="primary"
-                @click="handleSubmit('formItem', tab_flag)"
+                @click="handleSubmit('formItem')"
                 style="width:80px"
                 long
                 size="small"
@@ -71,17 +70,6 @@
     <Card class="vue-panel-table">
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
-        <Button
-          class="fr vue-back-btn header-btn"
-          type="primary"
-          size="small"
-          @click.stop="exportData(tab_flag)"
-          v-if="export_case"
-          :loading="export_case_loading"
-        >
-          <span v-if="!export_case_loading">导出数据</span>
-          <span v-else>导出中...</span>
-        </Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
