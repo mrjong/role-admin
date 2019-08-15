@@ -233,7 +233,6 @@
                 <div v-if="row.reliefAmt == 0">
                   <Input
                     size="small"
-                    clearable
                     type="number"
                     number
                     @on-blur="repayAmt_blur(row, index, $event)"
