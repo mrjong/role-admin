@@ -1759,7 +1759,7 @@ export default {
       let res = {};
       if (callData.callType === '2') {
         res = await callout_hung_on({
-          CallRecordDomain: params,
+          callRecordDomain: params,
           calloutVo: callData,
         },
         {
