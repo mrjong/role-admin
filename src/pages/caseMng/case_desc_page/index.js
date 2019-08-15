@@ -2304,7 +2304,7 @@ export default {
       // 时时判断当前案件是否出催，是的话不走下面的逻辑
       await this.case_detail_case_identity_info();
       if (this.case_detail_case_identity_info_Data.caseHandleStatus === 'OUT') {
-        this.$Message.inof({
+        this.$Message.info({
           content: '当前案件已出催！',
           duration: 3
         });
