@@ -328,6 +328,10 @@ export default {
     },
     // 处理还款金额
     repayAmt_blur(row, index, event) {
+      // 处理为空的字符串
+      if (event.target.value === '' || event.target.value < 0) {
+        row.repayAmt = 0;
+      };
       if (Number(event.target.value) + Number(row.reliefAmt) > Number(row.perdTotSur)) {
         row.error_flag = true;
         this.error_text = '金额填写有误'
@@ -337,10 +341,6 @@ export default {
         row.error_flag = false;
         this.$set(this.tableData_repayment, index, row);
       }
-      // 处理为空的字符串
-      if (event.target.value === '') {
-        row.repayAmt = 0;
-      };
       this.$set(this.tableData_repayment, index, row);
       this.totReliefAmt = 0;
       this.totRepayAmt = 0;
