@@ -5,7 +5,7 @@ export default {
     OutGoingCallMaintenance,
     ProjectMaintenance
   },
-  name: 'task_time',
+  name: 'OutGoingCallConfiguration',
   data() {
     return {
     };

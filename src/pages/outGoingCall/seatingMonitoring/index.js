@@ -119,9 +119,6 @@ export default {
         case "query":
           this.query = true;
           break;
-        case "export":
-          this.export_case = true;
-          break;
       }
     });
     // this.getList();
@@ -170,10 +167,10 @@ export default {
     },
     // 获取表格数据
     async getList(type) {
-      // if (!this.query) {
-      //   this.$Message.error("很抱歉，暂无权限查询");
-      //   return;
-      // }
+      if (!this.query) {
+        this.$Message.error("很抱歉，暂无权限查询");
+        return;
+      }
       this.query_loading = true;
       if(!this.formItem.channelCode){
         this.formItem.type= ''

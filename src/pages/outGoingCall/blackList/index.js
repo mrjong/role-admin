@@ -123,9 +123,6 @@ export default {
         case "query":
           this.query = true;
           break;
-        case "export":
-          this.export_case = true;
-          break;
       }
     });
     // this.getList();
@@ -162,25 +159,7 @@ export default {
       this.pageNo = 1;
       this.getList(type);
     },
-    // 导出
-    async exportData(type) {
-      if (this.tableData.length === 0) {
-        this.$Message.info("当前无数据，无法导入");
-        return;
-      }
-      this.export_case_loading = true;
-      let res;
-      let obj = {
-        ...this.formItem
-      };
-      let options = {
-        timeout: 120000,
-        responseType: "blob"
-      };
-      res = await call_record_export(obj, options);
-      util.dowloadfile("呼叫明细", res);
-      this.export_case_loading = false;
-    },
+
     // 获取表格数据
     async getList(type) {
       console.log(this.formItem)

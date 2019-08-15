@@ -1,9 +1,9 @@
 <template>
-  <Tabs value="TimedTask" style="background: #fff; border-radius: 4px;" >
-    <TabPane label="外呼管理" name="TimedTask">
+  <Tabs value="OutGoingCallMaintenance" style="background: #fff; border-radius: 4px;" >
+    <TabPane label="外呼管理" name="OutGoingCallMaintenance">
       <OutGoingCallMaintenance/>
     </TabPane>
-    <TabPane label="方案管理" name="TaskDetails">
+    <TabPane label="方案管理" name="ProjectMaintenance">
       <ProjectMaintenance/>
     </TabPane>
   </Tabs>
