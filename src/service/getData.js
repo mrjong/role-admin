@@ -1402,7 +1402,7 @@ export const arb_apply = (obj, options) =>
   });
 
 /*
-    客天登录
+    坐席登录（登录时请求）
 * */
 export const callout_get_seat = (obj, options) =>
   fetch({
@@ -1411,6 +1411,27 @@ export const callout_get_seat = (obj, options) =>
     data: qs.stringify(obj),
     options
   });
+
+/**
+ * 详情页外呼时重新获取坐席信息（新路由模式）
+ */
+export const callout_rout_get_seat = (obj) =>
+  fetch({
+    url: 'callout/rout/get_seat',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
+/**
+ * 新路由的外呼接口
+ *
+ */
+export const callout_hung_on = (obj) =>
+  fetch({
+    url: 'callout/hung_on',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
 
 /*
 客天外拨

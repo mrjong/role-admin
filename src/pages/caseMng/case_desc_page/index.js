@@ -39,6 +39,8 @@ import {
   case_list,
   credit_case_process, //获取时间轴接口
   case_detail_getimgurls,//获取图片信息街口
+  callout_rout_get_seat,//重新获取坐席参数
+  callout_hung_on, //新路由模式的外呼
 } from '@/service/getData';
 let callFlag = false;
 export default {
@@ -1755,11 +1757,19 @@ export default {
         params.actionId = callData.id;
       }
       let res = {};
-      if (this.seatType === 'RL') {
-        res = await call_moor_hung_on(params);
-      } else {
-        res = await call_kt_hung_on(params);
-      }
+      if (callData.callType === '2') {
+        res = await callout_hung_on({
+          CallRecordDomain: params,
+          calloutVo: callData,
+        })
+
+      } else if (callData.callType === '1') {
+        if (this.seatType === 'RL') {
+          res = await call_moor_hung_on(params);
+        } else {
+          res = await call_kt_hung_on(params);
+        }
+      };
       if (res.code === 1) {
         this.actionId = res.data.actionId;
         this.$Message.success('呼出成功');
@@ -2194,8 +2204,9 @@ export default {
       } else {
         this.callUserTyp = '';
       }
-      console.log(this.callUserType);
+      let callData = JSON.parse(localStorage.getItem('callData'));
       this.handleCancle();
+      // 判断拨打模式，是新路由还是传统模式
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;
         this.objCopy.collectType = tag;
@@ -2211,9 +2222,13 @@ export default {
           script.type = 'text/javascript';
           script.src = '/dist/callhelper.min.js';
           head.appendChild(script);
-          setTimeout(() => {
-            this.call(JSON.parse(localStorage.getItem('callData')));
-          }, 500)
+          if (callData.callType === '2') {
+            this.callout_rout_get_seat(obj)
+          } else if (callData.callType === '1') {
+            setTimeout(() => {
+              this.call(callData);
+            }, 500)
+          }
         } else if (this.seatType === 'RL') {
           // 容联外呼传参
           this.call_kt_hung_on({
@@ -2243,6 +2258,7 @@ export default {
         this.objCopy = {};
         this.actionId = '';
       }
+
       if (this.readType !== 'read') {
         if (obj.callUserType || obj.cntRelTyp) {
           this.formValidate.callUserType = obj.callUserType || obj.cntRelTyp;
@@ -2436,6 +2452,27 @@ export default {
           this.case_remark_his_add();
         }
       });
-    }
+    },
+    // 重新获取坐席信息
+    async callout_rout_get_seat(obj) {
+      let callData = JSON.parse(localStorage.getItem('callData'));
+      const res = await callout_rout_get_seat({
+        callType: callData.callType,
+        planId: callData.planId,
+        phoneNo: obj.mblNo,
+        caseNo: this.caseNo,
+      })
+      if (res.code === 1) {
+        localStorage.setItem('callData', JSON.stringify(res.data));
+        if (res.data.seatType === 'KT') {
+          this.call(res.data);
+        } else {
+
+        }
+      } else {
+
+      }
+      console.log(res)
+    },
   }
 };

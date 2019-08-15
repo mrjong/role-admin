@@ -39,11 +39,11 @@
                 </span>
               </Input>
               <div class="image-box">
-                <img @click="login_code" :src="imageShow" alt>
+                <img @click="login_code" :src="imageShow" alt />
               </div>
             </FormItem>
             <FormItem>
-              <Button @click="handleSubmit" type="primary" long :loading='login_loading'>
+              <Button @click="handleSubmit" type="primary" long :loading="login_loading">
                 <span v-if="!login_loading">登录</span>
                 <span v-else>登录中...</span>
               </Button>
@@ -63,14 +63,20 @@
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import { login, callout_get_seat, login_code } from "@/service/getData";
-import util from '@/libs/util';
-import {init, callOut, hangUp, retriveCall, holdCall} from '@/libs/news_crowd'
+import util from "@/libs/util";
+import {
+  init,
+  callOut,
+  hangUp,
+  retriveCall,
+  holdCall
+} from "@/libs/news_crowd";
 export default {
   data() {
     return {
       imageShow: "",
       key: "",
-      login_loading: false,//登录按钮loading
+      login_loading: false, //登录按钮loading
       form: {
         loginName: "",
         loginPwd: "",
@@ -94,9 +100,9 @@ export default {
     };
   },
   created() {
-//    init()
+    //    init()
     this.login_code();
-    sessionStorage.removeItem('websocket');
+    sessionStorage.removeItem("websocket");
     localStorage.removeItem("callData");
     localStorage.removeItem("callObj");
     this.$nextTick(() => {
@@ -115,19 +121,19 @@ export default {
       return enc;
     },
 
-//    ss() {
-//      callOut()
-//    },
-//
-//    cc() {
-//      hangUp()
-//    },
-//    ee(){
-//      holdCall()
-//    },
-//    aa() {
-//      retriveCall()
-//    },
+    //    ss() {
+    //      callOut()
+    //    },
+    //
+    //    cc() {
+    //      hangUp()
+    //    },
+    //    ee(){
+    //      holdCall()
+    //    },
+    //    aa() {
+    //      retriveCall()
+    //    },
     async login_code() {
       const res = await login_code();
       if (res.code === 1) {
@@ -146,10 +152,10 @@ export default {
 
       if (res.code === 1) {
         if (res.data.seatType === "KT") {
-          localStorage.setItem("callData", JSON.stringify(res.data));
           this.call(res.data);
-        };
-        window.sessionStorage.setItem('callSeat', JSON.stringify(res.data));
+        }
+        localStorage.setItem("callData", JSON.stringify(res.data));
+        window.sessionStorage.setItem("callSeat", JSON.stringify(res.data));
         this.loginSuccess(data);
       } else {
         this.$Message.error(res.message);
@@ -186,7 +192,7 @@ export default {
     },
     loginSuccess(res) {
       this.$Message.success("登录成功!");
-      window.sessionStorage.setItem('websocket', true);
+      window.sessionStorage.setItem("websocket", true);
       util.websocket();
       window.$router = this.$router;
       this.$router.push({
