@@ -3,6 +3,7 @@ import sysDictionary from '@/mixin/sysDictionary';
 import AddChannel from './components/addChannel/index.vue'
 import SeatsMg from './components/seatsMg/index.vue'
 import Phone from './components/phone/index.vue'
+
 export default {
   name: 'SeatingInformation',
   mixins: [sysDictionary],

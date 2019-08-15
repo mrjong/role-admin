@@ -17,9 +17,9 @@
           <FormItem label="渠道名称:" >
             <Select size="small" clearable placeholder="请选择渠道名称" v-model="formItem.channelCode" style="margin-top: 5px">
               <Option
-                v-for="item in getDirObj['SEAT_TYPE']"
+                v-for="(item, index) in getDirObj['SEAT_TYPE']"
                 :value="item.itemCode"
-                :key="item.itemCode"
+                :key="index"
               >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
@@ -28,9 +28,9 @@
           <FormItem label="渠道类型:" >
             <Select size="small" clearable placeholder="请选择渠道类型" v-model="formItem.channelSecondaryCode" style="margin-top: 5px">
               <Option
-                v-for="item in channelType"
+                v-for="(item, index) in channelType"
                 :value="item.channelCode"
-                :key="item.channelCode"
+                :key="index"
               >{{ item.channelName }}</Option>
             </Select>
           </FormItem>

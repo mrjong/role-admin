@@ -81,17 +81,6 @@
     <Card class="vue-panel-table">
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
-        <Button
-          class="fr vue-back-btn header-btn"
-          type="primary"
-          size="small"
-          @click.stop="exportData(tab_flag)"
-          v-if="export_case"
-          :loading="export_case_loading"
-        >
-          <span v-if="!export_case_loading">导出数据</span>
-          <span v-else>导出中...</span>
-        </Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">

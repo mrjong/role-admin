@@ -73,7 +73,7 @@ export const loginOut = () => {
 }
 
 //呼出
-export const callOut = (phoneNumber = '15732029713') => {
+export const callOut = (phoneNumber = '17600218955') => {
   showmsg("【呼出】============================================================");
   showmsg("调用MakeCall()进行呼出。呼出请求发出后会进行EVENT_AgentStateChanged事件通知");
   console.log(Date.parse(new Date())+   '呼出')
@@ -311,12 +311,11 @@ export const  init2 =() => {
   cti.EVENT_HangupEvent = function (compid, agentid, callId, calldata) {
     console.log("@ 挂断进行EVENT_HangupEvent通知。");
     let data = {compid: '830058', dates: '2019-08', callid: callId, anytype: '1'}
-    fetch({
-      url: '/api/callcenter/GetSingleCdrAnyCallRecord',
-      method: 'POST',
-      data: data,
-
-    });
+    // fetch({
+    //   url: '/api/callcenter/GetSingleCdrAnyCallRecord',
+    //   method: 'POST',
+    //   data: data,
+    // });
     handcall=0;
     console.log("## EVENT_HangupEvent:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calldata=" + calldata);
   }

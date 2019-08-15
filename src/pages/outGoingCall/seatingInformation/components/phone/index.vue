@@ -7,9 +7,9 @@
     >
     <div class="tel-box-desc">
       <div class="tel-btn-box" style="display: flex">
-        <Input  placeholder="please enter your number" style="margin-right: 20px" />
+        <Input  placeholder="please enter your number" style="margin-right: 20px" v-model="phoneNumber"/>
         <div class="item success"  v-if="success">
-          <div class="icon-box" @click="answer" >
+          <div class="icon-box" @click="callOut" >
             <Icon type="ios-call"></Icon>
           </div>
         </div>

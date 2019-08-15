@@ -1,3 +1,4 @@
+import {callOut, hangUp, retriveCall, holdCall, makeIdle} from '@/libs/news_crowd'
 
 
 export default {
@@ -5,9 +6,8 @@ export default {
   data() {
 
     return {
-      telNoHid: '',
-      usrNameHid: '',
-      success: false,
+      phoneNumber: '',
+      success: true,
     }
 
   },
@@ -15,12 +15,23 @@ export default {
     // this.getList();
   },
   methods: {
-    answer() {
+    callOut() {
+      if(!this.phoneNumber){
+        this.$Message.error('请输入手机号')
+        return
+      }
+      this.success=false
+      callOut(this.phoneNumber)
     },
+
     hangup() {
+      this.success=true
+      hangUp()
     },
     handle_cancel(){
       this.$emit("passBack");
-    }
+    },
+
+
   }
 };
