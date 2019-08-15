@@ -1426,11 +1426,12 @@ export const callout_rout_get_seat = (obj) =>
  * 新路由的外呼接口
  *
  */
-export const callout_hung_on = (obj) =>
+export const callout_hung_on = (obj, params) =>
   fetch({
     url: 'callout/hung_on',
     method: 'POST',
-    data: qs.stringify(obj),
+    data: obj,
+    ...params
   })
 
 /*

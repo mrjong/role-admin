@@ -1761,6 +1761,13 @@ export default {
         res = await callout_hung_on({
           CallRecordDomain: params,
           calloutVo: callData,
+        },
+        {
+          transformRequest: [
+            function(data) {
+              return JSON.stringify(data); //利用对应方法转换格式
+            }
+          ]
         })
 
       } else if (callData.callType === '1') {
