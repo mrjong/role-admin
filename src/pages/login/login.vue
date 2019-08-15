@@ -58,7 +58,7 @@
 <script>
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
-import { login, call_kt_get_seat, login_code } from "@/service/getData";
+import { login, callout_get_seat, login_code } from "@/service/getData";
 import util from '@/libs/util';
 
 export default {
@@ -119,21 +119,18 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    async call_kt_get_seat(data) {
-      const res = await call_kt_get_seat({
+    async callout_get_seat(data) {
+      const res = await callout_get_seat({
         loginName: this.form.loginName
       });
       console.log(res);
+
       if (res.code === 1) {
         if (res.data.seatType === "KT") {
-          sessionStorage.setItem("seatType", "KT");
           localStorage.setItem("callData", JSON.stringify(res.data));
           this.call(res.data);
-        } else if (res.data.seatType === "XZ") {
-          sessionStorage.setItem("seatType", "XZ");
-        } else if (res.data.seatType === "RL") {
-          sessionStorage.setItem("seatType", "RL");
-        }
+        };
+        window.sessionStorage.setItem('callSeat', JSON.stringify(res.data));
         this.loginSuccess(data);
       } else {
         this.$Message.error(res.message);
@@ -198,9 +195,8 @@ export default {
               "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
             );
 
-            // this.call_kt_get_seat()
             Cookies.set("access", 1);
-            this.call_kt_get_seat(res);
+            this.callout_get_seat(res);
           } else if (res && res.code === 3010010) {
             this.login_code();
 
