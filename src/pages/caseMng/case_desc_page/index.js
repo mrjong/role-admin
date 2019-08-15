@@ -1,6 +1,9 @@
 import jianmian from '@/components/caseDesc/jianmian.vue';
 import huakou from '@/components/caseDesc/huakou.vue';
 import zhongcai from '@/components/caseDesc/zhongcai.vue';
+import gathering from '@/components/caseDesc/gathering.vue';
+import QRdetail from '@/components/caseDesc/QR_code_detail.vue';
+import QRcode from '@/components/caseDesc/QR_code.vue';
 import TimeLine from '@/components/time_line_page';
 import qs from 'qs';
 import dayjs from 'dayjs';
@@ -39,6 +42,7 @@ import {
   case_list,
   credit_case_process, //获取时间轴接口
   case_detail_getimgurls,//获取图片信息街口
+  offlineScanPay_apply,//判断二维码是否生成
 } from '@/service/getData';
 let callFlag = false;
 export default {
@@ -47,7 +51,10 @@ export default {
     jianmian,
     huakou,
     zhongcai,
-    TimeLine
+    TimeLine,
+    gathering,
+    QRdetail,
+    QRcode
   },
   mixins: [sysDictionary],
   data() {
@@ -72,6 +79,7 @@ export default {
       apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
       apply_remission: false,//案件详情申请减免权限
+      APPLY_QR_CODE: false,//收款二维码权限
       add_collect_loading: false,//添加催记按钮loading
       add_txl_loading: false,//添加通讯录提交按钮loading
       message_detail_flag: false,//站内信modal是否显示
@@ -93,7 +101,10 @@ export default {
       modal: {
         huakou: false,
         jianmian: false,
-        zhongcai: false
+        zhongcai: false,
+        QR_CODE: false,
+        gathering: false,
+        QR_code_detail: false,
       },
       formItem2: {},
       tabName: '',
@@ -133,15 +144,11 @@ export default {
       call_status: '',// 拨打状态暂存
       modalTitle: '',
       visible1: false,
-      modal7: false,
+      address_list_modal: false,
       queryData: {},
       collectcode_getCollectRelate_Data: [],
       collectcode_getCollectRelate_childItem: [],
-      modal12: false,
-      inputGrid: '',
-      modal11: false,
       formValidate: {},
-      formValidate2: {},
       case_detail_case_identity_info_Data: {},
       zhongcai_set_data: {},
       case_detail_urgent_contact_Data: {},
@@ -1611,6 +1618,9 @@ export default {
     if (Cookie.get('apply_remission') === 'true') {
       this.apply_remission = true;
     };
+    if (Cookie.get('APPLY_QR_CODE') === 'true') {
+      this.APPLY_QR_CODE = true;
+    };
     let params = location.hash.split('?');
     const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
     this.caseNo = window.atob(queryData.caseNotest);
@@ -1881,16 +1891,16 @@ export default {
       if (res.code === 1) {
         // 更新list
         this.case_detail_mail_list_appended();
-        this.modal7 = false;
+        this.address_list_modal = false;
       } else {
         this.$Message.error(res.message);
       }
     },
     closeTxl() {
-      this.modal7 = false;
+      this.address_list_modal = false;
     },
     addtxl() {
-      this.modal7 = true;
+      this.address_list_modal = true;
     },
     // 催收信息
     async case_detail_remark_list() {
@@ -1916,6 +1926,7 @@ export default {
       this.case_detail_repay_ord_list_spin = true
       const res = await case_detail_repay_ord_list({
         userId: this.userId,
+        caseNo: this.caseNo,
         pageNum: this.case_detail_repay_ord_list_pageNo,
         pageSize: this.case_detail_repay_ord_list_pageSize
       });
@@ -2278,13 +2289,39 @@ export default {
     },
     passBackBreaks(obj) {
       console.log(obj)
-      this.modal.jianmian = obj.flag;
+      this.modal[obj.name] = obj.flag;
       if (obj.status === 'ok') {
-        this.$Message.success('申请成功');
+        switch (obj.name) {
+          case 'QR_code_detail':
+            this.breaks_data = {
+              caseNo: this.caseNo,
+            }
+            this.modal.QR_CODE = true;
+            break;
+          case 'jianmian':
+            this.$Message.success('申请成功');
+            break;
+          case 'gathering':
+            this.breaks_data = {
+              caseNo: this.caseNo,
+            }
+            this.modal.QR_CODE = true;
+            break;
+          default:
+            break;
+        }
       }
     },
-    handOpen(type, userId) {
-      console.log(this.modal);
+    async handOpen(type, userId) {
+      // 时时判断当前案件是否出催，是的话不走下面的逻辑
+      await this.case_detail_case_identity_info();
+      if (this.case_detail_case_identity_info_Data.caseHandleStatus === 'OUT') {
+        this.$Message.info({
+          content: '当前案件已出催！',
+          duration: 3
+        });
+        return;
+      };
       if (type === 'zhongcai') {
         let idCardFront = '';
         let idCardOpposite = '';
@@ -2314,8 +2351,40 @@ export default {
         }
       } else if (type === 'huakou') {
         this.$set(this, 'userId', userId);
+      } else if (type === 'gathering') {
+        this.breaks_data = {
+          caseNo: this.caseNo,
+          billNo: this.case_detail_case_base_info_Data.billNo,
+          tableData: this.tableData
+        };
+        this.offlineScanPay_apply(type);
+        return;
       }
       this.modal[type] = true;
+    },
+    // 判断是否存在二维码
+    async offlineScanPay_apply(name) {
+      const res = await offlineScanPay_apply({
+        caseNo: this.caseNo,
+      })
+      if (res.code === 3000001) {
+        // 新创建收款码
+        this.breaks_data = {
+          caseNo: this.caseNo,
+          billNo: this.case_detail_case_base_info_Data.billNo,
+          tableData: this.tableData
+        };
+        this.modal[name] = true;
+      } else if (res.code === 3000002) {
+        this.$Message.info('二维码正在失效中，请稍后重试！')
+      } else {
+        this.breaks_data = {
+          caseNo: this.caseNo,
+          billNo: this.case_detail_case_base_info_Data.billNo,
+          data: res.data,
+        }
+        this.modal.QR_code_detail = true;
+      }
     },
     handleView(name) {
       this.imgName = name;

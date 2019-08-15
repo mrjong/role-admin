@@ -1,6 +1,6 @@
 <template>
   <div class="panel_list p5">
-    <Modal title="新增通讯录" v-model="modal7">
+    <Modal title="新增通讯录" v-model="address_list_modal">
       <Form
         ref="formItem2"
         :model="formItem2"
@@ -78,6 +78,14 @@
             <span>信用进度</span>
           </span>
           <Button
+            v-if="readType!=='read' && APPLY_QR_CODE && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
+            @click="handOpen('gathering')"
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            size="small"
+            :disabled="btnDisable"
+          >收款二维码</Button>
+          <Button
             v-if="readType!=='read' && apply_arbitrament && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
             @click.stop="handOpen('zhongcai')"
             class="fr vue-back-btn header-btn"
@@ -85,14 +93,6 @@
             size="small"
             :disabled="btnDisable"
           >申请仲裁</Button>
-          <!-- <Button
-            v-if="readType!=='read'"
-            @click="handOpen('huankuan','申请还款')"
-            class="fr vue-back-btn header-btn"
-            type="primary"
-            size="small"
-            :disabled="btnDisable"
-          >申请还款</Button>-->
           <Button
             v-if="readType!=='read' && apply_deduct && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
             @click.stop="handOpen('huakou', case_collect_case_list_data&&case_collect_case_list_data.userId)"
@@ -865,6 +865,30 @@
     <Modal title="查看图片" v-model="visible">
       <img :src="imgName" v-if="visible" style="width: 100%" />
     </Modal>
+    <!-- 新建收款二维码 -->
+    <gathering
+      v-model="modal.gathering"
+      v-if="modal.gathering"
+      v-on:passBack="passBackBreaks"
+      :edit_flag="true"
+      :breaks_data="breaks_data"
+    ></gathering>
+    <!-- 收款详情 -->
+    <QRdetail
+      v-model="modal.QR_code_detail"
+      v-if="modal.QR_code_detail"
+      v-on:passBack="passBackBreaks"
+      :edit_flag="true"
+      :breaks_data="breaks_data"
+    ></QRdetail>
+    <!-- 二维码下载页 -->
+    <QRcode
+      v-model="modal.QR_CODE"
+      v-if="modal.QR_CODE"
+      v-on:passBack="passBackBreaks"
+      :breaks_data="breaks_data"
+    ></QRcode>
+    <!-- 减免 -->
     <jianmian
       v-model="modal.jianmian"
       v-if="modal.jianmian"
@@ -872,6 +896,7 @@
       :edit_flag="true"
       :breaks_data="breaks_data"
     ></jianmian>
+    <!-- 仲裁 -->
     <zhongcai
       :getDirObj="getDirObj"
       v-on:passBack="passBack('zhongcai')"
@@ -879,6 +904,7 @@
       v-if="modal.zhongcai"
       :zhongcai_data="zhongcai_set_data"
     ></zhongcai>
+    <!-- 划扣 -->
     <huakou
       v-on:passBack="passBack('huakou')"
       v-model="modal.huakou"
@@ -887,6 +913,7 @@
       :caseNo="caseNo"
       :userId="userId"
     ></huakou>
+    <!-- 站内信详情 -->
     <div v-if="message_detail_flag" style="z-index: 1000">
       <Modal title="站内信信息" class="message_detail" v-model="message_detail_flag" :footer-hide="true">
         <Row>

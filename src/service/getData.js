@@ -1718,3 +1718,35 @@ export const apply_arbitration_reverse = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+
+// 判断二维码是否生成
+export const offlineScanPay_apply = (obj) =>
+  fetch({
+    url: '/offlineScanPay/apply',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+// 提交收款申请
+export const offlineScanPay_generate = (obj, options) =>
+  fetch({
+    url: '/offlineScanPay/generate',
+    method: 'POST',
+    data: obj,
+    options,
+  })
+// 生成二维码的接口
+export const offlineScanPay_detail = (obj) =>
+  fetch({
+    url: '/offlineScanPay/detail',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+// 失效二维码
+export const offlineScanPay_invalid = (obj) =>
+  fetch({
+    url: '/offlineScanPay/invalid',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
