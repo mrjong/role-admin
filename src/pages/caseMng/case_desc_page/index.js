@@ -108,7 +108,6 @@ export default {
       getDirObj: {},
       userNmClearCopy: '',// 保存的明文名字
       img_list: [],//图片列表
-      telShow: false,
       mblNo: '',
       caseNo: '',
       userId: '',
@@ -1703,6 +1702,12 @@ export default {
       * 设置状态监听回调
       */
     stateCallback(data) {
+      console.log(data,'------------111111-------------')
+      let callObj = {
+        telNoHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
+        usrNameHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
+      };
+      localStorage.setItem('callObj', JSON.stringify(callObj));
       this.$store.commit('changeCallData', data);
     },
     /**
@@ -1716,7 +1721,7 @@ export default {
         if (!callFlag) {
           return;
         }
-        this.call_kt_hung_on({
+        this.call_hung_on({
           callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
           callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
           toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
@@ -1739,8 +1744,7 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    async call_kt_hung_on(obj) {
-      this.telShow = true;
+    async call_hung_on(obj) {
       let callData = JSON.parse(localStorage.getItem('callData'));
       let params = {
         callno: obj.callno,
@@ -1753,11 +1757,14 @@ export default {
         userId: this.userId,
         collectType: obj.collectType,
       };
-      if (this.seatType === 'KT') {
+      if (callData.seatType === 'KT') {
         params.actionId = callData.id;
+        // localStorage.removeItem('callObj');
       }
       let res = {};
+      // 判断外呼模式，2  新路由， 1  传统方式
       if (callData.callType === '2') {
+        // 新路由拨打方式三合一
         res = await callout_hung_on({
           callRecordDomain: params,
           calloutVo: callData,
@@ -1769,29 +1776,28 @@ export default {
             }
           ]
         })
-
       } else if (callData.callType === '1') {
-        if (this.seatType === 'RL') {
+        if (callData.seatType === 'RL') {
           res = await call_moor_hung_on(params);
-        } else {
+        } else if(callData.seatType === 'KT') {
           res = await call_kt_hung_on(params);
         }
       };
       if (res.code === 1) {
         this.actionId = res.data.actionId;
         this.$Message.success('呼出成功');
-        if (this.seatType === 'RL') {
+        if (callData.seatType === 'RL') {
           this.showMoorTel = true;
-          this.moorToCallMblHid = res.data.toCallMblHid;
-          this.moorToCallUser = res.data.toCallUser
-        }
-        let callObj = {
-          telNoHid: obj.toCallMblHid,
-          usrNameHid: obj.toCallUserHid
-        };
-        console.log(callObj);
+          this.moorToCallMblHid = obj.toCallMblHid;
+          this.moorToCallUser = obj.toCallUserHid;
+        } else if (callData.seatType === 'KT') {
         localStorage.removeItem('callObj');
-        localStorage.setItem('callObj', JSON.stringify(callObj));
+          // let callObj = {
+          //   telNoHid: obj.toCallMblHid,
+          //   usrNameHid: obj.toCallUserHid
+          // };
+          // localStorage.setItem('callObj', JSON.stringify(callObj));
+        }
         let timer;
         clearTimeout(timer);
         timer = setTimeout(() => {
@@ -1806,7 +1812,7 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    // 讯众外呼接口
+    // 讯众外呼接口（传统模式）
     async call_xz_hung_on(obj) {
       const res = await call_xz_hung_on(obj);
       if (res.code === 1) {
@@ -1829,7 +1835,7 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    // 讯众挂断接口
+    // 讯众挂断接口（传统模式）
     async call_xz_hung_off() {
       const res = await call_xz_hung_off({
         actionId: this.actionId
@@ -2238,7 +2244,7 @@ export default {
           }
         } else if (this.seatType === 'RL') {
           // 容联外呼传参
-          this.call_kt_hung_on({
+          this.call_hung_on({
             callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
             callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
             toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
@@ -2479,7 +2485,6 @@ export default {
       } else {
 
       }
-      console.log(res)
     },
   }
 };

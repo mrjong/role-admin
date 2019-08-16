@@ -134,6 +134,7 @@ export default {
           case "READY":
             // 坐席就绪
             this.showTel = false;
+            localStorage.removeItem("callObj");
             break;
           case "RINGING":
             // 坐席振铃
@@ -169,8 +170,10 @@ export default {
             break;
 
           default:
+            localStorage.removeItem("callObj");
             break;
         }
+        localStorage.removeItem("callObj");
       } else {
         this.$Message.error("拨打电话初始化异常");
       }
