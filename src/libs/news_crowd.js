@@ -13,11 +13,18 @@ function param(data){
   return url ? url:'';
 }
 
-let obj = {compid: '830058', agentid: '9999', telephone: '8300589999', telephonePassword: '00c351677029d3840898d241bc542fb9', wstype: 'ws', serverid: '', password: 'aa123456'}
+// let obj = {compid: '830058', agentid: '9999', telephone: '8300589999', telephonePassword: '00c351677029d3840898d241bc542fb9', wstype: 'ws', serverid: '', password: 'aa123456'};
 /**
  * 登录
  */
+let obj;
 export const init = () => {
+  // 判断是否有讯众的init参数
+  if (!sessionStorage.getItem('XZ_INIT_DATA')) {
+    return;
+  } else {
+    obj = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA'));
+  };
   let actionArray = ['getCtiServer', 'getRegServer']
   actionArray.forEach(item=>{
     let data = {action: item, ...obj}
@@ -46,6 +53,7 @@ export const init = () => {
     console.log(sip_server, sip_port)
     sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
     cti.CheckWSS ()
+    console.log(cti.CheckWSS ())
   }
   sip_client.sipPhoneConnectedEvent=function(){
     console.log("## sip ConnectedEvent");
@@ -73,7 +81,7 @@ export const loginOut = () => {
 }
 
 //呼出
-export const callOut = (phoneNumber = '17600218955') => {
+export const callOut = (phoneNumber = '15732029713') => {
   showmsg("【呼出】============================================================");
   showmsg("调用MakeCall()进行呼出。呼出请求发出后会进行EVENT_AgentStateChanged事件通知");
   console.log(Date.parse(new Date())+   '呼出')
@@ -95,7 +103,7 @@ export const retriveCall = () => {
 export const hangUp = () => {
   console.log("【挂断】============================================================");
   console.log("调用Hangup()进行挂断电话。挂断成功后会进行EVENT_AgentStateChanged事件通知");
-  cti.Hangup();
+  return cti.Hangup();
 }
 
 

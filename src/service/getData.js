@@ -1433,6 +1433,15 @@ export const callout_hung_on = (obj, params) =>
     data: obj,
     ...params
   })
+/**
+ * 新路由挂断接口
+ */
+export const callout_hung_off = (obj) =>
+  fetch({
+    url: 'callout/hung_off',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
 
 /*
 客天外拨

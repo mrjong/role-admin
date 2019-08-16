@@ -50,7 +50,7 @@ export default {
     // this.$Message.config({
     //   duration: 2
     // });
-    init()
+    // init()
     const h = this.$createElement;
     if (localStorage.getItem("callData")) {
       this.call(JSON.parse(localStorage.getItem("callData")));

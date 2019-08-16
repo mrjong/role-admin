@@ -6,6 +6,7 @@ import qs from 'qs';
 import dayjs from 'dayjs';
 import Cookie from 'js-cookie';
 import sysDictionary from '@/mixin/sysDictionary';
+import { init, callOut, hangUp } from '@/libs/news_crowd';//讯众插件
 import {
   case_detail_remark_list, // 催收
   case_detail_repay_ord_list, // 回款
@@ -41,6 +42,7 @@ import {
   case_detail_getimgurls,//获取图片信息街口
   callout_rout_get_seat,//重新获取坐席参数
   callout_hung_on, //新路由模式的外呼
+  callout_hung_off,//新路由模式的挂断
 } from '@/service/getData';
 let callFlag = false;
 export default {
@@ -1702,7 +1704,7 @@ export default {
       * 设置状态监听回调
       */
     stateCallback(data) {
-      console.log(data,'------------111111-------------')
+      console.log(data, '------------111111-------------')
       let callObj = {
         telNoHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
         usrNameHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
@@ -1765,21 +1767,11 @@ export default {
       // 判断外呼模式，2  新路由， 1  传统方式
       if (callData.callType === '2') {
         // 新路由拨打方式三合一
-        res = await callout_hung_on({
-          callRecordDomain: params,
-          calloutVo: callData,
-        },
-        {
-          transformRequest: [
-            function(data) {
-              return JSON.stringify(data); //利用对应方法转换格式
-            }
-          ]
-        })
+        res = await this.callout_hung_on(params, callData);
       } else if (callData.callType === '1') {
         if (callData.seatType === 'RL') {
           res = await call_moor_hung_on(params);
-        } else if(callData.seatType === 'KT') {
+        } else if (callData.seatType === 'KT') {
           res = await call_kt_hung_on(params);
         }
       };
@@ -1791,12 +1783,7 @@ export default {
           this.moorToCallMblHid = obj.toCallMblHid;
           this.moorToCallUser = obj.toCallUserHid;
         } else if (callData.seatType === 'KT') {
-        localStorage.removeItem('callObj');
-          // let callObj = {
-          //   telNoHid: obj.toCallMblHid,
-          //   usrNameHid: obj.toCallUserHid
-          // };
-          // localStorage.setItem('callObj', JSON.stringify(callObj));
+          localStorage.removeItem('callObj');
         }
         let timer;
         clearTimeout(timer);
@@ -1812,15 +1799,44 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    // 讯众外呼接口（传统模式）
+    // 外呼合并（路由模式）
+    async callout_hung_on(params, obj) {
+      const res = await callout_hung_on({
+        callRecordDomain: params,
+        calloutVo: obj,
+      }, {
+          transformRequest: [
+            function (data) {
+              return JSON.stringify(data); //利用对应方法转换格式
+            }
+          ]
+        });
+      return res;
+    },
+    // 讯众外呼接口（传统模式 || 路由模式）
     async call_xz_hung_on(obj) {
-      const res = await call_xz_hung_on(obj);
+      let callData = JSON.parse(localStorage.getItem('callData'));
+      let XZ_STATE = sessionStorage.getItem('XZ_STATE');
+      let res;
+      if (callData.callType === '2') {
+        if (XZ_STATE == '1') {
+          res = await this.callout_hung_on(obj, callData);
+        } else {
+          this.$Message.error('请连接软电话！');
+          return;
+        }
+      } else {
+        res = await call_xz_hung_on(obj);
+      }
+      console.log(res)
       if (res.code === 1) {
+        // callData.callType === '2' && callOut(res.data.calloutVo.phoneNo);//调用拨打的方法
+        callData.callType === '2' && callOut();//调用拨打的方法
         this.showMoorTel = true;
         this.$Message.success('呼出成功');
         this.actionId = res.data.actionId;
-        this.moorToCallMblHid = res.data.toCallMblHid;
-        this.moorToCallUser = res.data.toCallUserHid;
+        this.moorToCallMblHid = obj.toCallMblHid;
+        this.moorToCallUser = obj.toCallUserHid;
         let timer;
         clearTimeout(timer);
         timer = setTimeout(() => {
@@ -1835,11 +1851,20 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    // 讯众挂断接口（传统模式）
+    // 讯众挂断接口（传统模式||路由模式）
     async call_xz_hung_off() {
-      const res = await call_xz_hung_off({
-        actionId: this.actionId
-      });
+      let callData = JSON.parse(localStorage.getItem('callData'));
+      let res;
+      if (callData.callType === '2') {
+        // res = await callout_hung_off({})
+        hangUp();
+        this.showMoorTel = false;
+        return;
+      } else {
+        res = await call_xz_hung_off({
+          actionId: this.actionId
+        });
+      }
       if (res.code === 1) {
         this.showMoorTel = false;
       } else {
@@ -2236,7 +2261,7 @@ export default {
           script.src = '/dist/callhelper.min.js';
           head.appendChild(script);
           if (callData.callType === '2') {
-            this.callout_rout_get_seat(obj)
+            this.callout_rout_get_seat(obj, tag)
           } else if (callData.callType === '1') {
             setTimeout(() => {
               this.call(callData);
@@ -2467,7 +2492,7 @@ export default {
       });
     },
     // 重新获取坐席信息
-    async callout_rout_get_seat(obj) {
+    async callout_rout_get_seat(obj, tag) {
       let callData = JSON.parse(localStorage.getItem('callData'));
       const res = await callout_rout_get_seat({
         callType: callData.callType,
@@ -2479,8 +2504,21 @@ export default {
         localStorage.setItem('callData', JSON.stringify(res.data));
         if (res.data.seatType === 'KT') {
           this.call(res.data);
-        } else {
-
+        } else if (res.data.seatType === 'XZ') {
+          let obj = { compid: '830058', agentid: res.data.agentid, telephone: res.data.seatNo, telephonePassword: res.data.passwordMd5, wstype: 'ws', serverid: '', password: res.data.password };
+          window.sessionStorage.setItem('XZ_INIT_DATA', JSON.stringify(obj));
+          await init();//初始化讯众
+          this.call_xz_hung_on({
+            callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+            callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
+            toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
+            toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
+            toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+            toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
+            userId: this.userId,
+            caseNo: this.caseNo,
+            collectType: tag,
+          });
         }
       } else {
 

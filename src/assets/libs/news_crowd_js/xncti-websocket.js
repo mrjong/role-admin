@@ -1003,30 +1003,30 @@ ClassXnCtiClient.prototype.CTIDisConnectedEvent = function () {
 
 }
 ///////////////////////////////////////////////////////////
-///注册事件：座席状态 变化 
+///注册事件：座席状态 变化
 ///////////////////////////////////////////////////////////
 ClassXnCtiClient.prototype.EVENT_AgentStateChanged = function (agentid, agentstate, laststate, compid) {
 }
 
 ///////////////////////////////////////////////////////////
-///注册事件：座席通话或录音通知事件 
+///注册事件：座席通话或录音通知事件
 ///////////////////////////////////////////////////////////
 ClassXnCtiClient.prototype.EVENT_AgentAnswered = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, filename, calldata) {
 }
 
 ///////////////////////////////////////////////////////////
-///注册事件：对方振铃通知事件 
+///注册事件：对方振铃通知事件
 ///////////////////////////////////////////////////////////
 ClassXnCtiClient.prototype.EVENT_OtherRinging = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, calldata) {
 }
 
 ///////////////////////////////////////////////////////////
-///注册事件：座席振铃通知事件 
+///注册事件：座席振铃通知事件
 ///////////////////////////////////////////////////////////
 ClassXnCtiClient.prototype.EVENT_AgentRinging = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, agentstate, laststate, calldata) {
 }
 ///////////////////////////////////////////////////////////
-///注册事件：挂断通知事件 
+///注册事件：挂断通知事件
 ///////////////////////////////////////////////////////////
 ClassXnCtiClient.prototype.EVENT_HangupEvent = function (compid, agentid, callId, calldata) {
 
@@ -1039,7 +1039,7 @@ ClassXnCtiClient.prototype.EVENT_CMDRES = function (rescode, pbxrescode, res, ac
 
 }
 ///////////////////////////////////////////////////////////
-///注册事件：外呼任务完成通知事件 
+///注册事件：外呼任务完成通知事件
 ///////////////////////////////////////////////////////////
 ClassXnCtiClient.prototype.EVENT_TaskFinished = function (taskid) {
 

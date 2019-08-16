@@ -2,15 +2,15 @@
 
 this.sipWs = null;
 this.sipConnectIntervalId = null;
-this.sipExtIntervalId = null; 
+this.sipExtIntervalId = null;
 this.extloginsuccess = 0;//软电话是否注册成功
 this.sip_callid = '';
 this.sipconnected=0;//软电话是否连接成功 0：否 1：是
 
 this.protocolStr = document.location.protocol;  //http or  https
-this.sipurl = "ws://127.0.0.1:60000"; 
+this.sipurl = "ws://127.0.0.1:60000";
 
-//连接信息 
+//连接信息
 this.agentext='';
 this.extpwd='';
 this.sipip='';//注册服务器IP
@@ -35,7 +35,7 @@ ClassSipClient.prototype.ConnentSocket=function(_agentext,_extpwd,_sipip,_sport)
 }
 
 ClassSipClient.prototype.initSocket=function() {
-    var cls_sip=this; 
+    var cls_sip=this;
     clearInterval(this.sipConnectIntervalId);
     this.sipConnectIntervalId=null;
     if ("WebSocket" in window) {
@@ -66,7 +66,7 @@ ClassSipClient.prototype.initSocket=function() {
 ClassSipClient.prototype.sipWsEvent=function() {
     var cls_sip=this;
     this.sipWs.onopen = function () {
-        showmsg('## sip socket success');           
+        showmsg('## sip socket success');
     };
     this.sipWs.onmessage = function (receiveMsg) {
         showmsg("sipsoft message:" + receiveMsg.data);
@@ -75,7 +75,7 @@ ClassSipClient.prototype.sipWsEvent=function() {
 
     this.sipWs.onclose = function (receiveMsg) {
         showmsg('sip socket close：');
-        showmsg('close message:' + receiveMsg.toString());  
+        showmsg('close message:' + receiveMsg.toString());
     };
     this.sipWs.onerror = function (receiveMsg) {
         showmsg('onerror message:' + receiveMsg.toString());
@@ -85,13 +85,14 @@ ClassSipClient.prototype.sipWsEvent=function() {
 
 ClassSipClient.prototype.CheckSocket=function () {
     var cls_sip=this;
-    
+
     cls_sip.sipConnectIntervalId = setInterval(function () {
         if (cls_sip.sipWs&&cls_sip.sipWs.readyState == 1) {
-        //TODO           
-
+        //TODO
+          sessionStorage.setItem('XZ_STATE', cls_sip.sipWs.readyState);
         } else {
-            cls_sip.extloginsuccess = 0; 
+          sessionStorage.setItem('XZ_STATE', cls_sip.sipWs.readyState);
+            cls_sip.extloginsuccess = 0;
             showmsg('sip软电话连接失败');
             if (cti.IsConnect_CTI==1) {//如果CTI连接，软电话退出则重新连接
                 cls_sip.initSocket();
@@ -104,7 +105,7 @@ ClassSipClient.prototype.checkExtLogin=function () {
     if (this.extloginsuccess == 0 && this.sipWs.readyState == 1) {
         this.loginMessage(agentext, extpwd, sip_ip + ':' + sport);
     }
-}  
+}
 /*begin */
 
 ClassSipClient.prototype.parseMessage=function (data) {
@@ -114,12 +115,12 @@ ClassSipClient.prototype.parseMessage=function (data) {
             showmsg('连接:' + 900);
             if (jsonMsg.code=="200") {
             this.sipPhoneConnectedEvent();//连接成功
-            this.sipconnected=1;     
-            }            
+            this.sipconnected=1;
+            }
             break;
         case "801"://注册响应
-            showmsg('注册:' + 801);            
-            this.extloginsuccess = jsonMsg.code == '200'||jsonMsg.code == '410' ? 1 : 0; 
+            showmsg('注册:' + 801);
+            this.extloginsuccess = jsonMsg.code == '200'||jsonMsg.code == '410' ? 1 : 0;
             this.extLoginEvent(this.extloginsuccess);
             break;
         case "802"://应答响应
@@ -140,7 +141,7 @@ ClassSipClient.prototype.parseMessage=function (data) {
             break;
         case "901"://振铃
             showmsg('振铃:' + 901);
-            this.sip_callid = jsonMsg.callId;  
+            this.sip_callid = jsonMsg.callId;
             //setbuttonEnable('btn_call', false, 5);
             break;
         case "902"://接通
@@ -165,7 +166,7 @@ ClassSipClient.prototype.loginMessage=function(_extName, _pwd, _domainName) {
         domainName: _domainName,
         expireTime: "",
         domainProxy: ""
-    }; 
+    };
     try {
         this.sipWs.send(JSON.stringify(msgObj));
         showmsg("发送：" + JSON.stringify(msgObj));
@@ -223,7 +224,7 @@ ClassSipClient.prototype.logoutMessage=function(_extName) {
 ClassSipClient.prototype.sipPhoneDisConnect=function(){
     clearInterval(this.sipConnectIntervalId);
     if (this.sipWs!=null) {
-        this.sipWs.close(); 
+        this.sipWs.close();
     }
     this.sipWs=null;
 }
