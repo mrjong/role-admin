@@ -13,7 +13,7 @@ function param(data){
   return url ? url:'';
 }
 
-let obj = {compid: '830058', agentid: '9999', fenji: '8300589999', fenjiMima: '00c351677029d3840898d241bc542fb9', wstype: 'ws', serverid: '', mima: 'aa123456'}
+let obj = {compid: '830058', agentid: '9999', telephone: '8300589999', telephonePassword: '00c351677029d3840898d241bc542fb9', wstype: 'ws', serverid: '', password: 'aa123456'}
 /**
  * 登录
  */
@@ -31,7 +31,7 @@ export const init = () => {
           cti_port = dataRes.port;
           cti_serverid = dataRes.serverid;
           cti.CtiConnect(dataRes.domain, dataRes.port);
-          init2()
+          initStatus()
         } else {
           sip_server = dataRes.domain;
           sip_port = dataRes.port;
@@ -42,9 +42,9 @@ export const init = () => {
     })
   })
   cti.CTIConnectedEvent = function () {//cti服务器连接成功事件
-    cti.AgentLogin(obj.agentid, obj.fenjiMima, obj.fenji, obj.compid)
+    cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
     console.log(sip_server, sip_port)
-    sip_client.ConnentSocket(obj.fenji, obj.mima,sip_server, sip_port);//连接sip软电话
+    sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
     cti.CheckWSS ()
   }
   sip_client.sipPhoneConnectedEvent=function(){
@@ -54,7 +54,7 @@ export const init = () => {
       cti.AgentLogout();
       cti.CtiDisconnect();//断开cti连接
     }
-    sip_client.loginMessage(obj.fenji, obj.mima, sip_server + ':' + sip_port);
+    sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
   }
   sip_client.extLoginEvent=function(extlogin){
     if (extlogin===0) {
@@ -69,7 +69,7 @@ export const init = () => {
 export const loginOut = () => {
   cti.AgentLogout();
   cti.CtiDisconnect();//断开cti连接
-  sip_client.logoutMessage(obj.fenji);//sip分机退出
+  sip_client.logoutMessage(obj.telephone);//sip分机退出
 }
 
 //呼出
@@ -199,11 +199,11 @@ export const checkWS = (opagentid) => {
 //获取座席状态
 export const answerMessage = (opagentid) => {
   console.log("【应答】============================================================");
-  sip_client.answerMessage(obj.fenji,sip_client.sip_callid);//手动应答
+  sip_client.answerMessage(obj.telephone,sip_client.sip_callid);//手动应答
 
 }
 
-export const  init2 =() => {
+export const  initStatus =() => {
 
   ///////////////////////////////////////////////////////////
   ///注册事件：座席状态 变化
@@ -235,7 +235,7 @@ export const  init2 =() => {
         case "7": //振铃
         case "5": {
           if (handcall===1) {//主动外呼
-            sip_client.answerMessage(obj.fenji, sip_client.sip_callid);
+            sip_client.answerMessage(obj.telephone, sip_client.sip_callid);
           }else{
             console.log('## 呼入操作')
           }

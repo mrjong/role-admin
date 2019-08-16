@@ -29,11 +29,11 @@
           <Col span="24">
           <FormItem label="号码类型:"  prop="explicitType">
             <RadioGroup v-model="formData.explicitType" style=" margin-top: 3px;">
-              <Radio label="1">
+              <Radio label="2">
                 <span>固话</span>
               </Radio>
-              <Radio label="2">
-                <span>手机电话</span>
+              <Radio label="1">
+                <span>手机号</span>
               </Radio>
               <Radio label="3">
                 <span>虚拟号码</span>
