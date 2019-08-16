@@ -121,8 +121,13 @@ export default {
 
     //删除坐席
     async deleteSeats() {
+      if(this.ids.length === 0){
+        this.$Message.info('请勾选要删除的项')
+        return
+      }
       let res = await rout_seatPool_delete({
         ids: this.ids,
+        configId: this.seatsData.id
       })
       if (res.code === 1) {
         this.ids = []
@@ -133,8 +138,13 @@ export default {
     },
     //删除外显
     async deleteExplicit() {
+      if(this.ids.length === 0){
+        this.$Message.info('请勾选要删除的项')
+        return
+      }
       let res = await rout_explicit_delete({
         ids: this.ids,
+        configId: this.seatsData.id
       })
       if (res.code === 1) {
         this.ids = []
@@ -207,7 +217,7 @@ export default {
       this.formData = {}
       this.tableDataSeats = []
       this.tableDataExplicitNumber = []
-      this.$emit("passBack");
+      this.$emit("passBack", 'change');
     },
     selectItem(value) {
       value.forEach(item=>{

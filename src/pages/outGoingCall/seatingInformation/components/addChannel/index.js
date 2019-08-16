@@ -78,6 +78,8 @@ export default {
                 this.$emit("passBack", 'change');
                 this.$refs['formData'].resetFields();
                 this.formData = {}
+              } else {
+                this.$Message.error(res.message);
               }
             })
           } else {
@@ -85,6 +87,8 @@ export default {
               if (res.code === 1) {
                 this.$emit("passBack", 'change');
                 this.$refs['formData'].resetFields();
+              } else {
+                this.$Message.error(res.message);
               }
             })
           }

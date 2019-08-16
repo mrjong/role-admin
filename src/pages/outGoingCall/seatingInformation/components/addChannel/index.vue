@@ -12,9 +12,9 @@
           <FormItem label="渠道名称:"  prop="channelCode">
               <Select @on-change="selectChannel" placeholder="请选择渠道名称" style="margin-right: 20px; width: 70%" :label-in-value="true" v-model="formData.channelCode">
                 <Option
-                  v-for="item in getDirObj['SEAT_TYPE']"
+                  v-for="(item, index) in getDirObj['SEAT_TYPE']"
                   :value="item.itemCode"
-                  :key="item.itemCode"
+                  :key="index"
                 >{{ item.itemName }}</Option>
               </Select>
           </FormItem>
@@ -46,11 +46,11 @@
         <Row :gutter="32">
           <Col span="22">
           <FormItem label="地域盲区:" prop="areas">
-              <Select  placeholder="请选择地域盲区" style="margin-right: 20px" v-model="formData.areas" >
+              <Select  placeholder="请选择地域盲区" style="margin-right: 20px" v-model="formData.areas" multiple>
                 <Option
-                  v-for="item in getDirObj['PROVINCE_AREA']"
+                  v-for="(item, index) in getDirObj['PROVINCE_AREA']"
                   :value="item.itemCode"
-                  :key="item.itemCode"
+                  :key="index"
                 >{{ item.itemName }}
                 </Option>
               </Select>
