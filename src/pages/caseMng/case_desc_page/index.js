@@ -1796,6 +1796,7 @@ export default {
             this[this.address_list_name]();
         }, 1500)
       } else {
+        callData.callType === '2' && this.call_xz_hung_off();//呼叫失败调用挂断
         this.$Message.error(res.message);
       }
     },
@@ -1813,6 +1814,7 @@ export default {
         });
       return res;
     },
+
     // 讯众外呼接口（传统模式 || 路由模式）
     async call_xz_hung_on(obj) {
       let callData = JSON.parse(localStorage.getItem('callData'));
@@ -1823,6 +1825,7 @@ export default {
           res = await this.callout_hung_on(obj, callData);
         } else {
           this.$Message.error('请连接软电话！');
+          this.call_xz_hung_off();
           return;
         }
       } else {
@@ -1848,24 +1851,30 @@ export default {
             this[this.address_list_name]();
         }, 1500);
       } else {
+        callData.callType === '2' && this.call_xz_hung_off();//呼叫失败调用挂断
         this.$Message.error(res.message);
       }
     },
     // 讯众挂断接口（传统模式||路由模式）
     async call_xz_hung_off() {
       let callData = JSON.parse(localStorage.getItem('callData'));
+      let XZ_INIT_DATA = JSON.parse(window.sessionStorage.getItem('XZ_INIT_DATA'));
       let res;
       if (callData.callType === '2') {
-        // res = await callout_hung_off({})
-        hangUp();
-        this.showMoorTel = false;
-        return;
+        res = await callout_hung_off({
+          seatType: callData.seatType,//坐席类型
+          actionId: this.actionId,
+          callno: XZ_INIT_DATA.agentid,//坐席号
+        })
       } else {
         res = await call_xz_hung_off({
           actionId: this.actionId
         });
       }
       if (res.code === 1) {
+        if (callData.callType === '2') {
+          hangUp();
+        }
         this.showMoorTel = false;
       } else {
         this.$Message.error(res.message);
@@ -2521,7 +2530,7 @@ export default {
           });
         }
       } else {
-
+        this.$Message.error(res.message);
       }
     },
   }
