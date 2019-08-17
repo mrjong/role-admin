@@ -19,8 +19,8 @@
           <Col span="24">
           <FormItem label="第一优先渠道:" prop="channelOne">
             <div style="display: flex; align-items: center;">
-              <CheckboxGroup v-model="formDataProject.channelOne" >
-                <Checkbox :label="item.channelCode" v-for="item in channelType" :key="item.channelCode">
+              <CheckboxGroup v-model="formDataProject.channelOne" @on-change="channelOneChane">
+                <Checkbox :label="item.channelCode" v-for="item in channelType" :key="item.channelCode" :disabled="item.disabled">
                   <span>{{ item.channelName }}</span>
                 </Checkbox>
               </CheckboxGroup>
@@ -31,8 +31,8 @@
           <Row :gutter="32">
           <Col span="12">
           <FormItem label="第二选择渠道:" >
-            <CheckboxGroup v-model="formDataProject.channelTwo">
-              <Checkbox :label="item.channelCode" v-for="item in channelType" :key="item.channelCode">
+            <CheckboxGroup v-model="formDataProject.channelTwo" @on-change="channelTwoChane">
+              <Checkbox :label="item.channelCode" v-for="item in channelTypeTwo" :key="item.channelCode" :disabled="item.disabled">
                 <span>{{ item.channelName }}</span>
               </Checkbox>
             </CheckboxGroup>

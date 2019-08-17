@@ -4,6 +4,7 @@
     <Drawer
       :value="showSeatsMg"
       width="720"
+      :title="seatsData.channelName+'/'+seatsData.channelSecondaryName"
       :mask-closable="false"
       @on-close="closeDrawer"
       :styles="styles"

@@ -16,6 +16,7 @@ export default {
       addOrUpdateLoading: false,
       updateFlag: false,
       channelType: [],
+      channelTypeTwo: [],
       seatsList: [],
       numberList: [],
       formDataProject: {
@@ -115,6 +116,7 @@ export default {
             rout_plan_project_add(this.formDataProject).then(res=>{
               this.addOrUpdateLoading = false
               if (res.code === 1) {
+                this.$refs['formDataProject'].resetFields();
                 this.$Message.success('添加成功')
                 this.$emit("passBack", 'change');
                 this.formDataProject= {
@@ -138,6 +140,7 @@ export default {
             rout_plan_project_update(this.formDataProject).then(res=>{
               this.addOrUpdateLoading = false
               if (res.code === 1) {
+                this.$refs['formDataProject'].resetFields();
                 this.$Message.success('修改成功')
                 this.$emit("passBack", 'change');
                 this.formDataProject= {
@@ -152,7 +155,6 @@ export default {
               }
             })
           }
-          this.$refs['formDataProject'].resetFields();
         } else {
           this.$Message.error('请检查必填项')
         }
@@ -181,6 +183,10 @@ export default {
       call_channel_list({...objPam}).then(res=>{
         if (res && res.code === 1) {
           this.channelType = res.data;
+          this.channelType.forEach(item=>{
+            item.disabled = false
+          })
+          this.channelTypeTwo = JSON.parse(JSON.stringify(this.channelType))
           if(flag === 'update'){
             res.data.forEach(item=>{
               if(this.formDataLine.specialLine === item.channelCode){
@@ -248,7 +254,31 @@ export default {
         }
       })
     },
+    channelOneChane(val) {
+      this.channelTypeTwo.forEach(item2=>{
+        item2.disabled = false
+      })
+      val.forEach(item=>{
+        this.channelTypeTwo.forEach(item2=>{
+          if(item2.channelCode===item){
+            item2.disabled = true
+          }
+        })
+      })
+    },
 
+    channelTwoChane(val) {
+      this.channelType.forEach(item2=>{
+        item2.disabled = false
+      })
+      val.forEach(item=>{
+        this.channelType.forEach(item2=>{
+          if(item2.channelCode===item){
+            item2.disabled = true
+          }
+        })
+      })
+    },
     handleCancelLine() {
       this.$emit("passBack");
       this.$refs['formDataLine'].resetFields();
