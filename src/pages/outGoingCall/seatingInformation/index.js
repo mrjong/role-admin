@@ -84,6 +84,7 @@ export default {
           title: '地域盲区',
           key: 'deadArea',
           className: 'tableMainW',
+          tooltip: true,
           align: alignCenter,
           width: widthVal
         },
