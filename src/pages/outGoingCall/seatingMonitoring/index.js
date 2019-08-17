@@ -104,6 +104,7 @@ export default {
           key: "callDurate",
           className: "tableMainW",
           align: alignCenter,
+          minWidth: 200
         }
       ]
     };
