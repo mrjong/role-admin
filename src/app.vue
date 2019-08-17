@@ -29,12 +29,8 @@
 <script>
 import { mapGetters } from "vuex";
 import util from "@/libs/util";
-import {init} from '@/libs/news_crowd'
-
-// import { Notification } from "element-ui";
-// let _this = new Vue();
-// const h = _this.$createElement;
-// import ring from '@/libs/ring.wav'
+import { init } from "@/libs/news_crowd";
+import { callout_hung_off } from "@/service/getData";
 export default {
   data() {
     return {
@@ -111,6 +107,10 @@ export default {
       });
     },
     hangup() {
+      let callData = JSON.parse(localStorage.getItem("callData"));
+      if (callData.callType === "2") {
+        this.callout_kt_hung_off();
+      }
       this.showTel = false;
       CallHelper.hangup();
       this.fail = false;
@@ -123,6 +123,19 @@ export default {
     },
     pause1() {
       this.$refs.ring.pause();
+    },
+    // 科天新路由模式的挂断
+    async callout_kt_hung_off() {
+      let callData = JSON.parse(localStorage.getItem("callData"));
+      const res = await callout_hung_off({
+        seatType: callData.seatType, //坐席类型
+        actionId: callData.id,
+        callno: callData.seatNo //坐席号
+      });
+      if (res.code === 1) {
+      } else {
+        this.$Message.error(res.message);
+      }
     }
   },
   watch: {
@@ -163,6 +176,10 @@ export default {
             break;
           case "HANGUP":
             // 坐席挂机
+            let callData = JSON.parse(localStorage.getItem("callData"));
+            if (callData.callType === "2") {
+              this.callout_kt_hung_off();
+            }
             localStorage.removeItem("callObj");
             this.showTel = false;
             this.fail = false;
@@ -268,10 +285,12 @@ body {
 }
 .notice-success {
   // background: #67c23a;
-  background: rgb(138, 204, 120);;
+  background: rgb(138, 204, 120);
   border: none;
 }
-.notice-success, .notice-error, .notice-info {
+.notice-success,
+.notice-error,
+.notice-info {
   .el-notification__title {
     color: #fff;
   }
@@ -281,7 +300,7 @@ body {
     height: 52px;
     font-size: 28px;
   }
-   .el-icon-close {
+  .el-icon-close {
     color: #fff;
   }
 }
