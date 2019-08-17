@@ -99,6 +99,8 @@ export default {
     },
     handleCancel() {
       this.$emit("passBack");
+      this.$refs['formData'].resetFields();
+      this.formData={}
     }
   }
 };

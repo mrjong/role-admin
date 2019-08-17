@@ -97,6 +97,11 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="formItem.callType ==='1'">
+              <FormItem span="4" label="员工编号:" prop="empno">
+                <Input size="small" clearable v-model="formItem.empno" placeholder="请输入员工编号"></Input>
+              </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="formItem.callType ==='1'">
                 <FormItem label="接听方式:" span="4" prop="extenType">
                   <Select
                     size="small"
@@ -264,6 +269,7 @@ export default {
   methods: {
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
+        debugger
         if (valid) {
           this.call_employee_add();
         }
