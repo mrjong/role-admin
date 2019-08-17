@@ -1830,8 +1830,8 @@ export default {
       }
       console.log(res)
       if (res.code === 1) {
-        // callData.callType === '2' && callOut(res.data.calloutVo.phoneNo);//调用拨打的方法
-        callData.callType === '2' && callOut();//调用拨打的方法
+        callData.callType === '2' && callOut(res.data.calloutVo.phoneNo);//调用拨打的方法
+        // callData.callType === '2' && callOut();//调用拨打的方法
         this.showMoorTel = true;
         this.$Message.success('呼出成功');
         this.actionId = res.data.actionId;
