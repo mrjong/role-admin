@@ -80,6 +80,7 @@
         @change="changeItemCarousel"
         v-else
         ref="carousel"
+        v-show="lineList.length !== 0 "
       >
         <el-carousel-item v-for="item, index in lineList" :key="index">
           <Card class="carousel-card" style="height: 300px; width: 540px;">
