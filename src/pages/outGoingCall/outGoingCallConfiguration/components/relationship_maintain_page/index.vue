@@ -14,16 +14,17 @@
           <FormItem span="6" label="电催中心:">
             <Select
               size="small"
-              v-model="formItem.seatType"
-              filterable
               clearable
-              placeholder="请选择坐席类型"
+              filterable
+              placeholder="请选择电催中心"
+              @on-change="companyChange"
+              v-model="formItem.opCompayUuid"
             >
               <Option
-                v-for="item in getDirObj['SEAT_TYPE']"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
+                v-for="item in company_list_data"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
           </Col>
@@ -31,33 +32,34 @@
           <FormItem span="6" label="组别:">
             <Select
               size="small"
-              v-model="formItem.seatType"
-              filterable
               clearable
-              placeholder="请选择坐席类型"
+              filterable
+              placeholder="请选择组别"
+              @on-change="departmentChange"
+              v-model="formItem.opOrganizationUuid"
             >
               <Option
-                v-for="item in getDirObj['SEAT_TYPE']"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
+                v-for="item in department_list_data"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-          <FormItem span="6" label="姓名:">
+          <FormItem label="姓名:">
             <Select
               size="small"
-              v-model="formItem.seatType"
-              filterable
               clearable
-              placeholder="请选择坐席类型"
+              filterable
+              placeholder="请选择姓名"
+              v-model="formItem.opUserUuid"
             >
               <Option
-                v-for="item in getDirObj['SEAT_TYPE']"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
+                v-for="(item,index) in collect_list_data"
+                :value="item.id"
+                :key="item.id + index"
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
           </Col>

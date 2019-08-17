@@ -22,9 +22,9 @@
                 v-model="formItem.channelCode"
               >
                 <Option
-                  v-for="item in channelType"
+                  v-for="(item, index) in channelType"
                   :value="item.channelCode"
-                  :key="item.channelCode + 1"
+                  :key="index"
                 >{{ item.channelName }}</Option>
               </Select>
             </FormItem>
@@ -40,9 +40,9 @@
               v-model="formItem.opCompanyId"
             >
               <Option
-                v-for="item in company_list_data"
+                v-for="(item, index) in company_list_data"
                 :value="item.id"
-                :key="item.id"
+                :key="index"
               >{{ item.name }}</Option>
             </Select>
           </FormItem>
@@ -58,9 +58,9 @@
               v-model="formItem.opOrganizationId"
             >
               <Option
-                v-for="item in department_list_data"
+                v-for="(item, index) in department_list_data"
                 :value="item.id"
-                :key="item.id"
+                :key="index"
               >{{ item.name }}</Option>
             </Select>
           </FormItem>
