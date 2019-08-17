@@ -187,6 +187,8 @@ export default {
             item.disabled = false
           })
           this.channelTypeTwo = JSON.parse(JSON.stringify(this.channelType))
+          this.channelOneChane(this.formDataProject.channelOne)
+          this.channelTwoChane(this.formDataProject.channelTwo)
           if(flag === 'update'){
             res.data.forEach(item=>{
               if(this.formDataLine.specialLine === item.channelCode){
