@@ -16,22 +16,24 @@
           </Col>
         </Row>
         <Row :gutter="32">
-          <Col span="12">
+          <Col span="24">
           <FormItem label="第一优先渠道:" prop="channelOne">
             <div style="display: flex; align-items: center;">
               <CheckboxGroup v-model="formDataProject.channelOne" >
-                <Checkbox :label="item.itemCode" v-for="item in getDirObj['SEAT_TYPE']" :key="item.itemCode">
-                  <span>{{ item.itemName }}</span>
+                <Checkbox :label="item.channelCode" v-for="item in channelType" :key="item.channelCode">
+                  <span>{{ item.channelName }}</span>
                 </Checkbox>
               </CheckboxGroup>
             </div>
           </FormItem>
           </Col>
+        </Row>
+          <Row :gutter="32">
           <Col span="12">
           <FormItem label="第二选择渠道:" >
             <CheckboxGroup v-model="formDataProject.channelTwo">
-              <Checkbox :label="item.itemCode" v-for="item in getDirObj['SEAT_TYPE']" :key="item.itemCode">
-                <span>{{ item.itemName }}</span>
+              <Checkbox :label="item.channelCode" v-for="item in channelType" :key="item.channelCode">
+                <span>{{ item.channelName }}</span>
               </Checkbox>
             </CheckboxGroup>
           </FormItem>
@@ -86,10 +88,12 @@
         <Button size="small"
                 style="width:80px; height: 30px"
                 @click="handleCancelProject()"
-                >取消</Button>
+                :loading='addOrUpdateLoading'
+        >取消</Button>
         <Button size="small"
                 style="width:80px; height: 30px"
                 @click="handleSubmitProject()"
+                :loading='addOrUpdateLoading'
                 type="primary">确定</Button>
       </div>
     </Modal>
@@ -162,9 +166,9 @@
               style="width:80px; margin-left: 20px"
               long
               size="small"
-              :loading='addLoading'
+              :loading='addOrUpdateLoading'
             >
-              <span v-if="!addLoading">确定</span>
+              <span v-if="!addOrUpdateLoading">确定</span>
               <span v-else>确定...</span>
             </Button>
             <Button

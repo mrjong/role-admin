@@ -14,6 +14,7 @@ export default {
       getDirList: ['SEAT_TYPE', 'PROVINCE_AREA'],
       getDirObj: {},
       formData: {},
+      addLoading: false,
       updateFlag: false,
       ruleValidate:{
         channelCode: [
@@ -72,8 +73,10 @@ export default {
     async handleSubmit() {
       this.$refs['formData'].validate((valid) => {
         if (valid) {
+          this.addLoading = true
           if (!this.updateFlag) {
             seats_config_add(this.formData).then(res => {
+              this.addLoading = false
               if (res.code === 1) {
                 this.$emit("passBack", 'change');
                 this.$refs['formData'].resetFields();
@@ -84,6 +87,7 @@ export default {
             })
           } else {
             seats_config_update(this.formData).then(res => {
+              this.addLoading = false
               if (res.code === 1) {
                 this.$emit("passBack", 'change');
                 this.$refs['formData'].resetFields();

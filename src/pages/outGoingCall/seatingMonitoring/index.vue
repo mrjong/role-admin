@@ -101,7 +101,7 @@
             <FormItem>
               <Button
                 type="primary"
-                @click="handleSubmit('formItem', tab_flag)"
+                @click="handleSubmit('formItem')"
                 style="width:80px"
                 long
                 size="small"

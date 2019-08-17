@@ -67,6 +67,7 @@
         <Button size="small"
                 style="width:80px; height: 30px"
                 @click="handleSubmit('Submit')"
+                :loading="addLoading"
                 type="primary">确定</Button>
       </div>
     </Modal>

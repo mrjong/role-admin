@@ -13,7 +13,7 @@ export default {
       getDirList: ['SEAT_TYPE'],
       getDirObj: {},
       project: [],
-      addLoading: false,
+      addOrUpdateLoading: false,
       updateFlag: false,
       channelType: [],
       seatsList: [],
@@ -111,8 +111,11 @@ export default {
       this.$refs['formDataProject'].validate((valid) => {
         if (valid) {
           if(!this.updateFlag){
+            this.addOrUpdateLoading = true
             rout_plan_project_add(this.formDataProject).then(res=>{
+              this.addOrUpdateLoading = false
               if (res.code === 1) {
+                this.$Message.success('添加成功')
                 this.$emit("passBack", 'change');
                 this.formDataProject= {
                   territorialCallStatus: '1',
@@ -131,8 +134,11 @@ export default {
                 this.formDataProject.channelTwo.splice(index,1)
               }
             })
+            this.addOrUpdateLoading = true
             rout_plan_project_update(this.formDataProject).then(res=>{
+              this.addOrUpdateLoading = false
               if (res.code === 1) {
+                this.$Message.success('修改成功')
                 this.$emit("passBack", 'change');
                 this.formDataProject= {
                   territorialCallStatus: '1',
@@ -204,13 +210,17 @@ export default {
     async handleSubmitLine() {
       this.$refs['formDataLine'].validate((valid) => {
         if (valid) {
+          this.addOrUpdateLoading = true
           if (!this.updateFlag) {
             rout_plan_project_add(this.formDataLine).then(res => {
               if (res.code === 1) {
+                this.$Message.success('添加成功')
+                this.addOrUpdateLoading = false
                 this.$emit("passBack", 'change');
                 this.$refs['formDataLine'].resetFields();
                 this.formDataLine= { planType: '2'}
               } else {
+                this.addOrUpdateLoading = false
                 this.$Message.error(res.message)
               }
             })
@@ -222,11 +232,14 @@ export default {
             })
             rout_plan_project_update(this.formDataLine).then(res => {
               if (res.code === 1) {
+                this.addOrUpdateLoading = false
+                this.$Message.success('修改成功')
                 this.$emit("passBack", 'change');
                 this.$refs['formDataLine'].resetFields();
                 this.formDataLine= { planType: '2'}
               } else {
                 this.$Message.error(res.message)
+                this.addOrUpdateLoading = false
               }
             })
           }

@@ -128,13 +128,6 @@ export default {
     this.getLeafTypeList('04', '');
   },
   methods: {
-    tabClick(name) {
-      this.tab_flag = name;
-      this.tableData = [];
-      this.total = 0;
-      this.pageNo = 1;
-      this.getList(name);
-    },
     // 改变日期区间的格式之后进行处理
     changeDate(val1, val2) {
       this.formItem.startDate = val1[0];
@@ -146,13 +139,13 @@ export default {
       //默认带入一个参数是当前的页码数
       console.log(pageNo, "当前的页码数量值");
       this.pageNo = pageNo;
-      this.getList(this.tab_flag);
+      this.getList();
     },
     // 切换每页条数时的回调
     changeSize(pageSize) {
       this.pageSize = pageSize;
       this.pageNo = 1;
-      this.getList(this.tab_flag);
+      this.getList();
     },
     handleSubmit(name, type) {
       // 单独处理日期的缓存问题
@@ -166,7 +159,7 @@ export default {
       this.getList(type);
     },
     // 获取表格数据
-    async getList(type) {
+    async getList() {
       if (!this.query) {
         this.$Message.error("很抱歉，暂无权限查询");
         return;

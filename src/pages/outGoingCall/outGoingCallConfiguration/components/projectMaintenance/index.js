@@ -1,5 +1,5 @@
 import AddModel from './components/addModel'
-import { rout_plan_project_list,  } from '@/service/getData';
+import { rout_plan_project_list, call_channel_list  } from '@/service/getData';
 import sysDictionary from '@/mixin/sysDictionary';
 export default {
   components: {
@@ -21,6 +21,7 @@ export default {
       projectFlag: 'primary',
       lineFlag: 'default',
       rowData: {},
+      channelType: [],
       Option: {
         autoplay: 3000,
         speed: 100,
@@ -48,7 +49,7 @@ export default {
           break;
       }
     });
-    this.getList()
+    this.getChannelType()
   },
   methods: {
     // 获取表格数据
@@ -66,7 +67,6 @@ export default {
         } else {
           this.projectList = res.data
         }
-
       } else {
         this.$Message.error(res.message)
       }
@@ -117,6 +117,16 @@ export default {
       }
       this.showAddModel = {name: flag, type: 'update'}
       this.rowData = JSON.parse(JSON.stringify(data))
+    },
+    getChannelType() {
+      call_channel_list({}).then(res=>{
+        if (res && res.code === 1) {
+          this.channelType = res.data;
+          this.getList()
+        } else {
+          this.$Message.error(res.message);
+        }
+      })
     },
   }
 };

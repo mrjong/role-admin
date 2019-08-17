@@ -24,16 +24,16 @@
           <div style="font-weight: 700; font-size: 16px; padding-top: 30px; margin-left: 30px;">第一优先渠道:</div>
           <div style="margin-left: 130px; margin-top: 10px">
             <CheckboxGroup  v-model="item.channelOne">
-              <Checkbox :label="items.itemCode" v-for="items in getDirObj['SEAT_TYPE']" disabled :key="items.itemCode">
-                <span>{{ items.itemName }}</span>
+              <Checkbox :label="items.channelCode" v-for="items in channelType" disabled :key="items.channelCode">
+                <span>{{ items.channelName }}</span>
               </Checkbox>
             </CheckboxGroup>
           </div>
           <div style="font-weight: 700; font-size: 16px; margin-top: 20px; margin-left: 30px;">第二优先渠道:</div>
           <div style="margin-left: 130px; margin-top: 10px">
             <CheckboxGroup  v-model="item.channelTwo">
-              <Checkbox :label="items.itemCode" v-for="items in getDirObj['SEAT_TYPE']" disabled :key="items.itemCode">
-                <span>{{ items.itemName }}</span>
+              <Checkbox :label="items.channelCode" v-for="items in channelType" disabled :key="items.channelCode">
+                <span>{{ items.channelName }}</span>
               </Checkbox>
             </CheckboxGroup>
           </div>
