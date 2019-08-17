@@ -85,7 +85,7 @@ export const callOut = (phoneNumber) => {
   showmsg("【呼出】============================================================");
   showmsg("调用MakeCall()进行呼出。呼出请求发出后会进行EVENT_AgentStateChanged事件通知");
   console.log(Date.parse(new Date())+   '呼出')
-
+  console.log('外呼号码：'+ phoneNumber)
   cti.MakeCall(phoneNumber, 3, '');
   handcall=1;//主动外呼
 }
