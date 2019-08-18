@@ -28,7 +28,7 @@ export const init = () => {
   let actionArray = ['getCtiServer', 'getRegServer']
   actionArray.forEach(item=>{
     let data = {action: item, ...obj}
-    let url = 'http://api.salescomm.net:8200/Handler/agent.ashx'
+    let url = 'https://api.salescomm.net:8201/Handler/agent.ashx'
     url+=(url.indexOf('?')<0 ? '?' : '&' )+ param(data);
     jsonp(url, {param: 'callbackparam'}, (err, res) => {
       if (!err) {
