@@ -2514,7 +2514,7 @@ export default {
         if (res.data.seatType === 'KT') {
           this.call(res.data);
         } else if (res.data.seatType === 'XZ') {
-          let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, wstype: 'ws', serverid: '', password: res.data.password };
+          let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, wstype: 'wss', serverid: '', password: res.data.password };
           window.sessionStorage.setItem('XZ_INIT_DATA', JSON.stringify(obj));
           await init();//初始化讯众
           this.call_xz_hung_on({

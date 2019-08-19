@@ -1,7 +1,7 @@
 var ua = null;
 var session = null;
-var agentid = '9999';
-var compid = '830058';
+var agentid = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA')).agentid;
+var compid = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA')).compid;
 var cti_server = ''
 var cti_port = ''
 var cti = new ClassXnCtiClient();//初始化（必须）
@@ -11,7 +11,7 @@ var sip_serverid = '';//reg服务器id
 var sip_server = '';//reg服务器ip
 var sip_port = '';//reg服务器端口
 var handcall = 0
-var ws_type = 'ws';//cti连接方式
+var ws_type = 'wss';//cti连接方式
 
 var MSGTYPE = {
     EVENT: 1, //事件

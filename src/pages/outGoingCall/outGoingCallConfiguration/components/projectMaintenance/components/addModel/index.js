@@ -260,7 +260,7 @@ export default {
       this.channelTypeTwo.forEach(item2=>{
         item2.disabled = false
       })
-      val.forEach(item=>{
+      val && val.forEach(item=>{
         this.channelTypeTwo.forEach(item2=>{
           if(item2.channelCode===item){
             item2.disabled = true
@@ -273,7 +273,7 @@ export default {
       this.channelType.forEach(item2=>{
         item2.disabled = false
       })
-      val.forEach(item=>{
+      val && val.forEach(item=>{
         this.channelType.forEach(item2=>{
           if(item2.channelCode===item){
             item2.disabled = true
