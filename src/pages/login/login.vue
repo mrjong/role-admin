@@ -212,14 +212,8 @@ export default {
           this.login_loading = false;
           if (res && res.code === 1) {
             Cookies.set("user", this.form.loginName);
-            // Cookies.set("loginPwd", this.form.loginPwd);
             Cookies.set("SXF-TOKEN", res.data.token);
             Cookies.set("userType", res.data.userType);
-            this.$store.commit(
-              "setAvator",
-              "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
-            );
-
             Cookies.set("access", 1);
             this.callout_get_seat(res);
           } else if (res && res.code === 3010010) {
