@@ -1,7 +1,5 @@
 var ua = null;
 var session = null;
-var agentid = ''
-var compid = ''
 var cti_server = ''
 var cti_port = ''
 var cti = new ClassXnCtiClient();//初始化（必须）

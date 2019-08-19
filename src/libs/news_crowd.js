@@ -49,6 +49,7 @@ export const init = () => {
     })
   })
   cti.CTIConnectedEvent = function () {//cti服务器连接成功事件
+    console.log('cti服务器连接成功事件')
     cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
     console.log(sip_server, sip_port)
     sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
@@ -218,7 +219,7 @@ export const  initStatus =() => {
   ///////////////////////////////////////////////////////////
   cti.EVENT_AgentStateChanged = function (_agentid, agentstate, laststate, _compid) {
     showmsg("## EVENT_AgentStateChanged: " + "agentid= " + _agentid + ", agentstate = " + agentstate + ", laststate = " + laststate + ", compid = " + _compid);
-    if (_agentid === agentid) {//过滤当前座席的状态
+    if (_agentid === obj.agentid) {//过滤当前座席的状态
       switch (agentstate) {
         case "0": //退出
         {
