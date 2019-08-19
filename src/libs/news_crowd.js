@@ -55,25 +55,6 @@ export const init = () => {
       cti.CheckWSS()
       console.log(cti.CheckWSS())
     }
-    sip_client.sipPhoneConnectedEvent = function () {
-      console.log("## sip ConnectedEvent");
-      if (sip_server === '' && sip_port === '') {
-        console.log("## 获取注册服务器失败，重新签入");
-        cti.AgentLogout();
-        cti.CtiDisconnect();//断开cti连接
-        window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
-      }
-      sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
-    }
-    sip_client.extLoginEvent = function (extlogin) {
-      if (extlogin === 0) {
-        console.log("## 分机注册失败");
-        vueExample.$Message.error('分机注册失败')
-        cti.AgentLogout();
-        cti.CtiDisconnect();//断开cti连接
-        window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
-      }
-    };
   })
 }
 
@@ -332,5 +313,24 @@ export const initStatus = () => {
     // });
     handcall = 0;
     console.log("## EVENT_HangupEvent:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calldata=" + calldata);
+  };
+  sip_client.sipPhoneConnectedEvent = function () {
+    console.log("## sip ConnectedEvent");
+    if (sip_server === '' && sip_port === '') {
+      console.log("## 获取注册服务器失败，重新签入");
+      cti.AgentLogout();
+      cti.CtiDisconnect();//断开cti连接
+      window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
+    }
+    sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
   }
+  sip_client.extLoginEvent = function (extlogin) {
+    if (extlogin === 0) {
+      console.log("## 分机注册失败");
+      vueExample.$Message.error('分机注册失败')
+      cti.AgentLogout();
+      cti.CtiDisconnect();//断开cti连接
+      window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
+    }
+  };
 }

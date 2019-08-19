@@ -1582,7 +1582,7 @@ export default {
     changeXZHungUpFlag(val) {
       console.log(val)
       if (val === 'YES') {
-        this.call_xz_hung_off();
+        // this.call_xz_hung_off();
       }
     }
   },
@@ -1869,6 +1869,7 @@ export default {
     },
     // 讯众挂断接口（传统模式||路由模式）
     async call_xz_hung_off() {
+      debugger
       let callData = JSON.parse(localStorage.getItem('callData'));
       let XZ_INIT_DATA = JSON.parse(window.sessionStorage.getItem('XZ_INIT_DATA'));
       let res;
