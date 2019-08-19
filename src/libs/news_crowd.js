@@ -47,7 +47,7 @@ export const init = () => {
         };
       };
     })
-    let timer = setTimeout(() => {
+    // let timer = setTimeout(() => {
       cti.CTIConnectedEvent = function () {//cti服务器连接成功事件
         console.log('cti服务器连接成功事件')
         cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
@@ -75,8 +75,8 @@ export const init = () => {
           window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
         }
       }
-    }, 1000);
-    clearTimeout(timer);
+    // }, 1000);
+    // clearTimeout(timer);
   })
 }
 
