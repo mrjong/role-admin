@@ -6,6 +6,7 @@ import qs from 'qs';
 import dayjs from 'dayjs';
 import Cookie from 'js-cookie';
 import sysDictionary from '@/mixin/sysDictionary';
+import { mapGetters } from "vuex";
 import { init, callOut, hangUp } from '@/libs/news_crowd';//讯众插件
 import {
   case_detail_remark_list, // 催收
@@ -57,6 +58,7 @@ export default {
   data() {
     const _this = this;
     return {
+      HUNG_UP_FLAG: window.sessionStorage.getItem('HUNG_UP_FLAG'),//挂断标识
       moorToCallMblHid: '',//容联电话呼叫成功显示的电话密文
       moorToCallUser: '',//容联电话呼叫成功显示的姓名
       showMoorTel: false,//容联电话弹窗flag
@@ -1576,15 +1578,18 @@ export default {
       ]
     };
   },
-  // watch: {
-  //   collectcode_getCollectRelate_childItem() {
-  //     if (this.collectcode_getCollectRelate_childItem.length === 0) {
-  //       this.$set(this.formValidate, 'communicateResult', '');
-  //       this.$refs.formValidate.resetFields();
-  //     }
-  //     //  this.formValidate.validateField('communicateResult');
-  //   }
-  // },
+  watch: {
+    changeXZHungUpFlag(val) {
+      console.log(val)
+      if (val === 'YES') {
+        this.call_xz_hung_off();
+      }
+    }
+  },
+  computed: {
+    // 使用对象展开运算符将 getter 混入 computed 对象中
+    ...mapGetters(["changeXZHungUpFlag"])
+  },
   async created() {
     console.log(Cookie.get('all_opt'));
     if (Cookie.get('all_opt') === 'true') {
@@ -1891,6 +1896,7 @@ export default {
           this.showMoorTel = false;
         }, 2000);
       }
+      this.$store.commit('changeXZHungUpFlag','');//置空挂断标识符
     },
     // 容联挂断方法
     async call_moor_hung_up() {

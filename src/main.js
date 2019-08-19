@@ -14,7 +14,7 @@ Object.keys(filters).forEach((k) => {
   Vue.filter(k, filters[k]);
 });
 Vue.use(iView);
-new Vue({
+window.vueExample = new Vue({
   el: '#app',
   router: router,
   store: store,

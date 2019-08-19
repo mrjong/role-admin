@@ -19,7 +19,7 @@
       <!--<div v-if="lineList.length === 0 && projectFlag !=='primary'" class="none_class">暂无专线</div>-->
       <el-carousel :interval="4000" type="card" height="500px" arrow="always" indicator-position="none"  v-if="projectFlag ==='primary'" @change="changeItemCarousel" ref="carousel" v-show="projectList.length !== 0 ">
       <el-carousel-item v-for="item, index in projectList" :key="index">
-        <Card class="carousel-card" style="width: 540px;">
+        <Card class="carousel-card" >
           <p slot="title">{{item.planName}}</p>
           <div style="font-weight: 700; font-size: 16px; padding-top: 30px; margin-left: 30px;">第一优先渠道:</div>
           <div style="margin-left: 130px; margin-top: 10px">
