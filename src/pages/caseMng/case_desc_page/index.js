@@ -1582,7 +1582,7 @@ export default {
     changeXZHungUpFlag(val) {
       console.log(val)
       if (val === 'YES') {
-        // this.call_xz_hung_off();
+        this.call_xz_hung_off();
       }
     }
   },
@@ -1869,7 +1869,6 @@ export default {
     },
     // 讯众挂断接口（传统模式||路由模式）
     async call_xz_hung_off() {
-      debugger
       let callData = JSON.parse(localStorage.getItem('callData'));
       let XZ_INIT_DATA = JSON.parse(window.sessionStorage.getItem('XZ_INIT_DATA'));
       let res;
@@ -2530,8 +2529,7 @@ export default {
         } else if (res.data.seatType === 'XZ') {
           let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, wstype: 'wss', serverid: '', password: res.data.password };
           window.sessionStorage.setItem('XZ_INIT_DATA', JSON.stringify(obj));
-          const msg = await init();//初始化讯众
-          console.log(msg)
+          await  init()
           this.call_xz_hung_on({
             callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
             callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
@@ -2543,6 +2541,7 @@ export default {
             caseNo: this.caseNo,
             collectType: tag,
           });
+
         }
       } else {
         this.$Message.error(res.message);

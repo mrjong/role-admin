@@ -303,14 +303,6 @@ export const initStatus = () => {
   ///////////////////////////////////////////////////////////
   cti.EVENT_HangupEvent = function (compid, agentid, callId, calldata) {
     console.log("@ 挂断进行EVENT_HangupEvent通知。");
-    vueExample.$store.commit('changeXZHungUpFlag', 'YES');
-    vueExample.$Message.success('已挂断');
-    let data = { compid: '830058', dates: '2019-08', callid: callId, anytype: '1' }
-    // fetch({
-    //   url: '/api/callcenter/GetSingleCdrAnyCallRecord',
-    //   method: 'POST',
-    //   data: data,
-    // });
     handcall = 0;
     console.log("## EVENT_HangupEvent:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calldata=" + calldata);
   };

@@ -150,6 +150,8 @@ ClassSipClient.prototype.parseMessage=function (data) {
             break;
         case "903"://挂断
             showmsg('挂断:' + 903);
+            vueExample.$store.commit('changeXZHungUpFlag', 'YES');
+            vueExample.$Message.success('已挂断');
             //setbuttonEnable('btn_call', true, 5);
             break;
     }
