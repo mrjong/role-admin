@@ -49,7 +49,7 @@ module.exports = merge(webpackBaseConfig, {
             compress: {
                 warnings: false,
                 drop_debugger: true,
-                drop_console: true
+                drop_console: false
             }
         }),
         // new UglifyJsParallelPlugin({
