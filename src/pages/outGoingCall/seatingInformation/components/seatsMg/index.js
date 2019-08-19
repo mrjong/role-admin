@@ -63,8 +63,20 @@ export default {
           key: 'loginName',
         },
         {
+          title: '占用时间',
+          key: 'occupyTime',
+        },
+        {
           title: '密码',
           key: 'passWord',
+        },
+        {
+          title: '占用状态',
+          key: 'occupyStatusName',
+        },
+        {
+          title: '占用人',
+          key: 'occupyUser',
         },
       ],
       tableColumnsExplicitNumber: [
