@@ -1,7 +1,7 @@
 var ua = null;
 var session = null;
-var agentid = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA')).agentid;
-var compid = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA')).compid;
+var agentid = ''
+var compid = ''
 var cti_server = ''
 var cti_port = ''
 var cti = new ClassXnCtiClient();//初始化（必须）
