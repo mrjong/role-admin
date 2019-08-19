@@ -47,36 +47,33 @@ export const init = () => {
         };
       };
     })
-    // let timer = setTimeout(() => {
-      cti.CTIConnectedEvent = function () {//cti服务器连接成功事件
-        console.log('cti服务器连接成功事件')
-        cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
-        console.log(sip_server, sip_port)
-        sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
-        cti.CheckWSS()
-        console.log(cti.CheckWSS())
+    cti.CTIConnectedEvent = function () {//cti服务器连接成功事件
+      console.log('cti服务器连接成功事件')
+      cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
+      console.log(sip_server, sip_port)
+      sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
+      cti.CheckWSS()
+      console.log(cti.CheckWSS())
+    }
+    sip_client.sipPhoneConnectedEvent = function () {
+      console.log("## sip ConnectedEvent");
+      if (sip_server === '' && sip_port === '') {
+        console.log("## 获取注册服务器失败，重新签入");
+        cti.AgentLogout();
+        cti.CtiDisconnect();//断开cti连接
+        window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
       }
-      sip_client.sipPhoneConnectedEvent = function () {
-        console.log("## sip ConnectedEvent");
-        if (sip_server === '' && sip_port === '') {
-          console.log("## 获取注册服务器失败，重新签入");
-          cti.AgentLogout();
-          cti.CtiDisconnect();//断开cti连接
-          window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
-        }
-        sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
+      sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
+    }
+    sip_client.extLoginEvent = function (extlogin) {
+      if (extlogin === 0) {
+        console.log("## 分机注册失败");
+        vueExample.$Message.error('分机注册失败')
+        cti.AgentLogout();
+        cti.CtiDisconnect();//断开cti连接
+        window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
       }
-      sip_client.extLoginEvent = function (extlogin) {
-        if (extlogin === 0) {
-          console.log("## 分机注册失败");
-          vueExample.$Message.error('分机注册失败')
-          cti.AgentLogout();
-          cti.CtiDisconnect();//断开cti连接
-          window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
-        }
-      }
-    // }, 1000);
-    // clearTimeout(timer);
+    };
   })
 }
 
