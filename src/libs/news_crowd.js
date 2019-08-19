@@ -2,6 +2,7 @@
 import { aa} from "@/service/getData";
 import fetch from '@/libs/fetch';
 import qs from 'qs';
+import Vue from 'vue'
 let jsonp = require('jsonp');
 
 function param(data){
@@ -30,7 +31,7 @@ export const init = () => {
     let data = {action: item, ...obj}
     let url = 'https://api.salescomm.net:8201/Handler/agent.ashx'
     url+=(url.indexOf('?')<0 ? '?' : '&' )+ param(data);
-    jsonp(url, {param: 'callbackparam'}, (err, res) => {
+    jsonp(url, {param: 'callbackparam'}, (err, res)=> {
       if (!err) {
         let dataRes = res.data
         if(item === 'getCtiServer'){
@@ -43,35 +44,39 @@ export const init = () => {
           sip_server = dataRes.domain;
           sip_port = dataRes.port;
           sip_serverid = dataRes.serverid;
+        };
+        cti.CTIConnectedEvent = function () {//cti服务器连接成功事件
+          console.log('cti服务器连接成功事件')
+          cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
+          console.log(sip_server, sip_port)
+          sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
+          cti.CheckWSS ()
+          console.log(cti.CheckWSS ())
+        }
+        sip_client.sipPhoneConnectedEvent = function(){
+          console.log("## sip ConnectedEvent");
+          if (sip_server===''&&sip_port==='') {
+            console.log("## 获取注册服务器失败，重新签入");
+            cti.AgentLogout();
+            cti.CtiDisconnect();//断开cti连接
+            window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
+          }
+          sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
+        }
+        sip_client.extLoginEvent = function(extlogin){
+          if (extlogin===0) {
+            console.log("## 分机注册失败");
+            Vue.$Message.error('分机注册失败')
+            cti.AgentLogout();
+            cti.CtiDisconnect();//断开cti连接
+            window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
+          }
         }
       } else {
+
       }
     })
   })
-  cti.CTIConnectedEvent = function () {//cti服务器连接成功事件
-    console.log('cti服务器连接成功事件')
-    cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
-    console.log(sip_server, sip_port)
-    sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
-    cti.CheckWSS ()
-    console.log(cti.CheckWSS ())
-  }
-  sip_client.sipPhoneConnectedEvent=function(){
-    console.log("## sip ConnectedEvent");
-    if (sip_server===''&&sip_port==='') {
-      console.log("## 获取注册服务器失败，重新签入");
-      cti.AgentLogout();
-      cti.CtiDisconnect();//断开cti连接
-    }
-    sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
-  }
-  sip_client.extLoginEvent=function(extlogin){
-    if (extlogin===0) {
-      console.log("## 分机注册失败");
-      cti.AgentLogout();
-      cti.CtiDisconnect();//断开cti连接
-    }
-  }
 }
 
 //签出
@@ -319,6 +324,7 @@ export const  initStatus =() => {
   ///////////////////////////////////////////////////////////
   cti.EVENT_HangupEvent = function (compid, agentid, callId, calldata) {
     console.log("@ 挂断进行EVENT_HangupEvent通知。");
+    Vue.$Message.success('已挂断');
     let data = {compid: '830058', dates: '2019-08', callid: callId, anytype: '1'}
     // fetch({
     //   url: '/api/callcenter/GetSingleCdrAnyCallRecord',

@@ -1817,14 +1817,21 @@ export default {
 
     // 讯众外呼接口（传统模式 || 路由模式）
     async call_xz_hung_on(obj) {
-      let callData = JSON.parse(localStorage.getItem('callData'));
-      let XZ_STATE = sessionStorage.getItem('XZ_STATE');
+      const callData = JSON.parse(localStorage.getItem('callData'));
+      const XZ_STATE = sessionStorage.getItem('XZ_STATE');
+      const XZ_ERROR_MSG = sessionStorage.getItem('XZ_ERROR_MSG');
       let res;
       if (callData.callType === '2') {
         if (XZ_STATE == '1') {
+          if (XZ_ERROR_MSG) {
+            // 怕段注册分级是否异常，如有异常提示msg，并return
+            this.$Message.error(XZ_ERROR_MSG);
+            window.sessionStorage.removeItem('XZ_ERROR_MSG');
+            return;
+          }
           res = await this.callout_hung_on(obj, callData);
         } else {
-          this.$Message.error('请连接软电话！');
+          this.$Message.error('请连接讯众新版软电话！');
           this.call_xz_hung_off();
           return;
         }
@@ -2516,7 +2523,8 @@ export default {
         } else if (res.data.seatType === 'XZ') {
           let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, wstype: 'wss', serverid: '', password: res.data.password };
           window.sessionStorage.setItem('XZ_INIT_DATA', JSON.stringify(obj));
-          await init();//初始化讯众
+          const msg = await init();//初始化讯众
+          console.log(msg)
           this.call_xz_hung_on({
             callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
             callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
