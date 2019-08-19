@@ -68,7 +68,7 @@ export const init = () => {
     sip_client.extLoginEvent = function (extlogin) {
       if (extlogin === 0) {
         console.log("## 分机注册失败");
-        vueExample.$Message.error('分机注册失败')
+        // vueExample.$Message.error('分机注册失败')
         cti.AgentLogout();
         cti.CtiDisconnect();//断开cti连接
         window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
