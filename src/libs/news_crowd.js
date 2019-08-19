@@ -14,18 +14,18 @@ function param(data) {
   return url ? url : '';
 }
 
-// let obj = {compid: '830058', agentid: '9999', telephone: '8300589999', telephonePassword: '00c351677029d3840898d241bc542fb9', wstype: 'ws', serverid: '', password: 'aa123456'};
+let obj = {compid: '830058', agentid: '9999', telephone: '8300589999', telephonePassword: '00c351677029d3840898d241bc542fb9', wstype: 'wss', serverid: '', password: 'aa123456'};
 /**
  * 登录
  */
-let obj;
+// let obj;
 export const init = () => {
   // 判断是否有讯众的init参数
-  if (!sessionStorage.getItem('XZ_INIT_DATA')) {
-    return;
-  } else {
-    obj = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA'));
-  };
+  // if (!sessionStorage.getItem('XZ_INIT_DATA')) {
+  //   return;
+  // } else {
+  //   obj = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA'));
+  // };
   let actionArray = ['getCtiServer', 'getRegServer']
   actionArray.forEach(item => {
     let data = { action: item, ...obj }
