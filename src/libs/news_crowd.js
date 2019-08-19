@@ -1,17 +1,17 @@
 
-import { aa} from "@/service/getData";
+import { aa } from "@/service/getData";
 import fetch from '@/libs/fetch';
 import qs from 'qs';
 import Vue from 'vue'
 let jsonp = require('jsonp');
 
-function param(data){
-  let url='';
-  for(let key in data){
-    let item =data[key]!==undefined ? data[key] : '';
-    url+=`&${key}=${encodeURIComponent(item)}`
+function param(data) {
+  let url = '';
+  for (let key in data) {
+    let item = data[key] !== undefined ? data[key] : '';
+    url += `&${key}=${encodeURIComponent(item)}`
   }
-  return url ? url:'';
+  return url ? url : '';
 }
 
 // let obj = {compid: '830058', agentid: '9999', telephone: '8300589999', telephonePassword: '00c351677029d3840898d241bc542fb9', wstype: 'ws', serverid: '', password: 'aa123456'};
@@ -27,14 +27,14 @@ export const init = () => {
     obj = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA'));
   };
   let actionArray = ['getCtiServer', 'getRegServer']
-  actionArray.forEach(item=>{
-    let data = {action: item, ...obj}
+  actionArray.forEach(item => {
+    let data = { action: item, ...obj }
     let url = 'https://api.salescomm.net:8201/Handler/agent.ashx'
-    url+=(url.indexOf('?')<0 ? '?' : '&' )+ param(data);
-    jsonp(url, {param: 'callbackparam'}, (err, res)=> {
+    url += (url.indexOf('?') < 0 ? '?' : '&') + param(data);
+    jsonp(url, { param: 'callbackparam' }, (err, res) => {
       if (!err) {
         let dataRes = res.data
-        if(item === 'getCtiServer'){
+        if (item === 'getCtiServer') {
           cti_server = dataRes.domain;
           cti_port = dataRes.port;
           cti_serverid = dataRes.serverid;
@@ -53,12 +53,12 @@ export const init = () => {
         cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
         console.log(sip_server, sip_port)
         sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
-        cti.CheckWSS ()
-        console.log(cti.CheckWSS ())
+        cti.CheckWSS()
+        console.log(cti.CheckWSS())
       }
-      sip_client.sipPhoneConnectedEvent = function(){
+      sip_client.sipPhoneConnectedEvent = function () {
         console.log("## sip ConnectedEvent");
-        if (sip_server===''&&sip_port==='') {
+        if (sip_server === '' && sip_port === '') {
           console.log("## 获取注册服务器失败，重新签入");
           cti.AgentLogout();
           cti.CtiDisconnect();//断开cti连接
@@ -66,8 +66,8 @@ export const init = () => {
         }
         sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
       }
-      sip_client.extLoginEvent = function(extlogin){
-        if (extlogin===0) {
+      sip_client.extLoginEvent = function (extlogin) {
+        if (extlogin === 0) {
           console.log("## 分机注册失败");
           vueExample.$Message.error('分机注册失败')
           cti.AgentLogout();
@@ -91,10 +91,10 @@ export const loginOut = () => {
 export const callOut = (phoneNumber) => {
   showmsg("【呼出】============================================================");
   showmsg("调用MakeCall()进行呼出。呼出请求发出后会进行EVENT_AgentStateChanged事件通知");
-  console.log(Date.parse(new Date())+   '呼出')
-  console.log('外呼号码：'+ phoneNumber)
+  console.log(Date.parse(new Date()) + '呼出')
+  console.log('外呼号码：' + phoneNumber)
   cti.MakeCall(phoneNumber, 3, '');
-  handcall=1;//主动外呼
+  handcall = 1;//主动外呼
 }
 
 
@@ -214,11 +214,11 @@ export const checkWS = (opagentid) => {
 //获取座席状态
 export const answerMessage = (opagentid) => {
   console.log("【应答】============================================================");
-  sip_client.answerMessage(obj.telephone,sip_client.sip_callid);//手动应答
+  sip_client.answerMessage(obj.telephone, sip_client.sip_callid);//手动应答
 
 }
 
-export const  initStatus =() => {
+export const initStatus = () => {
 
   ///////////////////////////////////////////////////////////
   ///注册事件：座席状态 变化
@@ -228,62 +228,62 @@ export const  initStatus =() => {
     if (_agentid === obj.agentid) {//过滤当前座席的状态
       switch (agentstate) {
         case "0": //退出
-        {
-          console.log('退出')
-        }
+          {
+            console.log('退出')
+          }
           break;
         case "1": //空闲
-        {
-          console.log('退出')
-        }
+          {
+            console.log('退出')
+          }
           break;
         case "2": //示忙
-        {
-          console.log('示忙')
-        }
+          {
+            console.log('示忙')
+          }
           break;
         case "4": //后处理
-        {
-          console.log('后处理')
-        }
+          {
+            console.log('后处理')
+          }
           break;
         case "7": //振铃
         case "5": {
-          if (handcall===1) {//主动外呼
+          if (handcall === 1) {//主动外呼
             sip_client.answerMessage(obj.telephone, sip_client.sip_callid);
-          }else{
+          } else {
             console.log('## 呼入操作')
           }
         }
           break;
         case "8": //通话成功
-        {
-          console.log('## 通话成功')
-        }
+          {
+            console.log('## 通话成功')
+          }
           break;
         case "9": //三方会议
-        {
-          console.log('## 三方会议')
-        }
+          {
+            console.log('## 三方会议')
+          }
           break;
         case "11": //咨询状态
-        {
-          console.log('咨询')
-        }
+          {
+            console.log('咨询')
+          }
           break;
         case "12": //咨询挂断
-        {
-          console.log('挂断')
-        }
+          {
+            console.log('挂断')
+          }
           break;
         case "13": //保持
-        {
-          console.log('保持')
-        }
+          {
+            console.log('保持')
+          }
           break;
         case "15": //初始化
-        {
-        }
+          {
+          }
           break;
       }
     }
@@ -292,7 +292,7 @@ export const  initStatus =() => {
   ///注册事件：操作结果事件
   cti.EVENT_CMDRES = function (rescode, pbxrescode, res, actionid, taskid, calldata) {
     console.log("@ 操作结果EVENT_CMDRES事件通知。");
-    console.log("## EVENT_CMDRES:rescode=" + rescode + ",pbxrescode=" + pbxrescode + ",res=" + res + ",actionid=" +         actionid + ",taskid=" + taskid + ",calldata=" + calldata);
+    console.log("## EVENT_CMDRES:rescode=" + rescode + ",pbxrescode=" + pbxrescode + ",res=" + res + ",actionid=" + actionid + ",taskid=" + taskid + ",calldata=" + calldata);
   }
   ///注册事件：座席通话或录音通知事件
   ///////////////////////////////////////////////////////////
@@ -314,27 +314,26 @@ export const  initStatus =() => {
   ///注册事件：对方振铃通知事件
   ///////////////////////////////////////////////////////////
   cti.EVENT_OtherRinging = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, calldata) {
-    console.log(Date.parse(new Date())+ '对方振铃')
+    console.log(Date.parse(new Date()) + '对方振铃')
     console.log("@ 对方振铃进行EVENT_OtherRinging通知。可在此事件中处理弹屏相关操作。");
     console.log("## EVENT_OtherRinging:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",calldata=" + calldata);
     //可在此进行弹屏处理
-//            window.open("Popup.htm?caller=" + calleedevice, "_blank", "left = 200,top=200,width = 500,height = 350,scrollbars=yes,toolbar=yes,menubar=yes,location=yes,resizable=no,status=yes");
+    //            window.open("Popup.htm?caller=" + calleedevice, "_blank", "left = 200,top=200,width = 500,height = 350,scrollbars=yes,toolbar=yes,menubar=yes,location=yes,resizable=no,status=yes");
   }
 
   ///注册事件：挂断通知事件
   ///////////////////////////////////////////////////////////
   cti.EVENT_HangupEvent = function (compid, agentid, callId, calldata) {
-    // window.sessionStorage.setItem('HUNG_UP_FLAG', 'YES');
     console.log("@ 挂断进行EVENT_HangupEvent通知。");
     vueExample.$store.commit('changeXZHungUpFlag', 'YES');
     vueExample.$Message.success('已挂断');
-    let data = {compid: '830058', dates: '2019-08', callid: callId, anytype: '1'}
+    let data = { compid: '830058', dates: '2019-08', callid: callId, anytype: '1' }
     // fetch({
     //   url: '/api/callcenter/GetSingleCdrAnyCallRecord',
     //   method: 'POST',
     //   data: data,
     // });
-    handcall=0;
+    handcall = 0;
     console.log("## EVENT_HangupEvent:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calldata=" + calldata);
   }
 }
