@@ -1824,7 +1824,7 @@ export default {
         if (XZ_STATE == '1') {
           res = await this.callout_hung_on(obj, callData);
         } else {
-          this.$Message.error('请连接软电话！');
+          this.$Message.error('请连接讯众新版软电话！');
           this.call_xz_hung_off();
           return;
         }
