@@ -110,10 +110,11 @@ export const retriveCall = () => {
 }
 
 //挂断
-export const hangUp = () => {
+export const hangUp = async () => {
   console.log("【挂断】============================================================");
   console.log("调用Hangup()进行挂断电话。挂断成功后会进行EVENT_AgentStateChanged事件通知");
-  return cti.Hangup();
+  await cti.Hangup();
+  loginOut();
 }
 
 
