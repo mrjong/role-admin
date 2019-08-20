@@ -1635,6 +1635,7 @@ export default {
     this.collectcode_getListByCodeType();//获取拨打状态
   },
   mounted() {
+    // 禁止右键
     this.$nextTick(() => {
       document.oncontextmenu = new Function("event.returnValue=false");
     });
@@ -1827,19 +1828,13 @@ export default {
       const XZ_ERROR_MSG = sessionStorage.getItem('XZ_ERROR_MSG');
       let res;
       if (callData.callType === '2') {
-        res = await this.callout_hung_on(obj, callData);
-        // if (XZ_STATE == '1') {
-        //   if (XZ_ERROR_MSG) {
-        //     // 怕段注册分级是否异常，如有异常提示msg，并return
-        //     this.$Message.error(XZ_ERROR_MSG);
-        //     window.sessionStorage.removeItem('XZ_ERROR_MSG');
-        //     return;
-        //   }
-        // } else {
-        //   this.$Message.error('请连接讯众新版软电话！');
-        //   this.call_xz_hung_off();
-        //   return;
-        // }
+        if (XZ_STATE == '1') {
+          res = await this.callout_hung_on(obj, callData);
+        } else {
+          this.$Message.error('请启动讯众新版软电话！');
+          this.call_xz_hung_off();
+          return;
+        }
       } else {
         res = await call_xz_hung_on(obj);
       }

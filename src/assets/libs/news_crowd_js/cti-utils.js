@@ -9,7 +9,7 @@ var sip_serverid = '';//reg服务器id
 var sip_server = '';//reg服务器ip
 var sip_port = '';//reg服务器端口
 var handcall = 0
-var ws_type = 'wss';//cti连接方式
+var ws_type = sip_client.protocolStr === 'https:'? 'wss':'ws';//cti连接方式
 
 var MSGTYPE = {
     EVENT: 1, //事件

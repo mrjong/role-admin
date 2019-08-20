@@ -59,7 +59,7 @@ ClassSipClient.prototype.initSocket=function() {
 
     setTimeout(function () {
        cls_sip.CheckSocket();
-    }, 5000);
+    }, 3000);
     this.sipWsEvent();
 }
 
@@ -98,7 +98,7 @@ ClassSipClient.prototype.CheckSocket=function () {
                 cls_sip.initSocket();
             }
         }
-    }, 10000);//10s检测一次
+    }, 8000);//10s检测一次
 }
 
 ClassSipClient.prototype.checkExtLogin=function () {

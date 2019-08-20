@@ -26,7 +26,7 @@ export const init = () => {
   } else {
     obj = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA'));
   };
-  let data = { action: 'getCtiServer', ...obj,  wstype: 'wss' }
+  let data = { action: 'getCtiServer', ...obj,  wstype: sip_client.protocolStr === 'https:'? 'wss':'ws' }
   let url = 'https://api.salescomm.net:8201/Handler/agent.ashx'
   url += (url.indexOf('?') < 0 ? '?' : '&') + param(data);
   jsonp(url, { param: 'callbackparam' }, (err, res) => {
