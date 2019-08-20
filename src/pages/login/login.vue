@@ -39,15 +39,19 @@
                 </span>
               </Input>
               <div class="image-box">
-                <img @click="login_code" :src="imageShow" alt>
+                <img @click="login_code" :src="imageShow" alt />
               </div>
             </FormItem>
             <FormItem>
-              <Button @click="handleSubmit" type="primary" long :loading='login_loading'>
+              <Button @click="handleSubmit" type="primary" long :loading="login_loading">
                 <span v-if="!login_loading">登录</span>
                 <span v-else>登录中...</span>
               </Button>
             </FormItem>
+            <!--<div @click="ss">呼出</div>-->
+            <!--<div @click="cc">挂断</div>-->
+            <!--<div @click="ee">保持</div>-->
+            <!--<div @click="aa">接回</div>-->
           </Form>
         </div>
       </Card>
@@ -58,15 +62,21 @@
 <script>
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
-import { login, call_kt_get_seat, login_code } from "@/service/getData";
-import util from '@/libs/util';
-
+import { login, callout_get_seat, login_code } from "@/service/getData";
+import util from "@/libs/util";
+import {
+  init,
+  callOut,
+  hangUp,
+  retriveCall,
+  holdCall
+} from "@/libs/news_crowd";
 export default {
   data() {
     return {
       imageShow: "",
       key: "",
-      login_loading: false,//登录按钮loading
+      login_loading: false, //登录按钮loading
       form: {
         loginName: "",
         loginPwd: "",
@@ -90,8 +100,9 @@ export default {
     };
   },
   created() {
+    //    init()
     this.login_code();
-    sessionStorage.removeItem('websocket');
+    sessionStorage.removeItem("websocket");
     localStorage.removeItem("callData");
     localStorage.removeItem("callObj");
     this.$nextTick(() => {
@@ -109,6 +120,20 @@ export default {
       }).ciphertext.toString();
       return enc;
     },
+
+    //    ss() {
+    //      callOut()
+    //    },
+    //
+    //    cc() {
+    //      hangUp()
+    //    },
+    //    ee(){
+    //      holdCall()
+    //    },
+    //    aa() {
+    //      retriveCall()
+    //    },
     async login_code() {
       const res = await login_code();
       if (res.code === 1) {
@@ -119,21 +144,18 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    async call_kt_get_seat(data) {
-      const res = await call_kt_get_seat({
+    async callout_get_seat(data) {
+      const res = await callout_get_seat({
         loginName: this.form.loginName
       });
       console.log(res);
+
       if (res.code === 1) {
         if (res.data.seatType === "KT") {
-          sessionStorage.setItem("seatType", "KT");
-          localStorage.setItem("callData", JSON.stringify(res.data));
           this.call(res.data);
-        } else if (res.data.seatType === "XZ") {
-          sessionStorage.setItem("seatType", "XZ");
-        } else if (res.data.seatType === "RL") {
-          sessionStorage.setItem("seatType", "RL");
         }
+        localStorage.setItem("callData", JSON.stringify(res.data));
+        window.sessionStorage.setItem("callSeat", JSON.stringify(res.data));
         this.loginSuccess(data);
       } else {
         this.$Message.error(res.message);
@@ -170,7 +192,7 @@ export default {
     },
     loginSuccess(res) {
       this.$Message.success("登录成功!");
-      window.sessionStorage.setItem('websocket', true);
+      window.sessionStorage.setItem("websocket", true);
       util.websocket();
       window.$router = this.$router;
       this.$router.push({
@@ -190,17 +212,10 @@ export default {
           this.login_loading = false;
           if (res && res.code === 1) {
             Cookies.set("user", this.form.loginName);
-            // Cookies.set("loginPwd", this.form.loginPwd);
             Cookies.set("SXF-TOKEN", res.data.token);
             Cookies.set("userType", res.data.userType);
-            this.$store.commit(
-              "setAvator",
-              "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
-            );
-
-            // this.call_kt_get_seat()
             Cookies.set("access", 1);
-            this.call_kt_get_seat(res);
+            this.callout_get_seat(res);
           } else if (res && res.code === 3010010) {
             this.login_code();
 

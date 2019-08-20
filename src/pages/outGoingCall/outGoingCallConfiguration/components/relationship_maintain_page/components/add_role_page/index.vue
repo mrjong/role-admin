@@ -24,6 +24,57 @@
           >
             <Row>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+              <FormItem label="用户名称:" span="4" prop="loginId">
+                <Select
+                  size="small"
+                  v-model="formItem.loginId"
+                  filterable
+                  clearable
+                  placeholder="请选择用户名称"
+                >
+                  <Option
+                    v-for="item in userList"
+                    :value="item.loginName"
+                    :key="item.loginName"
+                  >{{ item.name }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+              <FormItem label="呼叫方案:" span="4" prop="callType">
+                <Select
+                  size="small"
+                  v-model="formItem.callType"
+                  filterable
+                  clearable
+                  placeholder="请选择呼叫方案"
+                >
+                  <Option
+                    v-for="item in getDirObj['CALL_TYPE']"
+                    :value="item.itemCode"
+                    :key="item.itemCode"
+                  >{{ item.itemName }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="formItem.callType ==='2'">
+              <FormItem label="方案/专线:" span="4" prop="planId">
+                <Select
+                  size="small"
+                  v-model="formItem.planId"
+                  filterable
+                  clearable
+                  placeholder="请选择方案/专线"
+                >
+                  <Option
+                    v-for="item in planList"
+                    :value="item.id"
+                    :key="item.id"
+                  >{{ item.planName }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="formItem.callType ==='1'">
                 <FormItem label="坐席类型:" span="4" prop="seatType">
                   <Select
                     size="small"
@@ -40,22 +91,17 @@
                   </Select>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="formItem.callType ==='1'">
                 <FormItem span="4" label="坐席编号:" prop="callno">
                   <Input size="small" clearable v-model="formItem.callno" placeholder="请输入坐席编号"></Input>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem span="4" label="登陆账号:" prop="loginId">
-                  <Input size="small" clearable v-model="formItem.loginId" :maxlength="10" placeholder="请输入登陆账号"></Input>
-                </FormItem>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="formItem.callType ==='1'">
+              <FormItem span="4" label="员工编号:" prop="empno">
+                <Input size="small" clearable v-model="formItem.empno" placeholder="请输入员工编号"></Input>
+              </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem span="4" label="员工编号:" prop="empno">
-                  <Input size="small" clearable v-model="formItem.empno" placeholder="请输入员工编号"></Input>
-                </FormItem>
-              </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="formItem.callType ==='1'">
                 <FormItem label="接听方式:" span="4" prop="extenType">
                   <Select
                     size="small"
@@ -72,7 +118,7 @@
                   </Select>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="formItem.callType ==='1'">
                 <FormItem label="状态:" span="4" prop="status">
                   <Select
                     size="small"
@@ -106,7 +152,7 @@
  <script>
 import tablePage from "@/mixin/tablePage";
 import sysDictionary from "@/mixin/sysDictionary";
-import { call_employee_add } from "@/service/getData";
+import { call_employee_add, system_user_call_users, rout_plan_planList } from "@/service/getData";
 export default {
   props: {
     model: ""
@@ -140,7 +186,7 @@ export default {
       }
     };
     return {
-      getDirList: ["SEAT_TYPE", "0_1_EFFECT_INVAL", "EXTEN_TYPE"],
+      getDirList: ["SEAT_TYPE", "0_1_EFFECT_INVAL", "EXTEN_TYPE", 'CALL_TYPE'],
       getDirObj: {},
       showPanel: false,
       add_loading: false,//添加按钮loading
@@ -188,7 +234,14 @@ export default {
             message: "请选择坐席类型",
             trigger: "change"
           }
-        ]
+        ],
+        callType: [
+          {
+            required: true,
+            message: "请选择呼叫方案",
+            trigger: "change"
+          }
+        ],
       },
       formItem: {
         callno: "",
@@ -197,7 +250,9 @@ export default {
         extenType: "sip",
         status: "",
         seatType: ""
-      }
+      },
+      userList: [],
+      planList: []
     };
   },
   watch: {
@@ -208,10 +263,13 @@ export default {
   },
   created() {
     console.log(this.model);
+    this.systemUserCallUsers()
+    this.routPlanPlanList()
   },
   methods: {
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
+        debugger
         if (valid) {
           this.call_employee_add();
         }
@@ -240,12 +298,30 @@ export default {
       };
       this.$emit("passBack", this.childrenData);
       // this.$emit("getChildrenStatus", this.childrenData);
-    }
+    },
+    // 查询用户
+    async systemUserCallUsers() {
+      const res = await system_user_call_users({userType: ''});
+      if (res.code === 1) {
+        this.userList = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 查询路由方案列表
+    async routPlanPlanList() {
+      const res = await rout_plan_planList({userType: ''});
+      if (res.code === 1) {
+        this.planList = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
   }
 };
 </script>
 
- <style lang="less">
+ <style lang="less" scoped>
 .ivu-modal {
   position: absolute;
   left: 50%;

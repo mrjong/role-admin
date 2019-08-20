@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import app from './modules/app';
 import user from './modules/user';
 import sysDictionary from './modules/sysDictionary';
-import callKt from './modules/callKt';
+import outbound from './modules/outbound';
 Vue.use(Vuex);
 const store = new Vuex.Store({
 	state: {
@@ -18,7 +18,7 @@ const store = new Vuex.Store({
 		app,
 		user,
 		sysDictionary,
-		callKt
+		outbound
 	}
 });
 

@@ -23,30 +23,64 @@
             class="add_role_form"
           >
             <Row>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-                <FormItem span="4" label="员工姓名:" prop="empno">
-                  <Select
-                    v-model="formItem.empno"
-                    filterable
-                    clearable
-                    placeholder="请选择员工"
-                    size="small"
-                    @on-change='changeUser'
-                  >
-                    <Option
-                      v-for="item in userList"
-                      :value="item.loginName"
-                      :key="item.loginName"
-                    >{{ item.name }}</Option>
-                  </Select>
-                </FormItem>
-              </Col>
+              <!--<Col :xs="24" :sm="24" :md="10" :lg="10" span="4">-->
+                <!--<FormItem span="4" label="员工姓名:" prop="empno">-->
+                  <!--<Select-->
+                    <!--v-model="formItem.empno"-->
+                    <!--filterable-->
+                    <!--clearable-->
+                    <!--placeholder="请选择员工"-->
+                    <!--size="small"-->
+                    <!--@on-change='changeUser'-->
+                  <!--&gt;-->
+                    <!--<Option-->
+                      <!--v-for="item in userList"-->
+                      <!--:value="item.loginName"-->
+                      <!--:key="item.loginName"-->
+                    <!--&gt;{{ item.name }}</Option>-->
+                  <!--</Select>-->
+                <!--</FormItem>-->
+              <!--</Col>-->
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
                 <FormItem span="4" label="登录账号:" prop="loginId">
                   <Input size="small" disabled v-model="formItem.loginId" placeholder="请输入登录账号"></Input>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" >
+              <FormItem label="呼叫方案:" span="4" prop="callType">
+                <Select
+                  size="small"
+                  v-model="formItem.callType"
+                  filterable
+                  clearable
+                  placeholder="请选择呼叫方案"
+                >
+                  <Option
+                    v-for="item in getDirObj['CALL_TYPE']"
+                    :value="item.itemCode"
+                    :key="item.itemCode"
+                  >{{ item.itemName }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4"  v-if="formItem.callType ==='2'">
+              <FormItem label="方案/专线:" span="4" prop="planId">
+                <Select
+                  size="small"
+                  v-model="formItem.planId"
+                  filterable
+                  clearable
+                  placeholder="请选择方案/专线"
+                >
+                  <Option
+                    v-for="item in planList"
+                    :value="item.id"
+                    :key="item.id"
+                  >{{ item.planName }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4"  v-if="formItem.callType ==='1'">
                 <FormItem label="坐席类型:" span="4">
                   <Select
                     size="small"
@@ -63,11 +97,12 @@
                   </Select>
                 </FormItem>
               </Col>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4"  v-if="formItem.callType ==='1'">
                 <FormItem span="4" label="坐席编号:">
                   <Input size="small" clearable v-model="formItem.callno" placeholder="请输入坐席编号"></Input>
                 </FormItem>
               </Col>
+
             </Row>
           </Form>
         </Card>
@@ -85,7 +120,7 @@
  <script>
 import tablePage from "@/mixin/tablePage";
 import sysDictionary from "@/mixin/sysDictionary";
-import { call_employee_update, call_employee_user } from "@/service/getData";
+import { call_employee_update, call_employee_user, rout_plan_planList } from "@/service/getData";
 export default {
   props: { model: {} },
   model: {
@@ -106,7 +141,7 @@ export default {
       }
     };
     return {
-      getDirList: ["SEAT_TYPE"],
+      getDirList: ["SEAT_TYPE", 'CALL_TYPE'],
       getDirObj: {},
       showPanel: false,
       add_loading: false,//提交按钮loading
@@ -135,8 +170,10 @@ export default {
         loginId: "",
         status: "",
         seatType: "",
-        id: ""
-      }
+        id: "",
+        callType: ''
+      },
+      planList: []
     };
   },
   watch: {
@@ -153,9 +190,13 @@ export default {
       loginId: this.model.data.loginId,
       status: this.model.data.status,
       seatType: this.model.data.seatType,
-      empno: '',
+      empno: this.model.data.loginId,
+      callType: this.model.data.callType,
+      planId: this.model.data.planId,
     };
+    console.log(this.formItem)
     this.call_employee_user();
+    this.routPlanPlanList();
   },
   methods: {
     handleSubmit(name) {
@@ -171,6 +212,12 @@ export default {
       const res = await call_employee_update(this.formItem);
       this.add_loading = false;
       if (res.code==1) {
+//        if(this.formItem.callType ==='1'){
+//          this.formItem.planId = ''
+//        } else {
+//          this.formItem.planId = ''
+//        }
+        this.formItem = {}
         this.$Message.success('修改成功');
         this.del("0");
       } else {
@@ -211,12 +258,21 @@ export default {
       this.pageNo = 1;
       this.formItem = {};
       this.$refs[name].resetFields();
-    }
+    },
+    // 查询路由方案列表
+    async routPlanPlanList() {
+      const res = await rout_plan_planList({userType: ''});
+      if (res.code === 1) {
+        this.planList = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
   }
 };
 </script>
 
- <style lang="less">
+ <style lang="less" scoped>
 .ivu-modal {
   position: absolute;
   left: 50%;

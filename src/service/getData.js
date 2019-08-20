@@ -1402,15 +1402,46 @@ export const arb_apply = (obj, options) =>
   });
 
 /*
-    客天登录
+    坐席登录（登录时请求）
 * */
-export const call_kt_get_seat = (obj, options) =>
+export const callout_get_seat = (obj, options) =>
   fetch({
-    url: '/call/kt/get_seat',
+    url: '/callout/get_seat',
     method: 'POST',
     data: qs.stringify(obj),
     options
   });
+
+/**
+ * 详情页外呼时重新获取坐席信息（新路由模式）
+ */
+export const callout_rout_get_seat = (obj) =>
+  fetch({
+    url: 'callout/rout/get_seat',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
+/**
+ * 新路由的外呼接口
+ *
+ */
+export const callout_hung_on = (obj, params) =>
+  fetch({
+    url: 'callout/hung_on',
+    method: 'POST',
+    data: obj,
+    ...params
+  })
+/**
+ * 新路由挂断接口
+ */
+export const callout_hung_off = (obj) =>
+  fetch({
+    url: 'callout/hung_off',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
 
 /*
 客天外拨
@@ -1726,6 +1757,13 @@ export const offlineScanPay_apply = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+//  黑名单
+export const black_list = (obj) =>
+  fetch({
+    url: '/rout/black/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 
 // 提交收款申请
 export const offlineScanPay_generate = (obj, options) =>
@@ -1742,6 +1780,162 @@ export const offlineScanPay_detail = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+//  故障率
+export const hitch_list = (obj) =>
+  fetch({
+    url: '/rout/error/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//  坐席信息维护查询
+export const seats_config_list = (obj) =>
+  fetch({
+    url: '/call/channel/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//  坐席信息维护添加
+export const seats_config_add = (obj) =>
+  fetch({
+    url: '/call/channel/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//  坐席信息维护修改
+export const seats_config_update = (obj) =>
+  fetch({
+    url: '/call/channel/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+//  路由信息方案专线列表查新
+export const rout_plan_project_list = (obj) =>
+  fetch({
+    url: '/rout/plan/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//  路由信息方案专线列表添加
+export const rout_plan_project_add = (obj) =>
+  fetch({
+    url: '/rout/plan/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   路由信息方案专线列表修改
+export const rout_plan_project_update = (obj) =>
+  fetch({
+    url: 'rout/plan/update',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   路由信息方案专线列表修改
+export const system_user_call_users = (obj) =>
+  fetch({
+    url: 'system/user/callusers',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+//   路由信息方案专线列表
+export const rout_plan_planList = (obj) =>
+  fetch({
+    url: 'rout/plan/planlist',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+
+//   添加坐席池接口
+export const rout_seatPool_add = (obj) =>
+  fetch({
+    url: '/rout/seatpool/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//  修改坐席池接口
+export const rout_seatPool_updateStatus = (obj) =>
+  fetch({
+    url: '/rout/seatpool/updateStatus',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   删除坐席池接口
+export const rout_seatPool_delete = (obj) =>
+  fetch({
+    url: '/rout/seatpool/delete',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   删除外显号码接口
+export const rout_explicit_delete = (obj) =>
+  fetch({
+    url: '/rout/explicit/delete',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   添加外显号码接口
+export const rout_explicit_add = (obj) =>
+  fetch({
+    url: '/rout/explicit/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+//   外显号码列表
+export const rout_explicit_list = (obj) =>
+  fetch({
+    url: '/rout/explicit/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   坐席池列表接口
+export const rout_seatPool_list = (obj) =>
+  fetch({
+    url: '/rout/seatpool/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+//   渠道类型列表
+export const call_channel_list = (obj) =>
+  fetch({
+    url: '/call/channel/channelList',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+//   选择坐席列表
+export const rout_explicit_getExplicitList = (obj) =>
+  fetch({
+    url: '/rout/explicit/getExplicitList',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//   选择号码列表
+export const rout_seatpool_getCallNos = (obj) =>
+  fetch({
+    url: '/rout/seatpool/getCallNos',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 
 // 失效二维码
 export const offlineScanPay_invalid = (obj) =>
@@ -1750,3 +1944,32 @@ export const offlineScanPay_invalid = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+
+//   选择号码列表
+export const call_channel_edit = (obj) =>
+  fetch({
+    url: '/call/channel/edit',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+//   坐席监控列表
+export const call_record_callDataList = (obj) =>
+  fetch({
+    url: '/call/record/callDataList',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+//   渠道信息维护开启关闭接口
+export const call_channel_updateStatus = (obj) =>
+  fetch({
+    url: '/call/channel/updateStatus',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+

@@ -1,0 +1,60 @@
+/deep/ .ivu-modal-content {
+  position: relative;
+  background-color: #fff;
+  //height: 500px;
+  border: 0;
+  border-radius: 6px;
+  background-clip: padding-box;
+  box-shadow: 0 4px 12px rgba(0,0,0,0);
+}
+  .tel-box-desc {
+    padding: 5px;
+    text-align: center;
+    //position: absolute;
+    top: 100px;
+    width: 400px;
+    margin: 30px;
+    .tel-num {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .tel-desc {
+      color: #fff;
+      font-size: 12px;
+    }
+    .tel-btn-box {
+      margin: 5px auto;
+      display: flex;
+      .item {
+        flex: 1;
+        cursor: pointer;
+        .icon-box {
+          font-size: 20px;
+          width: 35px;
+          display: inline-block;
+          line-height: 25px;
+          border-radius: 50%;
+          height: 30px;
+          color: #fff;
+        }
+        &.fail {
+          .icon-box {
+            background: rgb(234, 86, 66);
+          }
+        }
+        &.success {
+          .icon-box {
+            background: rgb(117, 213, 114);
+          }
+        }
+      }
+    }
+  }
+/deep/ .ivu-modal {
+  width: auto;
+  margin: 0 auto;
+  position: relative;
+  outline: 0;
+  top: 300px;
+}
+

@@ -1,4 +1,4 @@
-import { call_employee_list, call_employee_del } from '@/service/getData';
+import { call_employee_list, call_employee_del, getLeafTypeList, } from '@/service/getData';
 import Addform from './components/add_role_page'
 import Reviseform from './components/revise_role_page'
 import sysDictionary from "@/mixin/sysDictionary";
@@ -21,6 +21,9 @@ export default {
       delete: false,//删除权限
       update: false,//修改权限
       query_loading: false,//查询按钮loading
+      company_list_data: [],//电催中心list
+      department_list_data: [],//组别list
+      collect_list_data: [],//经办人list
       parentData: {
         modal: false,
         type: null,
@@ -73,10 +76,45 @@ export default {
           width: 150,
         },
         {
-          title: '员工姓名',
+          title: '姓名',
           searchOperator: 'like',
           key: 'userName',
           sortable: true,
+          align: 'center',
+          width: 120,
+        },
+        {
+          title: '用户角色',
+          searchOperator: 'like',
+          key: 'userTypeName',
+          align: 'center',
+          width: 120,
+        },
+        {
+          title: '方案名称',
+          searchOperator: 'like',
+          key: 'planName',
+          align: 'center',
+          width: 120,
+        },
+        {
+          title: '外呼方案',
+          searchOperator: 'like',
+          key: 'callTypeName',
+          align: 'center',
+          width: 120,
+        },
+        {
+          title: '所属电催中心',
+          searchOperator: 'like',
+          key: 'opCompayName',
+          align: 'center',
+          width: 120,
+        },
+        {
+          title: '所属组别',
+          searchOperator: 'like',
+          key: 'opOrganizationName',
           align: 'center',
           width: 120,
         },
@@ -212,6 +250,7 @@ export default {
       if (item.type !== '03') {
         return;
       }
+
       switch (item.url) {
         case "query": this.query = true;
           break;
@@ -223,9 +262,44 @@ export default {
           break;
       }
     });
+    this.getLeafTypeList('02', '');
+    this.getLeafTypeList('03', '');
+    this.getLeafTypeList('04', '');
     // this.getList();
   },
   methods: {
+
+    // 电催中心change
+    companyChange(value) {
+      this.getLeafTypeList('03', value);
+      this.getLeafTypeList('04', value);
+    },
+    // 部门change
+    departmentChange(value) {
+      this.getLeafTypeList('04', value);
+    },
+    //组别
+    async getLeafTypeList(type, parent) {
+      const res = await getLeafTypeList({
+        leafType: type,
+        parentId: parent || ""
+      });
+      if (res.code === 1) {
+        switch (type) {
+          case "02":
+            this.company_list_data = res.data;
+            break;
+          case "03":
+            this.department_list_data = res.data;
+            break;
+          case "04":
+            this.collect_list_data = res.data;
+            break;
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
     // 添加列表新数据按钮
     handleAdd(type) {
       this.parentData = {
