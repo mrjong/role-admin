@@ -29,7 +29,6 @@
 <script>
 import { mapGetters } from "vuex";
 import util from "@/libs/util";
-import { init } from "@/libs/news_crowd";
 import { callout_hung_off } from "@/service/getData";
 export default {
   data() {
@@ -46,7 +45,6 @@ export default {
     // this.$Message.config({
     //   duration: 2
     // });
-     init()
     const h = this.$createElement;
     if (localStorage.getItem("callData")) {
       this.call(JSON.parse(localStorage.getItem("callData")));

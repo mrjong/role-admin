@@ -2527,22 +2527,20 @@ export default {
         if (res.data.seatType === 'KT') {
           this.call(res.data);
         } else if (res.data.seatType === 'XZ') {
-          let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, wstype: 'wss', serverid: '', password: res.data.password };
+          let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, serverid: '', password: res.data.password };
           window.sessionStorage.setItem('XZ_INIT_DATA', JSON.stringify(obj));
           await init();
-          setTimeout(() => {
-            this.call_xz_hung_on({
-              callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
-              callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
-              toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
-              toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
-              toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
-              toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
-              userId: this.userId,
-              caseNo: this.caseNo,
-              collectType: tag,
-            });
-          }, 1000)
+          this.call_xz_hung_on({
+            callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+            callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
+            toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
+            toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
+            toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+            toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
+            userId: this.userId,
+            caseNo: this.caseNo,
+            collectType: tag,
+          });
         }
       } else {
         this.$Message.error(res.message);
