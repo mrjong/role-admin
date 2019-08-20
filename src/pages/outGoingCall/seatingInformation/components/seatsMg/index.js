@@ -59,31 +59,44 @@ export default {
           title: '坐席编号',
           key: 'seatNo',
           width: widthVal,
+          align: alignCenter,
         },
         {
           title: '账号',
           key: 'loginName',
           width: widthVal,
+          align: alignCenter,
         },
         {
           title: '占用时间',
           key: 'occupyTime',
-          width: widthVal,
+          width: 150,
+          align: alignCenter,
+          render: (h, params) => {
+            let occupyTime = params.row.occupyTime;
+            occupyTime = occupyTime
+              ? this.$options.filters['formatDate'](occupyTime, 'YYYY-MM-DD HH:mm:ss')
+              : occupyTime;
+            return h('span', occupyTime);
+          }
         },
         {
           title: '密码',
           key: 'passWord',
           width: widthVal,
+          align: alignCenter,
         },
         {
           title: '占用状态',
           key: 'occupyStatusName',
           width: widthVal,
+          align: alignCenter,
         },
         {
           title: '占用人',
           key: 'occupyUser',
           width: widthVal,
+          align: alignCenter,
         },
         {
           title: '操作',
@@ -104,10 +117,12 @@ export default {
         {
           title: '坐席号码',
           key: 'explicitNumber',
+          align: alignCenter,
         },
         {
           title: '归属地',
           key: 'attribution',
+          align: alignCenter,
         },
       ],
       add_handle: true, //添加
