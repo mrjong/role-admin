@@ -160,7 +160,41 @@
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-          <FormItem label="坐席类型:" span="4" prop="seatType">
+        <FormItem label="呼叫方案:" span="4" >
+          <Select
+            size="small"
+            v-model="addStaffFormItem.callType"
+            filterable
+            clearable
+            placeholder="请选择呼叫方案"
+          >
+            <Option
+              v-for="item in getDirObj['CALL_TYPE']"
+              :value="item.itemCode"
+              :key="item.itemCode"
+            >{{ item.itemName }}</Option>
+          </Select>
+        </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="addStaffFormItem.callType === '2'">
+        <FormItem label="方案/专线:" span="4" prop="seatType" >
+          <Select
+            size="small"
+            v-model="addStaffFormItem.planId"
+            filterable
+            clearable
+            placeholder="请选择方案或专线"
+          >
+            <Option
+              v-for="item in planList"
+              :value="item.id"
+              :key="item.id"
+            >{{ item.planName }}</Option>
+          </Select>
+        </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="addStaffFormItem.callType === '1'">
+          <FormItem label="坐席类型:" span="4" prop="seatType" >
             <Select
               size="small"
               v-model="addStaffFormItem.seatType"
@@ -176,7 +210,7 @@
             </Select>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="addStaffFormItem.callType === '1'">
           <FormItem span="4" label="坐席编号:">
             <Input size="small" v-model="addStaffFormItem.callno" :maxlength="10"></Input>
           </FormItem>
@@ -231,7 +265,8 @@ import {
   collect_user_list,
   collect_parent_children,
   system_role_list,
-  collect_user_check
+  collect_user_check,
+  rout_plan_planList
 } from "@/service/getData";
 import tablePage from "@/mixin/tablePage";
 import sysDictionary from "@/mixin/sysDictionary";
@@ -251,7 +286,7 @@ export default {
       callback();
     };
     return {
-      getDirList: ["SEAT_TYPE"],
+      getDirList: ["SEAT_TYPE", 'CALL_TYPE'],
       getDirObj: {},
       departmentFlag: true,
       add_user_loading: false, //添加人员提交loading
@@ -344,11 +379,13 @@ export default {
       companyList: [],
       departmentList: [],
       bossList: [],
-      roleList: []
+      roleList: [],
+      planList: []
     };
   },
   created() {
     // this.collect_user_list(this.parentData.nodeData.leafType);
+    this.routPlanPlanList()
     console.log(this.parentData);
     switch (this.parentData.type) {
       case "01":
@@ -561,7 +598,17 @@ export default {
       // } else {
       //   return false;
       // }
-    }
+    },
+
+    // 查询路由方案列表
+    async routPlanPlanList() {
+      const res = await rout_plan_planList({userType: ''});
+      if (res.code === 1) {
+        this.planList = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
   }
 };
 </script>

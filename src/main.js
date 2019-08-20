@@ -6,13 +6,15 @@ import App from './app.vue';
 import 'iview/dist/styles/iview.css';
 import filters from '@/filters';
 import validate from '@/libs/validate';
-
+import { Carousel, CarouselItem} from 'element-ui'
+Vue.component(Carousel.name, Carousel)
+Vue.component(CarouselItem.name, CarouselItem)
 Vue.prototype.GLOBAL = validate;
 Object.keys(filters).forEach((k) => {
   Vue.filter(k, filters[k]);
 });
 Vue.use(iView);
-new Vue({
+window.vueExample = new Vue({
   el: '#app',
   router: router,
   store: store,

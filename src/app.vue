@@ -20,16 +20,16 @@
     </div>
     <router-view></router-view>
     <video loop ref="ring" preload="auto" style="position: absolute" src="src/libs/ring.wav"></video>
+    <audio id="playaudio" src="./libs/ring1.wav" loop="loop" style="display: none"></audio>
+    <video id="my-video" muted="muted" style="display:none"></video>
+    <video id="peer-video" style="display:none"></video>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import util from "@/libs/util";
-// import { Notification } from "element-ui";
-// let _this = new Vue();
-// const h = _this.$createElement;
-// import ring from '@/libs/ring.wav'
+import { callout_hung_off } from "@/service/getData";
 export default {
   data() {
     return {
@@ -49,6 +49,7 @@ export default {
     if (localStorage.getItem("callData")) {
       this.call(JSON.parse(localStorage.getItem("callData")));
     }
+
     let websocket = window.sessionStorage.getItem("websocket");
     if (websocket) {
       util.websocket();
@@ -104,6 +105,10 @@ export default {
       });
     },
     hangup() {
+      let callData = JSON.parse(localStorage.getItem("callData"));
+      if (callData.callType === "2") {
+        this.callout_kt_hung_off();
+      }
       this.showTel = false;
       CallHelper.hangup();
       this.fail = false;
@@ -116,6 +121,19 @@ export default {
     },
     pause1() {
       this.$refs.ring.pause();
+    },
+    // 科天新路由模式的挂断
+    async callout_kt_hung_off() {
+      let callData = JSON.parse(localStorage.getItem("callData"));
+      const res = await callout_hung_off({
+        seatType: callData.seatType, //坐席类型
+        actionId: callData.id,
+        callno: callData.seatNo //坐席号
+      });
+      if (res.code === 1) {
+      } else {
+        this.$Message.error(res.message);
+      }
     }
   },
   watch: {
@@ -127,6 +145,7 @@ export default {
           case "READY":
             // 坐席就绪
             this.showTel = false;
+            localStorage.removeItem("callObj");
             break;
           case "RINGING":
             // 坐席振铃
@@ -155,6 +174,10 @@ export default {
             break;
           case "HANGUP":
             // 坐席挂机
+            let callData = JSON.parse(localStorage.getItem("callData"));
+            if (callData.callType === "2") {
+              this.callout_kt_hung_off();
+            }
             localStorage.removeItem("callObj");
             this.showTel = false;
             this.fail = false;
@@ -162,8 +185,10 @@ export default {
             break;
 
           default:
+            localStorage.removeItem("callObj");
             break;
         }
+        localStorage.removeItem("callObj");
       } else {
         this.$Message.error("拨打电话初始化异常");
       }
@@ -258,10 +283,12 @@ body {
 }
 .notice-success {
   // background: #67c23a;
-  background: rgb(138, 204, 120);;
+  background: rgb(138, 204, 120);
   border: none;
 }
-.notice-success, .notice-error, .notice-info {
+.notice-success,
+.notice-error,
+.notice-info {
   .el-notification__title {
     color: #fff;
   }
@@ -271,7 +298,7 @@ body {
     height: 52px;
     font-size: 28px;
   }
-   .el-icon-close {
+  .el-icon-close {
     color: #fff;
   }
 }

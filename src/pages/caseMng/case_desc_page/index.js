@@ -9,6 +9,8 @@ import qs from 'qs';
 import dayjs from 'dayjs';
 import Cookie from 'js-cookie';
 import sysDictionary from '@/mixin/sysDictionary';
+import { mapGetters } from "vuex";
+import { init, callOut, hangUp } from '@/libs/news_crowd';//讯众插件
 import {
   case_detail_remark_list, // 催收
   case_detail_repay_ord_list, // 回款
@@ -43,6 +45,9 @@ import {
   credit_case_process, //获取时间轴接口
   case_detail_getimgurls,//获取图片信息街口
   offlineScanPay_apply,//判断二维码是否生成
+  callout_rout_get_seat,//重新获取坐席参数
+  callout_hung_on, //新路由模式的外呼
+  callout_hung_off,//新路由模式的挂断
 } from '@/service/getData';
 let callFlag = false;
 export default {
@@ -71,6 +76,7 @@ export default {
       }
     }
     return {
+      HUNG_UP_FLAG: window.sessionStorage.getItem('HUNG_UP_FLAG'),//挂断标识
       moorToCallMblHid: '',//容联电话呼叫成功显示的电话密文
       moorToCallUser: '',//容联电话呼叫成功显示的姓名
       showMoorTel: false,//容联电话弹窗flag
@@ -129,7 +135,6 @@ export default {
       getDirObj: {},
       userNmClearCopy: '',// 保存的明文名字
       img_list: [],//图片列表
-      telShow: false,
       mblNo: '',
       caseNo: '',
       userId: '',
@@ -1592,15 +1597,18 @@ export default {
       ]
     };
   },
-  // watch: {
-  //   collectcode_getCollectRelate_childItem() {
-  //     if (this.collectcode_getCollectRelate_childItem.length === 0) {
-  //       this.$set(this.formValidate, 'communicateResult', '');
-  //       this.$refs.formValidate.resetFields();
-  //     }
-  //     //  this.formValidate.validateField('communicateResult');
-  //   }
-  // },
+  watch: {
+    changeXZHungUpFlag(val) {
+      console.log(val)
+      if (val === 'YES') {
+        this.call_xz_hung_off();
+      }
+    }
+  },
+  computed: {
+    // 使用对象展开运算符将 getter 混入 computed 对象中
+    ...mapGetters(["changeXZHungUpFlag"])
+  },
   async created() {
     console.log(Cookie.get('all_opt'));
     if (Cookie.get('all_opt') === 'true') {
@@ -1649,6 +1657,7 @@ export default {
     this.collectcode_getListByCodeType();//获取拨打状态
   },
   mounted() {
+    // 禁止右键
     this.$nextTick(() => {
       document.oncontextmenu = new Function("event.returnValue=false");
     });
@@ -1723,6 +1732,12 @@ export default {
       * 设置状态监听回调
       */
     stateCallback(data) {
+      console.log(data, '------------111111-------------')
+      let callObj = {
+        telNoHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
+        usrNameHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
+      };
+      localStorage.setItem('callObj', JSON.stringify(callObj));
       this.$store.commit('changeCallData', data);
     },
     /**
@@ -1736,7 +1751,7 @@ export default {
         if (!callFlag) {
           return;
         }
-        this.call_kt_hung_on({
+        this.call_hung_on({
           callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
           callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
           toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
@@ -1759,8 +1774,7 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    async call_kt_hung_on(obj) {
-      this.telShow = true;
+    async call_hung_on(obj) {
       let callData = JSON.parse(localStorage.getItem('callData'));
       let params = {
         callno: obj.callno,
@@ -1773,30 +1787,32 @@ export default {
         userId: this.userId,
         collectType: obj.collectType,
       };
-      if (this.seatType === 'KT') {
+      if (callData.seatType === 'KT') {
         params.actionId = callData.id;
+        // localStorage.removeItem('callObj');
       }
       let res = {};
-      if (this.seatType === 'RL') {
-        res = await call_moor_hung_on(params);
-      } else {
-        res = await call_kt_hung_on(params);
-      }
+      // 判断外呼模式，2  新路由， 1  传统方式
+      if (callData.callType === '2') {
+        // 新路由拨打方式三合一
+        res = await this.callout_hung_on(params, callData);
+      } else if (callData.callType === '1') {
+        if (callData.seatType === 'RL') {
+          res = await call_moor_hung_on(params);
+        } else if (callData.seatType === 'KT') {
+          res = await call_kt_hung_on(params);
+        }
+      };
       if (res.code === 1) {
         this.actionId = res.data.actionId;
         this.$Message.success('呼出成功');
-        if (this.seatType === 'RL') {
+        if (callData.seatType === 'RL') {
           this.showMoorTel = true;
-          this.moorToCallMblHid = res.data.toCallMblHid;
-          this.moorToCallUser = res.data.toCallUser
+          this.moorToCallMblHid = obj.toCallMblHid;
+          this.moorToCallUser = obj.toCallUserHid;
+        } else if (callData.seatType === 'KT') {
+          localStorage.removeItem('callObj');
         }
-        let callObj = {
-          telNoHid: obj.toCallMblHid,
-          usrNameHid: obj.toCallUserHid
-        };
-        console.log(callObj);
-        localStorage.removeItem('callObj');
-        localStorage.setItem('callObj', JSON.stringify(callObj));
         let timer;
         clearTimeout(timer);
         timer = setTimeout(() => {
@@ -1808,18 +1824,51 @@ export default {
             this[this.address_list_name]();
         }, 1500)
       } else {
+        callData.callType === '2' && this.call_xz_hung_off();//呼叫失败调用挂断
         this.$Message.error(res.message);
       }
     },
-    // 讯众外呼接口
+    // 外呼合并（路由模式）
+    async callout_hung_on(params, obj) {
+      const res = await callout_hung_on({
+        callRecordDomain: params,
+        calloutVo: obj,
+      }, {
+          transformRequest: [
+            function (data) {
+              return JSON.stringify(data); //利用对应方法转换格式
+            }
+          ]
+        });
+      return res;
+    },
+
+    // 讯众外呼接口（传统模式 || 路由模式）
     async call_xz_hung_on(obj) {
-      const res = await call_xz_hung_on(obj);
+      const callData = JSON.parse(localStorage.getItem('callData'));
+      const XZ_STATE = sessionStorage.getItem('XZ_STATE');
+      const XZ_ERROR_MSG = sessionStorage.getItem('XZ_ERROR_MSG');
+      let res;
+      if (callData.callType === '2') {
+        if (XZ_STATE == '1') {
+          res = await this.callout_hung_on(obj, callData);
+        } else {
+          this.$Message.error('请启动讯众新版软电话！');
+          this.call_xz_hung_off();
+          return;
+        }
+      } else {
+        res = await call_xz_hung_on(obj);
+      }
+      console.log(res)
       if (res.code === 1) {
+        callData.callType === '2' && callOut(res.data.calloutVo.phoneNo);//调用拨打的方法
+        // callData.callType === '2' && callOut();//调用拨打的方法
         this.showMoorTel = true;
         this.$Message.success('呼出成功');
         this.actionId = res.data.actionId;
-        this.moorToCallMblHid = res.data.toCallMblHid;
-        this.moorToCallUser = res.data.toCallUserHid;
+        this.moorToCallMblHid = obj.toCallMblHid;
+        this.moorToCallUser = obj.toCallUserHid;
         let timer;
         clearTimeout(timer);
         timer = setTimeout(() => {
@@ -1831,15 +1880,30 @@ export default {
             this[this.address_list_name]();
         }, 1500);
       } else {
+        callData.callType === '2' && this.call_xz_hung_off();//呼叫失败调用挂断
         this.$Message.error(res.message);
       }
     },
-    // 讯众挂断接口
+    // 讯众挂断接口（传统模式||路由模式）
     async call_xz_hung_off() {
-      const res = await call_xz_hung_off({
-        actionId: this.actionId
-      });
+      let callData = JSON.parse(localStorage.getItem('callData'));
+      let XZ_INIT_DATA = JSON.parse(window.sessionStorage.getItem('XZ_INIT_DATA'));
+      let res;
+      if (callData.callType === '2') {
+        res = await callout_hung_off({
+          seatType: callData.seatType,//坐席类型
+          actionId: this.actionId,
+          callno: XZ_INIT_DATA.agentid,//坐席号
+        })
+      } else {
+        res = await call_xz_hung_off({
+          actionId: this.actionId
+        });
+      }
       if (res.code === 1) {
+        if (callData.callType === '2') {
+          hangUp();
+        }
         this.showMoorTel = false;
       } else {
         this.$Message.error(res.message);
@@ -1849,6 +1913,7 @@ export default {
           this.showMoorTel = false;
         }, 2000);
       }
+      this.$store.commit('changeXZHungUpFlag','');//置空挂断标识符
     },
     // 容联挂断方法
     async call_moor_hung_up() {
@@ -2217,8 +2282,9 @@ export default {
       } else {
         this.callUserTyp = '';
       }
-      console.log(this.callUserType);
+      let callData = JSON.parse(localStorage.getItem('callData'));
       this.handleCancle();
+      // 判断拨打模式，是新路由还是传统模式
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;
         this.objCopy.collectType = tag;
@@ -2234,12 +2300,16 @@ export default {
           script.type = 'text/javascript';
           script.src = '/dist/callhelper.min.js';
           head.appendChild(script);
-          setTimeout(() => {
-            this.call(JSON.parse(localStorage.getItem('callData')));
-          }, 500)
+          if (callData.callType === '2') {
+            this.callout_rout_get_seat(obj, tag)
+          } else if (callData.callType === '1') {
+            setTimeout(() => {
+              this.call(callData);
+            }, 500)
+          }
         } else if (this.seatType === 'RL') {
           // 容联外呼传参
-          this.call_kt_hung_on({
+          this.call_hung_on({
             callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
             callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
             toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
@@ -2266,6 +2336,7 @@ export default {
         this.objCopy = {};
         this.actionId = '';
       }
+
       if (this.readType !== 'read') {
         if (obj.callUserType || obj.cntRelTyp) {
           this.formValidate.callUserType = obj.callUserType || obj.cntRelTyp;
@@ -2517,6 +2588,39 @@ export default {
           this.case_remark_his_add();
         }
       });
-    }
+    },
+    // 重新获取坐席信息
+    async callout_rout_get_seat(obj, tag) {
+      let callData = JSON.parse(localStorage.getItem('callData'));
+      const res = await callout_rout_get_seat({
+        callType: callData.callType,
+        planId: callData.planId,
+        phoneNo: obj.mblNo,
+        caseNo: this.caseNo,
+      })
+      if (res.code === 1) {
+        localStorage.setItem('callData', JSON.stringify(res.data));
+        if (res.data.seatType === 'KT') {
+          this.call(res.data);
+        } else if (res.data.seatType === 'XZ') {
+          let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, serverid: '', password: res.data.password };
+          window.sessionStorage.setItem('XZ_INIT_DATA', JSON.stringify(obj));
+          await init();
+          this.call_xz_hung_on({
+            callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+            callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
+            toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
+            toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
+            toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+            toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
+            userId: this.userId,
+            caseNo: this.caseNo,
+            collectType: tag,
+          });
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
   }
 };

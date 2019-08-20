@@ -2,9 +2,6 @@
   <div class="panel_list">
     <!-- 检索条件 -->
     <Card class="vue-panel">
-      <p slot="title">
-        <Icon :type="!showPanel?'chevron-down':'chevron-up'" @click="showPanel=!showPanel"></Icon>检索条件
-      </p>
       <Form
         v-if="!showPanel"
         ref="formItem"
@@ -13,6 +10,59 @@
         :rules="ruleValidate"
       >
         <Row>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem span="6" label="电催中心:">
+            <Select
+              size="small"
+              clearable
+              filterable
+              placeholder="请选择电催中心"
+              @on-change="companyChange"
+              v-model="formItem.opCompayUuid"
+            >
+              <Option
+                v-for="item in company_list_data"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.name }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem span="6" label="组别:">
+            <Select
+              size="small"
+              clearable
+              filterable
+              placeholder="请选择组别"
+              @on-change="departmentChange"
+              v-model="formItem.opOrganizationUuid"
+            >
+              <Option
+                v-for="item in department_list_data"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.name }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem label="姓名:">
+            <Select
+              size="small"
+              clearable
+              filterable
+              placeholder="请选择姓名"
+              v-model="formItem.opUserUuid"
+            >
+              <Option
+                v-for="(item,index) in collect_list_data"
+                :value="item.id"
+                :key="item.id + index"
+              >{{ item.name }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="坐席编号:">
               <Input size="small" clearable v-model.trim="formItem.callno" placeholder="请输入坐席编号"></Input>
@@ -33,11 +83,6 @@
                   :key="item.itemCode"
                 >{{ item.itemName }}</Option>
               </Select>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="员工姓名:">
-              <Input size="small" clearable v-model.trim="formItem.userName" placeholder="请输入员工姓名"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">

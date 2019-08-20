@@ -13,8 +13,8 @@ const package = require('../package.json');
 
 fs.open('./build/env.js', 'w', function(err, fd) {
     const buf = 'export default "production";';
-    fs.write(fd, buf, 0, buf.length, 0, function(err, written, buffer) {});
-    // fs.write(fd, buf, 0, 'utf-8', function(err, written, buffer) {});
+    fs.write(fd, buf, 0, buf.length, 0, function(err, written, buffer) {});//线上打包配置
+    // fs.write(fd, buf, 0, 'utf-8', function(err, written, buffer) {});//本地打包配置
 });
 
 module.exports = merge(webpackBaseConfig, {
@@ -49,7 +49,7 @@ module.exports = merge(webpackBaseConfig, {
             compress: {
                 warnings: false,
                 drop_debugger: true,
-                drop_console: true
+                drop_console: false
             }
         }),
         // new UglifyJsParallelPlugin({
