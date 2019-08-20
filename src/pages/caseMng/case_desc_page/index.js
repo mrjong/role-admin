@@ -1991,7 +1991,7 @@ export default {
       this.case_detail_repay_ord_list_spin = true
       const res = await case_detail_repay_ord_list({
         userId: this.userId,
-        caseNo: this.caseNo,
+        // caseNo: this.caseNo,
         pageNum: this.case_detail_repay_ord_list_pageNo,
         pageSize: this.case_detail_repay_ord_list_pageSize
       });
