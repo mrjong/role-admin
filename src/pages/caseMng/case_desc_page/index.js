@@ -1850,13 +1850,13 @@ export default {
       const XZ_ERROR_MSG = sessionStorage.getItem('XZ_ERROR_MSG');
       let res;
       if (callData.callType === '2') {
-        if (XZ_STATE == '1') {
-          res = await this.callout_hung_on(obj, callData);
-        } else {
-          this.$Message.error('请启动讯众新版软电话！');
-          this.call_xz_hung_off();
-          return;
-        }
+        res = await this.callout_hung_on(obj, callData);
+        // if (XZ_STATE == '1') {
+        // } else {
+        //   this.$Message.error('请启动讯众新版软电话！');
+        //   this.call_xz_hung_off();
+        //   return;
+        // }
       } else {
         res = await call_xz_hung_on(obj);
       }
