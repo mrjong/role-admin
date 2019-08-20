@@ -14,18 +14,18 @@ function param(data) {
   return url ? url : '';
 }
 
-let obj = {compid: '830058', agentid: '9999', telephone: '8300589999', telephonePassword: '00c351677029d3840898d241bc542fb9', serverid: '', password: 'aa123456'};
+// let obj = {compid: '830058', agentid: '9999', telephone: '8300589999', telephonePassword: '00c351677029d3840898d241bc542fb9', serverid: '', password: 'aa123456'};
 /**
  * 登录
  */
-// let obj;
+let obj;
 export const init = () => {
   // 判断是否有讯众的init参数
-  // if (!sessionStorage.getItem('XZ_INIT_DATA')) {
-  //   return;
-  // } else {
-  //   obj = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA'));
-  // };
+  if (!sessionStorage.getItem('XZ_INIT_DATA')) {
+    return;
+  } else {
+    obj = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA'));
+  };
   let data = { action: 'getCtiServer', ...obj,  wstype: 'wss' }
   let url = 'https://api.salescomm.net:8201/Handler/agent.ashx'
   url += (url.indexOf('?') < 0 ? '?' : '&') + param(data);
