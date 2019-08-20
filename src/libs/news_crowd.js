@@ -14,7 +14,7 @@ function param(data) {
   return url ? url : '';
 }
 
-let obj = {compid: '830058', agentid: '9999', telephone: '8300589999', telephonePassword: '00c351677029d3840898d241bc542fb9', wstype: 'wss', serverid: '', password: 'aa123456'};
+let obj = {compid: '830058', agentid: '9999', telephone: '8300589999', telephonePassword: '00c351677029d3840898d241bc542fb9', serverid: '', password: 'aa123456'};
 /**
  * 登录
  */
@@ -26,27 +26,32 @@ export const init = () => {
   // } else {
   //   obj = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA'));
   // };
-  let actionArray = ['getCtiServer', 'getRegServer']
-  actionArray.forEach(item => {
-    let data = { action: item, ...obj }
-    let url = 'https://api.salescomm.net:8201/Handler/agent.ashx'
-    url += (url.indexOf('?') < 0 ? '?' : '&') + param(data);
-    jsonp(url, { param: 'callbackparam' }, (err, res) => {
-      if (!err) {
-        let dataRes = res.data
-        if (item === 'getCtiServer') {
-          cti_server = dataRes.domain;
-          cti_port = dataRes.port;
-          cti_serverid = dataRes.serverid;
-          cti.CtiConnect(dataRes.domain, dataRes.port);
-          initStatus()
-        } else {
-          sip_server = dataRes.domain;
-          sip_port = dataRes.port;
-          sip_serverid = dataRes.serverid;
-        };
-      };
-    })
+  let data = { action: 'getCtiServer', ...obj,  wstype: 'wss' }
+  let url = 'https://api.salescomm.net:8201/Handler/agent.ashx'
+  url += (url.indexOf('?') < 0 ? '?' : '&') + param(data);
+  jsonp(url, { param: 'callbackparam' }, (err, res) => {
+    if (!err) {
+      let dataRes = res.data
+      cti_server = dataRes.domain;
+      cti_port = dataRes.port;
+      cti_serverid = dataRes.serverid;
+      cti.CtiConnect(dataRes.domain, dataRes.port);
+      initStatus()
+    };
+  })
+  let data2 = { action: 'getRegServer', ...obj,  wstype: 'ws' }
+  let url2 = 'https://api.salescomm.net:8201/Handler/agent.ashx'
+  url2 += (url2.indexOf('?') < 0 ? '?' : '&') + param(data2);
+  jsonp(url2, { param: 'callbackparam' }, (err, res) => {
+    if (!err) {
+      let dataRes = res.data
+        sip_server = dataRes.domain;
+        sip_port = dataRes.port;
+        sip_serverid = dataRes.serverid;
+    };
+  })
+  // actionArray.forEach(item => {
+
     cti.CTIConnectedEvent = function () {//cti服务器连接成功事件
       console.log('cti服务器连接成功事件')
       cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
@@ -64,6 +69,7 @@ export const init = () => {
         window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
       }
       sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
+
     }
     sip_client.extLoginEvent = function (extlogin) {
       if (extlogin === 0) {
@@ -74,7 +80,7 @@ export const init = () => {
         window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
       }
     };
-  })
+  // })
 }
 
 //签出
