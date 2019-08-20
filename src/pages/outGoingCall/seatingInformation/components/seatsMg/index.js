@@ -1,16 +1,17 @@
-import { rout_seatPool_add, rout_seatPool_list, rout_explicit_add, rout_explicit_list, rout_seatPool_delete,rout_explicit_delete } from '@/service/getData';
+import { rout_seatPool_add, rout_seatPool_list, rout_explicit_add, rout_explicit_list, rout_seatPool_delete,rout_explicit_delete, rout_seatPool_updateStatus } from '@/service/getData';
 
 export default {
   name: 'SeatsMg',
   props: ["showSeatsMg", 'seatsData'],
   data() {
     var alignCenter = 'center';
-    var widthVal = 180;
+    var widthVal = 130;
     var widthMidVal = 130;
     return {
       add_loading: false,
       query_loading: false,
       add_loading_explicit: false,
+      edit_loading: false, //编辑loading
       ids: [],
       seatsNo: '',
       explicitNumber: '',
@@ -57,27 +58,42 @@ export default {
         {
           title: '坐席编号',
           key: 'seatNo',
+          width: widthVal,
         },
         {
           title: '账号',
           key: 'loginName',
+          width: widthVal,
         },
         {
           title: '占用时间',
           key: 'occupyTime',
+          width: widthVal,
         },
         {
           title: '密码',
           key: 'passWord',
+          width: widthVal,
         },
         {
           title: '占用状态',
           key: 'occupyStatusName',
+          width: widthVal,
         },
         {
           title: '占用人',
           key: 'occupyUser',
+          width: widthVal,
         },
+        {
+          title: '操作',
+          slot: 'handle',
+          key: 'edit',
+          className: 'tableMainHandle',
+          width: 100,
+          fixed: 'left',
+          align: 'center',
+        }
       ],
       tableColumnsExplicitNumber: [
         {
@@ -222,7 +238,25 @@ export default {
         this.$Message.error(res.message);
       }
     },
-
+    handleClick(data) {
+      if(data.occupyStatus === '1'){
+        this.$Message.error('现在已经是空闲状态了');
+        return
+      }
+      this.edit_loading = data.id
+      rout_seatPool_updateStatus({
+        ...data
+      }).then(res=>{
+        this.edit_loading = ''
+        if(res.code === 1){
+          this.getListSeats()
+        } else {
+          this.$Message.error(res.message);
+        }
+      }).catch(err=>{
+        this.edit_loading = ''
+      })
+    },
 
 
     closeDrawer() {

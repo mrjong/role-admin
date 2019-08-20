@@ -1835,6 +1835,14 @@ export const rout_seatPool_add = (obj) =>
     data: qs.stringify(obj)
   })
 
+//  修改坐席池接口
+export const rout_seatPool_updateStatus = (obj) =>
+  fetch({
+    url: '/rout/seatpool/updateStatus',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
 //   删除坐席池接口
 export const rout_seatPool_delete = (obj) =>
   fetch({
@@ -1926,4 +1934,6 @@ export const call_channel_updateStatus = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+
+
 

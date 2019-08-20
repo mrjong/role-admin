@@ -55,7 +55,14 @@
           </span>
             </p>
             <Table border ref="selection" :columns="tableColumnsSeats" :data="tableDataSeats"   size="small" @on-selection-change="selectItem">
-
+              <template slot-scope="{ row, index }" slot="handle" >
+                <Button
+                  size="small"
+                  :loading="edit_loading === row.id"
+                  @click="handleClick(row)">
+                  置闲
+                </Button>
+              </template>
             </Table>
           </Card>
         </TabPane>
