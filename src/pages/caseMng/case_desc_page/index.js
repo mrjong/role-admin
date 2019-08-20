@@ -2612,7 +2612,7 @@ export default {
           script.src = '/dist/callhelper.min.js';
           head.appendChild(script);
           setTimeout(() => {
-            this.call(callData);
+            this.call(res.data);
           }, 500)
         } else if (res.data.seatType === 'XZ') {
           let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, serverid: '', password: res.data.password };
