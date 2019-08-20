@@ -214,10 +214,10 @@ ClassSipClient.prototype.logoutMessage=function(_extName) {
         name: _extName
     };
     try {
-        this.sipWs.send(JSON.stringify(msgObj));
-        showmsg("发送：" + JSON.stringify(msgObj));
+      this.sipWs.send(JSON.stringify(msgObj));
+      showmsg("发送：" + JSON.stringify(msgObj));
+      showmsg('cti连接state：' + cti.CheckWS());
     } catch (e) {
-
         showmsg("debug logoutMessage" + e);
     }
 
