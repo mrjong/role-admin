@@ -1891,7 +1891,7 @@ export default {
           this.showMoorTel = false;
         }, 2000);
       }
-      this.$store.commit('changeXZHungUpFlag','');//置空挂断标识符
+      this.$store.commit('changeXZHungUpFlag', '');//置空挂断标识符
     },
     // 容联挂断方法
     async call_moor_hung_up() {
@@ -2266,49 +2266,49 @@ export default {
         this.objCopy = obj;
         this.objCopy.collectType = tag;
         // type ['call] 拨打电话
-        if (localStorage.getItem('callData') && this.seatType === 'KT') {
-          if (localStorage.getItem('callObj')) {
-            this.$Message.info('请先挂断其他电话，再重试');
-            return
-          }
-          callFlag = true;
-          var head = document.getElementsByTagName('head')[0];
-          var script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.src = '/dist/callhelper.min.js';
-          head.appendChild(script);
-          if (callData.callType === '2') {
-            this.callout_rout_get_seat(obj, tag)
-          } else if (callData.callType === '1') {
+        if (callData.callType === '2') {
+          this.callout_rout_get_seat(obj, tag)
+        } else if (callData.callType === '1') {
+          if (localStorage.getItem('callData') && callData.seatType === 'KT') {
+            if (localStorage.getItem('callObj')) {
+              this.$Message.info('请先挂断其他电话，再重试');
+              return
+            }
+            callFlag = true;
+            var head = document.getElementsByTagName('head')[0];
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = '/dist/callhelper.min.js';
+            head.appendChild(script);
             setTimeout(() => {
               this.call(callData);
             }, 500)
-          }
-        } else if (this.seatType === 'RL') {
-          // 容联外呼传参
-          this.call_hung_on({
-            callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
-            callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
-            toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
-            toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
-            toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
-            toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
-            collectType: tag,
-          });
-        } else if (this.seatType === 'XZ') {
-          // 讯众外呼传参
-          this.call_xz_hung_on({
-            callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
-            callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
-            toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
-            toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
-            toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
-            toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
-            userId: this.userId,
-            caseNo: this.caseNo,
-            collectType: tag,
-          });
-        }
+          } else if (callData.seatType === 'RL') {
+            // 容联外呼传参
+            this.call_hung_on({
+              callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+              callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
+              toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
+              toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
+              toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+              toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
+              collectType: tag,
+            });
+          } else if (callData.seatType === 'XZ') {
+            // 讯众外呼传参
+            this.call_xz_hung_on({
+              callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+              callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
+              toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
+              toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
+              toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+              toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
+              userId: this.userId,
+              caseNo: this.caseNo,
+              collectType: tag,
+            });
+          };
+        };
       } else {
         this.objCopy = {};
         this.actionId = '';
@@ -2520,7 +2520,19 @@ export default {
       if (res.code === 1) {
         localStorage.setItem('callData', JSON.stringify(res.data));
         if (res.data.seatType === 'KT') {
-          this.call(res.data);
+          if (localStorage.getItem('callObj')) {
+            this.$Message.info('请先挂断其他电话，再重试');
+            return
+          }
+          callFlag = true;
+          var head = document.getElementsByTagName('head')[0];
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = '/dist/callhelper.min.js';
+          head.appendChild(script);
+          setTimeout(() => {
+            this.call(res.data);
+          }, 500)
         } else if (res.data.seatType === 'XZ') {
           let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, serverid: '', password: res.data.password };
           window.sessionStorage.setItem('XZ_INIT_DATA', JSON.stringify(obj));
