@@ -20,6 +20,7 @@ function param(data) {
  */
 let obj;
 export const init = (phoneNumber) => {
+  sessionStorage.removeItem('callId')
   // 判断是否有讯众的init参数
   if (!sessionStorage.getItem('XZ_INIT_DATA')) {
     return;
@@ -45,7 +46,7 @@ export const init = (phoneNumber) => {
       cti_port = dataRes.port;
       cti_serverid = dataRes.serverid;
       cti.CtiConnect(dataRes.domain, dataRes.port);
-      initStatus()
+      initStatus(phoneNumber)
       obj = {  ...obj, action: 'getRegServer',  wstype: 'ws' }
       let url2 = _url
       url2 += (url2.indexOf('?') < 0 ? '?' : '&') + param(obj);
@@ -61,12 +62,11 @@ export const init = (phoneNumber) => {
   })
   cti.CTIConnectedEvent = function () {//cti服务器连接成功事件
     console.log('cti服务器连接成功事件')
-    cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
     sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
     cti.CheckWSS()
     console.log(cti.CheckWSS())
   }
-  sip_client.sipPhoneConnectedEvent = function (d) {
+  sip_client.sipPhoneConnectedEvent = function () {
     console.log("## sip ConnectedEvent");
     if (sip_server === '' && sip_port === '') {
       console.log("## 获取注册服务器失败，重新签入");
@@ -75,9 +75,10 @@ export const init = (phoneNumber) => {
       window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
     }
     sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
-    callOut(phoneNumber)
+    cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
   }
   sip_client.extLoginEvent = function (extlogin) {
+    console.log(extlogin + '分机注册相关------------------------》')
     if (extlogin === 0) {
       console.log("## 分机注册失败");
       // vueExample.$Message.error('分机注册失败')
@@ -226,7 +227,7 @@ export const answerMessage = (opagentid) => {
 
 }
 
-export const initStatus = () => {
+export const initStatus = (phoneNumber) => {
 
   ///////////////////////////////////////////////////////////
   ///注册事件：座席状态 变化
@@ -242,7 +243,8 @@ export const initStatus = () => {
           break;
         case "1": //空闲
           {
-            console.log('退出')
+            console.log('空闲')
+            callOut(phoneNumber)
           }
           break;
         case "2": //示忙
@@ -291,6 +293,8 @@ export const initStatus = () => {
           break;
         case "15": //初始化
           {
+            console.log('初始化')
+            //
           }
           break;
       }
@@ -305,6 +309,7 @@ export const initStatus = () => {
   ///注册事件：座席通话或录音通知事件
   ///////////////////////////////////////////////////////////
   cti.EVENT_AgentAnswered = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, filename, calldata) {
+    sessionStorage.setItem('callId', callId)
     console.log("@ 座席成功通话或有录音进行EVENT_AgentAnswered通知。");
     console.log("## EVENT_AgentAnswered:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",filename=" + filename + ",calldata=" + calldata);
   }

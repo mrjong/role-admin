@@ -58,6 +58,7 @@ export default {
   data() {
     const _this = this;
     return {
+      recordId: '',
       seatType: String,
       HUNG_UP_FLAG: window.sessionStorage.getItem('HUNG_UP_FLAG'),//挂断标识
       moorToCallMblHid: '',//容联电话呼叫成功显示的电话密文
@@ -1845,7 +1846,7 @@ export default {
         // callData.callType === '2' && callOut();//调用拨打的方法
         this.showMoorTel = true;
         this.$Message.success('呼出成功');
-        this.actionId = res.data.actionId;
+        this.recordId = res.data.recordId;
         this.moorToCallMblHid = obj.toCallMblHid;
         this.moorToCallUser = obj.toCallUserHid;
         let timer;
@@ -1871,7 +1872,8 @@ export default {
       if (callData.callType === '2') {
         res = await callout_hung_off({
           seatType: callData.seatType,//坐席类型
-          actionId: this.actionId,
+          actionId: sessionStorage.getItem('callId') ? sessionStorage.getItem('callId') : '',
+          id: this.recordId,
           callno: XZ_INIT_DATA.agentid,//坐席号
         })
       } else {
