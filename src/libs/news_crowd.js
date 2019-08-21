@@ -19,16 +19,25 @@ function param(data) {
  * 登录
  */
 let obj;
-export const init = () => {
+export const init = (phoneNumber) => {
   // 判断是否有讯众的init参数
   if (!sessionStorage.getItem('XZ_INIT_DATA')) {
     return;
   } else {
     obj = JSON.parse(sessionStorage.getItem('XZ_INIT_DATA'));
   };
-  let data = { action: 'getCtiServer', ...obj,  wstype: sip_client.protocolStr === 'https:'? 'wss':'ws' }
-  let url = 'https://api.salescomm.net:8201/Handler/agent.ashx'
-  url += (url.indexOf('?') < 0 ? '?' : '&') + param(data);
+  let origin_location = document.location.protocol;  //http or  https  origin
+  let _url = '';
+  if (origin_location === "https" || origin_location === "https:") {
+    _url = 'https://api.salescomm.net:8201/Handler/agent.ashx';
+    obj.wstype = 'wss'
+  } else {
+    _url = 'http://api.salescomm.net:8200/Handler/agent.ashx'
+    obj.wstype = 'ws'
+  }
+  obj.action = 'getCtiServer'
+  let url = _url
+  url += (url.indexOf('?') < 0 ? '?' : '&') + param(obj);
   jsonp(url, { param: 'callbackparam' }, (err, res) => {
     if (!err) {
       let dataRes = res.data
@@ -37,50 +46,46 @@ export const init = () => {
       cti_serverid = dataRes.serverid;
       cti.CtiConnect(dataRes.domain, dataRes.port);
       initStatus()
+      obj = {  ...obj, action: 'getRegServer',  wstype: 'ws' }
+      let url2 = _url
+      url2 += (url2.indexOf('?') < 0 ? '?' : '&') + param(obj);
+      jsonp(url2, { param: 'callbackparam' }, (err, res) => {
+        if (!err) {
+          let dataRes = res.data
+          sip_server = dataRes.domain;
+          sip_port = dataRes.port;
+          sip_serverid = dataRes.serverid;
+        };
+      })
     };
   })
-  let data2 = { action: 'getRegServer', ...obj,  wstype: 'ws' }
-  let url2 = 'https://api.salescomm.net:8201/Handler/agent.ashx'
-  url2 += (url2.indexOf('?') < 0 ? '?' : '&') + param(data2);
-  jsonp(url2, { param: 'callbackparam' }, (err, res) => {
-    if (!err) {
-      let dataRes = res.data
-        sip_server = dataRes.domain;
-        sip_port = dataRes.port;
-        sip_serverid = dataRes.serverid;
-    };
-  })
-  // actionArray.forEach(item => {
-
-    cti.CTIConnectedEvent = function () {//cti服务器连接成功事件
-      console.log('cti服务器连接成功事件')
-      cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
-      console.log(sip_server, sip_port)
-      sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
-      cti.CheckWSS()
-      console.log(cti.CheckWSS())
+  cti.CTIConnectedEvent = function () {//cti服务器连接成功事件
+    console.log('cti服务器连接成功事件')
+    cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
+    sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
+    cti.CheckWSS()
+    console.log(cti.CheckWSS())
+  }
+  sip_client.sipPhoneConnectedEvent = function (d) {
+    console.log("## sip ConnectedEvent");
+    if (sip_server === '' && sip_port === '') {
+      console.log("## 获取注册服务器失败，重新签入");
+      cti.AgentLogout();
+      cti.CtiDisconnect();//断开cti连接
+      window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
     }
-    sip_client.sipPhoneConnectedEvent = function () {
-      console.log("## sip ConnectedEvent");
-      if (sip_server === '' && sip_port === '') {
-        console.log("## 获取注册服务器失败，重新签入");
-        cti.AgentLogout();
-        cti.CtiDisconnect();//断开cti连接
-        window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
-      }
-      sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
-
+    sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
+    callOut(phoneNumber)
+  }
+  sip_client.extLoginEvent = function (extlogin) {
+    if (extlogin === 0) {
+      console.log("## 分机注册失败");
+      // vueExample.$Message.error('分机注册失败')
+      cti.AgentLogout();
+      cti.CtiDisconnect();//断开cti连接
+      window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
     }
-    sip_client.extLoginEvent = function (extlogin) {
-      if (extlogin === 0) {
-        console.log("## 分机注册失败");
-        // vueExample.$Message.error('分机注册失败')
-        cti.AgentLogout();
-        cti.CtiDisconnect();//断开cti连接
-        window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
-      }
-    };
-  // })
+  };
 }
 
 //签出
@@ -94,7 +99,6 @@ export const loginOut = () => {
 export const callOut = (phoneNumber) => {
   showmsg("【呼出】============================================================");
   showmsg("调用MakeCall()进行呼出。呼出请求发出后会进行EVENT_AgentStateChanged事件通知");
-  console.log(Date.parse(new Date()) + '呼出')
   console.log('外呼号码：' + phoneNumber)
   cti.MakeCall(phoneNumber, 3, '');
   handcall = 1;//主动外呼
