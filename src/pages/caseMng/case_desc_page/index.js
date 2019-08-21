@@ -2411,6 +2411,10 @@ export default {
     },
     // 新增催记
     async case_remark_his_add() {
+      let callData = JSON.parse(localStorage.getItem('callData'));
+      if (callData.callType==='2' && callData.seatType === 'XZ') {
+        this.actionId = sessionStorage.getItem('callId') ? sessionStorage.getItem('callId') : '';
+      }
       this.add_collect_loading = true;
       const res = await case_remark_his_add({
         ...this.formValidate,
