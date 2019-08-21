@@ -46,7 +46,7 @@ export default {
     return {
       collect_status_list: [],
       call_status_list: [],
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'TALK_RESULT', 'APP_LOGIN_STATUS'],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'TALK_RESULT', 'APP_LOGIN_STATUS', 'ONE_USER_CHANNEL'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -365,7 +365,13 @@ export default {
           width: 120,
           align: 'center',
           key: 'isSubmitName',
-        }
+        },
+        {
+          title: '渠道来源',
+          width: 100,
+          align: 'center',
+          key: 'channelOneName'
+        },
       ]
     };
   },

@@ -50,7 +50,7 @@ export default {
       import_data_loading: false,// 导入loading
       query_flag: false, // false 默认查getList  true查询cases_import_list
       file_csaeIds: [],//上传文件返回的案件编号list集合
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PROD_NUM', 'APP_LOGIN_STATUS'],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PROD_NUM', 'APP_LOGIN_STATUS', 'ONE_USER_CHANNEL'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -496,6 +496,12 @@ export default {
           width: 100,
           align: 'center',
           key: 'isSubmitName'
+        },
+        {
+          title: '渠道来源',
+          width: 100,
+          align: 'center',
+          key: 'channelOneName'
         },
       ]
     };

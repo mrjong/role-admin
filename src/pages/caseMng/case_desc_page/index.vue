@@ -287,8 +287,8 @@
                       show-elevator
                       :page-size="case_detail_remark_list_pageSize"
                       :current.sync="case_detail_remark_list_pageNo"
-                      @on-page-size-change="changeSize('case_detail_remark_list')"
-                      @on-change="changePage('case_detail_remark_list')"
+                      @on-page-size-change="changeSize($event, 'case_detail_remark_list')"
+                      @on-change="changePage($event, 'case_detail_remark_list')"
                     ></Page>
                   </div>
                 </div>
@@ -314,8 +314,8 @@
                       show-elevator
                       :page-size="case_detail_repay_ord_list_pageSize"
                       :current.sync="case_detail_repay_ord_list_pageNo"
-                      @on-page-size-change="changeSize(null,'case_detail_repay_ord_list')"
-                      @on-change="changePage('case_detail_repay_ord_list')"
+                      @on-page-size-change="changeSize($event, 'case_detail_repay_ord_list')"
+                      @on-change="changePage($event, 'case_detail_repay_ord_list')"
                     ></Page>
                   </div>
                 </div>
@@ -341,8 +341,8 @@
                       show-elevator
                       :page-size="case_detail_user_repay_list_pageSize"
                       :current.sync="case_detail_user_repay_list_pageNo"
-                      @on-page-size-change="changeSize('case_detail_user_repay_list')"
-                      @on-change="changePage('case_detail_user_repay_list')"
+                      @on-page-size-change="changeSize($event, 'case_detail_user_repay_list')"
+                      @on-change="changePage($event, 'case_detail_user_repay_list')"
                     ></Page>
                   </div>
                 </div>
@@ -369,8 +369,8 @@
                       show-elevator
                       :page-size="case_detail_system_repay_list_pageSize"
                       :current.sync="case_detail_system_repay_list_pageNo"
-                      @on-page-size-change="changeSize('case_detail_system_repay_list')"
-                      @on-change="changePage('case_detail_system_repay_list')"
+                      @on-page-size-change="changeSize($event, 'case_detail_system_repay_list')"
+                      @on-change="changePage($event, 'case_detail_system_repay_list')"
                     ></Page>
                   </div>
                 </div>
@@ -404,8 +404,8 @@
                       show-elevator
                       :page-size="case_detail_bindcard_list_pageSize"
                       :current.sync="case_detail_bindcard_list_pageNo"
-                      @on-page-size-change="changeSize('case_detail_bindcard_list')"
-                      @on-change="changePage('case_detail_bindcard_list')"
+                      @on-page-size-change="changeSize($event, 'case_detail_bindcard_list')"
+                      @on-change="changePage($event, 'case_detail_bindcard_list')"
                     ></Page>
                   </div>
                 </div>
@@ -431,8 +431,8 @@
                       show-elevator
                       :page-size="case_detail_getcaselog_pageSize"
                       :current.sync="case_detail_getcaselog_pageNo"
-                      @on-page-size-change="changeSize('case_detail_getcaselog')"
-                      @on-change="changePage('case_detail_getcaselog')"
+                      @on-page-size-change="changeSize($event, 'case_detail_getcaselog')"
+                      @on-change="changePage($event, 'case_detail_getcaselog')"
                     ></Page>
                   </div>
                 </div>
@@ -459,8 +459,8 @@
                       show-elevator
                       :page-size="case_detail_siteletter_list_pageSize"
                       :current.sync="case_detail_siteletter_list_pageNo"
-                      @on-page-size-change="changeSize('case_detail_siteletter_list')"
-                      @on-change="changePage('case_detail_siteletter_list')"
+                      @on-page-size-change="changeSize($event, 'case_detail_siteletter_list')"
+                      @on-change="changePage($event, 'case_detail_siteletter_list')"
                     ></Page>
                   </div>
                 </div>
@@ -641,12 +641,13 @@
                             show-total
                             show-sizer
                             size="small"
+                            transfer
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
                             :page-size="case_detail_mail_statistics_list_pageSize"
                             :current.sync="case_detail_mail_statistics_list_pageNo"
-                            @on-page-size-change="changeSize('case_detail_mail_statistics_list')"
-                            @on-change="changePage('case_detail_mail_statistics_list')"
+                            @on-page-size-change="changeSize($event, 'case_detail_mail_statistics_list')"
+                            @on-change="changePage($event, 'case_detail_mail_statistics_list')"
                           ></Page>
                         </div>
                       </div>
@@ -670,12 +671,13 @@
                             show-total
                             show-sizer
                             size="small"
+                            transfer
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
                             :page-size="case_detail_mail_detail_list_pageSize"
                             :current.sync="case_detail_mail_detail_list_pageNo"
-                            @on-page-size-change="changeSize('case_detail_mail_detail_list')"
-                            @on-change="changePage('case_detail_mail_detail_list')"
+                            @on-page-size-change="changeSize($event, 'case_detail_mail_detail_list')"
+                            @on-change="changePage($event, 'case_detail_mail_detail_list')"
                           ></Page>
                         </div>
                       </div>
@@ -701,10 +703,11 @@
                             size="small"
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
+                            transfer
                             :page-size="case_detail_mail_list_pageSize"
                             :current.sync="case_detail_mail_list_pageNo"
-                            @on-page-size-change="changeSize('case_detail_mail_list')"
-                            @on-change="changePage('case_detail_mail_list')"
+                            @on-page-size-change="changeSize($event, 'case_detail_mail_list')"
+                            @on-change="changePage($event, 'case_detail_mail_list')"
                           ></Page>
                         </div>
                       </div>
@@ -731,10 +734,11 @@
                             size="small"
                             :page-size-opts="[10, 20, 50, 100]"
                             show-elevator
+                            transfer
                             :page-size="case_detail_mail_list_appended_pageSize"
                             :current.sync="case_detail_mail_list_appended_pageNo"
-                            @on-page-size-change="changeSize('case_detail_mail_list_appended')"
-                            @on-change="changePage('case_detail_mail_list_appended')"
+                            @on-page-size-change="changeSize($event, 'case_detail_mail_list_appended')"
+                            @on-change="changePage($event, 'case_detail_mail_list_appended')"
                           ></Page>
                         </div>
                       </div>

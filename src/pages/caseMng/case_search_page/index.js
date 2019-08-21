@@ -44,7 +44,7 @@ export default {
         timeout: 120000,
       },
       file_url: '/admin/cases/batch/import ',//文件上传地址
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PAY_OFF_STS', 'APP_LOGIN_STATUS'],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PAY_OFF_STS', 'APP_LOGIN_STATUS', 'ONE_USER_CHANNEL'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -423,6 +423,12 @@ export default {
           width: 100,
           align: 'center',
           key: 'isSubmitName'
+        },
+        {
+          title: '渠道来源',
+          width: 100,
+          align: 'center',
+          key: 'channelOneName'
         },
       ]
     };
