@@ -47,7 +47,7 @@ export default {
     // });
     const h = this.$createElement;
     let callData = JSON.parse(localStorage.getItem("callData"));
-    if (callData.seatType === 'KT' && callData.callType === '1') {
+    if (callData && callData.seatType === 'KT' && callData.callType === '1') {
       this.call(callData);
     }
 
