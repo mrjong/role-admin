@@ -1792,6 +1792,8 @@ export default {
           this.moorToCallUser = obj.toCallUserHid;
         } else if (callData.seatType === 'KT') {
           localStorage.removeItem('callObj');
+          callData.actionId = res.data.actionId;
+          localStorage.setItem('callData', JSON.stringify(callData));
         }
         let timer;
         clearTimeout(timer);
