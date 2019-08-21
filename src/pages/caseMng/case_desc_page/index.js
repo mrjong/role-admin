@@ -1814,6 +1814,8 @@ export default {
           this.moorToCallUser = obj.toCallUserHid;
         } else if (callData.seatType === 'KT') {
           localStorage.removeItem('callObj');
+          callData.actionId = res.data.actionId;
+          localStorage.setItem('callData', JSON.stringify(callData));
         }
         let timer;
         clearTimeout(timer);
@@ -1828,6 +1830,7 @@ export default {
       } else {
         callData.callType === '2' && this.call_xz_hung_off();//呼叫失败调用挂断
         this.$Message.error(res.message);
+        this.actionId = '';
       }
     },
     // 外呼合并（路由模式）
@@ -1865,7 +1868,7 @@ export default {
       console.log(res)
       if (res.code === 1) {
         callData.callType === '2' && await init(res.data.calloutVo.phoneNo);//调用拨打的方法
-        // callData.callType === '2' && callOut();//调用拨打的方法
+        this.actionId = res.data.actionId;
         this.showMoorTel = true;
         this.$Message.success('呼出成功');
         this.recordId = res.data.recordId;
@@ -1884,6 +1887,7 @@ export default {
       } else {
         callData.callType === '2' && this.call_xz_hung_off();//呼叫失败调用挂断
         this.$Message.error(res.message);
+        this.actionId = '';
       }
     },
     // 讯众挂断接口（传统模式||路由模式）
