@@ -46,8 +46,9 @@ export default {
     //   duration: 2
     // });
     const h = this.$createElement;
-    if (localStorage.getItem("callData")) {
-      this.call(JSON.parse(localStorage.getItem("callData")));
+    let callData = JSON.parse(localStorage.getItem("callData"));
+    if (callData && callData.seatType === 'KT' && callData.callType === '1') {
+      this.call(callData);
     }
 
     let websocket = window.sessionStorage.getItem("websocket");
