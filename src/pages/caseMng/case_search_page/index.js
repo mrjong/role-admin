@@ -717,6 +717,7 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 获取渠道来源
     async case_detail_one_channel() {
       const res = await case_detail_one_channel();
       if (res.code === 1) {

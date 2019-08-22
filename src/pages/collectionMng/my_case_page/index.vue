@@ -214,10 +214,10 @@
             <FormItem span="6" label="渠道来源:">
               <Select size="small" v-model="formItem.channelOneCode" clearable>
                 <Option
-                  v-for="item in getDirObj.ONE_USER_CHANNEL"
-                  :value="item.itemCode"
-                  :key="item.itemCode"
-                >{{ item.itemName }}</Option>
+                  v-for="item in case_detail_one_channel_list"
+                  :value="item.channelNo"
+                  :key="item.channelNo"
+                >{{ item.channelNm }}</Option>
               </Select>
             </FormItem>
           </Col>

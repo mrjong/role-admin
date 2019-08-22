@@ -2,7 +2,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import Cookie from 'js-cookie';
 import util from '@/libs/util';
-import { cases_allot_list, getLeafTypeList, import_list, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, allot_export, collect_show_children, cases_case_sendwebmessage, cases_download_template } from '@/service/getData';
+import { cases_allot_list, getLeafTypeList, import_list, cases_batch_allot, cases_batch_recycle, cases_collect_recover, cases_collect_stop, allot_export, collect_show_children, cases_case_sendwebmessage, cases_download_template, case_detail_one_channel } from '@/service/getData';
 import jianmian from '@/components/caseDesc/jianmian.vue';
 import qs from 'qs';
 
@@ -50,7 +50,8 @@ export default {
       import_data_loading: false,// 导入loading
       query_flag: false, // false 默认查getList  true查询cases_import_list
       file_csaeIds: [],//上传文件返回的案件编号list集合
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PROD_NUM', 'APP_LOGIN_STATUS', 'ONE_USER_CHANNEL'],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PROD_NUM', 'APP_LOGIN_STATUS',],
+      case_detail_one_channel_list: [],//渠道来源list
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -552,6 +553,7 @@ export default {
     this.getLeafTypeList('02', '');
     this.getLeafTypeList('03', '');
     this.getLeafTypeList('04', '');
+    this.case_detail_one_channel();
   },
   methods: {
     renderContent(h, { root, node, data }) {
@@ -1072,6 +1074,15 @@ export default {
         this.messageFormItem = {};
       } else {
         this.$Message.error(res.message);
+      }
+    },
+    // 获取渠道来源
+    async case_detail_one_channel() {
+      const res = await case_detail_one_channel();
+      if (res.code === 1) {
+        this.case_detail_one_channel_list = res.data;
+      } else {
+        this.$Message.error('获取渠道来源失败')
       }
     },
     // 根据类型判断提交

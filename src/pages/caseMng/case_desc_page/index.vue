@@ -158,10 +158,16 @@
               </Col>
               <Col :xs="24" :sm="24" :md="24" :lg="24">
                 <div class="panel-desc-title">
+                  借款渠道：
+                  <span>{{case_detail_address_info_Data&&case_detail_address_info_Data.channelOneName}}</span>
+                </div>
+              </Col>
+              <!-- <Col :xs="24" :sm="24" :md="24" :lg="24">
+                <div class="panel-desc-title">
                   当前逾期期数：
                   <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.overduePerdCount}}</span>
                 </div>
-              </Col>
+              </Col> -->
               <Col :xs="24" :sm="24" :md="24" :lg="24">
                 <div class="panel-desc-title">
                   家庭住址：

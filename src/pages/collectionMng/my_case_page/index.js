@@ -1,7 +1,8 @@
 import {
   case_collect_case_list,
   case_collect_case_list_export,
-  collectcode_getListByCodeType
+  collectcode_getListByCodeType,
+  case_detail_one_channel
 } from '@/service/getData';
 import formValidateFun from '@/mixin/formValidateFun';
 import tablePage from '@/mixin/tablePage';
@@ -46,8 +47,9 @@ export default {
     return {
       collect_status_list: [],
       call_status_list: [],
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'TALK_RESULT', 'APP_LOGIN_STATUS', 'ONE_USER_CHANNEL'],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'TALK_RESULT', 'APP_LOGIN_STATUS',],
       getDirObj: {},
+      case_detail_one_channel_list: [],//渠道来源list
       showPanel: false,
       showPanel2: false,
       query: false,//查询权限
@@ -417,6 +419,7 @@ export default {
     this.collectcode_getListByCodeType(1);//获取沟通状态
     this.collectcode_getListByCodeType(2);// 获取拨打状态
     this.getList();
+    this.case_detail_one_channel();
   },
   methods: {
     // 日期变更回调
@@ -473,6 +476,15 @@ export default {
         }
       } else {
         this.$Message.error(res.message);
+      }
+    },
+    // 获取渠道来源
+    async case_detail_one_channel() {
+      const res = await case_detail_one_channel();
+      if (res.code === 1) {
+        this.case_detail_one_channel_list = res.data;
+      } else {
+        this.$Message.error('获取渠道来源失败')
       }
     },
     handleSubmit(name) {
