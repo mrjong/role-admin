@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { case_list, query_export, getLeafTypeList, import_list, cases_download_template, collectcode_getListByCodeType } from '@/service/getData';
+import { case_list, query_export, getLeafTypeList, import_list, cases_download_template, collectcode_getListByCodeType,case_detail_one_channel } from '@/service/getData';
 import util from '@/libs/util';
 import qs from 'qs';
 import Cookie from 'js-cookie';
@@ -50,6 +50,7 @@ export default {
       showPanel2: false,
       collect_status_list: [],
       call_status_list: [],
+      case_detail_one_channel_list: [],//渠道来源list
       query: false,//案件查询权限
       detail: false,//c查看案件详情权限
       export_case: false,//导出权限
@@ -137,19 +138,12 @@ export default {
       pageSize: 10,
       total: 0,
       formItem: {
-        caseHandleStatus: '',
         prodTypes: [],
         periodCounts: [],
-        userNm: '',
-        idNo: '',
-        mblNo: '',
         minOverdueDays: '',
         maxOverdueDays: '',
         minOverdueAmt: '',
         maxOverdueAmt: '',
-        id: '',
-        billNo: '',
-        caseStatus: '',
       },
       tableData: [],
       tableColumns: [
@@ -424,6 +418,12 @@ export default {
           align: 'center',
           key: 'isSubmitName'
         },
+        {
+          title: '渠道来源',
+          width: 100,
+          align: 'center',
+          key: 'channelOneName'
+        },
       ]
     };
   },
@@ -473,6 +473,7 @@ export default {
     this.getLeafTypeList('04', '');
     this.collectcode_getListByCodeType(1);//获取沟通状态
     this.collectcode_getListByCodeType(2);// 获取拨打状态
+    this.case_detail_one_channel();//获取渠道来源接口
   },
   methods: {
     // table选中
@@ -716,23 +717,25 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 获取渠道来源
+    async case_detail_one_channel() {
+      const res = await case_detail_one_channel();
+      if (res.code === 1) {
+        this.case_detail_one_channel_list = res.data;
+      } else {
+        this.$Message.error('获取渠道来源失败')
+      }
+    },
     // 重置
     clearForm(name) {
       this.pageNo = 1;
       this.formItem = {
-        caseHandleStatus: '',
         prodTypes: [],
         periodCounts: [],
-        userNm: '',
-        idNo: '',
-        mblNo: '',
         minOverdueDays: '',
         maxOverdueDays: '',
         minOverdueAmt: '',
         maxOverdueAmt: '',
-        id: '',
-        billNo: '',
-        caseStatus: '',
       };
       window.sessionStorage.removeItem('case_search_form');
       this.$refs[name].resetFields();
