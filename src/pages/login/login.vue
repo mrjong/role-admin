@@ -151,7 +151,7 @@ export default {
       console.log(res);
 
       if (res.code === 1) {
-        if (res.data.seatType === "KT") {
+        if (res.data.seatType === "KT" && res.data.callType === '1') {
           this.call(res.data);
         }
         localStorage.setItem("callData", JSON.stringify(res.data));

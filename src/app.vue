@@ -46,8 +46,9 @@ export default {
     //   duration: 2
     // });
     const h = this.$createElement;
-    if (localStorage.getItem("callData")) {
-      this.call(JSON.parse(localStorage.getItem("callData")));
+    let callData = JSON.parse(localStorage.getItem("callData"));
+    if (callData && callData.seatType === 'KT' && callData.callType === '1') {
+      this.call(callData);
     }
 
     let websocket = window.sessionStorage.getItem("websocket");
@@ -127,7 +128,7 @@ export default {
       let callData = JSON.parse(localStorage.getItem("callData"));
       const res = await callout_hung_off({
         seatType: callData.seatType, //坐席类型
-        actionId: callData.id,
+        actionId: callData.actionId,
         callno: callData.seatNo //坐席号
       });
       if (res.code === 1) {

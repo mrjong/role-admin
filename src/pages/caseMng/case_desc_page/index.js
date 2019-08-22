@@ -76,6 +76,8 @@ export default {
       }
     }
     return {
+      recordId: '',
+      seatType: String,
       HUNG_UP_FLAG: window.sessionStorage.getItem('HUNG_UP_FLAG'),//挂断标识
       moorToCallMblHid: '',//容联电话呼叫成功显示的电话密文
       moorToCallUser: '',//容联电话呼叫成功显示的姓名
@@ -1632,13 +1634,13 @@ export default {
     let params = location.hash.split('?');
     const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
     this.caseNo = window.atob(queryData.caseNotest);
-    this.seatType = queryData.seatType;
+    // this.seatType = queryData.seatType;
     this.prdTyp = queryData.prdTyptest;
     this.userId = queryData.userIdtest;
     this.readType = queryData.readType;
     delete queryData.caseNotest;
     delete queryData.prdTyptest;
-    delete queryData.seatType;
+    // delete queryData.seatType;
     delete queryData.userIdtest;
     if (queryData.readType === 'edit') {
       // this.case_collect_case_list(); // 我的案件
@@ -1813,6 +1815,8 @@ export default {
           this.moorToCallUser = obj.toCallUserHid;
         } else if (callData.seatType === 'KT') {
           localStorage.removeItem('callObj');
+          callData.actionId = res.data.actionId;
+          localStorage.setItem('callData', JSON.stringify(callData));
         }
         let timer;
         clearTimeout(timer);
@@ -1827,6 +1831,7 @@ export default {
       } else {
         callData.callType === '2' && this.call_xz_hung_off();//呼叫失败调用挂断
         this.$Message.error(res.message);
+        this.actionId = '';
       }
     },
     // 外呼合并（路由模式）
@@ -1863,11 +1868,11 @@ export default {
       }
       console.log(res)
       if (res.code === 1) {
-        callData.callType === '2' && callOut(res.data.calloutVo.phoneNo);//调用拨打的方法
-        // callData.callType === '2' && callOut();//调用拨打的方法
+        callData.callType === '2' && await init(res.data.calloutVo.phoneNo);//调用拨打的方法
+        this.actionId = res.data.actionId;
         this.showMoorTel = true;
         this.$Message.success('呼出成功');
-        this.actionId = res.data.actionId;
+        this.recordId = res.data.recordId;
         this.moorToCallMblHid = obj.toCallMblHid;
         this.moorToCallUser = obj.toCallUserHid;
         let timer;
@@ -1883,6 +1888,7 @@ export default {
       } else {
         callData.callType === '2' && this.call_xz_hung_off();//呼叫失败调用挂断
         this.$Message.error(res.message);
+        this.actionId = '';
       }
     },
     // 讯众挂断接口（传统模式||路由模式）
@@ -1893,7 +1899,8 @@ export default {
       if (callData.callType === '2') {
         res = await callout_hung_off({
           seatType: callData.seatType,//坐席类型
-          actionId: this.actionId,
+          actionId: sessionStorage.getItem('callId') ? sessionStorage.getItem('callId') : '',
+          id: this.recordId,
           callno: XZ_INIT_DATA.agentid,//坐席号
         })
       } else {
@@ -2294,6 +2301,7 @@ export default {
         if (callData.callType === '2') {
           this.callout_rout_get_seat(obj, tag)
         } else if (callData.callType === '1') {
+          this.seatType = callData.seatType;
           if (localStorage.getItem('callData') && callData.seatType === 'KT') {
             if (localStorage.getItem('callObj')) {
               this.$Message.info('请先挂断其他电话，再重试');
@@ -2490,6 +2498,10 @@ export default {
     },
     // 新增催记
     async case_remark_his_add() {
+      let callData = JSON.parse(localStorage.getItem('callData'));
+      if (callData.callType==='2' && callData.seatType === 'XZ') {
+        this.actionId = sessionStorage.getItem('callId') ? sessionStorage.getItem('callId') : '';
+      }
       this.add_collect_loading = true;
       const res = await case_remark_his_add({
         ...this.formValidate,
@@ -2603,6 +2615,7 @@ export default {
       if (res.code === 1) {
         localStorage.setItem('callData', JSON.stringify(res.data));
         if (res.data.seatType === 'KT') {
+          this.seatType = res.data.seatType;
           if (localStorage.getItem('callObj')) {
             this.$Message.info('请先挂断其他电话，再重试');
             return
@@ -2617,9 +2630,10 @@ export default {
             this.call(res.data);
           }, 500)
         } else if (res.data.seatType === 'XZ') {
+          this.seatType = res.data.seatType;
           let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, serverid: '', password: res.data.password };
           window.sessionStorage.setItem('XZ_INIT_DATA', JSON.stringify(obj));
-          await init();
+          // await init();
           this.call_xz_hung_on({
             callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
             callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
