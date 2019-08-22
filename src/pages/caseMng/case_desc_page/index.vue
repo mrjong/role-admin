@@ -589,12 +589,12 @@
                   class="ivu-alert-copy ivu-alert-error"
                   v-for="(item,index) in case_detail_urgent_contact_Data.userContactList"
                 >
-                  <span class="state-name">紧急联系人</span>
+                  <span class="state-name">{{item.cntRelTyp === '00'? '本人':'紧急联系人'}}</span>
                   <span class="name">
                     {{item.cntUserNameClear}}
                     <span>({{item.cntRelTypName}})&nbsp;</span>
                   </span>
-                  <span class="tel" @click="handCall(item,'call','02')">
+                  <span class="tel" @click="handCall(item,'call', item.cntRelTyp === '00'? '01': '02')">
                     <Badge :count="item.callCount" class-name="badge_wrap_myself">
                       <Tooltip
                         :content="all_opt?'拨打':'暂无权限拨打'"
