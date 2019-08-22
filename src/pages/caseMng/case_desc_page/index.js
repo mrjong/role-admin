@@ -1657,7 +1657,6 @@ export default {
     this.case_detail_case_identity_info(); // 查询案件详情身份信息
     this.case_detail_getimgurls();
     this.collectcode_getListByCodeType();//获取拨打状态
-    this.case_detail_address_info();//
   },
   mounted() {
     // 禁止右键
@@ -2166,7 +2165,6 @@ export default {
     // 通话更新
     async case_detail_mail_list_appended() {
       this.message_list_loading = true;
-      console.log(this.case_detail_mail_list_appended_pageSize)
       const res = await case_detail_mail_list_appended({
         caseNo: this.caseNo,
         userId: this.userId,
@@ -2475,7 +2473,7 @@ export default {
       this.showBtn = !this.showBtn;
     },
     // 页码改变的回调
-    changePage(pageNo, name) {
+    changePage(name) {
       this[name]();
     },
     nextCase(caseNo) {
@@ -2491,10 +2489,10 @@ export default {
     },
     // 切换每页条数时的回调
     changeSize(pageSize, name) {
+      console.log(this.case_detail_getcaselog_pageSize);
       console.log(pageSize, name);
-      this[name+ '_pageSize'] = pageSize;
+      this.pageSize = pageSize;
       this.pageNo = 1;
-      this[name]();
     },
     // 新增催记
     async case_remark_his_add() {

@@ -1971,22 +1971,5 @@ export const call_channel_updateStatus = (obj) =>
     data: qs.stringify(obj)
   })
 
-/**
- * 1、渠道来源（查询）
- * 2、渠道来源（案件详情展示）
- */
 
-export const case_detail_one_channel = (obj) =>
-  fetch({
-    url: '/case/detail/one_channel',
-    method: 'POST',
-    data: qs.stringify(obj)
-  })
-
-export const case_detail_channel_info = (obj) =>
-  fetch({
-    url: '/case/detail/channel_info',
-    method: 'POST',
-    data: qs.stringify(obj)
-  })
 
