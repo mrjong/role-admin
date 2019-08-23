@@ -19,7 +19,8 @@ function param(data) {
  * 登录
  */
 let obj;
-export const init = (phoneNumber) => {
+export const init = (phoneNumber, that) => {
+  console.log('初始化')
   sessionStorage.removeItem('callId')
   // 判断是否有讯众的init参数
   if (!sessionStorage.getItem('XZ_INIT_DATA')) {
@@ -46,7 +47,7 @@ export const init = (phoneNumber) => {
       cti_port = dataRes.port;
       cti_serverid = dataRes.serverid;
       cti.CtiConnect(dataRes.domain, dataRes.port);
-      initStatus(phoneNumber)
+      initStatus(phoneNumber, that)
       obj = {  ...obj, action: 'getRegServer',  wstype: 'ws' }
       let url2 = _url
       url2 += (url2.indexOf('?') < 0 ? '?' : '&') + param(obj);
@@ -77,7 +78,7 @@ export const init = (phoneNumber) => {
         alert('请重启软电话')
         return
       }
-      init(phoneNumber)
+      init(phoneNumber, that)
       window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
     } else {
       sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
@@ -97,7 +98,7 @@ export const init = (phoneNumber) => {
         count = 0
         return
       }
-      init(phoneNumber)
+      init(phoneNumber, that)
       window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
     } else {
       console.log('分机注册成功')
@@ -244,7 +245,7 @@ export const answerMessage = (opagentid) => {
 
 }
 
-export const initStatus = (phoneNumber) => {
+export const initStatus = (phoneNumber, that) => {
 
   ///////////////////////////////////////////////////////////
   ///注册事件：座席状态 变化
@@ -272,6 +273,7 @@ export const initStatus = (phoneNumber) => {
         case "4": //后处理
           {
             console.log('后处理')
+            that.showMoorTel= false
           }
           break;
         case "7": //振铃
@@ -332,6 +334,11 @@ export const initStatus = (phoneNumber) => {
   }
   ///注册事件：操作结果事件
   cti.EVENT_CMDRES = function (rescode, pbxrescode, res, actionid, taskid, calldata) {
+    if(pbxrescode === -1 && rescode !==0){
+      cti.AgentLogout();
+      cti.CtiDisconnect();//断开cti连接
+      init(phoneNumber, that)
+    }
     console.log("@ 操作结果EVENT_CMDRES事件通知。");
     console.log("## EVENT_CMDRES:rescode=" + rescode + ",pbxrescode=" + pbxrescode + ",res=" + res + ",actionid=" + actionid + ",taskid=" + taskid + ",calldata=" + calldata);
   }
@@ -339,6 +346,7 @@ export const initStatus = (phoneNumber) => {
   ///////////////////////////////////////////////////////////
   cti.EVENT_AgentAnswered = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, filename, calldata) {
     sessionStorage.setItem('callId', callId)
+    that.$Message.success('座席通话')
     console.log("@ 座席成功通话或有录音进行EVENT_AgentAnswered通知。");
     console.log("## EVENT_AgentAnswered:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",filename=" + filename + ",calldata=" + calldata);
   }
@@ -356,6 +364,7 @@ export const initStatus = (phoneNumber) => {
   ///注册事件：对方振铃通知事件
   ///////////////////////////////////////////////////////////
   cti.EVENT_OtherRinging = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, calldata) {
+    that.$Message.success('对方振铃')
     console.log('对方振铃')
     console.log("@ 对方振铃进行EVENT_OtherRinging通知。可在此事件中处理弹屏相关操作。");
     console.log("## EVENT_OtherRinging:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",calldata=" + calldata);
