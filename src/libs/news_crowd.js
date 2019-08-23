@@ -100,7 +100,7 @@ export const init = (phoneNumber) => {
       init(phoneNumber)
       window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
     } else {
-      console.log('分机注册失败')
+      console.log('分机注册成功')
     }
   };
 }
@@ -356,7 +356,7 @@ export const initStatus = (phoneNumber) => {
   ///注册事件：对方振铃通知事件
   ///////////////////////////////////////////////////////////
   cti.EVENT_OtherRinging = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, calldata) {
-    console.log(Date.parse(new Date()) + '对方振铃')
+    console.log('对方振铃')
     console.log("@ 对方振铃进行EVENT_OtherRinging通知。可在此事件中处理弹屏相关操作。");
     console.log("## EVENT_OtherRinging:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",calldata=" + calldata);
     //可在此进行弹屏处理
