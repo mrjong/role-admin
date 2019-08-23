@@ -4,7 +4,7 @@ import fetch from '@/libs/fetch';
 import qs from 'qs';
 import Vue from 'vue'
 let jsonp = require('jsonp');
-
+let count = 0;
 function param(data) {
   let url = '';
   for (let key in data) {
@@ -64,7 +64,6 @@ export const init = (phoneNumber) => {
     console.log('cti服务器连接成功事件')
     sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
     cti.CheckWSS()
-    console.log(cti.CheckWSS())
   }
   sip_client.sipPhoneConnectedEvent = function () {
     console.log("## sip ConnectedEvent");
@@ -72,10 +71,18 @@ export const init = (phoneNumber) => {
       console.log("## 获取注册服务器失败，重新签入");
       cti.AgentLogout();
       cti.CtiDisconnect();//断开cti连接
+      count = count+ 1
+      if(count >= 5){
+        count = 0
+        alert('请重启软电话')
+        return
+      }
+      init(phoneNumber)
       window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
+    } else {
+      sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
+      cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
     }
-    sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
-    cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
   }
   sip_client.extLoginEvent = function (extlogin) {
     console.log(extlogin + '分机注册相关------------------------》')
@@ -84,7 +91,16 @@ export const init = (phoneNumber) => {
       // vueExample.$Message.error('分机注册失败')
       cti.AgentLogout();
       cti.CtiDisconnect();//断开cti连接
+      count = count+ 1
+      if(count >= 5){
+        alert('请重启软电话')
+        count = 0
+        return
+      }
+      init(phoneNumber)
       window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
+    } else {
+      console.log('分机注册失败')
     }
   };
 }
@@ -98,11 +114,12 @@ export const loginOut = () => {
 
 //呼出
 export const callOut = (phoneNumber) => {
+  handcall = 1;//主动外呼
   showmsg("【呼出】============================================================");
   showmsg("调用MakeCall()进行呼出。呼出请求发出后会进行EVENT_AgentStateChanged事件通知");
   console.log('外呼号码：' + phoneNumber)
   cti.MakeCall(phoneNumber, 3, '');
-  handcall = 1;//主动外呼
+
 }
 
 
@@ -260,7 +277,19 @@ export const initStatus = (phoneNumber) => {
         case "7": //振铃
         case "5": {
           if (handcall === 1) {//主动外呼
-            sip_client.answerMessage(obj.telephone, sip_client.sip_callid);
+            let countTime = 0
+            let timer= setInterval(function () {
+              countTime = countTime + 1
+              if(countTime >=10){
+                clearInterval(timer)
+                return
+              }
+              if(sessionStorage.getItem('ringState') === '1'){
+                sip_client.answerMessage(obj.telephone, sip_client.sip_callid);
+                sessionStorage.removeItem('ringState')
+                clearInterval(timer)
+              }
+            },1000)
           } else {
             console.log('## 呼入操作')
           }
