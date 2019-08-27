@@ -281,6 +281,7 @@ export default {
       this.$emit("passBack", 'change');
     },
     selectItem(value) {
+      this.ids = []
       value.forEach(item=>{
         this.ids.push(item.id)
       })
