@@ -72,13 +72,15 @@ export const init = (phoneNumber, that) => {
       console.log("## 获取注册服务器失败，重新签入");
       cti.AgentLogout();
       cti.CtiDisconnect();//断开cti连接
-      count = count+ 1
-      if(count >= 5){
-        count = 0
-        alert('请重启软电话')
-        return
-      }
-      init(phoneNumber, that)
+      // count = count+ 1
+      // if(count >= 3){
+      //   count = 0
+      //   alert('请重启软电话')
+      //   return
+      // }
+      // init(phoneNumber, that)
+      that.showMoorTel = false
+      that.$Message.error('分机注册失败')
       window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
     } else {
       sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
@@ -92,13 +94,15 @@ export const init = (phoneNumber, that) => {
       // vueExample.$Message.error('分机注册失败')
       cti.AgentLogout();
       cti.CtiDisconnect();//断开cti连接
-      count = count+ 1
-      if(count >= 5){
-        alert('请重启软电话')
-        count = 0
-        return
-      }
-      init(phoneNumber, that)
+      that.showMoorTel = false
+      that.$Message.error('分机注册失败')
+      // count = count+ 1
+      // if(count >= 3){
+      //   alert('请重启软电话')
+      //   count = 0
+      //   return
+      // }
+      // init(phoneNumber, that)
       window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
     } else {
       console.log('分机注册成功')
@@ -246,7 +250,7 @@ export const answerMessage = (opagentid) => {
 }
 
 export const initStatus = (phoneNumber, that) => {
-  that.xZStatus = '正在连接中，请稍等'
+  that.xZStatus = '正在连接，请稍等'
   ///////////////////////////////////////////////////////////
   ///注册事件：座席状态 变化
   ///////////////////////////////////////////////////////////
@@ -335,10 +339,11 @@ export const initStatus = (phoneNumber, that) => {
   }
   ///注册事件：操作结果事件
   cti.EVENT_CMDRES = function (rescode, pbxrescode, res, actionid, taskid, calldata) {
-    if(pbxrescode === -1 && rescode !==0){
+    if(pbxrescode === '-1' && rescode !== '0'){
       cti.AgentLogout();
       cti.CtiDisconnect();//断开cti连接
-      init(phoneNumber, that)
+      that.$Message.error('连接错误')
+      that.showMoorTel = false
     }
     console.log("@ 操作结果EVENT_CMDRES事件通知。");
     console.log("## EVENT_CMDRES:rescode=" + rescode + ",pbxrescode=" + pbxrescode + ",res=" + res + ",actionid=" + actionid + ",taskid=" + taskid + ",calldata=" + calldata);
@@ -347,7 +352,7 @@ export const initStatus = (phoneNumber, that) => {
   ///////////////////////////////////////////////////////////
   cti.EVENT_AgentAnswered = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, filename, calldata) {
     sessionStorage.setItem('callId', callId)
-    that.xZStatus = '通话中。。。'
+    that.xZStatus = '通话中...'
     // that.$Message.success('座席通话')
     console.log("@ 座席成功通话或有录音进行EVENT_AgentAnswered通知。");
     console.log("## EVENT_AgentAnswered:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",filename=" + filename + ",calldata=" + calldata);

@@ -1853,7 +1853,6 @@ export default {
         }
         this.actionId = res.data.actionId;
         this.showMoorTel = true;
-        this.$Message.success('呼出成功');
         this.recordId = res.data.recordId;
         this.moorToCallMblHid = obj.toCallMblHid;
         this.moorToCallUser = obj.toCallUserHid;
