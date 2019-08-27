@@ -246,7 +246,7 @@ export const answerMessage = (opagentid) => {
 }
 
 export const initStatus = (phoneNumber, that) => {
-
+  that.xZStatus = '正在连接中，请稍等'
   ///////////////////////////////////////////////////////////
   ///注册事件：座席状态 变化
   ///////////////////////////////////////////////////////////
