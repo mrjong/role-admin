@@ -422,7 +422,7 @@ export default {
           title: '渠道来源',
           width: 100,
           align: 'center',
-          key: 'channelOneName'
+          key: 'channelName'
         },
       ]
     };

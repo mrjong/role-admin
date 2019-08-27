@@ -87,7 +87,7 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="身份证号:" prop="idNo">
+            <FormItem label="身份证号:" >
               <Input size="small" clearable v-model.trim="formItem.idNo" placeholder="请输入身份证号"/>
             </FormItem>
           </Col>
