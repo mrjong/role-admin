@@ -342,7 +342,7 @@ export const initStatus = (phoneNumber, that) => {
     if(pbxrescode === '-1' && rescode !== '0'){
       cti.AgentLogout();
       cti.CtiDisconnect();//断开cti连接
-      that.$Message.error('连接错误')
+      // that.$Message.error('连接错误')
       that.showMoorTel = false
     }
     console.log("@ 操作结果EVENT_CMDRES事件通知。");
