@@ -212,7 +212,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="渠道来源:">
-              <Select size="small" v-model="formItem.channelOneCode" clearable>
+              <Select size="small" v-model="formItem.channelCode" clearable>
                 <Option
                   v-for="item in case_detail_one_channel_list"
                   :value="item.channelNo"
