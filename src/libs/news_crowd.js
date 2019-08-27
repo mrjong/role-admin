@@ -4,7 +4,7 @@ import fetch from '@/libs/fetch';
 import qs from 'qs';
 import Vue from 'vue'
 let jsonp = require('jsonp');
-
+let count = 0;
 function param(data) {
   let url = '';
   for (let key in data) {
@@ -19,7 +19,8 @@ function param(data) {
  * 登录
  */
 let obj;
-export const init = (phoneNumber) => {
+export const init = (phoneNumber, that) => {
+  console.log('初始化')
   sessionStorage.removeItem('callId')
   // 判断是否有讯众的init参数
   if (!sessionStorage.getItem('XZ_INIT_DATA')) {
@@ -46,7 +47,7 @@ export const init = (phoneNumber) => {
       cti_port = dataRes.port;
       cti_serverid = dataRes.serverid;
       cti.CtiConnect(dataRes.domain, dataRes.port);
-      initStatus(phoneNumber)
+      initStatus(phoneNumber, that)
       obj = {  ...obj, action: 'getRegServer',  wstype: 'ws' }
       let url2 = _url
       url2 += (url2.indexOf('?') < 0 ? '?' : '&') + param(obj);
@@ -64,7 +65,6 @@ export const init = (phoneNumber) => {
     console.log('cti服务器连接成功事件')
     sip_client.ConnentSocket(obj.telephone, obj.password, sip_server, sip_port);//连接sip软电话
     cti.CheckWSS()
-    console.log(cti.CheckWSS())
   }
   sip_client.sipPhoneConnectedEvent = function () {
     console.log("## sip ConnectedEvent");
@@ -72,10 +72,20 @@ export const init = (phoneNumber) => {
       console.log("## 获取注册服务器失败，重新签入");
       cti.AgentLogout();
       cti.CtiDisconnect();//断开cti连接
+      // count = count+ 1
+      // if(count >= 3){
+      //   count = 0
+      //   alert('请重启软电话')
+      //   return
+      // }
+      // init(phoneNumber, that)
+      that.showMoorTel = false
+      that.$Message.error('分机注册失败')
       window.sessionStorage.setItem('XZ_ERROR_MSG', '获取注册服务器失败，重新签入');
+    } else {
+      sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
+      cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
     }
-    sip_client.loginMessage(obj.telephone, obj.password, sip_server + ':' + sip_port);
-    cti.AgentLogin(obj.agentid, obj.telephonePassword, obj.telephone, obj.compid)
   }
   sip_client.extLoginEvent = function (extlogin) {
     console.log(extlogin + '分机注册相关------------------------》')
@@ -84,7 +94,18 @@ export const init = (phoneNumber) => {
       // vueExample.$Message.error('分机注册失败')
       cti.AgentLogout();
       cti.CtiDisconnect();//断开cti连接
+      that.showMoorTel = false
+      that.$Message.error('分机注册失败')
+      // count = count+ 1
+      // if(count >= 3){
+      //   alert('请重启软电话')
+      //   count = 0
+      //   return
+      // }
+      // init(phoneNumber, that)
       window.sessionStorage.setItem('XZ_ERROR_MSG', '分机注册失败');
+    } else {
+      console.log('分机注册成功')
     }
   };
 }
@@ -98,11 +119,12 @@ export const loginOut = () => {
 
 //呼出
 export const callOut = (phoneNumber) => {
+  handcall = 1;//主动外呼
   showmsg("【呼出】============================================================");
   showmsg("调用MakeCall()进行呼出。呼出请求发出后会进行EVENT_AgentStateChanged事件通知");
   console.log('外呼号码：' + phoneNumber)
   cti.MakeCall(phoneNumber, 3, '');
-  handcall = 1;//主动外呼
+
 }
 
 
@@ -227,8 +249,8 @@ export const answerMessage = (opagentid) => {
 
 }
 
-export const initStatus = (phoneNumber) => {
-
+export const initStatus = (phoneNumber, that) => {
+  that.xZStatus = '正在连接，请稍等'
   ///////////////////////////////////////////////////////////
   ///注册事件：座席状态 变化
   ///////////////////////////////////////////////////////////
@@ -255,12 +277,26 @@ export const initStatus = (phoneNumber) => {
         case "4": //后处理
           {
             console.log('后处理')
+            that.showMoorTel= false
           }
           break;
         case "7": //振铃
         case "5": {
           if (handcall === 1) {//主动外呼
-            sip_client.answerMessage(obj.telephone, sip_client.sip_callid);
+            handcall = 0;
+            let countTime = 0
+            let timer= setInterval(function () {
+              countTime = countTime + 1
+              if(countTime >=10){
+                clearInterval(timer)
+                return
+              }
+              if(sessionStorage.getItem('ringState') === '1'){
+                sip_client.answerMessage(obj.telephone, sip_client.sip_callid);
+                sessionStorage.removeItem('ringState')
+                clearInterval(timer)
+              }
+            },1000)
           } else {
             console.log('## 呼入操作')
           }
@@ -303,6 +339,12 @@ export const initStatus = (phoneNumber) => {
   }
   ///注册事件：操作结果事件
   cti.EVENT_CMDRES = function (rescode, pbxrescode, res, actionid, taskid, calldata) {
+    if(pbxrescode === '-1' && rescode !== '0'){
+      cti.AgentLogout();
+      cti.CtiDisconnect();//断开cti连接
+      that.$Message.error('连接错误')
+      that.showMoorTel = false
+    }
     console.log("@ 操作结果EVENT_CMDRES事件通知。");
     console.log("## EVENT_CMDRES:rescode=" + rescode + ",pbxrescode=" + pbxrescode + ",res=" + res + ",actionid=" + actionid + ",taskid=" + taskid + ",calldata=" + calldata);
   }
@@ -310,6 +352,8 @@ export const initStatus = (phoneNumber) => {
   ///////////////////////////////////////////////////////////
   cti.EVENT_AgentAnswered = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, filename, calldata) {
     sessionStorage.setItem('callId', callId)
+    that.xZStatus = '通话中...'
+    // that.$Message.success('座席通话')
     console.log("@ 座席成功通话或有录音进行EVENT_AgentAnswered通知。");
     console.log("## EVENT_AgentAnswered:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",filename=" + filename + ",calldata=" + calldata);
   }
@@ -319,6 +363,7 @@ export const initStatus = (phoneNumber) => {
   ///////////////////////////////////////////////////////////
   cti.EVENT_AgentRinging = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, agentstate, laststate, calldata) {
     console.log("@ 座席振铃进行EVENT_AgentRinging通知。可在此事件中处理弹屏相关操作。");
+    // that.xZStatus = '座席振铃'
     //可在此进行弹屏处理
     console.log("## EVENT_AgentRinging:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",agentstate=" + agentstate + ",laststate=" + laststate + ",calldata=" + calldata);
   }
@@ -327,8 +372,9 @@ export const initStatus = (phoneNumber) => {
   ///注册事件：对方振铃通知事件
   ///////////////////////////////////////////////////////////
   cti.EVENT_OtherRinging = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, calldata) {
-    console.log(Date.parse(new Date()) + '对方振铃')
-    console.log("@ 对方振铃进行EVENT_OtherRinging通知。可在此事件中处理弹屏相关操作。");
+    that.xZStatus = '客户振铃'
+    // that.$Message.success('对方振铃')
+    console.log('客户振铃')
     console.log("## EVENT_OtherRinging:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",calldata=" + calldata);
     //可在此进行弹屏处理
     //            window.open("Popup.htm?caller=" + calleedevice, "_blank", "left = 200,top=200,width = 500,height = 350,scrollbars=yes,toolbar=yes,menubar=yes,location=yes,resizable=no,status=yes");
@@ -338,7 +384,7 @@ export const initStatus = (phoneNumber) => {
   ///////////////////////////////////////////////////////////
   cti.EVENT_HangupEvent = function (compid, agentid, callId, calldata) {
     console.log("@ 挂断进行EVENT_HangupEvent通知。");
-    handcall = 0;
+    that.xZStatus = ''
     console.log("## EVENT_HangupEvent:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calldata=" + calldata);
   };
 
