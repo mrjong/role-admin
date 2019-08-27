@@ -949,10 +949,11 @@
       </Modal>
     </div>
     <!-- 容联、讯众软电话 -->
-    <div class="tel-box" v-if="showMoorTel">
-      <div class="tel-box-desc">
-        <div class="tel-num">{{moorToCallMblHid}}</div>
-        <div class="tel-desc">{{moorToCallUser}}</div>
+    <div class="tel-box" v-if="showMoorTel" :style="xZStyle && 'width: 210px'">
+      <div class="tel-box-desc" :style="xZStyle && 'width: 200px'">
+        <div class="tel-num" :style="xZStyle && 'display: inline-block; marginRight: 20px'">{{moorToCallMblHid}}</div>
+        <div class="tel-desc" :style="xZStyle && 'display: inline-block'">{{moorToCallUser}}</div>
+        <div class="tel-desc">{{xZStatus}}</div>
         <div class="tel-btn-box">
           <!-- <div class="item success" v-if="success">
             <div class="icon-box" @click="answer">

@@ -142,6 +142,7 @@ ClassSipClient.prototype.parseMessage = function (data) {
     case "901"://振铃
       showmsg('振铃:' + 901);
       this.sip_callid = jsonMsg.callId;
+      sessionStorage.setItem('ringState', '1')
       //setbuttonEnable('btn_call', false, 5);
       break;
     case "902"://接通
