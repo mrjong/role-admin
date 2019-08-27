@@ -346,7 +346,8 @@ export const initStatus = (phoneNumber, that) => {
   ///////////////////////////////////////////////////////////
   cti.EVENT_AgentAnswered = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, filename, calldata) {
     sessionStorage.setItem('callId', callId)
-    that.$Message.success('座席通话')
+    that.xZStatus = '通话中。。。'
+    // that.$Message.success('座席通话')
     console.log("@ 座席成功通话或有录音进行EVENT_AgentAnswered通知。");
     console.log("## EVENT_AgentAnswered:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",filename=" + filename + ",calldata=" + calldata);
   }
@@ -356,6 +357,7 @@ export const initStatus = (phoneNumber, that) => {
   ///////////////////////////////////////////////////////////
   cti.EVENT_AgentRinging = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, agentstate, laststate, calldata) {
     console.log("@ 座席振铃进行EVENT_AgentRinging通知。可在此事件中处理弹屏相关操作。");
+    // that.xZStatus = '座席振铃'
     //可在此进行弹屏处理
     console.log("## EVENT_AgentRinging:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",agentstate=" + agentstate + ",laststate=" + laststate + ",calldata=" + calldata);
   }
@@ -364,9 +366,9 @@ export const initStatus = (phoneNumber, that) => {
   ///注册事件：对方振铃通知事件
   ///////////////////////////////////////////////////////////
   cti.EVENT_OtherRinging = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, calldata) {
-    that.$Message.success('对方振铃')
-    console.log('对方振铃')
-    console.log("@ 对方振铃进行EVENT_OtherRinging通知。可在此事件中处理弹屏相关操作。");
+    that.xZStatus = '客户振铃'
+    // that.$Message.success('对方振铃')
+    console.log('客户振铃')
     console.log("## EVENT_OtherRinging:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",calldata=" + calldata);
     //可在此进行弹屏处理
     //            window.open("Popup.htm?caller=" + calleedevice, "_blank", "left = 200,top=200,width = 500,height = 350,scrollbars=yes,toolbar=yes,menubar=yes,location=yes,resizable=no,status=yes");
@@ -376,6 +378,7 @@ export const initStatus = (phoneNumber, that) => {
   ///////////////////////////////////////////////////////////
   cti.EVENT_HangupEvent = function (compid, agentid, callId, calldata) {
     console.log("@ 挂断进行EVENT_HangupEvent通知。");
+    that.xZStatus = ''
     handcall = 0;
     console.log("## EVENT_HangupEvent:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calldata=" + calldata);
   };

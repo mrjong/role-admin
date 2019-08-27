@@ -59,6 +59,8 @@ export default {
     const _this = this;
     return {
       recordId: '',
+      xZStyle: false,
+      xZStatus: '',
       seatType: String,
       HUNG_UP_FLAG: window.sessionStorage.getItem('HUNG_UP_FLAG'),//挂断标识
       moorToCallMblHid: '',//容联电话呼叫成功显示的电话密文
@@ -1845,7 +1847,10 @@ export default {
       }
       console.log(res)
       if (res.code === 1) {
-        callData.callType === '2' && await init(res.data.calloutVo.phoneNo, this);//调用拨打的方法
+        if(callData.callType === '2'){
+          await init(res.data.calloutVo.phoneNo, this);//调用拨打的方法
+          this.xZStyle = true
+        }
         this.actionId = res.data.actionId;
         this.showMoorTel = true;
         this.$Message.success('呼出成功');
