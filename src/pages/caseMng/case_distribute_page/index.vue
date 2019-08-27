@@ -87,7 +87,7 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="身份证号:" prop="idNo">
+            <FormItem label="身份证号:" >
               <Input size="small" clearable v-model.trim="formItem.idNo" placeholder="请输入身份证号"/>
             </FormItem>
           </Col>
@@ -236,6 +236,17 @@
               >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="渠道来源:">
+              <Select size="small" v-model="formItem.channelCode" clearable>
+                <Option
+                  v-for="item in case_detail_one_channel_list"
+                  :value="item.channelOneCode"
+                  :key="item.channelOneCode"
+                >{{ item.channelOneName }}</Option>
+              </Select>
+            </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>

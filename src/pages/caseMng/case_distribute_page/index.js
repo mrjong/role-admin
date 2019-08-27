@@ -497,6 +497,12 @@ export default {
           align: 'center',
           key: 'isSubmitName'
         },
+        {
+          title: '渠道来源',
+          width: 100,
+          align: 'center',
+          key: 'channelName'
+        },
       ]
     };
   },
