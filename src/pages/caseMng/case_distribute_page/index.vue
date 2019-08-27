@@ -242,9 +242,9 @@
               <Select size="small" v-model="formItem.channelCode" clearable>
                 <Option
                   v-for="item in case_detail_one_channel_list"
-                  :value="item.channelNo"
-                  :key="item.channelNo"
-                >{{ item.channelNm }}</Option>
+                  :value="item.channelOneCode"
+                  :key="item.channelOneCode"
+                >{{ item.channelOneName }}</Option>
               </Select>
             </FormItem>
           </Col>

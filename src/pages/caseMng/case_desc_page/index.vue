@@ -589,7 +589,7 @@
                   class="ivu-alert-copy ivu-alert-error"
                   v-for="(item,index) in case_detail_urgent_contact_Data.userContactList"
                 >
-                  <span class="state-name">{{item.cntRelTyp === '00'? '本人':'紧急联系人'}}</span>
+                  <span class="state-name">{{item.channelSource === '5'? '本人（变更）': item.channelSource === '10'? '本人（人审）':'紧急联系人'}}</span>
                   <span class="name">
                     {{item.cntUserNameClear}}
                     <span>({{item.cntRelTypName}})&nbsp;</span>
