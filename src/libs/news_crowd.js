@@ -279,6 +279,7 @@ export const initStatus = (phoneNumber, that) => {
         case "7": //振铃
         case "5": {
           if (handcall === 1) {//主动外呼
+            handcall = 0;
             let countTime = 0
             let timer= setInterval(function () {
               countTime = countTime + 1
@@ -379,7 +380,6 @@ export const initStatus = (phoneNumber, that) => {
   cti.EVENT_HangupEvent = function (compid, agentid, callId, calldata) {
     console.log("@ 挂断进行EVENT_HangupEvent通知。");
     that.xZStatus = ''
-    handcall = 0;
     console.log("## EVENT_HangupEvent:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calldata=" + calldata);
   };
 
