@@ -2530,7 +2530,7 @@ export default {
       const res = await callout_rout_get_seat({
         callType: callData.callType,
         planId: callData.planId,
-        phoneNo: obj.mblNo,
+        phoneNo: obj.mblNo || obj.cntUserMblNo,
         caseNo: this.caseNo,
       })
       if (res.code === 1) {
