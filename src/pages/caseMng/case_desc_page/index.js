@@ -2432,6 +2432,7 @@ export default {
         this.breaks_data = {
           caseNo: this.caseNo,
           billNo: this.case_detail_case_base_info_Data.billNo,
+          prdTyp: this.case_detail_case_base_info_Data.prdTyp,
         }
       } else if (type === 'huakou') {
         this.$set(this, 'userId', userId);
@@ -2439,6 +2440,7 @@ export default {
         this.breaks_data = {
           caseNo: this.caseNo,
           billNo: this.case_detail_case_base_info_Data.billNo,
+          prdTyp: this.case_detail_case_base_info_Data.prdTyp,
           tableData: this.tableData
         };
         this.offlineScanPay_apply(type);
@@ -2456,6 +2458,7 @@ export default {
         this.breaks_data = {
           caseNo: this.caseNo,
           billNo: this.case_detail_case_base_info_Data.billNo,
+          prdTyp: this.case_detail_case_base_info_Data.prdTyp,
           tableData: this.tableData
         };
         this.modal[name] = true;
