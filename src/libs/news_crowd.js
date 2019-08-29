@@ -114,7 +114,8 @@ export const init = (phoneNumber, that) => {
 export const loginOut = () => {
   cti.AgentLogout();
   cti.CtiDisconnect();//断开cti连接
-  sip_client.logoutMessage(obj.telephone);//sip分机退出
+  // sip_client.logoutMessage(obj.telephone);//sip分机退出
+  sip_client.sipPhoneDisConnect()
 }
 
 //呼出
