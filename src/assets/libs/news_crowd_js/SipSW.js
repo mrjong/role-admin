@@ -85,13 +85,12 @@ ClassSipClient.prototype.sipWsEvent = function () {
 
 ClassSipClient.prototype.CheckSocket = function () {
   var cls_sip = this;
-
   cls_sip.sipConnectIntervalId = setInterval(function () {
     if (cls_sip.sipWs && cls_sip.sipWs.readyState == 1) {
       //TODO
       sessionStorage.setItem('XZ_STATE', cls_sip.sipWs.readyState);
     } else {
-      sessionStorage.setItem('XZ_STATE', cls_sip.sipWs.readyState);
+      sessionStorage.setItem('XZ_STATE', cls_sip.sipWs && cls_sip.sipWs.readyState);
       cls_sip.extloginsuccess = 0;
       showmsg('sip软电话连接失败');
       if (cti.IsConnect_CTI == 1) {//如果CTI连接，软电话退出则重新连接
