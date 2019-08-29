@@ -203,6 +203,7 @@
       <p class="notice_detail_content">{{announcementContent}}</p>
       <p style="text-align: right; font-size: 14px; line-height: 26px;">{{createTime}}</p>
     </Modal>
+    <CaseLoading/>
   </div>
 </template>
 <script src="./index.js"></script>

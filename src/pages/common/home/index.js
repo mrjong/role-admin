@@ -8,12 +8,16 @@ import {
   home_gethomecall
 } from '@/service/getData';
 import util from '@/libs/util';
+import CaseLoading from './components/caseLoading';
 // let speed = 10;//初始速度
 // let intNum = 0;//初始值
 let timer = null;
 let obj = {};
 export default {
   name: '/home',
+  components: {
+    CaseLoading,
+  },
   data() {
     return {
       showPanel3: false,
