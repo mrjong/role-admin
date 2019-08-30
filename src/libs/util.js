@@ -411,6 +411,15 @@ util.websocket = () => {
           customClass: 'notice-success'
         });
         break;
+      case '04':
+        Notification({
+          message: h('span', { style: 'color: #fff; font-weight: 600' }, data.msgContent),
+          type: "success",
+          duration: 5000,
+          position: 'bottom-left',
+          customClass: 'notice-success'
+        });
+        break;
     }
 
   }; //连接关闭的回调方法

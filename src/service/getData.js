@@ -1990,3 +1990,76 @@ export const case_detail_channel_info = (obj) =>
     data: qs.stringify(obj)
   })
 
+
+export const rules_add = (obj) =>
+  fetch({
+    url: '/rules/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+export const allot_ready_case = (obj) =>
+  fetch({
+    url: '/allot/ReadyCase',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+export const divide_star_list = (obj) =>
+  fetch({
+    url: '/divideStar/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+//保存结案
+export const divide_star_update = (obj, options) =>
+  fetch({
+    url: '/divideStar/update',
+    method: 'POST',
+    data: obj,
+    options
+
+  })
+
+export const allot_user_getDivideUserByUserId = (obj) =>
+  fetch({
+    url: '/allot/user/getDivideUserByUserId',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+export const allot_user_upDivideRuleUser = (obj) =>
+  fetch({
+    url: '/allot/user/upDivideRuleUser',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+export const allot_user_list = (obj) =>
+  fetch({
+    url: '/allot/user/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+export const allot_user_confirmDivide = (obj) =>
+  fetch({
+    url: '/allot/user/confirmDivide',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+// 下载分配导入查询
+export const divide_download_template = (obj, options) =>
+  fetch({
+    url: '/divide/download/template',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
+  })
+

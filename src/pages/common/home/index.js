@@ -8,7 +8,7 @@ import {
   home_gethomecall
 } from '@/service/getData';
 import util from '@/libs/util';
-import CaseLoading from './components/caseLoading';
+import CaseLoading from './components/isConnection';
 // let speed = 10;//初始速度
 // let intNum = 0;//初始值
 let timer = null;
