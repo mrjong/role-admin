@@ -205,7 +205,7 @@
       <p style="text-align: right; font-size: 14px; line-height: 26px;">{{createTime}}</p>
     </Modal>
     <CaseLoading :showCaseLoading="showCaseLoading" @passBack="passBack" />
-    <IsConnection :showCaseLoading="showIsConnection" @passBack="passBack" />
+    <IsConnection @passBack="passBack" />
   </div>
 </template>
 <script src="./index.js"></script>

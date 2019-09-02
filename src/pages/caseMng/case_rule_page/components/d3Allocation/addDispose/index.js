@@ -128,6 +128,12 @@ export default {
           ]
         }
       );
+      if (res.code === 1) {
+        this.$emit("passBack");
+        this.$Message.success('分配成功');
+      } else {
+        this.$Message.error(res.message);
+      }
       console.log(res)
     },
     handleCancel() {

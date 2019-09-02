@@ -1,7 +1,7 @@
 
 import Cookie from 'js-cookie';
 import Vue from 'vue';
-import { Notification } from "element-ui";
+import { Notification} from "element-ui";
 let _this = new Vue();
 const h = _this.$createElement;
 let util = {};
@@ -411,7 +411,11 @@ util.websocket = () => {
           customClass: 'notice-success'
         });
         break;
-      case '04':
+      case '07':
+        vueExample.$store.commit('changeWebSocketData', data);
+        sessionStorage.setItem('changeWebSocketData', JSON.stringify(data))
+        break;
+      case '08':
         Notification({
           message: h('span', { style: 'color: #fff; font-weight: 600' }, data.msgContent),
           type: "success",

@@ -51,17 +51,18 @@ export default {
           }
         ]
       },
-      ruleValidate: {},
 
     };
   },
-  watch: {
-    updateData: function (value) {
-
-    }
-  },
   created() {
-    this.get_divide_star_list();
+
+  },
+  watch: {
+    showCaseLoading(val) {
+      if(val){
+        this.get_divide_star_list();
+      }
+    }
   },
   methods: {
     handleCancel() {
@@ -79,7 +80,7 @@ export default {
         ]
       });
       if (res.code === 1) {
-        console.log(res)
+        this.$emit("passBack");
       } else {
         this.$Message.error(res.message);
       }
@@ -90,7 +91,8 @@ export default {
         this.divideStarVoList = res.data.divideStarVoList
         this.allotStatus= res.data.allotStatus
       } else {
-        this.$Message.error(res.message);
+        this.$Message.error('您当前不能设置')
+        // this.$Message.error(res.message);
       }
     }
   }

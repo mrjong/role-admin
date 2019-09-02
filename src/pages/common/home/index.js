@@ -20,6 +20,7 @@ export default {
     CaseLoading,
     IsConnection
   },
+
   data() {
     return {
       showPanel3: false,
@@ -52,7 +53,7 @@ export default {
       announcement_list2: [],
       tableData: [],
       announcement_list: [],
-      showCaseLoading: true,
+      showCaseLoading: false,
       showIsConnection: false,
       tableColumns2: [
         {
@@ -305,8 +306,12 @@ export default {
       ]
     };
   },
+
   created() {
     console.log(this.$route)
+    if(sessionStorage.getItem('newConnectionCase')){
+      this.showIsConnection = true
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {

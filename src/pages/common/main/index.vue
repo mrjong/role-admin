@@ -74,7 +74,18 @@
             <breadcrumb-nav :currentPath="currentPath"></breadcrumb-nav>
           </div>
         </div>
+
         <div class="header-avator-con">
+          <div style="display: inline-block; width: 40%"></div>
+          <Button
+            type="primary"
+            @click="openCase"
+            style="width:180px"
+            long
+            size="small"
+          >
+            请设置次日接案量
+          </Button>
           <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
           <lock-screen></lock-screen>
           <!-- <message-tip v-model="mesCount"></message-tip> -->
@@ -107,6 +118,7 @@
         <!-- </keep-alive> -->
       </div>
     </div>
+    <CaseLoading :showCaseLoading="showCaseLoading" @passBack="passBack" />
   </div>
 </template>
 <script src="./index.js"></script>

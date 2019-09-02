@@ -25,7 +25,6 @@
               <Select
                 size="small"
                 clearable
-                multiple
                 placeholder="请选择产品线"
                 v-model="formItem.prodTypeList"
               >

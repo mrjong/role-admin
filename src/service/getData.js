@@ -2071,6 +2071,14 @@ export const divide_allot_user_export_list = (obj) =>
     data: qs.stringify(obj)
   })
 
+//我要接案
+export const cases_allot_take_case = (obj) =>
+  fetch({
+    url: '/cases/allot/takecase',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
 // 下载分配导入查询
 export const divide_download_template = (obj, options) =>
   fetch({
