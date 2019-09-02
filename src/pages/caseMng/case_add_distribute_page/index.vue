@@ -478,6 +478,7 @@ export default {
         ]
       },
       formItem: {
+        ruleType: '01',
         prodTypeList: "",
         perdCountList: [],
         perdThisCountList: [],

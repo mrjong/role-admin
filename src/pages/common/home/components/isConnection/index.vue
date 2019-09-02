@@ -1,6 +1,6 @@
 <template>
     <Modal
-      :value="isConfirmDivide"
+      :value="showIsConnection"
       :footer-hide="true"
       :closable=" false"
 

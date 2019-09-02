@@ -36,7 +36,7 @@ export default {
       },
       formItem: {
         prodTypeList: [],
-        status: ''
+        status: '',
       },
       ruleValidate: {
       },
@@ -434,6 +434,7 @@ export default {
         return;
       }
       this.query_loading = true;
+      this.formItem.ruleType= '01'
       const res = await divide_rules_list({
         ...this.formItem,
         pageNum: this.pageNo,

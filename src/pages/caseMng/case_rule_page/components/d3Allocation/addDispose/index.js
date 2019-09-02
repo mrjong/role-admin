@@ -22,10 +22,13 @@ export default {
       allotNameList: [], //人员名字list
       import_search: true,// 导入查询权限
       download_import_data: false,
-      file_url: '/divide/batch/import',//文件上传地址
+      file_url: '/admin/divide/batch/import',//文件上传地址
       import_data_loading: false,// 导入loading
       showDispose: true,
-      formItem: {},
+      formItem: {
+        ruleType: '02',
+        // allotType: '03'
+      },
       ruleValidate: {},
       getDirList: [
         "DIVIDE_PROD_TYPE",
@@ -49,8 +52,18 @@ export default {
       formData: {},
       allot_loading: false,
       add_handle:true,
-      tableDataSeats: [],
-      tableColumnsSeats: [
+      tableData: [],
+      tableColumns: [
+        {
+          title: '姓名',
+          align: "center",
+          key: 'opUserName'
+        },
+        {
+          title: '回款率',
+          align: "center",
+          key: 'collectRate'
+        },
       ],
       department_list_data: [],
     };
@@ -91,20 +104,25 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    allotTypeChange() {},
-    dateChange() {},
+    dateChange(val) {
+      this.formItem.effectMinDt = val
+    },
     closeDrawer() {
 
     },
     getChangeDate(val,flag) {
       this.formItem[flag] = val
     },
-    exportScoreValue() {
-    },
+
     async handleSubmit() {
-      console.log(this.formItem)
       let res = await divide_rules_add(
-        this.formItem
+        this.formItem,{
+          transformRequest: [
+            function(data) {
+              return JSON.stringify(data); //利用对应方法转换格式
+            }
+          ]
+        }
       );
       console.log(res)
     },
@@ -133,8 +151,8 @@ export default {
     handleSuccess(res, file) {
       this.import_data_loading = false;
       if (res.code === 1) {
-        console.log(res);
-        this.tableData = [];
+        this.tableData = res.data;
+        this.formItem.allotUserList = res.data
       } else {
         this.$Message.error(res.message);
       }

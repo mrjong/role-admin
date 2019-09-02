@@ -1,5 +1,6 @@
 <template>
   <div class="panel_list" style="padding: 10px;">
+
     <Row :gutter="10">
       <Col :xs="24" :sm="24" :md="16" :lg="16" style="margin-bottom: 30px; margin-right: 0px;">
         <!-- 今日案件 -->
@@ -203,7 +204,8 @@
       <p class="notice_detail_content">{{announcementContent}}</p>
       <p style="text-align: right; font-size: 14px; line-height: 26px;">{{createTime}}</p>
     </Modal>
-    <CaseLoading/>
+    <CaseLoading :showCaseLoading="showCaseLoading" @passBack="passBack" />
+    <IsConnection :showCaseLoading="showIsConnection" @passBack="passBack" />
   </div>
 </template>
 <script src="./index.js"></script>

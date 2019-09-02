@@ -7,8 +7,9 @@
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
           <FormItem label="查询周期:">
             <DatePicker
-              type="daterange"
-              v-model="formItem.date"
+              type="date"
+              v-model="formItem.effectMinDt"
+              format="yyyy-MM-dd"
               @on-change="dateChange"
               :editable="false"
               size='small'
@@ -42,14 +43,12 @@
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
-          v-if="add_rule"
           @click.stop="handeldBtnClick('2')"
         >配置</Button>
         <Button
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
-          v-if="one_distribute"
           @click.stop="handleBtnCaseCount"
         >维护接案数量</Button>
       </p>
@@ -77,7 +76,7 @@
     </Card>
     <Safeguard :showSafeguard="showSafeguard" @passBack="passBack"/>
     <AddDispose :showAddDispose="showAddDispose" @passBack="passBack"/>
-    <UpdateDispose :showUpdateDispose="showUpdateDispose" @passBack="passBack"/>
+    <UpdateDispose :showUpdateDispose="showUpdateDispose" @passBack="passBack" :updateData="updateData"/>
   </div>
 </template>
 <script src='./index.js'></script>

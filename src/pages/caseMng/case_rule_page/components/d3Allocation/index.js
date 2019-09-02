@@ -1,5 +1,5 @@
 
-import { divide_rules_list, divide_rules_changeStatus, divide_rules_order, divide_rules_his } from '@/service/getData';
+import { divide_rules_list, divide_rules_changeStatus, divide_rules_order, divide_rules_his, divide_allot_ready_case } from '@/service/getData';
 import AddDispose from './addDispose'
 import UpdateDispose from './updateDispose'
 import Safeguard from './safeguard'
@@ -16,13 +16,12 @@ export default {
       showUpdateDispose: false,
       showSafeguard: false,
       query: false,//查询权限
-      add_rule: false,//添加权限
       update: false,//修改权限
-      one_distribute: false,//一键分配权限
-      one_distribute_loading: false,//一键分配按钮loading
       query_loading: false,//查询按钮loading
+      updateData: {},
       formItem: {
         prodTypeList: [],
+        ruleType: '02',
         status: ''
       },
       ruleValidate: {
@@ -48,28 +47,6 @@ export default {
           title: '适用逾期天数',
           width: 200,
           searchOperator: '=',
-          key: 'prodTypeName',
-          align: 'center',
-        },
-        {
-          title: '适用分案日期',
-          width: 200,
-          searchOperator: '=',
-          key: 'perdCounts',
-          align: 'center',
-        },
-        {
-          title: '预设案件量时间',
-          width: 200,
-          searchOperator: '=',
-          key: 'perdThisCounts',
-          align: 'center',
-        },
-        {
-          title: '接案截至时间',
-          width: 200,
-          searchOperator: '=',
-          key: 'ovdudaysMin',
           align: 'center',
           render: (h, params) => {
             return h('div', [
@@ -101,60 +78,66 @@ export default {
           }
         },
         {
+          title: '适用分案日期',
+          width: 200,
+          searchOperator: '=',
+          key: 'effectMinDt',
+          align: 'center',
+          render: (h, params) => {
+            const row = params.row;
+            const effectMinDt = params.row.effectMinDt ?
+              this.$options.filters['tableDate'](params.row.effectMinDt) : null
+            return h('span', effectMinDt);
+          }
+        },
+        {
+          title: '预设案件量时间',
+          width: 200,
+          searchOperator: '=',
+          key: 'collectDateSta',
+          align: 'center',
+        },
+        {
+          title: '接案截至时间',
+          width: 200,
+          searchOperator: '=',
+          key: 'collectDateEnd',
+          align: 'center',
+        },
+        {
           title: '余案分配方式',
           width: 200,
           searchOperator: '=',
-          key: 'ovduamtMin',
+          key: 'remainAllotType',
           align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              params.row.ovduamtMin? h(
-                'span',
-                {
-                  class: 'edit-btn',
-                  props: {},
-                  style: {
-                    borderRight: 'none',
-                    padding: '0px'
-                  }
-                },
-                params.row.ovduamtMin + '-'
-              ): null,
-              params.row.ovduamtMax? h(
-                'span',
-                {
-                  class: 'edit-btn',
-                  props: {},
-                  style: {
-                    borderRight: 'none',
-                    padding: '0px'
-                  }
-                },
-                '-' + params.row.ovduamtMax
-              ): null,
-            ]);
-          }
         },
         {
           title: '创建人',
           width: 150,
           searchOperator: '=',
-          key: 'creditLevel',
+          key: 'createUser',
           align: 'center',
         },
         {
           title: '状态',
           width: 150,
           searchOperator: '=',
-          key: 'allotType',
+          key: 'execStatusName',
           align: 'center',
         },
         {
           title: '创建时间',
           width: 150,
           searchOperator: '=',
-          key: 'allotCounts',
+          key: 'createTime',
           align: 'center',
+          render: (h, params) => {
+            const row = params.row;
+            const createTime = row.createTime
+              ? this.$options.filters['formatDate'](row.createTime , 'YYYY-MM-DD HH:mm:ss')
+              : row.createTime;
+            return h('span', createTime);
+          }
         },
         {
           title: '操作',
@@ -175,6 +158,8 @@ export default {
                       //   this.$Message.error('很抱歉，暂无权限修改');
                       //   return;
                       // }
+                      this.updateData = JSON.parse(JSON.stringify(params.row))
+                      this.updateData.disabled= true
                       this.showUpdateDispose = true
                     }
                   }
@@ -193,6 +178,9 @@ export default {
                       //   return;
                       // }
                       this.showUpdateDispose = true
+                      this.updateData = JSON.parse(JSON.stringify(params.row))
+                      this.updateData.disabled = false
+                      console.log(this.updateData)
                     }
                   }
                 },
@@ -202,14 +190,17 @@ export default {
                 'a',
                 {
                   class: 'edit-btn',
+                  style: {
+                    display: params.row.execStatus === '01' ? 'inline-block' : 'none'
+                  },
                   props: {},
                   on: {
                     click: () => {
-                      if (!this.view_change_his) {
-                        this.$Message.error('很抱歉，暂无权限查看记录');
-                        return;
-                      }
-
+                      // if (!this.view_change_his) {
+                      //   this.$Message.error('很抱歉，暂无权限查看记录');
+                      //   return;
+                      // }
+                      this.divideAllotReadyCase(JSON.parse(JSON.stringify(params.row)).id)
                     }
                   }
                 },
@@ -223,11 +214,7 @@ export default {
     }
   },
   created() {
-    //获取缓存的表单值
-    let case_rule_form = window.sessionStorage.getItem('case_rule_form');
-    if (case_rule_form) {
-      this.formItem = JSON.parse(case_rule_form);
-    }
+    this.getList()
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -236,8 +223,6 @@ export default {
       }
       switch (item.url) {
         case "query": this.query = true;
-          break;
-        case "one_distribute": this.one_distribute = true;
           break;
         case "add": this.add_rule = true;
           break;
@@ -254,10 +239,9 @@ export default {
     handeldBtnClick(type) {
       this.showAddDispose= true
     },
-    handleSubmit(name) {
-      window.sessionStorage.setItem('case_rule_form', JSON.stringify(this.formItem));
-      this.pageNo = 1;
-      this.getList();
+
+    handleSubmit() {
+      this.getList()
     },
     // 页码改变的回调
     changePage(pageNo) {
@@ -275,43 +259,28 @@ export default {
       this.showSafeguard = true
     },
     // 选择日期回调
-    dateChange(arr) {
-      console.log(arr);
-      this.startFormItem.effectMinDt = arr[0];
-      this.startFormItem.effectMaxDt = arr[1];
+    dateChange(val) {
+      this.formItem.effectMinDt = this.$options.filters['formatDate'](val , 'YYYYMMDD')
     },
     // 关闭modal
     cancel(type) {
       this.recycleFlag = false;
     },
     // modal提交
-    ok(type, name) {
-      if (type === '1') {
-        this.$refs[name].validate((valid) => {
-          if (valid) {
-            this.startFormItem.status = '01';
-            this.divide_rules_changeStatus(this.startFormItem);
-          }
-        });
-      } else {
-        this.startFormItem.status = '02';
-        this.divide_rules_changeStatus(this.startFormItem);
-      };
-    },
     // 获取表格数据
     async getList() {
-      if (!this.query) {
-        this.$Message.error('很抱歉，暂无权限查询');
-        return;
-      }
+      // if (!this.query) {
+      //   this.$Message.error('很抱歉，暂无权限查询');
+      //   return;
+      // }
       this.query_loading = true;
+      this.formItem.ruleType= '02'
       const res = await divide_rules_list({
         ...this.formItem,
         pageNum: this.pageNo,
         pageSize: this.pageSize
       });
       this.query_loading = false;
-      console.log(res);
       if (res.code === 1) {
         this.tableData = res.data.content;
         this.total = res.data.totalElements;
@@ -342,10 +311,13 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    passBack() {
+    passBack(val) {
       this.showSafeguard = false
       this.showAddDispose = false
       this.showUpdateDispose = false
+      if(val==='change'){
+        this.getList()
+      }
     },
     // 重置
     clearForm(name) {
@@ -357,5 +329,15 @@ export default {
       window.sessionStorage.removeItem('case_rule_form');
       this.$refs[name].resetFields();
     },
+
+    async divideAllotReadyCase(id) {
+      const res = await divide_allot_ready_case({id: id});
+      console.log(res);
+      if (res.code === 1) {
+        this.getList();
+      } else {
+        this.$Message.error(res.message);
+      }
+    }
   },
 }

@@ -945,11 +945,12 @@ export const divide_rules_list = (obj) =>
   });
 
 // 添加案件接口
-export const divide_rules_add = (obj) =>
+export const divide_rules_add = (obj, options) =>
   fetch({
     url: '/divide/rules/add',
     method: 'POST',
-    data: qs.stringify(obj)
+    data: obj,
+    options
   });
 
 // 一键分配接口
@@ -991,12 +992,14 @@ export const divide_rules_edit = (obj) =>
     data: qs.stringify(obj)
   });
 
+
 // 修改分案规则
-export const divide_rules_save = (obj) =>
+export const divide_rules_save = (obj, options) =>
   fetch({
     url: '/divide/rules/save',
     method: 'POST',
-    data: qs.stringify(obj)
+    data: obj,
+    options
   });
 
 // 查看分案规则修改历史记录
@@ -1998,9 +2001,9 @@ export const rules_add = (obj) =>
     data: qs.stringify(obj)
   })
 
-export const allot_ready_case = (obj) =>
+export const divide_allot_ready_case = (obj) =>
   fetch({
-    url: '/allot/ReadyCase',
+    url: '/divide/allot/readyCase',
     method: 'POST',
     data: qs.stringify(obj)
   })
@@ -2021,19 +2024,20 @@ export const divide_star_update = (obj, options) =>
 
   })
 
-export const allot_user_getDivideUserByUserId = (obj) =>
+export const divide_allot_user_getDivideUserByUserId = (obj) =>
   fetch({
-    url: '/allot/user/getDivideUserByUserId',
+    url: '/divide/allot/user/getDivideUserByUserId',
     method: 'POST',
     data: qs.stringify(obj)
   })
 
 
-export const allot_user_upDivideRuleUser = (obj) =>
+export const divide_allot_user_upDivideRuleUser = (obj, options) =>
   fetch({
-    url: '/allot/user/upDivideRuleUser',
+    url: '/divide/allot/user/upDivideRuleUser',
     method: 'POST',
-    data: qs.stringify(obj)
+    data: obj,
+    options
   })
 
 

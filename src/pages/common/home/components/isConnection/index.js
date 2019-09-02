@@ -3,13 +3,13 @@ export default {
   components: {
 
   },
+  props: ['showIsConnection'],
   name: 'isConnection',
   data() {
     return {
       submit_loading: false,
       isRecdCase: '1',
       finaAllotCounts: '10',
-      isConfirmDivide: false
     };
   },
   created() {
