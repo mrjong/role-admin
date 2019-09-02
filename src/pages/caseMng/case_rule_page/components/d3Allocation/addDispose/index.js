@@ -116,7 +116,11 @@ export default {
 
     async handleSubmit() {
       let res = await divide_rules_add(
-        this.formItem,{
+        {
+          ...this.formItem,
+          prodTypeList: [this.formItem.prodTypeList],
+        },
+        {
           transformRequest: [
             function(data) {
               return JSON.stringify(data); //利用对应方法转换格式

@@ -2055,7 +2055,21 @@ export const allot_user_confirmDivide = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   })
+//分案明细接口列表
+export const divide_allot_user_list = (obj) =>
+  fetch({
+    url: '/divide/allot/user/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 
+//分案明细导出列表
+export const divide_allot_user_export_list = (obj) =>
+  fetch({
+    url: '/divide/allot/user/exportlist',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 
 // 下载分配导入查询
 export const divide_download_template = (obj, options) =>
