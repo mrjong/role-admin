@@ -30,9 +30,6 @@ export default {
       pageSize: 10,
       total: 0,
       tableData: [
-        {
-          prodTypeName: 3
-        }
       ],
       tableColumns: [
         {
@@ -170,6 +167,9 @@ export default {
                 'a',
                 {
                   class: 'edit-btn',
+                  style: {
+                    display: params.row.execStatus === '01' ? 'inline-block' : 'none'
+                  },
                   props: {},
                   on: {
                     click: () => {
@@ -214,7 +214,6 @@ export default {
     }
   },
   created() {
-    this.getList()
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {

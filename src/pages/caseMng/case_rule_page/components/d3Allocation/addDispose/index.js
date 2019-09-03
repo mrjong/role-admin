@@ -228,7 +228,7 @@ export default {
             }
           );
           if (res.code === 1) {
-            this.$emit("passBack");
+            this.$emit("passBack", 'change');
             this.$Message.success('添加成功');
             this.formItem= {
               ruleType: '02',

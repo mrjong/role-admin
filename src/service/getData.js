@@ -2064,11 +2064,13 @@ export const divide_allot_user_list = (obj) =>
   })
 
 //分案明细导出列表
-export const divide_allot_user_export_list = (obj) =>
+export const divide_allot_user_export_list = (obj, options) =>
   fetch({
     url: '/divide/allot/user/exportlist',
     method: 'POST',
-    data: qs.stringify(obj)
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
   })
 
 //我要接案
