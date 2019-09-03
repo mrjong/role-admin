@@ -4,7 +4,7 @@
     <Drawer
       :value="showSafeguard"
       width="720"
-      title="维护结案数量"
+      title="维护接案数量"
       :mask-closable="false"
       @on-close="closeDrawer"
       :closable="false"

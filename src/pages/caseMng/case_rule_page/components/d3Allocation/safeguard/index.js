@@ -157,6 +157,7 @@ export default {
                     style: {display: !this.showEdit ? 'none' : 'block', textAlign: 'center'},
                     props: {
                       size: 'small',
+                      type: 'number',
                       value: params.row["AllotCounts"+item.starCode],
                     },
                     on: {
@@ -187,6 +188,7 @@ export default {
                     style: {display: !this.showEdit ? 'none' : 'block', textAlign: 'center'},
                     props: {
                       size: 'small',
+                      type: 'number',
                       value: params.row["CountsSta"+item.starCode],
                     },
                     on: {
@@ -217,6 +219,7 @@ export default {
                     style: {display: !this.showEdit ? 'none' : 'block', textAlign: 'center'},
                     props: {
                       size: 'small',
+                      type: 'number',
                       value: params.row["CountsEnd"+item.starCode],
                     },
                     on: {
