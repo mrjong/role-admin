@@ -249,7 +249,6 @@ export default {
 
     },
     async handleSubmit () {
-      this.showEdit = false
       console.log(this.divideStarVoList)
       let res = await divide_star_update({
         divideStarVoList: this.divideStarVoList,
@@ -260,6 +259,7 @@ export default {
         }
       ]});
       if (res && res.code === 1) {
+        this.showEdit = false
         this.getList()
       } else {
         this.$Message.error(res.message);
@@ -283,6 +283,7 @@ export default {
       this.peakMonth.end = e.target.value
     },
     handleCancel() {
+      this.showEdit = false
       this.$emit("passBack");
     }
   }

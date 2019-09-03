@@ -5,7 +5,7 @@
       <Form  ref="formItem" :model="formItem" :label-width="95" style="padding: 10px 0">
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-          <FormItem label="查询周期:">
+          <FormItem label="适用分案日期:">
             <DatePicker
               type="date"
               v-model="formItem.effectMinDt"
@@ -14,7 +14,7 @@
               :editable="false"
               size='small'
               clearable
-              placeholder="请选择查询周期"
+              placeholder="请选择适用分案日期"
               style="width: 100%"
             ></DatePicker>
           </FormItem>

@@ -166,7 +166,7 @@ export default {
         this.$Message.error("很抱歉，暂无权限查询");
         return;
       }
-      this.formItem.currentDate = this.formItem.currentDate ?this.$options.filters['formatDate'](this.formItem.currentDate , 'YYYYMMDD') : ''
+      this.formItem.currentDate = this.formItem.currentDate ?this.$options.filters['formatDate'](this.formItem.currentDate , 'YYYY-MM-DD') : ''
       this.query_loading = true;
       let res;
       res = await divide_allot_user_list({

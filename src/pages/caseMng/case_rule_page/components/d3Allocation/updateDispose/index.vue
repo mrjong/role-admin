@@ -15,7 +15,7 @@
           <Form
             ref="formItem"
             :model="formItem"
-            :label-width="105"
+            :label-width="110"
             :rules="ruleValidate"
             :style="{'width': '100%', margin:'0', flex: '1'}"
           >
@@ -25,7 +25,6 @@
                 <Select
                   size="small"
                   clearable
-                  multiple
                   placeholder="请选择产品线"
                   v-model="formItem.prodTypeList"
                   :disabled="formItem.disabled"
@@ -115,11 +114,10 @@
             </Row>
             <Row>
               <Col :xs="24" :sm="24" :md="20" :lg="20" span="6">
-              <FormItem label="适用分案日期:">
+              <FormItem label="适用分案日期:" prop="effectMinDt">
                 <DatePicker
                   type="date"
                   v-model="formItem.effectMinDt"
-                  @on-change="dateChange"
                   format="yyyy-MM-dd"
                   :editable="false"
                   size='small'
@@ -133,12 +131,11 @@
             </Row>
             <Row>
               <Col :xs="24" :sm="24" :md="20" :lg="20" span="6">
-              <FormItem label="预设案件量时间:">
+              <FormItem label="预设案件量时间:" prop="collectDateSta">
                 <DatePicker
                   v-model="formItem.collectDateSta"
                   type="datetime"
                   format="yyyy-MM-dd HH:mm:ss"
-                  @on-change="getChangeDate($event, 'collectDateSta')"
                   :editable="false"
                   size='small'
                   clearable
@@ -151,12 +148,11 @@
             </Row>
             <Row>
               <Col :xs="24" :sm="24" :md="20" :lg="20" span="6">
-              <FormItem label="接案截至时间:">
+              <FormItem label="接案截至时间:" prop="collectDateEnd">
                 <DatePicker
                   type="datetime"
                   format="yyyy-MM-dd HH:mm:ss"
                   v-model="formItem.collectDateEnd"
-                  @on-change="getChangeDate($event, 'collectDateEnd')"
                   :editable="false"
                   size='small'
                   clearable
@@ -169,7 +165,7 @@
             </Row>
             <Row>
               <Col :xs="24" :sm="24" :md="20" :lg="20" span="6">
-              <FormItem span="6" label="余案分配方式:">
+              <FormItem span="6" label="余案分配方式:" prop="remainAllotType">
                 <Select
                   size="small"
                   clearable
@@ -188,7 +184,7 @@
             </Row>
             <Row>
               <Col :xs="24" :sm="24" :md="20" :lg="20" span="6">
-              <FormItem span="6" label="适用分案人员:">
+              <FormItem span="6" label="适用分案人员:" prop="opOrganizationList">
                 <Select
                   size="small"
                   multiple

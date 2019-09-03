@@ -9,6 +9,30 @@ export default {
   props: ["showUpdateDispose", 'updateData'],
   mixins: [formValidateFun, sysDictionary],
   data() {
+    const validate_day_start = (rule, value, callback) => {
+      if (Number(value) > 999) {
+        callback(new Error("天数不能大于999"));
+      }
+      if (
+        value &&
+        this.formItem.ovdudaysMax &&
+        Number(value) > Number(this.formItem.ovdudaysMax)
+      ) {
+        console.log(this.formItem.ovdudaysMax);
+        callback(new Error("开始不能大于结束"));
+      } else {
+        callback();
+      }
+    };
+    const validate_day_end = (rule, value, callback) => {
+      if (Number(value) > 999) {
+        callback(new Error("天数不能大于999"));
+      }
+      if (this.formItem.ovdudaysMin) {
+        this.$refs.formItem.validateField("ovdudaysMin");
+      }
+      callback();
+    };
     return {
       headers: {
         'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
@@ -25,9 +49,78 @@ export default {
       showDispose: true,
       formItem: {
         ruleType: '02',
-        // allotType: '03'
       },
-      ruleValidate: {},
+      ruleValidate: {
+        prodTypeList: [
+          {
+            required: true,
+            type: "string",
+            message: "请选择产品线"
+          }
+        ],
+        ovdudaysMin: [
+          {
+            pattern: this.GLOBAL.num,
+            message: "逾期天数为正整数",
+            trigger: "blur"
+          },
+          {
+            validator: validate_day_start,
+            trigger: "blur"
+          }
+        ],
+        ovdudaysMax: [
+          {
+            pattern: this.GLOBAL.num,
+            message: "逾期天数为正整数",
+            trigger: "blur"
+          },
+          {
+            validator: validate_day_end,
+            trigger: "blur"
+          }
+        ],
+        effectMinDt: [
+          {
+            required: true,
+            type: "date",
+            message: "请选择分案日期",
+            trigger: 'change'
+          }
+        ],
+        collectDateSta: [
+          {
+            required: true,
+            type: "date",
+            message: "请选择预设案件量时间",
+            trigger: 'change'
+          }
+        ],
+        collectDateEnd: [
+          {
+            required: true,
+            type: "date",
+            message: "请选择接案截至时间",
+            trigger: 'change'
+          }
+        ],
+        remainAllotType: [
+
+          {
+            required: true,
+            type: "string",
+            message: "请选择余案分配方式"
+          }
+        ],
+        opOrganizationList: [
+          {
+            required: true,
+            message: "请选择适用分案人员",
+            trigger: "change",
+            type: "array"
+          }
+        ],
+      },
       getDirList: [
         "DIVIDE_PROD_TYPE",
         "DIVIDE_PROD_CNT",
@@ -116,38 +209,47 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    dateChange(val) {
-      this.formItem.effectMinDt = val
-    },
     closeDrawer() {
 
     },
-    getChangeDate(val,flag) {
-      this.formItem[flag] = val
-    },
 
     async handleSubmit() {
-      this.formItem.effectMinDt = this.$options.filters['formatDate'](this.formItem.effectMinDt , 'YYYYMMDD')
-      this.formItem.collectDateSta =
-        this.$options.filters['formatDate'](this.formItem.collectDateSta , 'YYYY-MM-DD HH:mm:ss')
-      this.formItem.collectDateEnd =
-        this.$options.filters['formatDate'](this.formItem.collectDateEnd , 'YYYY-MM-DD HH:mm:ss')
-      this.update_loading = true
-      let res = await divide_rules_save(
-        this.formItem,{
-          transformRequest: [
-            function(data) {
-              return JSON.stringify(data); //利用对应方法转换格式
+      this.$refs['formItem'].validate(async valid => {
+        if (valid) {
+          if (this.formItem.allotUserList.length === 0) {
+            this.$Message.error('请先导入分案率值')
+            return
+          }
+          this.formItem.effectMinDt = this.$options.filters['formatDate'](this.formItem.effectMinDt, 'YYYYMMDD')
+          this.formItem.collectDateSta =
+            this.$options.filters['formatDate'](this.formItem.collectDateSta, 'YYYY-MM-DD HH:mm:ss')
+          this.formItem.collectDateEnd =
+            this.$options.filters['formatDate'](this.formItem.collectDateEnd, 'YYYY-MM-DD HH:mm:ss')
+          this.update_loading = true
+          let res = await divide_rules_save(
+            {
+              ...this.formItem,
+              prodTypeList: [this.formItem.prodTypeList],
+            },
+            {
+              transformRequest: [
+                function (data) {
+                  return JSON.stringify(data); //利用对应方法转换格式
+                }
+              ]
             }
-          ]
+          );
+          this.update_loading = false
+          if (res.code === 1) {
+            this.formItem = {
+              ruleType: '02',
+            }
+            this.$emit("passBack", 'change');
+          } else {
+            this.$Message.error(res.message)
+          }
         }
-      );
-      this.update_loading = false
-      if(res.code === 1){
-        this.$emit("passBack", 'change');
-      } else {
-        this.$Message.error(res.message)
-      }
+      })
     },
     handleCancel() {
       this.$emit("passBack");

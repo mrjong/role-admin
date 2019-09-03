@@ -417,6 +417,7 @@ util.websocket = () => {
         break;
       case '08':
         Notification({
+          title: data.msgTitle,
           message: h('span', { style: 'color: #fff; font-weight: 600' }, data.msgContent),
           type: "success",
           duration: 5000,

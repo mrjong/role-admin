@@ -1,6 +1,7 @@
 <template>
     <Modal
-      :value="showCaseLoading"
+      :value="showCaseLoading "
+      v-if="showFlag"
       :footer-hide="true"
       :closable=" false"
       width="50%"
@@ -21,7 +22,6 @@
             </span>
           </span>
         </p>
-        <p style="color: #ff5c33">说明：上述值取值“维护结案数量”页面的数据</p>
         <div>
           <div class="list">
             <span>请确认明日是否接收案件</span>

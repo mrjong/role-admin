@@ -11,7 +11,7 @@
       :styles="styles"
     >
       <Card class="vue-panel" style="margin-bottom: 30px;" :dis-hover="true">
-        <div style="margin-bottom: 30px">1. 请设置各档位催收员可配接收案件的数量  说明：仅可填写正整数</div>
+        <div style="margin-bottom: 30px">1. 请设置各档位催收员可配接收案件的数量  <span style="color: red">说明：仅可填写正整数</span></div>
         <Table border ref="selection" :columns="tableColumns" :data="tableData" size="small" ></Table>
         <div style="margin: 30px 0px 10px; display: flex; " >
           <span>2. 请选择高期期时间段</span>
@@ -42,7 +42,7 @@
             ></Input>号
           </div>
         </div>
-        <div>说明：除此时间段，其他均列为日常期。</div>
+        <div style="color: #c5c5c5">说明：除此时间段，其他均列为日常期。</div>
         <div style="display: flex; justify-content: space-around; margin-top: 20px">
           <Button
             type="primary"

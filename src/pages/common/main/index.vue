@@ -80,7 +80,7 @@
           <Button
             type="primary"
             @click="openCase"
-            style="width:180px"
+            style="width:150px"
             long
             size="small"
           >
