@@ -11,7 +11,8 @@ export default {
   data() {
     return {
       submit_loading: false,
-      allotStatus: '',
+      allotStatus: '',   //是否设置接案量
+      isPeak: '',  //是高峰期还是平常期
       showFlag: false,
       divideStarVoList: [
         // {
@@ -70,15 +71,34 @@ export default {
     handleCancel() {
       this.$emit("passBack");
     },
+    //更改默认值
+    changeAllotCounts(val, item) {
+      if(this.isPeak === '1'){
+        //高峰期
+        if(val.target.value< parseFloat(item.peakCountsSta) || val.target.value> parseFloat(item.peakCountsEnd) ){
+          item.descError = '区间应在' + item.peakCountsSta+ '到' + item.peakCountsEnd +'之间'
+        } else {
+          item.descError = ''
+        }
+      } else {
+        //平时期
+        if(val.target.value< parseFloat(item.normCountsSta) || val.target.value> parseFloat(item.normCountsEnd) ){
+          item.descError = '区间应在' + item.normCountsSta+ '到' + item.normCountsEnd +'之间'
+        } else {
+          item.descError = ''
+        }
+      }
+      console.log(val.target.value)
+      console.log(item)
+    },
     async handleSubmit() {
       let checkFlag = false
       this.divideStarVoList.forEach(item=>{
-        if(!item.allotCounts){
+        if(item.descError) {
           checkFlag = true
         }
       })
-      if(checkFlag) {
-        this.$Message.error('请填写相关值')
+      if(checkFlag){
         return
       }
       const res = await divide_allot_user_upDivideRuleUser({
@@ -93,6 +113,7 @@ export default {
       });
       if (res.code === 1) {
         this.$emit("passBack");
+        this.$Message.success('设置成功');
       } else {
         this.$Message.error(res.message);
       }
@@ -103,6 +124,7 @@ export default {
         this.showFlag = true
         this.divideStarVoList = res.data.divideStarVoList
         this.allotStatus= res.data.allotStatus
+        this.isPeak= res.data.isPeak
       } else {
         this.showFlag = false
         this.$emit("passBack");

@@ -29,17 +29,16 @@ export default {
   },
   methods: {
     async handleSubmit() {
-      if(this.webSocketData.template === 'SYS_MSG_CASE_ALLOT_NO'){
-        this.showIsConnection = false
-        return
-      }
+
       let params =JSON.parse(this.webSocketData.params)
       const res = await cases_allot_take_case({
         ...params
       });
       if (res.code === 1) {
         this.showIsConnection = false
-        this.$Message.success('接案成功');
+        if(this.webSocketData.template !== 'SYS_MSG_CASE_ALLOT_NO'){
+          this.$Message.success('接案成功');
+        }
       } else {
         this.$Message.error(res.message);
       }

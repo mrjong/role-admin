@@ -39,7 +39,8 @@
             <div style="margin-left: 30px; flex: 1">
               <div  v-for="(item, index) in divideStarVoList" class="list_item">
                 <span>{{item.starName}}</span>
-                <Input size="small" clearable  style="display: inline-block; width: 50%; margin-left: 20px" :disabled="allotStatus==='02'" v-model="item.allotCounts"/>
+                <Input size="small" clearable  style="display: inline-block; width: 50%; margin-left: 20px" :disabled="allotStatus==='02'" v-model="item.allotCounts" @on-change="changeAllotCounts($event, item)"/>
+                <span style="color: #ed4014; margin-left: 10px">{{item.descError && item.descError}}</span>
               </div>
             </div>
           </div>
