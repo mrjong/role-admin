@@ -216,9 +216,17 @@ export default {
     // this.tableData_repayment = this.breaks_data.tableData;
   },
   mounted() {
-    if (this.edit_flag) {
-      this.handelAdd();
-    }
+    this.uploadList = this.$refs.upload.fileList;
+    // 设置左右两边的border
+    this.$nextTick(() => {
+      let left = this.$refs.left;
+      let right = this.$refs.right;
+      if (Number(left.scrollHeight) > Number(right.scrollHeight)/2) {
+        left.style.borderRight = '1px solid #e8eaec';
+      } else {
+        right.style.borderLeft = '1px solid #e8eaec';
+      }
+    })
   },
   methods: {
     // 处理左右表单联动
@@ -532,7 +540,4 @@ export default {
       }
     }
   },
-  mounted() {
-    this.uploadList = this.$refs.upload.fileList;
-  }
 };

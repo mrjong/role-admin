@@ -40,7 +40,7 @@
         <!-- 减免信息 -->
         <Col :xs="24" :sm="24" :md="12" :lg="12">
           <div class="alert-title">减免标记</div>
-          <div class="alert-desc">
+          <div class="alert-desc left" ref='left'>
             <div class="panel-desc">
               <Form
                 ref="formItem"
@@ -219,7 +219,7 @@
         <!-- 还款信息 -->
         <Col :xs="24" :sm="24" :md="12" :lg="12">
           <div class="alert-title">还款信息</div>
-          <div class="alert-desc">
+          <div class="alert-desc right" ref='right'>
             <Table
               border
               :data="tableData_repayment"
