@@ -364,6 +364,7 @@ export const initStatus = (phoneNumber, that) => {
   ///////////////////////////////////////////////////////////
   cti.EVENT_AgentRinging = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, agentstate, laststate, calldata) {
     console.log("@ 座席振铃进行EVENT_AgentRinging通知。可在此事件中处理弹屏相关操作。");
+    sessionStorage.setItem('callId', callId)
     // that.xZStatus = '座席振铃'
     //可在此进行弹屏处理
     console.log("## EVENT_AgentRinging:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",agentstate=" + agentstate + ",laststate=" + laststate + ",calldata=" + calldata);
