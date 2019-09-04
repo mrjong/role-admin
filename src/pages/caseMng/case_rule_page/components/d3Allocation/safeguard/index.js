@@ -163,6 +163,9 @@ export default {
                     on: {
                       'on-change': ( e ) => {
                         this.getChange(e.target.value, item, params.row._index, 'AllotCounts')
+                      },
+                      'on-keyup': ( e ) => {
+                        e.target.value=e.target.value.replace(/^(0+)|[^\d]+/g,'')
                       }
                     }
                   },
@@ -194,6 +197,9 @@ export default {
                     on: {
                       'on-change': ( e ) => {
                         this.getChange(e.target.value, item, params.row._index, 'CountsSta')
+                      },
+                      'on-keyup': ( e ) => {
+                        e.target.value=e.target.value.replace(/^(0+)|[^\d]+/g,'')
                       }
                     }
                   },
@@ -225,6 +231,9 @@ export default {
                     on: {
                       'on-change': ( e ) => {
                         this.getChange(e.target.value, item, params.row._index, 'CountsEnd')
+                      },
+                      'on-keyup': ( e ) => {
+                        e.target.value=e.target.value.replace(/^(0+)|[^\d]+/g,'')
                       }
                     }
                   },
