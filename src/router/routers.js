@@ -10,6 +10,7 @@ import logMngRouter from '@/pages/logMng/router';
 import taskManagementRouter from '@/pages/taskManagement/router';
 import commonRouter from '@/pages/common/router';
 import outGoingCallRouter from '@/pages/outGoingCall/router';
+import roundMng from '@/pages/roundMng/router';
 export default {
   ...collectionMngRouter,
   ...workflowRouter,
@@ -21,5 +22,6 @@ export default {
   ...businessMngRouter,
   ...logMngRouter,
   ...commonRouter,
-  ...outGoingCallRouter
+  ...outGoingCallRouter,
+  ...roundMng
 };
