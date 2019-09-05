@@ -273,6 +273,7 @@ export default {
                       this.breaks_data = {
                         caseNo: params.row.id,
                         billNo: params.row.billNo,
+                        prdTyp: params.row.prdTyp,
                       };
                       this.breaks_flag = true;
                     }

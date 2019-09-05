@@ -155,13 +155,14 @@
                         placeholder="请选择减免期数"
                         v-model="formItem.perdNum"
                         clearable
-                        :disabled="!edit_flag"
+                        :disabled="!edit_flag || perdNum_flag"
                         label-in-value
                         transfer
                         @on-change="perdNumSelectChange"
                       >
                         <Option
                           v-for="item in relief_counts"
+                          v-if="item.itemCode === '0'? perdNum_flag: true"
                           :value="item.itemCode"
                           :key="item.itemCode"
                         >{{ item.itemName }}</Option>

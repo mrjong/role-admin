@@ -3,7 +3,7 @@
     <Modal
       class="jianmian"
       width="800"
-      v-model="model"
+      :value="model"
       @on-visible-change="del"
       title="申请减免"
       class-name="jianmian_modal"
@@ -89,8 +89,8 @@
             :rules="ruleValidate"
           >
             <Row>
-              <Col :xs="24" :sm="24" :md="10" :lg="10" span="6">
-                <FormItem span="6" label="减免原因:" prop="reliefReason">
+              <Col :xs="24" :sm="24" :md="14" :lg="14" span="14">
+                <FormItem span="6" label="减免原因:" prop="reliefReason" style="margin-bottom: 10px;">
                   <Select
                     size="small"
                     placeholder="请选择减免原因"
@@ -106,7 +106,7 @@
                   </Select>
                 </FormItem>
               </Col>
-               <Col :xs="24" :sm="24" :md="16" :lg="16" :span="16">
+               <Col :xs="24" :sm="24" :md="14" :lg="14" :span="14">
                 <FormItem span="6" label="减免标记:">
                   <Input
                     type="textarea"
@@ -194,13 +194,14 @@
                     placeholder="请选择减免期数"
                     v-model="formItem.perdNum"
                     clearable
-                    :disabled="!edit_flag"
+                    :disabled="!edit_flag || perdNum_flag"
                     label-in-value
                     transfer
                     @on-change="perdNumSelectChange"
                   >
                     <Option
                       v-for="item in relief_counts"
+                      v-if="item.itemCode === '0'? perdNum_flag: true"
                       :value="item.itemCode"
                       :key="item.itemCode"
                     >{{ item.itemName }}</Option>
