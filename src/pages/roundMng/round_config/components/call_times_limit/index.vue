@@ -10,11 +10,28 @@
     <!-- 展示区 -->
     <div class="list_item">
       <div class="list_wrap">
-        <CheckboxGroup v-model="call_times_limit_checkbox">
-          <Checkbox label="01" class="call_user_type">本人</Checkbox>
-          <Checkbox label="02" class="call_user_type">紧连</Checkbox>
-          <Checkbox label="03" class="call_user_type">通讯录</Checkbox>
-        </CheckboxGroup>
+        <Form ref="formItem" :model="formItem" :label-width="10" :rules="ruleValidate">
+          <CheckboxGroup v-model="call_times_limit_checkbox">
+            <Checkbox label="01" class="call_user_type">
+              本人
+              <FormItem span="6" prop="caseHandleStatus" class="form_item">
+                <InputNumber size="small" :max="10" :min="0" v-model="formItem.benren"></InputNumber>
+              </FormItem>
+            </Checkbox>
+            <Checkbox label="02" class="call_user_type">
+              紧连
+              <FormItem span="6" prop="caseHandleStatus" class="form_item">
+                <InputNumber size="small" :max="10" :min="0" v-model="formItem.benren"></InputNumber>
+              </FormItem>
+            </Checkbox>
+            <Checkbox label="03" class="call_user_type">
+              通讯录
+              <FormItem span="6" prop="caseHandleStatus" class="form_item">
+                <InputNumber size="small" :max="10" :min="0" v-model="formItem.benren"></InputNumber>
+              </FormItem>
+            </Checkbox>
+          </CheckboxGroup>
+        </Form>
       </div>
     </div>
   </div>
