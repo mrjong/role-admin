@@ -14,6 +14,7 @@
         <img :src="QR_CODE_INFO.qrCodeInfo" style="width: 300px; margin: 0 auto;" />
         <p class="qr_code_text">{{QR_CODE_INFO.userNmHid}}（{{QR_CODE_INFO.lastUserMblNo}}）</p>
         <p class="qr_code_text">金额：{{QR_CODE_INFO.totRepayAmt}}元</p>
+        <p class="qr_code_text mark_text">此二维码将于{{month}}月{{day}}日&nbsp;{{times}}失效</p>
       </div>
       <div slot="footer" class="gathering_footer">
         <Button size="small" @click="offlineScanPay_invalid" :loading="failure_loading">

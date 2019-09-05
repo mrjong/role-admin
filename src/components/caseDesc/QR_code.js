@@ -20,6 +20,9 @@ export default {
       download_loading: false,
       failure_loading: false,
       spinShow: true,
+      month: '',
+      day: '',
+      times: '',
     }
   },
   created() {
@@ -33,6 +36,8 @@ export default {
       html2canvas(this.$refs.imgtofile, {
         // backgroundColor: null
         useCORS: true,
+        width: 500,
+        // height: 500,
       }).then((canvas) => {
         let url = canvas.toDataURL('image/png');
         this.htmlUrl = url;
@@ -62,6 +67,9 @@ export default {
       if (res.code === 1) {
         this.QR_CODE_INFO = res.data;
         this.QR_CODE_INFO.qrCodeInfo = this.QR_CODE_INFO.qrCodeInfo? 'data:image/png;base64,'+ this.QR_CODE_INFO.qrCodeInfo :'';
+        res.data.qrCodeInvalidDt && this.$set(this, 'month', res.data.qrCodeInvalidDt.substr(4,2));
+        res.data.qrCodeInvalidDt && this.$set(this, 'day', res.data.qrCodeInvalidDt.substr(6,2));
+        res.data.qrCodeInvalidTm && this.$set(this, 'times', res.data.qrCodeInvalidTm.substr(0,2)+":"+res.data.qrCodeInvalidTm.substr(2,2));
         this.spinShow = false;
       } else {
         this.$Message.error(res.message);
