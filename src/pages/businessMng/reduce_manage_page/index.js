@@ -104,6 +104,7 @@ export default {
                     click: () => {
                       this.breaks_data = {
                         id: params.row.id,
+                        prdTyp: params.row.prodType,
                       }
                       this.modal.breaks = true
                     }

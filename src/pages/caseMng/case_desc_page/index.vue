@@ -167,7 +167,7 @@
                   当前逾期期数：
                   <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.overduePerdCount}}</span>
                 </div>
-              </Col> -->
+              </Col>-->
               <Col :xs="24" :sm="24" :md="24" :lg="24">
                 <div class="panel-desc-title">
                   家庭住址：
@@ -214,48 +214,60 @@
         <div v-if="!showPanel2">
           <Form ref="formItem" :model="formItem" :label-width="80" :rules="ruleValidate">
             <div class="panel-desc">
-              <Row :gutter="5">
-                <div class="panel-desc-title fl mr10">
-                  账单号：
-                  <span>{{case_detail_case_base_info_Data.billNo}}</span>
-                </div>
-
-                <div class="panel-desc-title fl mr10">
-                  借款本金：
-                  <span>{{case_detail_case_base_info_Data.loanAmount | money}}</span>
-                </div>
-
-                <div class="panel-desc-title fl mr10">
-                  借款时间：
-                  <span>{{case_detail_case_base_info_Data.loanTime | formatDatetime}}</span>
-                </div>
-
-                <div class="panel-desc-title fl mr10">
-                  银行卡号：
-                  <span>
-                    {{case_detail_case_base_info_Data.crdNoHid}}
-                    <Poptip
-                      :content="mingwenData"
-                      v-if="case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNoHid"
-                    >
-                      <!-- <Icon
-                        class="eye-class"
-                        v-if
-                        title="显示明文"
-                        type="md-eye"
-                        @click.native="syscommon_decrypt({
-                type:'BANK_CARD',
-                data:case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNo
-            })"
-                      ></Icon>-->
-                    </Poptip>
-                  </span>
-                </div>
-
-                <div class="panel-desc-title fl mr10">
-                  银行卡：
-                  <span>{{case_detail_case_base_info_Data.corgName}}</span>
-                </div>
+              <Row >
+                <Col span="24">
+                  <Col span="6" class="panel-desc-title">
+                    账单号：
+                    <span>{{case_detail_case_base_info_Data.billNo}}</span>
+                  </Col>
+                  <Col span="4" class="panel-desc-title">
+                    借款本金：
+                    <span>{{case_detail_case_base_info_Data.loanAmount | money}}</span>
+                  </Col>
+                  <Col span="5" class="panel-desc-title">
+                    借款时间：
+                    <span>{{case_detail_case_base_info_Data.loanTime | formatDatetime}}</span>
+                  </Col>
+                  <Col span="5" class="panel-desc-title">
+                    银行卡号：
+                    <span>
+                      {{case_detail_case_base_info_Data.crdNoHid}}
+                      <Poptip
+                        :content="mingwenData"
+                        v-if="case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNoHid"
+                      ></Poptip>
+                    </span>
+                  </Col>
+                  <Col span="4" class="panel-desc-title">
+                    银行卡：
+                    <span>{{case_detail_case_base_info_Data.corgName}}</span>
+                  </Col>
+                </Col>
+                <Col span="24" v-if="case_detail_case_base_info_Data.prdTyp === '01' || case_detail_case_base_info_Data.prdTyp === '11'">
+                  <Col span="6" class="panel-desc-title overdue_text">
+                    逾期应还本金：
+                    <span>{{case_detail_case_base_info_Data.billPrcpAmt | money}}</span>
+                    <!-- <span>2288.16</span> -->
+                  </Col>
+                  <Col span="4" class="panel-desc-title overdue_text">
+                    逾期应还利息：
+                    <span>{{case_detail_case_base_info_Data.billItrtAmt | money}}</span>
+                  </Col>
+                  <Col span="5" class="panel-desc-title overdue_text">
+                    逾期应还服务费：
+                    <span>{{case_detail_case_base_info_Data.billMngAmt | money}}</span>
+                  </Col>
+                  <Col span="5" class="panel-desc-title overdue_text">
+                    预期应还罚息：
+                    <span>
+                      {{case_detail_case_base_info_Data.billFineAmt | money}}
+                    </span>
+                  </Col>
+                  <Col span="4" class="panel-desc-title overdue_text">
+                    逾期应还管理费：
+                    <span>{{case_detail_case_base_info_Data.billOvduAmt | money}}</span>
+                  </Col>
+                </Col>
               </Row>
             </div>
           </Form>
@@ -589,12 +601,17 @@
                   class="ivu-alert-copy ivu-alert-error"
                   v-for="(item,index) in case_detail_urgent_contact_Data.userContactList"
                 >
-                  <span class="state-name">{{item.channelSource === '5'? '本人（变更）': item.channelSource === '10'? '本人（人审）':'紧急联系人'}}</span>
+                  <span
+                    class="state-name"
+                  >{{item.channelSource === '5'? '本人（变更）': item.channelSource === '10'? '本人（人审）':'紧急联系人'}}</span>
                   <span class="name">
                     {{item.cntUserNameClear}}
                     <span>({{item.cntRelTypName}})&nbsp;</span>
                   </span>
-                  <span class="tel" @click="handCall(item,'call', item.cntRelTyp === '00'? '01': '02')">
+                  <span
+                    class="tel"
+                    @click="handCall(item,'call', item.cntRelTyp === '00'? '01': '02')"
+                  >
                     <Badge :count="item.callCount" class-name="badge_wrap_myself">
                       <Tooltip
                         :content="all_opt?'拨打':'暂无权限拨打'"
@@ -720,7 +737,12 @@
                     </div>
                   </TabPane>
 
-                  <TabPane class="call_update" :icon="case_detail_urgent_contact_Data.isMailAppend || case_detail_mail_list_appended_tableData.length >0? 'md-person-add': ''" label="通话更新" name="case_detail_mail_list_appended">
+                  <TabPane
+                    class="call_update"
+                    :icon="case_detail_urgent_contact_Data.isMailAppend || case_detail_mail_list_appended_tableData.length >0? 'md-person-add': ''"
+                    label="通话更新"
+                    name="case_detail_mail_list_appended"
+                  >
                     <div>
                       <Table
                         border
@@ -951,7 +973,10 @@
     <!-- 容联、讯众软电话 -->
     <div class="tel-box" v-if="showMoorTel" :style="xZStyle && 'width: 210px'">
       <div class="tel-box-desc" :style="xZStyle && 'width: 200px'">
-        <div class="tel-num" :style="xZStyle && 'display: inline-block; marginRight: 20px'">{{moorToCallMblHid}}</div>
+        <div
+          class="tel-num"
+          :style="xZStyle && 'display: inline-block; marginRight: 20px'"
+        >{{moorToCallMblHid}}</div>
         <div class="tel-desc" :style="xZStyle && 'display: inline-block'">{{moorToCallUser}}</div>
         <div class="tel-desc">{{xZStatus}}</div>
         <div class="tel-btn-box">
