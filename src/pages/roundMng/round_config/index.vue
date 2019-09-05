@@ -8,7 +8,14 @@
         style="background: #fff; border-radius: 4px;"
       >
         <TabPane label="M1轮次维护" name="call_permissions">
-          <callPermissions />
+          <Row>
+            <Col span="12">
+              <callPermissions />
+            </Col>
+            <Col span="12">
+              <callTimesLimit></callTimesLimit>
+            </Col>
+          </Row>
         </TabPane>
       </Tabs>
     </Card>
