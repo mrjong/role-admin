@@ -4,6 +4,10 @@ export default {
   components: {
     callPermissions
   },
+  data () {
+    return {
+    }
+  },
   methods: {
     tabClick() {
 

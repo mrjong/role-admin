@@ -11,13 +11,6 @@
     <div class="list_wrap">
       <div class="list_item">
         <div class="flex_item">
-          <Icon type="md-remove-circle" size='24' style="cursor: pointer; margin-right: 6px;color: #ed4014"/>
-          <span>
-            逾期天数：
-            <em>1 —— 2</em>
-          </span>
-        </div>
-        <div class="flex_item">
           <span class="call_user_type">
             <Icon type="md-checkmark" size='20' style="margin-right: 6px; color: #19be6b"/>
             <span>本人</span>
@@ -25,13 +18,6 @@
         </div>
       </div>
       <div class="list_item">
-        <div class="flex_item">
-          <Icon type="md-remove-circle" size='24' style="cursor: pointer; margin-right: 6px;color: #ed4014"/>
-          <span>
-            逾期天数：
-            <em>3 —— 31</em>
-          </span>
-        </div>
         <div class="flex_item">
           <span class="call_user_type">
             <Icon type="md-checkmark" size='20' style="margin-right: 6px; color: #19be6b"/>
