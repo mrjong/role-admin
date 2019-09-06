@@ -11,7 +11,7 @@ export default {
     var widthMidVal = 100;
     let $this = this;
     return {
-      getDirList: ['ORD_STS', 'AC_TYP'],
+      getDirList: ['REPAY_ORD_STS', 'AC_TYP'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -62,10 +62,18 @@ export default {
         },
         {
           title: '代扣订单号',
-          key: 'dkOrdNo',
+          key: 'orgOrdNo',
           className: 'tableMainW',
           align: alignCenter,
           width: 200
+        },
+        {
+          title: '产品类型',
+          searchOperator: 'like',
+          key: 'prdTypName',
+          className: 'tableMainW',
+          align: alignCenter,
+          width: widthMidVal
         },
         {
           title: '客户姓名',
@@ -157,7 +165,7 @@ export default {
           key: 'crdNoLast',
           className: 'tableMainW',
           align: alignCenter,
-          width: widthVal
+          width: widthMidVal
         },
         {
           title: '已还本金',
@@ -172,14 +180,7 @@ export default {
             return h('span', res);
           }
         },
-        {
-          title: '产品类型',
-          searchOperator: 'like',
-          key: 'prdTypName',
-          className: 'tableMainW',
-          align: alignCenter,
-          width: widthVal
-        }
+
       ]
     };
   },
