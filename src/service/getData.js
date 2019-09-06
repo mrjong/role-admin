@@ -1990,3 +1990,15 @@ export const case_detail_channel_info = (obj) =>
     data: qs.stringify(obj)
   })
 
+/**
+ * 呼叫轮次
+ * 1、轮次list
+ */
+
+export const callRoundsConfig_list = (obj) =>
+  fetch({
+    url: '/callRoundsConfig/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+

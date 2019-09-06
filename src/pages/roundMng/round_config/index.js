@@ -3,6 +3,8 @@ import callTimesLimit from './components/call_times_limit'
 import casePushOrder from './components/case_push_order'
 import callStartTime from './components/call_start_time'
 import Cookie from 'js-cookie';
+import { callRoundsConfig_list } from '@/service/getData';
+
 
 export default {
   name: 'roune_config',
@@ -12,48 +14,51 @@ export default {
     casePushOrder,
     callStartTime
   },
-  data () {
+  data() {
     return {
       headers: {
         'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
         timeout: 120000,
       },
-      file_url: '/admin/cases/batch/import ',//文件上传地址
+      file_url: '/admin/callRoundsConfig/import ',//文件上传地址
       import_data_loading: false,// 导入loading
       tableData: [],
       tableColumns: [
         {
           title: '逾期天数',
-          key: 'caseHandleStatusName',
+          key: 'overdueDays',
           align: 'center',
         },
         {
           title: '轮次下限',
-          key: 'caseHandleStatusName',
+          key: 'roundsFloor',
           align: 'center',
         },
         {
           title: '轮次上限',
-          key: 'caseHandleStatusName',
+          key: 'roundsCeil',
           align: 'center',
         },
         {
           title: '通讯录拨打下限',
-          key: 'caseHandleStatusName',
+          key: 'adsCallFloor',
           align: 'center',
         },
         {
           title: '通讯录接通下限',
-          key: 'caseHandleStatusName',
+          key: 'adsAnswerFloor',
           align: 'center',
         },
         {
           title: '通讯录接通上限',
-          key: 'caseHandleStatusName',
+          key: 'adsAnswerCeil',
           align: 'center',
         },
       ]
     }
+  },
+  created() {
+    this.callRoundsConfig_list();
   },
   methods: {
     tabClick() {
@@ -80,22 +85,20 @@ export default {
     handleSuccess(res, file) {
       this.import_data_loading = false;
       if (res.code === 1) {
-        console.log(res);
-        this.tableData = [];
         this.query_flag = true;
-        this.$set(this, 'file_csaeIds', res.data.caseNoList);
-        let caseIds;
-        // 判断返回的案件号是否为空，空 不执行下面分页请求操作
-        if (res.data.caseNoList.length > 0) {
-          caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
-          this.cases_import_list(caseIds);
-          caseIds = null;
-        } else {
-          this.$Message.error('暂时查询不到相关数据')
-        }
+        this.callRoundsConfig_list();
       } else {
         this.$Message.error(res.message);
       }
     },
+    // 轮次配置表
+    async callRoundsConfig_list() {
+      const res = await callRoundsConfig_list();
+      if (res.code === 1) {
+        this.tableData = res.data;
+      } else {
+        this.$Message.error(res.message)
+      }
+    }
   },
 }

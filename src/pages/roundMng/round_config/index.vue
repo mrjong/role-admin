@@ -39,9 +39,7 @@
           :on-exceeded-size="handleMaxSize"
           :on-format-error="handleFormatError"
           :disabled="import_data_loading"
-          :data="{
-                  pageType: 2
-                }"
+          :data="{}"
         >
           <Button
             icon="ios-cloud-upload-outline"

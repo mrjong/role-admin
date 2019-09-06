@@ -24,6 +24,7 @@ export default {
       callback();
     };
     const _this = this;
+    const width_common = 110;
     return {
       getDirList: ['PROD_TYPE', 'GENDER', 'APPROVAL_STATE'],
       getDirObj: {},
@@ -100,90 +101,6 @@ export default {
           fixed: 'left',
         },
         {
-          title: '操作',
-          width: 150,
-          key: 'edit',
-          align: 'center',
-          fixed: 'left',
-          render: (h, params) => {
-            return h('div', [
-              h(
-                'a',
-                {
-                  class: 'edit-btn',
-                  props: {},
-                  on: {
-                    click: () => {
-                      _this.arbitrament_data = {
-                        data: params.row,
-                      }
-                      _this.arbitrament_modal = true;
-                      // _this.arb_detail(params.row);
-                    }
-                  }
-                },
-                '查看'
-              ),
-              h(
-                'a',
-                {
-                  style: {
-                    display: params.row.approvalState === '01' && _this.audit ? 'inline-block' : 'none'
-                  },
-                  class: 'edit-btn',
-                  props: {},
-                  on: {
-                    click: () => {
-                      if (!_this.audit) {
-                        _this.$Message.error('很抱歉，暂无审核权限');
-                        return;
-                      }
-                      _this.arbitrament_data = {
-                        data: params.row,
-                        edit: 'edit'
-                      }
-                      _this.arbitrament_modal = true;
-                      // _this.arb_detail(params.row, 'edit');
-                    }
-                  }
-                },
-                '审核'
-              ),
-              params.row.uploadStatus && _this.upload ? h(
-                'a',
-                {
-                  class: 'edit-btn',
-                  props: {},
-                  on: {
-                    click: () => {
-                      this.file_data = {
-                        id: params.row.approvalId,
-                        caseNo: params.row.caseNo
-                      };
-                      this.upload_modal = true;
-                      // this.file_list = this.$refs.upload;
-                      console.log(this.$refs.upload);
-                    }
-                  }
-                },
-                '上传'
-              ) : null
-            ]);
-          }
-        },
-        {
-          title: '仲裁状态',
-          width: 120,
-          align: 'center',
-          key: 'approvalStateName'
-        },
-        {
-          title: '标的金额',
-          width: 120,
-          align: 'center',
-          key: 'caseAmt'
-        },
-        {
           title: '案件编号',
           width: 180,
           align: 'center',
@@ -196,105 +113,71 @@ export default {
           key: 'billNo'
         },
         {
-          title: '产品名称',
-          width: 120,
+          title: '逾期天数',
+          width: width_common,
+          align: 'center',
+          key: 'overdueDays'
+        },
+        {
+          title: '本人拨打(次)',
+          width: width_common,
+          align: 'center',
+          key: 'caseAmt'
+        },
+        {
+          title: '紧联拨打(次)',
+          width: width_common,
           align: 'center',
           key: 'productName'
         },
 
         {
-          title: '借款期限',
-          width: 120,
+          title: '通讯录拨打(个)',
+          width: width_common,
           align: 'center',
           key: 'perdCnt'
         },
         {
-          title: '客户姓名',
-          width: 120,
+          title: '通讯录接听(个)',
+          width: width_common,
           align: 'center',
           key: 'userNameHid'
         },
         {
-          title: '身份证号',
-          width: 120,
+          title: '达标情况',
+          width: width_common,
           align: 'center',
           key: 'idCardNoHid'
         },
         {
-          title: '手机号',
-          width: 120,
+          title: '当日轮次',
+          width: width_common,
           align: 'center',
           key: 'mblNo'
         },
         {
-          title: '逾期天数',
-          width: 120,
+          title: '总轮次',
+          width: width_common,
           align: 'center',
-          key: 'overdueDays'
+          key: 'mblNo'
         },
         {
-          title: '逾期应还金额',
-          width: 120,
-          align: 'center',
-          key: 'overdueAmt',
-          render: (h, params) => {
-            let overdueAmt = params.row.overdueAmt;
-            overdueAmt = overdueAmt ? this.$options.filters['money'](overdueAmt) : overdueAmt;
-            return h('span', overdueAmt);
-          }
-        },
-        {
-          title: '已还罚息',
-          width: 120,
-          align: 'center',
-          key: 'perdFineRep',
-          render: (h, params) => {
-            let perdFineRep = params.row.perdFineRep;
-            perdFineRep = perdFineRep ? this.$options.filters['money'](perdFineRep) : perdFineRep;
-            return h('span', perdFineRep);
-          }
-        },
-        {
-          title: '已还滞纳金',
-          width: 120,
-          align: 'center',
-          key: 'perdOvduRep',
-          render: (h, params) => {
-            let perdOvduRep = params.row.perdOvduRep;
-            perdOvduRep = perdOvduRep ? this.$options.filters['money'](perdOvduRep) : perdOvduRep;
-            return h('span', perdOvduRep);
-          }
-        },
-        {
-          title: '申请时间',
-          width: 150,
-          align: 'center',
-          key: 'createTime',
-          render: (h, params) => {
-            let createTime = params.row.createTime;
-            createTime = createTime
-              ? this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
-              : createTime;
-            return h('span', createTime);
-          }
-        },
-        {
-          title: '申请人',
-          width: 120,
+          title: '经办人',
+          width: width_common,
           align: 'center',
           key: 'opUserName'
         },
         {
-          title: '电催中心',
-          width: 120,
-          align: 'center',
-          key: 'opCompayName'
-        },
-        {
-          title: '审核人',
-          width: 120,
+          title: '组别',
+          width: width_common,
           align: 'center',
           key: 'approvalUserName'
+        },
+        {
+          title: '电催中心',
+          width: width_common,
+          align: 'center',
+          key: 'opCompayName'
         },
         {
           title: '审核时间',
@@ -309,40 +192,6 @@ export default {
             return h('span', approvalTime);
           }
         },
-        {
-          title: '审核备注',
-          width: 120,
-          align: 'center',
-          key: 'approvalRemark',
-          render: (h, params) => {
-            let approvalRemark = params.row.approvalRemark;
-            return h('div', [
-              h(
-                'Tooltip',
-                {
-                  style: {
-                    margin: '0 5px',
-                  },
-                  props: {
-                    content: approvalRemark,
-                    placement: 'top',
-                    maxWidth: "110",
-                    transfer: true,
-                  }
-                },
-                [h('div', {
-                  style: {
-                    cursor: 'pointer',
-                    width: '110px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }
-                }, approvalRemark)]
-              ),
-            ]);
-          }
-        }
       ]
     };
   },
