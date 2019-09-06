@@ -4,6 +4,7 @@
       v-if="showFlag"
       :footer-hide="true"
       :closable=" false"
+      :mask-closable='false'
       width="50%"
       >
       <div class="content">

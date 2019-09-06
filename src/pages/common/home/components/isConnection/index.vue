@@ -3,7 +3,7 @@
       :value="showIsConnection"
       :footer-hide="true"
       :closable=" false"
-
+      :mask-closable='false'
       >
       <div class="content">
         <!--<div> 昨日回款率排名：{{}}。</div>-->
