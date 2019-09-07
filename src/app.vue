@@ -18,6 +18,14 @@
         </div>
       </div>
     </div>
+    <Spin fix style="z-index: 1000;" v-if="false">
+      <p class="spin">
+        <span class="letter" :style="{'animation-delay': index === '0' || index === text.length -1? '0s': index/(2*text.length - 2) + 's'}" v-for="item,index in text" :key="item+index">{{item}}</span>
+      </p>
+      <div class="spin_dot dot_1"></div>
+      <div class="spin_dot dot_2"></div>
+      <div class="spin_dot dot_3"></div>
+    </Spin>
     <router-view></router-view>
     <video loop ref="ring" preload="auto" style="position: absolute" src="src/libs/ring.wav"></video>
     <audio id="playaudio" src="./libs/ring1.wav" loop="loop" style="display: none"></audio>
@@ -38,7 +46,8 @@ export default {
       showTel: false,
       telNoHid: "***********",
       usrNameHid: "****",
-      theme: this.$store.state.app.themeColor
+      theme: this.$store.state.app.themeColor,
+      text: "系统准备案件中..."
     };
   },
   async created() {
@@ -47,7 +56,7 @@ export default {
     // });
     const h = this.$createElement;
     let callData = JSON.parse(localStorage.getItem("callData"));
-    if (callData && callData.seatType === 'KT' && callData.callType === '1') {
+    if (callData && callData.seatType === "KT" && callData.callType === "1") {
       this.call(callData);
     }
 
@@ -210,9 +219,46 @@ body {
   overflow: hidden;
 }
 .app-main {
+  position: relative;
   overflow: auto;
   width: 100%;
   height: 100%;
+}
+.spin_dot {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: #2d8cf0;
+  width: 30px;
+  height: 30px;
+  margin-right: 20px;
+}
+.dot_1 {
+  animation: ani-spin-bounce 1.5s 0s ease-in-out infinite;
+}
+.dot_2 {
+  animation: ani-spin-bounce 1.5s 0.5s ease-in-out infinite;
+}
+.dot_3 {
+  animation: ani-spin-bounce 1.5s 1s ease-in-out infinite;
+}
+.letter {
+  animation: bounce 0.75s cubic-bezier(0.05, 0, 0.2, 1) infinite alternate;
+  display: inline-block;
+  transform: translate3d(0, 0, 0);
+  margin-top: 0.5em;
+  text-shadow: rgba(11, 70, 109, 0.4) 0 0 0.05em;
+  font: normal 500 3rem "Varela Round", sans-serif;
+}
+@keyframes bounce {
+  0% {
+    transform: translate3d(0, 0, 0);
+    text-shadow: rgba(255, 255, 255, 0.4) 0 0 0.05em;
+  }
+  100% {
+    transform: translate3d(0, -1em, 0);
+    text-shadow: rgba(3, 56, 56, 0.4) 0 1em 0.18em;
+  }
 }
 .fail-icon {
   transform: rotate(132deg);
