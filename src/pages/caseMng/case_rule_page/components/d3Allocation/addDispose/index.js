@@ -165,16 +165,20 @@ export default {
 
   },
   watch: {
-    seatsData: function (value) {
-      if(Object.keys(value).length !== 0){
-        this.getListSeats();
-        this.getListExplicit();
+    showAddDispose: function (value) {
+      if(value){
+        this.$refs['formItem'].resetFields();
+        this.formItem = {
+          ruleType: '02',
+          allotUserList: [],
+          effectMinDt: util.getToday(1)
+        }
       }
     }
   },
   created() {
     this.getLeafTypeList('03', '');
-    },
+  },
   methods: {
     // 查询机构，公司，部门
     async getLeafTypeList(type, parent) {

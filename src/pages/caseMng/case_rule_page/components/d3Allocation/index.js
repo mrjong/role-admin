@@ -18,6 +18,7 @@ export default {
       query: false,//查询权限
       update: false,//修改权限
       query_loading: false,//查询按钮loading
+      executeFlag: false,
       updateData: {},
       formItem: {
         prodTypeList: [],
@@ -330,12 +331,16 @@ export default {
     },
 
     async divideAllotReadyCase(id) {
-      const res = await divide_allot_ready_case({id: id});
-      console.log(res);
-      if (res.code === 1) {
-        this.getList();
-      } else {
-        this.$Message.error(res.message);
+      this.executeFlag = true
+      if(!this.executeFlag){
+        const res = await divide_allot_ready_case({id: id});
+        this.executeFlag = false
+        console.log(res);
+        if (res.code === 1) {
+          this.getList();
+        } else {
+          this.$Message.error(res.message);
+        }
       }
     }
   },
