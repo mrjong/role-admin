@@ -44,12 +44,14 @@
           type="primary"
           size="small"
           @click.stop="handeldBtnClick('2')"
+          v-if="disposed"
         >配置</Button>
         <Button
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
           @click.stop="handleBtnCaseCount"
+          v-if="accept_case"
         >维护接案数量</Button>
       </p>
       <!-- 表格 -->

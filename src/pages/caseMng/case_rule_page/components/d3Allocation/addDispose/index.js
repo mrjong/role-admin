@@ -213,15 +213,15 @@ export default {
             this.$Message.error('请先导入分案率值')
             return
           }
-          this.formItem.effectMinDt = this.$options.filters['formatDate'](this.formItem.effectMinDt , 'YYYYMMDD')
-          this.formItem.collectDateSta =
-            this.$options.filters['formatDate'](this.formItem.collectDateSta , 'YYYY-MM-DD HH:mm:ss')
-          this.formItem.collectDateEnd =
-            this.$options.filters['formatDate'](this.formItem.collectDateEnd , 'YYYY-MM-DD HH:mm:ss')
-          let res = await divide_rules_add(
+          divide_rules_add(
             {
               ...this.formItem,
               prodTypeList: [this.formItem.prodTypeList],
+              effectMinDt: this.$options.filters['formatDate'](this.formItem.effectMinDt , 'YYYYMMDD'),
+              collectDateSta: this.$options.filters['formatDate'](this.formItem.collectDateSta , 'YYYY-MM-DD HH:mm:ss')
+              ,
+              collectDateEnd: this.$options.filters['formatDate'](this.formItem.collectDateEnd , 'YYYY-MM-DD HH:mm:ss')
+              ,
             },
             {
               transformRequest: [
@@ -230,17 +230,20 @@ export default {
                 }
               ]
             }
-          );
-          if (res.code === 1) {
-            this.$emit("passBack", 'change');
-            this.$Message.success('添加成功');
-            this.formItem= {
-              ruleType: '02',
+          ).then(res=>{
+            if (res.code === 1) {
+              this.$emit("passBack", 'change');
+              this.$Message.success('添加成功');
+              this.formItem= {
+                ruleType: '02',
                 allotUserList: []
+              }
+            } else {
+              this.$Message.error(res.message);
             }
-          } else {
-            this.$Message.error(res.message);
-          }
+          }).catch(err=>{
+            this.$Message.error(err.message);
+          })
         }
       });
     },

@@ -19,6 +19,10 @@ export default {
       update: false,//修改权限
       query_loading: false,//查询按钮loading
       executeFlag: false,
+      query_execute: false,
+      execute: false,
+      disposed: false,
+      accept_case: false,
       updateData: {},
       formItem: {
         prodTypeList: [],
@@ -152,10 +156,10 @@ export default {
                   props: {},
                   on: {
                     click: () => {
-                      // if (!this.update) {
-                      //   this.$Message.error('很抱歉，暂无权限修改');
-                      //   return;
-                      // }
+                      if (!this.query_execute) {
+                        this.$Message.error('很抱歉，暂无权限查看');
+                        return;
+                      }
                       this.updateData = JSON.parse(JSON.stringify(params.row))
                       this.updateData.disabled= true
                       this.showUpdateDispose = true
@@ -174,10 +178,10 @@ export default {
                   props: {},
                   on: {
                     click: () => {
-                      // if (!this.status_change) {
-                      //   this.$Message.error('很抱歉，暂无权限变更状态');
-                      //   return;
-                      // }
+                      if (!this.update) {
+                        this.$Message.error('很抱歉，暂无权限变更状态');
+                        return;
+                      }
                       this.showUpdateDispose = true
                       this.updateData = JSON.parse(JSON.stringify(params.row))
                       this.updateData.disabled = false
@@ -197,10 +201,10 @@ export default {
                   props: {},
                   on: {
                     click: () => {
-                      // if (!this.view_change_his) {
-                      //   this.$Message.error('很抱歉，暂无权限查看记录');
-                      //   return;
-                      // }
+                      if (!this.execute) {
+                        this.$Message.error('很抱歉，暂无权限执行');
+                        return;
+                      }
                       this.divideAllotReadyCase(JSON.parse(JSON.stringify(params.row)).id)
                     }
                   }
@@ -222,13 +226,17 @@ export default {
         return;
       }
       switch (item.url) {
-        case "query": this.query = true;
+        case "query_d3": this.query = true;
           break;
-        case "add": this.add_rule = true;
+        case "execute": this.execute = true;
           break;
-        case "update": this.update = true;
+        case "update_d3": this.update = true;
           break;
-        case "status_change": this.status_change = true;
+        case "query_execute": this.query_execute = true;
+          break;
+        case "disposed": this.disposed = true;
+          break;
+        case "accept_case": this.accept_case = true;
           break;
       }
     });
@@ -269,10 +277,10 @@ export default {
     // modal提交
     // 获取表格数据
     async getList() {
-      // if (!this.query) {
-      //   this.$Message.error('很抱歉，暂无权限查询');
-      //   return;
-      // }
+      if (!this.query) {
+        this.$Message.error('很抱歉，暂无权限查询');
+        return;
+      }
       this.query_loading = true;
       this.formItem.ruleType= '02'
       const res = await divide_rules_list({
@@ -335,7 +343,6 @@ export default {
       if(!this.executeFlag){
         const res = await divide_allot_ready_case({id: id});
         this.executeFlag = false
-        console.log(res);
         if (res.code === 1) {
           this.getList();
         } else {
