@@ -110,16 +110,15 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="6" label="达标情况:" prop="productTypes">
+            <FormItem span="6" label="达标情况:" >
               <Select
                 size="small"
                 clearable
-                multiple
                 placeholder="请选择达标情况"
-                v-model="formItem.productTypes"
+                v-model="formItem.isOver"
               >
                 <Option
-                  v-for="item in getDirObj.PROD_TYPE"
+                  v-for="item in getDirObj.COLLECT_ROUNDS_OVER"
                   :value="item.itemCode"
                   :key="item.itemName"
                 >{{ item.itemName }}</Option>

@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { arb_list, getLeafTypeList, credit_pdf_data, arb_exportlist } from '@/service/getData';
+import { collectRoundsRecords_list, getLeafTypeList,  } from '@/service/getData';
 import util from '@/libs/util';
 import Cookie from 'js-cookie';
 
@@ -26,7 +26,7 @@ export default {
     const _this = this;
     const width_common = 110;
     return {
-      getDirList: ['PROD_TYPE', 'GENDER', 'APPROVAL_STATE'],
+      getDirList: ['COLLECT_ROUNDS_OVER'],
       getDirObj: {},
       showPanel: false,
       company_list_data: [],//电催中心list
@@ -37,8 +37,7 @@ export default {
       audit: false,//审核权限
       export_case: false,//导出权限
       query_loading: false,//查询按钮loading
-      applyTime: [],//申请时间区间
-      approvalTime: [],//审核时间区间
+      applyTime: [],//统计时间区间
       export_case_loading: false,//导出loading
       export_list: [],//导出的list
       ruleValidate: {
@@ -83,7 +82,6 @@ export default {
       pageSize: 10,
       total: 0,
       formItem: {
-        productTypes: []
       },
       tableData: [],
       tableColumns: [
@@ -122,44 +120,44 @@ export default {
           title: '本人拨打(次)',
           width: width_common,
           align: 'center',
-          key: 'caseAmt'
+          key: 'debtorCall'
         },
         {
           title: '紧联拨打(次)',
           width: width_common,
           align: 'center',
-          key: 'productName'
+          key: 'urgencyCall'
         },
 
         {
           title: '通讯录拨打(个)',
           width: width_common,
           align: 'center',
-          key: 'perdCnt'
+          key: 'contactCall'
         },
         {
           title: '通讯录接听(个)',
           width: width_common,
           align: 'center',
-          key: 'userNameHid'
+          key: 'contactAnswer'
         },
         {
           title: '达标情况',
           width: width_common,
           align: 'center',
-          key: 'idCardNoHid'
+          key: 'isOverName'
         },
         {
           title: '当日轮次',
           width: width_common,
           align: 'center',
-          key: 'mblNo'
+          key: 'currentRounds'
         },
         {
           title: '总轮次',
           width: width_common,
           align: 'center',
-          key: 'mblNo'
+          key: 'totalRounds'
         },
         {
           title: '经办人',
@@ -171,7 +169,7 @@ export default {
           title: '组别',
           width: width_common,
           align: 'center',
-          key: 'approvalUserName'
+          key: 'opOrganizationName'
         },
         {
           title: '电催中心',
@@ -180,17 +178,17 @@ export default {
           key: 'opCompayName'
         },
         {
-          title: '审核时间',
+          title: '统计日期',
           width: 150,
           align: 'center',
-          key: 'approvalTime',
-          render: (h, params) => {
-            let approvalTime = params.row.approvalTime;
-            approvalTime = approvalTime
-              ? this.$options.filters['formatDate'](approvalTime, 'YYYY-MM-DD HH:mm:ss')
-              : approvalTime;
-            return h('span', approvalTime);
-          }
+          key: 'logDate',
+          // render: (h, params) => {
+          //   let updateTime = params.row.updateTime;
+          //   updateTime = updateTime
+          //     ? this.$options.filters['formatDate'](updateTime, 'YYYY-MM-DD HH:mm:ss')
+          //     : updateTime;
+          //   return h('span', updateTime);
+          // }
         },
       ]
     };
@@ -233,6 +231,7 @@ export default {
     this.getLeafTypeList('02', '');
     this.getLeafTypeList('03', '');
     this.getLeafTypeList('04', '');
+    this.getList();
   },
   methods: {
     // table勾选回调
@@ -281,13 +280,8 @@ export default {
     },
     //申请时间监听
     changeApplyTime(val) {
-      this.formItem.applyTimeLt = val[0];
-      this.formItem.applyTimeBt = val[1];
-    },
-    //审核时间监听
-    changeApprovalTime(val) {
-      this.formItem.approvalTimeLt = val[0];
-      this.formItem.approvalTimeBt = val[1];
+      this.formItem.logDateStart = val[0];
+      this.formItem.logDateEnd = val[1];
     },
 
     // 页码改变的回调
@@ -307,16 +301,10 @@ export default {
         if (valid) {
           if (this.applyTime) {
             this.applyTime = [
-              this.formItem.applyTimeLt,
-              this.formItem.applyTimeBt
+              this.formItem.logDateStart,
+              this.formItem.logDateEnd
             ]
           };
-          if (this.approvalTime) {
-            this.approvalTime = [
-              this.formItem.approvalTimeLt,
-              this.formItem.approvalTimeBt
-            ]
-          }
           window.sessionStorage.setItem('arbitrament_approve_form', JSON.stringify(this.formItem))
           this.pageNo = 1;
           this.getList();
@@ -348,14 +336,10 @@ export default {
     },
     // 获取表格数据
     async getList() {
-      if (!this.query) {
-        this.$Message.error('很抱歉，暂无权限查询');
-        return;
-      };
       this.query_loading = true;
       // delete this.formItem.approvalTimeLt;
       // delete this.formItem.applyTimeLt;
-      const res = await arb_list({
+      const res = await collectRoundsRecords_list({
         ...this.formItem,
         pageNum: this.pageNo,
         pageSize: this.pageSize
@@ -373,11 +357,8 @@ export default {
     // 重置
     clearForm(name) {
       this.pageNo = 1;
-      this.formItem = {
-        productTypes: []
-      };
+      this.formItem = {};
       this.applyTime = [];
-      this.approvalTime = [];
       window.sessionStorage.removeItem('arbitrament_approve_form');
       this.$refs[name].resetFields();
     }

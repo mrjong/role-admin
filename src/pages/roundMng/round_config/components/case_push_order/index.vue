@@ -4,15 +4,15 @@
     <div class="button_wrap">
       <strong>请设置案件推送顺序</strong>
       <Button type="error" size="small" disabled>删除</Button>
-      <Button type="warning" size="small">修改</Button>
+      <Button type="warning" size="small" disabled>修改</Button>
       <Button type="success" size="small" disabled>增加</Button>
     </div>
     <!-- 展示区 -->
     <div class="list_item">
       <div class="list_wrap">
         <span>排序规则：</span>
-        <Select v-model="sortCode" size="small" class="form_item" transfer style="min-width: 100px">
-          <Option v-for="item in ruleList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        <Select v-model="sortCode" size="small" class="form_item" disabled transfer style="min-width: 100px">
+          <Option v-for="item in getDirObj.CASE_SORT_RULE" :value="item.itemCode"  :key="item.itemCode">{{ item.itemName }}</Option>
         </Select>
         <i-switch size="large" @on-change='switch_change' v-model="isAsc">
           <span slot="open">升序</span>

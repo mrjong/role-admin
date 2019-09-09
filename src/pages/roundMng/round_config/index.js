@@ -22,18 +22,18 @@ export default {
       },
       file_url: '/admin/callRoundsConfig/import ',//文件上传地址
       import_data_loading: false,// 导入loading
+      update_loading: true,//传给子组件的update_loading
       formItem: {
         // 1 勾选   0未勾选
         debtorCallLimit: '1', //拨打权限本人
         urgencyCallLimit: '1', //拨打权限紧连
         contactCallLimit: '1', //拨打权限通讯录
-        debtorCallCeil: '0',//单个号码拨打次数本人
-        urgencyCallCeil: '0',//单个号码拨打次数紧连
-        contactCallCeil: '0',//单个号码拨打次数通讯录
-        overdueDaysSort: '1',// 排序规则 1 升序  0降序
+        debtorCallCeil: '3',//单个号码拨打次数本人
+        urgencyCallCeil: '3',//单个号码拨打次数紧连
+        contactCallCeil: '3',//单个号码拨打次数通讯录
         configSortList: [
           {
-            sortCode: '01',
+            sortCode: 'OVERDUE_DAYS',
             isAsc: '1'
           }
         ],
@@ -75,7 +75,7 @@ export default {
     }
   },
   created() {
-    // this.callRoundsConfig_list();
+    this.callRoundsConfig_list();
     this.callRoundsConfig_display()
   },
   mounted() {
@@ -113,8 +113,12 @@ export default {
       }
     },
     // 子组件的回调
-    passBack(obj) {
-      console.log(obj)
+    passBack(type, obj) {
+      console.log(obj);
+      for (const key in obj) {
+        this.formItem[key] = obj[key];
+      }
+      this.callRoundsConfig_update();
     },
     // 轮次配置表
     async callRoundsConfig_list() {
@@ -127,7 +131,13 @@ export default {
     },
     // 轮次配置反显
     async callRoundsConfig_display() {
-      const res = await callRoundsConfig_display()
+      const res = await callRoundsConfig_display();
+      if (res.code === 1) {
+        this.update_loading = true;
+        this.$set(this, 'formItem', res.data)
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     // 轮次配置更改
     async callRoundsConfig_update() {
@@ -144,7 +154,8 @@ export default {
         },
       );
       if (res.code === 1) {
-        this.formItem = res.data;
+        this.update_loading = false;
+        this.callRoundsConfig_display();
       } else {
         this.$Message.error(res.message);
       }
