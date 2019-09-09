@@ -3,7 +3,7 @@ import callTimesLimit from './components/call_times_limit'
 import casePushOrder from './components/case_push_order'
 import callStartTime from './components/call_start_time'
 import Cookie from 'js-cookie';
-import { callRoundsConfig_list } from '@/service/getData';
+import { callRoundsConfig_list, callRoundsConfig_update, callRoundsConfig_display } from '@/service/getData';
 
 
 export default {
@@ -22,6 +22,23 @@ export default {
       },
       file_url: '/admin/callRoundsConfig/import ',//文件上传地址
       import_data_loading: false,// 导入loading
+      formItem: {
+        // 1 勾选   0未勾选
+        debtorCallLimit: '1', //拨打权限本人
+        urgencyCallLimit: '1', //拨打权限紧连
+        contactCallLimit: '1', //拨打权限通讯录
+        debtorCallCeil: '0',//单个号码拨打次数本人
+        urgencyCallCeil: '0',//单个号码拨打次数紧连
+        contactCallCeil: '0',//单个号码拨打次数通讯录
+        overdueDaysSort: '1',// 排序规则 1 升序  0降序
+        configSortList: [
+          {
+            sortCode: '01',
+            isAsc: '1'
+          }
+        ],
+        floorFollowTime: '16:00',//跟进时间开启时间
+      },
       tableData: [],
       tableColumns: [
         {
@@ -58,7 +75,11 @@ export default {
     }
   },
   created() {
-    this.callRoundsConfig_list();
+    // this.callRoundsConfig_list();
+    this.callRoundsConfig_display()
+  },
+  mounted() {
+    console.log(this);
   },
   methods: {
     tabClick() {
@@ -91,6 +112,10 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 子组件的回调
+    passBack(obj) {
+      console.log(obj)
+    },
     // 轮次配置表
     async callRoundsConfig_list() {
       const res = await callRoundsConfig_list();
@@ -98,6 +123,30 @@ export default {
         this.tableData = res.data;
       } else {
         this.$Message.error(res.message)
+      }
+    },
+    // 轮次配置反显
+    async callRoundsConfig_display() {
+      const res = await callRoundsConfig_display()
+    },
+    // 轮次配置更改
+    async callRoundsConfig_update() {
+      const res = await callRoundsConfig_update(
+        {
+          ...this.formItem
+        },
+        {
+          transformRequest: [
+            function (data) {
+              return qs.stringify(data); //利用对应方法转换格式
+            }
+          ]
+        },
+      );
+      if (res.code === 1) {
+        this.formItem = res.data;
+      } else {
+        this.$Message.error(res.message);
       }
     }
   },

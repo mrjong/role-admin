@@ -3,16 +3,16 @@
     <!-- 操作区 -->
     <div class="button_wrap">
       <strong>请设置下限跟进开启时间</strong>
-      <Button type="error" size="small">删除</Button>
+      <Button type="error" size="small" disabled>删除</Button>
       <Button type="warning" size="small">修改</Button>
-      <Button type="success" size="small">增加</Button>
+      <Button type="success" size="small" disabled>增加</Button>
     </div>
     <!-- 展示区 -->
     <div class="list_item">
       <div class="list_wrap">
         <Form ref="formItem" :model="formItem" :label-width="120" :rules="ruleValidate">
           <FormItem span="6" label='下限跟进开启时间:' prop="caseHandleStatus" class="form_item">
-            <TimePicker format="HH:mm" placeholder="选择时间" size='small' transfer :steps="[1, 15]" style="width: 112px"></TimePicker>
+            <TimePicker format="HH:mm" placeholder="选择时间" v-model="formItem.floorFollowTime" size='small' transfer :steps="[1, 15]" style="width: 112px"></TimePicker>
           </FormItem>
         </Form>
       </div>

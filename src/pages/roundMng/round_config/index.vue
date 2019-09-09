@@ -10,16 +10,16 @@
         <TabPane label="M1轮次维护" name="call_permissions">
           <Row>
             <Col span="12">
-              <callPermissions></callPermissions>
+              <callPermissions @passBack='passBack' :parentData='formItem'></callPermissions>
             </Col>
             <Col span="12">
-              <callTimesLimit></callTimesLimit>
+              <callTimesLimit @passBack='passBack' :parentData='formItem'></callTimesLimit>
             </Col>
             <Col span="12">
-              <casePushOrder></casePushOrder>
+              <casePushOrder @passBack='passBack' :parentData='formItem'></casePushOrder>
             </Col>
             <Col span="12">
-              <callStartTime></callStartTime>
+              <callStartTime @passBack='passBack' :parentData='formItem'></callStartTime>
             </Col>
           </Row>
         </TabPane>

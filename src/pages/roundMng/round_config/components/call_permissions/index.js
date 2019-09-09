@@ -6,7 +6,7 @@ export default {
   },
   data () {
     return {
-      call_permissions_checkbox: ['01']
+      call_permissions_checkbox: ['01', '02', '03']
     }
   },
 }

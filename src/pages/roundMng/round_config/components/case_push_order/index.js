@@ -1,7 +1,8 @@
 export default {
   data() {
     return {
-      rule: '',
+      sortCode: '',
+      isAsc: '1',
       order: 'up',
       ruleList: [
         {
