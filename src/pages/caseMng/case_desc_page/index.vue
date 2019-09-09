@@ -258,13 +258,13 @@
                     <span>{{case_detail_case_base_info_Data.billMngAmt | money}}</span>
                   </Col>
                   <Col span="5" class="panel-desc-title overdue_text">
-                    预期应还罚息：
+                    逾期应还罚息：
                     <span>
                       {{case_detail_case_base_info_Data.billFineAmt | money}}
                     </span>
                   </Col>
                   <Col span="4" class="panel-desc-title overdue_text">
-                    逾期应还管理费：
+                    逾期应还滞纳金：
                     <span>{{case_detail_case_base_info_Data.billOvduAmt | money}}</span>
                   </Col>
                 </Col>
