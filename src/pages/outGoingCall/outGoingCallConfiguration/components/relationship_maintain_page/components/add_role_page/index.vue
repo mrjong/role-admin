@@ -269,7 +269,6 @@ export default {
   methods: {
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
-        debugger
         if (valid) {
           this.call_employee_add();
         }
