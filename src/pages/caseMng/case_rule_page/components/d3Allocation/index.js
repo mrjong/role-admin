@@ -201,6 +201,7 @@ export default {
                   props: {},
                   on: {
                     click: () => {
+                      debugger
                       if (!this.execute) {
                         this.$Message.error('很抱歉，暂无权限执行');
                         return;
@@ -339,8 +340,8 @@ export default {
     },
 
     async divideAllotReadyCase(id) {
-      this.executeFlag = true
-      if(!this.executeFlag){
+      this.executeFlag = true;
+      if(this.executeFlag){
         const res = await divide_allot_ready_case({id: id});
         this.executeFlag = false
         if (res.code === 1) {
