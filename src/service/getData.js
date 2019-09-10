@@ -1996,6 +1996,7 @@ export const case_detail_channel_info = (obj) =>
  * 2、配置
  * 3、展示
  * 4、轮次记录list
+ * 5、轮次记录导出
  */
 
 export const callRoundsConfig_list = (obj) =>
@@ -2025,4 +2026,13 @@ export const collectRoundsRecords_list = (obj) =>
     method: 'POST',
     data: qs.stringify(obj),
   })
+
+export const collectRoundsRecords_export = (obj, options) =>
+  fetch({
+    url: '/collectRoundsRecords/export',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
+  });
 

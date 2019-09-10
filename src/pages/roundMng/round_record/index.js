@@ -1,6 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
-import { collectRoundsRecords_list, getLeafTypeList,  } from '@/service/getData';
+import { collectRoundsRecords_list, getLeafTypeList, collectRoundsRecords_export } from '@/service/getData';
 import util from '@/libs/util';
 import Cookie from 'js-cookie';
 
@@ -39,7 +39,7 @@ export default {
       query_loading: false,//查询按钮loading
       applyTime: [],//统计时间区间
       export_case_loading: false,//导出loading
-      export_list: [],//导出的list
+      recordIdList: [],//导出的list
       ruleValidate: {
         idNo: [
           {
@@ -236,38 +236,10 @@ export default {
   methods: {
     // table勾选回调
     changeSelect(arr) {
-      this.approve_list = [];
-      this.export_list = [];
-      let obj = {};
+      this.recordIdList = [];
       arr.forEach(item => {
-        obj = {
-          id: item.approvalId,
-          caseNo: item.caseNo,
-        }
-        this.approve_list.push(obj);
-        this.export_list.push(item.approvalId);
+        this.recordIdList.push(item.id);
       });
-      console.log(this.approve_list)
-    },
-    // 导出数据
-    async exportData() {
-      if (this.tableData.length === 0) {
-        this.$Message.info('当前无数据，无法导出');
-        return;
-      }
-      this.export_case_loading = true;
-      const res = await arb_exportlist(
-        {
-          ...this.formItem,
-          ids: this.export_list,
-        },
-        {
-          timeout: 120000,
-          responseType: "blob"
-        }
-      );
-      this.export_case_loading = false;
-      util.dowloadfile('仲裁审批', res);
     },
     // 电催中心change
     companyChange(value) {
@@ -311,6 +283,26 @@ export default {
         }
       });
     },
+    // 轮次记录导出
+    async collectRoundsRecords_export() {
+      if (this.tableData.length === 0) {
+        this.$Message.info('当前无数据，无法导出');
+        return;
+      }
+      this.export_case_loading = true;
+      const res = await collectRoundsRecords_export(
+        {
+          recordIdList: this.recordIdList,
+          ...this.formItem
+        },
+        {
+          timeout: 120000,
+          responseType: "blob"
+        }
+      );
+      this.export_case_loading = false;
+      util.dowloadfile("轮次记录", res);
+    },
     // 查询机构，公司，部门
     async getLeafTypeList(type, parent) {
       const res = await getLeafTypeList({
@@ -348,7 +340,7 @@ export default {
       if (res.code === 1) {
         this.tableData = res.data.content;
         this.total = res.data.totalElements;
-        this.export_list = [];
+        this.recordIdList = [];
         this.pageNo = res.data.number;
       } else {
         this.$Message.error(res.message);

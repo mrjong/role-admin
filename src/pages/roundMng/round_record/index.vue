@@ -153,7 +153,7 @@
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
         <Button
-          @click.stop="exportData"
+          @click.stop="collectRoundsRecords_export"
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
