@@ -48,6 +48,8 @@ import {
   callout_rout_get_seat,//重新获取坐席参数
   callout_hung_on, //新路由模式的外呼
   callout_hung_off,//新路由模式的挂断
+  rounds_info,//当前案件轮次信息
+  rounds_over,//结束当前案件轮次
 } from '@/service/getData';
 let callFlag = false;
 export default {
@@ -1660,6 +1662,7 @@ export default {
     this.case_detail_getimgurls();
     this.collectcode_getListByCodeType();//获取拨打状态
     this.case_detail_address_info();
+    this.rounds_info();
   },
   mounted() {
     // 禁止右键
@@ -2653,6 +2656,11 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+    },
+    async rounds_info() {
+      const res = await rounds_info({
+        caseNo: this.caseNo,
+      })
     },
   }
 };

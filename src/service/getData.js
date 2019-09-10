@@ -2035,4 +2035,22 @@ export const collectRoundsRecords_export = (obj, options) =>
     responseType: 'blob',
     options
   });
+/**
+ * 案件详情相关的轮次接口
+ * 1、当前案件轮次信息
+ * 2、结束当前轮次
+ */
 
+export const rounds_info = (obj) =>
+  fetch({
+    url: '/rounds/info',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
+export const rounds_over = (obj) =>
+  fetch({
+    url: '/rounds/over',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })

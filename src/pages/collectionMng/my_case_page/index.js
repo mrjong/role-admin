@@ -179,6 +179,7 @@ export default {
                       display: eyeFlag? 'inline-block': 'none'
                     }
                   }),
+                  params.row.canCollect?
                   h(
                     'a',
                     {
@@ -200,7 +201,11 @@ export default {
                       }
                     },
                     params.row.id
-                  )
+                  ): h('span', {
+                    style: {
+                      color: '#ccc'
+                    }
+                  }, params.row.id)
                 ]
               )
             ]);

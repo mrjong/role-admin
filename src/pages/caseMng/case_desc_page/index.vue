@@ -510,6 +510,12 @@
             >
               <div>
                 <div class="case-desc-close">
+                  <div class="round_info" style="display: inline-block">
+                    <span>当日轮次：3</span>
+                    <Button size="small">结束</Button>
+                    <span>本轮可触达通讯录数量：8</span>
+                    <span>总轮次：8</span>
+                  </div>
                   <Tooltip content="收起" placement="left">
                     <Icon @click.native="isShow" size="20" type="md-close"></Icon>
                   </Tooltip>
