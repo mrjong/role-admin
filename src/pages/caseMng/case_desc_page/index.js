@@ -50,6 +50,7 @@ import {
   callout_hung_off,//新路由模式的挂断
   rounds_info,//当前案件轮次信息
   rounds_over,//结束当前案件轮次
+  rounds_record,//记录当前通话状态
 } from '@/service/getData';
 let callFlag = false;
 export default {
@@ -131,11 +132,6 @@ export default {
             trigger: 'blur',
             validator: call_number_validator,
           },
-          // {
-          //   pattern: this.GLOBAL.isMobile,
-          //   message: '请输入正确座机号',
-          //   trigger: 'blur'
-          // },
         ],
       },
       getDirList: ['GENDER', 'NATION', 'CONTACT_REL_TYPE'],
@@ -1610,11 +1606,15 @@ export default {
       if (val === 'YES') {
         this.call_xz_hung_off();
       }
+    },
+    changeCallRecord(obj) {
+      console.log(obj);
+      this.rounds_record(obj);
     }
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
-    ...mapGetters(["changeXZHungUpFlag"])
+    ...mapGetters(["changeXZHungUpFlag", "changeCallRecord"])
   },
   async created() {
     console.log(Cookie.get('all_opt'));
@@ -2289,8 +2289,31 @@ export default {
 
     // 点击电话
     handCall(obj, type, tag) {
-      if (!this.all_opt || !this.round_info_data.callAccess.debtorCallable) {
-        // this.$Message.error('很抱歉，暂无权限拨打');
+      // 判断权限是否可以拨打或是否上限
+      if (!this.all_opt) {
+        switch (tag) {
+          case '01':
+            if (!this.round_info_data.callAccess.debtorCallable) {
+              return;
+            }
+            break;
+          case '02':
+            if (!this.round_info_data.callAccess.urgencyCallable) {
+              this.$Message.error('很抱歉，请先拨打本人电话');
+              return;
+            }
+            break;
+          case '03':
+            if (!this.round_info_data.callAccess.contactCallable) {
+              return;
+            }
+            break;
+
+          default:
+            break;
+        }
+      } else {
+        this.$Message.error('很抱歉，暂无权限拨打');
         return;
       }
       if (obj.callUserType || obj.cntRelTyp) {
@@ -2668,5 +2691,21 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 记录当前通话状态
+    async rounds_record(obj) {
+      let callId;
+      if (obj.seatType === 'KT') {
+        callId = this.actionId;
+      } else {
+        callId = sessionStorage.getItem('callId') ? sessionStorage.getItem('callId') : '';
+      }
+      const res = await rounds_record({
+        callUserType: this.objCopy.collectType,
+        caseNo: this.caseNo,
+        callStatus: obj.status,
+        callId: callId,
+        mblNo: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+      })
+    }
   }
 };

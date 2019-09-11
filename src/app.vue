@@ -20,7 +20,12 @@
     </div>
     <Spin fix style="z-index: 1000;" v-if="false">
       <p class="spin">
-        <span class="letter" :style="{'animation-delay': index === '0' || index === text.length -1? '0s': index/(2*text.length - 2) + 's'}" v-for="item,index in text" :key="item+index">{{item}}</span>
+        <span
+          class="letter"
+          :style="{'animation-delay': index === '0' || index === text.length -1? '0s': index/(2*text.length - 2) + 's'}"
+          v-for="item,index in text"
+          :key="item+index"
+        >{{item}}</span>
       </p>
       <div class="spin_dot dot_1"></div>
       <div class="spin_dot dot_2"></div>
@@ -181,6 +186,20 @@ export default {
               }
             }
             this.showTel = true;
+            break;
+            // 触达第二端
+          case 'ANSWER':
+            this.$store.commit("changeCallRecord", {
+              seatType: 'KT',
+              status: '0'
+            });
+            break;
+            // 接听状态
+          case "REALTIME":
+            this.$store.commit("changeCallRecord", {
+              seatType: 'KT',
+              status: '1'
+            });
             break;
           case "HANGUP":
             // 坐席挂机
