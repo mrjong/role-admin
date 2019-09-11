@@ -511,10 +511,10 @@
               <div>
                 <div class="case-desc-close">
                   <div class="round_info" style="display: inline-block">
-                    <span>当日轮次：3</span>
-                    <Button size="small">结束</Button>
-                    <span>本轮可触达通讯录数量：8</span>
-                    <span>总轮次：8</span>
+                    <span>当日轮次：<em>{{round_info_data.todayRounds}}</em></span>
+                    <Button size="small" type="error" :disabled='!round_info_data.endable'>结束</Button>
+                    <span>本轮可触达通讯录数量：<em>{{round_info_data.availiableAbs}}</em></span>
+                    <span>总轮次：<em>{{round_info_data.totalRounds}}</em></span>
                   </div>
                   <Tooltip content="收起" placement="left">
                     <Icon @click.native="isShow" size="20" type="md-close"></Icon>
@@ -527,7 +527,7 @@
                     <span>(本人)&nbsp;</span>
                   </span>
                   <span
-                    class="tel"
+                    :class="{'tel': true, 'readonly': !all_opt || (round_info_data.callAccess && !round_info_data.callAccess.debtorCallable)}"
                     @click="handCall({
                         callUserType:'00',
                         userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
@@ -543,7 +543,7 @@
                       class-name="badge_wrap_myself"
                     >
                       <Tooltip
-                        :content="all_opt?'拨打':'暂无权限拨打'"
+                        :content="all_opt && round_info_data.callAccess && round_info_data.callAccess.debtorCallable?'拨打':'暂无权限拨打'"
                         placement="left"
                       >{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid}}</Tooltip>
                     </Badge>

@@ -102,6 +102,7 @@ export default {
       breaks_data: {},//减免info入参
       message_list_loading: false,//通讯录table loading
       address_list_name: 'case_detail_mail_statistics_list',//通讯录默认name
+      round_info_data: {},//轮次信息的相关字段
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -1662,7 +1663,7 @@ export default {
     this.case_detail_getimgurls();
     this.collectcode_getListByCodeType();//获取拨打状态
     this.case_detail_address_info();
-    this.rounds_info();
+    this.rounds_info();//获取当前案件轮次的信息
   },
   mounted() {
     // 禁止右键
@@ -2288,8 +2289,8 @@ export default {
 
     // 点击电话
     handCall(obj, type, tag) {
-      if (!this.all_opt) {
-        this.$Message.error('很抱歉，暂无权限拨打');
+      if (!this.all_opt || !this.round_info_data.callAccess.debtorCallable) {
+        // this.$Message.error('很抱歉，暂无权限拨打');
         return;
       }
       if (obj.callUserType || obj.cntRelTyp) {
@@ -2660,7 +2661,12 @@ export default {
     async rounds_info() {
       const res = await rounds_info({
         caseNo: this.caseNo,
-      })
+      });
+      if (res.code === 1) {
+        this.round_info_data = res.data;
+      } else {
+        this.$Message.error(res.message);
+      }
     },
   }
 };
