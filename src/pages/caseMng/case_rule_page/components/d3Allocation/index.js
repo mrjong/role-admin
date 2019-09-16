@@ -210,7 +210,7 @@ export default {
                 {
                   class: 'edit-btn',
                   style: {
-                    // display: params.row.execStatus === '01' ? 'inline-block' : 'none'
+                    display: params.row.execStatus === '01' ? 'inline-block' : 'none'
                   },
                 },
                 '执行'
