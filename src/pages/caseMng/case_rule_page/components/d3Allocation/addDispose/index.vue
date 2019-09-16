@@ -165,7 +165,7 @@
                 v-model="formItem.remainAllotType"
               >
                 <Option
-                  v-for="item in getDirObj.REMAIN_ALLOT_TYPE"
+                  v-for="item in getDirObj.ALLOT_TYPE"
                   :value="item.itemCode"
                   :key="item.itemName"
                 >{{ item.itemName }}</Option>

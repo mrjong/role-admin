@@ -194,7 +194,7 @@ export default {
               h('Poptip', {
                   props: {
                     confirm: true,
-                    title: '您确定要删除这条数据吗?',
+                    title: '您确定要执行这条数据吗?',
                     transfer: true
                   },
                   on: {
@@ -344,8 +344,8 @@ export default {
     },
 
     async divideAllotReadyCase(id) {
-      this.executeFlag = true
-      if(!this.executeFlag){
+      this.executeFlag = true;
+      if(this.executeFlag){
         const res = await divide_allot_ready_case({id: id});
         this.executeFlag = false
         if (res.code === 1) {

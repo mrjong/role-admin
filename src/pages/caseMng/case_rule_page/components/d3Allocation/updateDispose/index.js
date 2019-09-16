@@ -128,7 +128,7 @@ export default {
         "CASE_HANDLE_STATUS",
         "ALLOT_TYPE",
         "DIVIDE_PROD_NUM",
-        'REMAIN_ALLOT_TYPE'
+        'ALLOT_TYPE'
       ], //s数据字典传的字段
       getDirObj: {},
 
