@@ -157,7 +157,13 @@ export const announcement_list = (obj = {}) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-
+// 首页接案弹窗的接口
+export const home_advanceSysMsg = (obj) =>
+  fetch({
+    url: '/home/advanceSysMsg',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 // 首页今日案件、本月案件、上月案件面板信息接口
 export const home_gethomecollectrate = (obj) =>
   fetch({

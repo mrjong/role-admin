@@ -2,6 +2,9 @@
 import Cookie from 'js-cookie';
 import Vue from 'vue';
 import { Notification} from "element-ui";
+import {
+  home_advanceSysMsg
+} from '@/service/getData';
 let _this = new Vue();
 const h = _this.$createElement;
 let util = {};
@@ -371,6 +374,9 @@ util.websocket = () => {
 
   websocket.onopen = function () {
     //         setMessageInnerHTML("WebSocket连接成功");
+    home_advanceSysMsg().then(res=>{
+      console.log(res)
+    })
     // websocket.send("我是从客户端发出去的消息");
     // websocket.send("我是从客户端发出去的消息2");
     // websocket.send("我是从客户端发出去的消息3");
