@@ -191,16 +191,14 @@ export default {
                 },
                 '修改'
               ),
-              h(
-                'a',
-                {
-                  class: 'edit-btn',
-                  style: {
-                    display: params.row.execStatus === '01' ? 'inline-block' : 'none'
+              h('Poptip', {
+                  props: {
+                    confirm: true,
+                    title: '您确定要删除这条数据吗?',
+                    transfer: true
                   },
-                  props: {},
                   on: {
-                    click: () => {
+                    'on-ok': () => {
                       if (!this.execute) {
                         this.$Message.error('很抱歉，暂无权限执行');
                         return;
@@ -208,9 +206,16 @@ export default {
                       this.divideAllotReadyCase(JSON.parse(JSON.stringify(params.row)).id)
                     }
                   }
+                }
+                ,[h('a',
+                {
+                  class: 'edit-btn',
+                  style: {
+                    // display: params.row.execStatus === '01' ? 'inline-block' : 'none'
+                  },
                 },
                 '执行'
-              ),
+              )])
             ]);
           }
         },
