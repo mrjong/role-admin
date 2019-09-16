@@ -55,7 +55,7 @@ export default {
           {
             required: true,
             type: "string",
-            message: "请选择产品线"
+            message: "请选择产品线",
           }
         ],
         ovdudaysMin: [
@@ -250,6 +250,7 @@ export default {
       })
     },
     handleCancel() {
+      this.$refs['formItem'].resetFields();
       this.$emit("passBack");
     },
 

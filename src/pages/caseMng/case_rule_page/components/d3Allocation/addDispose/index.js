@@ -171,7 +171,11 @@ export default {
         this.formItem = {
           ruleType: '02',
           allotUserList: [],
-          effectMinDt: util.getToday(1)
+          effectMinDt: util.getToday(1),
+          collectDateSta: `${util.getToday(0)} 17:00:00`,
+          collectDateEnd: `${util.getToday(1)} 10:00:00`,
+          ovdudaysMin: 3,
+          ovdudaysMax: 3
         }
       }
     }
