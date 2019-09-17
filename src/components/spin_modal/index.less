@@ -1,0 +1,44 @@
+.spin_dot {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: #2d8cf0;
+  width: 30px;
+  height: 30px;
+  margin-right: 20px;
+}
+.dot_1 {
+  animation: ani-spin-bounce 1.5s 0s ease-in-out infinite;
+}
+.dot_2 {
+  animation: ani-spin-bounce 1.5s 0.5s ease-in-out infinite;
+}
+.dot_3 {
+  animation: ani-spin-bounce 1.5s 1s ease-in-out infinite;
+}
+.spin {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+.letter {
+  animation: bounce 0.75s cubic-bezier(0.05, 0, 0.2, 1) infinite alternate;
+  display: inline-block;
+  transform: translate3d(0, 0, 0);
+  margin-top: 0.5em;
+  text-shadow: rgba(11, 70, 109, 0.4) 0 0 0.05em;
+  font: normal 500 2rem "Varela Round", sans-serif;
+}
+.fixed_text {
+  font: normal 500 1.5rem "Varela Round", sans-serif;
+  margin-bottom: 2rem;
+}
+@keyframes bounce {
+  0% {
+    transform: translate3d(0, 0, 0);
+    text-shadow: rgba(10, 118, 219, 0.411) 0 0 0.05em;
+  }
+  100% {
+    transform: translate3d(0, -1em, 0);
+    text-shadow: rgba(10, 118, 219, 0.411) 0 1em 0.18em;
+  }
+}

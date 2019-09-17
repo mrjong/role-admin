@@ -51,6 +51,7 @@ import {
   rounds_info,//当前案件轮次信息
   rounds_over,//结束当前案件轮次
   rounds_record,//记录当前通话状态
+  case_collect_switch_case,//下一个接口
 } from '@/service/getData';
 let callFlag = false;
 export default {
@@ -104,6 +105,8 @@ export default {
       message_list_loading: false,//通讯录table loading
       address_list_name: 'case_detail_mail_statistics_list',//通讯录默认name
       round_info_data: {},//轮次信息的相关字段
+      next_case_list: '',//下一个案件的信息
+      collectCategory: false,//M1用户标识符
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -148,6 +151,7 @@ export default {
       imgName: '',
       visible: false,
       showBottom: false,//添加、编辑催记弹窗
+      remark_flag: false,//是否记催记的标识符
       callUserType: '',//催记里面的关系
       call_status: '',// 拨打状态暂存
       modalTitle: '',
@@ -1102,57 +1106,58 @@ export default {
                   lineHeight: '36px',
                 }
               }, [
-                  h(
-                    'a',
-                    {
-                      props: {
-                        type: 'md-create'
-                      },
-                      on: {
-                        click: () => {
-                          _this.handCall(params.row, 'call', '03');
-                        }
-                      }
+                h(
+                  'a',
+                  {
+                    class: !_this.all_opt || (_this.round_info_data.callAccess && !_this.round_info_data.callAccess.contactCallable) ? 'readonly' : 'edit-btn',
+                    props: {
+                      type: 'md-create'
                     },
-                    `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
-                  ),
-                  this.plaintext ? h(
-                    'Poptip',
-                    {
-                      props: {
-                        content: _this.mingwenData,
-                        transfer: true,
+                    on: {
+                      click: () => {
+                        _this.handCall(params.row, 'call', '03');
                       }
-                    },
-                    [
-                      h(
-                        'span',
-                        {
-                          on: {
-                            click: () => {
-                              _this.syscommon_decrypt({
-                                type: 'MBL',
-                                data: params.row.mblNo,
-                                tripartite: 'tripartite'
-                              });
-                            }
-                          },
-                          style: {
-                            display: params.row.mblNoHid ? 'inline-block' : 'none'
+                    }
+                  },
+                  `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
+                ),
+                this.plaintext ? h(
+                  'Poptip',
+                  {
+                    props: {
+                      content: _this.mingwenData,
+                      transfer: true,
+                    }
+                  },
+                  [
+                    h(
+                      'span',
+                      {
+                        on: {
+                          click: () => {
+                            _this.syscommon_decrypt({
+                              type: 'MBL',
+                              data: params.row.mblNo,
+                              tripartite: 'tripartite'
+                            });
                           }
                         },
-                        [
-                          h('Icon', {
-                            props: {
-                              type: 'md-eye'
-                            },
-                            class: 'eye-class'
-                          })
-                        ]
-                      )
-                    ]
-                  ) : null
-                ]),
+                        style: {
+                          display: params.row.mblNoHid ? 'inline-block' : 'none'
+                        }
+                      },
+                      [
+                        h('Icon', {
+                          props: {
+                            type: 'md-eye'
+                          },
+                          class: 'eye-class'
+                        })
+                      ]
+                    )
+                  ]
+                ) : null
+              ]),
             ]);
           }
         },
@@ -1270,56 +1275,56 @@ export default {
                 lineHeight: '36px',
               }
             }, [
-                h(
-                  'a',
-                  {
-                    class: 'edit-btn',
-                    on: {
-                      click: () => {
-                        _this.handCall(params.row, 'call', '03');
-                      }
+              h(
+                'a',
+                {
+                  class: !_this.all_opt || (_this.round_info_data.callAccess && !_this.round_info_data.callAccess.contactCallable) ? 'readonly' : 'edit-btn',
+                  on: {
+                    click: () => {
+                      _this.handCall(params.row, 'call', '03');
                     }
-                  },
-                  `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
-                ),
-                this.plaintext ? h(
-                  'Poptip',
-                  {
-                    props: {
-                      content: _this.mingwenData,
-                      transfer: true,
-                    }
-                  },
-                  [
-                    h(
-                      'span',
-                      {
-                        on: {
-                          click: () => {
-                            _this.syscommon_decrypt({
-                              type: 'MBL',
-                              data: params.row.mblNo,
-                              tripartite: 'tripartite'
-                            });
-                          }
-                        },
-                        style: {
-                          display: params.row.mblNoHid ? 'inline-block' : 'none'
+                  }
+                },
+                `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
+              ),
+              this.plaintext ? h(
+                'Poptip',
+                {
+                  props: {
+                    content: _this.mingwenData,
+                    transfer: true,
+                  }
+                },
+                [
+                  h(
+                    'span',
+                    {
+                      on: {
+                        click: () => {
+                          _this.syscommon_decrypt({
+                            type: 'MBL',
+                            data: params.row.mblNo,
+                            tripartite: 'tripartite'
+                          });
                         }
                       },
-                      [
-                        h('Icon', {
-                          props: {
-                            type: 'md-eye'
-                          },
+                      style: {
+                        display: params.row.mblNoHid ? 'inline-block' : 'none'
+                      }
+                    },
+                    [
+                      h('Icon', {
+                        props: {
+                          type: 'md-eye'
+                        },
 
-                          class: 'eye-class'
-                        })
-                      ]
-                    )
-                  ]
-                ) : null
-              ]);
+                        class: 'eye-class'
+                      })
+                    ]
+                  )
+                ]
+              ) : null
+            ]);
           }
         },
         {
@@ -1409,56 +1414,56 @@ export default {
                 lineHeight: '36px',
               }
             }, [
-                h(
-                  'a',
-                  {
-                    class: 'edit-btn',
-                    on: {
-                      click: () => {
-                        _this.handCall(params.row, 'call', '03');
-                      }
+              h(
+                'a',
+                {
+                  class: !_this.all_opt || (_this.round_info_data.callAccess && !_this.round_info_data.callAccess.contactCallable) ? 'readonly' : 'edit-btn',
+                  on: {
+                    click: () => {
+                      _this.handCall(params.row, 'call', '03');
                     }
-                  },
-                  `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
-                ),
-                this.plaintext ? h(
-                  'Poptip',
-                  {
-                    props: {
-                      content: _this.mingwenData,
-                      transfer: true,
-                    }
-                  },
-                  [
-                    h(
-                      'span',
-                      {
-                        on: {
-                          click: () => {
-                            _this.syscommon_decrypt({
-                              type: 'MBL',
-                              data: params.row.mblNo,
-                              tripartite: 'tripartite'
-                            });
-                          }
-                        },
-                        style: {
-                          display: params.row.mblNoHid ? 'inline-block' : 'none'
+                  }
+                },
+                `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
+              ),
+              this.plaintext ? h(
+                'Poptip',
+                {
+                  props: {
+                    content: _this.mingwenData,
+                    transfer: true,
+                  }
+                },
+                [
+                  h(
+                    'span',
+                    {
+                      on: {
+                        click: () => {
+                          _this.syscommon_decrypt({
+                            type: 'MBL',
+                            data: params.row.mblNo,
+                            tripartite: 'tripartite'
+                          });
                         }
                       },
-                      [
-                        h('Icon', {
-                          props: {
-                            type: 'md-eye'
-                          },
+                      style: {
+                        display: params.row.mblNoHid ? 'inline-block' : 'none'
+                      }
+                    },
+                    [
+                      h('Icon', {
+                        props: {
+                          type: 'md-eye'
+                        },
 
-                          class: 'eye-class'
-                        })
-                      ]
-                    )
-                  ]
-                ) : null
-              ]);
+                        class: 'eye-class'
+                      })
+                    ]
+                  )
+                ]
+              ) : null
+            ]);
           }
         },
       ],
@@ -1542,59 +1547,59 @@ export default {
                 lineHeight: '36px',
               }
             }, [
-                h(
-                  'a',
-                  {
-                    class: 'edit-btn',
-                    props: {
-                      type: 'md-create'
-                    },
-                    on: {
-                      click: () => {
-                        _this.handCall(params.row, 'call', '03');
-                      }
-                    }
+              h(
+                'a',
+                {
+                  class: !_this.all_opt || (_this.round_info_data.callAccess && !_this.round_info_data.callAccess.contactCallable) ? 'readonly' : 'edit-btn',
+                  props: {
+                    type: 'md-create'
                   },
-                  `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
-                ),
-                this.plaintext ? h(
-                  'Poptip',
-                  {
-                    props: {
-                      content: _this.mingwenData,
-                      transfer: true,
+                  on: {
+                    click: () => {
+                      _this.handCall(params.row, 'call', '03');
                     }
-                  },
-                  [
-                    h(
-                      'span',
-                      {
-                        on: {
-                          click: () => {
-                            _this.syscommon_decrypt({
-                              type: 'MBL',
-                              data: params.row.mblNo,
-                              tripartite: 'tripartite'
-                            });
-                          }
-                        },
-                        style: {
-                          display: params.row.mblNoHid ? 'inline-block' : 'none'
+                  }
+                },
+                `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
+              ),
+              this.plaintext ? h(
+                'Poptip',
+                {
+                  props: {
+                    content: _this.mingwenData,
+                    transfer: true,
+                  }
+                },
+                [
+                  h(
+                    'span',
+                    {
+                      on: {
+                        click: () => {
+                          _this.syscommon_decrypt({
+                            type: 'MBL',
+                            data: params.row.mblNo,
+                            tripartite: 'tripartite'
+                          });
                         }
                       },
-                      [
-                        h('Icon', {
-                          props: {
-                            type: 'md-eye'
-                          },
+                      style: {
+                        display: params.row.mblNoHid ? 'inline-block' : 'none'
+                      }
+                    },
+                    [
+                      h('Icon', {
+                        props: {
+                          type: 'md-eye'
+                        },
 
-                          class: 'eye-class'
-                        })
-                      ]
-                    )
-                  ]
-                ) : null
-              ]);
+                        class: 'eye-class'
+                      })
+                    ]
+                  )
+                ]
+              ) : null
+            ]);
           }
         },
       ]
@@ -1636,6 +1641,10 @@ export default {
     if (Cookie.get('APPLY_QR_CODE') === 'true') {
       this.APPLY_QR_CODE = true;
     };
+    // 判断是否为M1的用户
+    if (Cookie.get('collectCategory') === 'M01') {
+      this.collectCategory = true;
+    }
     let params = location.hash.split('?');
     const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
     this.caseNo = window.atob(queryData.caseNotest);
@@ -1664,6 +1673,7 @@ export default {
     this.collectcode_getListByCodeType();//获取拨打状态
     this.case_detail_address_info();
     this.rounds_info();//获取当前案件轮次的信息
+    this.case_collect_switch_case();//查询下一个案件
   },
   mounted() {
     // 禁止右键
@@ -1783,6 +1793,7 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 一对一模式的呼叫
     async call_hung_on(obj) {
       let callData = JSON.parse(localStorage.getItem('callData'));
       let params = {
@@ -1823,17 +1834,14 @@ export default {
           localStorage.removeItem('callObj');
           callData.actionId = res.data.actionId;
           localStorage.setItem('callData', JSON.stringify(callData));
+          callData.callType === '2' && this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && !this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });
         }
-        let timer;
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          if (params.collectType === '01')
-            this.case_detail_case_identity_info();
-          if (params.collectType === '02')
-            this.case_detail_urgent_contact();
-          if (params.collectType === '03')
-            this[this.address_list_name]();
-        }, 1500)
+        if (params.collectType === '01')
+          await this.case_detail_case_identity_info();
+        if (params.collectType === '02')
+          await this.case_detail_urgent_contact();
+        if (params.collectType === '03')
+          await this[this.address_list_name]();
       } else {
         callData.callType === '2' && this.call_xz_hung_off();//呼叫失败调用挂断
         this.$Message.error(res.message);
@@ -1846,12 +1854,12 @@ export default {
         callRecordDomain: params,
         calloutVo: obj,
       }, {
-          transformRequest: [
-            function (data) {
-              return JSON.stringify(data); //利用对应方法转换格式
-            }
-          ]
-        });
+        transformRequest: [
+          function (data) {
+            return JSON.stringify(data); //利用对应方法转换格式
+          }
+        ]
+      });
       return res;
     },
 
@@ -1863,36 +1871,27 @@ export default {
       let res;
       if (callData.callType === '2') {
         res = await this.callout_hung_on(obj, callData);
-        // if (XZ_STATE == '1') {
-        // } else {
-        //   this.$Message.error('请启动讯众新版软电话！');
-        //   this.call_xz_hung_off();
-        //   return;
-        // }
       } else {
         res = await call_xz_hung_on(obj);
       }
       console.log(res)
       if (res.code === 1) {
-        if(callData.callType === '2'){
-          await init(res.data.calloutVo.phoneNo, this);//调用拨打的方法
-          this.xZStyle = true
-        }
         this.actionId = res.data.actionId;
-        this.showMoorTel = true;
         this.recordId = res.data.recordId;
+        if (callData.callType === '2') {
+          await init(res.data.calloutVo.phoneNo, this);//调用拨打的方法
+          this.xZStyle = true;
+          this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && !this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });
+        }
+        this.showMoorTel = true;
         this.moorToCallMblHid = obj.toCallMblHid;
         this.moorToCallUser = obj.toCallUserHid;
-        let timer;
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          if (obj.collectType === '01')
-            this.case_detail_case_identity_info();
-          if (obj.collectType === '02')
-            this.case_detail_urgent_contact();
-          if (obj.collectType === '03')
-            this[this.address_list_name]();
-        }, 1500);
+        if (obj.collectType === '01')
+          await this.case_detail_case_identity_info();
+        if (obj.collectType === '02')
+          await this.case_detail_urgent_contact();
+        if (obj.collectType === '03')
+          await this[this.address_list_name]();
       } else {
         callData.callType === '2' && this.call_xz_hung_off();//呼叫失败调用挂断
         this.$Message.error(res.message);
@@ -2271,6 +2270,12 @@ export default {
 
     // 取消催记
     handleCancle(flag) {
+      if (this.remark_flag && this.collectCategory) {
+        this.$Message.error('请完成当前催记');
+        return;
+      }
+      this.actionId = '';
+      sessionStorage.removeItem('callId');
       this.add_collect_loading = false;
       // 重置初始化数据
       this.mblNo = '';
@@ -2290,31 +2295,37 @@ export default {
     // 点击电话
     handCall(obj, type, tag) {
       // 判断权限是否可以拨打或是否上限
-      if (!this.all_opt) {
-        switch (tag) {
-          case '01':
-            if (!this.round_info_data.callAccess.debtorCallable) {
-              return;
-            }
-            break;
-          case '02':
-            if (!this.round_info_data.callAccess.urgencyCallable) {
-              this.$Message.error('很抱歉，请先拨打本人电话');
-              return;
-            }
-            break;
-          case '03':
-            if (!this.round_info_data.callAccess.contactCallable) {
-              return;
-            }
-            break;
-
-          default:
-            break;
+      if (this.all_opt) {
+        if (this.collectCategory) {
+          switch (tag) {
+            case '01':
+              if (!this.round_info_data.callAccess.debtorCallable) {
+                return;
+              }
+              break;
+            case '02':
+              if (!this.round_info_data.callAccess.urgencyCallable) {
+                this.$Message.error('很抱歉，请先拨打本人电话');
+                return;
+              }
+              break;
+            case '03':
+              if (!this.round_info_data.callAccess.contactCallable) {
+                return;
+              }
+              break;
+            default:
+              break;
+          }
         }
       } else {
         this.$Message.error('很抱歉，暂无权限拨打');
         return;
+      }
+      // 判断当前催记是否完成
+      if (this.remark_flag && this.collectCategory) {
+        this.$Message.error('请完成当前催记后再进行拨打');
+        return
       }
       if (obj.callUserType || obj.cntRelTyp) {
         this.callUserType = (obj.callUserType || obj.cntRelTyp) === '00' ? '1' : '2';
@@ -2508,6 +2519,7 @@ export default {
     changePage(pageNum, name) {
       this[name]();
     },
+    // 下一个
     nextCase(caseNo) {
       let params = location.hash.split('?');
       const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
@@ -2519,18 +2531,29 @@ export default {
       location.href = params[0] + '?' + qs.stringify(queryData);
       location.reload();
     },
+    // 查询下一个案件
+    async case_collect_switch_case() {
+      const res = await case_collect_switch_case({
+        caseNo: this.caseNo,
+      });
+      if (res.code === 1) {
+        this.next_case_list = res.data;
+      } else {
+        // this.$Message.error(res.message);
+      }
+    },
     // 切换每页条数时的回调
     changeSize(pageSize, name) {
       console.log(this.case_detail_getcaselog_pageSize);
       console.log(pageSize, name);
-      this[ name +'_pageSize'] = pageSize;
+      this[name + '_pageSize'] = pageSize;
       this.pageNo = 1;
       this[name]();
     },
     // 新增催记
     async case_remark_his_add() {
       let callData = JSON.parse(localStorage.getItem('callData'));
-      if (callData.callType==='2' && callData.seatType === 'XZ') {
+      if (callData.callType === '2' && callData.seatType === 'XZ') {
         this.actionId = sessionStorage.getItem('callId') ? sessionStorage.getItem('callId') : '';
       }
       this.add_collect_loading = true;
@@ -2552,23 +2575,21 @@ export default {
       this.add_collect_loading = false;
       if (res.code === 1) {
         this.$Message.success('添加成功');
-        let timer;
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          this.case_detail_remark_list_pageNo = 1;
-          this.case_detail_remark_list();
-          // debugger
-          if (this.collectType === '01') {
-            this.case_detail_case_identity_info();
-          }
-          if (this.collectType === '02') {
-            this.case_detail_urgent_contact();
-          }
-          if (this.collectType === '03') {
-            this[this.address_list_name]();
-          }
-          this.handleCancle(true);
-        }, 1500);
+        this.remark_flag = false;
+        this.actionId = '';
+        sessionStorage.removeItem('callId');
+        this.case_detail_remark_list_pageNo = 1;
+        await this.case_detail_remark_list();
+        if (this.collectType === '01') {
+          await this.case_detail_case_identity_info();
+        }
+        if (this.collectType === '02') {
+          await this.case_detail_urgent_contact();
+        }
+        if (this.collectType === '03') {
+          await this[this.address_list_name]();
+        }
+        this.handleCancle(true);
       } else {
         this.$Message.error(res.message);
       }
@@ -2705,7 +2726,25 @@ export default {
         callStatus: obj.status,
         callId: callId,
         mblNo: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
-      })
+      });
+      if (res.code === 1) {
+        this.remark_flag = true;
+        this.rounds_info();
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 手动结束本轮呼叫轮次
+    async rounds_over() {
+      const res = await rounds_over({
+        caseNo: this.caseNo
+      });
+      if (res.code === 1) {
+        await this.$Message.success('结束成功');
+        this.rounds_info();
+      } else {
+        this.$Message.success(res.message);
+      }
     }
   }
 };

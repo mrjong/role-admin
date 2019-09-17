@@ -163,7 +163,8 @@ export default {
                   props: {
                     content: '查看详情',
                     placement: 'top',
-                    transfer: true
+                    transfer: true,
+                    disabled: !params.row.canCollect ? true : false
                   }
                 },
                 [
@@ -176,36 +177,36 @@ export default {
                       'vertical-align': 'top',
                       'margin-right': '5px',
                       color: '#EF0D33',
-                      display: eyeFlag? 'inline-block': 'none'
+                      display: eyeFlag ? 'inline-block' : 'none'
                     }
                   }),
-                  params.row.canCollect?
-                  h(
-                    'a',
-                    {
-                      class: 'edit-desc',
-                      on: {
-                        click: () => {
-                          if (!_this.detail) {
-                            _this.$Message.error('很抱歉，暂无权限查看详情');
-                            return
+                  params.row.canCollect ?
+                    h(
+                      'a',
+                      {
+                        class: 'edit-desc',
+                        on: {
+                          click: () => {
+                            if (!_this.detail) {
+                              _this.$Message.error('很抱歉，暂无权限查看详情');
+                              return
+                            }
+                            window.open(
+                              `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=edit&userIdtest=${userId}&seatType=${seatType
+                                ? seatType
+                                : 'KT'}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+                                  _this.formItem
+                                )}`
+                            );
                           }
-                          window.open(
-                            `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=edit&userIdtest=${userId}&seatType=${seatType
-                              ? seatType
-                              : 'KT'}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
-                                _this.formItem
-                              )}`
-                          );
                         }
+                      },
+                      params.row.id
+                    ) : h('span', {
+                      style: {
+                        color: '#ccc'
                       }
-                    },
-                    params.row.id
-                  ): h('span', {
-                    style: {
-                      color: '#ccc'
-                    }
-                  }, params.row.id)
+                    }, params.row.id)
                 ]
               )
             ]);
@@ -460,6 +461,15 @@ export default {
       });
       this.query_loading = false;
       if (res.code === 1) {
+        // 是否为开案阶段
+        if (res.data.loadingText) {
+          this.$store.commit("changeSpinData", res.data.loadingText);
+          let timer;
+          setTimeout(() => {
+            this.$store.commit("changeSpinData", '');
+          }, 3000);
+          clearTimeout(timer);
+        }
         this.tableData = res.data.page.content;
         this.pageSize = res.data.page.size;
         this.total = res.data.page.totalElements;
@@ -471,7 +481,7 @@ export default {
     // 沟通状态
     async collectcode_getListByCodeType(type) {
       const res = await collectcode_getListByCodeType({
-        codeType: type === 1? 'COLLECT_STS': 'TALK_RESULT'
+        codeType: type === 1 ? 'COLLECT_STS' : 'TALK_RESULT'
       });
       if (res.code === 1) {
         if (type === 1) {

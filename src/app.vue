@@ -18,19 +18,7 @@
         </div>
       </div>
     </div>
-    <Spin fix style="z-index: 1000;" v-if="false">
-      <p class="spin">
-        <span
-          class="letter"
-          :style="{'animation-delay': index === '0' || index === text.length -1? '0s': index/(2*text.length - 2) + 's'}"
-          v-for="item,index in text"
-          :key="item+index"
-        >{{item}}</span>
-      </p>
-      <div class="spin_dot dot_1"></div>
-      <div class="spin_dot dot_2"></div>
-      <div class="spin_dot dot_3"></div>
-    </Spin>
+    <spinModal :spin_data='spin_data'></spinModal>
     <router-view></router-view>
     <video loop ref="ring" preload="auto" style="position: absolute" src="src/libs/ring.wav"></video>
     <audio id="playaudio" src="./libs/ring1.wav" loop="loop" style="display: none"></audio>
@@ -43,12 +31,18 @@
 import { mapGetters } from "vuex";
 import util from "@/libs/util";
 import { callout_hung_off } from "@/service/getData";
+import spinModal from '@/components/spin_modal';
+import Cookie from 'js-cookie';
 export default {
+  components: {
+    spinModal
+  },
   data() {
     return {
       fail: false,
       success: false,
       showTel: false,
+      spin_data: {},
       telNoHid: "***********",
       usrNameHid: "****",
       theme: this.$store.state.app.themeColor,
@@ -78,7 +72,7 @@ export default {
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
-    ...mapGetters(["changeCallData"])
+    ...mapGetters(["changeCallData", 'changeSpinData'])
   },
 
   methods: {
@@ -152,6 +146,9 @@ export default {
     }
   },
   watch: {
+    changeSpinData(res) {
+      this.spin_data = res;
+    },
     changeCallData(res) {
       if (res.msg) {
         console.log("电话状态======>", res);
@@ -188,15 +185,15 @@ export default {
             this.showTel = true;
             break;
             // 触达第二端
-          case 'ANSWER':
-            this.$store.commit("changeCallRecord", {
+          case 'ANSWERED':
+            Cookie.get('collectCategory') === 'M01' && this.$store.commit("changeCallRecord", {
               seatType: 'KT',
               status: '0'
             });
             break;
             // 接听状态
           case "REALTIME":
-            this.$store.commit("changeCallRecord", {
+            Cookie.get('collectCategory') === 'M01' && this.$store.commit("changeCallRecord", {
               seatType: 'KT',
               status: '1'
             });
@@ -242,42 +239,6 @@ body {
   overflow: auto;
   width: 100%;
   height: 100%;
-}
-.spin_dot {
-  position: relative;
-  display: inline-block;
-  border-radius: 50%;
-  background-color: #2d8cf0;
-  width: 30px;
-  height: 30px;
-  margin-right: 20px;
-}
-.dot_1 {
-  animation: ani-spin-bounce 1.5s 0s ease-in-out infinite;
-}
-.dot_2 {
-  animation: ani-spin-bounce 1.5s 0.5s ease-in-out infinite;
-}
-.dot_3 {
-  animation: ani-spin-bounce 1.5s 1s ease-in-out infinite;
-}
-.letter {
-  animation: bounce 0.75s cubic-bezier(0.05, 0, 0.2, 1) infinite alternate;
-  display: inline-block;
-  transform: translate3d(0, 0, 0);
-  margin-top: 0.5em;
-  text-shadow: rgba(11, 70, 109, 0.4) 0 0 0.05em;
-  font: normal 500 3rem "Varela Round", sans-serif;
-}
-@keyframes bounce {
-  0% {
-    transform: translate3d(0, 0, 0);
-    text-shadow: rgba(255, 255, 255, 0.4) 0 0 0.05em;
-  }
-  100% {
-    transform: translate3d(0, -1em, 0);
-    text-shadow: rgba(3, 56, 56, 0.4) 0 1em 0.18em;
-  }
 }
 .fail-icon {
   transform: rotate(132deg);

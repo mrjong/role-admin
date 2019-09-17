@@ -1,6 +1,6 @@
 <template>
   <div class="panel_list p5">
-    <Modal title="新增通讯录" v-model="address_list_modal">
+    <Modal title="新增通讯录" v-model="address_list_modal" :mask-closable="false">
       <Form
         ref="formItem2"
         :model="formItem2"
@@ -114,18 +114,18 @@
             class="fr vue-back-btn header-btn"
             type="primary"
             v-if="readType!=='read'"
-            @click.stop="nextCase(case_collect_case_list_data&&case_collect_case_list_data.downCaseNo)"
-            :disabled="btnDisable||!case_collect_case_list_data||!case_collect_case_list_data.downCaseNo"
+            @click.stop="nextCase(next_case_list)"
+            :disabled="btnDisable||!next_case_list"
             size="small"
           >下一个</Button>
-          <Button
+          <!-- <Button
             class="fr vue-back-btn header-btn"
             type="primary"
             v-if="readType!=='read'"
             @click.stop="nextCase(case_collect_case_list_data&&case_collect_case_list_data.upCaseNo)"
             :disabled="btnDisable||!case_collect_case_list_data||!case_collect_case_list_data.upCaseNo"
             size="small"
-          >上一个</Button>
+          >上一个</Button>-->
         </p>
         <div class="panel-desc" v-if="!showPanel">
           <Row :gutter="10">
@@ -167,7 +167,7 @@
                   当前逾期期数：
                   <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.overduePerdCount}}</span>
                 </div>
-              </Col> -->
+              </Col>-->
               <Col :xs="24" :sm="24" :md="24" :lg="24">
                 <div class="panel-desc-title">
                   家庭住址：
@@ -510,11 +510,22 @@
             >
               <div>
                 <div class="case-desc-close">
-                  <div class="round_info" style="display: inline-block">
-                    <span>当日轮次：<em>{{round_info_data.todayRounds}}</em></span>
-                    <Button size="small" type="error" :disabled='!round_info_data.endable'>结束</Button>
-                    <span>本轮可触达通讯录数量：<em>{{round_info_data.availiableAbs}}</em></span>
-                    <span>总轮次：<em>{{round_info_data.totalRounds}}</em></span>
+                  <div class="round_info" style="display: inline-block" v-if="collectCategory">
+                    <span>
+                      当日轮次：
+                      <em>{{round_info_data.todayRounds}}</em>
+                    </span>
+                    <Poptip confirm title="确认要结束本轮呼叫轮次吗？" @on-ok="rounds_over">
+                      <Button size="small" type="error" :disabled="!round_info_data.endable">结束</Button>
+                    </Poptip>
+                    <span>
+                      本轮可触达通讯录数量：
+                      <em>{{round_info_data.availiableAbs}}</em>
+                    </span>
+                    <span>
+                      总轮次：
+                      <em>{{round_info_data.totalRounds}}</em>
+                    </span>
                   </div>
                   <Tooltip content="收起" placement="left">
                     <Icon @click.native="isShow" size="20" type="md-close"></Icon>
@@ -595,15 +606,20 @@
                   class="ivu-alert-copy ivu-alert-error"
                   v-for="(item,index) in case_detail_urgent_contact_Data.userContactList"
                 >
-                  <span class="state-name">{{item.channelSource === '5'? '本人（变更）': item.channelSource === '10'? '本人（人审）':'紧急联系人'}}</span>
+                  <span
+                    class="state-name"
+                  >{{item.channelSource === '5'? '本人（变更）': item.channelSource === '10'? '本人（人审）':'紧急联系人'}}</span>
                   <span class="name">
                     {{item.cntUserNameClear}}
                     <span>({{item.cntRelTypName}})&nbsp;</span>
                   </span>
-                  <span class="tel" @click="handCall(item,'call', item.cntRelTyp === '00'? '01': '02')">
+                  <span
+                    :class="{'tel': true, 'readonly': !all_opt || (round_info_data.callAccess && (!item.channelSource?!round_info_data.callAccess.urgencyCallable: !round_info_data.callAccess.debtorCallable))}"
+                    @click="handCall(item,'call', item.cntRelTyp === '00'? '01': '02')"
+                  >
                     <Badge :count="item.callCount" class-name="badge_wrap_myself">
                       <Tooltip
-                        :content="all_opt?'拨打':'暂无权限拨打'"
+                        :content="all_opt && round_info_data.callAccess && round_info_data.callAccess.urgencyCallable?'拨打':'暂无权限拨打'"
                         placement="left"
                       >{{item.cntUserMblNoHid}}</Tooltip>
                     </Badge>
@@ -726,7 +742,12 @@
                     </div>
                   </TabPane>
 
-                  <TabPane class="call_update" :icon="case_detail_urgent_contact_Data.isMailAppend || case_detail_mail_list_appended_tableData.length >0? 'md-person-add': ''" label="通话更新" name="case_detail_mail_list_appended">
+                  <TabPane
+                    class="call_update"
+                    :icon="case_detail_urgent_contact_Data.isMailAppend || case_detail_mail_list_appended_tableData.length >0? 'md-person-add': ''"
+                    label="通话更新"
+                    name="case_detail_mail_list_appended"
+                  >
                     <div>
                       <Table
                         border
@@ -957,7 +978,10 @@
     <!-- 容联、讯众软电话 -->
     <div class="tel-box" v-if="showMoorTel" :style="xZStyle && 'width: 210px'">
       <div class="tel-box-desc" :style="xZStyle && 'width: 200px'">
-        <div class="tel-num" :style="xZStyle && 'display: inline-block; marginRight: 20px'">{{moorToCallMblHid}}</div>
+        <div
+          class="tel-num"
+          :style="xZStyle && 'display: inline-block; marginRight: 20px'"
+        >{{moorToCallMblHid}}</div>
         <div class="tel-desc" :style="xZStyle && 'display: inline-block'">{{moorToCallUser}}</div>
         <div class="tel-desc">{{xZStatus}}</div>
         <div class="tel-btn-box">

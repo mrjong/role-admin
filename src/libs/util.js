@@ -381,6 +381,13 @@ util.websocket = () => {
     console.log(event.data);
     let data = JSON.parse(event.data);
     switch (data.msgType) {
+      case '00':
+          vueExample.$store.commit("changeSpinData", data.msgContent);
+          let timer;
+          timer = setTimeout(() => {
+            vueExample.$store.commit("changeSpinData", '');
+          }, 3000);
+          clearTimeout(timer)
       case '01':
         Notification({
           title: data.msgTitle,

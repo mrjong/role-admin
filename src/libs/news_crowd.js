@@ -3,6 +3,8 @@ import { aa } from "@/service/getData";
 import fetch from '@/libs/fetch';
 import qs from 'qs';
 import Vue from 'vue'
+import Cookie from 'js-cookie';
+
 let jsonp = require('jsonp');
 let count = 0;
 function param(data) {
@@ -48,7 +50,7 @@ export const init = (phoneNumber, that) => {
       cti_serverid = dataRes.serverid;
       cti.CtiConnect(dataRes.domain, dataRes.port);
       initStatus(phoneNumber, that)
-      obj = {  ...obj, action: 'getRegServer',  wstype: 'ws' }
+      obj = { ...obj, action: 'getRegServer', wstype: 'ws' }
       let url2 = _url
       url2 += (url2.indexOf('?') < 0 ? '?' : '&') + param(obj);
       jsonp(url2, { param: 'callbackparam' }, (err, res) => {
@@ -278,7 +280,7 @@ export const initStatus = (phoneNumber, that) => {
         case "4": //后处理
           {
             console.log('后处理')
-            that.showMoorTel= false
+            that.showMoorTel = false
           }
           break;
         case "7": //振铃
@@ -286,18 +288,18 @@ export const initStatus = (phoneNumber, that) => {
           if (handcall === 1) {//主动外呼
             handcall = 0;
             let countTime = 0
-            let timer= setInterval(function () {
+            let timer = setInterval(function () {
               countTime = countTime + 1
-              if(countTime >=10){
+              if (countTime >= 10) {
                 clearInterval(timer)
                 return
               }
-              if(sessionStorage.getItem('ringState') === '1'){
+              if (sessionStorage.getItem('ringState') === '1') {
                 sip_client.answerMessage(obj.telephone, sip_client.sip_callid);
                 sessionStorage.removeItem('ringState')
                 clearInterval(timer)
               }
-            },1000)
+            }, 1000)
           } else {
             console.log('## 呼入操作')
           }
@@ -340,7 +342,7 @@ export const initStatus = (phoneNumber, that) => {
   }
   ///注册事件：操作结果事件
   cti.EVENT_CMDRES = function (rescode, pbxrescode, res, actionid, taskid, calldata) {
-    if(pbxrescode === '-1' && rescode !== '0'){
+    if (pbxrescode === '-1' && rescode !== '0') {
       cti.AgentLogout();
       cti.CtiDisconnect();//断开cti连接
       // that.$Message.error('连接错误')
@@ -352,6 +354,11 @@ export const initStatus = (phoneNumber, that) => {
   ///注册事件：座席通话或录音通知事件
   ///////////////////////////////////////////////////////////
   cti.EVENT_AgentAnswered = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, filename, calldata) {
+    // 记录当前接听状态
+    Cookie.get('collectCategory') === 'M01' && vueExample.$store.commit('changeCallRecord', {
+      seatType: 'XZ',
+      status: '1'
+    });
     sessionStorage.setItem('callId', callId)
     that.xZStatus = '通话中...'
     // that.$Message.success('座席通话')
@@ -374,8 +381,12 @@ export const initStatus = (phoneNumber, that) => {
   ///注册事件：对方振铃通知事件
   ///////////////////////////////////////////////////////////
   cti.EVENT_OtherRinging = function (compid, agentid, callId, calltype, calleedevice, callerdevice, areacode, taskid, tasktype, calldata) {
+    // 记录当前接通状态
+    Cookie.get('collectCategory') === 'M01' && vueExample.$store.commit('changeCallRecord', {
+      seatType: 'XZ',
+      status: '0'
+    });
     that.xZStatus = '客户振铃'
-    // that.$Message.success('对方振铃')
     console.log('客户振铃')
     console.log("## EVENT_OtherRinging:compid=" + compid + ",agentid=" + agentid + ",callId=" + callId + ",calltype=" + calltype + ",calleedevice=" + calleedevice + ",callerdevice=" + callerdevice + ",areacode=" + areacode + ",taskid=" + taskid + ",tasktype=" + tasktype + ",calldata=" + calldata);
     //可在此进行弹屏处理

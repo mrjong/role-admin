@@ -5,11 +5,13 @@ const obj = {
     KTcallData: '',
     XZ_HUNG_UP_FLAG: String,
     CALL_RECORD: '',
+    SPIN_DATA: '',
 	},
 	getters: {
     changeCallData: (state) => state.KTcallData,
     changeXZHungUpFlag: (state) => state.XZ_HUNG_UP_FLAG,
     changeCallRecord: (state) => state.CALL_RECORD,
+    changeSpinData: (state) => state.SPIN_DATA,
 	},
 	mutations: {
 		changeCallData(state, res) {
@@ -20,6 +22,9 @@ const obj = {
     },
     changeCallRecord(state, res) {
       state.CALL_RECORD = res;
+    },
+    changeSpinData(state, res) {
+      state.SPIN_DATA = res;
     },
 
 	}

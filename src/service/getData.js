@@ -2040,6 +2040,7 @@ export const collectRoundsRecords_export = (obj, options) =>
  * 1、当前案件轮次信息
  * 2、结束当前轮次
  * 3、统计当前通话状态
+ * 4、下一个案件
  */
 
 export const rounds_info = (obj) =>
@@ -2059,6 +2060,13 @@ export const rounds_over = (obj) =>
 export const rounds_record = (obj) =>
   fetch({
     url: '/rounds/record',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
+export const case_collect_switch_case = (obj) =>
+  fetch({
+    url: '/case/collect/switch_case',
     method: 'POST',
     data: qs.stringify(obj),
   })
