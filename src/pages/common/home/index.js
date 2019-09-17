@@ -5,15 +5,22 @@ import {
   announcement_delete,
   home_gethomecollectrate,
   home_getthedaydata,
-  home_gethomecall
+  home_gethomecall,
 } from '@/service/getData';
 import util from '@/libs/util';
+import IsConnection from './components/isConnection';
+import CaseLoading from './components/caseLoading';
 // let speed = 10;//初始速度
 // let intNum = 0;//初始值
 let timer = null;
 let obj = {};
 export default {
   name: '/home',
+  components: {
+    CaseLoading,
+    IsConnection
+  },
+
   data() {
     return {
       showPanel3: false,
@@ -46,6 +53,8 @@ export default {
       announcement_list2: [],
       tableData: [],
       announcement_list: [],
+      showCaseLoading: false,
+      showIsConnection: false,
       tableColumns2: [
         {
           width: 40,
@@ -297,8 +306,12 @@ export default {
       ]
     };
   },
+
   created() {
     console.log(this.$route)
+    if(sessionStorage.getItem('newConnectionCase')){
+      this.showIsConnection = true
+    }
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
@@ -534,6 +547,11 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+    },
+    passBack() {
+      this.showCaseLoading = false
+      this.showIsConnection = false
     }
+
   }
 };

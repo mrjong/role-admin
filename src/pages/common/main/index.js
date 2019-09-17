@@ -5,6 +5,8 @@ import fullScreen from '@/components/fullscreen.vue';
 import lockScreen from '@/components/lockscreen/lockscreen.vue';
 import messageTip from '@/components/message-tip.vue';
 import themeSwitch from '@/components/theme-switch/theme-switch.vue';
+import CaseLoading from '../home/components/caseLoading';
+
 import Cookies from 'js-cookie';
 import CryptoJS from "crypto-js";
 import util from '@/libs/util.js';
@@ -19,13 +21,15 @@ export default {
 		lockScreen,
 		messageTip,
 		themeSwitch,
-		scrollBar
+		scrollBar,
+    CaseLoading
 	},
 	data() {
 		return {
 			visible1: false,
 			shrink: false,
 			formItem: {},
+      showCaseLoading: false,
 			ruleValidate: {
         loginPwd: [
           {
@@ -76,6 +80,9 @@ export default {
 		}
     },
 	methods: {
+    openCase() {
+      this.showCaseLoading = true
+    },
     passWord(str) {
       let key = CryptoJS.enc.Hex.parse("63666262663331373130363634393864");
       let iv = CryptoJS.enc.Hex.parse("38313837386662346131393061333035");
@@ -183,7 +190,10 @@ export default {
 		},
 		scrollBarResize() {
 			this.$refs.scrollBar.resize();
-		}
+		},
+    passBack() {
+      this.showCaseLoading = false
+    }
 	},
 	watch: {
 		$route(to) {

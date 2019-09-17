@@ -171,7 +171,7 @@
                   <Input
                     size="small"
                     clearable
-                    v-model="formItem.allotNameList"
+                    v-model="formItem.allotNameList.toString()"
                     placeholder="请选择接收人员"
                     disabled
                   ></Input>
@@ -478,6 +478,7 @@ export default {
         ]
       },
       formItem: {
+        ruleType: '01',
         prodTypeList: "",
         perdCountList: [],
         perdThisCountList: [],
@@ -811,7 +812,9 @@ export default {
       this.add_loading = true;
       const res = await divide_rules_add({
         ...this.formItem,
-        allotRoleIdList: this.allotRoleIdList
+        prodTypeList: [this.formItem.prodTypeList],
+        allotRoleIdList: this.allotRoleIdList,
+
       });
       this.add_loading = false;
       if (res.code === 1) {
@@ -829,7 +832,7 @@ export default {
       const res = await divide_rules_edit({ id: this.ruleId });
       console.log(res);
       if (res.code === 1) {
-        this.formItem.prodTypeList = res.data.prodTypeList;
+        this.formItem.prodTypeList = res.data.prodTypeList[0];
         this.formItem.perdCountList = res.data.perdCountList;
         this.formItem.perdThisCountList = res.data.perdThisCountList;
         this.formItem.creditLevelList = res.data.creditLevelList;
@@ -858,6 +861,7 @@ export default {
       this.update_loading = true;
       const res = await divide_rules_save({
         ...this.formItem,
+        prodTypeList: [this.formItem.prodTypeList],
         allotRoleIdList: this.allotRoleIdList
       });
       this.update_loading = false;
