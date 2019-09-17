@@ -157,7 +157,13 @@ export const announcement_list = (obj = {}) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-
+// 首页接案弹窗的接口
+export const home_advanceSysMsg = (obj) =>
+  fetch({
+    url: '/home/advanceSysMsg',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 // 首页今日案件、本月案件、上月案件面板信息接口
 export const home_gethomecollectrate = (obj) =>
   fetch({
@@ -945,11 +951,12 @@ export const divide_rules_list = (obj) =>
   });
 
 // 添加案件接口
-export const divide_rules_add = (obj) =>
+export const divide_rules_add = (obj, options) =>
   fetch({
     url: '/divide/rules/add',
     method: 'POST',
-    data: qs.stringify(obj)
+    data: obj,
+    options
   });
 
 // 一键分配接口
@@ -991,12 +998,14 @@ export const divide_rules_edit = (obj) =>
     data: qs.stringify(obj)
   });
 
+
 // 修改分案规则
-export const divide_rules_save = (obj) =>
+export const divide_rules_save = (obj, options) =>
   fetch({
     url: '/divide/rules/save',
     method: 'POST',
-    data: qs.stringify(obj)
+    data: obj,
+    options
   });
 
 // 查看分案规则修改历史记录
@@ -1988,5 +1997,103 @@ export const case_detail_channel_info = (obj) =>
     url: '/case/detail/channel_info',
     method: 'POST',
     data: qs.stringify(obj)
+  })
+
+
+export const rules_add = (obj) =>
+  fetch({
+    url: '/rules/add',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+export const divide_allot_ready_case = (obj) =>
+  fetch({
+    url: '/divide/allot/readyCase',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+export const divide_star_list = (obj) =>
+  fetch({
+    url: '/divideStar/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+//保存结案
+export const divide_star_update = (obj, options) =>
+  fetch({
+    url: '/divideStar/update',
+    method: 'POST',
+    data: obj,
+    options
+
+  })
+
+export const divide_allot_user_getDivideUserByUserId = (obj) =>
+  fetch({
+    url: '/divide/allot/user/getDivideUserByUserId',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+export const divide_allot_user_upDivideRuleUser = (obj, options) =>
+  fetch({
+    url: '/divide/allot/user/upDivideRuleUser',
+    method: 'POST',
+    data: obj,
+    options
+  })
+
+
+export const allot_user_list = (obj) =>
+  fetch({
+    url: '/allot/user/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+
+export const allot_user_confirmDivide = (obj) =>
+  fetch({
+    url: '/allot/user/confirmDivide',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+//分案明细接口列表
+export const divide_allot_user_list = (obj) =>
+  fetch({
+    url: '/divide/allot/user/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+//分案明细导出列表
+export const divide_allot_user_export_list = (obj, options) =>
+  fetch({
+    url: '/divide/allot/user/exportlist',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
+  })
+
+//我要接案
+export const cases_allot_take_case = (obj) =>
+  fetch({
+    url: '/cases/allot/takecase',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
+// 下载分配导入查询
+export const divide_download_template = (obj, options) =>
+  fetch({
+    url: '/divide/download/template',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
   })
 
