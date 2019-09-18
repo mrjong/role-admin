@@ -101,7 +101,7 @@ export default {
         },
         {
           title: "通话时长",
-          key: "callDurate",
+          key: "callDurateStr",
           className: "tableMainW",
           align: alignCenter,
           minWidth: 200

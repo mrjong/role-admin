@@ -222,48 +222,60 @@
         <div v-if="!showPanel2">
           <Form ref="formItem" :model="formItem" :label-width="80" :rules="ruleValidate">
             <div class="panel-desc">
-              <Row :gutter="5">
-                <div class="panel-desc-title fl mr10">
-                  账单号：
-                  <span>{{case_detail_case_base_info_Data.billNo}}</span>
-                </div>
-
-                <div class="panel-desc-title fl mr10">
-                  借款本金：
-                  <span>{{case_detail_case_base_info_Data.loanAmount | money}}</span>
-                </div>
-
-                <div class="panel-desc-title fl mr10">
-                  借款时间：
-                  <span>{{case_detail_case_base_info_Data.loanTime | formatDatetime}}</span>
-                </div>
-
-                <div class="panel-desc-title fl mr10">
-                  银行卡号：
-                  <span>
-                    {{case_detail_case_base_info_Data.crdNoHid}}
-                    <Poptip
-                      :content="mingwenData"
-                      v-if="case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNoHid"
-                    >
-                      <!-- <Icon
-                        class="eye-class"
-                        v-if
-                        title="显示明文"
-                        type="md-eye"
-                        @click.native="syscommon_decrypt({
-                type:'BANK_CARD',
-                data:case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNo
-            })"
-                      ></Icon>-->
-                    </Poptip>
-                  </span>
-                </div>
-
-                <div class="panel-desc-title fl mr10">
-                  银行卡：
-                  <span>{{case_detail_case_base_info_Data.corgName}}</span>
-                </div>
+              <Row >
+                <Col span="24">
+                  <Col span="6" class="panel-desc-title">
+                    账单号：
+                    <span>{{case_detail_case_base_info_Data.billNo}}</span>
+                  </Col>
+                  <Col span="4" class="panel-desc-title">
+                    借款本金：
+                    <span>{{case_detail_case_base_info_Data.loanAmount | money}}</span>
+                  </Col>
+                  <Col span="5" class="panel-desc-title">
+                    借款时间：
+                    <span>{{case_detail_case_base_info_Data.loanTime | formatDatetime}}</span>
+                  </Col>
+                  <Col span="5" class="panel-desc-title">
+                    银行卡号：
+                    <span>
+                      {{case_detail_case_base_info_Data.crdNoHid}}
+                      <Poptip
+                        :content="mingwenData"
+                        v-if="case_detail_case_base_info_Data&&case_detail_case_base_info_Data.crdNoHid"
+                      ></Poptip>
+                    </span>
+                  </Col>
+                  <Col span="4" class="panel-desc-title">
+                    银行卡：
+                    <span>{{case_detail_case_base_info_Data.corgName}}</span>
+                  </Col>
+                </Col>
+                <Col span="24" v-if="case_detail_case_base_info_Data.prdTyp === '01' || case_detail_case_base_info_Data.prdTyp === '11'">
+                  <Col span="6" class="panel-desc-title overdue_text">
+                    逾期应还本金：
+                    <span>{{case_detail_case_base_info_Data.billPrcpAmt | money}}</span>
+                    <!-- <span>2288.16</span> -->
+                  </Col>
+                  <Col span="4" class="panel-desc-title overdue_text">
+                    逾期应还利息：
+                    <span>{{case_detail_case_base_info_Data.billItrtAmt | money}}</span>
+                  </Col>
+                  <Col span="5" class="panel-desc-title overdue_text">
+                    逾期应还服务费：
+                    <span>{{case_detail_case_base_info_Data.billMngAmt | money}}</span>
+                  </Col>
+                  <Col span="5" class="panel-desc-title overdue_text">
+                    逾期应还罚息：
+                    <span>
+                      {{case_detail_case_base_info_Data.billFineAmt | money}}
+                    </span>
+                  </Col>
+                  <Col span="4" class="panel-desc-title overdue_text">
+                    逾期应还滞纳金：
+                    <span>{{case_detail_case_base_info_Data.billOvduAmt | money}}</span>
+                  </Col>
+                </Col>
               </Row>
             </div>
           </Form>

@@ -1,7 +1,10 @@
 
 import Cookie from 'js-cookie';
 import Vue from 'vue';
-import { Notification } from "element-ui";
+import { Notification} from "element-ui";
+import {
+  home_advanceSysMsg
+} from '@/service/getData';
 let _this = new Vue();
 const h = _this.$createElement;
 let util = {};
@@ -371,6 +374,9 @@ util.websocket = () => {
 
   websocket.onopen = function () {
     //         setMessageInnerHTML("WebSocket连接成功");
+    home_advanceSysMsg().then(res=>{
+      console.log(res)
+    })
     // websocket.send("我是从客户端发出去的消息");
     // websocket.send("我是从客户端发出去的消息2");
     // websocket.send("我是从客户端发出去的消息3");
@@ -410,6 +416,20 @@ util.websocket = () => {
         });
         break;
       case '03':
+        Notification({
+          title: data.msgTitle,
+          message: h('span', { style: 'color: #fff; font-weight: 600' }, data.msgContent),
+          type: "success",
+          duration: 5000,
+          position: 'bottom-left',
+          customClass: 'notice-success'
+        });
+        break;
+      case '07':
+        vueExample.$store.commit('changeWebSocketData', data);
+        sessionStorage.setItem('changeWebSocketData', JSON.stringify(data))
+        break;
+      case '08':
         Notification({
           title: data.msgTitle,
           message: h('span', { style: 'color: #fff; font-weight: 600' }, data.msgContent),

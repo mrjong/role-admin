@@ -81,7 +81,7 @@ export default {
         uname: obj.loginName,
         pwd: obj.password,
         debug: true,
-        isAutoAnswer: false,
+        isAutoAnswer: true,
         stateListenerCallBack: this.stateCallback,
         forceAnswerWhenRing: false, // 是否振铃自动接通
         autoReady: true,

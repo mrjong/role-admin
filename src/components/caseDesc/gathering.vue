@@ -40,7 +40,7 @@
         <!-- 减免信息 -->
         <Col :xs="24" :sm="24" :md="12" :lg="12">
           <div class="alert-title">减免标记</div>
-          <div class="alert-desc">
+          <div class="alert-desc left" ref='left'>
             <div class="panel-desc">
               <Form
                 ref="formItem"
@@ -155,13 +155,14 @@
                         placeholder="请选择减免期数"
                         v-model="formItem.perdNum"
                         clearable
-                        :disabled="!edit_flag"
+                        :disabled="!edit_flag || perdNum_flag"
                         label-in-value
                         transfer
                         @on-change="perdNumSelectChange"
                       >
                         <Option
                           v-for="item in relief_counts"
+                          v-if="item.itemCode === '0'? perdNum_flag: true"
                           :value="item.itemCode"
                           :key="item.itemCode"
                         >{{ item.itemName }}</Option>
@@ -219,7 +220,7 @@
         <!-- 还款信息 -->
         <Col :xs="24" :sm="24" :md="12" :lg="12">
           <div class="alert-title">还款信息</div>
-          <div class="alert-desc">
+          <div class="alert-desc right" ref='right'>
             <Table
               border
               :data="tableData_repayment"

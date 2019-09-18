@@ -25,6 +25,7 @@ export default {
       getDirObj: {},
       error_text: '',//错误提示的文字
       jianmian_loading: false,//减免提交loading
+      perdNum_flag: false,
       reliefAmt_max: 0,//当前减免记录最大金额
       file_url_list: {},//存放图片路径
       formItem: {},
@@ -216,9 +217,17 @@ export default {
     // this.tableData_repayment = this.breaks_data.tableData;
   },
   mounted() {
-    if (this.edit_flag) {
-      this.handelAdd();
-    }
+    this.uploadList = this.$refs.upload.fileList;
+    // 设置左右两边的border
+    this.$nextTick(() => {
+      let left = this.$refs.left;
+      let right = this.$refs.right;
+      if (Number(left.scrollHeight) > Number(right.scrollHeight)/2) {
+        left.style.borderRight = '1px solid #e8eaec';
+      } else {
+        right.style.borderLeft = '1px solid #e8eaec';
+      }
+    })
   },
   methods: {
     // 处理左右表单联动
@@ -355,14 +364,28 @@ export default {
     // 减免类型selectchange
     reliefTypeSelectChange(obj) {
       console.log(obj);
-      this.formItem.reliefTypeName = obj.label;
-      this.reliefPerdInfoVos.forEach(item => {
-        if (this.formItem.reliefType === item.reliefType && this.formItem.perdNum === String(item.perdNum)) {
-          this.$set(this.formItem, "reliefAmt", item.perdAmt.toFixed(2));
-          this.reliefAmt_max = (item.perdAmt).toFixed(2);
-          return;
-        }
-      })
+      if (obj) {
+        this.formItem.reliefTypeName = obj.label;
+        this.reliefPerdInfoVos.forEach(item => {
+          // 还到、现金分期执行新的罚息计算逻辑
+          if (this.breaks_data.prdTyp === '01' || this.breaks_data.prdTyp === '11') {
+            if (obj.value === item.reliefType && String(item.perdNum) === '0' && (obj.value === 'FINE' || obj.value === 'OVDU')) {
+              this.$set(this.formItem, "reliefAmt", item.perdAmt.toFixed(2));
+              this.reliefAmt_max = (item.perdAmt).toFixed(2);
+              this.$set(this.formItem, 'perdNum', '0');
+              this.perdNum_flag = true;
+              return;
+            }
+          }
+          // 商户贷、钱包不变
+          if (this.formItem.reliefType === item.reliefType && this.formItem.perdNum === String(item.perdNum)) {
+            this.$set(this.formItem, "reliefAmt", item.perdAmt.toFixed(2));
+            this.reliefAmt_max = (item.perdAmt).toFixed(2);
+            this.perdNum_flag = false;
+            return;
+          }
+        })
+      }
     },
     // 减免期数 selectchange
     perdNumSelectChange(val) {
@@ -532,7 +555,4 @@ export default {
       }
     }
   },
-  mounted() {
-    this.uploadList = this.$refs.upload.fileList;
-  }
 };

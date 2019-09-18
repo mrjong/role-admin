@@ -280,9 +280,9 @@
             <FormItem span="6" label="渠道来源:">
               <Select size="small" v-model="formItem.channelCode" clearable>
                 <Option
-                  v-for="item in case_detail_one_channel_list"
+                  v-for="(item,index) in case_detail_one_channel_list"
                   :value="item.channelOneCode"
-                  :key="item.channelOneCode"
+                  :key="item.channelOneCode + index"
                 >{{ item.channelOneName }}</Option>
               </Select>
             </FormItem>

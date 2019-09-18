@@ -47,7 +47,7 @@
             <FormItem label="订单状态:">
               <Select size="small" clearable v-model="formValidate.ordSts">
                 <Option
-                  v-for="item in getDirObj.ORD_STS"
+                  v-for="item in getDirObj.REPAY_ORD_STS"
                   :value="item.itemCode"
                   :key="item.itemCode"
                 >{{ item.itemName }}</Option>
@@ -70,7 +70,7 @@
               <Input
                 size="small"
                 clearable
-                v-model.trim="formValidate.dkorgOrdNo"
+                v-model.trim="formValidate.orgOrdNo"
                 placeholder="请输入代扣订单号"
               ></Input>
             </FormItem>
