@@ -384,10 +384,11 @@ util.websocket = () => {
       case '00':
           vueExample.$store.commit("changeSpinData", data.msgContent);
           let timer;
+          clearTimeout(timer);
           timer = setTimeout(() => {
             vueExample.$store.commit("changeSpinData", '');
           }, 3000);
-          clearTimeout(timer)
+          break;
       case '01':
         Notification({
           title: data.msgTitle,

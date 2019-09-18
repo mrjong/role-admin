@@ -1673,7 +1673,7 @@ export default {
     this.collectcode_getListByCodeType();//获取拨打状态
     this.case_detail_address_info();
     this.rounds_info();//获取当前案件轮次的信息
-    this.case_collect_switch_case();//查询下一个案件
+    this.collectCategory && this.case_collect_switch_case();//查询下一个案件
   },
   mounted() {
     // 禁止右键

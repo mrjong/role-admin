@@ -113,19 +113,27 @@
           <Button
             class="fr vue-back-btn header-btn"
             type="primary"
-            v-if="readType!=='read'"
+            v-if="readType!=='read' && collectCategory"
             @click.stop="nextCase(next_case_list)"
             :disabled="btnDisable||!next_case_list"
             size="small"
           >下一个</Button>
-          <!-- <Button
+          <Button
             class="fr vue-back-btn header-btn"
             type="primary"
-            v-if="readType!=='read'"
+            v-if="readType!=='read' && !collectCategory"
+            @click.stop="nextCase(case_collect_case_list_data&&case_collect_case_list_data.downCaseNo)"
+            :disabled="btnDisable||!case_collect_case_list_data||!case_collect_case_list_data.downCaseNo"
+            size="small"
+          >下一个</Button>
+          <Button
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            v-if="readType!=='read' && !collectCategory"
             @click.stop="nextCase(case_collect_case_list_data&&case_collect_case_list_data.upCaseNo)"
             :disabled="btnDisable||!case_collect_case_list_data||!case_collect_case_list_data.upCaseNo"
             size="small"
-          >上一个</Button>-->
+          >上一个</Button>
         </p>
         <div class="panel-desc" v-if="!showPanel">
           <Row :gutter="10">
