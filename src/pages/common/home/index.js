@@ -348,6 +348,10 @@ export default {
     this.home_getthedaydata();
     this.home_gethomecall();
   },
+  mounted() {
+    window.sessionStorage.setItem("websocket", true);
+    util.websocket();
+  },
   methods: {
     // 数字匀速增长
     async numberGrow(num, intNum, speed, name, wrap, timer, add_num) {

@@ -25,8 +25,11 @@ export default {
       showIsConnection: false,
     };
   },
-  created() {
-  },
+  // mounted() {
+  //   if(typeof(this.changeWebSocketData)==='string'){
+  //     vueExample.$store.commit('changeWebSocketData', JSON.parse(this.changeWebSocketData));
+  //   }
+  // },
   methods: {
     async handleSubmit() {
 
