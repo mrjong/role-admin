@@ -76,18 +76,20 @@
         </div>
 
         <div class="header-avator-con">
-          <div style="display: inline-block; width: 40%"></div>
-          <Button
-            type="primary"
-            @click="openCase"
-            style="width:150px"
-            long
-            size="small"
-          >
-            请设置次日接案量
-          </Button>
-          <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
-          <lock-screen></lock-screen>
+          <div style="position: absolute; right: 200px">
+            <Button
+              type="primary"
+              @click="openCase"
+              style="width:150px"
+              long
+              size="small"
+            >
+              请设置次日接案量
+            </Button>
+            <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
+            <lock-screen></lock-screen>
+          </div>
+
           <!-- <message-tip v-model="mesCount"></message-tip> -->
           <!-- <theme-switch></theme-switch> -->
           <div class="user-dropdown-menu-con">
