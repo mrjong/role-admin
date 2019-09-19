@@ -192,8 +192,8 @@ export default {
     },
     loginSuccess(res) {
       this.$Message.success("登录成功!");
-//      window.sessionStorage.setItem("websocket", true);
-//      util.websocket();
+      window.sessionStorage.setItem("websocket", true);
+      util.websocket();
       window.$router = this.$router;
       this.$router.push({
         path: "/home/home/home"
