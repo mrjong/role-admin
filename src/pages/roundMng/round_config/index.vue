@@ -49,7 +49,7 @@
             style="min-width: 80px;"
             :loading="import_data_loading"
           >
-            <span v-if="!import_data_loading">导入查询</span>
+            <span v-if="!import_data_loading" style="vertical-align: top">导入查询<span style="color: #ef0d33; vertical-align: top; margin-left: 8px;">(请设置轮次上下限)</span></span>
             <span v-else>导入中...</span>
           </Button>
         </Upload>
