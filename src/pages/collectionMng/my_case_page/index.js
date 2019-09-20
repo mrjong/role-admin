@@ -336,12 +336,23 @@ export default {
           }
         },
         {
+          title: '当日拨打轮次',
+          width: 120,
+          align: 'center',
+          key: 'todayRounds'
+        },
+        {
+          title: '拨打总轮次',
+          width: 120,
+          align: 'center',
+          key: 'totalRounds'
+        },
+        {
           title: '借款人拨打状态',
           width: 120,
           align: 'center',
           key: 'lastCurrentCollectResultName'
         },
-
         {
           title: '借款人沟通结果',
           width: 120,

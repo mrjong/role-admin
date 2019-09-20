@@ -1612,10 +1612,10 @@ export default {
         this.call_xz_hung_off();
       }
     },
-    changeCallRecord(obj) {
-      console.log(obj);
-      this.rounds_record(obj);
-    }
+    // changeCallRecord(obj) {
+    //   console.log(obj);
+    //   this.rounds_record(obj);
+    // }
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
@@ -1834,7 +1834,8 @@ export default {
           localStorage.removeItem('callObj');
           callData.actionId = res.data.actionId;
           localStorage.setItem('callData', JSON.stringify(callData));
-          callData.callType === '2' && this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && !this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });
+          // callData.callType === '2' && this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && !this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });
+          callData.callType === '2' && await this.rounds_record({ seatType: callData.seatType, status: '0' });
         }
         if (params.collectType === '01')
           await this.case_detail_case_identity_info();
@@ -1881,7 +1882,8 @@ export default {
         if (callData.callType === '2') {
           await init(res.data.calloutVo.phoneNo, this);//调用拨打的方法
           this.xZStyle = true;
-          this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && !this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });
+          // this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && !this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });
+          callData.callType === '2' && await this.rounds_record({ seatType: callData.seatType, status: '0' });
         }
         this.showMoorTel = true;
         this.moorToCallMblHid = obj.toCallMblHid;
