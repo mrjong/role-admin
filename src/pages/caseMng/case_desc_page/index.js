@@ -1835,6 +1835,11 @@ export default {
           callData.actionId = res.data.actionId;
           localStorage.setItem('callData', JSON.stringify(callData));
           // callData.callType === '2' && this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && !this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });
+          /**前端拨打挡板
+           *
+           *
+           */
+          callData.callType === '2' && await this.rounds_record({ seatType: callData.seatType, status: '0' });
           callData.callType === '2' && await this.rounds_record({ seatType: callData.seatType, status: '1' });
         }
         if (params.collectType === '01')
@@ -1883,6 +1888,10 @@ export default {
           await init(res.data.calloutVo.phoneNo, this);//调用拨打的方法
           this.xZStyle = true;
           // this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && !this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });
+          /**
+           * 前端拨打挡板
+           */
+          callData.callType === '2' && await this.rounds_record({ seatType: callData.seatType, status: '0' });
           callData.callType === '2' && await this.rounds_record({ seatType: callData.seatType, status: '1' });
         }
         this.showMoorTel = true;
