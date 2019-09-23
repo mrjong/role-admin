@@ -437,6 +437,13 @@ export default {
     this.collectcode_getListByCodeType(2);// 获取拨打状态
     this.getList();
     this.case_detail_one_channel();
+    if (document.hidden !== undefined) {
+      document.addEventListener("visibilitychange", () => {
+        // true 表示离开  false表示回来，再进行初始化
+        console.log(document.hidden)
+        !document.hidden && this.getList();
+      });
+    }
   },
   methods: {
     // 日期变更回调

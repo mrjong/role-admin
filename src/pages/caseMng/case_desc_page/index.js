@@ -53,6 +53,7 @@ import {
   rounds_record,//记录当前通话状态
   case_collect_switch_case,//下一个接口
 } from '@/service/getData';
+import util from '../../../libs/util';
 let callFlag = false;
 export default {
   name: 'case_desc',
@@ -1622,7 +1623,7 @@ export default {
     ...mapGetters(["changeXZHungUpFlag", "changeCallRecord"])
   },
   async created() {
-    console.log(String());
+    console.log(util.randomRange());
     if (Cookie.get('all_opt') === 'true') {
       this.all_opt = true;
     };
@@ -2722,6 +2723,7 @@ export default {
       });
       if (res.code === 1) {
         this.round_info_data = res.data;
+        this.collectCategory && res.data.callAccess.contactCallable && res.data.callAccess.debtorCallable && res.data.callAccess.urgencyCallable && this.case_collect_switch_case();
       } else {
         this.$Message.error(res.message);
       }

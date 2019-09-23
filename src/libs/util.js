@@ -1,7 +1,7 @@
 
 import Cookie from 'js-cookie';
 import Vue from 'vue';
-import { Notification} from "element-ui";
+import { Notification } from "element-ui";
 import {
   home_advanceSysMsg
 } from '@/service/getData';
@@ -374,7 +374,7 @@ util.websocket = () => {
 
   websocket.onopen = function () {
     //         setMessageInnerHTML("WebSocket连接成功");
-    home_advanceSysMsg().then(res=>{
+    home_advanceSysMsg().then(res => {
       console.log(res)
     })
     // websocket.send("我是从客户端发出去的消息");
@@ -388,13 +388,13 @@ util.websocket = () => {
     let data = JSON.parse(event.data);
     switch (data.msgType) {
       case '00':
-          vueExample.$store.commit("changeSpinData", data.msgContent);
-          let timer;
-          clearTimeout(timer);
-          timer = setTimeout(() => {
-            vueExample.$store.commit("changeSpinData", '');
-          }, 3000);
-          break;
+        vueExample.$store.commit("changeSpinData", data.msgContent);
+        let timer;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          vueExample.$store.commit("changeSpinData", '');
+        }, 3000);
+        break;
       case '01':
         Notification({
           title: data.msgTitle,
@@ -450,5 +450,28 @@ util.websocket = () => {
   window.onbeforeunload = function () {
     // closeWebSocket();
   };
+  /** 随机生成固定位数或者一定范围内的字符串数字组合
+ * @param {Number} min 范围最小值
+ * @param {Number} max 范围最大值，当不传递时表示生成指定位数的组合
+ * @param {String} charStr指定的字符串中生成组合
+ * @returns {String} 返回字符串结果
+ * */
+  util.randomRange = (min, max, charStr) => {
+    let returnStr = "",
+      range;
+    if (typeof min == 'undefined') {
+      min = 16;
+    }
+    if (typeof max == 'string') {
+      charStr = max;
+    }
+    range = ((max && typeof max == 'number') ? Math.round(Math.random() * (max - min)) + min : min);
+    charStr = charStr || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < range; i++) {
+      let index = Math.round(Math.random() * (charStr.length - 1));
+      returnStr += charStr.substring(index, index + 1);
+    }
+    return returnStr;
+  }
 }
 export default util;
