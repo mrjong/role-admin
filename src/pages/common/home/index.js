@@ -348,6 +348,7 @@ export default {
     this.home_getthedaydata();
     this.home_gethomecall();
   },
+
   methods: {
     // 数字匀速增长
     async numberGrow(num, intNum, speed, name, wrap, timer, add_num) {

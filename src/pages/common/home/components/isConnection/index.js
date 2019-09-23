@@ -1,6 +1,7 @@
 import { mapGetters } from "vuex";
 import {
   cases_allot_take_case,
+  home_advanceSysMsg
 } from '@/service/getData';
 export default {
   components: {
@@ -25,7 +26,13 @@ export default {
       showIsConnection: false,
     };
   },
-  created() {
+  mounted() {
+    home_advanceSysMsg().then(res=>{
+      console.log(res)
+    })
+    // if(typeof(this.changeWebSocketData)==='string'){
+    //   vueExample.$store.commit('changeWebSocketData', JSON.parse(this.changeWebSocketData));
+    // }
   },
   methods: {
     async handleSubmit() {
