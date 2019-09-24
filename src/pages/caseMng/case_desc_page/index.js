@@ -2607,6 +2607,7 @@ export default {
         if (this.collectType === '03') {
           await this[this.address_list_name]();
         }
+        this.rounds_info();
         this.handleCancle(true);
       } else {
         this.$Message.error(res.message);
@@ -2727,6 +2728,7 @@ export default {
       if (res.code === 1) {
         this.round_info_data = res.data;
         this.collectCategory && res.data.callAccess.contactCallable && res.data.callAccess.debtorCallable && res.data.callAccess.urgencyCallable && this.case_collect_switch_case();
+        this.collectCategory && !res.data.callAccess.contactCallable && !res.data.callAccess.debtorCallable && !res.data.callAccess.urgencyCallable && this.case_collect_switch_case();
       } else {
         this.$Message.error(res.message);
       }
