@@ -1,7 +1,8 @@
 <template>
   <div class="panel_list">
     <Card class="vue-panel detail-card">
-      <p slot="title">催收人员管理
+      <p slot="title">
+        催收人员管理
         <Button
           class="fr header-btn"
           type="primary"
@@ -33,12 +34,7 @@
       <Form ref="staffFormItem" :model="staffFormItem" :label-width="90" :rules="ruleValidate">
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
           <FormItem span="4" label="账号:" prop="loginName">
-            <Input
-              size="small"
-              v-model="staffFormItem.loginName"
-              placeholder="请输入账号"
-              disabled
-            ></Input>
+            <Input size="small" v-model="staffFormItem.loginName" placeholder="请输入账号" disabled></Input>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
@@ -63,7 +59,11 @@
               @on-change="roleSelect"
               :disabled="!formDisabled"
             >
-              <Option v-for="(item,index) in roleList" :value="item.id" :key="item.id + index">{{ item.name }}</Option>
+              <Option
+                v-for="(item,index) in roleList"
+                :value="item.id"
+                :key="item.id + index"
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -79,7 +79,11 @@
               placeholder="请选择公司"
               :disabled="!formDisabled"
             >
-              <Option v-for="(item,index) in companyList" :value="item.id" :key="item.id + index">{{ item.name }}</Option>
+              <Option
+                v-for="(item,index) in companyList"
+                :value="item.id"
+                :key="item.id + index"
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -95,44 +99,62 @@
               @on-change="outfitChange"
               :disabled="!formDisabled"
             >
-              <Option v-for="(item,index) in departmentList" :value="item.id" :key="item.id + index">{{ item.name }}</Option>
+              <Option
+                v-for="(item,index) in departmentList"
+                :value="item.id"
+                :key="item.id + index"
+              >{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
-        <FormItem label="呼叫方案:" span="4" >
-          <Select
-            size="small"
-            v-model="staffFormItem.callType"
-            clearable
-            placeholder="请选择呼叫方案"
-            :disabled="!formDisabled"
-          >
-            <Option
-              v-for="item in getDirObj['CALL_TYPE']"
-              :value="item.itemCode"
-              :key="item.itemCode"
-            >{{ item.itemName }}</Option>
-          </Select>
-        </FormItem>
+          <FormItem label="催收周期组别:" span="4">
+            <Select
+              size="small"
+              v-model="staffFormItem.collectCategory"
+              filterable
+              clearable
+              placeholder="请选择催收周期组别"
+              :disabled="!formDisabled"
+            >
+              <Option
+                v-for="item in getDirObj['COLLECT_CATEGORY']"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+          <FormItem label="呼叫方案:" span="4">
+            <Select
+              size="small"
+              v-model="staffFormItem.callType"
+              clearable
+              placeholder="请选择呼叫方案"
+              :disabled="!formDisabled"
+            >
+              <Option
+                v-for="item in getDirObj['CALL_TYPE']"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="staffFormItem.callType === '2'">
-        <FormItem label="方案/专线:" span="4" prop="seatType" >
-          <Select
-            size="small"
-            v-model="staffFormItem.planId"
-            filterable
-            clearable
-            placeholder="请选择方案或专线"
-            :disabled="!formDisabled"
-          >
-            <Option
-              v-for="item in planList"
-              :value="item.id"
-              :key="item.id"
-            >{{ item.planName }}</Option>
-          </Select>
-        </FormItem>
+          <FormItem label="方案/专线:" span="4" prop="seatType">
+            <Select
+              size="small"
+              v-model="staffFormItem.planId"
+              filterable
+              clearable
+              placeholder="请选择方案或专线"
+              :disabled="!formDisabled"
+            >
+              <Option v-for="item in planList" :value="item.id" :key="item.id">{{ item.planName }}</Option>
+            </Select>
+          </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="10" :lg="10" span="4" v-if="staffFormItem.callType === '1'">
           <FormItem span="4" label="坐席名称:">
@@ -319,12 +341,12 @@ export default {
       } else if (!blank.test(value)) {
         callback(new Error("不能包含有空格"));
       } else if (!this.GLOBAL.loginCount.test(value)) {
-        callback(new Error('4到10位（字母，数字，下划线，减号）'))
+        callback(new Error("4到10位（字母，数字，下划线，减号）"));
       }
       callback();
     };
     return {
-      getDirList: ["SEAT_TYPE", 'CALL_TYPE'],
+      getDirList: ["SEAT_TYPE", "CALL_TYPE", "COLLECT_CATEGORY"],
       getDirObj: {},
       update_loading: false, //修改提交的loading
       status_loading: false, //状态修改提交的loading
@@ -422,6 +444,7 @@ export default {
     this.staffFormItem.outfitId = this.parentData.nodeData.outfitId;
     this.staffFormItem.outfitName = this.parentData.nodeData.outfitName;
     this.staffFormItem.roleId = this.parentData.nodeData.roleId;
+    this.staffFormItem.collectCategory = this.parentData.nodeData.collectCategory;
     if (this.staffFormItem.roleId === "2474cbac7a34419f8decc99f022846a1") {
       this.departmentFlag = false;
     } else {
@@ -433,16 +456,16 @@ export default {
     this.staffFormItem.status = String(this.parentData.nodeData.status);
     this.collect_user_list("03", this.staffFormItem.companyId);
     this.collect_user_clerk_info(this.parentData.nodeData.name);
-    this.routPlanPlanList()
+    this.routPlanPlanList();
   },
   watch: {
     staffFormItem(val) {
-      console.log(val.callType)
+      console.log(val.callType);
     },
     parentData() {
       this.collect_user_list("02");
       this.system_role_list();
-      console.log(this.parentData.nodeData)
+      console.log(this.parentData.nodeData);
       this.staffFormItem.id = this.parentData.nodeData.id;
       this.staffFormItem.name = this.parentData.nodeData.name;
       this.staffFormItem.loginName = this.parentData.nodeData.loginName;
@@ -451,6 +474,7 @@ export default {
       this.staffFormItem.outfitId = this.parentData.nodeData.outfitId;
       this.staffFormItem.outfitName = this.parentData.nodeData.outfitName;
       this.staffFormItem.roleId = this.parentData.nodeData.roleId;
+      this.staffFormItem.collectCategory = this.parentData.nodeData.collectCategory;
       if (this.staffFormItem.roleId === "2474cbac7a34419f8decc99f022846a1") {
         this.departmentFlag = false;
       } else {
@@ -462,10 +486,9 @@ export default {
       this.staffFormItem.status = String(this.parentData.nodeData.status);
       this.collect_user_list("03", this.staffFormItem.companyId);
       this.collect_user_clerk_info(this.parentData.nodeData.name);
-      this.routPlanPlanList()
+      this.routPlanPlanList();
       this.formDisabled = false; //切换不同催收员，表单disabled重置
-    },
-
+    }
   },
   methods: {
     //公司变更联动部门变更
@@ -500,6 +523,7 @@ export default {
       this.staffFormItem.outfitId = this.parentData.nodeData.outfitId;
       this.staffFormItem.outfitName = this.parentData.nodeData.outfitName;
       this.staffFormItem.roleId = this.parentData.nodeData.roleId;
+      this.staffFormItem.collectCategory = this.parentData.nodeData.collectCategory;
       if (this.staffFormItem.roleId === "2474cbac7a34419f8decc99f022846a1") {
         this.departmentFlag = false;
       } else {
@@ -511,7 +535,7 @@ export default {
       this.staffFormItem.parentUuid = this.parentData.nodeData.parentUuid;
       this.staffFormItem.status = String(this.parentData.nodeData.status);
       this.collect_user_clerk_info(this.parentData.nodeData.name);
-      this.routPlanPlanList()
+      this.routPlanPlanList();
       this.formDisabled = true;
     },
     // 设置状态变更
@@ -635,8 +659,8 @@ export default {
         this.staffFormItem.callno = res.data.callno;
         this.staffFormItem.remark = res.data.remark;
         this.staffFormItem.userUuid = res.data.userUuid;
-        this.$set(this.staffFormItem, 'callType', res.data.callType);
-        this.$set(this.staffFormItem, 'planId', res.data.planId);
+        this.$set(this.staffFormItem, "callType", res.data.callType);
+        this.$set(this.staffFormItem, "planId", res.data.planId);
         this.staffFormItem.createTime = res.data.createTime
           ? this.$options.filters["formatDate"](
               res.data.createTime,
@@ -671,13 +695,13 @@ export default {
     },
     // 查询路由方案列表
     async routPlanPlanList() {
-      const res = await rout_plan_planList({userType: ''});
+      const res = await rout_plan_planList({ userType: "" });
       if (res.code === 1) {
         this.planList = res.data;
       } else {
         this.$Message.error(res.message);
       }
-    },
+    }
   }
 };
 </script>

@@ -85,7 +85,7 @@ export default {
     };
   },
   created() {
-    this.formItem.currentDate = util.getToday(-2)
+    this.$set(this.formItem, 'currentDate', util.getToday(0));
     // 按钮权限初始化
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
     buttonPermissionList.forEach(item => {
