@@ -1624,7 +1624,6 @@ export default {
     ...mapGetters(["changeXZHungUpFlag", "changeCallRecord"])
   },
   async created() {
-    console.log(util.randomRange());
     if (Cookie.get('all_opt') === 'true') {
       this.all_opt = true;
     };
