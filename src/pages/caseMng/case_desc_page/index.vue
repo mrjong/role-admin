@@ -536,7 +536,7 @@
                       <em>{{round_info_data.todayRounds}}</em>
                     </span>
                     <Poptip confirm title="确认要结束本轮呼叫轮次吗？" @on-ok="rounds_over">
-                      <Button size="small" type="error" :disabled="!round_info_data.endable">结束</Button>
+                      <Button size="small" type="error" :disabled="round_info_data.endable && remark_flag">结束</Button>
                     </Poptip>
                     <span>
                       本轮可触达通讯录数量：

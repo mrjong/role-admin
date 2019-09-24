@@ -2748,7 +2748,7 @@ export default {
         mblNo: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
       });
       if (res.code === 1) {
-        this.remark_flag = true;
+        this.$set(this, 'remark_flag', true)
         this.rounds_info();
       } else {
         this.$Message.error(res.message);
