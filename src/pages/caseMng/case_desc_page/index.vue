@@ -1,6 +1,6 @@
 <template>
   <div class="panel_list p5">
-    <Modal title="新增通讯录" v-model="address_list_modal">
+    <Modal title="新增通讯录" v-model="address_list_modal" :mask-closable="false">
       <Form
         ref="formItem2"
         :model="formItem2"
@@ -113,7 +113,15 @@
           <Button
             class="fr vue-back-btn header-btn"
             type="primary"
-            v-if="readType!=='read'"
+            v-if="readType!=='read' && collectCategory"
+            @click.stop="nextCase(next_case_list)"
+            :disabled="btnDisable||!next_case_list"
+            size="small"
+          >下一个</Button>
+          <Button
+            class="fr vue-back-btn header-btn"
+            type="primary"
+            v-if="readType!=='read' && !collectCategory"
             @click.stop="nextCase(case_collect_case_list_data&&case_collect_case_list_data.downCaseNo)"
             :disabled="btnDisable||!case_collect_case_list_data||!case_collect_case_list_data.downCaseNo"
             size="small"
@@ -121,7 +129,7 @@
           <Button
             class="fr vue-back-btn header-btn"
             type="primary"
-            v-if="readType!=='read'"
+            v-if="readType!=='read' && !collectCategory"
             @click.stop="nextCase(case_collect_case_list_data&&case_collect_case_list_data.upCaseNo)"
             :disabled="btnDisable||!case_collect_case_list_data||!case_collect_case_list_data.upCaseNo"
             size="small"
@@ -522,6 +530,23 @@
             >
               <div>
                 <div class="case-desc-close">
+                  <div class="round_info" style="display: inline-block" v-if="collectCategory">
+                    <span>
+                      当日轮次：
+                      <em>{{round_info_data.todayRounds}}</em>
+                    </span>
+                    <Poptip confirm title="确认要结束本轮呼叫轮次吗？" @on-ok="rounds_over">
+                      <Button size="small" type="error" :disabled="(!round_info_data.endable || remark_flag)">结束</Button>
+                    </Poptip>
+                    <span>
+                      本轮可触达通讯录数量：
+                      <em>{{round_info_data.availiableAbs}}</em>
+                    </span>
+                    <span>
+                      总轮次：
+                      <em>{{round_info_data.totalRounds}}</em>
+                    </span>
+                  </div>
                   <Tooltip content="收起" placement="left">
                     <Icon @click.native="isShow" size="20" type="md-close"></Icon>
                   </Tooltip>
@@ -533,7 +558,7 @@
                     <span>(本人)&nbsp;</span>
                   </span>
                   <span
-                    class="tel"
+                    :class="{'tel': true, 'readonly': !all_opt || (round_info_data.callAccess && !round_info_data.callAccess.debtorCallable)}"
                     @click="handCall({
                         callUserType:'00',
                         userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
@@ -549,7 +574,7 @@
                       class-name="badge_wrap_myself"
                     >
                       <Tooltip
-                        :content="all_opt?'拨打':'暂无权限拨打'"
+                        :content="all_opt && round_info_data.callAccess && round_info_data.callAccess.debtorCallable?'拨打':'暂无权限拨打'"
                         placement="left"
                       >{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid}}</Tooltip>
                     </Badge>
@@ -609,12 +634,12 @@
                     <span>({{item.cntRelTypName}})&nbsp;</span>
                   </span>
                   <span
-                    class="tel"
+                    :class="{'tel': true, 'readonly': !all_opt || (round_info_data.callAccess && (!item.channelSource?!round_info_data.callAccess.urgencyCallable: !round_info_data.callAccess.debtorCallable))}"
                     @click="handCall(item,'call', item.cntRelTyp === '00'? '01': '02')"
                   >
                     <Badge :count="item.callCount" class-name="badge_wrap_myself">
                       <Tooltip
-                        :content="all_opt?'拨打':'暂无权限拨打'"
+                        :content="all_opt && round_info_data.callAccess && round_info_data.callAccess.urgencyCallable?'拨打':'暂无权限拨打'"
                         placement="left"
                       >{{item.cntUserMblNoHid}}</Tooltip>
                     </Badge>

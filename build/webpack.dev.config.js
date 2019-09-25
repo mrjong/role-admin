@@ -23,7 +23,7 @@ module.exports = merge(webpackBaseConfig, {
     },
     plugins: [
         new webpack.DefinePlugin({
-          LOCALHOST: '"ws://172.18.40.44:8080/websocket"'
+          LOCALHOST: '"ws://172.18.30.201:8080/websocket"'
         }),
         new ExtractTextPlugin({
             filename: '[name].css',
@@ -66,7 +66,7 @@ module.exports = merge(webpackBaseConfig, {
         proxy: {
             '/admin': {
                 //target:'http://172.18.40.100:8080',
-                target: 'https://fcs-admin-test.vbillbank.com',  // 测试地址
+                // target: 'https://fcs-admin-test.vbillbank.com',  // 测试地址
                 // target: 'http://172.18.40.181:8080', //清泉目标接口域名
                 // target: 'http://172.16.154.239:8080', //志祥目标接口域名
                 //target: 'http://172.18.40.22:8080', // 胥尹辉后台本地
@@ -78,7 +78,8 @@ module.exports = merge(webpackBaseConfig, {
                 //target: 'http://172.18.30.201:8050', //本地
                 // target: 'http://172.18.40.100:8080', //jiaqi
                 // target: 'http://172.18.40.220:8080', //李鹏飞
-                target: 'http://172.18.40.40:8080', //吴宏
+                target: 'http://172.18.30.201:8080', //张建锋
+                // target: 'http://172.18.40.40:8080', //吴宏
                 pathRewrite: { '^/admin': '' }, //重写接口
                 changeOrigin: true, //是否跨域
                 // demo=>  'http://localhost:8080/api' ===> 'http://www.abc.com/api'

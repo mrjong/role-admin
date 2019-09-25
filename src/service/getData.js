@@ -1999,6 +1999,21 @@ export const case_detail_channel_info = (obj) =>
     data: qs.stringify(obj)
   })
 
+/**
+ * 呼叫轮次
+ * 1、轮次list
+ * 2、配置
+ * 3、展示
+ * 4、轮次记录list
+ * 5、轮次记录导出
+ */
+
+export const callRoundsConfig_list = (obj) =>
+  fetch({
+    url: '/callRoundsConfig/list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
 
 export const rules_add = (obj) =>
   fetch({
@@ -2007,6 +2022,70 @@ export const rules_add = (obj) =>
     data: qs.stringify(obj)
   })
 
+export const callRoundsConfig_update = (obj, options) =>
+  fetch({
+    url: '/callRoundsConfig/update',
+    method: 'POST',
+    data: obj,
+    options
+  })
+export const callRoundsConfig_display = (obj) =>
+  fetch({
+    url: '/callRoundsConfig/display',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
+export const collectRoundsRecords_list = (obj) =>
+  fetch({
+    url: '/collectRoundsRecords/list',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
+export const collectRoundsRecords_export = (obj, options) =>
+  fetch({
+    url: '/collectRoundsRecords/export',
+    method: 'POST',
+    data: qs.stringify(obj),
+    responseType: 'blob',
+    options
+  });
+/**
+ * 案件详情相关的轮次接口
+ * 1、当前案件轮次信息
+ * 2、结束当前轮次
+ * 3、统计当前通话状态
+ * 4、下一个案件
+ */
+
+export const rounds_info = (obj) =>
+  fetch({
+    url: '/rounds/info',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
+export const rounds_over = (obj) =>
+  fetch({
+    url: '/rounds/over',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
+export const rounds_record = (obj) =>
+  fetch({
+    url: '/rounds/record',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
+export const case_collect_switch_case = (obj) =>
+  fetch({
+    url: '/case/collect/switch_case',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
 export const divide_allot_ready_case = (obj) =>
   fetch({
     url: '/divide/allot/readyCase',

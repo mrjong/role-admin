@@ -43,6 +43,23 @@
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
+          <FormItem label="催收周期组别:" span="4">
+            <Select
+              size="small"
+              v-model="addLeaderFormItem.collectCategory"
+              filterable
+              clearable
+              placeholder="请选择催收周期组别"
+            >
+              <Option
+              v-for="item in getDirObj['COLLECT_CATEGORY']"
+              :value="item.itemCode"
+              :key="item.itemCode"
+            >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
           <FormItem span="4" label="说明:">
             <Input
               type="textarea"
@@ -156,6 +173,23 @@
               placeholder="请选择部门"
             >
               <Option v-for="(item,index) in departmentList" :value="item.id" :key="item.id + index">{{ item.name }}</Option>
+            </Select>
+          </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+          <FormItem label="催收周期组别:" span="4">
+            <Select
+              size="small"
+              v-model="addStaffFormItem.collectCategory"
+              filterable
+              clearable
+              placeholder="请选择催收周期组别"
+            >
+              <Option
+              v-for="item in getDirObj['COLLECT_CATEGORY']"
+              :value="item.itemCode"
+              :key="item.itemCode"
+            >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -286,7 +320,7 @@ export default {
       callback();
     };
     return {
-      getDirList: ["SEAT_TYPE", 'CALL_TYPE'],
+      getDirList: ["SEAT_TYPE", 'CALL_TYPE', 'COLLECT_CATEGORY'],
       getDirObj: {},
       departmentFlag: true,
       add_user_loading: false, //添加人员提交loading

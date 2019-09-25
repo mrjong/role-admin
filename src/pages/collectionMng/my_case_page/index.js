@@ -163,7 +163,8 @@ export default {
                   props: {
                     content: '查看详情',
                     placement: 'top',
-                    transfer: true
+                    transfer: true,
+                    disabled: !params.row.canCollect ? true : false
                   }
                 },
                 [
@@ -176,31 +177,36 @@ export default {
                       'vertical-align': 'top',
                       'margin-right': '5px',
                       color: '#EF0D33',
-                      display: eyeFlag? 'inline-block': 'none'
+                      display: eyeFlag ? 'inline-block' : 'none'
                     }
                   }),
-                  h(
-                    'a',
-                    {
-                      class: 'edit-desc',
-                      on: {
-                        click: () => {
-                          if (!_this.detail) {
-                            _this.$Message.error('很抱歉，暂无权限查看详情');
-                            return
+                  params.row.canCollect ?
+                    h(
+                      'a',
+                      {
+                        class: 'edit-desc',
+                        on: {
+                          click: () => {
+                            if (!_this.detail) {
+                              _this.$Message.error('很抱歉，暂无权限查看详情');
+                              return
+                            }
+                            window.open(
+                              `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=edit&userIdtest=${userId}&seatType=${seatType
+                                ? seatType
+                                : 'KT'}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+                                  _this.formItem
+                                )}`
+                            );
                           }
-                          window.open(
-                            `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=edit&userIdtest=${userId}&seatType=${seatType
-                              ? seatType
-                              : 'KT'}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
-                                _this.formItem
-                              )}`
-                          );
                         }
+                      },
+                      params.row.id
+                    ) : h('span', {
+                      style: {
+                        color: '#ccc'
                       }
-                    },
-                    params.row.id
-                  )
+                    }, params.row.id)
                 ]
               )
             ]);
@@ -330,12 +336,23 @@ export default {
           }
         },
         {
+          title: '当日拨打轮次',
+          width: 120,
+          align: 'center',
+          key: 'todayRounds'
+        },
+        {
+          title: '拨打总轮次',
+          width: 120,
+          align: 'center',
+          key: 'totalRounds'
+        },
+        {
           title: '借款人拨打状态',
           width: 120,
           align: 'center',
           key: 'lastCurrentCollectResultName'
         },
-
         {
           title: '借款人沟通结果',
           width: 120,
@@ -420,6 +437,13 @@ export default {
     this.collectcode_getListByCodeType(2);// 获取拨打状态
     this.getList();
     this.case_detail_one_channel();
+    if (document.hidden !== undefined) {
+      document.addEventListener("visibilitychange", () => {
+        // true 表示离开  false表示回来，再进行初始化
+        console.log(document.hidden)
+        !document.hidden && this.getList();
+      });
+    }
   },
   methods: {
     // 日期变更回调
@@ -455,6 +479,15 @@ export default {
       });
       this.query_loading = false;
       if (res.code === 1) {
+        // 是否为开案阶段
+        if (res.data.loadingText) {
+          this.$store.commit("changeSpinData", res.data.loadingText);
+          let timer;
+          setTimeout(() => {
+            this.$store.commit("changeSpinData", '');
+          }, 3000);
+          clearTimeout(timer);
+        }
         this.tableData = res.data.page.content;
         this.pageSize = res.data.page.size;
         this.total = res.data.page.totalElements;
@@ -466,7 +499,7 @@ export default {
     // 沟通状态
     async collectcode_getListByCodeType(type) {
       const res = await collectcode_getListByCodeType({
-        codeType: type === 1? 'COLLECT_STS': 'TALK_RESULT'
+        codeType: type === 1 ? 'COLLECT_STS' : 'TALK_RESULT'
       });
       if (res.code === 1) {
         if (type === 1) {

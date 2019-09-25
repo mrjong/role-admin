@@ -234,9 +234,6 @@
     font-size: 14px;
     border-radius: 3px;
   }
-  .alert-desc {
-    // padding: 5px 0px;
-  }
   .ivu-modal-close {
     top: 3px;
   }

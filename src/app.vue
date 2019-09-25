@@ -18,6 +18,7 @@
         </div>
       </div>
     </div>
+    <spinModal :spin_data='spin_data'></spinModal>
     <router-view></router-view>
     <video loop ref="ring" preload="auto" style="position: absolute" src="src/libs/ring.wav"></video>
     <audio id="playaudio" src="./libs/ring1.wav" loop="loop" style="display: none"></audio>
@@ -30,15 +31,22 @@
 import { mapGetters } from "vuex";
 import util from "@/libs/util";
 import { callout_hung_off } from "@/service/getData";
+import spinModal from '@/components/spin_modal';
+import Cookie from 'js-cookie';
 export default {
+  components: {
+    spinModal
+  },
   data() {
     return {
       fail: false,
       success: false,
       showTel: false,
+      spin_data: {},
       telNoHid: "***********",
       usrNameHid: "****",
-      theme: this.$store.state.app.themeColor
+      theme: this.$store.state.app.themeColor,
+      text: "系统准备案件中..."
     };
   },
   async created() {
@@ -47,7 +55,7 @@ export default {
     // });
     const h = this.$createElement;
     let callData = JSON.parse(localStorage.getItem("callData"));
-    if (callData && callData.seatType === 'KT' && callData.callType === '1') {
+    if (callData && callData.seatType === "KT" && callData.callType === "1") {
       this.call(callData);
     }
 
@@ -64,7 +72,7 @@ export default {
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
-    ...mapGetters(["changeCallData"])
+    ...mapGetters(["changeCallData", 'changeSpinData'])
   },
 
   methods: {
@@ -138,6 +146,9 @@ export default {
     }
   },
   watch: {
+    changeSpinData(res) {
+      this.spin_data = res;
+    },
     changeCallData(res) {
       if (res.msg) {
         console.log("电话状态======>", res);
@@ -172,6 +183,20 @@ export default {
               }
             }
             this.showTel = true;
+            break;
+            // 触达第二端
+          case 'ANSWERED':
+            Cookie.get('collectCategory') === 'M01' && this.$store.commit("changeCallRecord", {
+              seatType: 'KT',
+              status: '0'
+            });
+            break;
+            // 接听状态
+          case "REALTIME":
+            Cookie.get('collectCategory') === 'M01' && this.$store.commit("changeCallRecord", {
+              seatType: 'KT',
+              status: '1'
+            });
             break;
           case "HANGUP":
             // 坐席挂机
@@ -210,6 +235,7 @@ body {
   overflow: hidden;
 }
 .app-main {
+  position: relative;
   overflow: auto;
   width: 100%;
   height: 100%;

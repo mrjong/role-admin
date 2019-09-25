@@ -214,6 +214,7 @@ export default {
             Cookies.set("user", this.form.loginName);
             Cookies.set("SXF-TOKEN", res.data.token);
             Cookies.set("userType", res.data.userType);
+            Cookies.set("collectCategory", res.data.collectCategory);
             Cookies.set("access", 1);
             this.callout_get_seat(res);
           } else if (res && res.code === 3010010) {
