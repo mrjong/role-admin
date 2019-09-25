@@ -600,6 +600,7 @@ export default {
       if (!this.departmentFlag) {
         this.staffFormItem.outfitId = "";
       }
+      !this.staffFormItem.collectCategory && this.$set(this.staffFormItem, 'collectCategory', '');
       const res = await collect_user_clerk_update({
         ...this.staffFormItem,
         originOutfitId: this.parentData.nodeData.outfitId,
