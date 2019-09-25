@@ -15,7 +15,7 @@
       <div class="list_wrap">
         <Form ref="formItem" :model="formItem" :label-width="130" :rules="ruleValidate">
           <FormItem span="6" label='下限跟进开启时间:' prop="floorFollowTime" class="form_item">
-            <TimePicker format="HH:mm" placeholder="选择时间" :editable='false' v-model="formItem.floorFollowTime" size='small' transfer :steps="[1, 15]" style="width: 112px"></TimePicker>
+            <TimePicker format="HH:mm" placeholder="选择时间" :editable='false' v-model="formItem.floorFollowTime" size='small' transfer :steps="[1, 2]" style="width: 112px"></TimePicker>
           </FormItem>
         </Form>
       </div>
