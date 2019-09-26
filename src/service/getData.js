@@ -2175,25 +2175,20 @@ export const divide_download_template = (obj, options) =>
     responseType: 'blob',
     options
   })
-
-export const test2 = (obj) =>{
-  return axio.get('/v1/account', {
-    params: {
-      page_num: '1',
-      apikey: 'SrM6S9OQAFxktfTzD2pBX9yPDtWWlLZs',
-      page_size: '100',
-      mobile: '18811526607',
-    }
-  }).then( res => {
-    return axio.post('/v1/account/login/cti',
-      {
-        apikey: 'SrM6S9OQAFxktfTzD2pBX9yPDtWWlLZs',
-        account_id: res.data.data.accounts[0].account_id,
-      }
-    ).then( res2 => {
-      res2.data.account_id = res.data.data.accounts[0].account_id
-      return res2.data
-    })
+// 呼出
+export const callout_fixed_hung_on = (obj, options) =>
+  fetch({
+    url: '/callout/fixed/hung_on',
+    method: 'POST',
+    data: obj,
+    options
   })
-}
+// 挂断
+export const callout_fixed_hung_off = (obj, options) =>
+  fetch({
+    url: '/callout/fixed/hung_off',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
 

@@ -37,6 +37,8 @@ import {
   collectcode_getListByCodeType,// 获取拨打状态
   call_kt_hung_on, // 客天外拨
   call_moor_hung_on, // 容联外拨
+  callout_fixed_hung_on, //度言外拨
+  callout_fixed_hung_off,//度言挂断
   call_moor_hung_up,//容联挂断
   call_xz_hung_on,//讯众接通
   call_xz_hung_off,//讯众挂断
@@ -83,7 +85,9 @@ export default {
       }
     }
     return {
+      showDYFlag: null,
       Dy_data: {},
+      recordIdDY: '',
       xZStyle: false,
       xZStatus: '',
       seatType: String,
@@ -2350,6 +2354,34 @@ export default {
         if (callData.callType === '2') {
           this.callout_rout_get_seat(obj, tag)
         } else if (callData.callType === '1') {
+          if(callData.seatType === 'DY'){
+            let params = {
+              callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+              callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
+              toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
+              toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
+              toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+              toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
+              userId: this.userId,
+              caseNo: this.caseNo,
+              collectType: tag,
+            }
+            callout_fixed_hung_on({
+              callRecordDomain: params,
+              calloutVo: callData,
+            }, {
+              transformRequest: [
+                function (data) {
+                  return JSON.stringify(data); //利用对应方法转换格式
+                }
+              ]
+            }).then(res=>{
+              if(res.code ===1){
+                this.recordIdDY = res.data.callRecordDomain.id
+                this.showDYFlag = res.data.toCallMbl
+              }
+            })
+          }
           this.seatType = callData.seatType;
           if (localStorage.getItem('callData') && callData.seatType === 'KT') {
             if (localStorage.getItem('callObj')) {
@@ -2389,7 +2421,7 @@ export default {
               caseNo: this.caseNo,
               collectType: tag,
             });
-          };
+          }
         };
       } else {
         this.objCopy = {};
@@ -2416,6 +2448,15 @@ export default {
     },
     passBack(type) {
       this.modal[type] = false;
+    },
+    passBackDY(uid) {
+      callout_fixed_hung_off({
+        id: this.recordIdDY,
+        actionId: uid
+      }).then(res=>{
+        this.showDYFlag = null;
+      })
+
     },
     passBackBreaks(obj) {
       console.log(obj)

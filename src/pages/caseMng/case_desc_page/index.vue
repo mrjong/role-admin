@@ -995,7 +995,7 @@
         </Row>
       </Modal>
     </div>
-    <DYScript :Dy_data="Dy_data"/>
+    <DYScript :Dy_data="Dy_data" :showDYFlag="showDYFlag" @passBackDY="passBackDY"/>
     <!-- 容联、讯众软电话 -->
     <div class="tel-box" v-if="showMoorTel" :style="xZStyle && 'width: 210px'">
       <div class="tel-box-desc" :style="xZStyle && 'width: 200px'">
