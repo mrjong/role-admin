@@ -37,7 +37,7 @@
       }
       nodeA.parentNode.style =
           'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:-1'
-      nodeA.src=`https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=false&noOpBtn=true&nopo=true&noNumberSelect=true`
+      nodeA.src=`https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`
       this.getToken(this.token[0])
     },
     mounted() {
