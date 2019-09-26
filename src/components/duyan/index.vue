@@ -6,7 +6,7 @@
 
 <script>
   import {
-    test,test2
+    test2
   } from '@/service/getData';
   export default {
     props: ["Dy_data"],
@@ -26,6 +26,9 @@
       DYScript.id = "dySdkScript";  //指定脚本类型
       DYScript.setAttribute("ctype","mini");  //指定脚本类型
       document.body.appendChild(DYScript)
+      test2().then(res=>{
+        console.log(res)
+      })
     },
     methods: {
       getToken(){
