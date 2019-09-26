@@ -74,6 +74,9 @@
         // 正在拨打中的回调函数，返回电话号码等信息
         DYSDK.callConnecting(function (data) {
           console.log("正在拨打中的回调函数");
+          if(data.errorCode){
+            that.$emit("passBackDY", data.uuid);
+          }
           console.log(data)
         });
         DYSDK.ready(function(){
