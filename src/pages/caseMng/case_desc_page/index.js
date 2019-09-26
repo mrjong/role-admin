@@ -5,6 +5,7 @@ import gathering from '@/components/caseDesc/gathering.vue';
 import QRdetail from '@/components/caseDesc/QR_code_detail.vue';
 import QRcode from '@/components/caseDesc/QR_code.vue';
 import TimeLine from '@/components/time_line_page';
+import DYScript from '@/components/duyan';
 import qs from 'qs';
 import dayjs from 'dayjs';
 import Cookie from 'js-cookie';
@@ -64,7 +65,8 @@ export default {
     TimeLine,
     gathering,
     QRdetail,
-    QRcode
+    QRcode,
+    DYScript
   },
   mixins: [sysDictionary],
   data() {
@@ -81,7 +83,7 @@ export default {
       }
     }
     return {
-      recordId: '',
+      Dy_data: {},
       xZStyle: false,
       xZStatus: '',
       seatType: String,
