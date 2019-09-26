@@ -2175,4 +2175,20 @@ export const divide_download_template = (obj, options) =>
     responseType: 'blob',
     options
   })
+// 呼出
+export const callout_fixed_hung_on = (obj, options) =>
+  fetch({
+    url: '/callout/fixed/hung_on',
+    method: 'POST',
+    data: obj,
+    options
+  })
+// 挂断
+export const callout_fixed_hung_off = (obj, options) =>
+  fetch({
+    url: '/callout/fixed/hung_off',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
 
