@@ -83,7 +83,12 @@ module.exports = merge(webpackBaseConfig, {
                 pathRewrite: { '^/admin': '' }, //重写接口
                 changeOrigin: true, //是否跨域
                 // demo=>  'http://localhost:8080/api' ===> 'http://www.abc.com/api'
-            }
+            },
+          '/demo': {
+            target: 'https://open.duyansoft.com/api/',  // 测试地址
+            pathRewrite: { '^/demo': '' }, //重写接口
+            changeOrigin: true, //是否跨域
+          },
         },
     },
 });
