@@ -114,7 +114,8 @@ export default {
       round_info_data: {},//轮次信息的相关字段
       next_case_list: '',//下一个案件的信息
       collectCategory: false,//M1用户标识符
-      recordId: '',//前端定义的16位随机串，做唯一标识用
+      recordId: '',//后端返回的，做唯一标识用
+      recordIdFront: '',//前端定义的16位随机串，做唯一标识用
       imglist: {},
       actionId: '',
       objCopy: {},
@@ -1841,7 +1842,7 @@ export default {
           localStorage.removeItem('callObj');
           callData.actionId = res.data.actionId;
           localStorage.setItem('callData', JSON.stringify(callData));
-          callData.callType === '2' && this.$set(this, 'recordId', util.randomRange());
+          callData.callType === '2' && this.$set(this, 'recordIdFront', util.randomRange());
           callData.callType === '2' && this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && !this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });//本人的呼叫记录假状态
           callData.callType === '2' && this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });//紧连的呼叫记录假状态
         }
@@ -1890,7 +1891,7 @@ export default {
         if (callData.callType === '2') {
           await init(res.data.calloutVo.phoneNo, this);//调用拨打的方法
           this.xZStyle = true;
-          callData.callType === '2' && this.$set(this, 'recordId', util.randomRange());
+          callData.callType === '2' && this.$set(this, 'recordIdFront', util.randomRange());
           this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && !this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });//本人呼叫的记录假状态
           this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });//紧连呼叫的记录假状态
         }
@@ -2287,6 +2288,8 @@ export default {
       }
       this.actionId = '';
       this.recordId = '';
+      this.recordIdFront = '';
+      this.recordIdDY = '';
       sessionStorage.removeItem('callId');
       this.add_collect_loading = false;
       // 重置初始化数据
@@ -2780,7 +2783,7 @@ export default {
         caseNo: this.caseNo,
         callStatus: obj.status,
         callId: callId,
-        recordId: this.recordId,
+        recordId: this.recordIdFront,
         mblNo: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
       });
       if (res.code === 1) {
