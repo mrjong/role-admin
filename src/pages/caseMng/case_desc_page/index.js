@@ -1716,7 +1716,6 @@ export default {
         id: this.caseNo,
         pageNum: 1
       });
-      console.log(res);
       if (res.code === 1) {
         this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
@@ -1752,7 +1751,6 @@ export default {
         autoReady: true,
         url: obj.url
       };
-      console.log(config);
       CallHelper.init(config, this.initCallback);
     },
     /**
@@ -1773,7 +1771,6 @@ export default {
     initCallback(data) {
       console.log(data, '-------------');
       if (data.successChange) {
-        console.log(data);
         console.log('您已登录成功！desc_page');
         if (!callFlag) {
           return;
@@ -1884,7 +1881,6 @@ export default {
       } else {
         res = await call_xz_hung_on(obj);
       }
-      console.log(res)
       if (res.code === 1) {
         this.actionId = res.data.actionId;
         this.recordId = res.data.recordId;
@@ -1996,7 +1992,6 @@ export default {
     },
     // 催收信息
     async case_detail_remark_list() {
-      console.log(this.caseNo);
       this.case_detail_remark_list_spin = true
       const res = await case_detail_remark_list({
         caseNo: this.caseNo,
@@ -2261,7 +2256,6 @@ export default {
       const res = await case_detail_getimgurls({
         caseNo: this.caseNo,
       });
-      console.log(res);
       if (res.code === 1) {
         this.img_list = res.data;
       } else {
@@ -2599,8 +2593,6 @@ export default {
     },
     // 切换每页条数时的回调
     changeSize(pageSize, name) {
-      console.log(this.case_detail_getcaselog_pageSize);
-      console.log(pageSize, name);
       this[name + '_pageSize'] = pageSize;
       this.pageNo = 1;
       this[name]();

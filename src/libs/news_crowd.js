@@ -125,7 +125,6 @@ export const callOut = (phoneNumber) => {
   handcall = 1;//主动外呼
   showmsg("【呼出】============================================================");
   showmsg("调用MakeCall()进行呼出。呼出请求发出后会进行EVENT_AgentStateChanged事件通知");
-  console.log('外呼号码：' + phoneNumber)
   cti.MakeCall(phoneNumber, 3, '');
 
 }
