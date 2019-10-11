@@ -20,7 +20,7 @@ export default {
       import_data_loading: false,// 导入loading
       query_flag: false, // false 默认查getList  true查询import_list
       file_csaeIds: [],//上传文件返回的案件编号list集合
-      getDirList: ['PAY_OFF_STS', 'ROLE_TYPE'],
+      getDirList: ['PAY_OFF_STS', 'ROLE_TYPE', 'REPAY_PERD_NUM'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -147,7 +147,7 @@ export default {
         {
           title: '还款期数',
           searchOperator: 'like',
-          key: 'perdCnt',
+          key: 'perdNum',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal
@@ -167,7 +167,7 @@ export default {
         },
         {
           title: '产品期数',
-          key: 'perdNum',
+          key: 'perdCnt',
           className: 'tableMainW',
           align: alignCenter,
           width: widthMidVal,
