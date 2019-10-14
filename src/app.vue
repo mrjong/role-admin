@@ -30,12 +30,13 @@
 <script>
 import { mapGetters } from "vuex";
 import util from "@/libs/util";
-import { callout_hung_off } from "@/service/getData";
+import { callout_hung_off, callout_fixed_hung_off} from "@/service/getData";
 import spinModal from '@/components/spin_modal';
 import Cookie from 'js-cookie';
 export default {
   components: {
-    spinModal
+    spinModal,
+
   },
   data() {
     return {
@@ -46,7 +47,7 @@ export default {
       telNoHid: "***********",
       usrNameHid: "****",
       theme: this.$store.state.app.themeColor,
-      text: "系统准备案件中..."
+      text: "系统准备案件中...",
     };
   },
   async created() {
@@ -70,12 +71,108 @@ export default {
       }
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      if(window.location.href.indexOf("/case_desc_page?") !== -1 && sessionStorage.getItem('callSeat')){
+        this.initDy()
+        if (document.hidden !== undefined) {
+          document.addEventListener("visibilitychange", () => {
+            console.log(document.hidden)
+            if(!document.hidden){
+              this.initDy()
+              let nodeA = document.getElementById("dyCti")
+              let callData = sessionStorage.getItem('callSeat') ? JSON.parse(sessionStorage.getItem('callSeat')) : this.token
+              nodeA.src =
+                `https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`
+              nodeA.height = 40
+            }
+          });
+        }
+      }
+    })
+  },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
     ...mapGetters(["changeCallData", 'changeSpinData'])
   },
 
   methods: {
+    loadJs(url) {
+      var se = document.createElement('script')
+      se.id = 'dySdkScript'
+      se.setAttribute('url', url)
+      se.setAttribute('ctype', 'mini')
+      se.src = "https://cti.duyansoft.com/syui/dysdk/dysdk2.js"
+      // js 加载后执行
+      se.onload = () => {
+        let nodeA = document.getElementById("dyCti")
+        if (nodeA.parentNode.childNodes[1]) {
+          nodeA.parentNode.removeChild(nodeA.parentNode.childNodes[1])
+        }
+        nodeA.height = 40
+        nodeA.parentNode.style =
+          'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); display: none'
+        let that = this
+        DYSDK.ctiLogined(function (data) {
+          console.log('登录回调')
+          console.log(DYSDK)
+          console.log(data);
+        });
+
+        // 接通电话的回调函数，返回电话号码等信息
+        DYSDK.callConfirm(function (data) {
+          console.log('接通电话的回调函数')
+          console.log(data)
+        });
+
+        // 拨打电话失败的回调函数，返回电话号码等信息
+        DYSDK.callFail(function (data) {
+          console.log('拨打电话失败')
+          that.duyanHungOff(data.uuid, nodeA)
+          console.log(data)
+        });
+
+        // 电话结束的回调函数，返回电话号码等信息
+        DYSDK.callEnd(function (data) {
+          console.log("电话结束")
+          that.duyanHungOff(data.uuid, nodeA)
+          console.log(data)
+        });
+        // 正在拨打中的回调函数，返回电话号码等信息
+        DYSDK.callConnecting(function (data) {
+          console.log("正在拨打中的回调函数");
+          if(data.errorCode){
+            that.duyanHungOff(data.uuid, nodeA)
+          }
+          console.log(data)
+        });
+        DYSDK.ready(function(data){
+        })
+
+        DYSDK.getPhonelines((data) => {
+          console.log(data)
+        })
+        DYSDK.init({stopBeforeunload:true});
+      }
+      document.body.appendChild(se);
+    },
+    initDy() {
+      //加载度言
+      let duyanData = sessionStorage.getItem('callSeat') ? JSON.parse(sessionStorage.getItem('callSeat')) : this.token
+      this.loadJs(`https://cti.duyansoft.com/ctibar.html?account_id=${duyanData.seatNo}&token=${duyanData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`)
+    },
+    duyanHungOff(uid, dom) {
+      callout_fixed_hung_off({
+        id: sessionStorage.getItem('recordIdDY'),
+        actionId: uid
+      }).then(res=>{
+        setTimeout(()=>{
+          dom.parentNode.style =
+            'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); display: none'
+        },300)
+      })
+    },
+
     call(obj) {
       var config = {
         uname: obj.loginName,
@@ -106,6 +203,7 @@ export default {
         // this.$Message.error('登录失败，请联系管理员！');
       }
     },
+
     answer() {
       CallHelper.answer(data => {
         console.log(data);
@@ -143,7 +241,8 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
-    }
+    },
+
   },
   watch: {
     changeSpinData(res) {

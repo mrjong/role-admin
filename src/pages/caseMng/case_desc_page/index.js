@@ -5,7 +5,6 @@ import gathering from '@/components/caseDesc/gathering.vue';
 import QRdetail from '@/components/caseDesc/QR_code_detail.vue';
 import QRcode from '@/components/caseDesc/QR_code.vue';
 import TimeLine from '@/components/time_line_page';
-import DYScript from '@/components/duyan';
 import qs from 'qs';
 import dayjs from 'dayjs';
 import Cookie from 'js-cookie';
@@ -68,7 +67,6 @@ export default {
     gathering,
     QRdetail,
     QRcode,
-    DYScript
   },
   mixins: [sysDictionary],
   data() {
@@ -2377,8 +2375,17 @@ export default {
               ]
             }).then(res=>{
               if(res.code ===1){
-                this.recordIdDY = res.data.callRecordDomain.id
-                this.showDYFlag = res.data.toCallMbl
+                // this.recordIdDY = res.data.callRecordDomain.id
+                if(DYSDK.isReady){
+                  document.getElementById("dyCti").parentNode.style =
+                    'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
+                  sessionStorage.setItem('recordIdDY', res.data.callRecordDomain.id)
+                  DYSDK.call(res.data.toCallMbl, function () {
+                  }, '');
+                } else {
+                  this.$Message.info('请稍后重试')
+                }
+                // this.showDYFlag = res.data.toCallMbl
               }
             })
           }
