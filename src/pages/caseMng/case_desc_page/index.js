@@ -100,6 +100,10 @@ export default {
         case 'CASE_INFO':
           this.base_info_data = obj.data;
           break;
+        case 'ADDRESS_LIST':
+          // console.log(this.$refs[])
+          this.$refs[BASE_INFO].case_detail_case_identity_info();
+          break;
         default:
           break;
       }

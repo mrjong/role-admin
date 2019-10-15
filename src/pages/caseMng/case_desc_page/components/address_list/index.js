@@ -849,7 +849,8 @@ export default {
           callData.callType === '2' && this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });//紧连的呼叫记录假状态
         }
         if (params.collectType === '01')
-          await this.case_detail_case_identity_info();
+         await this.$emit('deliveryData', {type: 'ADDRESS_LIST'});
+          // await this.case_detail_case_identity_info();
         if (params.collectType === '02')
           await this.case_detail_urgent_contact();
         if (params.collectType === '03')
@@ -899,7 +900,8 @@ export default {
         this.moorToCallMblHid = obj.toCallMblHid;
         this.moorToCallUser = obj.toCallUserHid;
         if (obj.collectType === '01')
-          await this.case_detail_case_identity_info();
+          // await this.case_detail_case_identity_info();
+          await this.$emit('deliveryData', {type: 'ADDRESS_LIST'});
         if (obj.collectType === '02')
           await this.case_detail_urgent_contact();
         if (obj.collectType === '03')
@@ -1257,6 +1259,7 @@ export default {
         actionId: uid
       }).then(res=>{
         this.showDYFlag = null;
+        this.$emit('deliveryData', {type: 'ADDRESS_LIST'});
       })
     },
     // 切换每页条数时的回调
@@ -1296,7 +1299,8 @@ export default {
         this.case_detail_remark_list_pageNo = 1;
         await this.case_detail_remark_list();
         if (this.collectType === '01') {
-          await this.case_detail_case_identity_info();
+          // await this.case_detail_case_identity_info();
+          await this.$emit('deliveryData', {type: 'ADDRESS_LIST'});
         }
         if (this.collectType === '02') {
           await this.case_detail_urgent_contact();

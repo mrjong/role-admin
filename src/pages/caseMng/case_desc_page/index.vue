@@ -3,16 +3,16 @@
     <!-- 弹层 -->
     <div class="case-left-container" :style="{paddingRight:showBtn?'25px':'480px'}">
       <!-- 基础信息 -->
-      <baseInfo :queryData='queryData' :caseNo='caseNo' :userId='userId' :collectCategory='collectCategory' :base_info_data='base_info_data' @deliveryData='deliveryData'></baseInfo>
+      <baseInfo ref='BASE_INFO' :queryData='queryData' :caseNo='caseNo' :userId='userId' :collectCategory='collectCategory' :base_info_data='base_info_data' @deliveryData='deliveryData'></baseInfo>
 
       <!-- 案件信息 -->
-      <caseInfo :queryData='queryData' :caseNo='caseNo' @deliveryData='deliveryData'></caseInfo>
+      <caseInfo ref='CASE_INFO' :queryData='queryData' :caseNo='caseNo' @deliveryData='deliveryData'></caseInfo>
 
       <!-- 催收信息 -->
-      <collectionInfo :queryData='queryData' :caseNo='caseNo' :userId='userId'></collectionInfo>
+      <collectionInfo ref='COLLECTION_INFO' :queryData='queryData' :caseNo='caseNo' :userId='userId'></collectionInfo>
 
       <!-- 其他(绑卡、操作、站内信) -->
-      <otherInfo :queryData='queryData' :caseNo='caseNo' :userId='userId'></otherInfo>
+      <otherInfo ref='OTHER_INFO' :queryData='queryData' :caseNo='caseNo' :userId='userId'></otherInfo>
     </div>
     <div class="panel-case-right">
       <Tooltip v-if="showBtn" content="点击查看" placement="left">
@@ -22,7 +22,7 @@
         <transition name="slide
         ">
           <div v-show="!showBtn" class="heighti">
-            <addressList :queryData='queryData' :caseNo='caseNo' :userId='userId' :collectCategory='collectCategory' :address_list_data='address_list_data' @deliveryData='deliveryData' @isShow='isShow'></addressList>
+            <addressList ref='ADDRESS_LIST' :queryData='queryData' :caseNo='caseNo' :userId='userId' :collectCategory='collectCategory' :address_list_data='address_list_data' @deliveryData='deliveryData' @isShow='isShow'></addressList>
           </div>
         </transition>
       </div>
