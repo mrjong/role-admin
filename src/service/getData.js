@@ -754,6 +754,14 @@ export const case_detail_system_repay_list = (obj, options) =>
     data: qs.stringify(obj)
   });
 
+// 还款信息接口（系统代扣、主动还款）
+export const case_detail_repay_list = (obj) =>
+  fetch({
+    url: '/case/detail/repay_list',
+    method: 'POST',
+    data: qs.stringify(obj)
+  })
+
 /*
 *
 * 绑卡信息（指定案件、用户）
