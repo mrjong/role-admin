@@ -55,12 +55,23 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="案件编码:">
+            <FormItem label="还款期数:">
+              <Select size="small" clearable v-model="formValidate.perdNum">
+                <Option
+                  v-for="item in getDirObj.REPAY_PERD_NUM"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemDesc }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="案件编号:">
               <Input
                 size="small"
                 clearable
                 v-model.trim="formValidate.caseNo"
-                placeholder="请输入案件编码"
+                placeholder="请输入案件编号"
               ></Input>
             </FormItem>
           </Col>
