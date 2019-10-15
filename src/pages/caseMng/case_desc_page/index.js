@@ -2383,7 +2383,18 @@ export default {
                   DYSDK.call(res.data.toCallMbl, function () {
                   }, '');
                 } else {
-                  this.$Message.info('请稍后重试')
+                  DYSDK.init({stopBeforeunload:true});
+                  let timeID = setInterval(()=>{
+                    if(DYSDK.isReady){
+                      document.getElementById("dyCti").parentNode.style =
+                        'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
+                      sessionStorage.setItem('recordIdDY', res.data.callRecordDomain.id)
+                      DYSDK.call(res.data.toCallMbl, function () {
+                      }, '');
+                      clearInterval(timeID);
+                    }
+                  },300);
+                  // this.$Message.info('正在初始化请稍后重试')
                 }
                 // this.showDYFlag = res.data.toCallMbl
               }
@@ -2613,6 +2624,9 @@ export default {
     async case_remark_his_add() {
       let callData = JSON.parse(localStorage.getItem('callData'));
       if (callData.callType === '2' && callData.seatType === 'XZ') {
+        this.actionId = sessionStorage.getItem('callId') ? sessionStorage.getItem('callId') : '';
+      }
+      if (callData.callType === '1' && callData.seatType === 'DY') {
         this.actionId = sessionStorage.getItem('callId') ? sessionStorage.getItem('callId') : '';
       }
       this.add_collect_loading = true;

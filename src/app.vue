@@ -72,9 +72,10 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
       if(window.location.href.indexOf("/case_desc_page?") !== -1 && sessionStorage.getItem('callSeat')){
-        this.initDy()
+        this.$nextTick(() =>{
+          this.initDy()
+        })
         if (document.hidden !== undefined) {
           document.addEventListener("visibilitychange", () => {
             console.log(document.hidden)
@@ -89,7 +90,6 @@ export default {
           });
         }
       }
-    })
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
@@ -105,6 +105,7 @@ export default {
       se.src = "https://cti.duyansoft.com/syui/dysdk/dysdk2.js"
       // js 加载后执行
       se.onload = () => {
+        DYSDK.init({stopBeforeunload:true});
         let nodeA = document.getElementById("dyCti")
         if (nodeA.parentNode.childNodes[1]) {
           nodeA.parentNode.removeChild(nodeA.parentNode.childNodes[1])
@@ -141,7 +142,9 @@ export default {
         // 正在拨打中的回调函数，返回电话号码等信息
         DYSDK.callConnecting(function (data) {
           console.log("正在拨打中的回调函数");
+          sessionStorage.setItem('callId', data.uuid)
           if(data.errorCode){
+            this.$Message.error(data.errorCode)
             that.duyanHungOff(data.uuid, nodeA)
           }
           console.log(data)
@@ -152,7 +155,6 @@ export default {
         DYSDK.getPhonelines((data) => {
           console.log(data)
         })
-        DYSDK.init({stopBeforeunload:true});
       }
       document.body.appendChild(se);
     },
