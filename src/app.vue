@@ -144,8 +144,11 @@ export default {
           console.log("正在拨打中的回调函数");
           sessionStorage.setItem('callId', data.uuid)
           if(data.errorCode){
-            this.$Message.error(data.errorCode)
             that.duyanHungOff(data.uuid, nodeA)
+            that.$Message.error({
+              content: data.errorCode,
+              duration: 6
+            })
           }
           console.log(data)
         });
