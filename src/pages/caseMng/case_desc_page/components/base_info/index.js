@@ -9,7 +9,8 @@ import sysDictionary from '@/mixin/sysDictionary';
 import qs from 'qs';
 import Cookie from 'js-cookie';
 
-import { case_list,
+import {
+  case_list,
   case_detail_address_info,
   case_detail_case_identity_info, // 查询案件详情身份信息
   case_detail_getimgurls,
@@ -30,7 +31,7 @@ export default {
     QRdetail,
     QRcode,
   },
-  data () {
+  data() {
     return {
       getDirList: ['GENDER', 'NATION', 'CONTACT_REL_TYPE'],
       getDirObj: {},
@@ -67,18 +68,16 @@ export default {
       },
     }
   },
-  async created () {
-    let params = location.hash.split('?');
-    const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
-    this.caseNo = window.atob(queryData.caseNotest);
+  created() {
+    // let params = location.hash.split('?');
+    // const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
+    // this.caseNo = window.atob(queryData.caseNotest);
     // this.seatType = queryData.seatType;
-    this.prdTyp = queryData.prdTyptest;
-    this.userId = queryData.userIdtest;
-    this.readType = queryData.readType;
-    delete queryData.caseNotest;
-    delete queryData.prdTyptest;
+    // this.userId = this.queryData.userIdtest;
+    // delete queryData.caseNotest;
+    // delete queryData.prdTyptest;
     // delete queryData.seatType;
-    delete queryData.userIdtest;
+    // delete queryData.userIdtest;
     if (Cookie.get('all_opt') === 'true') {
       this.all_opt = true;
     };
@@ -97,13 +96,24 @@ export default {
     if (Cookie.get('APPLY_QR_CODE') === 'true') {
       this.APPLY_QR_CODE = true;
     };
-    if (queryData.readType === 'edit') {
-      // this.case_collect_case_list(); // 我的案件
-      await this.case_list()
+    // this.$nextTick(async () => {
+    //   debugger
+
+    // })
+  },
+  watch: {
+    async queryData(data) {
+debugger
+      this.prdTyp = data.prdTyptest;
+      this.readType = data.readType;
+      if (data.readType === 'edit') {
+        // this.case_collect_case_list(); // 我的案件
+        await this.case_list()
+      }
+      this.case_detail_case_identity_info(); // 查询案件详情身份信息
+      this.case_detail_address_info();
+      this.case_detail_getimgurls();
     }
-    this.case_detail_case_identity_info(); // 查询案件详情身份信息
-    this.case_detail_address_info();
-    this.case_detail_getimgurls();
   },
   methods: {
     handleView(name) {
@@ -192,7 +202,7 @@ export default {
       if (res.code === 1) {
         this.btnDisable = false;
         this.case_detail_case_identity_info_Data = res.data;
-        this.$emit('deliveryData', {type: 'BASE_INFO', data: res.data});
+        this.$emit('deliveryData', { type: 'BASE_INFO', data: res.data });
       } else {
         this.$Message.error(res.message);
       }

@@ -1,6 +1,6 @@
 <template>
   <div class="heighti case-top-panel">
-    <Card style="width: 480px" :style="{height:!this.showBottom?'inherit':'calc(100% - 325px)'}">
+    <Card style="width: 480px" class="heighti case-top-panel" :style="{height:!this.showBottom?'inherit':'calc(100% - 325px)'}">
       <div>
         <div class="case-desc-close">
           <div class="round_info" style="display: inline-block" v-if="collectCategory">

@@ -74,14 +74,14 @@ export default {
     this.userId = queryData.userIdtest;
     this.readType = queryData.readType;
     delete queryData.caseNotest;
-    delete queryData.prdTyptest;
+    // delete queryData.prdTyptest;
     // delete queryData.seatType;
-    delete queryData.userIdtest;
+    // delete queryData.userIdtest;
     if (queryData.readType === 'edit') {
       // this.case_collect_case_list(); // 我的案件
       await this.case_list()
     }
-    delete queryData.readType;
+    // delete queryData.readType;
     this.queryData = queryData;
     this.collectCategory && this.case_collect_switch_case();//查询下一个案件
   },
@@ -102,7 +102,7 @@ export default {
           break;
         case 'ADDRESS_LIST':
           // console.log(this.$refs[])
-          this.$refs[BASE_INFO].case_detail_case_identity_info();
+          this.$refs['BASE_INFO'].case_detail_case_identity_info();
           break;
         default:
           break;
