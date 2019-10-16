@@ -28,6 +28,7 @@ import util from '@/libs/util';
 import Cookie from 'js-cookie';
 import { mapGetters } from "vuex";
 import { init, callOut, hangUp } from '@/libs/news_crowd';//讯众插件
+import dayjs from 'dayjs';
 import sysDictionary from '@/mixin/sysDictionary';
 let callFlag = false;
 export default {
@@ -738,8 +739,34 @@ export default {
     ...mapGetters(["changeXZHungUpFlag", "changeCallRecord"])
   },
   methods: {
+    // 刷新通讯录、紧连、本人的接口
+    async refreshData(type) {
+      if (type === '01')
+        await this.$emit('deliveryData', { type: 'ADDRESS_LIST' });
+      if (type === '02')
+        await this.case_detail_urgent_contact();
+      if (type === '03')
+        await this[this.address_list_name]();
+    },
+    // 通讯录缩放功能回调
     isShow() {
       this.$emit('isShow');
+    },
+    // 初始化科天的标签
+    initKTScript(callData) {
+      if (localStorage.getItem('callObj')) {
+        this.$Message.info('请先挂断其他电话，再重试');
+        return
+      }
+      callFlag = true;
+      var head = document.getElementsByTagName('head')[0];
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = '/dist/callhelper.min.js';
+      head.appendChild(script);
+      setTimeout(() => {
+        this.call(callData);
+      }, 500)
     },
     call(obj) {
       var config = {
@@ -767,8 +794,8 @@ export default {
       this.$store.commit('changeCallData', data);
     },
     /**
-          * 初始化方法回调是否成功
-          */
+    * 初始化方法回调是否成功
+    */
     initCallback(data) {
       console.log(data, '-------------');
       if (data.successChange) {
@@ -776,7 +803,7 @@ export default {
         if (!callFlag) {
           return;
         }
-        this.call_hung_on({
+        this.call_kt_hung_on({
           callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
           callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
           toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
@@ -799,8 +826,55 @@ export default {
         this.$Message.error(res.message);
       }
     },
-    // 一对一模式的呼叫
-    async call_hung_on(obj) {
+    // 度言外呼
+    callout_fixed_hung_on(tag) {
+      let params = {
+        callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+        callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
+        toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
+        toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
+        toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
+        toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
+        userId: this.userId,
+        caseNo: this.caseNo,
+        collectType: tag,
+      }
+      callout_fixed_hung_on({
+        callRecordDomain: params,
+        calloutVo: callData,
+      }, {
+        transformRequest: [
+          function (data) {
+            return JSON.stringify(data); //利用对应方法转换格式
+          }
+        ]
+      }).then(res => {
+        if (res.code === 1) {
+          // this.recordIdDY = res.data.callRecordDomain.id
+          if (DYSDK.isReady) {
+            document.getElementById("dyCti").parentNode.style =
+              'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
+            sessionStorage.setItem('recordIdDY', res.data.callRecordDomain.id)
+            DYSDK.call(res.data.toCallMbl, function () {
+            }, '');
+          } else {
+            DYSDK.init({ stopBeforeunload: true });
+            let timeID = setInterval(() => {
+              if (DYSDK.isReady) {
+                document.getElementById("dyCti").parentNode.style =
+                  'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
+                sessionStorage.setItem('recordIdDY', res.data.callRecordDomain.id)
+                DYSDK.call(res.data.toCallMbl, function () {
+                }, '');
+                clearInterval(timeID);
+              }
+            }, 300);
+          };
+        }
+      })
+    },
+    // 科天的呼叫（callType 1 一对一  2 路由）
+    async call_kt_hung_on(obj) {
       let callData = JSON.parse(localStorage.getItem('callData'));
       let params = {
         callno: obj.callno,
@@ -815,7 +889,6 @@ export default {
       };
       if (callData.seatType === 'KT') {
         params.actionId = callData.id;
-        // localStorage.removeItem('callObj');
       }
       let res = {};
       // 判断外呼模式，2  新路由， 1  传统方式
@@ -823,38 +896,61 @@ export default {
         // 新路由拨打方式三合一
         res = await this.callout_hung_on(params, callData);
       } else if (callData.callType === '1') {
-        if (callData.seatType === 'RL') {
-          res = await call_moor_hung_on(params);
-        } else if (callData.seatType === 'KT') {
-          res = await call_kt_hung_on(params);
-        }
+        res = await call_kt_hung_on(params);
       };
       if (res.code === 1) {
         this.actionId = res.data.actionId;
         this.$Message.success('呼出成功');
-        if (callData.seatType === 'RL') {
-          this.showMoorTel = true;
-          this.moorToCallMblHid = obj.toCallMblHid;
-          this.moorToCallUser = obj.toCallUserHid;
-        } else if (callData.seatType === 'KT') {
-          localStorage.removeItem('callObj');
-          callData.actionId = res.data.actionId;
-          localStorage.setItem('callData', JSON.stringify(callData));
-          callData.callType === '2' && this.$set(this, 'recordIdFront', util.randomRange());
-          callData.callType === '2' && this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && !this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });//本人的呼叫记录假状态
-          callData.callType === '2' && this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });//紧连的呼叫记录假状态
-        }
-        if (params.collectType === '01')
-          await this.$emit('deliveryData', { type: 'ADDRESS_LIST' });
-        // await this.case_detail_case_identity_info();
-        if (params.collectType === '02')
-          await this.case_detail_urgent_contact();
-        if (params.collectType === '03')
-          await this[this.address_list_name]();
+        localStorage.removeItem('callObj');
+        callData.actionId = res.data.actionId;
+        localStorage.setItem('callData', JSON.stringify(callData));
+        callData.callType === '2' && this.$set(this, 'recordIdFront', util.randomRange());
+        callData.callType === '2' && this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && !this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });//本人的呼叫记录假状态
+        callData.callType === '2' && this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });//紧连的呼叫记录假状态
+        this.refreshData(params.collectType);//刷新数据
       } else {
         callData.callType === '2' && this.call_xz_hung_off();//呼叫失败调用挂断
         this.$Message.error(res.message);
         this.actionId = '';
+      }
+    },
+    // 容联外呼(一对一模式)
+    async call_moor_hung_on(obj) {
+      const res = await call_moor_hung_on({
+        callno: obj.callno,
+        caseNo: this.caseNo,
+        toCallUser: obj.toCallUser,
+        toCallUserHid: obj.toCallUserHid,
+        toCallMbl: obj.toCallMbl,
+        toCallMblHid: obj.toCallMblHid,
+        callUserType: obj.callUserType,
+        userId: this.userId,
+        collectType: obj.collectType,
+      });
+      if (res.code === 1) {
+        this.actionId = res.data.actionId;
+        this.$Message.success('呼出成功');
+        this.showMoorTel = true;
+        this.moorToCallMblHid = obj.toCallMblHid;
+        this.moorToCallUser = obj.toCallUserHid;
+        this.refreshData(obj.collectType);
+      } else {
+        this.$Message.error(res.message);
+        this.actionId = '';
+      }
+    },
+    // 容联挂断方法
+    async call_moor_hung_up() {
+      const res = await call_moor_hung_up();
+      if (res.code === 1) {
+        this.showMoorTel = false;
+      } else {
+        this.$Message.error(res.message);
+        let timer;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          this.showMoorTel = false;
+        }, 2000);
       }
     },
     // 外呼合并（路由模式）
@@ -874,8 +970,6 @@ export default {
     // 讯众外呼接口（传统模式 || 路由模式）
     async call_xz_hung_on(obj) {
       const callData = JSON.parse(localStorage.getItem('callData'));
-      const XZ_STATE = sessionStorage.getItem('XZ_STATE');
-      const XZ_ERROR_MSG = sessionStorage.getItem('XZ_ERROR_MSG');
       let res;
       if (callData.callType === '2') {
         res = await this.callout_hung_on(obj, callData);
@@ -895,13 +989,7 @@ export default {
         this.showMoorTel = true;
         this.moorToCallMblHid = obj.toCallMblHid;
         this.moorToCallUser = obj.toCallUserHid;
-        if (obj.collectType === '01')
-          // await this.case_detail_case_identity_info();
-          await this.$emit('deliveryData', { type: 'ADDRESS_LIST' });
-        if (obj.collectType === '02')
-          await this.case_detail_urgent_contact();
-        if (obj.collectType === '03')
-          await this[this.address_list_name]();
+        this.refreshData(obj.collectType);//刷新数据
       } else {
         callData.callType === '2' && this.call_xz_hung_off();//呼叫失败调用挂断
         this.$Message.error(res.message);
@@ -939,20 +1027,6 @@ export default {
         }, 2000);
       }
       this.$store.commit('changeXZHungUpFlag', '');//置空挂断标识符
-    },
-    // 容联挂断方法
-    async call_moor_hung_up() {
-      const res = await call_moor_hung_up();
-      if (res.code === 1) {
-        this.showMoorTel = false;
-      } else {
-        this.$Message.error(res.message);
-        let timer;
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          this.showMoorTel = false;
-        }, 2000);
-      }
     },
     // 新增通讯录
     async mail_list_add() {
@@ -1107,121 +1181,40 @@ export default {
     },
 
     // 点击电话
-    handCall(obj, type, tag) {
+   async handCall(obj, type, tag) {
       // 判断权限是否可以拨打或是否上限
-      if (this.all_opt) {
-        if (this.collectCategory) {
-          switch (tag) {
-            case '01':
-              if (!this.round_info_data.callAccess.debtorCallable) {
-                return;
-              }
-              break;
-            case '02':
-              if (!this.round_info_data.callAccess.urgencyCallable) {
-                this.$Message.error('很抱歉，请先拨打本人电话');
-                return;
-              }
-              break;
-            case '03':
-              if (!this.round_info_data.callAccess.contactCallable) {
-                return;
-              }
-              break;
-            default:
-              break;
-          }
-        }
-      } else {
-        this.$Message.error('很抱歉，暂无权限拨打');
+      if (this.isCallOut(tag) === false) {
         return;
-      }
+      };
       // 判断当前催记是否完成
       if (this.remark_flag && this.collectCategory) {
         this.$Message.error('请完成当前催记后再进行拨打');
         return
       }
+      // 确定外呼联系人的关系
       if (obj.callUserType || obj.cntRelTyp) {
         this.callUserType = (obj.callUserType || obj.cntRelTyp) === '00' ? '1' : '2';
       } else {
         this.callUserTyp = '';
-      }
+      };
       let callData = JSON.parse(localStorage.getItem('callData'));
-      this.handleCancle();
+      this.handleCancle();//重置相关外呼的参数
       // 判断拨打模式，是新路由还是传统模式
       if (type === 'call' && this.readType !== 'read') {
         this.objCopy = obj;
         this.objCopy.collectType = tag;
         // type ['call] 拨打电话
+        //callType 1 一对一模式，2 路由模式
         if (callData.callType === '2') {
           this.callout_rout_get_seat(obj, tag)
         } else if (callData.callType === '1') {
-          if (callData.seatType === 'DY') {
-            let params = {
-              callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
-              callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
-              toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
-              toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
-              toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
-              toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
-              userId: this.userId,
-              caseNo: this.caseNo,
-              collectType: tag,
-            }
-            callout_fixed_hung_on({
-              callRecordDomain: params,
-              calloutVo: callData,
-            }, {
-              transformRequest: [
-                function (data) {
-                  return JSON.stringify(data); //利用对应方法转换格式
-                }
-              ]
-            }).then(res => {
-              if (res.code === 1) {
-                // this.recordIdDY = res.data.callRecordDomain.id
-                if (DYSDK.isReady) {
-                  document.getElementById("dyCti").parentNode.style =
-                    'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
-                  sessionStorage.setItem('recordIdDY', res.data.callRecordDomain.id)
-                  DYSDK.call(res.data.toCallMbl, function () {
-                  }, '');
-                } else {
-                  DYSDK.init({ stopBeforeunload: true });
-                  let timeID = setInterval(() => {
-                    if (DYSDK.isReady) {
-                      document.getElementById("dyCti").parentNode.style =
-                        'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
-                      sessionStorage.setItem('recordIdDY', res.data.callRecordDomain.id)
-                      DYSDK.call(res.data.toCallMbl, function () {
-                      }, '');
-                      clearInterval(timeID);
-                    }
-                  }, 300);
-                  // this.$Message.info('正在初始化请稍后重试')
-                }
-                // this.showDYFlag = res.data.toCallMbl
-              }
-            })
-          }
           this.seatType = callData.seatType;
+          callData.seatType === 'DY' && this.callout_fixed_hung_on(tag);
           if (localStorage.getItem('callData') && callData.seatType === 'KT') {
-            if (localStorage.getItem('callObj')) {
-              this.$Message.info('请先挂断其他电话，再重试');
-              return
-            }
-            callFlag = true;
-            var head = document.getElementsByTagName('head')[0];
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = '/dist/callhelper.min.js';
-            head.appendChild(script);
-            setTimeout(() => {
-              this.call(callData);
-            }, 500)
+           await this.initKTScript(callData);
           } else if (callData.seatType === 'RL') {
             // 容联外呼传参
-            this.call_hung_on({
+            this.call_moor_hung_on({
               callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
               callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
               toCallUser: this.objCopy.userNm || this.objCopy.cntUserName,
@@ -1249,7 +1242,7 @@ export default {
         this.objCopy = {};
         this.actionId = '';
       }
-
+      // 不可读状态
       if (this.readType !== 'read') {
         if (obj.callUserType || obj.cntRelTyp) {
           this.formValidate.callUserType = obj.callUserType || obj.cntRelTyp;
@@ -1266,6 +1259,36 @@ export default {
         this.showBottom = true;
       } else {
         this.$Message.info('权限不足');
+      }
+    },
+    // 判断权限是否可以拨打或是否上限
+    isCallOut(tag) {
+      if (this.all_opt) {
+        if (this.collectCategory) {
+          switch (tag) {
+            case '01':
+              if (!this.round_info_data.callAccess.debtorCallable) {
+                return false;
+              }
+              break;
+            case '02':
+              if (!this.round_info_data.callAccess.urgencyCallable) {
+                this.$Message.error('很抱歉，请先拨打本人电话');
+                return false;
+              }
+              break;
+            case '03':
+              if (!this.round_info_data.callAccess.contactCallable) {
+                return false;
+              }
+              break;
+            default:
+              break;
+          }
+        }
+      } else {
+        this.$Message.error('很抱歉，暂无权限拨打');
+        return false;
       }
     },
     // 度言回调
@@ -1317,16 +1340,7 @@ export default {
         sessionStorage.removeItem('callId');
         this.case_detail_remark_list_pageNo = 1;
         await this.case_detail_remark_list();
-        if (this.collectType === '01') {
-          // await this.case_detail_case_identity_info();
-          await this.$emit('deliveryData', { type: 'ADDRESS_LIST' });
-        }
-        if (this.collectType === '02') {
-          await this.case_detail_urgent_contact();
-        }
-        if (this.collectType === '03') {
-          await this[this.address_list_name]();
-        }
+        this.refreshData(this.collectType);//刷新数据
         this.rounds_info();
         this.handleCancle(true);
       } else {
@@ -1407,19 +1421,7 @@ export default {
         localStorage.setItem('callData', JSON.stringify(res.data));
         if (res.data.seatType === 'KT') {
           this.seatType = res.data.seatType;
-          if (localStorage.getItem('callObj')) {
-            this.$Message.info('请先挂断其他电话，再重试');
-            return
-          }
-          callFlag = true;
-          var head = document.getElementsByTagName('head')[0];
-          var script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.src = '/dist/callhelper.min.js';
-          head.appendChild(script);
-          setTimeout(() => {
-            this.call(res.data);
-          }, 500)
+          await this.initKTScript(res.data);
         } else if (res.data.seatType === 'XZ') {
           this.seatType = res.data.seatType;
           let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, serverid: '', password: res.data.password };
@@ -1441,6 +1443,7 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 轮次信息
     async rounds_info() {
       const res = await rounds_info({
         caseNo: this.caseNo,

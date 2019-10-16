@@ -1,6 +1,10 @@
 <template>
   <div class="heighti case-top-panel">
-    <Card style="width: 480px" class="heighti case-top-panel" :style="{height:!this.showBottom?'inherit':'calc(100% - 325px)'}">
+    <Card
+      style="width: 480px"
+      class="heighti case-top-panel"
+      :style="{height:!this.showBottom?'inherit':'calc(100% - 325px)'}"
+    >
       <div>
         <div class="case-desc-close">
           <div class="round_info" style="display: inline-block" v-if="collectCategory">
@@ -138,7 +142,7 @@
       </div>
       <div class="heighti">
         <Tabs @on-click="tab_click_address" :animated="false" size="small">
-          <TabPane label="通话统计" name="case_detail_mail_statistics_list">
+          <!-- <TabPane label="通话统计" name="case_detail_mail_statistics_list">
             <div>
               <Table
                 border
@@ -148,7 +152,6 @@
                 :columns="case_detail_mail_statistics_list_tableColumns"
                 stripe
               ></Table>
-              <!-- 分页 -->
               <div class="vue-panel-page">
                 <div class="fr">
                   <Page
@@ -167,8 +170,8 @@
                 </div>
               </div>
             </div>
-          </TabPane>
-          <TabPane label="通话明细" name="case_detail_mail_detail_list">
+          </TabPane>-->
+          <!-- <TabPane label="通话明细" name="case_detail_mail_detail_list">
             <div>
               <Table
                 border
@@ -178,7 +181,6 @@
                 max-height="500"
                 stripe
               ></Table>
-              <!-- 分页 -->
               <div class="vue-panel-page">
                 <div class="fr">
                   <Page
@@ -197,8 +199,8 @@
                 </div>
               </div>
             </div>
-          </TabPane>
-          <TabPane label="通讯录" name="case_detail_mail_list">
+          </TabPane>-->
+          <TabPane label="联系人" name="case_detail_mail_list">
             <div>
               <Table
                 border
@@ -232,7 +234,7 @@
           <TabPane
             class="call_update"
             :icon="case_detail_urgent_contact_Data.isMailAppend || case_detail_mail_list_appended_tableData.length >0? 'md-person-add': ''"
-            label="通话更新"
+            label="联系人更新"
             name="case_detail_mail_list_appended"
           >
             <div>
