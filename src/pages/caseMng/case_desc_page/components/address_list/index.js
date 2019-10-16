@@ -23,10 +23,9 @@ import {
   rounds_info,//当前案件轮次信息
   rounds_over,//结束当前案件轮次
   rounds_record,//记录当前通话状态
- } from '@/service/getData';
+} from '@/service/getData';
 import util from '@/libs/util';
 import Cookie from 'js-cookie';
-import DYScript from '@/components/duyan';
 import { mapGetters } from "vuex";
 import { init, callOut, hangUp } from '@/libs/news_crowd';//讯众插件
 import sysDictionary from '@/mixin/sysDictionary';
@@ -35,9 +34,6 @@ export default {
   name: 'address_list',
   props: ['queryData', 'caseNo', 'userId', 'collectCategory', 'address_list_data'],
   mixins: [sysDictionary],
-  components: {
-    DYScript
-  },
   data() {
     const _this = this;
     const call_number_validator = (rule, value, callback) => {
@@ -761,7 +757,7 @@ export default {
     /**
       * 设置状态监听回调
       */
-     stateCallback(data) {
+    stateCallback(data) {
       console.log(data, '------------111111-------------')
       let callObj = {
         telNoHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
@@ -849,8 +845,8 @@ export default {
           callData.callType === '2' && this.round_info_data.callAccess.debtorCallable && !this.round_info_data.callAccess.contactCallable && this.round_info_data.callAccess.urgencyCallable && await this.rounds_record({ seatType: callData.seatType, status: '0' });//紧连的呼叫记录假状态
         }
         if (params.collectType === '01')
-         await this.$emit('deliveryData', {type: 'ADDRESS_LIST'});
-          // await this.case_detail_case_identity_info();
+          await this.$emit('deliveryData', { type: 'ADDRESS_LIST' });
+        // await this.case_detail_case_identity_info();
         if (params.collectType === '02')
           await this.case_detail_urgent_contact();
         if (params.collectType === '03')
@@ -901,7 +897,7 @@ export default {
         this.moorToCallUser = obj.toCallUserHid;
         if (obj.collectType === '01')
           // await this.case_detail_case_identity_info();
-          await this.$emit('deliveryData', {type: 'ADDRESS_LIST'});
+          await this.$emit('deliveryData', { type: 'ADDRESS_LIST' });
         if (obj.collectType === '02')
           await this.case_detail_urgent_contact();
         if (obj.collectType === '03')
@@ -1160,7 +1156,7 @@ export default {
         if (callData.callType === '2') {
           this.callout_rout_get_seat(obj, tag)
         } else if (callData.callType === '1') {
-          if(callData.seatType === 'DY'){
+          if (callData.seatType === 'DY') {
             let params = {
               callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
               callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
@@ -1181,10 +1177,30 @@ export default {
                   return JSON.stringify(data); //利用对应方法转换格式
                 }
               ]
-            }).then(res=>{
-              if(res.code ===1){
-                this.recordIdDY = res.data.callRecordDomain.id
-                this.showDYFlag = res.data.toCallMbl
+            }).then(res => {
+              if (res.code === 1) {
+                // this.recordIdDY = res.data.callRecordDomain.id
+                if (DYSDK.isReady) {
+                  document.getElementById("dyCti").parentNode.style =
+                    'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
+                  sessionStorage.setItem('recordIdDY', res.data.callRecordDomain.id)
+                  DYSDK.call(res.data.toCallMbl, function () {
+                  }, '');
+                } else {
+                  DYSDK.init({ stopBeforeunload: true });
+                  let timeID = setInterval(() => {
+                    if (DYSDK.isReady) {
+                      document.getElementById("dyCti").parentNode.style =
+                        'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
+                      sessionStorage.setItem('recordIdDY', res.data.callRecordDomain.id)
+                      DYSDK.call(res.data.toCallMbl, function () {
+                      }, '');
+                      clearInterval(timeID);
+                    }
+                  }, 300);
+                  // this.$Message.info('正在初始化请稍后重试')
+                }
+                // this.showDYFlag = res.data.toCallMbl
               }
             })
           }
@@ -1257,9 +1273,9 @@ export default {
       callout_fixed_hung_off({
         id: this.recordIdDY,
         actionId: uid
-      }).then(res=>{
+      }).then(res => {
         this.showDYFlag = null;
-        this.$emit('deliveryData', {type: 'ADDRESS_LIST'});
+        this.$emit('deliveryData', { type: 'ADDRESS_LIST' });
       })
     },
     // 切换每页条数时的回调
@@ -1272,6 +1288,9 @@ export default {
     async case_remark_his_add() {
       let callData = JSON.parse(localStorage.getItem('callData'));
       if (callData.callType === '2' && callData.seatType === 'XZ') {
+        this.actionId = sessionStorage.getItem('callId') ? sessionStorage.getItem('callId') : '';
+      }
+      if (callData.callType === '1' && callData.seatType === 'DY') {
         this.actionId = sessionStorage.getItem('callId') ? sessionStorage.getItem('callId') : '';
       }
       this.add_collect_loading = true;
@@ -1300,7 +1319,7 @@ export default {
         await this.case_detail_remark_list();
         if (this.collectType === '01') {
           // await this.case_detail_case_identity_info();
-          await this.$emit('deliveryData', {type: 'ADDRESS_LIST'});
+          await this.$emit('deliveryData', { type: 'ADDRESS_LIST' });
         }
         if (this.collectType === '02') {
           await this.case_detail_urgent_contact();
