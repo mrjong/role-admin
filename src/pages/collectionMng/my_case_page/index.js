@@ -65,20 +65,6 @@ export default {
       export_case_loading: false,//导出按钮loading
       summary: {},
       ruleValidate: {
-        // idNo: [
-        // 	{
-        // 		pattern: this.GLOBAL.idNo,
-        // 		message: '请输入正确身份证号',
-        // 		trigger: 'blur'
-        // 	}
-        // ],
-        // mblNo: [
-        // 	{
-        // 		pattern: this.GLOBAL.mblNo,
-        // 		message: '请输入正确手机号',
-        // 		trigger: 'blur'
-        // 	}
-        // ],
         minOverdueDays: [
           {
             pattern: this.GLOBAL.num,
@@ -194,7 +180,7 @@ export default {
                             window.open(
                               `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=edit&userIdtest=${userId}&seatType=${seatType
                                 ? seatType
-                                : 'KT'}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+                                : 'KT'}&caseType=myCase&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
                                   _this.formItem
                                 )}`
                             );

@@ -17,6 +17,8 @@ import {
   offlineScanPay_apply,//判断二维码是否生成
   syscommon_decrypt,//解密接口
   credit_case_process,//信用进度
+  case_collect_case_list,
+  case_collect_switch_case,//下一个接口
 } from '@/service/getData';
 export default {
   name: 'base_info',
@@ -69,15 +71,6 @@ export default {
     }
   },
   created() {
-    // let params = location.hash.split('?');
-    // const queryData = qs.parse(params[1], { ignoreQueryPrefix: true });
-    // this.caseNo = window.atob(queryData.caseNotest);
-    // this.seatType = queryData.seatType;
-    // this.userId = this.queryData.userIdtest;
-    // delete queryData.caseNotest;
-    // delete queryData.prdTyptest;
-    // delete queryData.seatType;
-    // delete queryData.userIdtest;
     if (Cookie.get('all_opt') === 'true') {
       this.all_opt = true;
     };
@@ -96,19 +89,17 @@ export default {
     if (Cookie.get('APPLY_QR_CODE') === 'true') {
       this.APPLY_QR_CODE = true;
     };
-    // this.$nextTick(async () => {
-    //   debugger
-
-    // })
+  },
+  mounted() {
+    this.collectCategory && this.case_collect_switch_case();//查询下一个案件
   },
   watch: {
     async queryData(data) {
-debugger
       this.prdTyp = data.prdTyptest;
       this.readType = data.readType;
       if (data.readType === 'edit') {
-        // this.case_collect_case_list(); // 我的案件
-        await this.case_list()
+        data.caseType === 'myCase' && await this.case_collect_case_list(); // 我的案件(过滤过的)
+        data.caseType === 'allCase' && await this.case_list();//案件查询的案件列表
       }
       this.case_detail_case_identity_info(); // 查询案件详情身份信息
       this.case_detail_address_info();
@@ -177,9 +168,25 @@ debugger
         this.$Message.error(res.message);
       }
     },
-    // 获取表格数据
+    // 案件查询总的数据
     async case_list() {
       const res = await case_list({
+        ...this.queryData,
+        id: this.caseNo,
+        pageNum: 1
+      });
+      if (res.code === 1) {
+        this.case_collect_case_list_data =
+          res.data && res.data.page && res.data.page.content && res.data.page.content[0];
+        this.userId = res.data.page.content[0].userId;
+        this.prdTyp = res.data.page.content[0].prdTyp;
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 我的案件列表的数据
+    async case_collect_case_list() {
+      const res = await case_collect_case_list({
         ...this.queryData,
         id: this.caseNo,
         pageNum: 1
@@ -218,6 +225,7 @@ debugger
         this.$Message.error('获取图片异常')
       }
     },
+    // 获取地址信息
     async case_detail_address_info() {
       this.case_detail_address_info_spin = true
       const res = await case_detail_address_info({
@@ -243,6 +251,17 @@ debugger
       // return
       location.href = params[0] + '?' + qs.stringify(queryData);
       location.reload();
+    },
+    // 查询下一个案件
+    async case_collect_switch_case() {
+      const res = await case_collect_switch_case({
+        caseNo: this.caseNo,
+      });
+      if (res.code === 1) {
+        this.next_case_list = res.data;
+      } else {
+        // this.$Message.error(res.message);
+      }
     },
     // 判断是否存在二维码
     async offlineScanPay_apply(name) {

@@ -327,7 +327,7 @@ export default {
                       on: {
                         click: () => {
                           window.open(
-                            `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=read&userIdtest=${userId}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+                            `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=read&userIdtest=${userId}&caseType=allCase&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
                               _this.formItem
                             )}`
                           );
