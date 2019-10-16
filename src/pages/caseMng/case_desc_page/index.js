@@ -75,6 +75,7 @@ export default {
           break;
         case 'ADDRESS_LIST':
           this.$refs['BASE_INFO'].case_detail_case_identity_info();
+          obj.tag && this.$refs['COLLECTION_INFO'].case_detail_remark_list();
           break;
         default:
           break;

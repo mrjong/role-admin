@@ -827,7 +827,7 @@ export default {
       }
     },
     // 度言外呼
-    callout_fixed_hung_on(tag) {
+    callout_fixed_hung_on(tag, callData) {
       let params = {
         callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
         callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
@@ -870,6 +870,7 @@ export default {
               }
             }, 300);
           };
+          this.refreshData(tag);
         }
       })
     },
@@ -1209,7 +1210,7 @@ export default {
           this.callout_rout_get_seat(obj, tag)
         } else if (callData.callType === '1') {
           this.seatType = callData.seatType;
-          callData.seatType === 'DY' && this.callout_fixed_hung_on(tag);
+          callData.seatType === 'DY' && this.callout_fixed_hung_on(tag, callData);
           if (localStorage.getItem('callData') && callData.seatType === 'KT') {
            await this.initKTScript(callData);
           } else if (callData.seatType === 'RL') {
@@ -1338,8 +1339,7 @@ export default {
         this.remark_flag = false;
         this.actionId = '';
         sessionStorage.removeItem('callId');
-        this.case_detail_remark_list_pageNo = 1;
-        await this.case_detail_remark_list();
+        await this.$emit('deliveryData', { type: 'ADDRESS_LIST', tag: 'add_remark' });
         this.refreshData(this.collectType);//刷新数据
         this.rounds_info();
         this.handleCancle(true);
