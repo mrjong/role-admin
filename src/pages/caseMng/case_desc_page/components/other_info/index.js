@@ -266,7 +266,11 @@ export default {
     }
   },
   created () {
-    this.case_detail_bindcard_list(); // 绑卡信息
+  },
+  watch: {
+    queryData(data) {
+      this.case_detail_bindcard_list(); // 绑卡信息
+    }
   },
   methods: {
     // 页码改变的回调

@@ -12,7 +12,7 @@ export default {
           title: '期数',
           width: 60,
           align: 'center',
-          key: 'perdNum'
+          key: 'perdNum',
         },
         {
           title: '逾期天数',
@@ -196,8 +196,7 @@ export default {
         this.case_detail_case_base_info_Data = res.data && res.data;
         (res.data && res.data.caseBasePerdVoList) && this.$set(this, 'tableData', res.data.caseBasePerdVoList);
         this.$emit('deliveryData', {data: res.data.caseBasePerdVoList, type: 'CASE_INFO'});
-        // this.tableData[0].perdNum === 0 && this.$set(this, 'tableData', this.tableData.splice(0,1));
-        // this.tableData[0].perdNum === 0 && this.tableData.splice(0,1);
+        this.tableData[0].perdNum === 0 && this.$set(this, 'tableData', this.tableData.slice(1));
       } else {
         this.$Message.error(res.message);
       }

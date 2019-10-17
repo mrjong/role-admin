@@ -707,6 +707,13 @@ export default {
     }
   },
   watch: {
+    queryData(data) {
+      this.readType = this.queryData.readType;
+      this.case_detail_urgent_contact(); // 紧急联系人
+      this.case_detail_mail_statistics_list(); // 通话统计
+      this.collectcode_getListByCodeType();//获取拨打状态
+      this.rounds_info();//获取当前案件轮次的信息
+    },
     address_list_data(data) {
       this.case_detail_case_identity_info_Data = data;
     },
@@ -728,11 +735,7 @@ export default {
     if (Cookie.get('plaintext') === 'true') {
       this.plaintext = true;
     };
-    this.readType = this.queryData.readType;
-    this.case_detail_urgent_contact(); // 紧急联系人
-    this.case_detail_mail_statistics_list(); // 通话统计
-    this.collectcode_getListByCodeType();//获取拨打状态
-    this.rounds_info();//获取当前案件轮次的信息
+
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
@@ -1182,7 +1185,7 @@ export default {
     },
 
     // 点击电话
-   async handCall(obj, type, tag) {
+    async handCall(obj, type, tag) {
       // 判断权限是否可以拨打或是否上限
       if (this.isCallOut(tag) === false) {
         return;
@@ -1212,7 +1215,7 @@ export default {
           this.seatType = callData.seatType;
           callData.seatType === 'DY' && this.callout_fixed_hung_on(tag, callData);
           if (localStorage.getItem('callData') && callData.seatType === 'KT') {
-           await this.initKTScript(callData);
+            await this.initKTScript(callData);
           } else if (callData.seatType === 'RL') {
             // 容联外呼传参
             this.call_moor_hung_on({

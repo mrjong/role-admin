@@ -392,7 +392,11 @@ export default {
     }
   },
   created () {
-    this.case_detail_remark_list(); // 催收信息
+  },
+  watch: {
+    queryData(data) {
+      this.case_detail_remark_list(); // 催收信息
+    }
   },
   methods: {
     // 催收信息
