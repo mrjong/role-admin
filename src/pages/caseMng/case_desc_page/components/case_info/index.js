@@ -194,8 +194,10 @@ export default {
       });
       if (res.code === 1) {
         this.case_detail_case_base_info_Data = res.data && res.data;
-        this.tableData = res.data && res.data.caseBasePerdVoList;
+        (res.data && res.data.caseBasePerdVoList) && this.$set(this, 'tableData', res.data.caseBasePerdVoList);
         this.$emit('deliveryData', {data: res.data.caseBasePerdVoList, type: 'CASE_INFO'});
+        // this.tableData[0].perdNum === 0 && this.$set(this, 'tableData', this.tableData.splice(0,1));
+        // this.tableData[0].perdNum === 0 && this.tableData.splice(0,1);
       } else {
         this.$Message.error(res.message);
       }

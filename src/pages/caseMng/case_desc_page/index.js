@@ -50,10 +50,10 @@ export default {
     // delete queryData.prdTyptest;
     // delete queryData.seatType;
     // delete queryData.userIdtest;
-    if (queryData.readType === 'edit') {
+    // if (queryData.readType === 'edit') {
       queryData.caseType === 'myCase' && await this.case_collect_case_list(); // 我的案件(过滤过的)
       queryData.caseType === 'allCase' && await this.case_list();//案件查询的案件列表
-    }
+    // }
     // delete queryData.readType;
     this.queryData = queryData;
   },

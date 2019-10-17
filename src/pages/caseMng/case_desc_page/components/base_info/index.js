@@ -97,10 +97,10 @@ export default {
     async queryData(data) {
       this.prdTyp = data.prdTyptest;
       this.readType = data.readType;
-      if (data.readType === 'edit') {
+      // if (data.readType === 'edit') {
         data.caseType === 'myCase' && await this.case_collect_case_list(); // 我的案件(过滤过的)
         data.caseType === 'allCase' && await this.case_list();//案件查询的案件列表
-      }
+      // }
       this.case_detail_case_identity_info(); // 查询案件详情身份信息
       this.case_detail_address_info();
       this.case_detail_getimgurls();
