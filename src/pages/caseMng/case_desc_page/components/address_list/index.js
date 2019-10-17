@@ -710,7 +710,7 @@ export default {
     queryData(data) {
       this.readType = this.queryData.readType;
       this.case_detail_urgent_contact(); // 紧急联系人
-      this.case_detail_mail_statistics_list(); // 通话统计
+      this.case_detail_mail_list(); // 通话统计
       this.collectcode_getListByCodeType();//获取拨打状态
       this.rounds_info();//获取当前案件轮次的信息
     },
