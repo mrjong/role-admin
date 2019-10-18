@@ -22,7 +22,7 @@ import {
 } from '@/service/getData';
 export default {
   name: 'base_info',
-  props: ['queryData', 'caseNo', 'userId', 'collectCategory', 'base_info_data'],
+  props: ['queryData', 'caseNo', 'collectCategory', 'base_info_data'],
   mixins: [sysDictionary],
   components: {
     jianmian,
@@ -44,6 +44,7 @@ export default {
       showPanel: false,
       readType: '',
       prdTyp: '',
+      userId: '',
       all_opt: false,//案件详情全部操作权限
       plaintext: false,//案件详情查看明文权限
       apply_arbitrament: false,//案件详情申请仲裁权限
@@ -95,12 +96,11 @@ export default {
   },
   watch: {
     async queryData(data) {
+      this.userId = data.userIdtest;
       this.prdTyp = data.prdTyptest;
       this.readType = data.readType;
-      // if (data.readType === 'edit') {
-        data.caseType === 'myCase' && await this.case_collect_case_list(); // 我的案件(过滤过的)
-        data.caseType === 'allCase' && await this.case_list();//案件查询的案件列表
-      // }
+      data.caseType === 'myCase' && await this.case_collect_case_list(); // 我的案件(过滤过的)
+      data.caseType === 'allCase' && await this.case_list();//案件查询的案件列表
       this.case_detail_case_identity_info(); // 查询案件详情身份信息
       this.case_detail_address_info();
       this.case_detail_getimgurls();
@@ -178,8 +178,8 @@ export default {
       if (res.code === 1) {
         this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
-        this.userId = res.data.page.content[0].userId;
-        this.prdTyp = res.data.page.content[0].prdTyp;
+        this.userId = res.data.page.content.length > 0 ? res.data.page.content[0].userId : this.userId;
+        this.prdTyp = res.data.page.content.length > 0 ? res.data.page.content[0].prdTyp : this.prdTyp;
       } else {
         this.$Message.error(res.message);
       }
@@ -194,8 +194,8 @@ export default {
       if (res.code === 1) {
         this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
-        this.userId = res.data.page.content[0].userId;
-        this.prdTyp = res.data.page.content[0].prdTyp;
+        this.userId = res.data.page.content.length > 0 ? res.data.page.content[0].userId : this.userId;
+        this.prdTyp = res.data.page.content.length > 0 ? res.data.page.content[0].prdTyp : this.prdTyp;
       } else {
         this.$Message.error(res.message);
       }

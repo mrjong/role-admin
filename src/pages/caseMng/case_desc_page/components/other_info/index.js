@@ -5,10 +5,11 @@ import { case_detail_bindcard_list, // 绑卡信息
  } from '@/service/getData';
 export default {
   name: 'other_info',
-  props: ['queryData', 'caseNo', 'userId'],
+  props: ['queryData', 'caseNo'],
   data () {
     const _this = this;
     return {
+      userId: '',
       message_detail_flag: false,
       message_detail_data: {},//站内信modal展示的数据
       // 用户绑卡信息
@@ -269,6 +270,7 @@ export default {
   },
   watch: {
     queryData(data) {
+      this.userId = data.userIdtest;
       this.case_detail_bindcard_list(); // 绑卡信息
     }
   },

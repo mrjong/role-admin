@@ -33,7 +33,7 @@ import sysDictionary from '@/mixin/sysDictionary';
 let callFlag = false;
 export default {
   name: 'address_list',
-  props: ['queryData', 'caseNo', 'userId', 'collectCategory', 'address_list_data'],
+  props: ['queryData', 'caseNo', 'collectCategory', 'address_list_data'],
   mixins: [sysDictionary],
   data() {
     const _this = this;
@@ -65,6 +65,7 @@ export default {
       },
       collectType: '',
       readType: '',
+      userId: '',
       userNmClearCopy: '',// 保存的明文名字
       showBottom: false,//添加、编辑催记弹窗
       remark_flag: false,//是否记催记的标识符
@@ -709,6 +710,7 @@ export default {
   watch: {
     queryData(data) {
       this.readType = this.queryData.readType;
+      this.userId = data.userIdtest;
       this.case_detail_urgent_contact(); // 紧急联系人
       this.case_detail_mail_list(); // 通话统计
       this.collectcode_getListByCodeType();//获取拨打状态

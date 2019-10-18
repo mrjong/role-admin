@@ -51,8 +51,8 @@ export default {
     // delete queryData.seatType;
     // delete queryData.userIdtest;
     // if (queryData.readType === 'edit') {
-      queryData.caseType === 'myCase' && await this.case_collect_case_list(); // 我的案件(过滤过的)
-      queryData.caseType === 'allCase' && await this.case_list();//案件查询的案件列表
+    queryData.caseType === 'myCase' && await this.case_collect_case_list(); // 我的案件(过滤过的)
+    queryData.caseType === 'allCase' && await this.case_list();//案件查询的案件列表
     // }
     // delete queryData.readType;
     this.queryData = queryData;
@@ -91,7 +91,7 @@ export default {
       if (res.code === 1) {
         this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
-        this.userId = res.data.page.content[0].userId;
+        this.userId = res.data.page.content[0] && res.data.page.content[0].userId;
       } else {
         this.$Message.error(res.message);
       }
@@ -107,7 +107,7 @@ export default {
       if (res.code === 1) {
         this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
-        this.userId = res.data.page.content[0].userId;
+        this.userId = res.data.page.content[0] && res.data.page.content[0].userId;
       } else {
         this.$Message.error(res.message);
       }

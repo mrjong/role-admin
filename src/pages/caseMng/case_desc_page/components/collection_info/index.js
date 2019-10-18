@@ -7,9 +7,10 @@ import { case_detail_remark_list, // 催收
 
 export default {
   name: 'collection_info',
-  props: ['queryData', 'caseNo', 'userId'],
+  props: ['queryData', 'caseNo'],
   data () {
     return {
+      userId: '',
       // 催收信息
       case_detail_remark_list_spin: false,
       case_detail_remark_list_pageNo: 1,
@@ -395,6 +396,7 @@ export default {
   },
   watch: {
     queryData(data) {
+      this.userId = data.userIdtest;
       this.case_detail_remark_list(); // 催收信息
     }
   },
