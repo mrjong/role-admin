@@ -77,6 +77,65 @@
           </Row>
           <Row>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="6">
+            <FormItem label="电催中心:">
+              <Select
+                size="small"
+                clearable
+                multiple
+                placeholder="请选择电催中心"
+                @on-change="companyChange"
+                v-model="formItem.searchCompanyIds"
+              >
+                <Option
+                  v-for="item in company_list_data"
+                  :value="item.id"
+                  :key="item.id"
+                >{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col :xs="24" :sm="24" :md="20" :lg="20" span="6">
+            <FormItem span="6" label="组别:">
+              <Select
+                size="small"
+                clearable
+                multiple
+                @on-change="departmentChange"
+                placeholder="请选择组别"
+                v-model="formItem.searchDepartmentIds"
+              >
+                <Option
+                  v-for="item in department_list_data"
+                  :value="item.id"
+                  :key="item.id"
+                >{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col :xs="24" :sm="24" :md="20" :lg="20" span="6">
+            <FormItem label="经办人:" span="6">
+              <Select
+                size="small"
+                clearable
+                multiple
+                placeholder="请选择经办人"
+                v-model="formItem.searchPersonIds"
+              >
+                <Option
+                  v-for="(item,index) in collect_list_data"
+                  :value="item.id"
+                  :key="item.id + index"
+                >{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col :xs="24" :sm="24" :md="20" :lg="20" span="6">
             <FormItem label="逾期天数:">
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
               <FormItem prop="ovdudaysMin">
