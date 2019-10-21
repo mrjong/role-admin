@@ -51,11 +51,11 @@ export default {
     // delete queryData.seatType;
     // delete queryData.userIdtest;
     // if (queryData.readType === 'edit') {
-    queryData.caseType === 'myCase' && await this.case_collect_case_list(); // 我的案件(过滤过的)
-    queryData.caseType === 'allCase' && await this.case_list();//案件查询的案件列表
+    // this.queryData = queryData;
+    queryData.caseType === 'myCase' && await this.case_collect_case_list(queryData); // 我的案件(过滤过的)
+    queryData.caseType === 'allCase' && await this.case_list(queryData);//案件查询的案件列表
     // }
     // delete queryData.readType;
-    this.queryData = queryData;
   },
   mounted() {
     // 禁止右键
@@ -82,7 +82,7 @@ export default {
       }
     },
     // 获取表格数据
-    async case_list() {
+    async case_list(queryData) {
       const res = await case_list({
         ...this.queryData,
         id: this.caseNo,
@@ -91,14 +91,15 @@ export default {
       if (res.code === 1) {
         this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
-        this.userId = res.data.page.content[0] && res.data.page.content[0].userId;
-        this.queryData.userIdtest = res.data.page.content[0] && res.data.page.content[0].userId;
+        this.queryData = queryData;
+        this.userId = res.data.page.content.length > 0 ? res.data.page.content[0].userId : queryData.userIdtest;
+        this.queryData.userIdtest = res.data.page.content.length > 0 ? res.data.page.content[0].userId : queryData.userIdtest;
       } else {
         this.$Message.error(res.message);
       }
     },
     // 获取表格数据
-    async case_collect_case_list() {
+    async case_collect_case_list(queryData) {
       console.log(this.queryData, '---------------');
       const res = await case_collect_case_list({
         ...this.queryData,
@@ -108,8 +109,9 @@ export default {
       if (res.code === 1) {
         this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
-        this.userId = res.data.page.content[0] && res.data.page.content[0].userId;
-        this.queryData.userIdtest = res.data.page.content[0] && res.data.page.content[0].userId;
+        this.queryData = queryData;
+        this.userId = res.data.page.content.length > 0 ? res.data.page.content[0].userId : queryData.userIdtest;
+        this.queryData.userIdtest = res.data.page.content.length > 0 ? res.data.page.content[0].userId : queryData.userIdtest;
       } else {
         this.$Message.error(res.message);
       }
