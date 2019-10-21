@@ -204,7 +204,8 @@ export default {
     async case_detail_case_identity_info() {
       const res = await case_detail_case_identity_info({
         ...this.queryData,
-        id: this.caseNo
+        id: this.caseNo,
+        userIdtest: this.userId,
       });
       if (res.code === 1) {
         this.btnDisable = false;

@@ -92,6 +92,7 @@ export default {
         this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
         this.userId = res.data.page.content[0] && res.data.page.content[0].userId;
+        this.queryData.userIdtest = res.data.page.content[0] && res.data.page.content[0].userId;
       } else {
         this.$Message.error(res.message);
       }
@@ -108,6 +109,7 @@ export default {
         this.case_collect_case_list_data =
           res.data && res.data.page && res.data.page.content && res.data.page.content[0];
         this.userId = res.data.page.content[0] && res.data.page.content[0].userId;
+        this.queryData.userIdtest = res.data.page.content[0] && res.data.page.content[0].userId;
       } else {
         this.$Message.error(res.message);
       }

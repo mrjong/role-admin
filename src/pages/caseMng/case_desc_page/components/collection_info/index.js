@@ -7,10 +7,10 @@ import { case_detail_remark_list, // 催收
 
 export default {
   name: 'collection_info',
-  props: ['queryData', 'caseNo'],
+  props: ['queryData', 'caseNo', 'userId'],
   data () {
     return {
-      userId: '',
+      userIdCopy: '',
       // 催收信息
       case_detail_remark_list_spin: false,
       case_detail_remark_list_pageNo: 1,
@@ -395,8 +395,8 @@ export default {
   created () {
   },
   watch: {
-    queryData(data) {
-      this.userId = data.userIdtest;
+    userId(userId) {
+      this.userIdCopy = userId;
       this.case_detail_remark_list(); // 催收信息
     }
   },
@@ -406,7 +406,7 @@ export default {
       this.case_detail_remark_list_spin = true
       const res = await case_detail_remark_list({
         caseNo: this.caseNo,
-        userId: this.userId,
+        userId: this.userIdCopy,
         pageNum: this.case_detail_remark_list_pageNo,
         pageSize: this.case_detail_remark_list_pageSize
       });
@@ -423,7 +423,7 @@ export default {
     async case_detail_repay_ord_list() {
       this.case_detail_repay_ord_list_spin = true
       const res = await case_detail_repay_ord_list({
-        userId: this.userId,
+        userId: this.userIdCopy,
         // caseNo: this.caseNo,
         pageNum: this.case_detail_repay_ord_list_pageNo,
         pageSize: this.case_detail_repay_ord_list_pageSize
@@ -442,7 +442,7 @@ export default {
       this.case_detail_user_repay_list_spin = true
       const res = await case_detail_user_repay_list({
         caseNo: this.caseNo,
-        userId: this.userId,
+        userId: this.userIdCopy,
         pageNum: this.case_detail_user_repay_list_pageNo,
         pageSize: this.case_detail_user_repay_list_pageSize
       });
@@ -460,7 +460,7 @@ export default {
       this.case_detail_system_repay_list_spin = true
       const res = await case_detail_system_repay_list({
         caseNo: this.caseNo,
-        userId: this.userId,
+        userId: this.userIdCopy,
         pageNum: this.case_detail_system_repay_list_pageNo,
         pageSize: this.case_detail_system_repay_list_pageSize
       });

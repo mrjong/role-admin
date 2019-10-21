@@ -5,11 +5,11 @@ import { case_detail_bindcard_list, // 绑卡信息
  } from '@/service/getData';
 export default {
   name: 'other_info',
-  props: ['queryData', 'caseNo'],
+  props: ['queryData', 'caseNo', 'userId'],
   data () {
     const _this = this;
     return {
-      userId: '',
+      userIdCopy: '',
       message_detail_flag: false,
       message_detail_data: {},//站内信modal展示的数据
       // 用户绑卡信息
@@ -269,8 +269,8 @@ export default {
   created () {
   },
   watch: {
-    queryData(data) {
-      this.userId = data.userIdtest;
+    userId(userId) {
+      this.userIdCopy = userId;
       this.case_detail_bindcard_list(); // 绑卡信息
     }
   },
@@ -295,7 +295,7 @@ export default {
       this.case_detail_bindcard_list_spin = true
       const res = await case_detail_bindcard_list({
         caseNo: this.caseNo,
-        userId: this.userId,
+        userId: this.userIdCopy,
         pageNum: this.case_detail_bindcard_list_pageNo,
         pageSize: this.case_detail_bindcard_list_pageSize
       });
@@ -314,7 +314,7 @@ export default {
       this.case_detail_getcaselog_spin = true
       const res = await case_detail_getcaselog({
         caseNo: this.caseNo,
-        userId: this.userId,
+        userId: this.userIdCopy,
         pageNum: this.case_detail_getcaselog_pageNo,
         pageSize: this.case_detail_getcaselog_pageSize
       });
@@ -333,7 +333,7 @@ export default {
       this.case_detail_siteletter_list_spin = true
       const res = await case_detail_siteletter_list({
         caseNo: this.caseNo,
-        userId: this.userId,
+        userId: this.userIdCopy,
         pageNum: this.case_detail_siteletter_list_pageNo,
         pageSize: this.case_detail_siteletter_list_pageSize
       });

@@ -33,7 +33,7 @@ import sysDictionary from '@/mixin/sysDictionary';
 let callFlag = false;
 export default {
   name: 'address_list',
-  props: ['queryData', 'caseNo', 'collectCategory', 'address_list_data'],
+  props: ['queryData', 'caseNo', 'collectCategory', 'address_list_data', 'userId'],
   mixins: [sysDictionary],
   data() {
     const _this = this;
@@ -65,7 +65,7 @@ export default {
       },
       collectType: '',
       readType: '',
-      userId: '',
+      userIdCopy: '',
       userNmClearCopy: '',// 保存的明文名字
       showBottom: false,//添加、编辑催记弹窗
       remark_flag: false,//是否记催记的标识符
@@ -708,9 +708,9 @@ export default {
     }
   },
   watch: {
-    queryData(data) {
+    userId(userId) {
       this.readType = this.queryData.readType;
-      this.userId = data.userIdtest;
+      this.userIdCopy = userId;
       this.case_detail_urgent_contact(); // 紧急联系人
       this.case_detail_mail_list(); // 通话统计
       this.collectcode_getListByCodeType();//获取拨打状态
@@ -840,7 +840,7 @@ export default {
         toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
         toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
         toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
-        userId: this.userId,
+        userId: this.userIdCopy,
         caseNo: this.caseNo,
         collectType: tag,
       }
@@ -890,7 +890,7 @@ export default {
         toCallMbl: obj.toCallMbl,
         toCallMblHid: obj.toCallMblHid,
         callUserType: obj.callUserType,
-        userId: this.userId,
+        userId: this.userIdCopy,
         collectType: obj.collectType,
       };
       if (callData.seatType === 'KT') {
@@ -930,7 +930,7 @@ export default {
         toCallMbl: obj.toCallMbl,
         toCallMblHid: obj.toCallMblHid,
         callUserType: obj.callUserType,
-        userId: this.userId,
+        userId: this.userIdCopy,
         collectType: obj.collectType,
       });
       if (res.code === 1) {
@@ -1040,7 +1040,7 @@ export default {
       const res = await mail_list_add({
         ...this.formItem,
         caseNo: this.caseNo,
-        userId: this.userId
+        userId: this.userIdCopy
       });
       this.add_txl_loading = false;
       if (res.code === 1) {
@@ -1070,7 +1070,7 @@ export default {
       this.message_list_loading = true;
       const res = await case_detail_mail_statistics_list({
         caseNo: this.caseNo,
-        userId: this.userId,
+        userId: this.userIdCopy,
         pageNum: this.case_detail_mail_statistics_list_pageNo,
         pageSize: this.case_detail_mail_statistics_list_pageSize
       });
@@ -1089,7 +1089,7 @@ export default {
       this.message_list_loading = true;
       const res = await case_detail_mail_detail_list({
         caseNo: this.caseNo,
-        userId: this.userId,
+        userId: this.userIdCopy,
         pageNum: this.case_detail_mail_detail_list_pageNo,
         pageSize: this.case_detail_mail_detail_list_pageSize
       });
@@ -1108,7 +1108,7 @@ export default {
       this.message_list_loading = true;
       const res = await case_detail_mail_list({
         caseNo: this.caseNo,
-        userId: this.userId,
+        userId: this.userIdCopy,
         pageNum: this.case_detail_mail_list_pageNo,
         pageSize: this.case_detail_mail_list_pageSize
       });
@@ -1127,7 +1127,7 @@ export default {
       this.message_list_loading = true;
       const res = await case_detail_mail_list_appended({
         caseNo: this.caseNo,
-        userId: this.userId,
+        userId: this.userIdCopy,
         pageNum: this.case_detail_mail_list_appended_pageNo,
         pageSize: this.case_detail_mail_list_appended_pageSize
       })
@@ -1144,7 +1144,7 @@ export default {
     async case_detail_urgent_contact() {
       const res = await case_detail_urgent_contact({
         caseNo: this.caseNo,
-        userId: this.userId
+        userId: this.userIdCopy
       });
       if (res.code === 1) {
         this.case_detail_urgent_contact_Data = res.data;
@@ -1238,7 +1238,7 @@ export default {
               toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
               toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
               toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
-              userId: this.userId,
+              userId: this.userIdCopy,
               caseNo: this.caseNo,
               collectType: tag,
             });
@@ -1328,7 +1328,7 @@ export default {
         promiseRepayDate: this.formValidate.promiseRepayDate
           ? dayjs(this.formValidate.promiseRepayDate).format('YYYY-MM-DD HH:mm')
           : '',
-        userId: this.userId,
+        userId: this.userIdCopy,
         userNm: this.userNm,
         mblNo: this.mblNo,
         mblNoHid: this.mblNoHid,
@@ -1439,7 +1439,7 @@ export default {
             toCallUserHid: this.objCopy.userNmHid || this.objCopy.cntUserNameHid,
             toCallMbl: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
             toCallMblHid: this.objCopy.mblNoHid || this.objCopy.cntUserMblNoHid,
-            userId: this.userId,
+            userId: this.userIdCopy,
             caseNo: this.caseNo,
             collectType: tag,
           });
