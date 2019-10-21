@@ -44,7 +44,7 @@ export default {
     this.caseNo = window.atob(queryData.caseNotest);
     // this.seatType = queryData.seatType;
     this.prdTyp = queryData.prdTyptest;
-    this.userId = queryData.userIdtest;
+    // this.userId = queryData.userIdtest;
     this.readType = queryData.readType;
     delete queryData.caseNotest;
     // delete queryData.prdTyptest;

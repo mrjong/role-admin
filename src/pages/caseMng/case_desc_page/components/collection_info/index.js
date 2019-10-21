@@ -10,7 +10,7 @@ export default {
   props: ['queryData', 'caseNo', 'userId'],
   data () {
     return {
-      userIdCopy: '',
+      userIdCopy: null,
       // 催收信息
       case_detail_remark_list_spin: false,
       case_detail_remark_list_pageNo: 1,
@@ -406,7 +406,7 @@ export default {
       this.case_detail_remark_list_spin = true
       const res = await case_detail_remark_list({
         caseNo: this.caseNo,
-        userId: this.userIdCopy,
+        userId: this.userIdCopy || this.userId,
         pageNum: this.case_detail_remark_list_pageNo,
         pageSize: this.case_detail_remark_list_pageSize
       });
@@ -423,7 +423,7 @@ export default {
     async case_detail_repay_ord_list() {
       this.case_detail_repay_ord_list_spin = true
       const res = await case_detail_repay_ord_list({
-        userId: this.userIdCopy,
+        userId: this.userIdCopy || this.userId,
         // caseNo: this.caseNo,
         pageNum: this.case_detail_repay_ord_list_pageNo,
         pageSize: this.case_detail_repay_ord_list_pageSize
@@ -442,7 +442,7 @@ export default {
       this.case_detail_user_repay_list_spin = true
       const res = await case_detail_user_repay_list({
         caseNo: this.caseNo,
-        userId: this.userIdCopy,
+        userId: this.userIdCopy || this.userId,
         pageNum: this.case_detail_user_repay_list_pageNo,
         pageSize: this.case_detail_user_repay_list_pageSize
       });
@@ -460,7 +460,7 @@ export default {
       this.case_detail_system_repay_list_spin = true
       const res = await case_detail_system_repay_list({
         caseNo: this.caseNo,
-        userId: this.userIdCopy,
+        userId: this.userIdCopy || this.userId,
         pageNum: this.case_detail_system_repay_list_pageNo,
         pageSize: this.case_detail_system_repay_list_pageSize
       });
