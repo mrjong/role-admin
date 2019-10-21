@@ -10,6 +10,9 @@ export default {
   mixins: [formValidateFun, sysDictionary],
   data() {
     const validate_day_start = (rule, value, callback) => {
+      if (value==='') {
+        callback(new Error("请输入逾期天数"));
+      }
       if (Number(value) > 999) {
         callback(new Error("天数不能大于999"));
       }
@@ -25,6 +28,9 @@ export default {
       }
     };
     const validate_day_end = (rule, value, callback) => {
+      if (value==='') {
+        callback(new Error("请输入逾期天数"));
+      }
       if (Number(value) > 999) {
         callback(new Error("天数不能大于999"));
       }
@@ -172,8 +178,8 @@ export default {
   },
   created() {
     this.getLeafTypeList('02', []);
-    this.getLeafTypeList('03', []);
-    this.getLeafTypeList('04', []);
+    // this.getLeafTypeList('03', []);
+    // this.getLeafTypeList('04', []);
   },
   methods: {
     async getData(value) {
@@ -192,12 +198,23 @@ export default {
     },
     // 电催中心change
     companyChange(value) {
-      this.getLeafTypeList('03', value);
-      this.getLeafTypeList('04', value);
+//      this.getLeafTypeList('03', value);
+//      this.getLeafTypeList('04', value);
+      if(value.length === 0){
+        this.department_list_data = []
+        this.formItem.searchDepartmentIds = ''
+      } else {
+        this.getLeafTypeList('03', value);
+      }
     },
     // 部门change
     departmentChange(value) {
-      this.getLeafTypeList('04', value);
+      if(value.length === 0){
+        this.collect_list_data = []
+        this.formItem.searchPersonIds = ''
+      } else {
+        this.getLeafTypeList('04', value);
+      }
     },
     // 查询机构，公司，部门
     async getLeafTypeList(type, parent) {

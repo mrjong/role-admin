@@ -410,6 +410,9 @@ export default {
       if (Number(value) > 999) {
         callback(new Error("逾期天数不能大于999天"));
       }
+      if (value==='') {
+        callback(new Error("请输入逾期天数"));
+      }
       if (
         value &&
         this.formItem.ovdudaysMax &&
@@ -424,6 +427,9 @@ export default {
     const validate_day_end = (rule, value, callback) => {
       if (Number(value) > 999) {
         callback(new Error("逾期天数不能大于999天"));
+      }
+      if (value==='') {
+        callback(new Error("请输入逾期天数"));
       }
       if (this.formItem.ovdudaysMin) {
         this.$refs.formItem.validateField("ovdudaysMin");
@@ -570,8 +576,8 @@ export default {
     }
     console.log(this.formItem);
     this.getLeafTypeList('02', []);
-    this.getLeafTypeList('03', []);
-    this.getLeafTypeList('04', []);
+//    this.getLeafTypeList('03', []);
+//    this.getLeafTypeList('04', []);
   },
   methods: {
     renderContent(h, { root, node, data }) {
@@ -713,12 +719,23 @@ export default {
     },
     // 电催中心change
     companyChange(value) {
-      this.getLeafTypeList('03', value);
-      this.getLeafTypeList('04', value);
+//      this.getLeafTypeList('03', value);
+//      this.getLeafTypeList('04', value);
+      if(value.length === 0){
+        this.department_list_data = []
+        this.formItem.searchDepartmentIds = ''
+      } else {
+        this.getLeafTypeList('03', value);
+      }
     },
     // 部门change
     departmentChange(value) {
-      this.getLeafTypeList('04', value);
+      if(value.length === 0){
+        this.collect_list_data = []
+        this.formItem.searchPersonIds = ''
+      } else {
+        this.getLeafTypeList('04', value);
+      }
     },
     // 查询机构，公司，部门
     async getLeafTypeList(type, parent) {
