@@ -201,7 +201,7 @@ export default {
 //      this.getLeafTypeList('04', value);
       if(value.length === 0){
         this.department_list_data = []
-        this.formItem.searchDepartmentIds = ''
+        this.formItem.searchDepartmentIds = []
       } else {
         this.getLeafTypeList('03', value);
       }
@@ -210,7 +210,7 @@ export default {
     departmentChange(value) {
       if(value.length === 0){
         this.collect_list_data = []
-        this.formItem.searchPersonIds = ''
+        this.formItem.searchPersonIds = []
       } else {
         this.getLeafTypeList('04', value);
       }
