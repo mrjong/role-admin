@@ -1,4 +1,4 @@
-import { divide_rules_save, getLeafTypeList, divide_download_template, divide_rules_edit } from '@/service/getData';
+import { divide_rules_save, getLeafTypeList, divide_download_template, divide_rules_edit, collect_getLeafTypeListByIds } from '@/service/getData';
 import formValidateFun from "@/mixin/formValidateFun";
 import sysDictionary from "@/mixin/sysDictionary";
 import Cookie from 'js-cookie';
@@ -10,6 +10,9 @@ export default {
   mixins: [formValidateFun, sysDictionary],
   data() {
     const validate_day_start = (rule, value, callback) => {
+      if (value==='') {
+        callback(new Error("请输入逾期天数"));
+      }
       if (Number(value) > 999) {
         callback(new Error("天数不能大于999"));
       }
@@ -25,6 +28,9 @@ export default {
       }
     };
     const validate_day_end = (rule, value, callback) => {
+      if (value==='') {
+        callback(new Error("请输入逾期天数"));
+      }
       if (Number(value) > 999) {
         callback(new Error("天数不能大于999"));
       }
@@ -39,6 +45,10 @@ export default {
         timeout: 120000,
       },
       titleDesc: '',
+      company_list_data: [],//电催中心list
+      department_list_data: [],//组别list
+      department_list_datas: [],//分案人员list
+      collect_list_data: [],//经办人list
       divideRuleUserVos: [], //汇款率接口参数list
       allotRoleIdList: [], //人员角色idlist
       allotNameList: [], //人员名字list
@@ -154,7 +164,6 @@ export default {
           key: 'collectRate'
         },
       ],
-      department_list_data: [],
     };
 
   },
@@ -169,7 +178,9 @@ export default {
     }
   },
   created() {
-    this.getLeafTypeList('03', '');
+    this.getLeafTypeList('02', []);
+    this.getOpOrganizationList('03', '');
+    // this.getLeafTypeList('04', []);
   },
   methods: {
     async getData(value) {
@@ -186,12 +197,32 @@ export default {
         this.$Message.error(res.message);
       }
     },
+    // 电催中心change
+    companyChange(value) {
+//      this.getLeafTypeList('03', value);
+//      this.getLeafTypeList('04', value);
+      if(value.length === 0){
+        this.department_list_data = []
+        this.formItem.searchDepartmentIds = ''
+      } else {
+        this.getLeafTypeList('03', value);
+      }
+    },
+    // 部门change
+    departmentChange(value) {
+      if(value.length === 0){
+        this.collect_list_data = []
+        this.formItem.searchPersonIds = ''
+      } else {
+        this.getLeafTypeList('04', value);
+      }
+    },
     // 查询机构，公司，部门
     async getLeafTypeList(type, parent) {
-      const res = await getLeafTypeList({
+      const res = await collect_getLeafTypeListByIds({
         // status: "1",
         leafType: type,
-        parentId: parent || ""
+        parentIds: parent || []
       });
       if (res.code === 1) {
         switch (type) {
@@ -212,7 +243,22 @@ export default {
     closeDrawer() {
 
     },
-
+    // 查询分案人员
+    async getOpOrganizationList(type, parent) {
+      const res = await getLeafTypeList({
+        leafType: type,
+        parentIds: parent || ''
+      });
+      if (res.code === 1) {
+        switch (type) {
+          case "03":
+            this.department_list_datas = res.data;
+            break;
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
     async handleSubmit() {
       this.$refs['formItem'].validate(async valid => {
         if (valid) {

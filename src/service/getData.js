@@ -949,7 +949,13 @@ export const divide_rules_list = (obj) =>
     method: 'POST',
     data: qs.stringify(obj)
   });
-
+// 分案规则优化
+export const collect_getLeafTypeListByIds = (obj) =>
+  fetch({
+    url: '/collect/getLeafTypeListByIds',
+    method: 'POST',
+    data: qs.stringify(obj)
+  });
 // 添加案件接口
 export const divide_rules_add = (obj, options) =>
   fetch({

@@ -96,6 +96,59 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+              <FormItem span="6" label="电催中心:">
+                <Select
+                  size="small"
+                  clearable
+                  multiple
+                  placeholder="请选择电催中心"
+                  @on-change="companyChange"
+                  v-model="formItem.searchCompanyIds"
+                >
+                  <Option
+                    v-for="item in company_list_data"
+                    :value="item.id"
+                    :key="item.id"
+                  >{{ item.name }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+              <FormItem span="6" label="组别:">
+                <Select
+                  size="small"
+                  clearable
+                  multiple
+                  @on-change="departmentChange"
+                  placeholder="请选择组别"
+                  v-model="formItem.searchDepartmentIds"
+                >
+                  <Option
+                    v-for="item in department_list_data"
+                    :value="item.id"
+                    :key="item.id"
+                  >{{ item.name }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
+              <FormItem label="经办人:">
+                <Select
+                  size="small"
+                  clearable
+                  multiple
+                  placeholder="请选择经办人"
+                  v-model="formItem.searchPersonIds"
+                >
+                  <Option
+                    v-for="(item,index) in collect_list_data"
+                    :value="item.id"
+                    :key="item.id + index"
+                  >{{ item.name }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
                 <FormItem label="逾期应还金额:">
                   <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                     <FormItem prop="ovduamtMin">
@@ -329,7 +382,8 @@ import {
   collect_tree_children,
   collect_show_children,
   collect_parent_children,
-  allot_divideCollectRate
+  allot_divideCollectRate,
+  collect_getLeafTypeListByIds
 } from "@/service/getData";
 export default {
   name: "case_add_distribute_page",
@@ -356,6 +410,9 @@ export default {
       if (Number(value) > 999) {
         callback(new Error("逾期天数不能大于999天"));
       }
+      if (value==='') {
+        callback(new Error("请输入逾期天数"));
+      }
       if (
         value &&
         this.formItem.ovdudaysMax &&
@@ -370,6 +427,9 @@ export default {
     const validate_day_end = (rule, value, callback) => {
       if (Number(value) > 999) {
         callback(new Error("逾期天数不能大于999天"));
+      }
+      if (value==='') {
+        callback(new Error("请输入逾期天数"));
       }
       if (this.formItem.ovdudaysMin) {
         this.$refs.formItem.validateField("ovdudaysMin");
@@ -401,6 +461,9 @@ export default {
       submitType: 1, //提交类型 1添加，2修改
       ruleId: "",
       allotRoleIdList: [],
+      company_list_data: [],//电催中心list
+      department_list_data: [],//组别list
+      collect_list_data: [],//经办人list
       //催收员回款率的表单
       remoneyRateForm: {
         staffList: []
@@ -512,6 +575,9 @@ export default {
       this.divide_rules_edit();
     }
     console.log(this.formItem);
+    this.getLeafTypeList('02', []);
+//    this.getLeafTypeList('03', []);
+//    this.getLeafTypeList('04', []);
   },
   methods: {
     renderContent(h, { root, node, data }) {
@@ -650,6 +716,48 @@ export default {
           console.log(this.formItem);
         }
       });
+    },
+    // 电催中心change
+    companyChange(value) {
+//      this.getLeafTypeList('03', value);
+//      this.getLeafTypeList('04', value);
+      if(value.length === 0){
+        this.department_list_data = []
+        this.formItem.searchDepartmentIds = ''
+      } else {
+        this.getLeafTypeList('03', value);
+      }
+    },
+    // 部门change
+    departmentChange(value) {
+      if(value.length === 0){
+        this.collect_list_data = []
+        this.formItem.searchPersonIds = ''
+      } else {
+        this.getLeafTypeList('04', value);
+      }
+    },
+    // 查询机构，公司，部门
+    async getLeafTypeList(type, parent) {
+      const res = await collect_getLeafTypeListByIds({
+        leafType: type,
+        parentIds: parent || []
+      });
+      if (res.code === 1) {
+        switch (type) {
+          case "02":
+            this.company_list_data = res.data;
+            break;
+          case "03":
+            this.department_list_data = res.data;
+            break;
+          case "04":
+            this.collect_list_data = res.data;
+            break;
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     // 点击出现tree
     selectTreeNode(type) {
@@ -832,6 +940,9 @@ export default {
       const res = await divide_rules_edit({ id: this.ruleId });
       console.log(res);
       if (res.code === 1) {
+        this.formItem.searchCompanyIds = res.data.searchCompanyIds;
+        this.formItem.searchDepartmentIds = res.data.searchDepartmentIds;
+        this.formItem.searchPersonIds = res.data.searchPersonIds;
         this.formItem.prodTypeList = res.data.prodTypeList[0];
         this.formItem.perdCountList = res.data.perdCountList;
         this.formItem.perdThisCountList = res.data.perdThisCountList;
