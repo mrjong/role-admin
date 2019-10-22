@@ -264,6 +264,7 @@ export default {
             this.$Message.error('请先导入分案率值')
             return
           }
+          this.allot_loading = true
           divide_rules_add(
             {
               ...this.formItem,
@@ -282,6 +283,7 @@ export default {
               ]
             }
           ).then(res=>{
+            this.allot_loading = false
             if (res.code === 1) {
               this.$emit("passBack", 'change');
               this.$Message.success('添加成功');
@@ -293,6 +295,7 @@ export default {
               this.$Message.error(res.message);
             }
           }).catch(err=>{
+            this.allot_loading = false
             this.$Message.error(err.message);
           })
         }
