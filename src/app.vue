@@ -72,26 +72,27 @@ export default {
     }
   },
   mounted() {
-      if(window.location.href.indexOf("/case_desc_page?") !== -1 && sessionStorage.getItem('callSeat')){
-        if(JSON.parse(sessionStorage.getItem('callSeat')).seatType === 'DY'){
-          this.$nextTick(() =>{
-            this.initDy()
-          })
-          if (document.hidden !== undefined) {
-            document.addEventListener("visibilitychange", () => {
-              console.log(document.hidden)
-              if(!document.hidden){
-                this.initDy()
-                let nodeA = document.getElementById("dyCti")
-                let callData = sessionStorage.getItem('callSeat') ? JSON.parse(sessionStorage.getItem('callSeat')) : this.token
-                nodeA.src =
-                  `https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`
-                nodeA.height = 40
-              }
-            });
-          }
+    let callSeat = sessionStorage.getItem('callSeat')
+    if(window.location.href.indexOf("/case_desc_page?") !== -1 && callSeat){
+      if(JSON.parse(callSeat).seatType && JSON.parse(callSeat).seatType === 'DY'){
+        this.$nextTick(() =>{
+          this.initDy()
+        })
+        if (document.hidden !== undefined) {
+          document.addEventListener("visibilitychange", () => {
+            console.log(document.hidden)
+            if(!document.hidden){
+              this.initDy()
+              let nodeA = document.getElementById("dyCti")
+              let callData = JSON.parse(callSeat)
+              nodeA.src =
+                `https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`
+              nodeA.height = 40
+            }
+          });
         }
       }
+    }
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
@@ -118,7 +119,7 @@ export default {
         let that = this
         DYSDK.ctiLogined(function (data) {
           console.log('登录回调')
-          data.phone= data.phone.substring(0,4)+"****"+data.phone.substring(7,11)
+          data.phone= data.phone && data.phone.substring(0,4)+"****"+data.phone.substring(7,11)
           console.log(DYSDK)
           console.log(data);
         });
@@ -126,15 +127,14 @@ export default {
         // 接通电话的回调函数，返回电话号码等信息
         DYSDK.callConfirm(function (data) {
           console.log('接通电话的回调函数')
-          data.phone= data.phone.substring(0,4)+"****"+data.phone.substring(7,11)
+          data.phone= data.phone && data.phone.substring(0,4)+"****"+data.phone.substring(7,11)
           console.log(data)
         });
 
         // 拨打电话失败的回调函数，返回电话号码等信息
         DYSDK.callFail(function (data) {
           console.log('拨打电话失败')
-          data.phone= data.phone.substring(0,4)+"****"+data.phone.substring(7,11)
-
+          data.phone= data.phone && data.phone.substring(0,4)+"****"+data.phone.substring(7,11)
           that.duyanHungOff(data.uuid, nodeA)
           console.log(data)
         });
@@ -142,15 +142,14 @@ export default {
         // 电话结束的回调函数，返回电话号码等信息
         DYSDK.callEnd(function (data) {
           console.log("电话结束")
-          data.phone= data.phone.substring(0,4)+"****"+data.phone.substring(7,11)
-
+          data.phone= data.phone && data.phone.substring(0,4)+"****"+data.phone.substring(7,11)
           that.duyanHungOff(data.uuid, nodeA)
           console.log(data)
         });
         // 正在拨打中的回调函数，返回电话号码等信息
         DYSDK.callConnecting(function (data) {
           console.log("正在拨打中的回调函数");
-          data.phone= data.phone.substring(0,4)+"****"+data.phone.substring(7,11)
+          data.phone= data.phone && data.phone.substring(0,4)+"****"+data.phone.substring(7,11)
           sessionStorage.setItem('callId', data.uuid)
           if(data.errorCode){
             that.duyanHungOff(data.uuid, nodeA)
@@ -172,7 +171,7 @@ export default {
     },
     initDy() {
       //加载度言
-      let duyanData = sessionStorage.getItem('callSeat') ? JSON.parse(sessionStorage.getItem('callSeat')) : this.token
+      let duyanData = sessionStorage.getItem('callSeat') ? JSON.parse(sessionStorage.getItem('callSeat')) : ''
       this.loadJs(`https://cti.duyansoft.com/ctibar.html?account_id=${duyanData.seatNo}&token=${duyanData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`)
     },
     duyanHungOff(uid, dom) {
