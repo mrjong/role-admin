@@ -49,6 +49,7 @@ export default {
       },
       company_list_data: [],//电催中心list
       department_list_data: [],//组别list
+      department_list_datas: [],//分案人员list
       collect_list_data: [],//经办人list
       divideRuleUserVos: [], //汇款率接口参数list
       allotRoleIdList: [], //人员角色idlist
@@ -190,7 +191,7 @@ export default {
   },
   created() {
     this.getLeafTypeList('02', []);
-    // this.getLeafTypeList('03', []);
+    this.getOpOrganizationList('03', '');
     // this.getLeafTypeList('04', []);
   },
   methods: {
@@ -231,6 +232,22 @@ export default {
             break;
           case "04":
             this.collect_list_data = res.data;
+            break;
+        }
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    // 查询分案人员
+    async getOpOrganizationList(type, parent) {
+      const res = await getLeafTypeList({
+        leafType: type,
+        parentIds: parent || ''
+      });
+      if (res.code === 1) {
+        switch (type) {
+          case "03":
+            this.department_list_datas = res.data;
             break;
         }
       } else {

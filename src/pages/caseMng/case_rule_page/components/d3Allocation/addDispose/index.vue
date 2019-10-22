@@ -243,7 +243,7 @@
                 v-model="formItem.opOrganizationList"
               >
                 <Option
-                  v-for="item in department_list_data"
+                  v-for="item in department_list_datas"
                   :value="item.id"
                   :key="item.id"
                 >{{ item.name }}</Option>
