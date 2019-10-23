@@ -73,7 +73,7 @@ export default {
     },
     //更改默认值
     changeAllotCounts(val, item) {
-      if(this.isPeak === '1'){
+      if(this.isPeak === 1){
         //高峰期
         if(val.target.value< parseFloat(item.peakCountsSta) || val.target.value> parseFloat(item.peakCountsEnd) ){
           item.descError = '区间应在' + item.peakCountsSta+ '到' + item.peakCountsEnd +'之间'
