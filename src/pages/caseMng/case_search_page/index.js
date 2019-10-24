@@ -216,7 +216,7 @@ export default {
                           window.open(
                             `${location.origin}/#/case_desc_page?caseNotest=${window.btoa(id)}&prdTyptest=${prdTyp}&readType=edit&userIdtest=${userId}&seatType=${seatType
                               ? seatType
-                              : 'KT'}&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
+                              : 'KT'}&caseType=allCase&pageNum=${_this.pageNo}&pageSize=${_this.pageSize}&${qs.stringify(
                                 _this.formItem
                               )}`
                           );

@@ -155,7 +155,7 @@ export default {
           this.call(res.data);
         }
         localStorage.setItem("callData", JSON.stringify(res.data));
-        window.sessionStorage.setItem("callSeat", JSON.stringify(res.data));
+        res.data.seatType === 'DY' && window.sessionStorage.setItem("callSeat", JSON.stringify(res.data));
         this.loginSuccess(data);
       } else {
         this.$Message.error(res.message);
