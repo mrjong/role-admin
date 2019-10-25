@@ -5,6 +5,7 @@ import tablePage from '@/mixin/tablePage';
 import util from '@/libs/util';
 import 'video.js/dist/video-js.css';
 import { videoPlayer } from 'vue-video-player';
+import ReportModal from './components/reportModal';
 import Cookie from 'js-cookie';
 import videojs from 'video.js'
 import 'vue-video-player/src/custom-theme.css'
@@ -15,7 +16,8 @@ import qs from 'qs';
 export default {
   name: 'collecttion_recording_page',
   components: {
-    videoPlayer
+    videoPlayer,
+    ReportModal
   },
   mixins: [tablePage, formValidateFun, sysDictionary],
   data() {
@@ -38,6 +40,7 @@ export default {
       collect_list_data: [],//经办人list
       modal1: false,
       billNo: null, //录音显示的账单号
+      dataReport: {}, //质检查看报告
       playerOptions: {
         // videojs options
         muted: false,
@@ -134,6 +137,26 @@ export default {
                   }
                 },
                 '下载'
+              ),h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  style: {
+                    borderRight: 'none'
+                  },
+                  on: {
+                    click: () => {
+                      if (!this.download) {
+                        this.$Message.error('很抱歉，暂无下载权限');
+                        return;
+                      }
+                      this.dataReport = JSON.parse(JSON.stringify(params.row))
+                      // this.case_collect_tape_download(actionId);
+                    }
+                  }
+                },
+                '查看报告'
               ),
             ]) : h('div', [
               h(
@@ -500,6 +523,9 @@ export default {
     },
     cancel() {
       this.$Modal.remove();
+    },
+    passBask(val) {
+      this.dataReport = {}
     }
   }
 };

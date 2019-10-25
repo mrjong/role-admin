@@ -152,6 +152,66 @@
               </Select>
             </FormItem>
           </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem span="6" label="质检结果:" prop="prdTyp">
+            <Select size="small" clearable placeholder="请选择质检结果" v-model="formItem.prdTyp">
+              <Option
+                v-for="item in getDirObj.PROD_TYPE"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem label="质检得分:">
+            <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
+            <FormItem prop="minOverdueDays">
+              <Input size="small" clearable v-model.trim="formItem.minOverdueDays"></Input>
+            </FormItem>
+            </Col>
+            <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
+            <div class="text-center">-</div>
+            </Col>
+            <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
+            <FormItem prop="maxOverdueDays">
+              <Input size="small" clearable v-model.trim="formItem.maxOverdueDays"></Input>
+            </FormItem>
+            </Col>
+          </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem span="6" label="违规级别:" prop="prdTyp">
+            <Select size="small" clearable placeholder="请选择违规级别" v-model="formItem.prdTyp">
+              <Option
+                v-for="item in getDirObj.PROD_TYPE"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem span="6" label="问题类别:" prop="prdTyp">
+            <Select size="small" clearable placeholder="请选择问题类别" v-model="formItem.prdTyp">
+              <Option
+                v-for="item in getDirObj.PROD_TYPE"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem label="录音编号:" prop="billNo">
+            <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入录音编号"/>
+          </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem label="稽核人:" prop="billNo">
+            <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入稽核人"/>
+          </FormItem>
+          </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
               <Button
@@ -228,6 +288,7 @@
         <p style="text-align: center; font-size: 14px; color: #2d8cf0; font-weight: 500;margin-top: 20px">账单号：{{billNo}}</p>
       </Modal>
     </div>
+    <ReportModal :dataReport="dataReport" @passBask="passBask"/>
   </div>
 </template>
 
