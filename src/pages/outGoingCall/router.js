@@ -4,4 +4,5 @@ export default {
 	'/outGoingCall/seatingInformation': () => import('@/pages/outGoingCall/seatingInformation'),
 	'/outGoingCall/seatingMonitoring': () => import('@/pages/outGoingCall/seatingMonitoring'),
 	'/outGoingCall/outGoingCallConfiguration': () => import('@/pages/outGoingCall/outGoingCallConfiguration'),
+	'/outGoingCall/smartCallPage': () => import('@/pages/outGoingCall/smartCallPage'),
 };
