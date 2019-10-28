@@ -23,6 +23,11 @@ export default {
           align: 'center',
         },
         {
+          title: '识别对象',
+          key: 'key',
+          align: 'center',
+        },
+        {
           title: '命中规则',
           key: 'rule',
           align: 'center',

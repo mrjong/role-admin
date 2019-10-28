@@ -322,6 +322,42 @@ export default {
           width: 180,
           key: 'idNoHid',
           align: 'center',
+        },
+        {
+          title: '质检结果',
+          width: 180,
+          key: 'idNoHid',
+          align: 'center',
+        },
+        {
+          title: '质检得分',
+          width: 180,
+          key: 'idNoHid',
+          align: 'center',
+        },
+        {
+          title: '违规级别',
+          width: 180,
+          key: 'idNoHid',
+          align: 'center',
+        },
+        {
+          title: '问题类别',
+          width: 180,
+          key: 'idNoHid',
+          align: 'center',
+        },
+        {
+          title: '录音编号',
+          width: 180,
+          key: 'idNoHid',
+          align: 'center',
+        },
+        {
+          title: '稽核人',
+          width: 180,
+          key: 'idNoHid',
+          align: 'center',
         }
       ]
     };
