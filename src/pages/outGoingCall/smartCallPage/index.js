@@ -2,7 +2,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import 'video.js/dist/video-js.css'
 import { videoPlayer } from 'vue-video-player'
-import { case_collect_collect_list, case_collect_collect_export, getLeafTypeList, case_collect_tape, import_list, cases_download_template, collectcode_getListByCodeType } from '@/service/getData';
+import { robotOutbound_list, case_collect_collect_export, getLeafTypeList, case_collect_tape, import_list, cases_download_template, collectcode_getListByCodeType } from '@/service/getData';
 import tablePage from '@/mixin/tablePage';
 import util from '@/libs/util';
 import 'video.js/dist/video-js.css';
@@ -44,7 +44,7 @@ export default {
         // poster: '/static/images/author.jpg'
       },
       modal1: false,
-      getDirList: ['PROD_TYPE'],
+      getDirList: ['PROD_TYPE', 'JOB_TYPE', 'IS_Reminder'],
       getDirObj: {},
       showPanel: false,
       productLineList: [],
@@ -151,39 +151,32 @@ export default {
         {
           title: '任务类型',
           width: 120,
-          key: 'userNmHid',
+          key: 'jobType',
           align: 'center',
         },
         {
           title: '时长',
           width: 150,
-          key: 'createTime',
+          key: 'duration',
           align: 'center',
-          render: (h, params) => {
-            let createTime = params.row.createTime;
-            createTime = createTime
-              ? this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
-              : createTime;
-            return h('span', createTime);
-          }
         },
         {
           title: '呼叫电话',
           width: 120,
-          key: 'userNmHid',
+          key: 'mblNoHid',
           align: 'center',
         },
         {
           title: '呼叫开始时间',
           width: 150,
-          key: 'createTime',
+          key: 'callTime',
           align: 'center',
           render: (h, params) => {
-            let createTime = params.row.createTime;
-            createTime = createTime
-              ? this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
-              : createTime;
-            return h('span', createTime);
+            let callTime = params.row.callTime;
+            callTime = callTime
+              ? this.$options.filters['formatDate'](callTime, 'YYYY-MM-DD HH:mm:ss')
+              : callTime;
+            return h('span', callTime);
           }
         },
         {
@@ -192,41 +185,41 @@ export default {
           key: 'createTime',
           align: 'center',
           render: (h, params) => {
-            let createTime = params.row.createTime;
-            createTime = createTime
-              ? this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
-              : createTime;
-            return h('span', createTime);
+            let callEndTime = params.row.callEndTime;
+            callEndTime = callEndTime
+              ? this.$options.filters['formatDate'](callEndTime, 'YYYY-MM-DD HH:mm:ss')
+              : '';
+            return h('span', callEndTime);
           }
         },
         {
-          title: '客户姓名',
+          title: '客户名称',
           width: 120,
-          key: 'customerNameHid',
+          key: 'userNmHid',
           align: 'center',
         },
         {
           title: '关系',
           width: 100,
-          key: 'callUserTypeName',
+          key: 'pelTyp',
           align: 'center',
         },
         {
           title: '拨打状态',
           width: 100,
-          key: 'collectResultName',
+          key: 'collectResult',
           align: 'center',
         },
         {
           title: '沟通结果',
           width: 100,
-          key: 'communicateResultName',
+          key: 'communicateResult',
           align: 'center',
         },
         {
           title: '组别',
           width: 120,
-          key: 'groupName',
+          key: 'opOrganizationName',
           align: 'center',
         },
         {
@@ -265,6 +258,12 @@ export default {
           title: '客户身份证号',
           width: 180,
           key: 'idNoHid',
+          align: 'center',
+        },
+        {
+          title: '是否催记',
+          width: 180,
+          key: 'isReminder',
           align: 'center',
         },
       ]
@@ -493,15 +492,15 @@ export default {
       //   return;
       // }
       this.query_loading = true;
-      const res = await case_collect_collect_list({
+      const res = await robotOutbound_list({
         ...this.formItem,
         pageSize: this.pageSize,
         pageNum: this.pageNo
       });
       this.query_loading = false;
       if (res.code === 1) {
-        this.tableData = res.data.page.content;
-        this.total = res.data.page.totalElements;
+        this.tableData = res.data.content;
+        this.total = res.data.totalElements;
         console.log(res);
       } else {
         this.$Message.error(res.message);

@@ -159,13 +159,30 @@
               clearable
               filterable
               placeholder="请选择任务类型"
-              v-model="formItem.talkResult"
+              v-model="formItem.jobType"
             >
               <Option
-                v-for="(item,index) in call_status_list"
-                :value="item.codeKey"
-                :key="item.codeKey + index"
-              >{{ item.codeName }}</Option>
+                v-for="item in getDirObj.JOB_TYPE"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+          <FormItem label="是否催记:">
+            <Select
+              size="small"
+              clearable
+              filterable
+              placeholder="请选择"
+              v-model="formItem.isReminder"
+            >
+              <Option
+                v-for="item in getDirObj.IS_Reminder"
+                :value="item.itemCode"
+                :key="item.itemCode"
+              >{{ item.itemName }}</Option>
             </Select>
           </FormItem>
           </Col>
