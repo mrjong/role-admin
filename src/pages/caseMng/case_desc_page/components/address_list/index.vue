@@ -1,7 +1,7 @@
 <template>
   <div class="heighti case-top-panel">
     <Card
-      style="width: 480px"
+      style="width: 550px"
       class="heighti case-top-panel"
       :style="{height:!this.showBottom?'inherit':'calc(100% - 325px)'}"
     >

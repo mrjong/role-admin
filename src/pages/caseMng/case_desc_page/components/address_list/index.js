@@ -1313,6 +1313,10 @@ export default {
       this.pageNo = 1;
       this[name]();
     },
+    // 页码改变的回调
+    changePage(pageNum, name) {
+      this[name]();
+    },
     // 新增催记
     async case_remark_his_add() {
       let callData = JSON.parse(localStorage.getItem('callData'));
