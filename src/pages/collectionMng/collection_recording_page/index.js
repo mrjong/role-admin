@@ -145,15 +145,21 @@ export default {
                   props: {},
                   style: {
                     borderRight: 'none',
-                    display: params.row.id ? 'block' : 'none'
+                    // display: params.row.id ? 'block' : 'none',
+                    color: params.row.id ? '': '#CCC'
                   },
                   on: {
                     click: () => {
+                      if(params.row.id){
+                        this.dataId = params.row.id
+                      } else {
+                        return
+                      }
                       if (!this.checkReport) {
                         this.$Message.error('很抱歉，暂无下载权限');
                         return;
                       }
-                      this.dataId = params.row.id ? params.row.id : ''
+
                       // this.case_collect_tape_download(actionId);
                     }
                   }
