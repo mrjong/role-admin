@@ -1,7 +1,7 @@
 <template>
   <div class="panel_list p5">
     <!-- 弹层 -->
-    <div class="case-left-container" :style="{paddingRight:showBtn?'25px':'480px'}">
+    <div class="case-left-container" :style="{paddingRight:showBtn?'25px':'550px'}">
       <!-- 基础信息 -->
       <baseInfo ref='BASE_INFO' :queryData='queryData' :caseNo='caseNo' :userId='userId' :collectCategory='collectCategory' :base_info_data='base_info_data' @deliveryData='deliveryData'></baseInfo>
 
