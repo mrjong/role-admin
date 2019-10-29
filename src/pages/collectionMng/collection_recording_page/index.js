@@ -23,7 +23,7 @@ export default {
   data() {
     let _this = this;
     return {
-      getDirList: ['PROD_TYPE'],
+      getDirList: ['PROD_TYPE', 'VQC_RULE_LEVEL', 'VQC_RESULT', 'VQC_RULE_CATEGORY'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -355,12 +355,12 @@ export default {
           key: 'recordNumber',
           align: 'center',
         },
-        {
-          title: '稽核人',
-          width: 180,
-          key: 'ruleName',
-          align: 'center',
-        }
+        // {
+        //   title: '稽核人',
+        //   width: 180,
+        //   key: 'ruleName',
+        //   align: 'center',
+        // }
       ]
     };
   },
@@ -505,6 +505,7 @@ export default {
     },
     // 列表
     async getList() {
+      console.log(this.formItem)
       // if (!this.query) {
       //   this.$Message.error('很抱歉，暂无权限查询');
       //   return;

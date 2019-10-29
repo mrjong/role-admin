@@ -156,7 +156,7 @@
           <FormItem span="6" label="质检结果:" prop="vqcResult">
             <Select size="small" clearable placeholder="请选择质检结果" v-model="formItem.vqcResult">
               <Option
-                v-for="item in getDirObj.PROD_TYPE"
+                v-for="item in getDirObj.VQC_RESULT"
                 :value="item.itemCode"
                 :key="item.itemCode"
               >{{ item.itemName }}</Option>
@@ -181,10 +181,10 @@
           </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-          <FormItem span="6" label="违规级别:" prop="ruleLevel">
-            <Select size="small" clearable placeholder="请选择违规级别" v-model="formItem.ruleLevel">
+          <FormItem span="6" label="违规级别:" prop="ruleLevels">
+            <Select size="small" multiple clearable placeholder="请选择违规级别" v-model="formItem.ruleLevels">
               <Option
-                v-for="item in getDirObj.PROD_TYPE"
+                v-for="item in getDirObj.VQC_RULE_LEVEL"
                 :value="item.itemCode"
                 :key="item.itemCode"
               >{{ item.itemName }}</Option>
@@ -192,10 +192,10 @@
           </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-          <FormItem span="6" label="问题类别:" prop="ruleName">
-            <Select size="small" clearable placeholder="请选择问题类别" v-model="formItem.ruleName">
+          <FormItem span="6" label="问题类别:" prop="ruleCategorys">
+            <Select size="small" multiple clearable placeholder="请选择问题类别" v-model="formItem.ruleCategorys">
               <Option
-                v-for="item in getDirObj.PROD_TYPE"
+                v-for="item in getDirObj.VQC_RULE_CATEGORY"
                 :value="item.itemCode"
                 :key="item.itemCode"
               >{{ item.itemName }}</Option>
