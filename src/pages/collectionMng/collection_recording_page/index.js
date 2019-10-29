@@ -164,7 +164,7 @@ export default {
                     }
                   }
                 },
-                '查看报告'
+                params.row.id ? '查看报告' : '暂无报告'
               ),
             ]) : h('div', [
               h(
