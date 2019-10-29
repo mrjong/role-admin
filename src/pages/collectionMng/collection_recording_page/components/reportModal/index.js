@@ -1,9 +1,11 @@
 import {
-
+  vqc_result_detail,
+  vqc_result_hitRule
 } from "@/service/getData";
 export default {
   data() {
     return {
+      dataReport: {},
       tableData: [
         {
           time: 111,
@@ -14,46 +16,65 @@ export default {
       tableColumns: [
         {
           title: '时间',
-          key: 'time',
+          key: 'fragmentStartTime',
           align: 'center',
         },
         {
           title: '识别关键词',
-          key: 'key',
+          key: 'keywordsMatched',
           align: 'center',
         },
         {
           title: '识别对象',
-          key: 'key',
+          key: 'roleName',
           align: 'center',
         },
         {
           title: '命中规则',
-          key: 'rule',
+          key: 'ruleName',
           align: 'center',
         },
         {
           title: '扣分情况',
-          key: 'rule',
+          key: 'hitScore',
           align: 'center',
         },
       ]
     };
   },
   props: {
-    dataReport: {},
+    dataId: {},
     getDirObj: {},
   },
   watch: {
-    dataReport: function (value) {
+    dataId: function (value) {
       console.log(value)
+      if(value){
+        // this.dataReport = {}
+        this.getData(null)
+      }
+
     }
   },
   created() {
 
   },
   methods: {
+    async getData(id) {
+      const res = await vqc_result_hitRule({
+        vqcResultId: id
+      });
+      const res2 = await vqc_result_detail({
+        vqcResultId: id
+      });
+      console.log(res)
+      this.tableData = res.data
+      this.dataReport = res2.data
+      console.log(res2)
+    },
     del() {
+      // debugger
+      this.dataReport = {}
       this.$emit('passBask');
     }
   }

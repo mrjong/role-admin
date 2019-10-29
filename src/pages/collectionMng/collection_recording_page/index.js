@@ -32,6 +32,7 @@ export default {
       query: false,//查询权限
       play: false,//播放权限
       download: false,//下载权限
+      checkReport: false, //查看报告权限
       all_opt: false,//案件详情全部操作权限
       plaintext: false,//案件详情查看明文权限
       query_loading: false,//查询权限按钮loading
@@ -40,7 +41,7 @@ export default {
       collect_list_data: [],//经办人list
       modal1: false,
       billNo: null, //录音显示的账单号
-      dataReport: {}, //质检查看报告
+      dataId: '', //质检查看报告
       playerOptions: {
         // videojs options
         muted: false,
@@ -143,15 +144,16 @@ export default {
                   class: 'edit-btn',
                   props: {},
                   style: {
-                    borderRight: 'none'
+                    borderRight: 'none',
+                    display: params.row.id ? 'block' : 'none'
                   },
                   on: {
                     click: () => {
-                      if (!this.download) {
+                      if (!this.checkReport) {
                         this.$Message.error('很抱歉，暂无下载权限');
                         return;
                       }
-                      this.dataReport = JSON.parse(JSON.stringify(params.row))
+                      this.dataId = params.row.id ? params.row.id : ''
                       // this.case_collect_tape_download(actionId);
                     }
                   }
@@ -326,37 +328,37 @@ export default {
         {
           title: '质检结果',
           width: 180,
-          key: 'idNoHid',
+          key: 'vqcResult',
           align: 'center',
         },
         {
           title: '质检得分',
           width: 180,
-          key: 'idNoHid',
+          key: 'vqcScore',
           align: 'center',
         },
         {
           title: '违规级别',
           width: 180,
-          key: 'idNoHid',
+          key: 'violationLevel',
           align: 'center',
         },
         {
           title: '问题类别',
           width: 180,
-          key: 'idNoHid',
+          key: 'violationCategory',
           align: 'center',
         },
         {
           title: '录音编号',
           width: 180,
-          key: 'idNoHid',
+          key: 'recordNumber',
           align: 'center',
         },
         {
           title: '稽核人',
           width: 180,
-          key: 'idNoHid',
+          key: 'ruleName',
           align: 'center',
         }
       ]
@@ -382,6 +384,8 @@ export default {
         case "download": this.download = true;
           break;
         case "plaintext": this.plaintext = true;
+          break;
+        case "checkReport": this.checkReport = true;
           break;
       }
     });
@@ -561,7 +565,7 @@ export default {
       this.$Modal.remove();
     },
     passBask(val) {
-      this.dataReport = {}
+      this.dataId = ''
     }
   }
 };

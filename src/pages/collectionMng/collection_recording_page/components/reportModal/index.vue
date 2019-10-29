@@ -15,20 +15,20 @@
         <Card class="vue-panel panel_list" :dis-hover="true">
           <p class="base_info">基本信息</p>
           <div class="base_content">
-            <div><label>录音编码:</label><span>12131231</span> </div>
-            <div><label>数据集名称:</label><span>12131231</span> </div>
+            <div><label>录音编码:</label><span>{{dataReport.recordNumber}}</span> </div>
+            <!--<div><label>数据集名称:</label><span>{{dataReport}}</span> </div>-->
           </div>
           <div class="base_content">
-            <div><label>质检结果:</label><span>12131231</span> </div>
-            <div><label>质检得分:</label><span>12131231</span> </div>
+            <div><label>质检结果:</label><span>{{dataReport.vqcResult}}</span> </div>
+            <div><label>质检得分:</label><span>{{dataReport.vqcScore}}</span> </div>
           </div>
           <div class="base_content">
-            <div ><label>违规级别:</label><span>12131231</span> </div>
-            <div ><label>质检时间:</label><span>12131231</span> </div>
+            <div ><label>违规级别:</label><span>{{dataReport.ruleLevel}}</span> </div>
+            <div ><label>质检时间:</label><span>{{dataReport.checkTime}}</span> </div>
           </div>
-          <div class="base_content">
-            <div ><label>稽核人:</label><span>12131231</span> </div>
-          </div>
+          <!--<div class="base_content">-->
+            <!--<div ><label>稽核人:</label><span>{{dataReport.name}}</span> </div>-->
+          <!--</div>-->
           <p class="base_info" style="margin-top: 20px">质检明细</p>
         </Card>
         <Table :data="tableData" border :columns="tableColumns" stripe size="small" align="center" style="margin-bottom: 20px"></Table>
@@ -59,9 +59,13 @@
   .base_content {
     font-size: 14px;
     display: flex;
-    justify-content: space-between;
-    padding-right: 10%;
     margin-bottom: 5px;
+  }
+  .base_content div{
+    flex: 1;
+  }
+  .base_content div label{
+    margin-right: 1%;
   }
   /deep/ .ivu-modal-body {
     padding-top: 10px;
