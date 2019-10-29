@@ -146,12 +146,12 @@ export default {
                   style: {
                     borderRight: 'none',
                     // display: params.row.id ? 'block' : 'none',
-                    color: params.row.id ? '': '#CCC'
+                    color: params.row.vqcResultId ? '': '#CCC'
                   },
                   on: {
                     click: () => {
-                      if(params.row.id){
-                        this.dataId = params.row.id
+                      if(params.row.vqcResultId){
+                        this.dataId = params.row.vqcResultId
                       } else {
                         return
                       }
@@ -164,7 +164,7 @@ export default {
                     }
                   }
                 },
-                params.row.id ? '查看报告' : '暂无报告'
+                params.row.vqcResultId ? '查看报告' : '暂无报告'
               ),
             ]) : h('div', [
               h(

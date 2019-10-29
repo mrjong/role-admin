@@ -7,11 +7,7 @@ export default {
     return {
       dataReport: {},
       tableData: [
-        {
-          time: 111,
-          key: 'eee',
-          rule: '444'
-        }
+
       ],
       tableColumns: [
         {
@@ -51,7 +47,7 @@ export default {
       console.log(value)
       if(value){
         // this.dataReport = {}
-        this.getData(null)
+        this.getData(value)
       }
 
     }
