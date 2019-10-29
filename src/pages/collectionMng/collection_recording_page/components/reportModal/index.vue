@@ -16,7 +16,7 @@
           <p class="base_info">基本信息</p>
           <div class="base_content">
             <div><label>录音编码:</label><span>{{dataReport.recordNumber}}</span> </div>
-            <!--<div><label>数据集名称:</label><span>{{dataReport}}</span> </div>-->
+            <div><label>数据集名称:</label><span>{{dataReport.dataSet}}</span> </div>
           </div>
           <div class="base_content">
             <div><label>质检结果:</label><span>{{dataReport.vqcResult}}</span> </div>
