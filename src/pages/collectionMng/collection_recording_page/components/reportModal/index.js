@@ -64,7 +64,7 @@ export default {
         vqcResultId: id
       });
       console.log(res)
-      this.tableData = res.data
+      this.tableData = res.data ? res.data :[]
       this.dataReport = res2.data
       console.log(res2)
     },
