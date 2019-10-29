@@ -157,12 +157,12 @@
             <Select
               size="small"
               clearable
-              filterable
               placeholder="请选择任务类型"
-              v-model="formItem.jobType"
+              multiple
+              v-model="formItem.jobTypeList"
             >
               <Option
-                v-for="item in getDirObj.JOB_TYPE"
+                v-for="item in getDirObj.ROBOT_JOB_TYPE"
                 :value="item.itemCode"
                 :key="item.itemCode"
               >{{ item.itemName }}</Option>
@@ -179,7 +179,7 @@
               v-model="formItem.isReminder"
             >
               <Option
-                v-for="item in getDirObj.IS_Reminder"
+                v-for="item in getDirObj.ROBOT_IS_REMINDER"
                 :value="item.itemCode"
                 :key="item.itemCode"
               >{{ item.itemName }}</Option>
@@ -204,48 +204,6 @@
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formItem')"
               >重置</Button>
-              <Button
-                size="small"
-                v-if="import_search"
-                icon="ios-cloud-download-outline"
-                type="primary"
-                style="min-width:80px;margin-left: 8px"
-                @click="download_import"
-                :loading="download_import_data"
-              >
-                <span v-if="!download_import_data">下载导入查询模板</span>
-                <span v-else>下载中...</span>
-              </Button>
-              <Upload
-                v-if="import_search"
-                :action="file_url"
-                :show-upload-list="false"
-                :headers="headers"
-                :format="['xls', 'xlsx']"
-                :max-size="1024"
-                :on-success="handleSuccess"
-                :on-error='handleError'
-                :on-progress="handleProgress"
-                :on-exceeded-size="handleMaxSize"
-                :on-format-error="handleFormatError"
-                :disabled="import_data_loading"
-                style="display: inline-block; margin-left:8px"
-                :data='{
-                  pageType: 4
-                }'
-              >
-                <Button
-                  icon="ios-cloud-upload-outline"
-                  type="primary"
-                  size="small"
-                  style="min-width: 80px;"
-                  :loading="import_data_loading"
-                >
-                  <span v-if="!import_data_loading">导入查询</span>
-                  <span v-else>导入中...</span>
-                </Button>
-              </Upload>
-              <span style="line-height: 24px;color: #ed4014" v-if="import_search">（*导入查询和条件查询的数据没有关联）</span>
             </FormItem>
           </Col>
         </Row>
@@ -255,17 +213,6 @@
     <Card class="vue-panel-table">
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
-        <Button
-          class="fr vue-back-btn header-btn"
-          type="primary"
-          size="small"
-          @click.stop="case_collect_collect_export"
-          v-if="export_case"
-          :loading="export_case_loading"
-        >
-          <span v-if="!export_case_loading">导出数据</span>
-          <span v-else>导出中...</span>
-        </Button>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
@@ -289,24 +236,6 @@
         </div>
       </div>
     </Card>
-    <div v-if="modal1">
-      <Modal v-model="modal1" title="录音播放" @on-ok="ok" @on-cancel="cancel" draggable>
-        <video-player
-          class="video-player-box"
-          ref="videoPlayer"
-          :options="playerOptions"
-          :playsinline="true"
-          customEventName="customstatechangedeventname"
-          @play="onPlayerPlay($event)"
-          @pause="onPlayerPause($event)"
-          @ended="onPlayerEnded($event)"
-          @waiting="onPlayerWaiting($event)"
-          @statechanged="playerStateChanged($event)"
-          @ready="playerReadied"
-        ></video-player>
-        <p style="text-align: center; font-size: 14px; color: #2d8cf0; font-weight: 500;margin-top: 20px">账单号：{{billNo}}</p>
-      </Modal>
-    </div>
   </div>
 </template>
 <script src="./index.js"></script>
