@@ -166,16 +166,16 @@
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
           <FormItem label="质检得分:">
             <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
-            <FormItem prop="minScore">
-              <Input size="small" clearable v-model.trim="formItem.minScore"></Input>
+            <FormItem prop="vqcScoreStart">
+              <Input size="small" clearable v-model.trim="formItem.vqcScoreStart"></Input>
             </FormItem>
             </Col>
             <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
             <div class="text-center">-</div>
             </Col>
             <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
-            <FormItem prop="maxScore">
-              <Input size="small" clearable v-model.trim="formItem.maxScore"></Input>
+            <FormItem prop="vqcScoreStart">
+              <Input size="small" clearable v-model.trim="formItem.vqcScoreEnd"></Input>
             </FormItem>
             </Col>
           </FormItem>
