@@ -150,14 +150,14 @@ export default {
                   },
                   on: {
                     click: () => {
+                      if (!this.checkReport) {
+                        this.$Message.error('很抱歉，暂无查看权限');
+                        return;
+                      }
                       if(params.row.vqcResultId){
                         this.dataId = params.row.vqcResultId
                       } else {
                         return
-                      }
-                      if (!this.checkReport) {
-                        this.$Message.error('很抱歉，暂无下载权限');
-                        return;
                       }
 
                       // this.case_collect_tape_download(actionId);
