@@ -3,7 +3,7 @@
     <Modal
       :value="JSON.stringify(dataReport) !== '{}'"
       class-name="user_info_form_modal"
-      width='700'
+      width='650'
       :mask-closable="false"
       @on-cancel="del"
       :footer-hide="true"
@@ -16,7 +16,7 @@
         <Card class="vue-panel panel_list" :dis-hover="true">
           <p class="base_info">基本信息</p>
           <div class="base_content">
-            <div><label>录音编码:</label><span>{{dataReport.recordNumber}}</span> </div>
+            <div><label>录音编号:</label><span>{{dataReport.recordNumber}}</span> </div>
             <div><label>数据集名称:</label><span>{{dataReport.dataSet}}</span> </div>
           </div>
           <div class="base_content">
@@ -62,7 +62,10 @@
     display: flex;
     margin-bottom: 5px;
   }
-  .base_content div{
+  .base_content div:nth-of-type(1){
+    flex: 1.5;
+  }
+  .base_content div:nth-of-type(2){
     flex: 1;
   }
   .base_content div label{
