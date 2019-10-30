@@ -40,27 +40,6 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <!-- beginDate endDate -->
-            <FormItem label="催收时间:">
-              <DatePicker
-                size="small"
-                style="width:100%"
-                format="yyyy-MM-dd"
-                v-model="formItem.csDate"
-                type="daterange"
-                placement="bottom-start"
-                @on-change="dateChange"
-                placeholder="请选择催收时间"
-                clearable
-              ></DatePicker>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="案件编号:" prop="caseNo">
-              <Input size="small" clearable v-model.trim="formItem.caseNo" placeholder="请输入案件编号"/>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="账单号:" prop="billNo">
               <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入账单号"/>
             </FormItem>
