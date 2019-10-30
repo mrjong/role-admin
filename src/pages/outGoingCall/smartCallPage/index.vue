@@ -104,7 +104,7 @@
                 clearable
                 filterable
                 placeholder="请选择沟通状态"
-                v-model="formItem.collectSts"
+                v-model="formItem.communicateResult"
               >
                 <Option
                   v-for="(item,index) in collect_status_list"
@@ -121,7 +121,7 @@
                 clearable
                 filterable
                 placeholder="请选择拨打状态"
-                v-model="formItem.talkResult"
+                v-model="formItem.collectResult"
               >
                 <Option
                   v-for="(item,index) in call_status_list"
