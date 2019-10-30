@@ -3,6 +3,7 @@
     <Modal
       :value="JSON.stringify(dataReport) !== '{}'"
       class-name="user_info_form_modal"
+      width='700'
       :mask-closable="false"
       @on-cancel="del"
       :footer-hide="true"
@@ -24,7 +25,7 @@
           </div>
           <div class="base_content">
             <div ><label>违规级别:</label><span>{{dataReport.ruleLevel}}</span> </div>
-            <div ><label>质检时间:</label><span>{{dataReport.checkTime}}</span> </div>
+            <div ><label>质检时间:</label><span>{{dataReport.checkTime | formatDatetime}}</span> </div>
           </div>
           <!--<div class="base_content">-->
             <!--<div ><label>稽核人:</label><span>{{dataReport.name}}</span> </div>-->

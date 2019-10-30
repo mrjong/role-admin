@@ -14,6 +14,10 @@ export default {
           title: '时间',
           key: 'fragmentStartTime',
           align: 'center',
+          render: (h, params) => {
+            let fragmentStartTime = params.row.fragmentStartTime? this.$options.filters['hhMmSsTime'](params.row.fragmentStartTime, 2): params.row.fragmentStartTime
+            return h('span', fragmentStartTime)
+          }
         },
         {
           title: '识别关键词',
@@ -45,7 +49,7 @@ export default {
   watch: {
     dataId: function (value) {
       console.log(value)
-      if(value){
+      if (value) {
         // this.dataReport = {}
         this.getData(value)
       }
@@ -53,7 +57,6 @@ export default {
     }
   },
   created() {
-
   },
   methods: {
     async getData(id) {
@@ -64,7 +67,7 @@ export default {
         vqcResultId: id
       });
       console.log(res)
-      this.tableData = res.data ? res.data :[]
+      this.tableData = res.data ? res.data : []
       this.dataReport = res2.data
       console.log(res2)
     },
