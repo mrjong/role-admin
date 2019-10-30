@@ -161,7 +161,7 @@ export default {
           align: 'center',
         },
         {
-          title: '沟通结果',
+          title: '沟通状态',
           width: 100,
           key: 'communicateResultName',
           align: 'center',
