@@ -96,6 +96,7 @@ export default {
           title: '任务名称',
           width: 120,
           key: 'jobName',
+          tooltip: true,
           align: 'center',
         },
         {
