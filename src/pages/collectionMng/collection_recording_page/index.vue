@@ -193,7 +193,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
           <FormItem span="6" label="问题类别:" prop="ruleCategorys">
-            <Select size="small" multiple clearable placeholder="请选择问题类别" v-model="formItem.ruleCategorys">
+            <Select size="small" clearable placeholder="请选择问题类别" v-model="formItem.ruleCategorys">
               <Option
                 v-for="item in getDirObj.VQC_RULE_CATEGORY"
                 :value="item.itemCode"
