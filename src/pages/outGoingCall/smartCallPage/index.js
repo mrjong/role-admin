@@ -93,6 +93,12 @@ export default {
           fixed: 'left',
         },
         {
+          title: '任务名称',
+          width: 120,
+          key: 'jobName',
+          align: 'center',
+        },
+        {
           title: '任务类型',
           width: 120,
           key: 'jobTypeName',

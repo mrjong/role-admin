@@ -26,22 +26,22 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="客户姓名:" prop="userNm">
-              <Input size="small" clearable v-model.trim="formItem.userNm" placeholder="请输入客户姓名"/>
+              <Input size="small" clearable v-model.trim="formItem.userNm" placeholder="请输入客户姓名" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="身份证号:" prop="idNo">
-              <Input size="small" clearable v-model.trim="formItem.idNo" placeholder="请输入身份证号"/>
+              <Input size="small" clearable v-model.trim="formItem.idNo" placeholder="请输入身份证号" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="催收电话:" prop="mblNo">
-              <Input size="small" clearable v-model.trim="formItem.mblNo" placeholder="请输入催收电话"/>
+              <Input size="small" clearable v-model.trim="formItem.mblNo" placeholder="请输入催收电话" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="账单号:" prop="billNo">
-              <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入账单号"/>
+              <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入账单号" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -123,7 +123,7 @@
                 placeholder="请选择拨打状态"
                 v-model="formItem.talkResult"
               >
-               <Option
+                <Option
                   v-for="(item,index) in call_status_list"
                   :value="item.codeKey"
                   :key="item.codeKey + index"
@@ -132,38 +132,43 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-          <FormItem label="任务类型:">
-            <Select
-              size="small"
-              clearable
-              placeholder="请选择任务类型"
-              multiple
-              v-model="formItem.jobTypeList"
-            >
-              <Option
-                v-for="item in getDirObj.ROBOT_JOB_TYPE"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
-            </Select>
-          </FormItem>
+            <FormItem label="任务类型:">
+              <Select
+                size="small"
+                clearable
+                placeholder="请选择任务类型"
+                multiple
+                v-model="formItem.jobTypeList"
+              >
+                <Option
+                  v-for="item in getDirObj.ROBOT_JOB_TYPE"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-          <FormItem label="是否催记:">
-            <Select
-              size="small"
-              clearable
-              filterable
-              placeholder="请选择"
-              v-model="formItem.isReminder"
-            >
-              <Option
-                v-for="item in getDirObj.ROBOT_IS_REMINDER"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
-            </Select>
-          </FormItem>
+            <FormItem label="是否催记:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择"
+                v-model="formItem.isReminder"
+              >
+                <Option
+                  v-for="item in getDirObj.ROBOT_IS_REMINDER"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="任务名称:">
+              <Input size="small" clearable v-model.trim="formItem.jobName" placeholder="请输入任务名称" />
+            </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
@@ -227,6 +232,6 @@
 }
 .video-player-box {
   display: flex;
-  justify-content: center
+  justify-content: center;
 }
 </style>
