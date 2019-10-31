@@ -2206,3 +2206,15 @@ export const callout_fixed_hung_off = (obj, options) =>
   })
 
 
+/**
+ * 外呼管理智能机器人
+ * 检索接口
+ *
+ */
+
+export const robotOutbound_list = (obj, options) =>
+  fetch({
+    url: 'robotOutbound/list',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
