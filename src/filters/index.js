@@ -16,7 +16,7 @@ exports.hhMmSsTime = (date, type) => {
   let time = (new Date(date)).valueOf();
   let hours = parseInt((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   let minutes = parseInt((time % (1000 * 60 * 60)) / (1000 * 60));
-  let seconds = (time % (1000 * 60)) / 1000;
+  let seconds = Math.round((time % (1000 * 60)) / 1000);
   if (type === 2)
   return (minutes < 10? '0' + minutes: minutes)+ ':' +(seconds < 10? '0' + seconds: seconds);
   if (type === 1)
