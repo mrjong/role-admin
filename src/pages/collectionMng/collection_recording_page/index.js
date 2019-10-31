@@ -365,6 +365,7 @@ export default {
           title: '问题类别',
           width: 180,
           key: 'ruleCategoryName',
+          tooltip: true,
           align: 'center',
         },
         {
