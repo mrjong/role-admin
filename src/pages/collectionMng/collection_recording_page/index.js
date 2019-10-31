@@ -334,7 +334,7 @@ export default {
         {
           title: '质检结果',
           width: 180,
-          key: 'vqcResult',
+          key: 'vqcResultName',
           align: 'center',
         },
         {
@@ -342,6 +342,18 @@ export default {
           width: 180,
           key: 'vqcScore',
           align: 'center',
+          render: (h, params) => {
+            var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+            var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+            if(params.row.vqcScore){
+              if(regPos.test(params.row.vqcScore) || regNeg.test(params.row.vqcScore)) {
+                let hitScore = params.row.vqcScore? '-'+ params.row.vqcScore : ''
+                return h('span', hitScore);
+              } else {
+                return h('span', '');
+              }
+            }
+          }
         },
         {
           title: '违规级别',
@@ -352,7 +364,7 @@ export default {
         {
           title: '问题类别',
           width: 180,
-          key: 'violationCategory',
+          key: 'ruleCategoryName',
           align: 'center',
         },
         {
