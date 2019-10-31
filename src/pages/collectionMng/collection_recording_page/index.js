@@ -345,9 +345,9 @@ export default {
           render: (h, params) => {
             var regPos = /^\d+(\.\d+)?$/; //非负浮点数
             var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
-            if(params.row.vqcScore){
+            if(params.row.vqcScore || params.row.vqcScore === 0 ){
               if(regPos.test(params.row.vqcScore) || regNeg.test(params.row.vqcScore)) {
-                let hitScore = params.row.vqcScore? '-'+ params.row.vqcScore : ''
+                let hitScore = params.row.vqcScore ? '-'+ params.row.vqcScore : params.row.vqcScore === 0 ? '0' : ''
                 return h('span', hitScore);
               } else {
                 return h('span', '');
@@ -358,7 +358,7 @@ export default {
         {
           title: '违规级别',
           width: 180,
-          key: 'violationLevel',
+          key: 'ruleLevel',
           align: 'center',
         },
         {
