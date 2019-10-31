@@ -5,6 +5,7 @@ import tablePage from '@/mixin/tablePage';
 import util from '@/libs/util';
 import 'video.js/dist/video-js.css';
 import { videoPlayer } from 'vue-video-player';
+import ReportModal from './components/reportModal';
 import Cookie from 'js-cookie';
 import videojs from 'video.js'
 import 'vue-video-player/src/custom-theme.css'
@@ -15,13 +16,14 @@ import qs from 'qs';
 export default {
   name: 'collecttion_recording_page',
   components: {
-    videoPlayer
+    videoPlayer,
+    ReportModal
   },
   mixins: [tablePage, formValidateFun, sysDictionary],
   data() {
     let _this = this;
     return {
-      getDirList: ['PROD_TYPE'],
+      getDirList: ['PROD_TYPE', 'VQC_RULE_LEVEL', 'VQC_RESULT', 'VQC_RULE_CATEGORY'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -30,6 +32,7 @@ export default {
       query: false,//查询权限
       play: false,//播放权限
       download: false,//下载权限
+      checkReport: false, //查看报告权限
       all_opt: false,//案件详情全部操作权限
       plaintext: false,//案件详情查看明文权限
       query_loading: false,//查询权限按钮loading
@@ -38,6 +41,7 @@ export default {
       collect_list_data: [],//经办人list
       modal1: false,
       billNo: null, //录音显示的账单号
+      dataId: '', //质检查看报告
       playerOptions: {
         // videojs options
         muted: false,
@@ -134,6 +138,33 @@ export default {
                   }
                 },
                 '下载'
+              ),h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  style: {
+                    borderRight: 'none',
+                    // display: params.row.id ? 'block' : 'none',
+                    color: params.row.vqcResultId ? '': '#CCC'
+                  },
+                  on: {
+                    click: () => {
+                      if (!this.checkReport) {
+                        this.$Message.error('很抱歉，暂无查看权限');
+                        return;
+                      }
+                      if(params.row.vqcResultId){
+                        this.dataId = params.row.vqcResultId
+                      } else {
+                        return
+                      }
+
+                      // this.case_collect_tape_download(actionId);
+                    }
+                  }
+                },
+                params.row.vqcResultId ? '查看报告' : '暂无报告'
               ),
             ]) : h('div', [
               h(
@@ -299,7 +330,56 @@ export default {
           width: 180,
           key: 'idNoHid',
           align: 'center',
-        }
+        },
+        {
+          title: '质检结果',
+          width: 180,
+          key: 'vqcResultName',
+          align: 'center',
+        },
+        {
+          title: '质检得分',
+          width: 180,
+          key: 'vqcScore',
+          align: 'center',
+          render: (h, params) => {
+            var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+            var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+            if(params.row.vqcScore || params.row.vqcScore === 0 ){
+              if(regPos.test(params.row.vqcScore) || regNeg.test(params.row.vqcScore)) {
+                let hitScore = params.row.vqcScore ? '-'+ params.row.vqcScore : params.row.vqcScore === 0 ? '0' : ''
+                return h('span', hitScore);
+              } else {
+                return h('span', '');
+              }
+            }
+          }
+        },
+        {
+          title: '违规级别',
+          width: 180,
+          key: 'ruleLevel',
+          align: 'center',
+        },
+        {
+          title: '问题类别',
+          width: 180,
+          key: 'ruleCategoryName',
+          tooltip: true,
+          align: 'center',
+        },
+        {
+          title: '录音编号',
+          width: 180,
+          key: 'recordNumber',
+          align: 'center',
+        },
+        // {
+        //   title: '稽核人',
+        //   width: 180,
+        //   key: 'ruleName',
+        //   align: 'center',
+        // }
       ]
     };
   },
@@ -323,6 +403,8 @@ export default {
         case "download": this.download = true;
           break;
         case "plaintext": this.plaintext = true;
+          break;
+        case "checkReport": this.checkReport = true;
           break;
       }
     });
@@ -442,6 +524,7 @@ export default {
     },
     // 列表
     async getList() {
+      console.log(this.formItem)
       // if (!this.query) {
       //   this.$Message.error('很抱歉，暂无权限查询');
       //   return;
@@ -500,6 +583,9 @@ export default {
     },
     cancel() {
       this.$Modal.remove();
+    },
+    passBask(val) {
+      this.dataId = ''
     }
   }
 };

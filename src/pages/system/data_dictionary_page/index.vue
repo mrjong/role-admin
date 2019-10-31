@@ -1,5 +1,5 @@
 <template>
-  <div class="panel_list">
+  <div class="panel_list dictionary_wrap">
     <Row :gutter="8" class="detail-row">
       <!-- 左侧树结构 -->
       <Col span="8" class="tree-col">
@@ -83,35 +83,22 @@
           <Form ref="newMenuItem" :model="newMenuItem" :label-width="90" :rules="ruleValidate1">
             <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
               <FormItem span="4" label="字典项名称:" prop="itemName">
-                <Input
-                  size="small"
-                  v-model="newMenuItem.itemName"
-                  id="acount"
-                ></Input>
+                <Input size="small" v-model="newMenuItem.itemName" id="acount"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
               <FormItem span="4" label="级别:" prop="depth">
-                <Input
-                  size="small"
-                  v-model="newMenuItem.depth"
-                ></Input>
+                <Input size="small" v-model="newMenuItem.depth"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
               <FormItem span="4" label="字典代码:" prop="itemCode">
-                <Input
-                  size="small"
-                  v-model="newMenuItem.itemCode"
-                ></Input>
+                <Input size="small" v-model="newMenuItem.itemCode"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
               <FormItem span="4" label="字典描述:" prop="itemDesc">
-                <Input
-                  size="small"
-                  v-model="newMenuItem.itemDesc"
-                ></Input>
+                <Input size="small" v-model="newMenuItem.itemDesc"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
@@ -131,26 +118,28 @@
 </template>
 <script src="./index.js"></script>
 <style lang="less">
-.tdetail-row,
-.detail-col {
-  position: relative;
-}
-.tree-col {
-  .ivu-tree {
-    height: 620px;
-    overflow-y: auto;
+.dictionary_wrap {
+  .tdetail-row,
+  .detail-col {
+    position: relative;
   }
-}
-.ivu-modal {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-.detail-col {
-  position: relative;
-  .ivu-form {
-    overflow: hidden;
+  .tree-col {
+    .ivu-tree {
+      height: 620px;
+      overflow-y: auto;
+    }
+  }
+  .ivu-modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .detail-col {
+    position: relative;
+    .ivu-form {
+      overflow: hidden;
+    }
   }
 }
 </style>

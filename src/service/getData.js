@@ -2204,6 +2204,29 @@ export const callout_fixed_hung_off = (obj, options) =>
     method: 'POST',
     data: qs.stringify(obj),
   })
+/**
+ * 案件催收记录质检
+ * 详情
+ * 报告明细列表
+ *
+ */
+
+// 挂断
+export const vqc_result_detail = (obj, options) =>
+  fetch({
+    url: '/vqc/result/detail',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
+
+
+// 挂断
+export const vqc_result_hitRule = (obj, options) =>
+  fetch({
+    url: 'vqc/result/hitRule',
+    method: 'POST',
+    data: qs.stringify(obj),
+  })
 
 
 /**
