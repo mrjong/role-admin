@@ -20,7 +20,7 @@
             <div><label>数据集名称:</label><span>{{dataReport.dataSetName}}</span> </div>
           </div>
           <div class="base_content">
-            <div><label>质检结果:</label><span>{{dataReport.vqcResult}}</span> </div>
+            <div><label>质检结果:</label><span>{{dataReport.vqcResultName}}</span> </div>
             <div><label>质检得分:</label><span>{{dataReport.vqcScore}}</span> </div>
           </div>
           <div class="base_content">
