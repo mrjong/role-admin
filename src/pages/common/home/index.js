@@ -314,7 +314,6 @@ export default {
   created() {
     console.log(this.$route)
     console.log(new Date().getMonth())
-    debugger
     if(sessionStorage.getItem('newConnectionCase')){
       this.showIsConnection = true
     }
