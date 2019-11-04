@@ -1127,7 +1127,7 @@ export default {
       this.message_list_loading = true;
       const res = await case_detail_mail_list_appended({
         caseNo: this.caseNo,
-        userId: this.userIdCopy,
+        // userId: this.userIdCopy,
         pageNum: this.case_detail_mail_list_appended_pageNo,
         pageSize: this.case_detail_mail_list_appended_pageSize
       })
