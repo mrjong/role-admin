@@ -13,7 +13,7 @@
         <CheckboxGroup v-model="call_permissions_checkbox">
           <Checkbox label="01" class="call_user_type" disabled>本人</Checkbox>
           <Checkbox label="02" class="call_user_type" disabled>紧连</Checkbox>
-          <Checkbox label="03" class="call_user_type" disabled>通讯录</Checkbox>
+          <Checkbox label="03" class="call_user_type" disabled>联系人</Checkbox>
         </CheckboxGroup>
       </div>
     </div>
