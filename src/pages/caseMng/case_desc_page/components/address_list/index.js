@@ -1045,8 +1045,8 @@ export default {
       this.add_txl_loading = false;
       if (res.code === 1) {
         // 更新list
-        this.case_detail_mail_list_appended();
         this.address_list_modal = false;
+        this.case_detail_mail_list_appended();
       } else {
         this.$Message.error(res.message);
       }
