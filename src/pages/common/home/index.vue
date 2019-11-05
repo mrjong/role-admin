@@ -50,15 +50,15 @@
           <Card class="board_wrap first_bg" >
             <div class="flex_box_wrap">
               <div class="board_left">
-                <p class="board_title">本月累计案件</p>
+                <p class="board_title">{{new Date().getMonth()+1}}月累计案件</p>
                 <p class="board_content"  :class="[this_month.index === 1? 'first': this_month.index === 999 || this_month.index === 998? 'last' : 'other' ]">{{this_month.caseCount}}</p>
               </div>
               <div class="board_middle">
-                <p class="board_title">本月累计还款</p>
+                <p class="board_title">{{new Date().getMonth()+1}}月累计还款</p>
                 <p class="board_content"  :class="[this_month.index === 1? 'first': this_month.index === 999 || this_month.index === 998? 'last' : 'other' ]">{{this_month.repayCount}}</p>
               </div>
               <div class="board_right">
-                <p class="board_title">本月回款率</p>
+                <p class="board_title">{{new Date().getMonth()+1}}月回款率</p>
                 <p class="board_content" :class="[this_month.index === 1? 'first': this_month.index === 999 || this_month.index === 998? 'last' : 'other' ]">{{this_month.collectRate}}%</p>
               </div>
             </div>
@@ -71,15 +71,15 @@
           <Card class="board_wrap first_bg" >
             <div class="flex_box_wrap">
               <div class="board_left">
-                <p class="board_title">上月累计案件</p>
+                <p class="board_title">{{new Date().getMonth() ===0 ? 12 : new Date().getMonth()}}月累计案件</p>
                 <p class="board_content" :class="[last_month.index === 1? 'first': last_month.index === 999 || last_month.index === 998? 'last' : 'other' ]">{{last_month.caseCount}}</p>
               </div>
               <div class="board_middle">
-                <p class="board_title">上月累计还款</p>
+                <p class="board_title">{{new Date().getMonth() ===0 ? 12 : new Date().getMonth()}}月累计还款</p>
                 <p class="board_content" :class="[last_month.index === 1? 'first': last_month.index === 999 || last_month.index === 998? 'last' : 'other' ]">{{last_month.repayCount}}</p>
               </div>
               <div class="board_right">
-                <p class="board_title">上月回款率</p>
+                <p class="board_title">{{new Date().getMonth() ===0 ? 12 : new Date().getMonth()}}月回款率</p>
                 <p class="board_content" :class="[last_month.index === 1? 'first': last_month.index === 999 || last_month.index === 998? 'last' : 'other' ]">{{last_month.collectRate}}%</p>
               </div>
             </div>
@@ -88,26 +88,46 @@
           </Card>
         </Col>
       </Col>
-      <!-- 今日到期 -->
       <Col :xs="24" :sm="24" :md="8" :lg="8" style="margin-top: 0px;">
-        <Card class="board_wrap first_bg" >
-          <div class="flex_box_wrap">
-            <div class="board_left">
-              <p class="board_title">今日在催</p>
-              <p class="board_content special">{{today_expire.caseCount}}</p>
-            </div>
-            <div class="board_middle">
-              <p class="board_title">承诺还款</p>
-              <p class="board_content special">{{today_expire.casePromiseCount}}</p>
-            </div>
-            <div class="board_right">
-              <p class="board_title">今日未催收</p>
-              <p class="board_content special">{{today_expire.caseNoDealCount}}</p>
-            </div>
+      <Card class="board_wrap first_bg" >
+        <div class="flex_box_wrap">
+          <div class="board_left">
+            <p class="board_title">今日在催</p>
+            <p class="board_content special">{{today_expire.caseCount}}</p>
           </div>
-          <p class="order_line" style='visibility:hidden'>没有排名</p>
-          <Spin fix v-if="today_expire_flag"></Spin>
-        </Card>
+          <div class="board_middle">
+            <p class="board_title">承诺还款</p>
+            <p class="board_content special">{{today_expire.casePromiseCount}}</p>
+          </div>
+          <div class="board_right">
+            <p class="board_title">今日未催收</p>
+            <p class="board_content special">{{today_expire.caseNoDealCount}}</p>
+          </div>
+        </div>
+        <p class="order_line" style='visibility:hidden'>没有排名</p>
+        <Spin fix v-if="today_expire_flag"></Spin>
+      </Card>
+      </Col>
+      <!-- 上上月统计 -->
+      <Col :xs="24" :sm="24" :md="8" :lg="8" style="margin-top: 0px;">
+      <Card class="board_wrap first_bg" >
+        <div class="flex_box_wrap">
+          <div class="board_left">
+            <p class="board_title">{{new Date().getMonth()-1 ===0 ? 12 : new Date().getMonth() ===0 ? 11: new Date().getMonth()-1}}月累计案件</p>
+            <p class="board_content" :class="[last_last_month.index === 1? 'first': last_last_month.index === 999 || last_month.index === 998? 'last' : 'other' ]">{{last_last_month.caseCount}}</p>
+          </div>
+          <div class="board_middle">
+            <p class="board_title">{{new Date().getMonth()-1 ===0 ? 12 : new Date().getMonth() ===0 ? 11: new Date().getMonth()-1}}月累计还款</p>
+            <p class="board_content" :class="[last_last_month.index === 1? 'first': last_last_month.index === 999 || last_month.index === 998? 'last' : 'other' ]">{{last_last_month.repayCount}}</p>
+          </div>
+          <div class="board_right">
+            <p class="board_title">{{new Date().getMonth()-1 ===0 ? 12 : new Date().getMonth() === 0 ? 11: new Date().getMonth()-1}}月回款率</p>
+            <p class="board_content" :class="[last_last_month.index === 1? 'first': last_last_month.index === 999 || last_last_month.index === 998? 'last' : 'other' ]">{{last_last_month.collectRate}}%</p>
+          </div>
+        </div>
+        <p class="order_line" :class="[last_last_month.index === 0? 'hidden': 'show', last_last_month.index === 1? 'first': last_last_month.index === 999 || last_last_month.index === 998? 'last' : 'other' ]">{{numTransform(last_last_month.index)}}</p>
+        <Spin fix v-if="last_last_month_flag"></Spin>
+      </Card>
       </Col>
       <!-- 公告栏 -->
       <Col :xs="24" :sm="24" :md="12" :lg="12">

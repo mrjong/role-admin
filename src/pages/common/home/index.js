@@ -43,6 +43,10 @@ export default {
       this_month_flag: true,
       last_month: {},//上月案件info
       last_month_flag: true,
+      last_month_desc: '',
+      last_last_month: {},//上月案件info
+      last_last_month_flag: true,
+      last_last_month_desc: '',
       today_expire: {},//今日到期info
       today_expire_flag: true,
       yesterday: {},//昨日呼叫info
@@ -309,6 +313,7 @@ export default {
 
   created() {
     console.log(this.$route)
+    console.log(new Date().getMonth())
     if(sessionStorage.getItem('newConnectionCase')){
       this.showIsConnection = true
     }
@@ -345,6 +350,7 @@ export default {
     this.home_gethomecollectrate('1');
     this.home_gethomecollectrate('2');
     this.home_gethomecollectrate('3');
+    this.home_gethomecollectrate('4');
     this.home_getthedaydata();
     this.home_gethomecall();
   },
@@ -459,6 +465,13 @@ export default {
             this.numberGrow(this.today_case.repayCount, 0, 3, 'repayCount', 'today_case', null, 5);
             this.numberGrow(this.today_case.collectRate, 0, 5, 'collectRate', 'today_case', null, 1);
             this.today_case_flag = false;
+            break;
+          case '4':
+            this.last_last_month = res.data;
+            this.numberGrow(this.last_last_month.caseCount, 0, 1, 'caseCount', 'last_last_month', null, 80);
+            this.numberGrow(this.last_last_month.repayCount, 0, 1, 'repayCount', 'last_last_month', null, 80);
+            this.numberGrow(this.last_last_month.collectRate, 0, 2, 'collectRate', 'last_last_month', null, 1);
+            this.last_last_month_flag = false;
             break;
         }
       } else {

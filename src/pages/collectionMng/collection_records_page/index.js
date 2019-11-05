@@ -151,14 +151,14 @@ export default {
         {
           title: '催收时间',
           width: 150,
-          key: 'createTime',
+          key: 'remarkDate',
           align: 'center',
           render: (h, params) => {
-            let createTime = params.row.createTime;
-            createTime = createTime
-              ? this.$options.filters['formatDate'](createTime, 'YYYY-MM-DD HH:mm:ss')
-              : createTime;
-            return h('span', createTime);
+            let remarkDate = params.row.remarkDate;
+            remarkDate = remarkDate
+              ? this.$options.filters['formatDate'](remarkDate, 'YYYY-MM-DD HH:mm:ss')
+              : remarkDate;
+            return h('span', remarkDate);
           }
         },
         {
