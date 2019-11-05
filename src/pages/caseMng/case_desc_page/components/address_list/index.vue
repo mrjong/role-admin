@@ -20,7 +20,7 @@
               >结束</Button>
             </Poptip>
             <span>
-              本轮可触达通讯录数量：
+              本轮可触达联系人数量：
               <em>{{round_info_data.availiableAbs}}</em>
             </span>
             <span>
@@ -383,8 +383,8 @@
         </FormItem>
       </Form>
     </Card>
-    <!-- 新增通讯录 -->
-    <Modal title="新增通讯录" v-model="address_list_modal" :mask-closable="false">
+    <!-- 新增联系人 -->
+    <Modal title="新增联系人" v-model="address_list_modal" :mask-closable="false">
       <Form
         ref="formItem"
         :model="formItem"

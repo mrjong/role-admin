@@ -57,17 +57,17 @@ export default {
           align: 'center',
         },
         {
-          title: '通讯录拨打下限',
+          title: '联系人拨打下限',
           key: 'adsCallFloor',
           align: 'center',
         },
         {
-          title: '通讯录接通下限',
+          title: '联系人接通下限',
           key: 'adsAnswerFloor',
           align: 'center',
         },
         {
-          title: '通讯录接通上限',
+          title: '联系人接通上限',
           key: 'adsAnswerCeil',
           align: 'center',
         },

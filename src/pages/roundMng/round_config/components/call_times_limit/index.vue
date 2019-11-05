@@ -28,7 +28,7 @@
               </FormItem>
             </Checkbox>
             <Checkbox label="03" class="call_user_type" disabled>
-              通讯录
+              联系人
               <FormItem span="6" prop="contactCallCeil" class="form_item">
                 <InputNumber size="small" :max="10" :min="0" @on-blur="input_blur(formItem.contactCallCeil, 'contactCallCeil')" v-model="formItem.contactCallCeil"></InputNumber>
               </FormItem>

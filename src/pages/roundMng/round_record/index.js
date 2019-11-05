@@ -130,13 +130,13 @@ export default {
         },
 
         {
-          title: '通讯录拨打(个)',
+          title: '联系人拨打(个)',
           width: width_common,
           align: 'center',
           key: 'contactCall'
         },
         {
-          title: '通讯录接听(个)',
+          title: '联系人接听(个)',
           width: width_common,
           align: 'center',
           key: 'contactAnswer'
