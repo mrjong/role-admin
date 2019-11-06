@@ -150,13 +150,13 @@
                 <span>{{case_detail_address_info_Data&&case_detail_address_info_Data.channelOneName}}</span>
               </div>
             </Col> -->
-            <Col :xs="24" :sm="24" :md="24" :lg="24">
+            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.address">
               <div class="panel-desc-title">
                 家庭住址：
                 <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.address}}</span>
               </div>
             </Col>
-            <Col :xs="24" :sm="24" :md="24" :lg="24">
+            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.habitation">
               <div class="panel-desc-title">
                 居住住址：
                 <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.habitation}}</span>

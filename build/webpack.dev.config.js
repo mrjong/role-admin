@@ -79,7 +79,7 @@ module.exports = merge(webpackBaseConfig, {
                 // target: 'http://172.18.40.100:8080', //jiaqi
                 // target: 'http://172.18.40.220:8080', //李鹏飞
                 // target: 'http://172.18.30.201:8080', //张建锋
-                // target: 'http://172.18.40.199:8080', //高峰
+                // target: 'http://172.18.40.76:8080', //高峰
                 pathRewrite: { '^/admin': '' }, //重写接口
                 changeOrigin: true, //是否跨域
                 // demo=>  'http://localhost:8080/api' ===> 'http://www.abc.com/api'
