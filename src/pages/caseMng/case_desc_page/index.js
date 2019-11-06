@@ -23,6 +23,7 @@ export default {
   data() {
     return {
       base_info_data: {},//基础信息组件的传参
+      case_info_data: {},//案件信息组件传参
       address_list_data: {},//通讯录组件的传参
       collectCategory: false,//M1用户标识符
       case_collect_case_list_data: {},
@@ -69,6 +70,7 @@ export default {
       switch (obj.type) {
         case 'BASE_INFO':
           this.address_list_data = obj.data;
+          this.case_info_data = obj.data;
           break;
         case 'CASE_INFO':
           this.base_info_data = obj.data;
