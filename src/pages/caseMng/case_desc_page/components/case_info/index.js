@@ -1,7 +1,7 @@
 import { case_detail_case_base_info } from '@/service/getData';
 export default {
   name: 'case_indo',
-  props: ['queryData', 'caseNo'],
+  props: ['queryData', 'caseNo', 'case_info_data'],
   data() {
     return {
       showPanel: false,

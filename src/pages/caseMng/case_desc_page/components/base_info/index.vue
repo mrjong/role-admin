@@ -108,7 +108,37 @@
                 </span>
               </div>
             </Col>
-            <Col :xs="24" :sm="24" :md="24" :lg="24">
+            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.usrMarried">
+              <div class="panel-desc-title">
+                婚姻状况：
+                <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.usrMarried}}</span>
+              </div>
+            </Col>
+            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.haveChildren">
+              <div class="panel-desc-title">
+                有无子女：
+                <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.haveChildren}}</span>
+              </div>
+            </Col>
+            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.jobType">
+              <div class="panel-desc-title">
+                工作类型：
+                <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.jobType}}</span>
+              </div>
+            </Col>
+            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.incomeRange">
+              <div class="panel-desc-title">
+                收入区间：
+                <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.incomeRange}}</span>
+              </div>
+            </Col>
+            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.eduDegree">
+              <div class="panel-desc-title">
+                学历：
+                <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.eduDegree}}</span>
+              </div>
+            </Col>
+            <!-- <Col :xs="24" :sm="24" :md="24" :lg="24">
               <div class="panel-desc-title">
                 逾期应还金额：
                 <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.overdueAmt | money}}</span>
@@ -119,17 +149,17 @@
                 借款渠道：
                 <span>{{case_detail_address_info_Data&&case_detail_address_info_Data.channelOneName}}</span>
               </div>
-            </Col>
-            <!-- <Col :xs="24" :sm="24" :md="24" :lg="24">
-                <div class="panel-desc-title">
-                  当前逾期期数：
-                  <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.overduePerdCount}}</span>
-                </div>
-            </Col>-->
-            <Col :xs="24" :sm="24" :md="24" :lg="24">
+            </Col> -->
+            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.address">
               <div class="panel-desc-title">
                 家庭住址：
                 <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.address}}</span>
+              </div>
+            </Col>
+            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.habitation">
+              <div class="panel-desc-title">
+                居住住址：
+                <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.habitation}}</span>
               </div>
             </Col>
           </Col>

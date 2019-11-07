@@ -6,6 +6,12 @@
         <span
           class="qishu"
         >{{case_detail_case_base_info_Data && case_detail_case_base_info_Data.prdTypName}}（{{case_detail_case_base_info_Data && case_detail_case_base_info_Data.perdCnt}}期）</span>
+        <span class="qishu" style="margin: 0px 20px;">
+          逾期应还金额：{{case_info_data&&case_info_data.overdueAmt}}
+        </span>
+        <span class="qishu">
+          借款渠道：{{case_info_data&&case_info_data.channelOneName}}
+        </span>
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel">
