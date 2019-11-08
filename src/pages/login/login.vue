@@ -156,6 +156,7 @@ export default {
         }
         localStorage.setItem("callData", JSON.stringify(res.data));
         res.data.seatType === 'DY' && window.sessionStorage.setItem("callSeat", JSON.stringify(res.data));
+        res.data.seatType === 'DY' &&  this.$store.commit("changeInitDY", true);
         this.loginSuccess(data);
       } else {
         this.$Message.error(res.message);

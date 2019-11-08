@@ -737,7 +737,9 @@ export default {
     if (Cookie.get('plaintext') === 'true') {
       this.plaintext = true;
     };
-
+  },
+  mounted () {
+    this.$store.commit('changeDYScript', true);
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
@@ -856,6 +858,8 @@ export default {
       }).then(res => {
         if (res.code === 1) {
           // this.recordIdDY = res.data.callRecordDomain.id
+          let DYSDK = JSON.parse(window.sessionStorage.getItem('DYSDK'));
+          console.log(DYSDK);
           if (DYSDK.isReady) {
             document.getElementById("dyCti").parentNode.style =
               'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
