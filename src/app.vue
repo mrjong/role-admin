@@ -30,7 +30,7 @@
 <script>
 import { mapGetters } from "vuex";
 import util from "@/libs/util";
-import { callout_hung_off, callout_fixed_hung_off } from "@/service/getData";
+import { callout_hung_off, callout_fixed_hung_off, callout_get_seat } from "@/service/getData";
 import spinModal from "@/components/spin_modal";
 import Cookie from "js-cookie";
 export default {
@@ -72,26 +72,27 @@ export default {
     }
   },
   mounted() {
-    let callSeat = sessionStorage.getItem('callSeat')
-    if(window.location.href.indexOf("/case_desc_page?") === -1 && callSeat){
-      if(JSON.parse(callSeat).seatType && JSON.parse(callSeat).seatType === 'DY'){
-        this.$nextTick(() =>{
+    let callSeat = sessionStorage.getItem("callSeat");
+    if (window.location.href.indexOf("/case_desc_page?") !== -1 && callSeat) {
+      if (
+        JSON.parse(callSeat).seatType &&
+        JSON.parse(callSeat).seatType === "DY"
+      ) {
+        this.$nextTick(() => {
           this.initDy();
-          // this.$store.commit("changeInitDY", true);
-        })
-        // if (document.hidden !== undefined) {
-        //   document.addEventListener("visibilitychange", () => {
-        //     console.log(document.hidden)
-        //     if(!document.hidden){
-        //       this.initDy()
-        //       let nodeA = document.getElementById("dyCti")
-        //       let callData = JSON.parse(callSeat)
-        //       nodeA.src =
-        //         `https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`
-        //       nodeA.height = 40
-        //     }
-        //   });
-        // }
+        });
+        if (document.hidden !== undefined) {
+          document.addEventListener("visibilitychange", () => {
+            console.log(document.hidden);
+            if (!document.hidden) {
+              this.initDy();
+              let nodeA = document.getElementById("dyCti");
+              let callData = JSON.parse(callSeat);
+              nodeA.src = `https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`;
+              nodeA.height = 40;
+            }
+          });
+        }
       }
     }
   },
@@ -113,7 +114,6 @@ export default {
       se.setAttribute("ctype", "mini");
       se.setAttribute("name", "DYSDK");
       se.src = "https://cti.duyansoft.com/syui/dysdk/dysdk2.js";
-      // this.$set(this, "DY_script", se);
       // js 加载后执行
       se.onload = () => {
         DYSDK.init({ stopBeforeunload: true });
@@ -187,8 +187,9 @@ export default {
           console.log(data);
         });
       };
+      document.body.appendChild(se);
       this.DY_script = se;
-
+      console.log(this.DY_script);
     },
     initDy() {
       //加载度言
@@ -281,6 +282,16 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+    },
+    // 重新获取度言的相关参数
+    async callout_get_seat() {
+      const res = await callout_get_seat({
+        loginName: Cookie.get("user"),
+      });
+      if (res.code === 1) {
+        res.data.seatType === 'DY' && window.sessionStorage.setItem("callSeat", JSON.stringify(res.data));
+        this.initDy();
+      }
     }
   },
   watch: {
@@ -369,9 +380,8 @@ export default {
           JSON.parse(callSeat).seatType &&
           JSON.parse(callSeat).seatType === "DY"
         ) {
-          this.$nextTick(() => {
-            this.initDy();
-          });
+          this.initDy();
+          // this.callout_get_seat()
           // if (document.hidden !== undefined) {
           //   document.addEventListener("visibilitychange", () => {
           //     console.log(document.hidden);
@@ -390,11 +400,18 @@ export default {
     // 初始化度言的标签
     changeDYScript(res) {
       if (res) {
-        let dySdkScript = document.getElementById("dySdkScript");
-        console.log(dySdkScript);
-        dySdkScript && document.removeChild(dySdkScript);
-        console.log(this.DY_script);
-        document.body.appendChild(this.DY_script);
+        console.log("--------------", this.DY_script);
+        // document.getElementById("dyCti").parentNode.style =
+        //   "position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100";
+        // sessionStorage.setItem("recordIdDY", res.data.callRecordDomain.id);
+        // DYSDK.call(res.data.toCallMbl, function() {}, "");
+        // let dySdkScript = document.getElementById("dySdkScript");
+        // let dySdkScript = (window.sessionStorage.getItem("DY_script"));
+        // let dySdkScript = (Cookie.get("DY_script"));
+        // console.log(dySdkScript);
+        // // dySdkScript && document.removeChild(dySdkScript);
+        // console.log(this.DY_script);
+        // document.body.appendChild(dySdkScript);
       }
     }
   },

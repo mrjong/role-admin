@@ -739,7 +739,8 @@ export default {
     };
   },
   mounted () {
-    this.$store.commit('changeDYScript', true);
+    // this.$store.commit('changeDYScript', true);
+    console.log(window.name)
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
@@ -835,6 +836,15 @@ export default {
     },
     // 度言外呼
     callout_fixed_hung_on(tag, callData) {
+      // 判断度言初始化的状态
+      if (!DYSDK.isReady) {
+        this.$Message.error('度言初始化失败，请稍后重试!');
+        clearTimeout(timer)
+        var timer = setTimeout(() => {
+          this.$store.commit("changeInitDY", true);
+        }, 1500)
+        return;
+      }
       let params = {
         callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
         callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
@@ -858,7 +868,7 @@ export default {
       }).then(res => {
         if (res.code === 1) {
           // this.recordIdDY = res.data.callRecordDomain.id
-          let DYSDK = JSON.parse(window.sessionStorage.getItem('DYSDK'));
+          // let DYSDK = JSON.parse(window.sessionStorage.getItem('DYSDK'));
           console.log(DYSDK);
           if (DYSDK.isReady) {
             document.getElementById("dyCti").parentNode.style =
