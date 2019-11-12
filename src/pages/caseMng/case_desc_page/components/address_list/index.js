@@ -836,8 +836,10 @@ export default {
     },
     // 度言外呼
     callout_fixed_hung_on(tag, callData) {
+      let DYISOK =  Cookie.get('DYISOK');
+      console.log(DYISOK)
       // 判断度言初始化的状态
-      if (!DYSDK.isReady) {
+      if (DYISOK !== 'true') {
         this.$Message.error('度言初始化失败，请稍后重试!');
         clearTimeout(timer)
         var timer = setTimeout(() => {
@@ -870,7 +872,7 @@ export default {
           // this.recordIdDY = res.data.callRecordDomain.id
           // let DYSDK = JSON.parse(window.sessionStorage.getItem('DYSDK'));
           console.log(DYSDK);
-          if (DYSDK.isReady) {
+          if (DYISOK === 'true') {
             document.getElementById("dyCti").parentNode.style =
               'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
             sessionStorage.setItem('recordIdDY', res.data.callRecordDomain.id)
@@ -879,7 +881,7 @@ export default {
           } else {
             DYSDK.init({ stopBeforeunload: true });
             let timeID = setInterval(() => {
-              if (DYSDK.isReady) {
+              if (DYISOK === 'true') {
                 document.getElementById("dyCti").parentNode.style =
                   'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
                 sessionStorage.setItem('recordIdDY', res.data.callRecordDomain.id)
