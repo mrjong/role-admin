@@ -120,6 +120,7 @@ export default {
       se.src = "https://cti.duyansoft.com/syui/dysdk/dysdk2.js";
       // js 加载后执行
       se.onload = () => {
+        Cookie.remove("DYISOK", true);
         DYSDK.init({ stopBeforeunload: true });
         let nodeA = document.getElementById("dyCti");
         if (nodeA.parentNode.childNodes[1]) {
@@ -130,7 +131,6 @@ export default {
           "position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); display: none";
         let that = this;
         DYSDK.ctiLogined(function(data) {
-          debugger;
           Cookie.set("DYISOK", true);
           console.log("登录回调");
           data.phone =
@@ -156,7 +156,7 @@ export default {
             data.phone &&
             data.phone.substring(0, 4) + "****" + data.phone.substring(7, 11);
           that.duyanHungOff(data.uuid, nodeA);
-          that.callout_get_seat();
+          !data.uuid && that.callout_get_seat();
           console.log(data);
         });
 
