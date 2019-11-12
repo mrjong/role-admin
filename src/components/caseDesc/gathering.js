@@ -222,7 +222,7 @@ export default {
     this.$nextTick(() => {
       let left = this.$refs.left;
       let right = this.$refs.right;
-      if (Number(left.scrollHeight) > Number(right.scrollHeight)/2) {
+      if (parseFloat(left.scrollHeight) > parseFloat(right.scrollHeight)/2) {
         left.style.borderRight = '1px solid #e8eaec';
       } else {
         right.style.borderLeft = '1px solid #e8eaec';
@@ -239,25 +239,25 @@ export default {
         if (type === 'add') {
           // 增加减免的联动
           this.tableData.forEach((j) => {
-            if (Number(i.perdNum) === Number(j.perdNum)) {
+            if (parseFloat(i.perdNum) === parseFloat(j.perdNum)) {
               i.error_flag = false;
-              reliefAmt += Number(j.reliefAmt);
+              reliefAmt += parseFloat(j.reliefAmt);
               i.reliefAmt = reliefAmt;
-              // i.repayAmt = Number(i.perdTotSur - i.reliefAmt).toFixed(2);
-              i.repayAmt = Number(i.perdTotSur) - i.reliefAmt;
-              // i.repayAmt = Number(i.repayAmt).toFixed(2);
+              // i.repayAmt = parseFloat(i.perdTotSur - i.reliefAmt).toFixed(2);
+              i.repayAmt = parseFloat(i.perdTotSur) - i.reliefAmt.toFixed(2);
+              // i.repayAmt = parseFloat(i.repayAmt).toFixed(2);
               console.log(i.repayAmt)
               this.$set(this.tableData_repayment, index, i)
             }
           });
         } else {
           // 删除减免的联动
-          if (Number(i.perdNum) === Number(row[0].perdNum)) {
+          if (parseFloat(i.perdNum) === parseFloat(row[0].perdNum)) {
             i.error_flag = false;
-            reliefAmt = Number(i.reliefAmt) - Number(row[0].reliefAmt);
+            reliefAmt = parseFloat(i.reliefAmt) - parseFloat(row[0].reliefAmt);
             // i.reliefAmt = reliefAmt.toFixed(2);
             i.reliefAmt = reliefAmt;
-            i.repayAmt = i.reliefAmt > 0 ? Number(i.perdTotSur) - Number(i.reliefAmt): 0;
+            i.repayAmt = i.reliefAmt > 0 ? parseFloat(i.perdTotSur) - parseFloat(i.reliefAmt).toFixed(2): 0;
             this.$set(this.tableData_repayment, index, i)
           }
         }
@@ -294,7 +294,7 @@ export default {
       // 类型，期数，金额校验通过后执行添加的逻辑
       if (reliefType && perdNum && reliefAmt) {
         if (this.reliefAmt_max > 0) {
-          if (Number(this.reliefAmt_max) < Number(this.formItem.reliefAmt)) {
+          if (parseFloat(this.reliefAmt_max) < parseFloat(this.formItem.reliefAmt)) {
             this.$Message.error(`减免最大金额不能超过${this.reliefAmt_max}`);
             this.$set(this.formItem, "reliefAmt", this.reliefAmt_max);
             return;
@@ -333,7 +333,7 @@ export default {
     },
     // 减免金额处理小数点
     reliefAmt_blur(val) {
-      this.$set(this.formItem, "reliefAmt", Number(val).toFixed(2));
+      this.$set(this.formItem, "reliefAmt", parseFloat(val).toFixed(2));
     },
     // 处理还款金额
     repayAmt_blur(row, index, event) {
@@ -341,7 +341,7 @@ export default {
       if (event.target.value === '' || event.target.value < 0) {
         row.repayAmt = 0;
       };
-      if (Number(event.target.value) + Number(row.reliefAmt) > Number(row.perdTotSur)) {
+      if (parseFloat(event.target.value) + parseFloat(row.reliefAmt) > parseFloat(row.perdTotSur)) {
         row.error_flag = true;
         this.error_text = '金额填写有误'
         this.$set(this.tableData_repayment, index, row);
@@ -355,9 +355,9 @@ export default {
       this.totRepayAmt = 0;
       this.tableData_repayment.forEach(item => {
         item.remainTotAmt = item.perdTotSur;//处理剩余应还金额
-        this.totRepayAmt += Number(item.repayAmt)
-        if (Number(item.reliefAmt) > 0) {
-          this.totReliefAmt += Number(item.reliefAmt);
+        this.totRepayAmt += parseFloat(item.repayAmt)
+        if (parseFloat(item.reliefAmt) > 0) {
+          this.totReliefAmt += parseFloat(item.reliefAmt);
         }
       })
     },
@@ -479,9 +479,9 @@ export default {
       this.totReliefAmt = 0;
       this.tableData_repayment.forEach(item => {
         item.remainTotAmt = item.perdTotSur;//处理剩余应还金额
-        item.repayAmt > 0 && (item.repayAmt = Number(item.repayAmt.toFixed(2)));
-        if (Number(item.reliefAmt) > 0) {
-          this.totReliefAmt += Number(item.reliefAmt);
+        item.repayAmt > 0 && (item.repayAmt = parseFloat(item.repayAmt.toFixed(2)));
+        if (parseFloat(item.reliefAmt) > 0) {
+          this.totReliefAmt += parseFloat(item.reliefAmt);
         }
       })
       this.offlineScanPay_generate()
@@ -528,8 +528,8 @@ export default {
           userNmHid: this.overdue_info.userNameHid,
           userMblNoHid: this.overdue_info.mblNoHid,
           billPerdInfos: this.overdue_info.billPerdInfos,
-          totReliefAmt: this.totReliefAmt,
-          totRepayAmt: Number(this.totRepayAmt.toFixed(2)),
+          totReliefAmt: parseFloat(this.totReliefAmt.toFixed(2)),
+          totRepayAmt: parseFloat(this.totRepayAmt.toFixed(2)),
           ...this.formItem,
           reliefStatus: 'O',
           reliefOrigin: 'OS',
