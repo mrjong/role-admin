@@ -162,7 +162,6 @@
                       >
                         <Option
                           v-for="item in relief_counts"
-                          v-if="item.itemCode === '0'? perdNum_flag: true"
                           :value="item.itemCode"
                           :key="item.itemCode"
                         >{{ item.itemName }}</Option>
@@ -231,7 +230,7 @@
               v-if="edit_flag"
             >
               <template slot-scope="{ row, column, index }" slot="repayAmt">
-                <div v-if="row.reliefAmt == 0">
+                <div v-if="row.perdSts === '1' && index === 0">
                   <Input
                     size="small"
                     type="number"

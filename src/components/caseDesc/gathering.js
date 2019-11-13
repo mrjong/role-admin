@@ -367,16 +367,16 @@ export default {
       if (obj) {
         this.formItem.reliefTypeName = obj.label;
         this.reliefPerdInfoVos.forEach(item => {
-          // 还到、现金分期执行新的罚息计算逻辑
-          if (this.breaks_data.prdTyp === '01' || this.breaks_data.prdTyp === '11') {
-            if (obj.value === item.reliefType && String(item.perdNum) === '0' && (obj.value === 'FINE' || obj.value === 'OVDU')) {
-              this.$set(this.formItem, "reliefAmt", item.perdAmt.toFixed(2));
-              this.reliefAmt_max = (item.perdAmt).toFixed(2);
-              this.$set(this.formItem, 'perdNum', '0');
-              this.perdNum_flag = true;
-              return;
-            }
-          }
+          // // 还到、现金分期执行新的罚息计算逻辑
+          // if (this.breaks_data.prdTyp === '01' || this.breaks_data.prdTyp === '11') {
+          //   if (obj.value === item.reliefType && String(item.perdNum) === '0' && (obj.value === 'FINE' || obj.value === 'OVDU')) {
+          //     this.$set(this.formItem, "reliefAmt", item.perdAmt.toFixed(2));
+          //     this.reliefAmt_max = (item.perdAmt).toFixed(2);
+          //     this.$set(this.formItem, 'perdNum', '0');
+          //     this.perdNum_flag = true;
+          //     return;
+          //   }
+          // }
           // 商户贷、钱包不变
           if (this.formItem.reliefType === item.reliefType && this.formItem.perdNum === String(item.perdNum)) {
             this.$set(this.formItem, "reliefAmt", item.perdAmt.toFixed(2));
