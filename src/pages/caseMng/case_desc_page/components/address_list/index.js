@@ -1444,6 +1444,7 @@ export default {
       })
       if (res.code === 1) {
         localStorage.setItem('callData', JSON.stringify(res.data));
+        window.sessionStorage.setItem("callSeat", JSON.stringify(res.data));
         if (res.data.seatType === 'KT') {
           this.seatType = res.data.seatType;
           await this.initKTScript(res.data);
@@ -1451,7 +1452,6 @@ export default {
           this.seatType = res.data.seatType;
           let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, serverid: '', password: res.data.password };
           window.sessionStorage.setItem('XZ_INIT_DATA', JSON.stringify(obj));
-          // await init();
           this.call_xz_hung_on({
             callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
             callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
@@ -1463,7 +1463,7 @@ export default {
             caseNo: this.caseNo,
             collectType: tag,
           });
-        }
+        };
       } else {
         this.$Message.error(res.message);
       }
