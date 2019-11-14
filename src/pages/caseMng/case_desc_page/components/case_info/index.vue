@@ -19,7 +19,7 @@
           <div class="panel-desc">
             <Row>
               <Col span="24">
-                <Col span="6" class="panel-desc-title">
+                <Col span="7" class="panel-desc-title">
                   账单号：
                   <span>{{case_detail_case_base_info_Data && case_detail_case_base_info_Data.billNo}}</span>
                 </Col>
@@ -41,7 +41,7 @@
                     ></Poptip>
                   </span>
                 </Col>
-                <Col span="4" class="panel-desc-title">
+                <Col span="3" class="panel-desc-title">
                   银行卡：
                   <span>{{case_detail_case_base_info_Data && case_detail_case_base_info_Data.corgName}}</span>
                 </Col>
