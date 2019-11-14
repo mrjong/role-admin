@@ -21,10 +21,10 @@
           </div>
           <div class="base_content">
             <div><label>质检结果:</label><span>{{dataReport.vqcResultName}}</span> </div>
-            <div><label>质检得分:</label><span>{{dataReport.vqcScore > 0? -dataReport.vqcScore: dataReport.vqcScore}}</span> </div>
+            <div><label>质检得分:</label><span>{{dataReport.staffVqcScore > 0? -dataReport.staffVqcScore: dataReport.staffVqcScore}}</span> </div>
           </div>
           <div class="base_content">
-            <div ><label>违规级别:</label><span>{{dataReport.ruleLevel}}</span> </div>
+            <div ><label>违规级别:</label><span>{{dataReport.staffRuleLevel}}</span> </div>
             <div ><label>质检时间:</label><span>{{dataReport.checkTime | formatDatetime}}</span> </div>
           </div>
           <!--<div class="base_content">-->

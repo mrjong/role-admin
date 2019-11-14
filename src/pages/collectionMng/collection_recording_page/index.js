@@ -334,20 +334,20 @@ export default {
         {
           title: '质检结果',
           width: 180,
-          key: 'vqcResultName',
+          key: 'staffVqcResultName',
           align: 'center',
         },
         {
           title: '质检得分',
           width: 180,
-          key: 'vqcScore',
+          key: 'staffVqcScore',
           align: 'center',
           render: (h, params) => {
             var regPos = /^\d+(\.\d+)?$/; //非负浮点数
             var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
-            if(params.row.vqcScore || params.row.vqcScore === 0 ){
-              if(regPos.test(params.row.vqcScore) || regNeg.test(params.row.vqcScore)) {
-                let hitScore = params.row.vqcScore ? '-'+ params.row.vqcScore : params.row.vqcScore === 0 ? '0' : ''
+            if(params.row.staffVqcScore || params.row.staffVqcScore === 0 ){
+              if(regPos.test(params.row.staffVqcScore) || regNeg.test(params.row.staffVqcScore)) {
+                let hitScore = params.row.staffVqcScore ? '-'+ params.row.staffVqcScore : params.row.staffVqcScore === 0 ? '0' : ''
                 return h('span', hitScore);
               } else {
                 return h('span', '');
@@ -358,13 +358,13 @@ export default {
         {
           title: '违规级别',
           width: 180,
-          key: 'ruleLevel',
+          key: 'staffRuleLevel',
           align: 'center',
         },
         {
           title: '问题类别',
           width: 180,
-          key: 'ruleCategoryName',
+          key: 'staffRuleCategoryName',
           tooltip: true,
           align: 'center',
         },
