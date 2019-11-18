@@ -161,9 +161,10 @@
                         @on-change="perdNumSelectChange"
                       >
                         <Option
-                          v-for="item in relief_counts"
+                          v-for="item,index in relief_counts"
                           :value="item.itemCode"
                           :key="item.itemCode"
+                          v-if="index < 1"
                         >{{ item.itemName }}</Option>
                       </Select>
                     </FormItem>
