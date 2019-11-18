@@ -75,7 +75,7 @@ export default {
       plaintext: false,
       showDYFlag: null,
       Dy_data: {},
-      DY_IS_CALL: false,
+      DY_IS_CALL: JSON.parse(localStorage.getItem('callData')).seatType === 'DY'? false: true,
       recordIdDY: '',
       recordId: '',//后端返回的，做唯一标识用
       recordIdFront: '',//前端定义的16位随机串，做唯一标识用

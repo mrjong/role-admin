@@ -83,7 +83,8 @@ export default {
         JSON.parse(callSeat).seatType === "DY"
       ) {
         this.$nextTick(() => {
-          this.initDy();
+          // this.initDy();
+          this.callout_get_seat()
         });
         if (document.hidden !== undefined) {
           document.addEventListener("visibilitychange", () => {
