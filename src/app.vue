@@ -89,11 +89,11 @@ export default {
           document.addEventListener("visibilitychange", () => {
             console.log(document.hidden);
             if (!document.hidden) {
-              this.initDy();
-              let nodeA = document.getElementById("dyCti");
-              let callData = JSON.parse(sessionStorage.getItem("callSeat"));
-              nodeA.src = `https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`;
-              nodeA.height = 40;
+              this.callout_get_seat();
+              // let nodeA = document.getElementById("dyCti");
+              // let callData = JSON.parse(sessionStorage.getItem("callSeat"));
+              // nodeA.src = `https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`;
+              // nodeA.height = 40;
             }
           });
         }
@@ -120,7 +120,7 @@ export default {
       se.src = "https://cti.duyansoft.com/syui/dysdk/dysdk2.js";
       // js 加载后执行
       se.onload = () => {
-        Cookie.remove("DYISOK", true);
+        Cookie.remove("DYISOK");
         DYSDK.init({ stopBeforeunload: true });
         let nodeA = document.getElementById("dyCti");
         if (nodeA.parentNode.childNodes[1]) {
@@ -193,16 +193,18 @@ export default {
         DYSDK.getPhonelines(data => {
           console.log(data);
         });
+        that.$store.commit("chnageDYStatus", true);
       };
       console.log(document.getElementById("dySdkScript"));
-      if (document.getElementById('dySdkScript')) {
-        document.body.removeChild(document.getElementById('dySdkScript'));
-      };
+      if (document.getElementById("dySdkScript")) {
+        document.body.removeChild(document.getElementById("dySdkScript"));
+      }
       document.body.appendChild(se);
       // this.DY_script = se;
       // console.log(this.DY_script);
     },
     initDy() {
+      this.$store.commit("chnageDYStatus", false);
       //加载度言
       let duyanData = sessionStorage.getItem("callSeat")
         ? JSON.parse(sessionStorage.getItem("callSeat"))
@@ -393,6 +395,7 @@ export default {
     // 度言监测
     changeInitDY(res) {
       let callSeat = sessionStorage.getItem("callSeat");
+      debugger;
       if (res && callSeat) {
         if (
           JSON.parse(callSeat).seatType &&

@@ -75,6 +75,7 @@ export default {
       plaintext: false,
       showDYFlag: null,
       Dy_data: {},
+      DY_IS_CALL: false,
       recordIdDY: '',
       recordId: '',//后端返回的，做唯一标识用
       recordIdFront: '',//前端定义的16位随机串，做唯一标识用
@@ -728,6 +729,9 @@ export default {
     changeCallRecord(obj) {
       console.log(obj);
       this.rounds_record(obj);
+    },
+    chnageDYStatus(val) {
+      this.DY_IS_CALL = val;
     }
   },
   created() {
@@ -744,7 +748,7 @@ export default {
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
-    ...mapGetters(["changeXZHungUpFlag", "changeCallRecord"])
+    ...mapGetters(["changeXZHungUpFlag", "changeCallRecord", "chnageDYStatus"]),
   },
   methods: {
     // 刷新通讯录、紧连、本人的接口
@@ -843,8 +847,8 @@ export default {
         this.$Message.error('度言初始化失败，请稍后重试!');
         clearTimeout(timer)
         var timer = setTimeout(() => {
-          this.$store.commit("changeInitDY", true);
-        }, 1500)
+          this.$store.commit("changeInitDY", util.randomRange());
+        }, 500)
         return;
       }
       let params = {
