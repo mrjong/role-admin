@@ -288,87 +288,145 @@
         :label-width="100"
         v-show="showBottom"
       >
-        <FormItem label="沟通对象">
-          <Input
-            size="small"
-            clearable
-            v-model.trim="formValidate.userNmClear"
-            placeholder="请输入沟通对象"
-          ></Input>
-        </FormItem>
-        <FormItem label="关系" prop="callUserType">
-          <Select
-            size="small"
-            v-model="formValidate.callUserType"
-            @on-change="select_relation"
-            transfer
-            clearable
-            placeholder="请选择关系"
-          >
-            <Option
-              v-for="item,index in getDirObj.CONTACT_REL_TYPE"
-              :value="item.itemCode"
-              :key="item.itemCode+index"
-            >{{ item.itemName }}</Option>
-          </Select>
-        </FormItem>
-
-        <FormItem label="拨打状态" prop="collectResult">
-          <Select
-            size="small"
-            v-model="formValidate.collectResult"
-            @on-change="SelectChange"
-            transfer
-            clearable
-            placeholder="请选择拨打状态"
-          >
-            <Option
-              v-for="item,index in collectcode_getCollectRelate_Data"
-              :value="item.codeKey"
-              :key="item.codeKey+index"
-            >{{ item.codeName }}</Option>
-          </Select>
-        </FormItem>
-
-        <FormItem label="沟通状态" prop="communicateResult">
-          <Select
-            size="small"
-            transfer
-            clearable
-            v-model="formValidate.communicateResult"
-            placeholder="请选择沟通状态"
-          >
-            <Option
-              v-for="item,index in collectcode_getCollectRelate_childItem"
-              :value="item.codeKeyResult"
-              :key="item.codeKeyResult+index"
-            >{{ item.codeNameResult }}</Option>
-          </Select>
-        </FormItem>
-
-        <FormItem label="承诺还款时间">
-          <DatePicker
-            placement="top"
-            style="width:100%;"
-            size="small"
-            transfer
-            clearable
-            type="datetime"
-            format="yyyy-MM-dd HH:mm"
-            placeholder="请选择承诺还款时间"
-            v-model="formValidate.promiseRepayDate"
-          ></DatePicker>
-        </FormItem>
-        <FormItem label="备注">
-          <Input
-            v-model.trim="formValidate.collectRmk"
-            type="textarea"
-            :autosize="{minRows: 2,maxRows: 2}"
-            :maxlength="249"
-            clearable
-            placeholder="请输入备注，最大249个字符"
-          ></Input>
-        </FormItem>
+        <Row>
+          <Col :xs="24" :sm="24" :md="12" :lg="12">
+            <FormItem label="沟通对象">
+              <Input
+                size="small"
+                clearable
+                v-model.trim="formValidate.userNmClear"
+                placeholder="请输入沟通对象"
+              ></Input>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="12" :lg="12">
+            <FormItem label="沟通途径">
+              <Input
+                size="small"
+                clearable
+                v-model.trim="formValidate.userNmClear"
+                placeholder="请输入沟通对象"
+              ></Input>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="12" :lg="12">
+            <FormItem label="关系" prop="callUserType">
+              <Select
+                size="small"
+                v-model="formValidate.callUserType"
+                @on-change="select_relation"
+                transfer
+                clearable
+                placeholder="请选择关系"
+              >
+                <Option
+                  v-for="item,index in getDirObj.CONTACT_REL_TYPE"
+                  :value="item.itemCode"
+                  :key="item.itemCode+index"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="12" :lg="12">
+            <FormItem label="拨打状态" prop="collectResult">
+              <Select
+                size="small"
+                v-model="formValidate.collectResult"
+                @on-change="SelectChange"
+                transfer
+                clearable
+                placeholder="请选择拨打状态"
+              >
+                <Option
+                  v-for="item,index in collectcode_getCollectRelate_Data"
+                  :value="item.codeKey"
+                  :key="item.codeKey+index"
+                >{{ item.codeName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="12" :lg="12">
+            <FormItem label="沟通状态" prop="communicateResult">
+              <Select
+                size="small"
+                transfer
+                clearable
+                @on-change='communicateResultChange'
+                v-model="formValidate.communicateResult"
+                placeholder="请选择沟通状态"
+              >
+                <Option
+                  v-for="item,index in collectcode_getCollectRelate_childItem"
+                  :value="item.codeKeyResult"
+                  :key="item.codeKeyResult+index"
+                >{{ item.codeNameResult }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="12" :lg="12" v-if="isPromiseRepayDate">
+            <FormItem label="承诺还款时间" prop='promiseRepayDate'>
+              <DatePicker
+                placement="top"
+                style="width:100%;"
+                size="small"
+                transfer
+                clearable
+                type="datetime"
+                format="yyyy-MM-dd HH:mm"
+                placeholder="请选择承诺还款时间"
+                v-model="formValidate.promiseRepayDate"
+              ></DatePicker>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="12" :lg="12">
+            <FormItem label="个人资产">
+              <Select
+                size="small"
+                v-model="formValidate.callUserType"
+                @on-change="select_relation"
+                transfer
+                clearable
+                placeholder="请选择个人资产"
+              >
+                <Option
+                  v-for="item,index in getDirObj.CONTACT_REL_TYPE"
+                  :value="item.itemCode"
+                  :key="item.itemCode+index"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="12" :lg="12">
+            <FormItem label="不良嗜好">
+              <Select
+                size="small"
+                v-model="formValidate.callUserType"
+                @on-change="select_relation"
+                transfer
+                clearable
+                placeholder="请选择不良嗜好"
+              >
+                <Option
+                  v-for="item,index in getDirObj.CONTACT_REL_TYPE"
+                  :value="item.itemCode"
+                  :key="item.itemCode+index"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="24" :lg="24">
+            <FormItem label="备注">
+              <Input
+                v-model.trim="formValidate.collectRmk"
+                type="textarea"
+                :autosize="{minRows: 2,maxRows: 2}"
+                :maxlength="249"
+                clearable
+                placeholder="请输入备注，最大249个字符"
+              ></Input>
+            </FormItem>
+          </Col>
+        </Row>
         <FormItem style="margin-top:10px">
           <Button
             type="primary"
@@ -390,7 +448,7 @@
         :model="formItem"
         :label-width="80"
         class="panel_list"
-        :rules="ruleValidate2"
+        :rules="addRuleValidate"
       >
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">

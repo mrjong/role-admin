@@ -53,7 +53,7 @@ export default {
       getDirObj: {},
       formValidate: {},//新增催记
       formItem: {},//新增通讯录
-      ruleValidate2: {
+      addRuleValidate: {
         mblNo: [
           {
             required: true,
@@ -66,6 +66,7 @@ export default {
       collectType: '',
       readType: '',
       userIdCopy: '',
+      isPromiseRepayDate: false,//承诺还款时间的显隐
       userNmClearCopy: '',// 保存的明文名字
       showBottom: false,//添加、编辑催记弹窗
       remark_flag: false,//是否记催记的标识符
@@ -120,7 +121,16 @@ export default {
             message: '请选择关系',
             trigger: 'change'
           }
-        ]
+        ],
+        promiseRepayDate: [
+          {
+            required: true,
+            message: '请选择承诺时间',
+            trigger: 'change',
+            type: 'date'
+          }
+        ],
+
       },
       // 通话统计
       case_detail_mail_statistics_list_pageNo: 1,
@@ -1421,6 +1431,15 @@ export default {
       }
       if (key) {
         this.collectcode_getCodeList(this.call_status, this.callUserType);
+      }
+    },
+    // 沟通状态change
+    communicateResultChange (val) {
+      // 控制承诺还款时间现引
+      if (val === '10') {
+        this.isPromiseRepayDate = true;
+      } else {
+        this.isPromiseRepayDate = false;
       }
     },
     // 新增催记按钮
