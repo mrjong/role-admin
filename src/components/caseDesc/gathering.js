@@ -243,10 +243,7 @@ export default {
               i.error_flag = false;
               reliefAmt += parseFloat(j.reliefAmt);
               i.reliefAmt = reliefAmt;
-              // i.repayAmt = parseFloat(i.perdTotSur - i.reliefAmt).toFixed(2);
-              i.repayAmt = parseFloat(i.perdTotSur) - i.reliefAmt.toFixed(2);
-              // i.repayAmt = parseFloat(i.repayAmt).toFixed(2);
-              console.log(i.repayAmt)
+              i.repayAmt = (parseFloat(i.perdTotSur) - parseFloat(i.reliefAmt)).toFixed(2);
               this.$set(this.tableData_repayment, index, i)
             }
           });
@@ -261,7 +258,7 @@ export default {
             this.$set(this.tableData_repayment, index, i)
           }
         }
-        this.totRepayAmt += i.repayAmt;
+        this.totRepayAmt += parseFloat(i.repayAmt);
       });
     },
     // 添加减免记录，本地暂存
