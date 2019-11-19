@@ -230,8 +230,8 @@ export default {
           textVal = val && `${parseInt(val).toFixed(2)} 元`;
           break;
         case '01':
-          val !== 10 && (textVal = val && `罚息${10 - parseInt(val)}折券`);
-          val === 10 && (textVal = '罚息全免');
+          val !== 0 && (textVal = val && `罚息${parseInt(val)}折券`);
+          val === 0 && (textVal = '罚息全免');
           break;
         default:
           break;
