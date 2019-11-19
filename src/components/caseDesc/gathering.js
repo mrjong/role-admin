@@ -476,7 +476,7 @@ export default {
       this.totReliefAmt = 0;
       this.tableData_repayment.forEach(item => {
         item.remainTotAmt = item.perdTotSur;//处理剩余应还金额
-        item.repayAmt > 0 && (item.repayAmt = parseFloat(item.repayAmt.toFixed(2)));
+        item.repayAmt > 0 && (item.repayAmt = parseFloat(item.repayAmt));
         if (parseFloat(item.reliefAmt) > 0) {
           this.totReliefAmt += parseFloat(item.reliefAmt);
         }
