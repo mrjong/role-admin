@@ -9,6 +9,7 @@ const obj = {
     SPIN_DATA: '',
     DY_FLAG: false,
     SET_DY_SCRIPT: '',
+    DY_IS_OVER: false,
 	},
 	getters: {
     changeCallData: (state) => state.KTcallData,
@@ -17,6 +18,7 @@ const obj = {
     changeSpinData: (state) => state.SPIN_DATA,
     changeInitDY: (state) => state.DY_FLAG,
     changeDYScript: (state) => state.SET_DY_SCRIPT,
+    chnageDYStatus: (state) => state.DY_IS_OVER,
 	},
 	mutations: {
 		changeCallData(state, res) {
@@ -36,7 +38,10 @@ const obj = {
     },
     changeDYScript(state, res) {
       state.SET_DY_SCRIPT = res;
-    }
+    },
+    chnageDYStatus(state, res) {
+      state.DY_IS_OVER = res;
+    },
 	}
 };
 
