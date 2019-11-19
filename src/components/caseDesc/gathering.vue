@@ -231,7 +231,7 @@
               v-if="edit_flag"
             >
               <template slot-scope="{ row, column, index }" slot="repayAmt">
-                <div v-if="row.perdSts === '1' && index === 0">
+                <div v-if="(row.perdSts === '1' && index === 0) && row.input_edit_flag">
                   <Input
                     size="small"
                     type="number"

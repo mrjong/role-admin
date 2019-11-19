@@ -209,6 +209,7 @@ export default {
     this.breaks_data.tableData.forEach(item => {
       if (item.perdSts === '0' || item.perdSts === '1') {
         item.error_flag = false;
+        item.input_edit_flag = true;
         item.reliefAmt = 0.00;
         item.repayAmt = 0;
         this.tableData_repayment.push(item);
@@ -241,6 +242,7 @@ export default {
           this.tableData.forEach((j) => {
             if (parseFloat(i.perdNum) === parseFloat(j.perdNum)) {
               i.error_flag = false;
+              i.input_edit_flag = false;
               reliefAmt += parseFloat(j.reliefAmt);
               i.reliefAmt = reliefAmt;
               i.repayAmt = (parseFloat(i.perdTotSur) - parseFloat(i.reliefAmt)).toFixed(2);
@@ -251,6 +253,7 @@ export default {
           // 删除减免的联动
           if (parseFloat(i.perdNum) === parseFloat(row[0].perdNum)) {
             i.error_flag = false;
+            i.input_edit_flag = true;
             reliefAmt = parseFloat(i.reliefAmt) - parseFloat(row[0].reliefAmt);
             // i.reliefAmt = reliefAmt.toFixed(2);
             i.reliefAmt = reliefAmt;
