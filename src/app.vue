@@ -30,7 +30,11 @@
 <script>
 import { mapGetters } from "vuex";
 import util from "@/libs/util";
-import { callout_hung_off, callout_fixed_hung_off, callout_get_seat } from "@/service/getData";
+import {
+  callout_hung_off,
+  callout_fixed_hung_off,
+  callout_get_seat
+} from "@/service/getData";
 import spinModal from "@/components/spin_modal";
 import Cookie from "js-cookie";
 export default {
@@ -79,17 +83,18 @@ export default {
         JSON.parse(callSeat).seatType === "DY"
       ) {
         this.$nextTick(() => {
-          this.initDy();
+          // this.initDy();
+          this.callout_get_seat()
         });
         if (document.hidden !== undefined) {
           document.addEventListener("visibilitychange", () => {
             console.log(document.hidden);
             if (!document.hidden) {
-              this.initDy();
-              let nodeA = document.getElementById("dyCti");
-              let callData = JSON.parse(callSeat);
-              nodeA.src = `https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`;
-              nodeA.height = 40;
+              this.callout_get_seat();
+              // let nodeA = document.getElementById("dyCti");
+              // let callData = JSON.parse(sessionStorage.getItem("callSeat"));
+              // nodeA.src = `https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`;
+              // nodeA.height = 40;
             }
           });
         }
@@ -116,6 +121,7 @@ export default {
       se.src = "https://cti.duyansoft.com/syui/dysdk/dysdk2.js";
       // js 加载后执行
       se.onload = () => {
+        Cookie.remove("DYISOK");
         DYSDK.init({ stopBeforeunload: true });
         let nodeA = document.getElementById("dyCti");
         if (nodeA.parentNode.childNodes[1]) {
@@ -126,6 +132,7 @@ export default {
           "position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); display: none";
         let that = this;
         DYSDK.ctiLogined(function(data) {
+          Cookie.set("DYISOK", true);
           console.log("登录回调");
           data.phone =
             data.phone &&
@@ -150,6 +157,7 @@ export default {
             data.phone &&
             data.phone.substring(0, 4) + "****" + data.phone.substring(7, 11);
           that.duyanHungOff(data.uuid, nodeA);
+          !data.uuid && that.callout_get_seat();
           console.log(data);
         });
 
@@ -186,12 +194,18 @@ export default {
         DYSDK.getPhonelines(data => {
           console.log(data);
         });
+        that.$store.commit("chnageDYStatus", true);
       };
+      console.log(document.getElementById("dySdkScript"));
+      if (document.getElementById("dySdkScript")) {
+        document.body.removeChild(document.getElementById("dySdkScript"));
+      }
       document.body.appendChild(se);
-      this.DY_script = se;
-      console.log(this.DY_script);
+      // this.DY_script = se;
+      // console.log(this.DY_script);
     },
     initDy() {
+      this.$store.commit("chnageDYStatus", false);
       //加载度言
       let duyanData = sessionStorage.getItem("callSeat")
         ? JSON.parse(sessionStorage.getItem("callSeat"))
@@ -210,7 +224,7 @@ export default {
         setTimeout(() => {
           dom.parentNode.style =
             "position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); display: none";
-        }, 300);
+        }, 1000);
       });
     },
 
@@ -286,11 +300,18 @@ export default {
     // 重新获取度言的相关参数
     async callout_get_seat() {
       const res = await callout_get_seat({
-        loginName: Cookie.get("user"),
+        loginName: Cookie.get("user")
       });
       if (res.code === 1) {
-        res.data.seatType === 'DY' && window.sessionStorage.setItem("callSeat", JSON.stringify(res.data));
-        this.initDy();
+        res.data.seatType === "DY" &&
+          window.sessionStorage.setItem("callSeat", JSON.stringify(res.data));
+        clearTimeout(timer);
+        var timer = setTimeout(() => {
+          this.initDy(res.data.callToken);
+          let nodeA = document.getElementById("dyCti");
+          nodeA.src = `https://cti.duyansoft.com/ctibar.html?account_id=${res.data.seatNo}&token=${res.data.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`;
+          nodeA.height = 40;
+        }, 300);
       }
     }
   },
@@ -375,25 +396,14 @@ export default {
     // 度言监测
     changeInitDY(res) {
       let callSeat = sessionStorage.getItem("callSeat");
+      debugger;
       if (res && callSeat) {
         if (
           JSON.parse(callSeat).seatType &&
           JSON.parse(callSeat).seatType === "DY"
         ) {
-          this.initDy();
-          // this.callout_get_seat()
-          // if (document.hidden !== undefined) {
-          //   document.addEventListener("visibilitychange", () => {
-          //     console.log(document.hidden);
-          //     if (!document.hidden) {
-          //       this.initDy();
-          //       let nodeA = document.getElementById("dyCti");
-          //       let callData = JSON.parse(callSeat);
-          //       nodeA.src = `https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`;
-          //       nodeA.height = 40;
-          //     }
-          //   });
-          // }
+          // this.initDy();
+          this.callout_get_seat();
         }
       }
     },

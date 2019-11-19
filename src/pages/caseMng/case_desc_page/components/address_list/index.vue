@@ -5,6 +5,7 @@
       class="heighti case-top-panel"
       :style="{height:!this.showBottom?'inherit':'calc(100% - 325px)'}"
     >
+      <Spin size="large" fix v-if="!DY_IS_CALL"></Spin>
       <div>
         <div class="case-desc-close">
           <div class="round_info" style="display: inline-block" v-if="collectCategory">
