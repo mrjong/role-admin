@@ -201,7 +201,7 @@
                   >
                     <Option
                       v-for="item in relief_counts"
-                      v-if="item.itemCode === '0'? perdNum_flag: true"
+
                       :value="item.itemCode"
                       :key="item.itemCode"
                     >{{ item.itemName }}</Option>

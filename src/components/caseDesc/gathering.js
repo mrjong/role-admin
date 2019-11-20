@@ -209,6 +209,7 @@ export default {
     this.breaks_data.tableData.forEach(item => {
       if (item.perdSts === '0' || item.perdSts === '1') {
         item.error_flag = false;
+        item.input_edit_flag = true;
         item.reliefAmt = 0.00;
         item.repayAmt = 0;
         this.tableData_repayment.push(item);
@@ -241,12 +242,10 @@ export default {
           this.tableData.forEach((j) => {
             if (parseFloat(i.perdNum) === parseFloat(j.perdNum)) {
               i.error_flag = false;
+              i.input_edit_flag = false;
               reliefAmt += parseFloat(j.reliefAmt);
               i.reliefAmt = reliefAmt;
-              // i.repayAmt = parseFloat(i.perdTotSur - i.reliefAmt).toFixed(2);
-              i.repayAmt = parseFloat(i.perdTotSur) - i.reliefAmt.toFixed(2);
-              // i.repayAmt = parseFloat(i.repayAmt).toFixed(2);
-              console.log(i.repayAmt)
+              i.repayAmt = (parseFloat(i.perdTotSur) - parseFloat(i.reliefAmt)).toFixed(2);
               this.$set(this.tableData_repayment, index, i)
             }
           });
@@ -254,6 +253,7 @@ export default {
           // 删除减免的联动
           if (parseFloat(i.perdNum) === parseFloat(row[0].perdNum)) {
             i.error_flag = false;
+            i.input_edit_flag = true;
             reliefAmt = parseFloat(i.reliefAmt) - parseFloat(row[0].reliefAmt);
             // i.reliefAmt = reliefAmt.toFixed(2);
             i.reliefAmt = reliefAmt;
@@ -261,7 +261,7 @@ export default {
             this.$set(this.tableData_repayment, index, i)
           }
         }
-        this.totRepayAmt += i.repayAmt;
+        this.totRepayAmt += parseFloat(i.repayAmt);
       });
     },
     // 添加减免记录，本地暂存
@@ -367,16 +367,16 @@ export default {
       if (obj) {
         this.formItem.reliefTypeName = obj.label;
         this.reliefPerdInfoVos.forEach(item => {
-          // 还到、现金分期执行新的罚息计算逻辑
-          if (this.breaks_data.prdTyp === '01' || this.breaks_data.prdTyp === '11') {
-            if (obj.value === item.reliefType && String(item.perdNum) === '0' && (obj.value === 'FINE' || obj.value === 'OVDU')) {
-              this.$set(this.formItem, "reliefAmt", item.perdAmt.toFixed(2));
-              this.reliefAmt_max = (item.perdAmt).toFixed(2);
-              this.$set(this.formItem, 'perdNum', '0');
-              this.perdNum_flag = true;
-              return;
-            }
-          }
+          // // 还到、现金分期执行新的罚息计算逻辑
+          // if (this.breaks_data.prdTyp === '01' || this.breaks_data.prdTyp === '11') {
+          //   if (obj.value === item.reliefType && String(item.perdNum) === '0' && (obj.value === 'FINE' || obj.value === 'OVDU')) {
+          //     this.$set(this.formItem, "reliefAmt", item.perdAmt.toFixed(2));
+          //     this.reliefAmt_max = (item.perdAmt).toFixed(2);
+          //     this.$set(this.formItem, 'perdNum', '0');
+          //     this.perdNum_flag = true;
+          //     return;
+          //   }
+          // }
           // 商户贷、钱包不变
           if (this.formItem.reliefType === item.reliefType && this.formItem.perdNum === String(item.perdNum)) {
             this.$set(this.formItem, "reliefAmt", item.perdAmt.toFixed(2));
@@ -479,7 +479,7 @@ export default {
       this.totReliefAmt = 0;
       this.tableData_repayment.forEach(item => {
         item.remainTotAmt = item.perdTotSur;//处理剩余应还金额
-        item.repayAmt > 0 && (item.repayAmt = parseFloat(item.repayAmt.toFixed(2)));
+        item.repayAmt > 0 && (item.repayAmt = parseFloat(item.repayAmt));
         if (parseFloat(item.reliefAmt) > 0) {
           this.totReliefAmt += parseFloat(item.reliefAmt);
         }

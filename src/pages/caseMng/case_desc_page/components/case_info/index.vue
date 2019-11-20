@@ -6,11 +6,15 @@
         <span
           class="qishu"
         >{{case_detail_case_base_info_Data && case_detail_case_base_info_Data.prdTypName}}（{{case_detail_case_base_info_Data && case_detail_case_base_info_Data.perdCnt}}期）</span>
+        <span
+          class="qishu"
+          style="margin: 0px 20px;"
+        >逾期应还金额：{{case_info_data&&case_info_data.overdueAmt}}</span>
+        <span class="qishu">借款渠道：{{case_info_data&&case_info_data.channelOneName}}</span>
+        <!-- 优惠券类型coup 00 金额券  01 打折券  -->
         <span class="qishu" style="margin: 0px 20px;">
-          逾期应还金额：{{case_info_data&&case_info_data.overdueAmt}}
-        </span>
-        <span class="qishu">
-          借款渠道：{{case_info_data&&case_info_data.channelOneName}}
+          优惠券：
+          <span :style="{'color': case_detail_case_base_info_Data.coup && case_detail_case_base_info_Data.coup.coupCateGory === '00'? '#ed3f14': '#2d8cf0', 'vertical-align': 'top'}">{{case_detail_case_base_info_Data.coup? dealCoup(case_detail_case_base_info_Data.coup.coupCateGory, case_detail_case_base_info_Data.coup.coupValue) : '无'}}</span>
         </span>
       </p>
       <!-- 表格 -->
@@ -46,14 +50,12 @@
                   <span>{{case_detail_case_base_info_Data && case_detail_case_base_info_Data.corgName}}</span>
                 </Col>
               </Col>
-              <Col
+              <!-- <Col
                 span="24"
-                v-if="case_detail_case_base_info_Data && case_detail_case_base_info_Data.prdTyp === '01' || case_detail_case_base_info_Data && case_detail_case_base_info_Data.prdTyp === '11'"
-              >
+                v-if="case_detail_case_base_info_Data && case_detail_case_base_info_Data.prdTyp === '01' || case_detail_case_base_info_Data && case_detail_case_base_info_Data.prdTyp === '11'">
                 <Col span="6" class="panel-desc-title overdue_text">
                   逾期应还本金：
                   <span>{{case_detail_case_base_info_Data && case_detail_case_base_info_Data.billPrcpAmt | money}}</span>
-                  <!-- <span>2288.16</span> -->
                 </Col>
                 <Col span="4" class="panel-desc-title overdue_text">
                   逾期应还利息：
@@ -71,7 +73,7 @@
                   逾期应还滞纳金：
                   <span>{{case_detail_case_base_info_Data && case_detail_case_base_info_Data.billOvduAmt | money}}</span>
                 </Col>
-              </Col>
+              </Col>-->
             </Row>
           </div>
         </Form>

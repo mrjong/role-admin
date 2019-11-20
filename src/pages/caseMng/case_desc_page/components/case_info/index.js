@@ -38,6 +38,17 @@ export default {
           key: 'overdueFlgName'
         },
         {
+          title: '应还本金',
+          width: 100,
+          align: 'center',
+          key: 'perdPrcpAmt',
+          render: (h, params) => {
+            let perdPrcpAmt = params.row.perdPrcpAmt;
+            perdPrcpAmt = perdPrcpAmt ? this.$options.filters['money'](perdPrcpAmt) : perdPrcpAmt;
+            return h('span', perdPrcpAmt);
+          }
+        },
+        {
           title: '应还利息',
           width: 100,
           align: 'center',
@@ -195,8 +206,8 @@ export default {
       if (res.code === 1) {
         this.case_detail_case_base_info_Data = res.data && res.data;
         (res.data && res.data.caseBasePerdVoList) && this.$set(this, 'tableData', res.data.caseBasePerdVoList);
-        this.$emit('deliveryData', {data: res.data.caseBasePerdVoList, type: 'CASE_INFO'});
         res.data.caseBasePerdVoList.length >0 && this.tableData[0].perdNum === 0 && this.$set(this, 'tableData', this.tableData.slice(1));
+        this.$emit('deliveryData', {data: this.tableData, type: 'CASE_INFO'});
       } else {
         this.$Message.error(res.message);
       }
@@ -210,6 +221,22 @@ export default {
       } else {
         this.$Message.error(res.message);
       }
+    },
+    // 处理优惠券
+    dealCoup(type, val) {
+      let textVal;
+      switch (type) {
+        case '00':
+          textVal = val && `${parseInt(val).toFixed(2)} 元`;
+          break;
+        case '01':
+          val !== 0 && (textVal = val && `罚息${parseInt(val)}折券`);
+          val === 0 && (textVal = '罚息全免');
+          break;
+        default:
+          break;
+      }
+      return textVal;
     },
     rowClassName(row, index) {
       if (row.overdueFlgName === '已逾期' || row.overdueFlgName === '处理中') {

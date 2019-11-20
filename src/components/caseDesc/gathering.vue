@@ -161,10 +161,10 @@
                         @on-change="perdNumSelectChange"
                       >
                         <Option
-                          v-for="item in relief_counts"
-                          v-if="item.itemCode === '0'? perdNum_flag: true"
+                          v-for="item,index in relief_counts"
                           :value="item.itemCode"
                           :key="item.itemCode"
+                          v-if="index < 1"
                         >{{ item.itemName }}</Option>
                       </Select>
                     </FormItem>
@@ -231,7 +231,7 @@
               v-if="edit_flag"
             >
               <template slot-scope="{ row, column, index }" slot="repayAmt">
-                <div v-if="row.reliefAmt == 0">
+                <div v-if="(row.perdSts === '1' && index === 0) && row.input_edit_flag">
                   <Input
                     size="small"
                     type="number"
