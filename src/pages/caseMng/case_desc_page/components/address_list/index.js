@@ -75,6 +75,7 @@ export default {
       plaintext: false,
       showDYFlag: null,
       Dy_data: {},
+      DY_IS_CALL: JSON.parse(localStorage.getItem('callData')).seatType === 'DY'? false: true,
       recordIdDY: '',
       recordId: '',//后端返回的，做唯一标识用
       recordIdFront: '',//前端定义的16位随机串，做唯一标识用
@@ -728,6 +729,9 @@ export default {
     changeCallRecord(obj) {
       console.log(obj);
       this.rounds_record(obj);
+    },
+    chnageDYStatus(val) {
+      this.DY_IS_CALL = val;
     }
   },
   created() {
@@ -744,7 +748,7 @@ export default {
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
-    ...mapGetters(["changeXZHungUpFlag", "changeCallRecord"])
+    ...mapGetters(["changeXZHungUpFlag", "changeCallRecord", "chnageDYStatus"]),
   },
   methods: {
     // 刷新通讯录、紧连、本人的接口
@@ -836,13 +840,15 @@ export default {
     },
     // 度言外呼
     callout_fixed_hung_on(tag, callData) {
+      let DYISOK =  Cookie.get('DYISOK');
+      console.log(DYISOK)
       // 判断度言初始化的状态
-      if (!DYSDK.isReady) {
+      if (DYISOK !== 'true') {
         this.$Message.error('度言初始化失败，请稍后重试!');
         clearTimeout(timer)
         var timer = setTimeout(() => {
-          this.$store.commit("changeInitDY", true);
-        }, 1500)
+          this.$store.commit("changeInitDY", util.randomRange());
+        }, 500)
         return;
       }
       let params = {
@@ -870,7 +876,7 @@ export default {
           // this.recordIdDY = res.data.callRecordDomain.id
           // let DYSDK = JSON.parse(window.sessionStorage.getItem('DYSDK'));
           console.log(DYSDK);
-          if (DYSDK.isReady) {
+          if (DYISOK === 'true') {
             document.getElementById("dyCti").parentNode.style =
               'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
             sessionStorage.setItem('recordIdDY', res.data.callRecordDomain.id)
@@ -879,7 +885,7 @@ export default {
           } else {
             DYSDK.init({ stopBeforeunload: true });
             let timeID = setInterval(() => {
-              if (DYSDK.isReady) {
+              if (DYISOK === 'true') {
                 document.getElementById("dyCti").parentNode.style =
                   'position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100'
                 sessionStorage.setItem('recordIdDY', res.data.callRecordDomain.id)
@@ -1442,6 +1448,7 @@ export default {
       })
       if (res.code === 1) {
         localStorage.setItem('callData', JSON.stringify(res.data));
+        window.sessionStorage.setItem("callSeat", JSON.stringify(res.data));
         if (res.data.seatType === 'KT') {
           this.seatType = res.data.seatType;
           await this.initKTScript(res.data);
@@ -1449,7 +1456,6 @@ export default {
           this.seatType = res.data.seatType;
           let obj = { compid: '830058', telephone: res.data.agentid, agentid: res.data.seatNo, telephonePassword: res.data.passwordMd5, serverid: '', password: res.data.password };
           window.sessionStorage.setItem('XZ_INIT_DATA', JSON.stringify(obj));
-          // await init();
           this.call_xz_hung_on({
             callno: this.objCopy.mblNo || this.objCopy.cntUserMblNo,
             callUserType: this.objCopy.callUserType || this.objCopy.cntRelTyp,
@@ -1461,7 +1467,7 @@ export default {
             caseNo: this.caseNo,
             collectType: tag,
           });
-        }
+        };
       } else {
         this.$Message.error(res.message);
       }

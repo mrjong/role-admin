@@ -23,7 +23,7 @@ module.exports = merge(webpackBaseConfig, {
     },
     plugins: [
         new webpack.DefinePlugin({
-          LOCALHOST: '"ws://172.18.30.201:8080/websocket"'
+          LOCALHOST: '"ws://172.16.174.166:8080/websocket"'
         }),
         new ExtractTextPlugin({
             filename: '[name].css',
