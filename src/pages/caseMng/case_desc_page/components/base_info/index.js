@@ -5,6 +5,7 @@ import gathering from '@/components/caseDesc/gathering.vue';
 import QRdetail from '@/components/caseDesc/QR_code_detail.vue';
 import QRcode from '@/components/caseDesc/QR_code.vue';
 import TimeLine from '@/components/time_line_page';
+import clientfile from '@/components/caseDesc/Client_File.vue';
 import sysDictionary from '@/mixin/sysDictionary';
 import qs from 'qs';
 import Cookie from 'js-cookie';
@@ -32,6 +33,7 @@ export default {
     gathering,
     QRdetail,
     QRcode,
+    clientfile
   },
   data() {
     return {
@@ -68,6 +70,7 @@ export default {
         QR_CODE: false,
         gathering: false,
         QR_code_detail: false,
+        Client_File: true,
       },
     }
   },
@@ -291,6 +294,11 @@ export default {
     },
     // 手动打开按钮弹窗
     async handOpen(type, userId) {
+      // 客户档案
+      if (type === 'Client_File') {
+        this.modal[type] = true;
+        return;
+      }
       // 时时判断当前案件是否出催，是的话不走下面的逻辑
       await this.case_detail_case_identity_info();
       if (this.case_detail_case_identity_info_Data.caseHandleStatus === 'OUT') {

@@ -18,6 +18,15 @@
             ></Icon>
         </Poptip>-->
         （{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
+        <!-- 客户档案 -->
+        <Button
+          @click="handOpen('Client_File')"
+          class="vue-back-btn header-btn"
+          style="vertical-align: top"
+          size="small"
+          type="primary"
+          ghost
+        >客户档案</Button>
         <!-- 信用进度按钮 -->
         <span
           v-if="case_detail_case_identity_info_Data.caseHandleStatus && case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
@@ -108,31 +117,61 @@
                 </span>
               </div>
             </Col>
-            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.usrMarried">
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="24"
+              v-if="case_detail_case_identity_info_Data.usrMarried"
+            >
               <div class="panel-desc-title">
                 婚姻状况：
                 <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.usrMarried}}</span>
               </div>
             </Col>
-            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.haveChildren">
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="24"
+              v-if="case_detail_case_identity_info_Data.haveChildren"
+            >
               <div class="panel-desc-title">
                 有无子女：
                 <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.haveChildren}}</span>
               </div>
             </Col>
-            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.jobType">
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="24"
+              v-if="case_detail_case_identity_info_Data.jobType"
+            >
               <div class="panel-desc-title">
                 工作类型：
                 <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.jobType}}</span>
               </div>
             </Col>
-            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.incomeRange">
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="24"
+              v-if="case_detail_case_identity_info_Data.incomeRange"
+            >
               <div class="panel-desc-title">
                 收入区间：
                 <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.incomeRange}}</span>
               </div>
             </Col>
-            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.eduDegree">
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="24"
+              v-if="case_detail_case_identity_info_Data.eduDegree"
+            >
               <div class="panel-desc-title">
                 学历：
                 <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.eduDegree}}</span>
@@ -149,14 +188,26 @@
                 借款渠道：
                 <span>{{case_detail_address_info_Data&&case_detail_address_info_Data.channelOneName}}</span>
               </div>
-            </Col> -->
-            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.address">
+            </Col>-->
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="24"
+              v-if="case_detail_case_identity_info_Data.address"
+            >
               <div class="panel-desc-title">
                 家庭住址：
                 <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.address}}</span>
               </div>
             </Col>
-            <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="case_detail_case_identity_info_Data.habitation">
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="24"
+              v-if="case_detail_case_identity_info_Data.habitation"
+            >
               <div class="panel-desc-title">
                 居住住址：
                 <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.habitation}}</span>
@@ -194,6 +245,8 @@
     <Modal title="查看图片" v-model="visible">
       <img :src="imgName" v-if="visible" style="width: 100%" />
     </Modal>
+    <!-- 客户档案 -->
+    <clientfile :ishow="modal.Client_File" v-if="modal.Client_File" v-on:passBack="passBackBreaks"></clientfile>
     <!-- 新建收款二维码 -->
     <gathering
       v-model="modal.gathering"
