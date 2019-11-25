@@ -49,7 +49,7 @@ export default {
       }
     }
     return {
-      getDirList: ['CONTACT_REL_TYPE'],
+      getDirList: ['CONTACT_REL_TYPE', 'PERSONAL_PROPERTY', 'BAD_HABITS', 'CONTACT_METHOD'],
       getDirObj: {},
       formValidate: {},//新增催记
       formItem: {},//新增通讯录
@@ -67,6 +67,7 @@ export default {
       readType: '',
       userIdCopy: '',
       isPromiseRepayDate: false,//承诺还款时间的显隐
+      isCollectResult: true,//拨打状态的显隐
       userNmClearCopy: '',// 保存的明文名字
       showBottom: false,//添加、编辑催记弹窗
       remark_flag: false,//是否记催记的标识符
@@ -106,6 +107,13 @@ export default {
           {
             required: true,
             message: '请选择拨打状态',
+            trigger: 'change'
+          }
+        ],
+        collectFlg: [
+          {
+            required: true,
+            message: '请选择沟通途径',
             trigger: 'change'
           }
         ],
@@ -1436,7 +1444,11 @@ export default {
         this.callUserType = '';
       }
       if (key) {
-        this.collectcode_getCodeList(this.call_status, this.callUserType);
+        if (this.formValidate.collectFlg !== '01' && this.formValidate.collectFlg !== '02') {
+          this.collectcode_getCodeList('24', this.callUserType);
+        } else {
+          this.collectcode_getCodeList(this.call_status, this.callUserType);
+        }
       }
     },
     // 沟通状态change
@@ -1446,6 +1458,15 @@ export default {
         this.isPromiseRepayDate = true;
       } else {
         this.isPromiseRepayDate = false;
+      }
+    },
+    // 沟通途径change
+    collectFlgChange(val) {
+      if ( val && val !== '01' && val !== '02') {
+        this.isCollectResult = false;
+        this.collectcode_getCodeList('24', this.callUserType);
+      } else {
+        this.isCollectResult = true
       }
     },
     // 新增催记按钮

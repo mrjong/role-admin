@@ -65,9 +65,9 @@ module.exports = merge(webpackBaseConfig, {
         disableHostCheck: true,
         proxy: {
             '/admin': {
-                target:'http://172.16.174.166:8080',//测试环境
+                // target:'http://172.16.174.166:8080',//测试环境
                 // target: 'https://fcs-admin-test.vbillbank.com',  // 测试地址
-                // target: 'http://172.18.40.181:8080', //清泉目标接口域名
+                target: 'http://172.16.170.158:8080', //开发环境地址
                 // target: 'http://172.16.154.239:8080', //志祥目标接口域名
                 //target: 'http://172.18.40.22:8080', // 胥尹辉后台本地
                 //target: 'http://172.18.40.245:8080', //志祥目标接口域名

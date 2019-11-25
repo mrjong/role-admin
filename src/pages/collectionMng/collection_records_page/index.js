@@ -44,7 +44,7 @@ export default {
         // poster: '/static/images/author.jpg'
       },
       modal1: false,
-      getDirList: ['PROD_TYPE'],
+      getDirList: ['PROD_TYPE', 'PERSONAL_PROPERTY', 'BAD_HABITS', 'CONTACT_METHOD'],
       getDirObj: {},
       showPanel: false,
       productLineList: [],
@@ -215,6 +215,24 @@ export default {
               : promiseRepayDate;
             return h('span', promiseRepayDate);
           }
+        },
+        {
+          title: '个人资产',
+          width: 120,
+          key: 'property',
+          align: 'center',
+        },
+        {
+          title: '不良嗜好',
+          width: 120,
+          key: 'badHabits',
+          align: 'center',
+        },
+        {
+          title: '沟通途径',
+          width: 120,
+          key: 'collectFlg',
+          align: 'center',
         },
         {
           title: '组别',

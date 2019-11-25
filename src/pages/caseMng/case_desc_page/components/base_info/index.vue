@@ -213,6 +213,18 @@
                 <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.habitation}}</span>
               </div>
             </Col>
+            <Col
+              :xs="24"
+              :sm="24"
+              :md="24"
+              :lg="24"
+              v-if="case_detail_case_identity_info_Data.equipment"
+            >
+              <div class="panel-desc-title">
+                手机型号：
+                <span>{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.equipment}}</span>
+              </div>
+            </Col>
           </Col>
           <Col :xs="24" :sm="24" :md="12" :lg="12">
             <div class="fl" v-for="(item,index) in img_list">

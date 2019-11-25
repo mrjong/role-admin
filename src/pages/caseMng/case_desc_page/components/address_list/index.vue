@@ -301,13 +301,20 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="12" :lg="12">
-            <FormItem label="沟通途径">
-              <Input
-                size="small"
+            <FormItem label="沟通途径" prop='collectFlg'>
+              <Select
                 clearable
-                v-model.trim="formValidate.userNmClear"
-                placeholder="请输入沟通对象"
-              ></Input>
+                size="small"
+                placeholder="请选择沟通途径"
+                @on-change='collectFlgChange'
+                v-model="formValidate.collectFlg"
+              >
+                <Option
+                  v-for="item in getDirObj.CONTACT_METHOD"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
+              </Select>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="12" :lg="12">
@@ -328,7 +335,7 @@
               </Select>
             </FormItem>
           </Col>
-          <Col :xs="24" :sm="24" :md="12" :lg="12">
+          <Col :xs="24" :sm="24" :md="12" :lg="12" v-if="isCollectResult">
             <FormItem label="拨打状态" prop="collectResult">
               <Select
                 size="small"
@@ -383,14 +390,15 @@
             <FormItem label="个人资产">
               <Select
                 size="small"
-                v-model="formValidate.callUserType"
+                v-model="formValidate.propertyList"
                 @on-change="select_relation"
                 transfer
                 clearable
+                multiple
                 placeholder="请选择个人资产"
               >
                 <Option
-                  v-for="item,index in getDirObj.CONTACT_REL_TYPE"
+                  v-for="item,index in getDirObj.PERSONAL_PROPERTY"
                   :value="item.itemCode"
                   :key="item.itemCode+index"
                 >{{ item.itemName }}</Option>
@@ -401,14 +409,15 @@
             <FormItem label="不良嗜好">
               <Select
                 size="small"
-                v-model="formValidate.callUserType"
+                v-model="formValidate.badHabitsList"
                 @on-change="select_relation"
                 transfer
                 clearable
+                multiple
                 placeholder="请选择不良嗜好"
               >
                 <Option
-                  v-for="item,index in getDirObj.CONTACT_REL_TYPE"
+                  v-for="item,index in getDirObj.BAD_HABITS"
                   :value="item.itemCode"
                   :key="item.itemCode+index"
                 >{{ item.itemName }}</Option>
