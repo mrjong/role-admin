@@ -11,7 +11,7 @@ export default {
   props: ['ishow'],
   data() {
     return {
-
+      showPanel: true
     }
   },
   created() {
@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     del() {
-
+      this.$emit('passBack', 'Client_File')
     }
   },
 }

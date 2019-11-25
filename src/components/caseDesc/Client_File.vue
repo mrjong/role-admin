@@ -72,9 +72,10 @@
           </Card>
         </Col>
         <!-- 债务情况 -->
-        <Col :md="12" :lg="12">
+        <Col :md="12" :lg="12" style="margin-top: -8px;">
           <Card class="vue-panel case-desc debt">
             <p slot="title">债务情况</p>
+            <!-- 还款习惯 -->
             <div class="debt_wrap">
               <span class="debt_empty_title"></span>
               <span>当前账单</span>
@@ -104,6 +105,54 @@
               <div class="debt_title">优惠券次数/金额</div>
               <div class="debt_content">16</div>
               <div class="debt_content">25</div>
+            </div>
+            <!-- 共债信息 -->
+            <p class="debt_information_title" @click="showPanel = !showPanel">
+              共债信息
+              <Icon
+                style="margin-left: 10px; color: #5c6b77"
+                size="20"
+                :type="showPanel? 'md-arrow-dropdown-circle': 'md-arrow-dropup-circle'"
+              />
+            </p>
+            <div :class="showPanel? 'debt_information_box': 'debt_information_box_empty'">
+              <p class="debt_information_caseOrMoney">累计借贷14笔，逾期11笔，在用3笔</p>
+              <p class="debt_information_caseOrMoney">单笔平均借贷10000元</p>
+              <div class="debt_information_wrap">
+                <div class="debt_information_wrap_title">本平台：</div>
+                <div class="debt_information_content">
+                  <p>
+                    <span class="debt_information_content_title">借贷/在用笔数</span>
+                    <span class="debt_information_content_cont">6笔/1笔</span>
+                  </p>
+                </div>
+              </div>
+              <div class="debt_information_wrap">
+                <div class="debt_information_wrap_title">其他平台：</div>
+                <div class="debt_information_content">
+                  <p>
+                    <span class="debt_information_content_title">借贷笔数/金额</span>
+                    <span class="debt_information_content_cont">8笔/80000.00元</span>
+                  </p>
+                  <p>
+                    <span class="debt_information_content_title">逾期笔数/金额</span>
+                    <span class="debt_information_content_cont">8笔/80000.00元</span>
+                  </p>
+                  <p>
+                    <span class="debt_information_content_title">不良笔数/金额</span>
+                    <span class="debt_information_content_cont">8笔/80000.00元</span>
+                  </p>
+                </div>
+              </div>
+              <div class="debt_information_wrap">
+                <div class="debt_information_wrap_title">信用卡：</div>
+                <div class="debt_information_content">
+                  <p>
+                    <span class="debt_information_content_title">最高额度</span>
+                    <span class="debt_information_content_cont">100000.00元</span>
+                  </p>
+                </div>
+              </div>
             </div>
           </Card>
         </Col>
@@ -145,7 +194,7 @@
         <Col :md="12" :lg="12">
           <Card class="vue-panel case-desc interaction">
             <p slot="title">交互信息</p>
-            <p class="interaction_wrap">
+            <div class="interaction_wrap">
               <div class="interaction_title">APP：</div>
               <div class="interaction_content">
                 <p>
@@ -161,8 +210,8 @@
                   <span class="interaction_content_cont">2019-11-22 18:00</span>
                 </p>
               </div>
-            </p>
-            <p class="interaction_wrap">
+            </div>
+            <div class="interaction_wrap">
               <div class="interaction_title">投诉：</div>
               <div class="interaction_content">
                 <p>
@@ -170,8 +219,8 @@
                   <span class="interaction_content_cont">10次</span>
                 </p>
               </div>
-            </p>
-            <p class="interaction_wrap">
+            </div>
+            <div class="interaction_wrap">
               <div class="interaction_title">400：</div>
               <div class="interaction_content">
                 <p>
@@ -183,8 +232,8 @@
                   <span class="interaction_content_cont">2019-11-22 18:00</span>
                 </p>
               </div>
-            </p>
-            <p class="interaction_wrap">
+            </div>
+            <div class="interaction_wrap">
               <div class="interaction_title">短信：</div>
               <div class="interaction_content">
                 <p>
@@ -192,7 +241,7 @@
                   <span class="interaction_content_cont">10次</span>
                 </p>
               </div>
-            </p>
+            </div>
           </Card>
         </Col>
       </Row>
@@ -204,6 +253,12 @@
 
 <style lang="less">
 .client_file {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .ivu-modal {
+    top: 20px;
+  }
   .ivu-modal-body {
     background: #f0f0f0;
     padding: 10px;
@@ -213,7 +268,10 @@
     span {
       display: inline-block;
     }
-    .income, .outbound, .deby, .history {
+    .income,
+    .outbound,
+    .deby,
+    .history {
       margin-bottom: 10px;
     }
     // 收入情况
@@ -225,17 +283,23 @@
     .income_wrap {
       margin-bottom: 8px;
     }
-    .income_title, .interaction_title {
+    .income_title,
+    .interaction_title,
+    .debt_information_wrap_title {
       float: left;
       width: 90px;
       text-align: right;
       margin-right: 5px;
     }
-    .income_content, .interaction_content {
+    .income_content,
+    .interaction_content,
+    .debt_information_content {
       overflow: hidden;
     }
     // 外呼情况
-    .outbound_wrap, .debt_wrap, .history_wrap {
+    .outbound_wrap,
+    .debt_wrap,
+    .history_wrap {
       display: flex;
       align-items: center;
       border-bottom: 1px dashed #ccc;
@@ -262,7 +326,8 @@
     }
     // 债务情况
     .debt_wrap {
-      span, div {
+      span,
+      div {
         flex: 1;
         text-align: center;
       }
@@ -274,9 +339,42 @@
     }
     // 历史记录
     .history_wrap {
-      span:nth-of-type(4), div:nth-of-type(4) {
-        flex: 2
+      span:nth-of-type(4),
+      div:nth-of-type(4) {
+        flex: 2;
       }
+    }
+    // 共债信息
+    .debt_information_title {
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: #000;
+      padding: 10px;
+    }
+    .debt_information_box {
+      .debt_information_caseOrMoney {
+        padding-left: 24px;
+        line-height: 26px;
+      }
+    }
+    .debt_information_box_empty {
+      height: 0;
+      overflow: hidden;
+    }
+    .debt_information_wrap_title,
+    .interaction_title {
+      width: 100px;
+      font-weight: 500;
+      color: #000;
+    }
+    .interaction_content,
+    .debt_information_content {
+      line-height: 24px;
+    }
+    .interaction_content_title,
+    .debt_information_content_title {
+      margin-right: 10px;
     }
   }
 }

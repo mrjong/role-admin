@@ -70,7 +70,7 @@ export default {
         QR_CODE: false,
         gathering: false,
         QR_code_detail: false,
-        Client_File: true,
+        Client_File: false,
       },
     }
   },
