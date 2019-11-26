@@ -480,6 +480,10 @@ export default {
         });
       }
     },
+    // 强执立案
+    apply_register() {
+
+    },
     // 上传之前的回调
     handleUpload(file) {
       console.log(file);
