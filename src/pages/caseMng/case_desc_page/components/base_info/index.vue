@@ -259,7 +259,7 @@
       <img :src="imgName" v-if="visible" style="width: 100%" />
     </Modal>
     <!-- 客户档案 -->
-    <clientfile :ishow="modal.Client_File" :userId='userId' @passBack='passBack' v-if="modal.Client_File"></clientfile>
+    <clientfile :ishow="modal.Client_File" :caseNo='caseNo' :billNo='billNo' :userId='userId' @passBack='passBack' v-if="modal.Client_File"></clientfile>
     <!-- 新建收款二维码 -->
     <gathering
       v-model="modal.gathering"

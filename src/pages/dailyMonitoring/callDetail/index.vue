@@ -29,7 +29,23 @@
                 placement="bottom-start"
                 placeholder="请选择呼叫时间"
                 :confirm='false'
-                @on-change="changeDate"
+                @on-change="changeDate($event, 'dealTime')"
+              ></DatePicker>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <!-- beginDate endDate -->
+            <FormItem label="分配时间:">
+              <DatePicker
+                size="small"
+                style="width:100%"
+                format="yyyy-MM-dd"
+                v-model="formItem.allotDate"
+                type="daterange"
+                placement="bottom-start"
+                @on-change="changeDate($event, 'allotDate')"
+                placeholder="请选择分配时间"
+                clearable
               ></DatePicker>
             </FormItem>
           </Col>

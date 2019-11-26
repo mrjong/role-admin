@@ -23,7 +23,7 @@ import {
 } from '@/service/getData';
 export default {
   name: 'base_info',
-  props: ['queryData', 'caseNo', 'collectCategory', 'base_info_data'],
+  props: ['queryData', 'caseNo', 'collectCategory', 'base_info_data', 'billNo'],
   mixins: [sysDictionary],
   components: {
     jianmian,

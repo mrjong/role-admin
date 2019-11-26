@@ -49,8 +49,24 @@
                 v-model="formItem.csDate"
                 type="daterange"
                 placement="bottom-start"
-                @on-change="dateChange"
+                @on-change="dateChange($event, 'csDate')"
                 placeholder="请选择催收时间"
+                clearable
+              ></DatePicker>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <!-- beginDate endDate -->
+            <FormItem label="分配时间:">
+              <DatePicker
+                size="small"
+                style="width:100%"
+                format="yyyy-MM-dd"
+                v-model="formItem.allotDate"
+                type="daterange"
+                placement="bottom-start"
+                @on-change="dateChange($event, 'allotDate')"
+                placeholder="请选择分配时间"
                 clearable
               ></DatePicker>
             </FormItem>

@@ -15,64 +15,21 @@
         <span>客户档案</span>
       </p>
       <Row :gutter="10">
-        <!-- 收入情况 -->
         <Col :md="12" :lg="12">
+          <!-- 收入情况 -->
           <Card class="vue-panel case-desc income">
             <p slot="title">收入情况</p>
-            <p class="income_wrap">
-              <span class="income_title">职业：</span>
-              <span class="income_content">销售</span>
-            </p>
-            <p class="income_wrap">
-              <span class="income_title">工作单位：</span>
-              <span class="income_content">随行付（北京）金融信息服务有限公司随行付（北京）金融信息服务有限公司</span>
-            </p>
-            <p class="income_wrap">
-              <span class="income_title">户籍地址：</span>
-              <span class="income_content">随行付（北京）金融信息服务有限公司随行付（北京）金融信息服务有限公司</span>
-            </p>
-            <p class="income_wrap">
-              <span class="income_title">个人财产：</span>
-              <span class="income_content">有房，有车</span>
+            <p
+              class="income_wrap"
+              v-for="val, key ,index in archives_queryIncome_data"
+              :key="val+index"
+              v-if="val"
+            >
+              <span class="income_title">{{deal_title('archives_queryIncome', key)}}</span>
+              <span class="income_content">{{val}}</span>
             </p>
           </Card>
-        </Col>
-        <!-- 外呼情况 -->
-        <Col :md="12" :lg="12">
-          <Card class="vue-panel case-desc outbound">
-            <p slot="title">外呼情况</p>
-            <div class="outbound_wrap">
-              <span class="outbound_empty_title"></span>
-              <span>触达人数</span>
-              <span>外呼次数</span>
-              <span>接通率</span>
-              <span>语音播报</span>
-            </div>
-            <div class="outbound_wrap">
-              <div class="outbound_title">本人</div>
-              <div class="outbound_content">1</div>
-              <div class="outbound_content">22</div>
-              <div class="outbound_content">33%</div>
-              <div class="outbound_content">6</div>
-            </div>
-            <div class="outbound_wrap">
-              <div class="outbound_title">紧急联系人</div>
-              <div class="outbound_content">1</div>
-              <div class="outbound_content">22</div>
-              <div class="outbound_content">33%</div>
-              <div class="outbound_content">6</div>
-            </div>
-            <div class="outbound_wrap">
-              <div class="outbound_title">指定联系人</div>
-              <div class="outbound_content">1</div>
-              <div class="outbound_content">22</div>
-              <div class="outbound_content">33%</div>
-              <div class="outbound_content">6</div>
-            </div>
-          </Card>
-        </Col>
-        <!-- 债务情况 -->
-        <Col :md="12" :lg="12" style="margin-top: -8px;">
+          <!-- 债务情况 -->
           <Card class="vue-panel case-desc debt">
             <p slot="title">债务情况</p>
             <!-- 还款习惯 -->
@@ -82,29 +39,24 @@
               <span>历史账单</span>
             </div>
             <div class="debt_wrap">
-              <div class="debt_title">逾期次数</div>
-              <div class="debt_content">16</div>
-              <div class="debt_content">25</div>
-            </div>
-            <div class="debt_wrap">
-              <div class="debt_title">最长还款天数</div>
-              <div class="debt_content">16</div>
-              <div class="debt_content">25</div>
+              <div class="debt_title">最常还款天数</div>
+              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.billRepayDays}}</div>
+              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.hisRepayDays}}</div>
             </div>
             <div class="debt_wrap">
               <div class="debt_title">最长逾期天数</div>
-              <div class="debt_content">16</div>
-              <div class="debt_content">25</div>
+              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.billOverdueDays}}</div>
+              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.hisOverdueDays}}</div>
             </div>
             <div class="debt_wrap">
               <div class="debt_title">减免次数/金额</div>
-              <div class="debt_content">16</div>
-              <div class="debt_content">25</div>
+              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.billDecreaseNum}}/{{archives_queryDebt_data && archives_queryDebt_data.billDecreaseAmt}}</div>
+              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.hisDecreaseNum}}/{{archives_queryDebt_data && archives_queryDebt_data.hisDecreaseAmt}}</div>
             </div>
             <div class="debt_wrap">
               <div class="debt_title">优惠券次数/金额</div>
-              <div class="debt_content">16</div>
-              <div class="debt_content">25</div>
+              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data}}</div>
+              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data}}</div>
             </div>
             <!-- 共债信息 -->
             <p class="debt_information_title" @click="showPanel = !showPanel">
@@ -156,8 +108,30 @@
             </div>
           </Card>
         </Col>
-        <!-- 历史沟通 -->
         <Col :md="12" :lg="12">
+          <!-- 外呼情况 -->
+          <Card class="vue-panel case-desc outbound">
+            <p slot="title">外呼情况</p>
+            <div class="outbound_wrap">
+              <span class="outbound_empty_title"></span>
+              <span>触达人数</span>
+              <span>外呼次数</span>
+              <span>接通率%</span>
+              <span>语音播报</span>
+            </div>
+            <div
+              class="outbound_wrap"
+              v-for="item, key ,index in archives_queryOutbound_data"
+              :key="item+key"
+            >
+              <div class="outbound_title">{{item.collectType}}</div>
+              <div class="outbound_content">{{item.reachNum}}</div>
+              <div class="outbound_content">{{item.outBoundNum}}</div>
+              <div class="outbound_content">{{item.connectPercentile}}</div>
+              <div class="outbound_content">{{item.robotCallNum}}</div>
+            </div>
+          </Card>
+          <!-- 历史沟通 -->
           <Card class="vue-panel case-desc history">
             <p slot="title">历史沟通</p>
             <div class="history_wrap">
@@ -167,31 +141,19 @@
               <span>最近沟通时间</span>
               <span>沟通途径</span>
             </div>
-            <div class="history_wrap">
-              <div class="history_title">本人</div>
-              <div class="history_content">承诺还款</div>
-              <div class="history_content">25</div>
-              <div class="history_content">2019-11-22 16:00</div>
-              <div class="history_content">支付宝</div>
-            </div>
-            <div class="history_wrap">
-              <div class="history_title">非本人</div>
-              <div class="history_content">承诺还款</div>
-              <div class="history_content">25</div>
-              <div class="history_content">2019-11-22 16:00</div>
-              <div class="history_content">支付宝</div>
-            </div>
-            <div class="history_wrap">
-              <div class="history_title">非本人</div>
-              <div class="history_content">承诺还款</div>
-              <div class="history_content">25</div>
-              <div class="history_content">2019-11-22 16:00</div>
-              <div class="history_content">支付宝</div>
+            <div
+              class="history_wrap"
+              v-for="item, key, index in archives_queryLinkHistory_data"
+              :key="item+index"
+            >
+              <div class="history_title">{{item.collectType}}</div>
+              <div class="history_content">{{item.communicateResult}}</div>
+              <div class="history_content">{{item.communicateNum}}</div>
+              <div class="history_content">{{item.lastCallTime | formatDatetime}}</div>
+              <div class="history_content">{{item.collectContect}}</div>
             </div>
           </Card>
-        </Col>
-        <!-- 交互信息 -->
-        <Col :md="12" :lg="12">
+          <!-- 交互信息 -->
           <Card class="vue-panel case-desc interaction">
             <p slot="title">交互信息</p>
             <div class="interaction_wrap">
@@ -259,12 +221,21 @@
   .ivu-modal {
     top: 20px;
   }
+  .grid-col {
+    width: 49%;
+    display: inline-block;
+  }
+  .grid-col:nth-of-type(2n + 1) {
+    margin-right: 10px;
+    float: left;
+  }
+  .grid-col:nth-of-type(2n),
+  .grid-col:nth-of-type(5) {
+    float: right;
+  }
   .ivu-modal-body {
     background: #f0f0f0;
     padding: 10px;
-    .ivu-col {
-      float: left;
-    }
     span {
       display: inline-block;
     }

@@ -32,6 +32,7 @@ export default {
       caseNo: '',
       userId: '',
       showBtn: false,
+      billNo: null,
       queryData: {},
     };
   },
@@ -96,6 +97,7 @@ export default {
         this.queryData = queryData;
         this.userId = res.data.page.content.length > 0 ? res.data.page.content[0].userId : queryData.userIdtest;
         this.queryData.userIdtest = res.data.page.content.length > 0 ? res.data.page.content[0].userId : queryData.userIdtest;
+        this.billNo = res.data.page.content[0].billNo;
       } else {
         this.$Message.error(res.message);
       }
@@ -114,6 +116,7 @@ export default {
         this.queryData = queryData;
         this.userId = res.data.page.content.length > 0 ? res.data.page.content[0].userId : queryData.userIdtest;
         this.queryData.userIdtest = res.data.page.content.length > 0 ? res.data.page.content[0].userId : queryData.userIdtest;
+        this.billNo = res.data.page.content[0].billNo;
       } else {
         this.$Message.error(res.message);
       }
