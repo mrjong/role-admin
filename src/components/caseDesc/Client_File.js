@@ -1,4 +1,4 @@
-import { archives_queryIncome, archives_queryOutbound, archives_queryDebt, archives_queryLinkHistory, archives_archives_queryIncome } from '@/service/case-detail-api';
+import { archives_queryIncome, archives_queryOutbound, archives_queryDebt, archives_queryLinkHistory, archives_queryInteractive } from '@/service/case-detail-api';
 
 export default {
   name: 'client-file',
@@ -10,6 +10,7 @@ export default {
       archives_queryOutbound_data: [],//外呼情况
       archives_queryDebt_data: [],//债务情况
       archives_queryLinkHistory_data: [],//历史沟通
+      archives_queryInteractive_data: [],//交互信息
     }
   },
   created() {
@@ -18,6 +19,7 @@ export default {
     this.archives_queryOutbound();
     this.archives_queryDebt();
     this.archives_queryLinkHistory();
+    this.archives_queryInteractive()
   },
   methods: {
     del() {
@@ -94,6 +96,19 @@ export default {
       })
     },
     //交互信息
-    archives_queryInteractive() {},
+    archives_queryInteractive() {
+      archives_queryInteractive({
+        userId: this.userId,
+        caseNo: this.caseNo
+      }).then(res => {
+        if (res.code === 1) {
+          this.archives_queryInteractive_data = res.data;
+        } else {
+          this.$Message.error(res.message)
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
   },
 }
