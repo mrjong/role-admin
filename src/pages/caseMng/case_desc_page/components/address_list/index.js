@@ -51,7 +51,9 @@ export default {
     return {
       getDirList: ['CONTACT_REL_TYPE', 'PERSONAL_PROPERTY', 'BAD_HABITS', 'CONTACT_METHOD'],
       getDirObj: {},
-      formValidate: {},//新增催记
+      formValidate: {
+        collectFlg: '01'
+      },//新增催记
       formItem: {},//新增通讯录
       addRuleValidate: {
         mblNo: [
@@ -1217,7 +1219,9 @@ export default {
       this.collectType = '';
       this.collectcode_getCollectRelate_childItem = []
       this.formValidate.communicateResult = null;
-      this.formValidate = {};
+      this.formValidate = {
+        collectFlg: '01',
+      };
       // this.formValidate.callUserType = '';
       this.$refs.formValidate.resetFields();
       this.showBottom = false;

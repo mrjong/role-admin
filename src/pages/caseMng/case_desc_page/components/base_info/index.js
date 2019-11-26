@@ -46,7 +46,7 @@ export default {
       showPanel: false,
       readType: '',
       prdTyp: '',
-      userId: '',
+      userId: null,
       all_opt: false,//案件详情全部操作权限
       plaintext: false,//案件详情查看明文权限
       apply_arbitrament: false,//案件详情申请仲裁权限

@@ -25,6 +25,7 @@
           style="vertical-align: top"
           size="small"
           type="primary"
+          :disabled='!userId'
           ghost
         >客户档案</Button>
         <!-- 信用进度按钮 -->
@@ -258,7 +259,7 @@
       <img :src="imgName" v-if="visible" style="width: 100%" />
     </Modal>
     <!-- 客户档案 -->
-    <clientfile :ishow="modal.Client_File" @passBack='passBack' v-if="modal.Client_File"></clientfile>
+    <clientfile :ishow="modal.Client_File" :userId='userId' @passBack='passBack' v-if="modal.Client_File"></clientfile>
     <!-- 新建收款二维码 -->
     <gathering
       v-model="modal.gathering"
