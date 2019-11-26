@@ -391,7 +391,6 @@
               <Select
                 size="small"
                 v-model="formValidate.propertyList"
-                @on-change="select_relation"
                 transfer
                 clearable
                 multiple
@@ -410,7 +409,6 @@
               <Select
                 size="small"
                 v-model="formValidate.badHabitsList"
-                @on-change="select_relation"
                 transfer
                 clearable
                 multiple
