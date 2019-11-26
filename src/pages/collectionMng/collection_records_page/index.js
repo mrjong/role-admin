@@ -44,7 +44,7 @@ export default {
         // poster: '/static/images/author.jpg'
       },
       modal1: false,
-      getDirList: ['PROD_TYPE', 'PERSONAL_PROPERTY', 'BAD_HABITS', 'CONTACT_METHOD'],
+      getDirList: ['PROD_TYPE', 'CONTACT_METHOD'],
       getDirObj: {},
       showPanel: false,
       productLineList: [],

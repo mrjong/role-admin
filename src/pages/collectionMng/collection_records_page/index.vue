@@ -152,6 +152,24 @@
               </Select>
             </FormItem>
           </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="沟通途径:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                transfer
+                placeholder="请选择沟通途径"
+                v-model="formItem.collectFlg"
+              >
+               <Option
+                  v-for="(item,index) in getDirObj.CONTACT_METHOD"
+                  :value="item.itemCode"
+                  :key="item.itemCode + index"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
               <Button
