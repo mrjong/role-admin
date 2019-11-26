@@ -1468,9 +1468,11 @@ export default {
     collectFlgChange(val) {
       if ( val && val !== '01' && val !== '02') {
         this.isCollectResult = false;
-        this.collectcode_getCodeList('24', this.callUserType);
+        this.formValidate.collectResult = '24';//默认接听
+        this.collectcode_getCodeList(this.formValidate.collectResult, this.callUserType);
       } else {
-        this.isCollectResult = true
+        this.isCollectResult = true;
+        this.formValidate.collectResult = '';
       }
     },
     // 新增催记按钮

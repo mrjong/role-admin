@@ -335,7 +335,7 @@
               </Select>
             </FormItem>
           </Col>
-          <Col :xs="24" :sm="24" :md="12" :lg="12" v-if="isCollectResult">
+          <Col :xs="24" :sm="24" :md="12" :lg="12" v-show="isCollectResult">
             <FormItem label="拨打状态" prop="collectResult">
               <Select
                 size="small"
