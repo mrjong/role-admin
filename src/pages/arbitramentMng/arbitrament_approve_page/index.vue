@@ -33,17 +33,17 @@
 
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="案件编号:" prop="userNm">
-              <Input size="small" clearable v-model="formItem.caseNo" placeholder="请输入案件编号"/>
+              <Input size="small" clearable v-model="formItem.caseNo" placeholder="请输入案件编号" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="账单号:" prop="billNo">
-              <Input size="small" clearable v-model="formItem.billNo" placeholder="请输入账单号"/>
+              <Input size="small" clearable v-model="formItem.billNo" placeholder="请输入账单号" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="申请人:" prop="opUserName">
-              <Input size="small" clearable v-model="formItem.opUserName" placeholder="请输入申请人"/>
+              <Input size="small" clearable v-model="formItem.opUserName" placeholder="请输入申请人" />
             </FormItem>
           </Col>
 
@@ -92,7 +92,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="客户姓名:" prop="userName">
-              <Input size="small" clearable v-model="formItem.userName" placeholder="请输入客户姓名"/>
+              <Input size="small" clearable v-model="formItem.userName" placeholder="请输入客户姓名" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
@@ -122,14 +122,13 @@
     <Card class="vue-panel-table">
       <p slot="title" @click="showPanel2=!showPanel2">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
-
         <Button
           @click.stop="apply_register"
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
           v-if="execution"
-          :loading='apply_loading'
+          :loading="apply_loading"
         >
           <span v-if="!apply_loading">强执立案</span>
           <span v-else>立案中...</span>
@@ -140,7 +139,7 @@
           type="primary"
           size="small"
           v-if="execution"
-          :loading='apply_loading'
+          :loading="apply_loading"
         >
           <span v-if="!apply_loading">申请执行</span>
           <span v-else>执行中...</span>
@@ -151,7 +150,7 @@
           type="primary"
           size="small"
           v-if="export_case"
-          :loading='export_case_loading'
+          :loading="export_case_loading"
         >
           <span v-if="!export_case_loading">导出数据</span>
           <span v-else>导出中...</span>
@@ -185,15 +184,33 @@
         </div>
       </div>
     </Card>
-    <arbitrament-deatil v-model="arbitrament_modal" :arbitrament_data='arbitrament_data' v-if="arbitrament_modal" v-on:passBack='passBack'></arbitrament-deatil>
-    <overallModal :modal_flag='modal_flag'>
+    <arbitrament-deatil
+      v-model="arbitrament_modal"
+      :arbitrament_data="arbitrament_data"
+      v-if="arbitrament_modal"
+      v-on:passBack="passBack"
+    ></arbitrament-deatil>
+    <overallModal :modal_flag="modal_flag" @closeModal='modal_flag = !modal_flag'>
       <template>
-        <p>我是消息体</p>
+        <p class="modal-content">已选择{{approve_list.length}}个案件，确认操作强执立案吗？</p>
       </template>
       <template v-slot:footer>
-        <p>我是页尾</p>
+        <div class="modal-footer">
+          <Button
+            @click.stop="modal_flag = !modal_flag"
+            class="cancelBtn vue-back-btn header-btn"
+          >取消</Button>
+          <Button
+            @click.stop="modalHandleSubmit"
+            class="vue-back-btn header-btn"
+            type="primary"
+            :loading="modalConfirmLoading"
+          >
+            <span v-if="!modalConfirmLoading">确定</span>
+            <span v-else>提交中...</span>
+          </Button>
+        </div>
       </template>
-
     </overallModal>
     <!-- 上传文件的modal -->
     <div v-if="upload_modal">
@@ -221,13 +238,16 @@
               点击或者拖拽文件到此进行文件上传
               <span style="color: #ed4014">（*仅限上传PDF格式文件,上传最大数量为1）</span>
             </p>
-            <p>文件命名格式：<span style="color: #ed4014">（2018）衢仲网字第1117号_张三_裁决书.pdf</span></p>
+            <p>
+              文件命名格式：
+              <span style="color: #ed4014">（2018）衢仲网字第1117号_张三_裁决书.pdf</span>
+            </p>
           </div>
         </Upload>
         <div class="file_list_wrap" v-for="(item,index) in file_list" v-if="show_file_list">
           {{item.name}}
           <span @click="handleRemoveFile" style="float: right">
-            <Icon size="20" type="ios-close"/>
+            <Icon size="20" type="ios-close" />
           </span>
           <!-- <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress> -->
         </div>
@@ -256,6 +276,19 @@
   }
   .ivu-modal-close {
     top: 3px;
+  }
+}
+.modal-content {
+  font-size: 18px;
+  font-weight: 500;
+  color: #000;
+  padding: 20px 10px 20px 50px;
+}
+.modal-footer {
+  text-align: center;
+  padding: 20px 10px;
+  .cancelBtn {
+    margin-right: 20px;
   }
 }
 </style>

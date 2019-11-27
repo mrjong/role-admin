@@ -1,6 +1,13 @@
 <template>
   <div>
-    <Modal :title="title" footer-hide :value="modal_flag" class-name="vertical-center-modal">
+    <Modal
+      :title="title"
+      footer-hide
+      :value="modal_flag"
+      @on-visible-change="passBack"
+      :mask-closable="false"
+      class-name="vertical-center-modal"
+    >
       <slot></slot>
       <slot name="footer"></slot>
     </Modal>

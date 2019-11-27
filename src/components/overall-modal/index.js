@@ -10,6 +10,8 @@ export default {
 
   },
   methods: {
-
+    passBack(flag) {
+      !flag && this.$emit('closeModal')
+    }
   },
 }

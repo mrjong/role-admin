@@ -40,6 +40,7 @@ export default {
       reject_loading: false,//驳回按钮loading
       upload_loading: false,//上传按钮loading
       apply_loading: false,// 申请执行按钮loading
+      modalConfirmLoading: false,//强执立案提交loading
       file_disabled: false,// 是否禁用上传
       approve_list: [],// 申请执行勾选list
       show_file_list: false,// 显示上传的list
@@ -641,6 +642,10 @@ export default {
       this.approvalTime = [];
       window.sessionStorage.removeItem('arbitrament_approve_form');
       this.$refs[name].resetFields();
+    },
+    // modal提交
+    modalHandleSubmit() {
+      this.modal_flag = false;
     }
   }
 };
