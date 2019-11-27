@@ -21,8 +21,8 @@
             <p slot="title">收入情况</p>
             <p
               class="income_wrap"
-              v-for="val, key ,index in archives_queryIncome_data"
-              :key="val+index"
+              v-for="(val, key ,index) in archives_queryIncome_data"
+              :key="index"
               v-if="val"
             >
               <span class="income_title">{{deal_title('archives_queryIncome', key)}}</span>
@@ -86,10 +86,10 @@
             </p>
             <p
               class="debt_information_caseOrMoney"
-            >累计借贷{{archives_queryDebt_data.billNumAll + archives_queryDebt_data.otherOutStandCount}}笔，逾期{{archives_queryDebt_data.otherOverdueCount + archives_queryDebt_data.billOngoingNum}}笔，在用{{archives_queryDebt_data.otherOngoingNum}}笔</p>
+            >累计借贷{{archives_queryDebt_data.billNumAll + archives_queryDebt_data.otherOutStandCount}}笔，逾期{{archives_queryDebt_data.otherOverdueCount + archives_queryDebt_data.billOngoingNum}}笔，在用{{archives_queryDebt_data.otherOngoingNum ? archives_queryDebt_data.otherOngoingNum: 0}}笔</p>
             <p
               class="debt_information_caseOrMoney"
-            >单笔平均借贷{{archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount}}元</p>
+            >单笔平均借贷{{archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount > 0? archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount:0}}元</p>
             <div :class="showPanel? 'debt_information_box': 'debt_information_box_empty'">
               <div class="debt_information_wrap">
                 <div class="debt_information_wrap_title">本平台：</div>
@@ -152,8 +152,8 @@
             </div>
             <div
               class="outbound_wrap"
-              v-for="item, key ,index in archives_queryOutbound_data"
-              :key="item+key"
+              v-for="(item, key ,index) in archives_queryOutbound_data"
+              :key="index"
             >
               <div class="outbound_title">{{item.collectType}}</div>
               <div class="outbound_content">{{item.reachNum}}</div>
@@ -174,8 +174,8 @@
             </div>
             <div
               class="history_wrap"
-              v-for="item, key, index in archives_queryLinkHistory_data.data"
-              :key="item+index"
+              v-for="(item, key, index) in archives_queryLinkHistory_data.data"
+              :key="index"
             >
               <div class="history_title">{{item.collectType}}</div>
               <div class="history_content">{{item.communicateResult}}</div>
@@ -183,7 +183,7 @@
               <div class="history_content">{{item.lastCallTime | formatDatetime}}</div>
               <div class="history_content">{{item.collectContect}}</div>
             </div>
-            <p class="bad-habits">不良嗜好：{{archives_queryLinkHistory_data.extra.badHabits}}</p>
+            <p class="bad-habits">不良嗜好：{{archives_queryLinkHistory_data.extra && archives_queryLinkHistory_data.extra.badHabits}}</p>
           </Card>
           <!-- 交互信息 -->
           <Card class="vue-panel case-desc interaction">
