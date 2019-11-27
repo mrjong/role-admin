@@ -5,6 +5,7 @@
       width="850"
       :value="ishow"
       footer-hide
+      draggable
       @on-visible-change="del"
       :mask-closable="false"
     >
@@ -258,6 +259,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  .ivu-modal-header {
+    background: #f0f0f0;
+  }
   .ivu-modal {
     top: 20px;
   }
