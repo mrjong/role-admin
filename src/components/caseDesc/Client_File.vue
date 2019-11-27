@@ -40,23 +40,39 @@
             </div>
             <div class="debt_wrap">
               <div class="debt_title">最常还款天数</div>
-              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.billRepayDays}}</div>
-              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.hisRepayDays}}</div>
+              <div
+                class="debt_content"
+              >{{archives_queryDebt_data && archives_queryDebt_data.billRepayDays}}</div>
+              <div
+                class="debt_content"
+              >{{archives_queryDebt_data && archives_queryDebt_data.hisRepayDays}}</div>
             </div>
             <div class="debt_wrap">
               <div class="debt_title">最长逾期天数</div>
-              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.billOverdueDays}}</div>
-              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.hisOverdueDays}}</div>
+              <div
+                class="debt_content"
+              >{{archives_queryDebt_data && archives_queryDebt_data.billOverdueDays}}</div>
+              <div
+                class="debt_content"
+              >{{archives_queryDebt_data && archives_queryDebt_data.hisOverdueDays}}</div>
             </div>
             <div class="debt_wrap">
               <div class="debt_title">减免次数/金额</div>
-              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.billDecreaseNum}}/{{archives_queryDebt_data && archives_queryDebt_data.billDecreaseAmt}}</div>
-              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.hisDecreaseNum}}/{{archives_queryDebt_data && archives_queryDebt_data.hisDecreaseAmt}}</div>
+              <div
+                class="debt_content"
+              >{{archives_queryDebt_data && archives_queryDebt_data.billDecreaseNum}}/{{archives_queryDebt_data && archives_queryDebt_data.billDecreaseAmt}}</div>
+              <div
+                class="debt_content"
+              >{{archives_queryDebt_data && archives_queryDebt_data.hisDecreaseNum}}/{{archives_queryDebt_data && archives_queryDebt_data.hisDecreaseAmt}}</div>
             </div>
             <div class="debt_wrap">
               <div class="debt_title">优惠券次数/金额</div>
-              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.billCouponNum}}/{{archives_queryDebt_data && archives_queryDebt_data.billCouponAmt}}</div>
-              <div class="debt_content">{{archives_queryDebt_data && archives_queryDebt_data.hisCouponNum}}/{{archives_queryDebt_data && archives_queryDebt_data.hisCouponAmt}}</div>
+              <div
+                class="debt_content"
+              >{{archives_queryDebt_data && archives_queryDebt_data.billCouponNum}}/{{archives_queryDebt_data && archives_queryDebt_data.billCouponAmt}}</div>
+              <div
+                class="debt_content"
+              >{{archives_queryDebt_data && archives_queryDebt_data.hisCouponNum}}/{{archives_queryDebt_data && archives_queryDebt_data.hisCouponAmt}}</div>
             </div>
             <!-- 共债信息 -->
             <p class="debt_information_title" @click="showPanel = !showPanel">
@@ -67,15 +83,21 @@
                 :type="showPanel? 'md-arrow-dropdown-circle': 'md-arrow-dropup-circle'"
               />
             </p>
+            <p
+              class="debt_information_caseOrMoney"
+            >累计借贷{{archives_queryDebt_data.billNumAll}}+{{archives_queryDebt_data.otherOutStandCount}}笔，逾期{{archives_queryDebt_data.otherOverdueCount}}+{{archives_queryDebt_data.billOngoingNum}}笔，在用{{archives_queryDebt_data.billOngoingNum}}笔</p>
+            <p
+              class="debt_information_caseOrMoney"
+            >单笔平均借贷{{archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount}}元</p>
             <div :class="showPanel? 'debt_information_box': 'debt_information_box_empty'">
-              <p class="debt_information_caseOrMoney">累计借贷{{archives_queryDebt_data.billNumAll}}+{{archives_queryDebt_data.otherOutStandCount}}笔，逾期{{archives_queryDebt_data.otherOverdueCount}}+{{archives_queryDebt_data.billOngoingNum}}笔，在用{{archives_queryDebt_data.billOngoingNum}}笔</p>
-              <p class="debt_information_caseOrMoney">单笔平均借贷{{archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount}}元</p>
               <div class="debt_information_wrap">
                 <div class="debt_information_wrap_title">本平台：</div>
                 <div class="debt_information_content">
                   <p>
                     <span class="debt_information_content_title">借贷/在用笔数</span>
-                    <span class="debt_information_content_cont">{{archives_queryDebt_data.billNumAll}}笔/{{archives_queryDebt_data.billOngoingNum}}笔</span>
+                    <span
+                      class="debt_information_content_cont"
+                    >{{archives_queryDebt_data.billNumAll}}笔/{{archives_queryDebt_data.billOngoingNum}}笔</span>
                   </p>
                 </div>
               </div>
@@ -84,15 +106,21 @@
                 <div class="debt_information_content">
                   <p>
                     <span class="debt_information_content_title">借贷笔数/金额</span>
-                    <span class="debt_information_content_cont">{{archives_queryDebt_data.otherOutStandCount}}笔/{{archives_queryDebt_data.otherLoanBal}}元</span>
+                    <span
+                      class="debt_information_content_cont"
+                    >{{archives_queryDebt_data.otherOutStandCount}}笔/{{archives_queryDebt_data.otherLoanBal}}元</span>
                   </p>
                   <p>
                     <span class="debt_information_content_title">逾期笔数/金额</span>
-                    <span class="debt_information_content_cont">{{archives_queryDebt_data.otherOverdueCount}}笔/{{archives_queryDebt_data.otherOverdueAmt}}元</span>
+                    <span
+                      class="debt_information_content_cont"
+                    >{{archives_queryDebt_data.otherOverdueCount}}笔/{{archives_queryDebt_data.otherOverdueAmt}}元</span>
                   </p>
                   <p>
                     <span class="debt_information_content_title">不良笔数/金额</span>
-                    <span class="debt_information_content_cont">{{archives_queryDebt_data.otherOverdueMoreCount}}笔/{{archives_queryDebt_data.otherOverdueMoreAmt}}元</span>
+                    <span
+                      class="debt_information_content_cont"
+                    >{{archives_queryDebt_data.otherOverdueMoreCount}}笔/{{archives_queryDebt_data.otherOverdueMoreAmt}}元</span>
                   </p>
                 </div>
               </div>
@@ -101,7 +129,9 @@
                 <div class="debt_information_content">
                   <p>
                     <span class="debt_information_content_title">最高额度</span>
-                    <span class="debt_information_content_cont">{{archives_queryDebt_data.creditCardLimit}}元</span>
+                    <span
+                      class="debt_information_content_cont"
+                    >{{archives_queryDebt_data.creditCardLimit}}元</span>
                   </p>
                 </div>
               </div>
@@ -161,19 +191,25 @@
               <div class="interaction_content">
                 <p>
                   <span class="interaction_content_title">累计登录</span>
-                  <span class="interaction_content_cont">{{archives_queryInteractive_data.loginNum}}次</span>
+                  <span
+                    class="interaction_content_cont"
+                  >{{archives_queryInteractive_data.loginNum}}次</span>
                 </p>
                 <p>
                   <span class="interaction_content_title">本次逾期后登录</span>
-                  <span class="interaction_content_cont">{{archives_queryInteractive_data.loginAfterOverdueNum}}次</span>
+                  <span
+                    class="interaction_content_cont"
+                  >{{archives_queryInteractive_data.loginAfterOverdueNum}}次</span>
                 </p>
                 <p>
                   <span class="interaction_content_title">最后登录时间</span>
-                  <span class="interaction_content_cont">{{archives_queryInteractive_data.lastLoginTime | formatDatetime}}</span>
+                  <span
+                    class="interaction_content_cont"
+                  >{{archives_queryInteractive_data.lastLoginTime | formatDatetime}}</span>
                 </p>
               </div>
             </div>
-            <div class="interaction_wrap">
+            <!-- <div class="interaction_wrap">
               <div class="interaction_title">投诉：</div>
               <div class="interaction_content">
                 <p>
@@ -181,8 +217,8 @@
                   <span class="interaction_content_cont">{{archives_queryInteractive_data.complaintNum}}次</span>
                 </p>
               </div>
-            </div>
-            <div class="interaction_wrap">
+            </div>-->
+            <!-- <div class="interaction_wrap">
               <div class="interaction_title">400：</div>
               <div class="interaction_content">
                 <p>
@@ -194,13 +230,15 @@
                   <span class="interaction_content_cont">{{archives_queryInteractive_data.lastLoginTime | formatDatetime}}</span>
                 </p>
               </div>
-            </div>
+            </div>-->
             <div class="interaction_wrap">
               <div class="interaction_title">短信：</div>
               <div class="interaction_content">
                 <p>
                   <span class="interaction_content_title">短信次数</span>
-                  <span class="interaction_content_cont">{{archives_queryInteractive_data.shortMessageNum}}次</span>
+                  <span
+                    class="interaction_content_cont"
+                  >{{archives_queryInteractive_data.shortMessageNum}}次</span>
                 </p>
               </div>
             </div>
@@ -323,11 +361,9 @@
       color: #000;
       padding: 10px;
     }
-    .debt_information_box {
-      .debt_information_caseOrMoney {
-        padding-left: 24px;
-        line-height: 26px;
-      }
+    .debt_information_caseOrMoney {
+      padding-left: 24px;
+      line-height: 26px;
     }
     .debt_information_box_empty {
       height: 0;

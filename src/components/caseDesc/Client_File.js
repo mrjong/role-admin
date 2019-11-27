@@ -5,7 +5,7 @@ export default {
   props: ['ishow', 'userId', 'caseNo', 'billNo'],
   data() {
     return {
-      showPanel: true,
+      showPanel: false,
       archives_queryIncome_data: {},//收入情况
       archives_queryOutbound_data: [],//外呼情况
       archives_queryDebt_data: [],//债务情况
