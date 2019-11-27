@@ -6,6 +6,8 @@
       :value="ishow"
       footer-hide
       draggable
+      transfer
+      scrollable
       @on-visible-change="del"
       :mask-closable="false"
     >

@@ -1,5 +1,4 @@
 import { archives_queryIncome, archives_queryOutbound, archives_queryDebt, archives_queryLinkHistory, archives_queryInteractive } from '@/service/case-detail-api';
-
 export default {
   name: 'client-file',
   props: ['ishow', 'userId', 'caseNo', 'billNo'],
@@ -20,6 +19,22 @@ export default {
     this.archives_queryDebt();
     this.archives_queryLinkHistory();
     this.archives_queryInteractive()
+  },
+  mounted() {
+    this.$nextTick(() => {
+      let modalContent = document.querySelector('.ivu-modal-content-drag');
+      console.log(modalContent)
+      window.addEventListener('mousemove', () => {
+        console.log(modalContent.offsetTop)
+        if (modalContent.offsetTop <= 0) {
+          modalContent.style.top = 0;
+        }
+      }, true)
+    })
+  },
+  destroyed() {
+    let modalContent = document.querySelector('.ivu-modal-content-drag');
+    window.removeEventListener('mousemove', () => {}, true)
   },
   methods: {
     del() {
