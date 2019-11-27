@@ -87,7 +87,7 @@ export default {
         userId: this.userId,
       }).then(res => {
         if (res.code === 1) {
-          this.archives_queryLinkHistory_data = res.data;
+          this.archives_queryLinkHistory_data = res;
         } else {
           this.$Message.error(res.message)
         }

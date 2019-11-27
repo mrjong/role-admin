@@ -85,7 +85,7 @@
             </p>
             <p
               class="debt_information_caseOrMoney"
-            >累计借贷{{archives_queryDebt_data.billNumAll}}+{{archives_queryDebt_data.otherOutStandCount}}笔，逾期{{archives_queryDebt_data.otherOverdueCount}}+{{archives_queryDebt_data.billOngoingNum}}笔，在用{{archives_queryDebt_data.billOngoingNum}}笔</p>
+            >累计借贷{{archives_queryDebt_data.billNumAll + archives_queryDebt_data.otherOutStandCount}}笔，逾期{{archives_queryDebt_data.otherOverdueCount + archives_queryDebt_data.billOngoingNum}}笔，在用{{archives_queryDebt_data.otherOngoingNum}}笔</p>
             <p
               class="debt_information_caseOrMoney"
             >单笔平均借贷{{archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount}}元</p>
@@ -173,7 +173,7 @@
             </div>
             <div
               class="history_wrap"
-              v-for="item, key, index in archives_queryLinkHistory_data"
+              v-for="item, key, index in archives_queryLinkHistory_data.data"
               :key="item+index"
             >
               <div class="history_title">{{item.collectType}}</div>
@@ -182,6 +182,7 @@
               <div class="history_content">{{item.lastCallTime | formatDatetime}}</div>
               <div class="history_content">{{item.collectContect}}</div>
             </div>
+            <p class="bad-habits">不良嗜好：{{archives_queryLinkHistory_data.extra.badHabits}}</p>
           </Card>
           <!-- 交互信息 -->
           <Card class="vue-panel case-desc interaction">
@@ -352,6 +353,11 @@
       div:nth-of-type(4) {
         flex: 2;
       }
+    }
+    .bad-habits {
+      font-weight: 500;
+      color: #000;
+      padding: 20px 0 0 10px;
     }
     // 共债信息
     .debt_information_title {
