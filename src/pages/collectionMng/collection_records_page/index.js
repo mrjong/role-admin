@@ -423,7 +423,7 @@ export default {
         this.formItem.beginDate = arr[0];
         this.formItem.endDate = arr[1];
       }
-      if (type === 'allotDate') {
+      if (type === 'allotDateCopy') {
         this.formItem.allotDateSt = arr[0];
         this.formItem.allotDateEd = arr[1];
       }
@@ -544,7 +544,7 @@ export default {
             this.formItem.beginDate,
             this.formItem.endDate,
           ])
-          this.formItem.allotDate && (this.formItem.allotDate = [this.formItem.allotDateSt, this.formItem.allotDateEd]);
+          this.formItem.allotDateCopy && (this.formItem.allotDateCopy = [this.formItem.allotDateSt, this.formItem.allotDateEd]);
           this.pageNo = 1;
           window.sessionStorage.setItem('collecttion_records_form', JSON.stringify(this.formItem));
           this.getList();

@@ -40,10 +40,10 @@
                 size="small"
                 style="width:100%"
                 format="yyyy-MM-dd"
-                v-model="formItem.allotDate"
+                v-model="formItem.allotDateCopy"
                 type="daterange"
                 placement="bottom-start"
-                @on-change="changeDate($event, 'allotDate')"
+                @on-change="changeDate($event, 'allotDateCopy')"
                 placeholder="请选择分配时间"
                 clearable
               ></DatePicker>

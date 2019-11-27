@@ -233,7 +233,7 @@ export default {
         this.formItem.callStartDate = arr[0];
         this.formItem.callEndDate = arr[1];
       }
-      if (type === 'allotDate') {
+      if (type === 'allotDateCopy') {
         this.formItem.allotDateSt = arr[0];
         this.formItem.allotDateEd = arr[1];
       }
@@ -257,7 +257,7 @@ export default {
       this.formItem.dealTime && (this.formItem.dealTime = [this.formItem.callStartDate,      this.formItem.callEndDate
       ]
       );
-      this.formItem.allotDate && (this.formItem.allotDate = [this.formItem.allotDateSt,
+      this.formItem.allotDateCopy && (this.formItem.allotDateCopy = [this.formItem.allotDateSt,
       this.formItem.allotDateEd])
       window.sessionStorage.setItem(
         "daily_monitoring_callDetail_form",

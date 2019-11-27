@@ -69,7 +69,7 @@
             </p>
             <div :class="showPanel? 'debt_information_box': 'debt_information_box_empty'">
               <p class="debt_information_caseOrMoney">累计借贷{{archives_queryDebt_data.billNumAll}}+{{archives_queryDebt_data.otherOutStandCount}}笔，逾期{{archives_queryDebt_data.otherOverdueCount}}+{{archives_queryDebt_data.billOngoingNum}}笔，在用{{archives_queryDebt_data.billOngoingNum}}笔</p>
-              <p class="debt_information_caseOrMoney">单笔平均借贷10000元</p>
+              <p class="debt_information_caseOrMoney">单笔平均借贷{{archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount}}元</p>
               <div class="debt_information_wrap">
                 <div class="debt_information_wrap_title">本平台：</div>
                 <div class="debt_information_content">
