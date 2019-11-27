@@ -32,6 +32,7 @@
           <!-- 债务情况 -->
           <Card class="vue-panel case-desc debt">
             <p slot="title">债务情况</p>
+            <p class="repayment_title">还款习惯</p>
             <!-- 还款习惯 -->
             <div class="debt_wrap">
               <span class="debt_empty_title"></span>
@@ -346,6 +347,12 @@
         font-size: 14px;
         font-weight: 500;
       }
+    }
+    .repayment_title {
+      font-weight: 500;
+      color: #000;
+      padding: 6px 10px;
+      font-size: 14px;
     }
     // 历史记录
     .history_wrap {
