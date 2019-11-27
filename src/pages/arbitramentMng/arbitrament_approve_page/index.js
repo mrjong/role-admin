@@ -1,5 +1,6 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
+import overallModal from '@/components/overall-modal/index.vue'
 import { arb_list, credit_case_execute, credit_pdf_data, arb_exportlist } from '@/service/getData';
 import arbitramentDeatil from './components/arbitrament_detail';
 import util from '@/libs/util';
@@ -9,7 +10,8 @@ export default {
   name: 'case_search_page',
   mixins: [formValidateFun, sysDictionary],
   components: {
-    arbitramentDeatil
+    arbitramentDeatil,
+    overallModal
   },
   data() {
     console.log(this.GLOBAL);
@@ -23,6 +25,7 @@ export default {
       getDirList: ['PROD_TYPE', 'GENDER', 'APPROVAL_STATE'],
       getDirObj: {},
       showPanel: false,
+      modal_flag: false,//提示框modal
       prefix: '/admin/arb/images/',
       file_list: [],// 上传文件list
       file_url: '',// 暂存的文件url
@@ -482,7 +485,11 @@ export default {
     },
     // 强执立案
     apply_register() {
-
+      if (this.approve_list.length<1) {
+        this.$Message.error('请先勾选仲裁案件');
+        return;
+      }
+      this.modal_flag = true;
     },
     // 上传之前的回调
     handleUpload(file) {

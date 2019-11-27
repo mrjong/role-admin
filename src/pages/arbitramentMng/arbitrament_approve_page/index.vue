@@ -186,7 +186,15 @@
       </div>
     </Card>
     <arbitrament-deatil v-model="arbitrament_modal" :arbitrament_data='arbitrament_data' v-if="arbitrament_modal" v-on:passBack='passBack'></arbitrament-deatil>
+    <overallModal :modal_flag='modal_flag'>
+      <template>
+        <p>我是消息体</p>
+      </template>
+      <template v-slot:footer>
+        <p>我是页尾</p>
+      </template>
 
+    </overallModal>
     <!-- 上传文件的modal -->
     <div v-if="upload_modal">
       <Modal title="上传文件" v-model="upload_modal" :mask-closable="false">

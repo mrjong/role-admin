@@ -1,9 +1,8 @@
 <template>
   <div>
-    <Modal :title="title" :value="modal_flag" class-name="vertical-center-modal">
-      <p>Content of dialog</p>
-      <p>Content of dialog</p>
-      <p>Content of dialog</p>
+    <Modal :title="title" footer-hide :value="modal_flag" class-name="vertical-center-modal">
+      <slot></slot>
+      <slot name="footer"></slot>
     </Modal>
   </div>
 </template>
