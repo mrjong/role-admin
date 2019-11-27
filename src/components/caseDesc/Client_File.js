@@ -71,6 +71,7 @@ export default {
     archives_queryOutbound() {
       archives_queryOutbound({
         userId: this.userId,
+        billNo: this.billNo
       }).then(res => {
         if (res.code === 1) {
           this.archives_queryOutbound_data = res.data;
