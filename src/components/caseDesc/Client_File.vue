@@ -43,6 +43,16 @@
               <span>历史账单</span>
             </div>
             <div class="debt_wrap">
+              <div class="debt_title">逾期次数</div>
+              <div
+                class="debt_content"
+              >{{archives_queryDebt_data&&archives_queryDebt_data.billOverduePerd?archives_queryDebt_data.billOverduePerd: 0}}/{{archives_queryDebt_data && archives_queryDebt_data.billPerdAll?archives_queryDebt_data.billPerdAll: 0}}</div>
+              <div
+                class="debt_content"
+              >{{archives_queryDebt_data&&archives_queryDebt_data.hisOverduePerd?archives_queryDebt_data.hisOverduePerd: 0}}/{{archives_queryDebt_data && archives_queryDebt_data.hisPerdAll?archives_queryDebt_data.hisPerdAll: 0}}</div>
+
+            </div>
+            <div class="debt_wrap">
               <div class="debt_title">最常还款天数</div>
               <div
                 class="debt_content"
@@ -165,7 +175,9 @@
               <div class="outbound_title">{{item.collectType}}</div>
               <div class="outbound_content">{{item.reachNum}}</div>
               <div class="outbound_content">{{item.outBoundNum}}</div>
-              <div class="outbound_content">{{item.connectPercentile?(item.connectPercentile)+'%':'0%'}}</div>
+              <div
+                class="outbound_content"
+              >{{item.connectPercentile?(item.connectPercentile)+'%':'0%'}}</div>
               <div class="outbound_content">{{item.robotCallNum}}</div>
             </div>
           </Card>
