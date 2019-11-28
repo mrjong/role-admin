@@ -69,7 +69,7 @@
                 class="debt_content"
               >{{archives_queryDebt_data && archives_queryDebt_data.hisDecreaseNum? archives_queryDebt_data.hisDecreaseNum: 0}}/{{archives_queryDebt_data && archives_queryDebt_data.hisDecreaseAmt? archives_queryDebt_data.hisDecreaseAmt: 0}}</div>
             </div>
-            <div class="debt_wrap" style="margin-bottom: 10px border:node">
+            <div class="debt_wrap" style="margin-bottom: 10px; border: none">
               <div class="debt_title">优惠券次数/金额</div>
               <div
                 class="debt_content"
