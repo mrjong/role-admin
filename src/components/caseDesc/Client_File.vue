@@ -154,7 +154,7 @@
               <span class="outbound_empty_title"></span>
               <span>触达人数</span>
               <span>外呼次数</span>
-              <span>接通率%</span>
+              <span>接通率</span>
               <span>语音播报</span>
             </div>
             <div
@@ -165,7 +165,7 @@
               <div class="outbound_title">{{item.collectType}}</div>
               <div class="outbound_content">{{item.reachNum}}</div>
               <div class="outbound_content">{{item.outBoundNum}}</div>
-              <div class="outbound_content">{{item.connectPercentile}}</div>
+              <div class="outbound_content">{{item.connectPercentile?(item.connectPercentile)+'%':'0%'}}</div>
               <div class="outbound_content">{{item.robotCallNum}}</div>
             </div>
           </Card>

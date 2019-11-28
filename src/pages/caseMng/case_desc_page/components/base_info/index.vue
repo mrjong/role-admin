@@ -5,15 +5,12 @@
         {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear}}
         ({{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}})
         <!-- 客户档案 -->
-        <Button
+        <span
           @click="handOpen('Client_File')"
           class="vue-back-btn"
-          style="vertical-align: top; margin-left: 15px; font-size: 14px;font-weight: 500;border: none;line-height: 28px;"
-          size="small"
-          type="primary"
-          :disabled='!userId'
-          ghost
-        >客户档案</Button>
+          style="display: inline-block; color: #2d8cf0; cursor: pointer; vertical-align: middle; margin-left: 15px; font-size: 14px;font-weight: 500;border: none;line-height: 23px; height: 26px;text-decoration: none;"
+          v-if='userId'
+        >客户档案</span>
         <!-- 信用进度按钮 -->
         <span
           v-if="case_detail_case_identity_info_Data.caseHandleStatus && case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
