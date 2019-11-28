@@ -287,6 +287,17 @@
               </Select>
             </FormItem>
           </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem span="6" label="信用进度:">
+              <Select size="small" v-model="formItem.processStage" clearable>
+                <Option
+                  v-for="(item,index) in case_detail_one_channel_list"
+                  :value="item.channelOneCode"
+                  :key="item.channelOneCode + index"
+                >{{ item.channelOneName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <FormItem>
               <Button

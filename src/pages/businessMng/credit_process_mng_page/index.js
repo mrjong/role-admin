@@ -1,4 +1,6 @@
 import Cookie from 'js-cookie';
+import { casesprocess_download_template, casesprocess_list, casesprocess_delete } from '@/service/business-mng-api';
+import util from '@/libs/util';
 
 export default {
   name: 'credit-process-mng',
@@ -9,7 +11,7 @@ export default {
         'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
         timeout: 120000,
       },
-      file_url: '/admin/cases/batch/import ',//文件上传地址
+      file_url: '/admin/casesprocess/import',//文件上传地址
       showPanel: false,
       showPanelTable: false,
       export_case: true,
@@ -41,51 +43,62 @@ export default {
           align: 'center',
           fixed: 'left',
           render: (h, params) => {
-            const caseHandleStatus = params.row.caseHandleStatus;
+            const revokeStatus = params.row.revokeStatus;
             return h('div', [
-              this.update_limt ? h(
-                'a',
+              revokeStatus && params.index === 0 ? h('Poptip',
                 {
-                  class: 'edit-btn',
-                  props: {},
+                  props: {
+                    confirm: true,
+                    title: '您确定要撤销这条数据吗?',
+                    transfer: true
+                  },
                   on: {
-                    click: () => {
-
+                    'on-ok': () => {
+                      this.casesprocess_delete(params.row.id)
                     }
                   }
-                },
-                '修改'
-              ) : h('span', {
-                style : {
-                  color: rgb(204, 204, 204),
-                }
-              }, '修改'),
+                }, [h(
+                  'a',
+                  {
+                    class: 'edit-btn',
+                    props: {},
+                    on: {
+                      click: () => {
+                        // this.casesprocess_delete(params.row.id)
+                      }
+                    }
+                  },
+                  '撤销'
+                )]) : h('span', {
+                  style: {
+                    color: 'rgb(200, 200, 200)',
+                  }
+                }, '撤销'),
             ]);
           }
         },
         {
           title: '导入账单数量',
-          key: 'applyNo',
+          key: 'amount',
           className: 'tableMainW',
           align: alignCenter,
         },
         {
           title: '操作人',
-          key: 'applyNo',
+          key: 'createUser',
           className: 'tableMainW',
           align: alignCenter,
         },
         {
           title: '操作时间',
-          key: 'applyNo',
+          key: 'updateTime',
           className: 'tableMainW',
           align: alignCenter,
-          render(h, params){
-            console.log(this.$options,'opopopopo');
-            let res = params.row.applayTime;
-            res = res ? this.$options.filters['formatDate'](res,'YYYY-MM-DD HH:mm:ss')
+          render: (h, params) => {
+            let res = params.row.updateTime;
+            res = res ? this.$options.filters['formatDate'](res, 'YYYY-MM-DD HH:mm:ss')
               : res;
-            return h('span',res);
+            return h('span', res);
           }
         },
       ],
@@ -99,7 +112,7 @@ export default {
   },
   methods: {
     handleSubmit(name) {
-
+      this.casesprocess_list()
     },
     clearForm() {
       this.formValidate = {};
@@ -146,27 +159,52 @@ export default {
       console.log(error);
       this.import_data_loading = false;
     },
+    async casesprocess_list() {
+      this.query_loading = true;
+      const res = await casesprocess_list({
+        ...this.formValidate,
+        pageNum: this.pageNo,
+        pageSize: this.pageSize
+      });
+      this.query_loading = false;
+      if (res.code === 1) {
+        this.tableData = res.data.content;
+        this.total = res.data.totalElements;
+      } else {
+        this.$Message.error(res.message)
+      }
+    },
     // 文件上传成功
     handleSuccess(res, file) {
       this.import_data_loading = false;
       if (res.code === 1) {
-        console.log(res);
-        this.tableData = [];
-        this.query_flag = true;
-        this.$set(this, 'file_csaeIds', res.data.caseNoList);
-        let caseIds;
-        // 判断返回的案件号是否为空，空 不执行下面分页请求操作
-        if (res.data.caseNoList.length > 0) {
-          caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
-          this.cases_import_list(caseIds);
-        } else {
-          this.$Message.error('暂时查询不到相关数据')
-        }
+        this.casesprocess_list();
+      } else {
+        this.$Message.error(res.message);
+      }
+    },
+    async casesprocess_delete(id) {
+      const res = await casesprocess_delete({
+        taskId: id,
+      })
+      if (res.code === 1) {
+        this.casesprocess_list();
       } else {
         this.$Message.error(res.message);
       }
     },
     // 下载模板
-    download_import() {},
+    async casesprocess_download_template() {
+      this.download_import_data = true;
+      const res = await casesprocess_download_template(
+        {},
+        {
+          responseType: 'blob',
+          timeout: 120000,
+        }
+      );
+      this.download_import_data = false;
+      util.dowloadfile('信用进度模板', res);
+    },
   },
 }

@@ -2,6 +2,7 @@ import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
 import overallModal from '@/components/overall-modal/index.vue'
 import { arb_list, credit_case_execute, credit_pdf_data, arb_exportlist } from '@/service/getData';
+import { credit_case_filing } from '@/service/business-mng-api';
 import arbitramentDeatil from './components/arbitrament_detail';
 import util from '@/libs/util';
 import Cookie from 'js-cookie';
@@ -417,6 +418,9 @@ export default {
     // this.getList();
   },
   methods: {
+    closeModal() {
+      this.modal_flag = false;
+    },
     // table勾选回调
     changeSelect(arr) {
       this.approve_list = [];
@@ -486,11 +490,34 @@ export default {
     },
     // 强执立案
     apply_register() {
-      if (this.approve_list.length<1) {
+      if (this.approve_list.length < 1) {
         this.$Message.error('请先勾选仲裁案件');
         return;
       }
       this.modal_flag = true;
+    },
+    // 强执立案
+    async credit_case_filing() {
+      this.modalConfirmLoading = true;
+      const res = await credit_case_filing(
+        {
+          arbConditions: this.approve_list,
+        },
+        {
+          transformRequest: [
+            function (data) {
+              return JSON.stringify(data); //利用对应方法转换格式
+            }
+          ]
+        }
+      );
+      this.modalConfirmLoading = false;
+      if (res.code === 1) {
+        this.modal_flag = false;
+        this.getList();
+      } else {
+        this.$Message.error(res.message);
+      }
     },
     // 上传之前的回调
     handleUpload(file) {
@@ -627,6 +654,7 @@ export default {
         this.tableData = res.data.content;
         this.total = res.data.totalElements;
         this.export_list = [];
+        this.approve_list = [];
         this.pageNo = res.data.number;
       } else {
         this.$Message.error(res.message);

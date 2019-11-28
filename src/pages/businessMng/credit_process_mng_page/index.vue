@@ -14,8 +14,8 @@
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="案件号:">
-              <Input size="small" clearable v-model.trim="formValidate.caseNo" placeholder="请输入案件号"></Input>
+            <FormItem label="操作人:">
+              <Input size="small" clearable v-model.trim="formValidate.createUser" placeholder="请输入操作人"></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -57,10 +57,10 @@
                 icon="ios-cloud-download-outline"
                 type="primary"
                 style="min-width:80px;margin-left: 8px"
-                @click="download_import"
+                @click="casesprocess_download_template"
                 :loading="download_import_data"
               >
-                <span v-if="!download_import_data">下载导入查询模板</span>
+                <span v-if="!download_import_data">下载信用进度模板</span>
                 <span v-else>下载中...</span>
               </Button>
               <Upload
@@ -88,11 +88,11 @@
                   style="min-width: 80px;"
                   :loading="import_data_loading"
                 >
-                  <span v-if="!import_data_loading">导入查询</span>
+                  <span v-if="!import_data_loading">导入信用进度</span>
                   <span v-else>导入中...</span>
                 </Button>
               </Upload>
-              <span style="line-height: 24px;color: #ed4014" v-if="import_search">（*导入查询和条件查询的数据没有关联）</span>
+              <span style="line-height: 24px;color: #ed4014" v-if="import_search">（*导入的和条件查询的数据没有关联）</span>
             </FormItem>
           </Col>
         </Row>
@@ -115,7 +115,7 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanelTable">
-        <Table border :data="tableData" @on-selection-change="changeSelect" :columns="tableColumns" stripe class="tableBox"></Table>
+        <Table border :data="tableData" :loading='query_loading' @on-selection-change="changeSelect" :columns="tableColumns" stripe class="tableBox"></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div style="float: right;">

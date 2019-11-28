@@ -190,7 +190,7 @@
       v-if="arbitrament_modal"
       v-on:passBack="passBack"
     ></arbitrament-deatil>
-    <overallModal :modal_flag="modal_flag" @closeModal='modal_flag = !modal_flag'>
+    <overallModal :modal_flag="modal_flag" @closeModal='closeModal'>
       <template>
         <p class="modal-content">已选择{{approve_list.length}}个案件，确认操作强执立案吗？</p>
       </template>
@@ -201,7 +201,7 @@
             class="cancelBtn vue-back-btn header-btn"
           >取消</Button>
           <Button
-            @click.stop="modalHandleSubmit"
+            @click.stop="credit_case_filing"
             class="vue-back-btn header-btn"
             type="primary"
             :loading="modalConfirmLoading"
