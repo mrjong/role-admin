@@ -3,26 +3,12 @@
     <Card class="vue-panel case-desc">
       <p slot="title">
         {{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear}}
-        <!-- <Poptip
-            :content="mingwenData"
-            v-if="case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid"
-          >
-            <Icon
-              class="eye-class"
-              title="显示明文"
-              type="md-eye"
-              @click.native="syscommon_decrypt({
-                type:'NAME',
-                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm
-            })"
-            ></Icon>
-        </Poptip>-->
-        （{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}}）
+        ({{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userGenderName}}/{{case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.age}})
         <!-- 客户档案 -->
         <Button
           @click="handOpen('Client_File')"
-          class="vue-back-btn header-btn"
-          style="vertical-align: top"
+          class="vue-back-btn"
+          style="vertical-align: top; margin-left: 15px; font-size: 14px;font-weight: 500;border: none;line-height: 28px;"
           size="small"
           type="primary"
           :disabled='!userId'
@@ -32,10 +18,10 @@
         <span
           v-if="case_detail_case_identity_info_Data.caseHandleStatus && case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"
           @click.stop="get_credit_process"
-          style="line-height: 20px; height: 26px; display: inline-block; font-weight: 500; color: #2d8cf0; margin-left: 10px; font-size: 13px; cursor: pointer;"
+          style="line-height: 20px; height: 26px; display: inline-block; font-weight: 500; color: #2d8cf0; margin-left: 15px; font-size: 14px; cursor: pointer;"
         >
-          <Icon :type="!credit_panel?'ios-arrow-dropup':'ios-arrow-dropdown'" size="20"></Icon>
           <span>信用进度</span>
+          <Icon :type="!credit_panel?'ios-arrow-dropup':'ios-arrow-dropdown'" size="20"></Icon>
         </span>
         <Button
           v-if="readType!=='read' && APPLY_QR_CODE && case_detail_case_identity_info_Data.caseHandleStatus &&case_detail_case_identity_info_Data.caseHandleStatus != 'OUT'"

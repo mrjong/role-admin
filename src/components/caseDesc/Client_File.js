@@ -47,7 +47,7 @@ export default {
           name === 'workInfo' && (titleName = '职业：');
           name === 'workDtlAddr' && (titleName = '工作地址：');
           name === 'idDtlAddr' && (titleName = '户籍地址：');
-          name === 'property' && (titleName = '个人财产：');
+          name === 'property' && (titleName = '个人资产：');
           return titleName;
         default:
           break;
