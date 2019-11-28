@@ -89,7 +89,7 @@
             </p>
             <p
               class="debt_information_caseOrMoney"
-            >累计借贷{{archives_queryDebt_data.billNumAll + archives_queryDebt_data.otherOutStandCount}}笔，逾期{{archives_queryDebt_data.otherOverdueCount + archives_queryDebt_data.billOngoingNum}}笔，在用{{archives_queryDebt_data.otherOngoingNum ? archives_queryDebt_data.otherOngoingNum: 0}}笔</p>
+            >累计借贷{{archives_queryDebt_data.otherOutStandCount}}笔，逾期{{archives_queryDebt_data.otherOverdueCount}}笔，在用{{archives_queryDebt_data.otherOngoingNum ? archives_queryDebt_data.otherOngoingNum: 0}}笔</p>
             <p
               class="debt_information_caseOrMoney"
             >单笔平均借贷{{archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount > 0? archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount:0}}元</p>
@@ -128,7 +128,10 @@
                   </p>
                 </div>
               </div>
-              <div class="debt_information_wrap" v-if="archives_queryDebt_data && archives_queryDebt_data.creditCardLimit">
+              <div
+                class="debt_information_wrap"
+                v-if="archives_queryDebt_data && archives_queryDebt_data.creditCardLimit"
+              >
                 <div class="debt_information_wrap_title">信用卡：</div>
                 <div class="debt_information_content">
                   <p>
@@ -186,7 +189,10 @@
               <div class="history_content">{{item.lastCallTime | formatDatetime}}</div>
               <div class="history_content">{{item.collectContect}}</div>
             </div>
-            <p class="bad-habits" v-if="archives_queryLinkHistory_data.extra">不良嗜好：{{archives_queryLinkHistory_data.extra && archives_queryLinkHistory_data.extra.badHabits}}</p>
+            <p
+              class="bad-habits"
+              v-if="archives_queryLinkHistory_data.extra"
+            >不良嗜好：{{archives_queryLinkHistory_data.extra && archives_queryLinkHistory_data.extra.badHabits}}</p>
           </Card>
           <!-- 交互信息 -->
           <Card class="vue-panel case-desc interaction">
