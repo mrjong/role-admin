@@ -110,7 +110,24 @@ export default {
             return h('span', promiseRepayDate);
           }
         },
-
+        {
+          title: '个人资产',
+          align: 'center',
+          width: 100,
+          key: 'property'
+        },
+        {
+          title: '不良嗜好',
+          align: 'center',
+          width: 100,
+          key: 'badHabits'
+        },
+        {
+          title: '沟通途径',
+          align: 'center',
+          width: 100,
+          key: 'collectFlg'
+        },
       ],
 
       // 回款信息

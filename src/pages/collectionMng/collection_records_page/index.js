@@ -21,8 +21,8 @@ export default {
     const _this = this
     return {
       headers: {
-				'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
-				timeout: 120000,
+        'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
+        timeout: 120000,
       },
       file_url: '/admin/cases/batch/import ',//文件上传地址
       import_data_loading: false,// 导入loading
@@ -44,7 +44,7 @@ export default {
         // poster: '/static/images/author.jpg'
       },
       modal1: false,
-      getDirList: ['PROD_TYPE'],
+      getDirList: ['PROD_TYPE', 'CONTACT_METHOD'],
       getDirObj: {},
       showPanel: false,
       productLineList: [],
@@ -112,7 +112,7 @@ export default {
           render: (h, params) => {
             const soundUuid = params.row.soundUuid;
             const bfFlag = params.row.bfFlag;
-            return bfFlag?h('div', [
+            return bfFlag ? h('div', [
               h(
                 'a',
                 {
@@ -134,7 +134,7 @@ export default {
                 },
                 '播放'
               ),
-            ]): h('div', [
+            ]) : h('div', [
               h(
                 'span',
                 {
@@ -146,6 +146,19 @@ export default {
                 '暂无录音'
               ),
             ]);
+          }
+        },
+        {
+          title: '分配时间',
+          width: 150,
+          key: 'allotDate',
+          align: 'center',
+          render: (h, params) => {
+            let allotDate = params.row.allotDate;
+            allotDate = allotDate
+              ? this.$options.filters['formatDate'](allotDate, 'YYYY-MM-DD HH:mm:ss')
+              : allotDate;
+            return h('span', allotDate);
           }
         },
         {
@@ -215,6 +228,24 @@ export default {
               : promiseRepayDate;
             return h('span', promiseRepayDate);
           }
+        },
+        {
+          title: '个人资产',
+          width: 120,
+          key: 'property',
+          align: 'center',
+        },
+        {
+          title: '不良嗜好',
+          width: 120,
+          key: 'badHabits',
+          align: 'center',
+        },
+        {
+          title: '沟通途径',
+          width: 120,
+          key: 'collectFlg',
+          align: 'center',
         },
         {
           title: '组别',
@@ -293,7 +324,7 @@ export default {
                 },
                 [
                   h('span', {
-                  },params.row.billNo)
+                  }, params.row.billNo)
                 ]
               )
             ])
@@ -386,10 +417,16 @@ export default {
   },
   methods: {
     // 日历监听
-    dateChange(arr) {
+    dateChange(arr, type) {
       console.log(arr);
-      this.formItem.beginDate = arr[0];
-      this.formItem.endDate = arr[1];
+      if (type === 'csDate') {
+        this.formItem.beginDate = arr[0];
+        this.formItem.endDate = arr[1];
+      }
+      if (type === 'allotDateCopy') {
+        this.formItem.allotDateSt = arr[0];
+        this.formItem.allotDateEd = arr[1];
+      }
       console.log(this.formItem)
     },
     // listen event
@@ -424,7 +461,7 @@ export default {
     // 沟通状态
     async collectcode_getListByCodeType(type) {
       const res = await collectcode_getListByCodeType({
-        codeType: type === 1? 'COLLECT_STS': 'TALK_RESULT'
+        codeType: type === 1 ? 'COLLECT_STS' : 'TALK_RESULT'
       });
       if (res.code === 1) {
         if (type === 1) {
@@ -459,7 +496,7 @@ export default {
     changePage(pageNo) { //默认带入一个参数是当前的页码数
       this.pageNo = pageNo;
       if (this.query_flag) {
-        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize)
+        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize)
         this.cases_import_list(caseIds);
       } else {
         this.getList();
@@ -470,7 +507,7 @@ export default {
       this.pageSize = pageSize;
       this.pageNo = 1;
       if (this.query_flag) {
-        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize)
+        let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize)
         this.cases_import_list(caseIds);
       } else {
         this.getList();
@@ -503,12 +540,11 @@ export default {
       this.query_flag = false;
       this.$refs[name].validate((valid) => {
         if (valid) {
-          if (this.formItem.csDate) {
-            this.formItem.csDate = [
-             this.formItem.beginDate,
-             this.formItem.endDate,
-            ]
-          }
+          this.formItem.csDate && (this.formItem.csDate = [
+            this.formItem.beginDate,
+            this.formItem.endDate,
+          ])
+          this.formItem.allotDateCopy && (this.formItem.allotDateCopy = [this.formItem.allotDateSt, this.formItem.allotDateEd]);
           this.pageNo = 1;
           window.sessionStorage.setItem('collecttion_records_form', JSON.stringify(this.formItem));
           this.getList();
@@ -524,10 +560,10 @@ export default {
     },
     // 上传文件格式校验
     handleFormatError(file) {
-			this.$Message.error('请选择Excel文件上传');
+      this.$Message.error('请选择Excel文件上传');
     },
     // 上传文件大小校验
-		handleMaxSize(file) {
+    handleMaxSize(file) {
       this.$Message.error('文件大小不得超过1M');
     },
     // 文件上传时
@@ -547,10 +583,10 @@ export default {
         this.tableData = [];
         this.query_flag = true;
         this.$set(this, 'file_csaeIds', res.data.caseNoList);
-        let caseIds ;
+        let caseIds;
         // 判断返回的案件号是否为空，空 不执行下面分页请求操作
-        if (res.data.caseNoList.length>0) {
-          caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize);
+        if (res.data.caseNoList.length > 0) {
+          caseIds = util.slice_case_number(res.data.caseNoList, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize);
           this.cases_import_list(caseIds);
         } else {
           this.$Message.error('暂时查询不到相关数据')
@@ -583,7 +619,7 @@ export default {
     async cases_import_list(caseIds) {
       this.query_flag = true;
       console.log(caseIds)
-      const res = await import_list('/case/collect',{
+      const res = await import_list('/case/collect', {
         caseIds: caseIds,
       });
       console.log(res);
@@ -613,7 +649,7 @@ export default {
       const res = await case_collect_collect_export(
         {
           ...this.formItem,
-          importQuery: this.query_flag? 1: null
+          importQuery: this.query_flag ? 1 : null
         },
         {
           responseType: 'blob',
@@ -624,7 +660,7 @@ export default {
       this.export_case_loading = false;
       setTimeout(() => {
         if (this.query_flag) {
-          let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo-1)*this.pageSize, this.pageNo*this.pageSize)
+          let caseIds = util.slice_case_number(this.file_csaeIds, (this.pageNo - 1) * this.pageSize, this.pageNo * this.pageSize)
           this.cases_import_list(caseIds);
         } else {
           this.getList();

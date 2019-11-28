@@ -32,6 +32,7 @@ export default {
       caseNo: '',
       userId: '',
       showBtn: false,
+      billNo: null,
       queryData: {},
     };
   },
@@ -74,6 +75,7 @@ export default {
           break;
         case 'CASE_INFO':
           this.base_info_data = obj.data;
+          this.billNo = obj.billNo;
           break;
         case 'ADDRESS_LIST':
           this.$refs['BASE_INFO'].case_detail_case_identity_info();
@@ -96,6 +98,7 @@ export default {
         this.queryData = queryData;
         this.userId = res.data.page.content.length > 0 ? res.data.page.content[0].userId : queryData.userIdtest;
         this.queryData.userIdtest = res.data.page.content.length > 0 ? res.data.page.content[0].userId : queryData.userIdtest;
+        // this.billNo = res.data.page.content[0].billNo;
       } else {
         this.$Message.error(res.message);
       }
@@ -114,6 +117,7 @@ export default {
         this.queryData = queryData;
         this.userId = res.data.page.content.length > 0 ? res.data.page.content[0].userId : queryData.userIdtest;
         this.queryData.userIdtest = res.data.page.content.length > 0 ? res.data.page.content[0].userId : queryData.userIdtest;
+        // this.billNo = res.data.page.content[0].billNo;
       } else {
         this.$Message.error(res.message);
       }

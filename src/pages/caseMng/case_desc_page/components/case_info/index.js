@@ -207,7 +207,7 @@ export default {
         this.case_detail_case_base_info_Data = res.data && res.data;
         (res.data && res.data.caseBasePerdVoList) && this.$set(this, 'tableData', res.data.caseBasePerdVoList);
         res.data.caseBasePerdVoList.length >0 && this.tableData[0].perdNum === 0 && this.$set(this, 'tableData', this.tableData.slice(1));
-        this.$emit('deliveryData', {data: this.tableData, type: 'CASE_INFO'});
+        this.$emit('deliveryData', {data: this.tableData, billNo: res.data.billNo, type: 'CASE_INFO'});
       } else {
         this.$Message.error(res.message);
       }

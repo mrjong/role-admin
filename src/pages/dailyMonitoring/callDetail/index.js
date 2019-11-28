@@ -82,6 +82,19 @@ export default {
           }
         },
         {
+          title: '分配时间',
+          width: 150,
+          key: 'allotDate',
+          align: 'center',
+          render: (h, params) => {
+            let allotDate = params.row.allotDate;
+            allotDate = allotDate
+              ? this.$options.filters['formatDate'](allotDate, 'YYYY-MM-DD HH:mm:ss')
+              : allotDate;
+            return h('span', allotDate);
+          }
+        },
+        {
           title: "外呼手机号",
           searchOperator: "=",
           key: "toCallMblHid",
@@ -215,9 +228,15 @@ export default {
       this.getList(name);
     },
     // 改变日期区间的格式之后进行处理
-    changeDate(val1, val2) {
-      this.formItem.callStartDate = val1[0];
-      this.formItem.callEndDate = val1[1];
+    changeDate(arr, type) {
+      if (type === 'dealTime') {
+        this.formItem.callStartDate = arr[0];
+        this.formItem.callEndDate = arr[1];
+      }
+      if (type === 'allotDateCopy') {
+        this.formItem.allotDateSt = arr[0];
+        this.formItem.allotDateEd = arr[1];
+      }
       // 日期格式单天和时间区间之间的差别在于range这里拿到的是一个长度唯二的数组，而单日侧直接是一个结果值
     },
     // 页码改变的回调
@@ -235,12 +254,11 @@ export default {
     },
     handleSubmit(name, type) {
       // 单独处理日期的缓存问题
-      if (this.formItem.dealTime) {
-        this.formItem.dealTime = [
-          this.formItem.callStartDate,
-          this.formItem.callEndDate
-        ];
-      };
+      this.formItem.dealTime && (this.formItem.dealTime = [this.formItem.callStartDate,      this.formItem.callEndDate
+      ]
+      );
+      this.formItem.allotDateCopy && (this.formItem.allotDateCopy = [this.formItem.allotDateSt,
+      this.formItem.allotDateEd])
       window.sessionStorage.setItem(
         "daily_monitoring_callDetail_form",
         JSON.stringify(this.formItem)
