@@ -186,7 +186,7 @@
               <div class="history_content">{{item.lastCallTime | formatDatetime}}</div>
               <div class="history_content">{{item.collectContect}}</div>
             </div>
-            <p class="bad-habits">不良嗜好：{{archives_queryLinkHistory_data.extra && archives_queryLinkHistory_data.extra.badHabits}}</p>
+            <p class="bad-habits" v-if="archives_queryLinkHistory_data.extra">不良嗜好：{{archives_queryLinkHistory_data.extra && archives_queryLinkHistory_data.extra.badHabits}}</p>
           </Card>
           <!-- 交互信息 -->
           <Card class="vue-panel case-desc interaction">
