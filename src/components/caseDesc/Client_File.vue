@@ -128,7 +128,7 @@
                   </p>
                 </div>
               </div>
-              <div class="debt_information_wrap">
+              <div class="debt_information_wrap" v-if="archives_queryDebt_data && archives_queryDebt_data.creditCardLimit">
                 <div class="debt_information_wrap_title">信用卡：</div>
                 <div class="debt_information_content">
                   <p>
