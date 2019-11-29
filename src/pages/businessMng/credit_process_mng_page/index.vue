@@ -25,7 +25,7 @@
                 style="width:100%"
                 format="yyyy-MM-dd"
                 type="datetimerange"
-                :value='formValidate.time'
+                v-model='formValidate.time'
                 clearable
                 placement="bottom-start"
                 placeholder="请选择操作日期"
