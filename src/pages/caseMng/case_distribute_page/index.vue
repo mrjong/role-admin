@@ -83,33 +83,24 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="客户姓名:">
-              <Input size="small" clearable v-model.trim="formItem.userNm" placeholder="请输入客户姓名"/>
+              <Input size="small" clearable v-model.trim="formItem.userNm" placeholder="请输入客户姓名" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="身份证号:" >
-              <Input size="small" clearable v-model.trim="formItem.idNo" placeholder="请输入身份证号"/>
+            <FormItem label="身份证号:">
+              <Input size="small" clearable v-model.trim="formItem.idNo" placeholder="请输入身份证号" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="手机号:" prop="mblNo">
-              <Input
-                size="small"
-                clearable
-                v-model.trim="formItem.mblNo"
-                placeholder="请输入手机号"
-              />
+              <Input size="small" clearable v-model.trim="formItem.mblNo" placeholder="请输入手机号" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="逾期天数:">
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                 <FormItem prop="minOverdueDays">
-                  <Input
-                    size="small"
-                    clearable
-                    v-model.trim="formItem.minOverdueDays"
-                  ></Input>
+                  <Input size="small" clearable v-model.trim="formItem.minOverdueDays"></Input>
                 </FormItem>
               </Col>
               <Col :xs="2" :sm="2" :md="2" :lg="2" span="2">
@@ -117,11 +108,7 @@
               </Col>
               <Col :xs="11" :sm="11" :md="11" :lg="11" span="11">
                 <FormItem prop="maxOverdueDays">
-                  <Input
-                    size="small"
-                    clearable
-                    v-model.trim="formItem.maxOverdueDays"
-                  ></Input>
+                  <Input size="small" clearable v-model.trim="formItem.maxOverdueDays"></Input>
                 </FormItem>
               </Col>
             </FormItem>
@@ -150,7 +137,7 @@
                 v-model="formItem.date"
                 @on-change="dateChange"
                 :editable="false"
-                size='small'
+                size="small"
                 clearable
                 placeholder="请选择分配日期"
                 style="width: 100%"
@@ -159,12 +146,12 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="案件编号:">
-              <Input size="small" clearable v-model.trim="formItem.id" placeholder="请输入案件编号"/>
+              <Input size="small" clearable v-model.trim="formItem.id" placeholder="请输入案件编号" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="账单号:">
-              <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入账单号"/>
+              <Input size="small" clearable v-model.trim="formItem.billNo" placeholder="请输入账单号" />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -221,21 +208,21 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-          <FormItem label="登录状态:">
-            <Select
-              size="small"
-              clearable
-              filterable
-              placeholder="请选择登录状态"
-              v-model="formItem.appLoginStatus"
-            >
-              <Option
-                v-for="(item,index) in getDirObj.APP_LOGIN_STATUS"
-                :value="item.itemCode"
-                :key="item.itemCode"
-              >{{ item.itemName }}</Option>
-            </Select>
-          </FormItem>
+            <FormItem label="登录状态:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                placeholder="请选择登录状态"
+                v-model="formItem.appLoginStatus"
+              >
+                <Option
+                  v-for="(item,index) in getDirObj.APP_LOGIN_STATUS"
+                  :value="item.itemCode"
+                  :key="item.itemCode"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="渠道来源:">
@@ -252,10 +239,10 @@
             <FormItem span="6" label="信用进度:">
               <Select size="small" v-model="formItem.processStage" clearable>
                 <Option
-                  v-for="item in case_detail_one_channel_list"
-                  :value="item.channelOneCode"
-                  :key="item.channelOneCode"
-                >{{ item.channelOneName }}</Option>
+                  v-for="(item,index) in getDirObj.DICTIONARY_PROCESS_SEARCH"
+                  :value="item.itemCode"
+                  :key="item.itemCode+index"
+                >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -297,14 +284,14 @@
                 :format="['xls', 'xlsx']"
                 :max-size="1024"
                 :on-success="handleSuccess"
-                :on-error='handleError'
+                :on-error="handleError"
                 :on-progress="handleProgress"
                 :on-exceeded-size="handleMaxSize"
                 :on-format-error="handleFormatError"
                 :disabled="import_data_loading"
-                :data='{
+                :data="{
                   pageType: 2
-                }'
+                }"
                 style="display: inline-block; margin-left:8px"
               >
                 <Button
@@ -318,7 +305,10 @@
                   <span v-else>导入中...</span>
                 </Button>
               </Upload>
-              <span style="line-height: 24px;color: #ed4014" v-if="import_search">（*导入查询和条件查询的数据没有关联）</span>
+              <span
+                style="line-height: 24px;color: #ed4014"
+                v-if="import_search"
+              >（*导入查询和条件查询的数据没有关联）</span>
             </FormItem>
           </Col>
         </Row>
@@ -632,7 +622,13 @@
       </Modal>
     </div>
     <!-- 减免组件 -->
-    <jianmian v-model="breaks_flag" v-if="breaks_flag" v-on:passBack="passBackBreaks" :edit_flag='true' :breaks_data='breaks_data'></jianmian>
+    <jianmian
+      v-model="breaks_flag"
+      v-if="breaks_flag"
+      v-on:passBack="passBackBreaks"
+      :edit_flag="true"
+      :breaks_data="breaks_data"
+    ></jianmian>
   </div>
 </template>
 <script src='./index.js'></script>

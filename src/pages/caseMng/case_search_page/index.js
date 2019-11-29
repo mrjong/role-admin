@@ -44,7 +44,7 @@ export default {
         timeout: 120000,
       },
       file_url: '/admin/cases/batch/import ',//文件上传地址
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PAY_OFF_STS', 'APP_LOGIN_STATUS'],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PAY_OFF_STS', 'APP_LOGIN_STATUS', 'DICTIONARY_PROCESS_SEARCH'],
       getDirObj: {},
       showPanel: false,
       showPanel2: false,
@@ -423,6 +423,12 @@ export default {
           width: 100,
           align: 'center',
           key: 'channelName'
+        },
+        {
+          title: '信用进度',
+          width: 120,
+          align: 'center',
+          key: 'processStageName'
         },
       ]
     };

@@ -225,10 +225,10 @@
             <FormItem span="6" label="信用进度:">
               <Select size="small" v-model="formItem.processStage" clearable>
                 <Option
-                  v-for="item,index in case_detail_one_channel_list"
-                  :value="item.channelOneCode"
-                  :key="item.channelOneCode+index"
-                >{{ item.channelOneName }}</Option>
+                  v-for="(item,index) in getDirObj.DICTIONARY_PROCESS_SEARCH"
+                  :value="item.itemCode"
+                  :key="item.itemCode+index"
+                >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
           </Col>

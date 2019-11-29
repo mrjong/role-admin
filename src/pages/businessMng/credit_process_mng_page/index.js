@@ -118,10 +118,11 @@ export default {
       this.formValidate = {};
     },
     // 改变日期区间的格式之后进行处理
-    changeApplyDate(val1, val2) {
-      this.formValidate.applayDateLt = val1[0];
-      this.formValidate.applayDateBt = val1[1];
-      console.log('123', this.formValidate);
+    changeApplyDate(arr) {
+      if (arr) {
+        this.formValidate.start = arr[0];
+        this.formValidate.end = arr[1];
+      }
     },
     // table勾选回调
     changeSelect(arr) {

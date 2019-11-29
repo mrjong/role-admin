@@ -47,7 +47,7 @@ export default {
     return {
       collect_status_list: [],
       call_status_list: [],
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'TALK_RESULT', 'APP_LOGIN_STATUS',],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'TALK_RESULT', 'APP_LOGIN_STATUS', 'DICTIONARY_PROCESS_SEARCH'],
       getDirObj: {},
       case_detail_one_channel_list: [],//渠道来源list
       showPanel: false,
@@ -376,6 +376,12 @@ export default {
           width: 100,
           align: 'center',
           key: 'channelName'
+        },
+        {
+          title: '信用进度',
+          width: 120,
+          align: 'center',
+          key: 'processStageName'
         },
       ]
     };
