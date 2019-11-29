@@ -3,7 +3,7 @@
     <!-- 弹层 -->
     <div class="case-left-container" :style="{paddingRight:showBtn?'25px':'500px'}">
       <!-- 基础信息 -->
-      <baseInfo ref='BASE_INFO' :queryData='queryData' :caseNo='caseNo' :userId='userId' :collectCategory='collectCategory' :base_info_data='base_info_data' @deliveryData='deliveryData'></baseInfo>
+      <baseInfo ref='BASE_INFO' :queryData='queryData' :caseNo='caseNo' :userId='userId' :collectCategory='collectCategory' :billNo='billNo' :base_info_data='base_info_data' @deliveryData='deliveryData'></baseInfo>
 
       <!-- 案件信息 -->
       <caseInfo ref='CASE_INFO' :queryData='queryData' :case_info_data='case_info_data' :caseNo='caseNo' @deliveryData='deliveryData'></caseInfo>

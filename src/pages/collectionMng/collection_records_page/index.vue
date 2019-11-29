@@ -49,8 +49,24 @@
                 v-model="formItem.csDate"
                 type="daterange"
                 placement="bottom-start"
-                @on-change="dateChange"
+                @on-change="dateChange($event, 'csDate')"
                 placeholder="请选择催收时间"
+                clearable
+              ></DatePicker>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <!-- beginDate endDate -->
+            <FormItem label="分配时间:">
+              <DatePicker
+                size="small"
+                style="width:100%"
+                format="yyyy-MM-dd"
+                v-model="formItem.allotDateCopy"
+                type="daterange"
+                placement="bottom-start"
+                @on-change="dateChange($event, 'allotDateCopy')"
+                placeholder="请选择分配时间"
                 clearable
               ></DatePicker>
             </FormItem>
@@ -149,6 +165,24 @@
                   :value="item.codeKey"
                   :key="item.codeKey + index"
                 >{{ item.codeName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
+            <FormItem label="沟通途径:">
+              <Select
+                size="small"
+                clearable
+                filterable
+                transfer
+                placeholder="请选择沟通途径"
+                v-model="formItem.collectFlg"
+              >
+               <Option
+                  v-for="(item,index) in getDirObj.CONTACT_METHOD"
+                  :value="item.itemCode"
+                  :key="item.itemCode + index"
+                >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
           </Col>

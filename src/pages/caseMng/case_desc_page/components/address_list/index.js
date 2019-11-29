@@ -49,11 +49,13 @@ export default {
       }
     }
     return {
-      getDirList: ['CONTACT_REL_TYPE'],
+      getDirList: ['CONTACT_REL_TYPE', 'PERSONAL_PROPERTY', 'BAD_HABITS', 'CONTACT_METHOD'],
       getDirObj: {},
-      formValidate: {},//新增催记
+      formValidate: {
+        collectFlg: '01'
+      },//新增催记
       formItem: {},//新增通讯录
-      ruleValidate2: {
+      addRuleValidate: {
         mblNo: [
           {
             required: true,
@@ -66,6 +68,8 @@ export default {
       collectType: '',
       readType: '',
       userIdCopy: '',
+      isPromiseRepayDate: false,//承诺还款时间的显隐
+      isCollectResult: true,//拨打状态的显隐
       userNmClearCopy: '',// 保存的明文名字
       showBottom: false,//添加、编辑催记弹窗
       remark_flag: false,//是否记催记的标识符
@@ -108,6 +112,13 @@ export default {
             trigger: 'change'
           }
         ],
+        collectFlg: [
+          {
+            required: true,
+            message: '请选择沟通途径',
+            trigger: 'change'
+          }
+        ],
         communicateResult: [
           {
             required: true,
@@ -121,7 +132,16 @@ export default {
             message: '请选择关系',
             trigger: 'change'
           }
-        ]
+        ],
+        promiseRepayDate: [
+          {
+            required: true,
+            message: '请选择承诺时间',
+            trigger: 'change',
+            type: 'date'
+          }
+        ],
+
       },
       // 通话统计
       case_detail_mail_statistics_list_pageNo: 1,
@@ -1199,7 +1219,9 @@ export default {
       this.collectType = '';
       this.collectcode_getCollectRelate_childItem = []
       this.formValidate.communicateResult = null;
-      this.formValidate = {};
+      this.formValidate = {
+        collectFlg: '01',
+      };
       // this.formValidate.callUserType = '';
       this.$refs.formValidate.resetFields();
       this.showBottom = false;
@@ -1426,7 +1448,31 @@ export default {
         this.callUserType = '';
       }
       if (key) {
-        this.collectcode_getCodeList(this.call_status, this.callUserType);
+        if (this.formValidate.collectFlg !== '01' && this.formValidate.collectFlg !== '02') {
+          this.collectcode_getCodeList('24', this.callUserType);
+        } else {
+          this.collectcode_getCodeList(this.call_status, this.callUserType);
+        }
+      }
+    },
+    // 沟通状态change
+    communicateResultChange (val) {
+      // 控制承诺还款时间现引
+      if (val === '10') {
+        this.isPromiseRepayDate = true;
+      } else {
+        this.isPromiseRepayDate = false;
+      }
+    },
+    // 沟通途径change
+    collectFlgChange(val) {
+      if ( val && val !== '01' && val !== '02') {
+        this.isCollectResult = false;
+        this.formValidate.collectResult = '24';//默认接听
+        this.collectcode_getCodeList(this.formValidate.collectResult, this.callUserType);
+      } else {
+        this.isCollectResult = true;
+        this.formValidate.collectResult = '';
       }
     },
     // 新增催记按钮
