@@ -45,7 +45,7 @@ export default {
           render: (h, params) => {
             const revokeStatus = params.row.revokeStatus;
             return h('div', [
-              revokeStatus && params.index === 0 ? h('Poptip',
+              revokeStatus === '1' && params.index === 0 ? h('Poptip',
                 {
                   props: {
                     confirm: true,
