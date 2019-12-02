@@ -45,7 +45,7 @@ export default {
       switch (type) {
         case 'archives_queryIncome':
           name === 'workInfo' && (titleName = '职业：');
-          name === 'workDtlAddr' && (titleName = '工作地址：');
+          name === 'workDtlAddr' && (titleName = '工作单位：');
           name === 'idDtlAddr' && (titleName = '户籍地址：');
           name === 'property' && (titleName = '个人资产：');
           return titleName;

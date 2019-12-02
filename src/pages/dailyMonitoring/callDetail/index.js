@@ -308,8 +308,9 @@ export default {
         this.$Message.error("很抱歉，暂无权限查询");
         return;
       }
-      if (!this.formItem.callStartDate) {
-        this.$Message.error('请选择呼叫日期后再查询');
+      console.log(this.formItem)
+      if (!this.formItem.callStartDate && !this.formItem.allotDateSt && !this.formItem.callUserName && !this.formItem.seatType) {
+        this.$Message.error('请选择呼叫日期或分配时间后再查询');
         return;
       }
       this.query_loading = true;
