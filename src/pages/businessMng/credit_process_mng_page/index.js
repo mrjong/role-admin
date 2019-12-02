@@ -176,10 +176,14 @@ export default {
       }
     },
     // 文件上传成功
-    handleSuccess(res, file) {
+    async handleSuccess(res, file) {
       this.import_data_loading = false;
       if (res.code === 1) {
-        this.casesprocess_list();
+        await this.casesprocess_list();
+        await this.$Message.success({
+          content: '上传成功',
+          duration: 2
+        })
       } else {
         this.$Message.error(res.message);
       }
