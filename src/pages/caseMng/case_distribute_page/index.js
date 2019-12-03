@@ -50,7 +50,7 @@ export default {
       import_data_loading: false,// 导入loading
       query_flag: false, // false 默认查getList  true查询cases_import_list
       file_csaeIds: [],//上传文件返回的案件编号list集合
-      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PROD_NUM', 'APP_LOGIN_STATUS',],
+      getDirList: ['PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', 'PROD_NUM', 'APP_LOGIN_STATUS', 'DICTIONARY_PROCESS_SEARCH'],
       case_detail_one_channel_list: [],//渠道来源list
       getDirObj: {},
       showPanel: false,
@@ -505,6 +505,12 @@ export default {
           align: 'center',
           key: 'channelName'
         },
+        {
+          title: '信用进度',
+          width: 120,
+          align: 'center',
+          key: 'processStageName'
+        },
       ]
     };
   },
@@ -545,11 +551,11 @@ export default {
           break;
       }
     });
-    Cookie.set('all_opt', this.all_opt);
-    Cookie.set('plaintext', this.plaintext);
-    Cookie.set('apply_arbitrament', false);
-    Cookie.set('apply_deduct', false);
-    Cookie.set('apply_remission', false);
+    // Cookie.set('all_opt', this.all_opt);
+    // Cookie.set('plaintext', this.plaintext);
+    // Cookie.set('apply_arbitrament', false);
+    // Cookie.set('apply_deduct', false);
+    // Cookie.set('apply_remission', false);
     // this.getList();
     this.getLeafTypeList('02', '');
     this.getLeafTypeList('03', '');

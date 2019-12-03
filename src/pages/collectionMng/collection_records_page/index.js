@@ -59,6 +59,9 @@ export default {
       play: false,//播放权限
       all_opt: false,//案件详情全部操作权限
       plaintext: false,//案件详情查看明文权限
+      addressListPhone: false,//查看通讯录电话权限
+      contactPhone: false,//查看紧连明文权限
+      oneselfPhone: false,//查看本人明文权限
       import_search: false,//导入查询权限
       query_loading: false,//查询按钮loading
       export_case_loading: false,//导出按钮loading
@@ -399,6 +402,12 @@ export default {
           break;
         case "plaintext": this.plaintext = true;
           break;
+        case "oneselfPhone": this.oneselfPhone = true;
+          break;
+        case "contactPhone": this.contactPhone = true;
+          break;
+        case "addressListPhone": this.addressListPhone = true;
+          break;
         // case "import_search": this.import_search = true;
         //   break;
       }
@@ -408,6 +417,9 @@ export default {
     Cookie.set('apply_arbitrament', false);
     Cookie.set('apply_deduct', false);
     Cookie.set('apply_remission', false);
+    Cookie.set('oneselfPhone', this.oneselfPhone);
+    Cookie.set('contactPhone', this.contactPhone);
+    Cookie.set('addressListPhone', this.addressListPhone);
     // this.getList();
     this.collectcode_getListByCodeType(1);//获取沟通状态
     this.collectcode_getListByCodeType(2);// 获取拨打状态

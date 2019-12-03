@@ -1,6 +1,8 @@
 import formValidateFun from '@/mixin/formValidateFun';
 import sysDictionary from '@/mixin/sysDictionary';
+import overallModal from '@/components/overall-modal/index.vue'
 import { arb_list, credit_case_execute, credit_pdf_data, arb_exportlist } from '@/service/getData';
+import { credit_case_filing } from '@/service/business-mng-api';
 import arbitramentDeatil from './components/arbitrament_detail';
 import util from '@/libs/util';
 import Cookie from 'js-cookie';
@@ -9,7 +11,8 @@ export default {
   name: 'case_search_page',
   mixins: [formValidateFun, sysDictionary],
   components: {
-    arbitramentDeatil
+    arbitramentDeatil,
+    overallModal
   },
   data() {
     console.log(this.GLOBAL);
@@ -23,6 +26,7 @@ export default {
       getDirList: ['PROD_TYPE', 'GENDER', 'APPROVAL_STATE'],
       getDirObj: {},
       showPanel: false,
+      modal_flag: false,//提示框modal
       prefix: '/admin/arb/images/',
       file_list: [],// 上传文件list
       file_url: '',// 暂存的文件url
@@ -37,6 +41,7 @@ export default {
       reject_loading: false,//驳回按钮loading
       upload_loading: false,//上传按钮loading
       apply_loading: false,// 申请执行按钮loading
+      modalConfirmLoading: false,//强执立案提交loading
       file_disabled: false,// 是否禁用上传
       approve_list: [],// 申请执行勾选list
       show_file_list: false,// 显示上传的list
@@ -413,6 +418,9 @@ export default {
     // this.getList();
   },
   methods: {
+    closeModal() {
+      this.modal_flag = false;
+    },
     // table勾选回调
     changeSelect(arr) {
       this.approve_list = [];
@@ -478,6 +486,37 @@ export default {
           content: res.message,
           duration: 4
         });
+      }
+    },
+    // 强执立案
+    apply_register() {
+      if (this.approve_list.length < 1) {
+        this.$Message.error('请先勾选仲裁案件');
+        return;
+      }
+      this.modal_flag = true;
+    },
+    // 强执立案
+    async credit_case_filing() {
+      this.modalConfirmLoading = true;
+      const res = await credit_case_filing(
+        {
+          arbConditions: this.approve_list,
+        },
+        {
+          transformRequest: [
+            function (data) {
+              return JSON.stringify(data); //利用对应方法转换格式
+            }
+          ]
+        }
+      );
+      this.modalConfirmLoading = false;
+      if (res.code === 1) {
+        this.modal_flag = false;
+        this.getList();
+      } else {
+        this.$Message.error(res.message);
       }
     },
     // 上传之前的回调
@@ -615,6 +654,7 @@ export default {
         this.tableData = res.data.content;
         this.total = res.data.totalElements;
         this.export_list = [];
+        this.approve_list = [];
         this.pageNo = res.data.number;
       } else {
         this.$Message.error(res.message);
@@ -630,6 +670,10 @@ export default {
       this.approvalTime = [];
       window.sessionStorage.removeItem('arbitrament_approve_form');
       this.$refs[name].resetFields();
+    },
+    // modal提交
+    modalHandleSubmit() {
+      this.modal_flag = false;
     }
   }
 };

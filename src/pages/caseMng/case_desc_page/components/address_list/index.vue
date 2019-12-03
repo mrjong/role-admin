@@ -42,14 +42,14 @@
           <span
             :class="{'tel': true, 'readonly': !all_opt || (round_info_data.callAccess && !round_info_data.callAccess.debtorCallable)}"
             @click="handCall({
-                        callUserType:'00',
-                        userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
-                        userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
-                        userNmClear:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear,
-                        userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
-                        mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
-                        mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
-                    },'call','01')"
+              callUserType:'00',
+              userId:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userId,
+              userNmHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmHid,
+              userNmClear:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNmClear,
+              userNm:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.userNm,
+              mblNoHid:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNoHid,
+              mblNo:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
+            },'call','01')"
           >
             <Badge
               :count="case_detail_case_identity_info_Data.callCount"
@@ -69,13 +69,11 @@
               class="eye-class"
               title="显示明文"
               type="md-eye"
-              v-if="plaintext"
-              @click.native="syscommon_decrypt(
-                        {
-                          type:'MBL',
-                          data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
-                        }
-                      )"
+              v-if="oneselfPhone"
+              @click.native="syscommon_decrypt({
+                type:'MBL',
+                data:case_detail_case_identity_info_Data&&case_detail_case_identity_info_Data.mblNo
+              })"
             ></Icon>
           </Poptip>
           <span
@@ -126,7 +124,7 @@
               class="eye-class"
               title="显示明文"
               type="md-eye"
-              v-if="plaintext"
+              v-if="item.channelSource === '5' || item.channelSource === '10'? oneselfPhone : contactPhone"
               @click.native="syscommon_decrypt({type:'MBL', data:item&&item.cntUserMblNo})"
             ></Icon>
           </Poptip>
@@ -301,12 +299,12 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="12" :lg="12">
-            <FormItem label="沟通途径" prop='collectFlg'>
+            <FormItem label="沟通途径" prop="collectFlg">
               <Select
                 clearable
                 size="small"
                 placeholder="请选择沟通途径"
-                @on-change='collectFlgChange'
+                @on-change="collectFlgChange"
                 v-model="formValidate.collectFlg"
               >
                 <Option
@@ -335,7 +333,13 @@
               </Select>
             </FormItem>
           </Col>
-          <Col :xs="24" :sm="24" :md="12" :lg="12" v-if="formValidate.collectFlg === '01' || formValidate.collectFlg === '02'">
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="12"
+            :lg="12"
+            v-if="formValidate.collectFlg === '01' || formValidate.collectFlg === '02'"
+          >
             <FormItem label="拨打状态" prop="collectResult">
               <Select
                 size="small"
@@ -359,7 +363,7 @@
                 size="small"
                 transfer
                 clearable
-                @on-change='communicateResultChange'
+                @on-change="communicateResultChange"
                 v-model="formValidate.communicateResult"
                 placeholder="请选择沟通状态"
               >
@@ -372,7 +376,7 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="12" :lg="12" v-if="isPromiseRepayDate">
-            <FormItem label="承诺还款时间" prop='promiseRepayDate'>
+            <FormItem label="承诺还款时间" prop="promiseRepayDate">
               <DatePicker
                 placement="top"
                 style="width:100%;"

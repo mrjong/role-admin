@@ -315,32 +315,6 @@ export default {
       }
       this.query_loading = true;
       let res;
-      // switch (type) {
-      //   // 科天
-      //   case 'KT_CALL_DETAIL':
-      //     res = await kt_callDetail_list({
-      //       pageNum: this.pageNo,
-      //       pageSize: this.pageSize,
-      //       ...this.formItem
-      //     });
-      //     break;
-      //   // 容联
-      //   case 'RL_CALL_DETAIL':
-      //     res = await rl_callDetail_list({
-      //       pageNum: this.pageNo,
-      //       pageSize: this.pageSize,
-      //       ...this.formItem
-      //     });
-      //     break;
-      //   // 讯众
-      //   case 'XZ_CALL_DETAIL':
-      //     res = await xz_callDetail_list({
-      //       pageNum: this.pageNo,
-      //       pageSize: this.pageSize,
-      //       ...this.formItem
-      //     });
-      //     break;
-      // };
       res = await call_record_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,

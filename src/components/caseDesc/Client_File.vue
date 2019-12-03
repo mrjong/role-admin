@@ -103,7 +103,7 @@
             >累计借贷{{archives_queryDebt_data.otherOutStandCount? archives_queryDebt_data.otherOutStandCount: 0}}笔，逾期{{archives_queryDebt_data.otherOverdueCount? archives_queryDebt_data.otherOverdueCount: 0}}笔，在用{{archives_queryDebt_data.otherOngoingNum ? archives_queryDebt_data.otherOngoingNum: 0}}笔</p>
             <p
               class="debt_information_caseOrMoney"
-            >单笔平均借贷{{archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount > 0? archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount:0}}元</p>
+            >单笔平均借贷{{archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount > 0? (archives_queryDebt_data.otherLoanBal/archives_queryDebt_data.otherOutStandCount).toFixed(2):0}}元</p>
             <div :class="showPanel? 'debt_information_box': 'debt_information_box_empty'">
               <div class="debt_information_wrap">
                 <div class="debt_information_wrap_title">本平台</div>
