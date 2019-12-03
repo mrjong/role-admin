@@ -551,11 +551,11 @@ export default {
           break;
       }
     });
-    Cookie.set('all_opt', this.all_opt);
-    Cookie.set('plaintext', this.plaintext);
-    Cookie.set('apply_arbitrament', false);
-    Cookie.set('apply_deduct', false);
-    Cookie.set('apply_remission', false);
+    // Cookie.set('all_opt', this.all_opt);
+    // Cookie.set('plaintext', this.plaintext);
+    // Cookie.set('apply_arbitrament', false);
+    // Cookie.set('apply_deduct', false);
+    // Cookie.set('apply_remission', false);
     // this.getList();
     this.getLeafTypeList('02', '');
     this.getLeafTypeList('03', '');

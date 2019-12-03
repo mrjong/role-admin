@@ -75,8 +75,11 @@ export default {
       remark_flag: false,//是否记催记的标识符
       callUserType: '',//催记里面的关系
       call_status: '',// 拨打状态暂存
-      all_opt: false,
-      plaintext: false,
+      all_opt: false,//操作权限
+      plaintext: false,//查看其他明文权限
+      addressListPhone: false,//查看通讯录电话权限
+      contactPhone: false,//查看紧连电话权限
+      oneselfPhone: false,//查看本人电话权限
       showDYFlag: null,
       Dy_data: {},
       DY_IS_CALL: JSON.parse(localStorage.getItem('callData')).seatType === 'DY'? false: true,
@@ -244,7 +247,7 @@ export default {
                   },
                   `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
                 ),
-                this.plaintext ? h(
+                this.addressListPhone ? h(
                   'Poptip',
                   {
                     props: {
@@ -410,7 +413,7 @@ export default {
                 },
                 `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
               ),
-              this.plaintext ? h(
+              this.addressListPhone ? h(
                 'Poptip',
                 {
                   props: {
@@ -549,7 +552,7 @@ export default {
                 },
                 `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
               ),
-              this.plaintext ? h(
+              this.addressListPhone ? h(
                 'Poptip',
                 {
                   props: {
@@ -685,7 +688,7 @@ export default {
                 },
                 `${mblNoHid === null ? '' : mblNoHid}${callStateName === null ? '' : '(' + callStateName + ')'}`
               ),
-              this.plaintext ? h(
+              this.addressListPhone ? h(
                 'Poptip',
                 {
                   props: {
@@ -760,6 +763,15 @@ export default {
     };
     if (Cookie.get('plaintext') === 'true') {
       this.plaintext = true;
+    };
+    if (Cookie.get('addressListPhone') === 'true') {
+      this.addressListPhone = true;
+    };
+    if (Cookie.get('contactPhone') === 'true') {
+      this.contactPhone = true;
+    };
+    if (Cookie.get('oneselfPhone') === 'true') {
+      this.oneselfPhone = true;
     };
   },
   mounted () {

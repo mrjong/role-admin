@@ -92,7 +92,7 @@
                   <span v-else>导入中...</span>
                 </Button>
               </Upload>
-              <span style="line-height: 24px;color: #ed4014" v-if="import_search">（*导入的和条件查询的数据没有关联）</span>
+              <!-- <span style="line-height: 24px;color: #ed4014" v-if="import_search">（*导入的和条件查询的数据没有关联）</span> -->
             </FormItem>
           </Col>
         </Row>

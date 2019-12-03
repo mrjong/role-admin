@@ -57,6 +57,9 @@ export default {
       export_case: false,//导出权限
       all_opt: false,//案件详情全部操作权限
       plaintext: false,//案件详情查看明文权限
+      addressListPhone: false,//查看通讯录电话权限
+      contactPhone: false,//查看紧连明文权限
+      oneselfPhone: false,//查看本人明文权限
       apply_arbitrament: false,//案件详情申请仲裁权限
       apply_deduct: false,//案件详情申请划扣权限
       apply_remission: false,//案件详情申请减免权限
@@ -417,6 +420,12 @@ export default {
           break;
         case "APPLY_QR_CODE": this.APPLY_QR_CODE = true;
           break;
+        case "oneselfPhone": this.oneselfPhone = true;
+          break;
+        case "contactPhone": this.contactPhone = true;
+          break;
+        case "addressListPhone": this.addressListPhone = true;
+          break;
       }
     });
     Cookie.set('all_opt', this.all_opt);
@@ -425,6 +434,9 @@ export default {
     Cookie.set('apply_deduct', this.apply_deduct);
     Cookie.set('apply_remission', this.apply_remission);
     Cookie.set('APPLY_QR_CODE', this.APPLY_QR_CODE);
+    Cookie.set('oneselfPhone', this.oneselfPhone);
+    Cookie.set('contactPhone', this.contactPhone);
+    Cookie.set('addressListPhone', this.addressListPhone);
     this.collectcode_getListByCodeType(1);//获取沟通状态
     this.collectcode_getListByCodeType(2);// 获取拨打状态
     this.getList();

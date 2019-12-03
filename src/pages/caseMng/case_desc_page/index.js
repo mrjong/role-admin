@@ -49,11 +49,6 @@ export default {
     // this.userId = queryData.userIdtest;
     this.readType = queryData.readType;
     delete queryData.caseNotest;
-    // delete queryData.prdTyptest;
-    // delete queryData.seatType;
-    // delete queryData.userIdtest;
-    // if (queryData.readType === 'edit') {
-    // this.queryData = queryData;
     queryData.caseType === 'myCase' && await this.case_collect_case_list(queryData); // 我的案件(过滤过的)
     queryData.caseType === 'allCase' && await this.case_list(queryData);//案件查询的案件列表
     // }

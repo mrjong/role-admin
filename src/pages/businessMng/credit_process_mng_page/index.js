@@ -135,13 +135,13 @@ export default {
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
-      this.getList();
+      this.casesprocess_list();
     },
     // 切换每页条数时的回调
     changeSize(pageSize) {
       this.pageSize = pageSize;
       this.pageNo = 1;
-      this.getList();
+      this.casesprocess_list();
     },
     // 上传文件格式校验
     handleFormatError(file) {
@@ -160,20 +160,25 @@ export default {
       console.log(error);
       this.import_data_loading = false;
     },
-    async casesprocess_list() {
+    casesprocess_list() {
       this.query_loading = true;
-      const res = await casesprocess_list({
+      casesprocess_list({
         ...this.formValidate,
         pageNum: this.pageNo,
         pageSize: this.pageSize
-      });
-      this.query_loading = false;
-      if (res.code === 1) {
-        this.tableData = res.data.content;
-        this.total = res.data.totalElements;
-      } else {
-        this.$Message.error(res.message)
-      }
+      }).then(res => {
+        if (res.code === 1) {
+          this.$set(this, 'tableData', res.data.content)
+          this.$set(this, 'total', res.data.totalElements)
+        } else {
+          this.$Message.error(res.message)
+        }
+        this.query_loading = false;
+      }).catch(err => {
+        console.log(err)
+        this.query_loading = false;
+      })
+
     },
     // 文件上传成功
     async handleSuccess(res, file) {
