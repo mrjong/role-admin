@@ -160,9 +160,9 @@ export default {
       console.log(error);
       this.import_data_loading = false;
     },
-    casesprocess_list() {
+    async casesprocess_list() {
       this.query_loading = true;
-      casesprocess_list({
+      await casesprocess_list({
         ...this.formValidate,
         pageNum: this.pageNo,
         pageSize: this.pageSize
@@ -171,7 +171,10 @@ export default {
           this.$set(this, 'tableData', res.data.content)
           this.$set(this, 'total', res.data.totalElements)
         } else {
-          this.$Message.error(res.message)
+          this.$Message.error({
+            content: res.message,
+            duration: 2
+          });
         }
         this.query_loading = false;
       }).catch(err => {
@@ -190,7 +193,11 @@ export default {
           duration: 2
         })
       } else {
-        this.$Message.error(res.message);
+        this.$Message.error({
+          content: res.message,
+          closable: true,
+          duration: 0
+        });
       }
     },
     async casesprocess_delete(id) {
