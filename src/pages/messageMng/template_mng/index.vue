@@ -94,7 +94,7 @@
           class="fr vue-back-btn header-btn"
           type="primary"
           size="small"
-          @click.stop="handeldBtnClick('2')"
+          @click.stop="getTemplateFlag = !getTemplateFlag"
         >获取模板</Button>
       </p>
       <!-- 表格 -->
@@ -120,7 +120,7 @@
       </div>
     </Card>
 
-    <!-- 案件启用modal -->
+    <!-- 参数配置modal -->
     <div v-if="parameterFlag">
       <Modal
         v-model="parameterFlag"
@@ -135,36 +135,56 @@
         </p>
         <configParameter>
           <template v-slot:default="slotProps">
-            <Button size="small" @click>取消</Button>
-            <Button type="primary" size="small" @click>确定</Button>
+            <Button size="small" @click="handleCancelParameter">取消</Button>
+            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps)">确定</Button>
           </template>
         </configParameter>
       </Modal>
     </div>
-    <!-- 案件停用modal -->
-    <!-- <div v-if="stopFlag">
+    <!-- 获取模板modal -->
+    <div v-if="getTemplateFlag">
       <Modal
-        v-model="stopFlag"
-        width="800"
+        v-model="getTemplateFlag"
+        width="400"
         class-name="user_info_form_modal"
+        :closable="false"
+        footer-hide
         :mask-closable="false"
       >
-        <p slot="header" style="color:#333; font-size: 20px; font-weight: 600">
-          <span>停用</span>
+        <p slot="header" style="color:#333; font-size: 16px; font-weight: 500">
+          <span>获取模板</span>
         </p>
-        <Alert show-icon type="warning">
-          <template slot="desc">停用后，此规则将失效，是否继续？</template>
-        </Alert>
-        <div slot="footer">
-          <Button size="small" @click="cancel('2')">取消</Button>
-          <Button type="primary" size="small" @click="ok('2', 'startFormItem')">确定</Button>
-        </div>
+
+        <getTemplate>
+          <template v-slot:default="slotProps">
+            <Button size="small" @click="handleCancelTemplate" style="margin-right: 10px;">取消</Button>
+            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps)">确定</Button>
+          </template>
+        </getTemplate>
       </Modal>
-    </div>-->
-    <!-- 查看分案规则修改记录 -->
-    <!-- <div v-if="parentData.updateRecordFlag">
-      <caseUpdateRecord v-if="parentData.updateRecordFlag" v-model="parentData"></caseUpdateRecord>
-    </div>-->
+    </div>
+    <!-- 创建任务modal -->
+    <div v-if="createTaskFlag">
+      <Modal
+        v-model="createTaskFlag"
+        width="500"
+        class-name="user_info_form_modal"
+        :closable="false"
+        footer-hide
+        :mask-closable="false"
+      >
+        <p slot="header" style="color:#333; font-size: 16px; font-weight: 500">
+          <span>创建任务</span>
+        </p>
+
+        <newTask>
+          <template v-slot:default="slotProps">
+            <Button size="small" @click="handleCancelCreateTask" style="margin-right: 10px;">取消</Button>
+            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps)">确定</Button>
+          </template>
+        </newTask>
+      </Modal>
+    </div>
   </div>
 </template>
 <script src='./index.js'></script>

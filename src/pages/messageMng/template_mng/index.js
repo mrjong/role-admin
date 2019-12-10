@@ -1,11 +1,15 @@
 import sysDictionary from '@/mixin/sysDictionary';
 import configParameter from "./components/config-parameter/index.vue";
+import getTemplate from "./components/get-template/index.vue";
+import newTask from "./components/create-task/index.vue";
 
 export default {
   name: 'template-mng',
   mixins: [sysDictionary],
   components: {
     configParameter,
+    getTemplate,
+    newTask,
   },
   data() {
     const minWidth = 80;
@@ -19,6 +23,8 @@ export default {
       showPanelForm: false,
       showPanelTable: false,
       parameterFlag: false,//参数配置modal
+      getTemplateFlag: false,//获取模板modal
+      createTaskFlag: false,//创建任务模板modal
       total: 0,
       pageNo: 1,
       pageSize: 10,
@@ -106,7 +112,7 @@ export default {
                   props: {},
                   on: {
                     click: () => {
-
+                      this.createTaskFlag = true;
                     }
                   }
                 },
@@ -126,22 +132,64 @@ export default {
     handleSubmit(name) {
 
     },
+
     clearForm() {
       this.$refs.formItem.resetFields();
     },
-    handeldBtnClick() {
 
+    // modal回调校验
+    handleSubmitModalprops(slotProps) {
+      console.log(slotProps)
+      slotProps.validateFormData().then(isValid => {
+        if (isValid) {
+          this.isBtnLoading = true;
+        } else {
+          console.log(slotProps, '校验不通过');
+        }
+      });
     },
+
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
       this.getList();
     },
+
     // 切换每页条数时的回调
     changeSize(pageSize) {
       this.pageSize = pageSize;
       this.pageNo = 1;
       this.getList();
     },
+
+    // 关闭参数配置modal
+    handleCancelParameter() {
+      this.parameterFlag = false;
+    },
+
+    // 参数配置确定提交
+    handleSubmitParameter(slotProps) {
+
+    },
+
+    // 关闭获取模板modal
+    handleCancelTemplate() {
+      this.getTemplateFlag = false;
+    },
+
+    // 获取模板确定提交
+    handleSubmitTemplate(slotProps) {
+
+    },
+
+    // 关闭创建任务modal
+    handleCancelCreateTask() {
+      this.createTaskFlag = false;
+    },
+
+    // 创建任务的提交
+    handleSubmitCreateTask(slotProps) {
+
+    }
   },
 }
