@@ -215,7 +215,7 @@ export default {
         id: this.dataSource.id,
       }).then(res => {
         if (res.code === 1) {
-          let { jobType, jobName, jobScene, triggerNode, jobTime, dataType, jobDescribe, jobCondition } = res.data;
+          let { jobType, jobName, jobScene, triggerNode, jobTime, dataType, jobDescribe, conditions } = res.data;
           this.$set(this.formItem, 'jobType', jobType);
           this.$set(this.formItem, 'jobName', jobName);
           this.$set(this.formItem, 'jobScene', jobScene);
@@ -223,7 +223,7 @@ export default {
           this.$set(this.formItem, 'triggerNode', triggerNode);
           jobType === 'system' && this.$set(this.formItem, 'jobTime', day(jobTime).format('HH:mm'));
           jobType === 'artificial' && this.$set(this.formItem, 'jobTime', day(jobTime).format('yyyy-MM-dd HH:mm'));
-          jobCondition && this.$set(this, 'tableData', JSON.parse(jobCondition))
+          conditions && this.$set(this, 'tableData', conditions)
           console.log(this.tableData)
           this.$set(this.formItem, 'dataType', dataType);
           this.$set(this.formItem, 'jobDescribe', jobDescribe);
