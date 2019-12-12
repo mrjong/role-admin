@@ -12,8 +12,13 @@
           <FormItem label="任务类型：" prop="jobType">
             <RadioGroup v-model="formItem.jobType" size="small">
               <!-- <Radio label="01">系统任务</Radio>
-              <Radio label="02">手动任务</Radio> -->
-              <Radio :disabled='disabled' :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_JOB_TYPE">{{ item.itemName }}</Radio>
+              <Radio label="02">手动任务</Radio>-->
+              <Radio
+                :disabled="disabled"
+                :label="item.itemCode"
+                :key="index + item.itemCode"
+                v-for="item,index in getDirObj.MSG_JOB_TYPE"
+              >{{ item.itemName }}</Radio>
             </RadioGroup>
           </FormItem>
         </Col>
@@ -21,8 +26,8 @@
           <FormItem label="任务名称：" prop="jobName">
             <Input
               size="small"
-              :clearable='!disabled'
-              :disabled='disabled'
+              :clearable="!disabled"
+              :disabled="disabled"
               v-model.trim="formItem.jobName"
               style="width: 100%"
               placeholder="请输入任务名称"
@@ -33,8 +38,14 @@
           <FormItem label="使用场景：" prop="jobScene">
             <RadioGroup v-model="formItem.jobScene" size="small">
               <!-- <Radio label="01">实时</Radio>
-              <Radio label="02">定时</Radio> -->
-              <Radio :disabled='disabled' :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_JOB_SCENE" v-if="item.itemCode === 'real_time' || item.itemCode === 'timing'">{{ item.itemName }}</Radio>
+              <Radio label="02">定时</Radio>-->
+              <Radio
+                :disabled="disabled"
+                :label="item.itemCode"
+                :key="index + item.itemCode"
+                v-for="item,index in getDirObj.MSG_JOB_SCENE"
+                v-if="item.itemCode === 'real_time' || item.itemCode === 'timing'"
+              >{{ item.itemName }}</Radio>
             </RadioGroup>
           </FormItem>
         </Col>
@@ -42,8 +53,13 @@
           <FormItem label="选择节点：" prop="triggerNode">
             <RadioGroup v-model="formItem.triggerNode" size="small">
               <!-- <Radio label="01">仲裁状态</Radio>
-              <Radio label="02">信用进度状态</Radio> -->
-              <Radio :disabled='disabled' :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_TRIGGER_NODE">{{ item.itemName }}</Radio>
+              <Radio label="02">信用进度状态</Radio>-->
+              <Radio
+                :disabled="disabled"
+                :label="item.itemCode"
+                :key="index + item.itemCode"
+                v-for="item,index in getDirObj.MSG_TRIGGER_NODE"
+              >{{ item.itemName }}</Radio>
             </RadioGroup>
           </FormItem>
         </Col>
@@ -57,13 +73,19 @@
           <FormItem label="发送时间：" prop="jobScene_children">
             <RadioGroup v-model="formItem.jobScene_children" size="small">
               <!-- <Radio label="01">立即发送</Radio>
-              <Radio label="02">指定时间</Radio> -->
-             <Radio :disabled='disabled' :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_JOB_SCENE" v-if="formItem.jobType === 'system'? (item.itemCode === 'repeat' || item.itemCode === 'immediately'): (item.itemCode === 'timing' || item.itemCode === 'immediately')">{{ item.itemName }}</Radio>
+              <Radio label="02">指定时间</Radio>-->
+              <Radio
+                :disabled="disabled"
+                :label="item.itemCode"
+                :key="index + item.itemCode"
+                v-for="item,index in getDirObj.MSG_JOB_SCENE"
+                v-if="formItem.jobType === 'system'? (item.itemCode === 'repeat' || item.itemCode === 'immediately'): (item.itemCode === 'timing' || item.itemCode === 'immediately')"
+              >{{ item.itemName }}</Radio>
               <TimePicker
                 v-if="formItem.jobScene_children === 'repeat' && formItem.jobType === 'system'"
                 format="HH:mm"
                 v-model="formItem.jobTime"
-                :disabled='disabled'
+                :disabled="disabled"
                 placeholder="Select time"
                 size="small"
               ></TimePicker>
@@ -72,7 +94,7 @@
                 format="yyyy-MM-dd HH:mm"
                 type="datetime"
                 v-model="formItem.jobTime"
-                :disabled='disabled'
+                :disabled="disabled"
                 placeholder="Select time"
                 size="small"
               ></DatePicker>
@@ -82,13 +104,19 @@
         <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobTime || formItem.jobScene">
           <FormItem label="选择用户：" prop="dataType">
             <RadioGroup v-model="formItem.dataType" size="small">
-              <Radio label="rule_condition" :disabled='disabled'>添加规则</Radio>
-              <Radio label="import" :disabled='disabled'>导入</Radio>
+              <Radio label="rule_condition" :disabled="disabled">添加规则</Radio>
+              <Radio label="import" :disabled="disabled">导入</Radio>
               <!-- <Radio :label="item.itemCode" :key="index" v-for="item in getParentCodeList">{{ item.itemName }}</Radio> -->
             </RadioGroup>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.dataType === 'rule_condition' && !disabled">
+        <Col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :lg="24"
+          v-if="formItem.dataType === 'rule_condition' && !disabled"
+        >
           <Col :xs="24" :sm="24" :md="6" :lg="6" style="text-align: center">
             <!-- <FormItem :label-width="8"> -->
             字段来源
@@ -109,52 +137,94 @@
             值域
             <!-- </FormItem> -->
           </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6">
-            <FormItem prop="partName" :label-width="8">
-              <Select size="small" clearable @on-change="changeSelect($event, 'partName')" placeholder="请选择来源" v-model="formItem.partName">
+          <Col :xs="24" :sm="24" :md="6" :lg="6" style="margin-bottom: 10px;">
+            <FormItem prop="source" :label-width="8">
+              <Select
+                size="small"
+                clearable
+                @on-change="changeSelect($event, 'source')"
+                placeholder="请选择来源"
+                label-in-value
+                v-model="formItem.source"
+              >
                 <Option
-                  v-for="item in getDirObj.MSG_PARAM_SOURCE"
+                  v-for="item,index in getDirObj.MSG_DATA_SOURCE"
                   :value="item.itemCode"
-                  :key="item.itemName"
+                  :key="item.itemCode+index"
                 >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6">
-            <FormItem prop="partExpression" :label-width="8">
-              <Select size="small" clearable @on-change="changeSelect($event, 'partExpression')" placeholder="请选择" v-model="formItem.partExpression">
+            <FormItem prop="partName" :label-width="8">
+              <Select
+                size="small"
+                clearable
+                :disabled="!formItem.source"
+                @on-change="changeSelect($event, 'partName')"
+                placeholder="请选择"
+                label-in-value
+                v-model="formItem.partName"
+              >
                 <Option
-                  v-for="item in partExpressionList"
+                  v-for="item,index in partNameList"
                   :value="item.itemCode"
-                  :key="item.itemName"
+                  :key="item.itemCode+index"
                 >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="5" :lg="5">
             <FormItem prop="operator" :label-width="8">
-              <Select size="small" clearable placeholder="请选择" @on-change="changeSelect($event, 'operator')" v-model="formItem.source">
+              <Select
+                size="small"
+                clearable
+                :disabled="!formItem.partName"
+                placeholder="请选择"
+                label-in-value
+                @on-change="changeSelect($event, 'operator')"
+                v-model="formItem.operator"
+              >
                 <Option
-                  v-for="item in operatorList"
+                  v-for="item,index in getDirObj.MSG_OPERATOR"
                   :value="item.itemCode"
-                  :key="item.itemName"
+                  :key="item.itemCode+ index"
                 >{{ item.itemName }}</Option>
               </Select>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="5" :lg="5">
             <FormItem prop="value" :label-width="8">
-              <Select size="small" clearable placeholder="请选择" v-model="formItem.value">
+              <Select
+                size="small"
+                v-if="operatorList.length>0"
+                clearable
+                label-in-value
+                @on-change="changeSelect($event, 'value')"
+                :disabled="!formItem.operator"
+                placeholder="请选择"
+                v-model="formItem.value"
+              >
                 <Option
-                  v-for="item in valueList"
+                  v-for="item,index in operatorList"
                   :value="item.itemCode"
-                  :key="item.itemName"
+                  :key="item.itemCode + index"
                 >{{ item.itemName }}</Option>
               </Select>
+              <Input
+                size="small"
+                v-else
+                v-model.trim="formItem.value"
+                @on-blur='inputBlur'
+                style="width: 100%;"
+                placeholder="请输入"
+                clearable
+                :disabled="!formItem.operator"
+              />
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="2" :lg="2" style="padding: 5px 0 0 10px;">
-            <Button type="success" size="small" @click="handleAdd">确定</Button>
+            <Button type="success" size="small" @click="handleAdd">添加</Button>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" style="margin-bottom: 20px">
             <Table :data="tableData" border :columns="tableColumns" stripe></Table>
@@ -192,14 +262,14 @@
               style="width: 100%;"
               :maxlength="500"
               placeholder="请输入500字以内的任务描述"
-              :disabled='disabled'
+              :disabled="disabled"
             />
           </FormItem>
         </Col>
       </Row>
     </Form>
     <div style="margin-top: 10px;text-align: center;">
-      <slot :formItem="formItem" :validateFormData="validateFormData"></slot>
+      <slot :formItem="formItem" :validateFormData="validateFormData" :conditions='tableData'></slot>
     </div>
   </div>
 </template>

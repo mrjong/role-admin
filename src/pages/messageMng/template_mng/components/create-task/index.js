@@ -2,6 +2,7 @@ import Cookie from 'js-cookie';
 import sysDictionary from '@/mixin/sysDictionary';
 import api from '@/service/'
 import day from 'dayjs'
+import { isValid } from 'ipaddr.js';
 
 export default {
   name: 'get-template',
@@ -13,7 +14,7 @@ export default {
   },
   data() {
     return {
-      getDirList: ['MSG_TRIGGER_NODE', 'MSG_JOB_SCENE', 'MSG_JOB_TYPE', 'MSG_PARAM_SOURCE'],
+      getDirList: ['MSG_TRIGGER_NODE', 'MSG_JOB_SCENE', 'MSG_JOB_TYPE', 'MSG_DATA_SOURCE', 'MSG_OPERATOR'],
       getDirObj: {},
       headers: {
         'SXF-TOKEN': Cookie.get('SXF-TOKEN'),
@@ -24,8 +25,13 @@ export default {
         jobName: [{ required: true, message: '请填写任务名称', trigger: 'blur' },],
         jobScene: [{ required: true, message: '请选择使用场景', trigger: 'change' },],
         triggerNode: [{ required: true, message: '请选择节点', trigger: 'change' },],
+        jobScene_children: [{ required: true, message: '请选择发送时间', trigger: 'change' },],
         jobTime: [{ required: true, message: '请选择发送时间', trigger: 'change' },],
         dataType: [{ required: true, message: '请选择用户', trigger: 'change' },],
+        source: [{ required: true, message: '请选择字段来源', trigger: 'change' },],
+        partName: [{ required: true, message: '请选择字段名称', trigger: 'change' },],
+        operator: [{ required: true, message: '请选择操作符', trigger: 'change' },],
+        value: [{ required: true, message: '请选择值域', trigger: 'change' },],
       },
       formItem: {},
       default_file_list: [],//文件list
@@ -55,29 +61,30 @@ export default {
         },
         {
           title: '字段来源',
-          key: 'templTypeName',
+          key: 'partNameShow',
           align: 'center',
         },
         {
           title: '字段名称',
-          key: 'templTypeName',
+          key: 'sourceShow',
           align: 'center',
         },
         {
           title: '操作符',
-          key: 'templTypeName',
+          key: 'operatorShow',
           align: 'center',
         },
         {
           title: '值域',
-          key: 'templTypeName',
+          key: 'valueShow',
           align: 'center',
         },
       ],
       tableData: [],
-      partExpressionList: [],//字段名称list
+      partNameList: [],//字段名称list
       operatorList: [],//操作符list
       valueList: [],//值域list
+      copyObj: {},//暂存添加到列表的数据
     }
   },
   created() {
@@ -92,7 +99,16 @@ export default {
 
     //添加单个规则
     handleAdd() {
-
+      this.$refs.formItem.validate(isValid => {
+        if (isValid) {
+          this.tableData.push(this.copyObj);
+          this.$set(this, 'copyObj', {});
+          // this.$set(this.formItem, 'partName', null);
+          // this.$set(this.formItem, 'source', null)
+          // this.$set(this.formItem, 'operator', null)
+          // this.$set(this.formItem, 'value', null)
+        }
+      })
     },
 
     /**
@@ -138,9 +154,43 @@ export default {
       console.log(fileList, 'fileList');
     },
 
+    // 输入框失焦
+    inputBlur(e) {
+      console.log(e.target.value)
+      this.$set(this.copyObj, 'valueShow', e.target.value);
+    },
+
     // select
-    changeSelect(val, type) {
-      val && this.sysDictionary_getListByParentId(val, type);
+    changeSelect(obj, type) {
+      if (obj) {
+        switch (type) {
+          case 'source':
+            this.$set(this.formItem, 'operator', null)
+            this.$set(this.formItem, 'value', null)
+            this.$set(this.formItem, 'partName', null)
+            this.$set(this.copyObj, 'source', obj.value);
+            this.$set(this.copyObj, 'sourceShow', obj.label);
+            break;
+          case 'partName':
+            this.$set(this.formItem, 'operator', null)
+            this.$set(this.formItem, 'value', null)
+            this.$set(this.copyObj, 'partName', obj.value);
+            this.$set(this.copyObj, 'partNameShow', obj.label);
+            break;
+          case 'operator':
+            this.$set(this.copyObj, 'operator', obj.value);
+            this.$set(this.copyObj, 'operatorShow', obj.label);
+            break;
+          case 'value':
+            this.$set(this.copyObj, 'value', obj.value);
+            this.$set(this.copyObj, 'valueShow', obj.label);
+            break;
+          default:
+            break;
+        }
+      }
+      console.log(obj)
+      obj && this.sysDictionary_getListByParentId(obj.value, type);
     },
 
     // 数据字典动态联动
@@ -149,9 +199,8 @@ export default {
         itemCode: itemCode,
       }).then(res => {
         if (res.code === 1) {
-          type === 'partName' && this.$set(this, 'partExpressionList', res.data);
-          type === 'partExpression' && this.$set(this, 'operatorList', res.data);
-          type === 'operator' && this.$set(this, 'valueList', res.data);
+          type === 'source' && this.$set(this, 'partNameList', res.data);
+          type === 'partName' && this.$set(this, 'operatorList', res.data);
         } else {
 
         }
@@ -166,7 +215,7 @@ export default {
         id: this.dataSource.id,
       }).then(res => {
         if (res.code === 1) {
-          let {jobType, jobName, jobScene, triggerNode, jobTime, dataType, jobDescribe} = res.data;
+          let { jobType, jobName, jobScene, triggerNode, jobTime, dataType, jobDescribe, jobCondition } = res.data;
           this.$set(this.formItem, 'jobType', jobType);
           this.$set(this.formItem, 'jobName', jobName);
           this.$set(this.formItem, 'jobScene', jobScene);
@@ -174,6 +223,8 @@ export default {
           this.$set(this.formItem, 'triggerNode', triggerNode);
           jobType === 'system' && this.$set(this.formItem, 'jobTime', day(jobTime).format('HH:mm'));
           jobType === 'artificial' && this.$set(this.formItem, 'jobTime', day(jobTime).format('yyyy-MM-dd HH:mm'));
+          jobCondition && this.$set(this, 'tableData', JSON.parse(jobCondition))
+          console.log(this.tableData)
           this.$set(this.formItem, 'dataType', dataType);
           this.$set(this.formItem, 'jobDescribe', jobDescribe);
           this.$set(this.formItem, 'jobScene_children', jobScene);

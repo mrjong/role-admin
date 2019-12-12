@@ -236,10 +236,13 @@ export default {
     handleSubmitCreateTask(slotProps) {
       let params = {
         ...slotProps.formItem,
-        id: this.currentRow.id,
+        templId: this.currentRow.id,
+        templCode: this.currentRow.templCode,
+        templType: this.currentRow.templType,
         jobScene: slotProps.formItem.jobScene_children? slotProps.formItem.jobScene_children: slotProps.formItem.jobScene,
         dataPath: null,
-        jobTime: slotProps.formItem.jobTime.length > 4? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobTime
+        jobTime: slotProps.formItem.jobTime && slotProps.formItem.jobTime.length > 4? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobTime,
+        conditions: slotProps.conditions,
       };
       api.msgJob_addMsgJob(params, {
         transformRequest: [

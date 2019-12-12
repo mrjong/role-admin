@@ -15,4 +15,10 @@ export default {
       parameterList: [],
     }
   },
+  methods: {
+    // 表单校验
+    validateFormData() {
+      return this.$refs.formItem.validate();
+    },
+  },
 }

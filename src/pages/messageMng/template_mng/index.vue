@@ -194,7 +194,7 @@
   margin-bottom: 14px;
 }
 /deep/ .ivu-radio-wrapper {
-  min-width: 64px;
+  min-width: 72px;
 }
 </style>
 

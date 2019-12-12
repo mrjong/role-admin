@@ -145,3 +145,13 @@
 </template>
 
 <script src='./index.js'></script>
+
+<style lang="less" scoped>
+/deep/ .ivu-form-item {
+  margin-bottom: 14px;
+}
+/deep/ .ivu-radio-wrapper {
+  min-width: 72px;
+}
+
+</style>
