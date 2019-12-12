@@ -13,7 +13,7 @@
             <RadioGroup v-model="formItem.jobType" size="small">
               <!-- <Radio label="01">系统任务</Radio>
               <Radio label="02">手动任务</Radio> -->
-              <Radio :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_JOB_TYPE">{{ item.itemName }}</Radio>
+              <Radio :disabled='disabled' :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_JOB_TYPE">{{ item.itemName }}</Radio>
             </RadioGroup>
           </FormItem>
         </Col>
@@ -21,7 +21,8 @@
           <FormItem label="任务名称：" prop="jobName">
             <Input
               size="small"
-              clearable
+              :clearable='!disabled'
+              :disabled='disabled'
               v-model.trim="formItem.jobName"
               style="width: 100%"
               placeholder="请输入任务名称"
@@ -33,7 +34,7 @@
             <RadioGroup v-model="formItem.jobScene" size="small">
               <!-- <Radio label="01">实时</Radio>
               <Radio label="02">定时</Radio> -->
-              <Radio :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_JOB_SCENE" v-if="item.itemCode === 'real_time' || item.itemCode === 'timing'">{{ item.itemName }}</Radio>
+              <Radio :disabled='disabled' :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_JOB_SCENE" v-if="item.itemCode === 'real_time' || item.itemCode === 'timing'">{{ item.itemName }}</Radio>
             </RadioGroup>
           </FormItem>
         </Col>
@@ -42,7 +43,7 @@
             <RadioGroup v-model="formItem.triggerNode" size="small">
               <!-- <Radio label="01">仲裁状态</Radio>
               <Radio label="02">信用进度状态</Radio> -->
-              <Radio :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_TRIGGER_NODE">{{ item.itemName }}</Radio>
+              <Radio :disabled='disabled' :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_TRIGGER_NODE">{{ item.itemName }}</Radio>
             </RadioGroup>
           </FormItem>
         </Col>
@@ -53,30 +54,41 @@
           :lg="24"
           v-if="formItem.jobScene === 'timing' || formItem.jobType === 'artificial'"
         >
-          <FormItem label="发送时间：" prop="jobTime">
-            <RadioGroup v-model="formItem.jobTime" size="small">
+          <FormItem label="发送时间：" prop="jobScene_children">
+            <RadioGroup v-model="formItem.jobScene_children" size="small">
               <!-- <Radio label="01">立即发送</Radio>
               <Radio label="02">指定时间</Radio> -->
-             <Radio :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_JOB_SCENE" v-if="item.itemCode === 'repeat' || item.itemCode === 'immediately'">{{ item.itemName }}</Radio>
+             <Radio :disabled='disabled' :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_JOB_SCENE" v-if="formItem.jobType === 'system'? (item.itemCode === 'repeat' || item.itemCode === 'immediately'): (item.itemCode === 'timing' || item.itemCode === 'immediately')">{{ item.itemName }}</Radio>
               <TimePicker
-                v-if="formItem.jobTime === 'repeat'"
+                v-if="formItem.jobScene_children === 'repeat' && formItem.jobType === 'system'"
                 format="HH:mm"
+                v-model="formItem.jobTime"
+                :disabled='disabled'
                 placeholder="Select time"
                 size="small"
               ></TimePicker>
+              <DatePicker
+                v-if="formItem.jobScene_children === 'timing' && formItem.jobType === 'artificial'"
+                format="yyyy-MM-dd HH:mm"
+                type="datetime"
+                v-model="formItem.jobTime"
+                :disabled='disabled'
+                placeholder="Select time"
+                size="small"
+              ></DatePicker>
             </RadioGroup>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobTime || formItem.jobScene">
           <FormItem label="选择用户：" prop="dataType">
             <RadioGroup v-model="formItem.dataType" size="small">
-              <Radio label="01">添加规则</Radio>
-              <Radio label="02">导入</Radio>
+              <Radio label="rule_condition" :disabled='disabled'>添加规则</Radio>
+              <Radio label="import" :disabled='disabled'>导入</Radio>
               <!-- <Radio :label="item.itemCode" :key="index" v-for="item in getParentCodeList">{{ item.itemName }}</Radio> -->
             </RadioGroup>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.dataType === '01'">
+        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.dataType === 'rule_condition' && !disabled">
           <Col :xs="24" :sm="24" :md="6" :lg="6" style="text-align: center">
             <!-- <FormItem :label-width="8"> -->
             字段来源
@@ -148,7 +160,7 @@
             <Table :data="tableData" border :columns="tableColumns" stripe></Table>
           </Col>
         </Col>
-        <Col span="24" v-if="formItem.dataType === '02'">
+        <Col span="24" v-if="formItem.dataType === 'import' && !disabled">
           <FormItem :label-width="90">
             <Upload
               type="drag"
@@ -180,6 +192,7 @@
               style="width: 100%;"
               :maxlength="500"
               placeholder="请输入500字以内的任务描述"
+              :disabled='disabled'
             />
           </FormItem>
         </Col>

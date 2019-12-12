@@ -3,6 +3,7 @@ import configParameter from "./components/config-parameter/index.vue";
 import getTemplate from "./components/get-template/index.vue";
 import newTask from "./components/create-task/index.vue";
 import api from '@/service/index.js';
+import day from 'dayjs'
 export default {
   name: 'template-mng',
   mixins: [sysDictionary],
@@ -128,6 +129,7 @@ export default {
   },
   created() {
     this.msgTempl_list()
+    console.log(day().format('YYYY-MM-DD'))
   },
   methods: {
     handleSubmit(name) {
@@ -150,6 +152,7 @@ export default {
         if (isValid) {
           this.isBtnLoading = true;
           type === 'getTemplate' && this.handleSubmitTemplate(slotProps);
+          type === 'createTask' && this.handleSubmitCreateTask(slotProps);
         } else {
           console.log(slotProps, '校验不通过');
         }
@@ -231,7 +234,33 @@ export default {
 
     // 创建任务的提交
     handleSubmitCreateTask(slotProps) {
-
+      let params = {
+        ...slotProps.formItem,
+        id: this.currentRow.id,
+        jobScene: slotProps.formItem.jobScene_children? slotProps.formItem.jobScene_children: slotProps.formItem.jobScene,
+        dataPath: null,
+        jobTime: slotProps.formItem.jobTime.length > 4? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobTime
+      };
+      api.msgJob_addMsgJob(params, {
+        transformRequest: [
+          function(data) {
+            return JSON.stringify(data); //利用对应方法转换格式
+          }
+        ]
+      })
+      .then(res => {
+        if (res.code === 1) {
+          this.handleCancelCreateTask();
+          this.msgTempl_list();
+          this.$Message.success('任务创建成功');
+        } else {
+          this.$Message.error(res.message);
+        }
+        this.isBtnLoading = false;
+      }).catch(err => {
+        this.isBtnLoading = false;
+        console.log(err)
+      })
     }
   },
 }

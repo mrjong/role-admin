@@ -43,14 +43,21 @@ export default {
         {
           title: '模板类型',
           minWidth: minWidth,
-          key: 'templTypeName',
+          key: 'templType',
           align: 'center',
         },
         {
           title: '发送时间',
-          minWidth: middleWidth,
+          minWidth: maxWidth,
           key: 'jobTime',
           align: 'center',
+          render: (h, params) => {
+            const row = params.row;
+            const jobTime = row.jobTime
+              ? this.$options.filters['formatDate'](row.jobTime, 'YYYY-MM-DD HH:mm:ss')
+              : row.jobTime;
+            return h('span', jobTime);
+          }
         },
         {
           title: '案件量',
@@ -85,12 +92,12 @@ export default {
         {
           title: '创建人',
           minWidth: minWidth,
-          key: 'createUser',
+          key: 'creater',
           align: 'center',
         },
         {
           title: '创建时间',
-          minWidth: minWidth,
+          minWidth: maxWidth,
           key: 'createTime',
           align: 'center',
           render: (h, params) => {
@@ -116,11 +123,13 @@ export default {
                   props: {},
                   on: {
                     click: () => {
-                      this.createTaskFlag = true;
+                      params.row.jobStatus === "启用" && this.msgJob_disableJob(params.row.id)
+                      params.row.jobStatus === "禁用" && this.msgJob_enableJob(params.row.id)
                     }
                   }
                 },
-                '启用'
+                params.row.jobStatus === "禁用" && '启用' ||
+                params.row.jobStatus === "启用" && '禁用'
               ),
             ]);
           }
@@ -172,13 +181,51 @@ export default {
           this.$set(this, 'tableData', res.data.content);
           this.$set(this, 'total', res.data.totalElements);
         } else {
-          this.$Message(res.message);
+          // this.$Message(res.message);
         }
         this.query_loading = false;
       }).catch(err => {
         this.query_loading = false;
         console.log(err)
       })
-    }
+    },
+
+    // 启用任务
+    msgJob_enableJob(id) {
+      api.msgJob_enableJob({
+        id: id,
+      }).then(res => {
+        if (res.code === 1) {
+          this.getList();
+          this.$Message.success({
+            content: '启用成功',
+            duration: 2
+          });
+        } else {
+          this.$Message.error(res.message);
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    // 禁用任务
+    msgJob_disableJob(id) {
+      api.msgJob_disableJob({
+        id: id,
+      }).then(async res => {
+        if (res.code === 1) {
+          await this.getList();
+          this.$Message.success({
+            content: '禁用成功',
+            duration: 2
+          });
+        } else {
+          this.$Message.error(res.message);
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
   },
 }

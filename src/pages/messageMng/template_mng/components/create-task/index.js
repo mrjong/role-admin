@@ -1,6 +1,7 @@
 import Cookie from 'js-cookie';
 import sysDictionary from '@/mixin/sysDictionary';
 import api from '@/service/'
+import day from 'dayjs'
 
 export default {
   name: 'get-template',
@@ -8,6 +9,7 @@ export default {
   props: {
     getParentCodeList: Array,
     dataSource: Object,
+    disabled: Boolean
   },
   data() {
     return {
@@ -78,6 +80,10 @@ export default {
       valueList: [],//值域list
     }
   },
+  created() {
+    console.log(this.dataSource);
+    this.dataSource && this.msgJob_queryJobById();
+  },
   methods: {
     // 表单校验
     validateFormData() {
@@ -115,7 +121,7 @@ export default {
       }
       if (res.code === 1) {
         this.$Message.success('文件上传成功');
-        timer = setTimeout(() => {
+        var timer = setTimeout(() => {
           this.default_file_list = fileList;
         }, 300);
       } else {
@@ -148,6 +154,32 @@ export default {
           type === 'operator' && this.$set(this, 'valueList', res.data);
         } else {
 
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    // 获取任务详情接口
+    msgJob_queryJobById() {
+      api.msgJob_queryJobById({
+        id: this.dataSource.id,
+      }).then(res => {
+        if (res.code === 1) {
+          let {jobType, jobName, jobScene, triggerNode, jobTime, dataType, jobDescribe} = res.data;
+          this.$set(this.formItem, 'jobType', jobType);
+          this.$set(this.formItem, 'jobName', jobName);
+          this.$set(this.formItem, 'jobScene', jobScene);
+          jobType === 'system' && jobScene === 'repeat' && this.$set(this.formItem, 'jobScene', 'timing');
+          this.$set(this.formItem, 'triggerNode', triggerNode);
+          jobType === 'system' && this.$set(this.formItem, 'jobTime', day(jobTime).format('HH:mm'));
+          jobType === 'artificial' && this.$set(this.formItem, 'jobTime', day(jobTime).format('yyyy-MM-dd HH:mm'));
+          this.$set(this.formItem, 'dataType', dataType);
+          this.$set(this.formItem, 'jobDescribe', jobDescribe);
+          this.$set(this.formItem, 'jobScene_children', jobScene);
+          console.log(this.formItem)
+        } else {
+          this.$Message.error(res.message);
         }
       }).catch(err => {
         console.log(err)

@@ -177,10 +177,10 @@
           <span>创建任务</span>
         </p>
 
-        <newTask :dataSource='currentRow'>
+        <newTask>
           <template v-slot:default="slotProps">
             <Button size="small" @click="handleCancelCreateTask" style="margin-right: 25px;">取消</Button>
-            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps)" :loading='isBtnLoading'>确定</Button>
+            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps, 'createTask')" :loading='isBtnLoading'>确定</Button>
           </template>
         </newTask>
       </Modal>

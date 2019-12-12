@@ -118,6 +118,29 @@
         </div>
       </div>
     </Card>
+
+    <!-- 任务详情modal -->
+    <div v-if="taskDetailFlag">
+      <Modal
+        v-model="taskDetailFlag"
+        width="550"
+        class-name="user_info_form_modal"
+        :closable="false"
+        footer-hide
+        :mask-closable="false"
+      >
+        <p slot="header" style="color:#333; font-size: 16px; font-weight: 500">
+          <span>{{taskModalTitle}}</span>
+        </p>
+
+        <taskDetail :dataSource='currentRow' :disabled="taskModal === 'view'? true: false">
+          <template v-slot:default="slotProps">
+            <Button size="small" @click="handleCancelCreateTask" style="margin-right: 25px;">取消</Button>
+            <Button type="primary" size="small" v-if="taskModal === 'update'" @click="handleSubmitModalprops(slotProps, 'createTask')" :loading='isBtnLoading'>确定</Button>
+          </template>
+        </taskDetail>
+      </Modal>
+    </div>
   </div>
 </template>
 

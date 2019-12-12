@@ -14,11 +14,21 @@ export const msgTempl_list = (obj) =>
   });
 
 // 添加任务
-export const msgJob_addMsgJob = (obj) =>
+export const msgJob_addMsgJob = (obj, options) =>
   fetch({
     url: '/msgJob/addMsgJob',
     method: 'POST',
-    data: qs.stringify(obj)
+    data: obj,
+    ...options
+  });
+
+// 编辑任务
+export const msgJob_updateMsgJob = (obj, options) =>
+  fetch({
+    url: '/msgJob/updateMsgJob',
+    method: 'POST',
+    data: obj,
+    ...options
   });
 
 // 启用任务
