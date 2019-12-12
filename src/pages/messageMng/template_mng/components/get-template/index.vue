@@ -17,7 +17,6 @@
           <FormItem label="模板类型" prop="templType">
             <Select
               size="small"
-              multiple
               clearable
               placeholder="请选择模板类型"
               v-model="formItem.templType"

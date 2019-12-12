@@ -5,7 +5,10 @@ export default {
   },
   data() {
     return {
-      formRules: {},
+      formRules: {
+        templType: [{ required: true, message: '请选择模板类型', trigger: 'change' },],
+        templCode: [{ required: true, message: '请填写模板编号', trigger: 'blur' },]
+      },
       formItem: {},
     }
   },

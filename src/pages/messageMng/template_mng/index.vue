@@ -1,5 +1,5 @@
 <template>
-  <div class="panel_list">
+  <div class="panel_list message_mng_wrap">
     <!-- 检索条件 -->
     <Card class="vue-panel">
       <p slot="title" @click="showPanelForm=!showPanelForm">
@@ -14,7 +14,7 @@
         v-if="!showPanelForm"
         ref="formItem"
         :rules="formRules"
-        :model="formItem"
+        v-model="formItem"
         :label-width="95"
         style="padding: 10px 0"
       >
@@ -29,7 +29,7 @@
                 v-model="formItem.templType"
               >
                 <Option
-                  v-for="item in getDirObj.DIVIDE_PROD_TYPE"
+                  v-for="item in getDirObj.MSG_TEMPL_TYPE"
                   :value="item.itemCode"
                   :key="item.itemName"
                 >{{ item.itemName }}</Option>
@@ -50,7 +50,7 @@
             <FormItem span="6" label="模板状态:" prop="templStatus">
               <Select clearable size="small" placeholder="请选择模板状态" v-model="formItem.templStatus">
                 <Option
-                  v-for="item in getDirObj['01_02_EFFECT_INVAL']"
+                  v-for="item in getDirObj['MSG_TEMPL_STATUS']"
                   :value="item.itemCode"
                   :key="item.itemCode"
                 >{{ item.itemName }}</Option>
@@ -136,7 +136,7 @@
         <configParameter>
           <template v-slot:default="slotProps">
             <Button size="small" @click="handleCancelParameter">取消</Button>
-            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps)">确定</Button>
+            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps)" :loading='isBtnLoading'>确定</Button>
           </template>
         </configParameter>
       </Modal>
@@ -155,10 +155,10 @@
           <span>获取模板</span>
         </p>
 
-        <getTemplate>
+        <getTemplate :getParentCodeList='getDirObj.MSG_TEMPL_TYPE'>
           <template v-slot:default="slotProps">
-            <Button size="small" @click="handleCancelTemplate" style="margin-right: 10px;">取消</Button>
-            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps)">确定</Button>
+            <Button size="small" @click="handleCancelTemplate" style="margin-right: 25px;">取消</Button>
+            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps, 'getTemplate')" :loading='isBtnLoading'>确定</Button>
           </template>
         </getTemplate>
       </Modal>
@@ -167,7 +167,7 @@
     <div v-if="createTaskFlag">
       <Modal
         v-model="createTaskFlag"
-        width="500"
+        width="550"
         class-name="user_info_form_modal"
         :closable="false"
         footer-hide
@@ -177,10 +177,10 @@
           <span>创建任务</span>
         </p>
 
-        <newTask>
+        <newTask :dataSource='currentRow'>
           <template v-slot:default="slotProps">
-            <Button size="small" @click="handleCancelCreateTask" style="margin-right: 10px;">取消</Button>
-            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps)">确定</Button>
+            <Button size="small" @click="handleCancelCreateTask" style="margin-right: 25px;">取消</Button>
+            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps)" :loading='isBtnLoading'>确定</Button>
           </template>
         </newTask>
       </Modal>
@@ -188,5 +188,14 @@
   </div>
 </template>
 <script src='./index.js'></script>
+
+<style lang="less" scoped>
+/deep/ .ivu-form-item {
+  margin-bottom: 14px;
+}
+/deep/ .ivu-radio-wrapper {
+  min-width: 64px;
+}
+</style>
 
 

@@ -1,36 +1,24 @@
 import sysDictionary from '@/mixin/sysDictionary';
-import configParameter from "./components/config-parameter/index.vue";
-import getTemplate from "./components/get-template/index.vue";
-import newTask from "./components/create-task/index.vue";
-import api from '@/service/index.js';
+import api from '@/service/';
 export default {
-  name: 'template-mng',
+  name: 'system-task',
   mixins: [sysDictionary],
-  components: {
-    configParameter,
-    getTemplate,
-    newTask,
-  },
   data() {
     const minWidth = 80;
     const middleWidth = 120;
     const maxWidth = 150;
     return {
-      getDirList: ['MSG_TEMPL_TYPE', 'MSG_TEMPL_STATUS'],
+      getDirList: ['DIVIDE_PROD_TYPE', 'PROD_CNT', 'CREDIT_LEVEL', 'CASE_HANDLE_STATUS', '01_02_EFFECT_INVAL'],
       getDirObj: {},
-      formItem: {},
-      formRules: {},
       showPanelForm: false,
       showPanelTable: false,
-      parameterFlag: false,//参数配置modal
-      getTemplateFlag: false,//获取模板modal
-      createTaskFlag: false,//创建任务模板modal
-      currentRow: {},
+      formItem: {},
+      formRules: {},
+      query_loading: false,
       total: 0,
-      pageNo: 1,
       pageSize: 10,
-      tableData: [
-      ],
+      pageNo: 1,
+      tableData: [],
       tableColumns: [
         {
           title: '序号',
@@ -40,9 +28,21 @@ export default {
           fixed: 'left'
         },
         {
-          title: '模板类型',
+          title: '任务名称',
+          minWidth: maxWidth,
+          key: 'jobName',
+          align: 'center',
+        },
+        {
+          title: '任务类型',
           minWidth: minWidth,
-          key: 'templType',
+          key: 'jobType',
+          align: 'center',
+        },
+        {
+          title: '使用场景',
+          minWidth: minWidth,
+          key: 'jobScene',
           align: 'center',
         },
         {
@@ -52,22 +52,27 @@ export default {
           align: 'center',
         },
         {
-          title: '模板编号',
+          title: '发送时间',
           minWidth: middleWidth,
-          key: 'templCode',
+          key: 'jobTime',
           align: 'center',
         },
         {
-          title: '模板内容',
-          minWidth: maxWidth,
-          key: 'templContent',
-          tooltip: true,
-          align: 'center',
-        },
-        {
-          title: '模板状态',
+          title: '任务状态',
           minWidth: minWidth,
-          key: 'templStatus',
+          key: 'jobStatus',
+          align: 'center',
+        },
+        {
+          title: '任务描述',
+          minWidth: maxWidth,
+          key: 'jobDescribe',
+          align: 'center',
+        },
+        {
+          title: '创建人',
+          minWidth: minWidth,
+          key: 'createUser',
           align: 'center',
         },
         {
@@ -102,7 +107,7 @@ export default {
                     }
                   }
                 },
-                '配置参数'
+                '查看'
               ),
               h(
                 'a',
@@ -111,70 +116,69 @@ export default {
                   props: {},
                   on: {
                     click: () => {
-                      this.currentRow = params.row;
                       this.createTaskFlag = true;
                     }
                   }
                 },
-                '创建任务'
+                '启用'
+              ),
+              h(
+                'a',
+                {
+                  class: 'edit-btn',
+                  props: {},
+                  on: {
+                    click: () => {
+                      this.createTaskFlag = true;
+                    }
+                  }
+                },
+                '编辑任务'
               ),
             ]);
           }
         },
       ],
-      query_loading: false,//查询loading
-      isBtnLoading: false,
     }
   },
   created() {
-    this.msgTempl_list()
+    this.getList()
   },
   methods: {
-    handleSubmit(name) {
+    // 表单查询校验
+    handleSubmit() {
       this.$refs.formItem.validate(isValid => {
         if (isValid) {
           this.query_loading = true;
-          this.msgTempl_list();
-        }
+          this.getList();
+        };
       })
     },
 
+    // 清空重置
     clearForm() {
       this.$refs.formItem.resetFields();
-    },
-
-    // modal回调校验
-    handleSubmitModalprops(slotProps, type) {
-      console.log(slotProps)
-      slotProps.validateFormData().then(isValid => {
-        if (isValid) {
-          this.isBtnLoading = true;
-          type === 'getTemplate' && this.handleSubmitTemplate(slotProps);
-        } else {
-          console.log(slotProps, '校验不通过');
-        }
-      });
     },
 
     // 页码改变的回调
     changePage(pageNo) {
       this.pageNo = pageNo;
-      this.msgTempl_list();
+      this.getList();
     },
 
     // 切换每页条数时的回调
     changeSize(pageSize) {
       this.pageSize = pageSize;
       this.pageNo = 1;
-      this.msgTempl_list();
+      this.getList();
     },
 
-    // 查询模板
-    msgTempl_list() {
-      console.log(api)
-      api.msgTempl_list({
+    // 查询任务列表
+    getList() {
+      api.msgJob_queryJob({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
+        jobType: 'system',
         ...this.formItem
       }).then(res => {
         if (res.code === 1) {
@@ -186,52 +190,8 @@ export default {
         this.query_loading = false;
       }).catch(err => {
         this.query_loading = false;
-        console.log(err);
+        console.log(err)
       })
-    },
-
-    // 关闭参数配置modal
-    handleCancelParameter() {
-      this.parameterFlag = false;
-    },
-
-    // 参数配置确定提交
-    handleSubmitParameter(slotProps) {
-
-    },
-
-    // 关闭获取模板modal
-    handleCancelTemplate() {
-      this.getTemplateFlag = false;
-    },
-
-    // 获取模板确定提交
-    handleSubmitTemplate(slotProps) {
-      api.msgTempl_addTempl({
-        ...slotProps.formItem,
-      }).then(res => {
-        if (res.code === 1) {
-          this.handleCancelTemplate();
-          this.$Message.success('模板添加成功');
-          this.msgTempl_list();
-        } else {
-          this.$Message.error(res.message);
-        }
-        this.isBtnLoading = false;
-      }).catch(err => {
-        console.log(err);
-        this.isBtnLoading = false;
-      })
-    },
-
-    // 关闭创建任务modal
-    handleCancelCreateTask() {
-      this.createTaskFlag = false;
-    },
-
-    // 创建任务的提交
-    handleSubmitCreateTask(slotProps) {
-
     }
   },
 }

@@ -4,56 +4,183 @@
       ref="formItem"
       :rules="formRules"
       :model="formItem"
-      :label-width="85"
+      :label-width="90"
       style="padding: 10px 0"
     >
       <Row>
         <Col :xs="24" :sm="24" :md="24" :lg="24">
-          <FormItem label="任务类型" prop="jobType">
-            <RadioGroup v-model="formItem.jobType" size="large">
-              <Radio label="系统任务"></Radio>
-              <Radio label="手动任务"></Radio>
-              <!-- <Radio :label="item.itemCode" :key="index" v-for="item in getParentCodeList">{{ item.itemName }}</Radio> -->
+          <FormItem label="任务类型：" prop="jobType">
+            <RadioGroup v-model="formItem.jobType" size="small">
+              <!-- <Radio label="01">系统任务</Radio>
+              <Radio label="02">手动任务</Radio> -->
+              <Radio :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_JOB_TYPE">{{ item.itemName }}</Radio>
             </RadioGroup>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24">
-          <FormItem label="任务名称" prop="jobName">
+          <FormItem label="任务名称：" prop="jobName">
             <Input
               size="small"
               clearable
               v-model.trim="formItem.jobName"
-              style="width: 70%"
+              style="width: 100%"
               placeholder="请输入任务名称"
             />
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="24" :lg="24">
-          <FormItem label="使用场景" prop="jobScene">
-            <RadioGroup v-model="formItem.jobScene" size="large">
-              <Radio label="实时"></Radio>
-              <Radio label="定时"></Radio>
+        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobType === 'system'">
+          <FormItem label="使用场景：" prop="jobScene">
+            <RadioGroup v-model="formItem.jobScene" size="small">
+              <!-- <Radio label="01">实时</Radio>
+              <Radio label="02">定时</Radio> -->
+              <Radio :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_JOB_SCENE" v-if="item.itemCode === 'real_time' || item.itemCode === 'timing'">{{ item.itemName }}</Radio>
+            </RadioGroup>
+          </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobScene === 'real_time'">
+          <FormItem label="选择节点：" prop="triggerNode">
+            <RadioGroup v-model="formItem.triggerNode" size="small">
+              <!-- <Radio label="01">仲裁状态</Radio>
+              <Radio label="02">信用进度状态</Radio> -->
+              <Radio :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_TRIGGER_NODE">{{ item.itemName }}</Radio>
+            </RadioGroup>
+          </FormItem>
+        </Col>
+        <Col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :lg="24"
+          v-if="formItem.jobScene === 'timing' || formItem.jobType === 'artificial'"
+        >
+          <FormItem label="发送时间：" prop="jobTime">
+            <RadioGroup v-model="formItem.jobTime" size="small">
+              <!-- <Radio label="01">立即发送</Radio>
+              <Radio label="02">指定时间</Radio> -->
+             <Radio :label="item.itemCode" :key="index + item.itemCode" v-for="item,index in getDirObj.MSG_JOB_SCENE" v-if="item.itemCode === 'repeat' || item.itemCode === 'immediately'">{{ item.itemName }}</Radio>
+              <TimePicker
+                v-if="formItem.jobTime === 'repeat'"
+                format="HH:mm"
+                placeholder="Select time"
+                size="small"
+              ></TimePicker>
+            </RadioGroup>
+          </FormItem>
+        </Col>
+        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobTime || formItem.jobScene">
+          <FormItem label="选择用户：" prop="dataType">
+            <RadioGroup v-model="formItem.dataType" size="small">
+              <Radio label="01">添加规则</Radio>
+              <Radio label="02">导入</Radio>
               <!-- <Radio :label="item.itemCode" :key="index" v-for="item in getParentCodeList">{{ item.itemName }}</Radio> -->
             </RadioGroup>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="24" :lg="24">
-          <FormItem label="选择节点" prop="triggerNode">
-            <RadioGroup v-model="formItem.triggerNode" size="large">
-              <Radio label="仲裁状态"></Radio>
-              <Radio label="信用进度状态"></Radio>
-              <!-- <Radio :label="item.itemCode" :key="index" v-for="item in getParentCodeList">{{ item.itemName }}</Radio> -->
-            </RadioGroup>
+        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.dataType === '01'">
+          <Col :xs="24" :sm="24" :md="6" :lg="6" style="text-align: center">
+            <!-- <FormItem :label-width="8"> -->
+            字段来源
+            <!-- </FormItem> -->
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6" style="text-align: center">
+            <!-- <FormItem :label-width="8"> -->
+            字段名称
+            <!-- </FormItem> -->
+          </Col>
+          <Col :xs="24" :sm="24" :md="5" :lg="5" style="text-align: center">
+            <!-- <FormItem :label-width="8"> -->
+            操作符
+            <!-- </FormItem> -->
+          </Col>
+          <Col :xs="24" :sm="24" :md="5" :lg="5" style="text-align: center">
+            <!-- <FormItem :label-width="8"> -->
+            值域
+            <!-- </FormItem> -->
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6">
+            <FormItem prop="partName" :label-width="8">
+              <Select size="small" clearable @on-change="changeSelect($event, 'partName')" placeholder="请选择来源" v-model="formItem.partName">
+                <Option
+                  v-for="item in getDirObj.MSG_PARAM_SOURCE"
+                  :value="item.itemCode"
+                  :key="item.itemName"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="6" :lg="6">
+            <FormItem prop="partExpression" :label-width="8">
+              <Select size="small" clearable @on-change="changeSelect($event, 'partExpression')" placeholder="请选择" v-model="formItem.partExpression">
+                <Option
+                  v-for="item in partExpressionList"
+                  :value="item.itemCode"
+                  :key="item.itemName"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="5" :lg="5">
+            <FormItem prop="operator" :label-width="8">
+              <Select size="small" clearable placeholder="请选择" @on-change="changeSelect($event, 'operator')" v-model="formItem.source">
+                <Option
+                  v-for="item in operatorList"
+                  :value="item.itemCode"
+                  :key="item.itemName"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="5" :lg="5">
+            <FormItem prop="value" :label-width="8">
+              <Select size="small" clearable placeholder="请选择" v-model="formItem.value">
+                <Option
+                  v-for="item in valueList"
+                  :value="item.itemCode"
+                  :key="item.itemName"
+                >{{ item.itemName }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col :xs="24" :sm="24" :md="2" :lg="2" style="padding: 5px 0 0 10px;">
+            <Button type="success" size="small" @click="handleAdd">确定</Button>
+          </Col>
+          <Col :xs="24" :sm="24" :md="24" :lg="24" style="margin-bottom: 20px">
+            <Table :data="tableData" border :columns="tableColumns" stripe></Table>
+          </Col>
+        </Col>
+        <Col span="24" v-if="formItem.dataType === '02'">
+          <FormItem :label-width="90">
+            <Upload
+              type="drag"
+              name="file"
+              :show-upload-list="true"
+              style="width: 100%"
+              :format="['xls', 'xlsx']"
+              action="/admin/msgJob/uploadData"
+              :data="{}"
+              :headers="headers"
+              :on-remove="handleFileRemove"
+              :on-format-error="handleFormatError"
+              :on-success="handleUploadSuccess"
+              :on-error="handleUploadError"
+            >
+              <div style="padding: 10px 0">
+                <Icon type="ios-cloud-upload" size="36" style="color: #3399ff"></Icon>
+                <p>单击或拖动此处以上传文件</p>
+              </div>
+            </Upload>
           </FormItem>
         </Col>
         <Col :xs="24" :sm="24" :md="24" :lg="24">
-          <FormItem label="发送时间" prop="jobTime">
-            <RadioGroup v-model="formItem.jobTime" size="large">
-              <Radio label="立即发送"></Radio>
-              <Radio label="指定时间"></Radio>
-              <TimePicker format="HH:mm" placeholder="Select time"></TimePicker>
-              <!-- <Radio :label="item.itemCode" :key="index" v-for="item in getParentCodeList">{{ item.itemName }}</Radio> -->
-            </RadioGroup>
+          <FormItem label="任务描述：">
+            <Input
+              size="small"
+              type="textarea"
+              v-model.trim="formItem.jobDescribe"
+              style="width: 100%;"
+              :maxlength="500"
+              placeholder="请输入500字以内的任务描述"
+            />
           </FormItem>
         </Col>
       </Row>

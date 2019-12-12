@@ -8,7 +8,7 @@
     </TabPane>
   </Tabs>
 </template>
-<style type="less" scoped>
+<style lang="less" scoped>
   /deep/ .ivu-tabs-tabpane{
     background: #F0F0F0;
   }
