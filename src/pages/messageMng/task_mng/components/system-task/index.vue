@@ -25,12 +25,12 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem span="4" label="任务类型:" prop="jobType">
+            <FormItem span="4" label="模板类型:" prop="templType">
               <Select
                 size="small"
                 clearable
-                placeholder="请选择任务类型"
-                v-model="formItem.jobType"
+                placeholder="请选择模板类型"
+                v-model="formItem.templType"
               >
                 <Option
                   v-for="item in getDirObj.MSG_JOB_TYPE"

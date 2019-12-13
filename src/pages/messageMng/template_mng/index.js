@@ -45,7 +45,7 @@ export default {
         {
           title: '模板类型',
           minWidth: minWidth,
-          key: 'templType',
+          key: 'templTypeName',
           align: 'center',
         },
         {
@@ -70,7 +70,7 @@ export default {
         {
           title: '模板状态',
           minWidth: minWidth,
-          key: 'templStatus',
+          key: 'templStatusName',
           align: 'center',
         },
         {
@@ -99,10 +99,15 @@ export default {
                 {
                   class: 'edit-btn',
                   props: {},
+                  style: {
+                    color: params.row.paramConfig.length>0? '#2d8cf0': '#ccc',
+                  },
                   on: {
                     click: () => {
-                      this.currentRow = params.row;
-                      this.parameterFlag = true;
+                      if (params.row.paramConfig.length>0) {
+                        this.currentRow = params.row;
+                        this.parameterFlag = true;
+                      }
                     }
                   }
                 },
@@ -265,7 +270,7 @@ export default {
         templCode: this.currentRow.templCode,
         templType: this.currentRow.templType,
         jobScene: slotProps.formItem.jobScene_children? slotProps.formItem.jobScene_children: slotProps.formItem.jobScene,
-        dataPath: null,
+        dataPath: slotProps.dataPath? slotProps.dataPath: null,
         jobTime: slotProps.formItem.jobTime && slotProps.formItem.jobTime.length > 4? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobTime,
         conditions: slotProps.conditions,
       };

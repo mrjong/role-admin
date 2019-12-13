@@ -101,7 +101,7 @@
             </RadioGroup>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobTime || formItem.jobScene">
+        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobScene_children || formItem.jobScene">
           <FormItem label="选择用户：" prop="dataType">
             <RadioGroup v-model="formItem.dataType" size="small">
               <Radio label="rule_condition" :disabled="disabled">添加规则</Radio>
@@ -272,7 +272,7 @@
       </Row>
     </Form>
     <div style="margin-top: 10px;text-align: center;">
-      <slot :formItem="formItem" :validateFormData="validateFormData" :conditions='tableData'></slot>
+      <slot :formItem="formItem" :validateFormData="validateFormData" :conditions='tableData' :dataPath='dataPath'></slot>
     </div>
   </div>
 </template>

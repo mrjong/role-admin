@@ -27,6 +27,7 @@ export default {
       isBtnLoading: false,
       total: 0,
       pageSize: 10,
+      jobType: 'system',
       pageNo: 1,
       tableData: [],
       tableColumns: [
@@ -44,9 +45,9 @@ export default {
           align: 'center',
         },
         {
-          title: '任务类型',
+          title: '模板类型',
           minWidth: minWidth,
-          key: 'jobType',
+          key: 'templType',
           align: 'center',
         },
         {
@@ -188,6 +189,7 @@ export default {
     // 清空重置
     clearForm() {
       this.$refs.formItem.resetFields();
+      this.getList()
     },
 
     // 页码改变的回调
@@ -208,7 +210,7 @@ export default {
       api.msgJob_queryJob({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
-        jobType: 'system',
+        jobType: this.jobType,
         ...this.formItem
       }).then(res => {
         if (res.code === 1) {
@@ -286,7 +288,7 @@ export default {
         ...slotProps.formItem,
         id: this.currentRow.id,
         jobScene: slotProps.formItem.jobScene_children? slotProps.formItem.jobScene_children: slotProps.formItem.jobScene,
-        dataPath: null,
+        dataPath: slotProps.dataPath? slotProps.dataPath: null,
         jobTime: slotProps.formItem.jobTime.length > 4? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobTime
       };
       api.msgJob_updateMsgJob(params, {

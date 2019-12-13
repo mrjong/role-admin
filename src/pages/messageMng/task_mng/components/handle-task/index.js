@@ -16,6 +16,7 @@ export default {
       formItem: {},
       formRules: {},
       query_loading: false,
+      jobType: 'artificial',
       total: 0,
       pageSize: 10,
       pageNo: 1,
@@ -174,7 +175,7 @@ export default {
       api.msgJob_queryJob({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
-        jobType: 'artificial',
+        jobType: this.jobType,
         ...this.formItem
       }).then(res => {
         if (res.code === 1) {

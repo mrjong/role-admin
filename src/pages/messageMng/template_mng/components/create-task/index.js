@@ -48,8 +48,14 @@ export default {
                 {
                   class: 'edit-btn',
                   props: {},
+                  style: {
+                    color: this.disabled ? '#ccc':'#2d8cf0'
+                  },
                   on: {
                     click: () => {
+                      if (this.disabled) {
+                        return;
+                      }
                       this.tableData.splice(params.index, 1);
                     }
                   }
@@ -85,6 +91,7 @@ export default {
       operatorList: [],//操作符list
       valueList: [],//值域list
       copyObj: {},//暂存添加到列表的数据
+      dataPath: null,
     }
   },
   created() {
@@ -102,7 +109,7 @@ export default {
       this.$refs.formItem.validate(isValid => {
         if (isValid) {
           this.tableData.push(this.copyObj);
-          this.$set(this, 'copyObj', {});
+          // this.$set(this, 'copyObj', {});
           // this.$set(this.formItem, 'partName', null);
           // this.$set(this.formItem, 'source', null)
           // this.$set(this.formItem, 'operator', null)
@@ -138,7 +145,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success('文件上传成功');
         var timer = setTimeout(() => {
-          this.default_file_list = fileList;
+          this.dataPath = res.data;
         }, 300);
       } else {
         this.$Message.error(res.message);
