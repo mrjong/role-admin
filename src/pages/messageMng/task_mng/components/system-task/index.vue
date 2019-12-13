@@ -41,12 +41,12 @@
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="模板名称:" prop="templName">
+            <FormItem label="模板编号:" prop="templCode">
               <Input
                 size="small"
                 clearable
-                v-model.trim="formItem.templName"
-                placeholder="请输入模板名称"
+                v-model.trim="formItem.templCode"
+                placeholder="请输入模板编号"
               />
             </FormItem>
           </Col>

@@ -65,6 +65,13 @@ export default {
           tooltip: true,
         },
         {
+          title: '模板编号',
+          minWidth: minWidth,
+          key: 'templCode',
+          align: 'center',
+          tooltip: true,
+        },
+        {
           title: '发送时间',
           minWidth: maxWidth,
           key: 'jobTime',
@@ -265,6 +272,11 @@ export default {
       console.log(slotProps)
       slotProps.validateFormData().then(isValid => {
         if (isValid) {
+          if (slotProps.formItem.jobType === 'artificial' && !slotProps.dataPath) {
+            // 判断手动任务是否包含文件
+            this.$Message.error('请上传文件！');
+            return;
+          }
           this.isBtnLoading = true;
           type === 'createTask' && this.handleSubmitCreateTask(slotProps);
         } else {

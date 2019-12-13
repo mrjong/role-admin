@@ -44,6 +44,13 @@ export default {
           tooltip: true,
         },
         {
+          title: '模板编号',
+          minWidth: minWidth,
+          key: 'templCode',
+          align: 'center',
+          tooltip: true,
+        },
+        {
           title: '模板类型',
           minWidth: minWidth,
           key: 'templType',

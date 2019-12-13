@@ -28,12 +28,15 @@ export default {
         jobScene_children: [{ required: true, message: '请选择发送时间', trigger: 'change' },],
         jobTime: [{ required: true, message: '请选择发送时间', trigger: 'change' },],
         dataType: [{ required: true, message: '请选择用户', trigger: 'change' },],
+      },
+      formItem: {},
+      formItemChildren: {},
+      formRulesChildren: {
         source: [{ required: true, message: '请选择字段来源', trigger: 'change' },],
         partName: [{ required: true, message: '请选择字段名称', trigger: 'change' },],
         operator: [{ required: true, message: '请选择操作符', trigger: 'change' },],
         value: [{ required: true, message: '请选择值域', trigger: 'change' },],
       },
-      formItem: {},
       default_file_list: [],//文件list
       tableColumns: [
         {
@@ -107,7 +110,7 @@ export default {
     //添加单个规则
     handleAdd() {
       let obj = {};
-      this.$refs.formItem.validate(isValid => {
+      this.$refs.formItemChildren.validate(isValid => {
         if (isValid) {
           Object.assign(obj, this.copyObj)
           this.tableData.push(obj);
@@ -125,6 +128,7 @@ export default {
      */
     handleFileRemove(file, fileList) {
       this.default_file_list = fileList;
+      this.dataPath = null;
     },
 
     /**
@@ -176,15 +180,15 @@ export default {
       if (obj) {
         switch (type) {
           case 'source':
-            this.$set(this.formItem, 'operator', null)
-            this.$set(this.formItem, 'value', null)
-            this.$set(this.formItem, 'partName', null)
+            this.$set(this.formItemChildren, 'operator', null)
+            this.$set(this.formItemChildren, 'value', null)
+            this.$set(this.formItemChildren, 'partName', null)
             this.$set(this.copyObj, 'source', obj.value);
             this.$set(this.copyObj, 'sourceShow', obj.label);
             break;
           case 'partName':
-            this.$set(this.formItem, 'operator', null)
-            this.$set(this.formItem, 'value', null)
+            this.$set(this.formItemChildren, 'operator', null)
+            this.$set(this.formItemChildren, 'value', null)
             this.$set(this.copyObj, 'partName', obj.value);
             this.$set(this.copyObj, 'partNameShow', obj.label);
             break;
