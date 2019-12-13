@@ -11,10 +11,10 @@
         ></Icon>
       </p>
       <Form
-        v-if="!showPanelForm"
+        v-show="!showPanelForm"
         ref="formItem"
         :rules="formRules"
-        v-model="formItem"
+        :model="formItem"
         :label-width="95"
         style="padding: 10px 0"
       >
@@ -23,10 +23,9 @@
             <FormItem span="4" label="模板类型:" prop="templType">
               <Select
                 size="small"
-                multiple
                 clearable
                 placeholder="请选择模板类型"
-                v-model="formItem.templType"
+                v-model.trim="formItem.templType"
               >
                 <Option
                   v-for="item in getDirObj.MSG_TEMPL_TYPE"
@@ -48,7 +47,7 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem span="6" label="模板状态:" prop="templStatus">
-              <Select clearable size="small" placeholder="请选择模板状态" v-model="formItem.templStatus">
+              <Select clearable size="small" placeholder="请选择模板状态" v-model.trim="formItem.templStatus">
                 <Option
                   v-for="item in getDirObj['MSG_TEMPL_STATUS']"
                   :value="item.itemCode"
@@ -73,7 +72,7 @@
               <Button
                 size="small"
                 style="width:80px;margin-left: 8px"
-                @click="clearForm('formItem')"
+                @click="clearForm()"
               >重置</Button>
             </FormItem>
           </Col>
@@ -124,7 +123,7 @@
     <div v-if="parameterFlag">
       <Modal
         v-model="parameterFlag"
-        width="800"
+        width="550"
         class-name="user_info_form_modal"
         :closable="false"
         footer-hide
@@ -133,10 +132,10 @@
         <p slot="header" style="color:#333; font-size: 16px; font-weight: 500">
           <span>请配置参数</span>
         </p>
-        <configParameter>
+        <configParameter :dataSource='currentRow'>
           <template v-slot:default="slotProps">
-            <Button size="small" @click="handleCancelParameter">取消</Button>
-            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps)" :loading='isBtnLoading'>确定</Button>
+            <Button size="small" @click="handleCancelParameter" style="margin-right: 25px;">取消</Button>
+            <Button type="primary" size="small" @click="handleSubmitModalprops(slotProps, 'configParams')" :loading='isBtnLoading'>确定</Button>
           </template>
         </configParameter>
       </Modal>

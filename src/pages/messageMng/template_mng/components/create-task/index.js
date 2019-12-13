@@ -38,7 +38,7 @@ export default {
       tableColumns: [
         {
           title: '操作',
-          width: 60,
+          width: 65,
           key: 'edit',
           align: 'center',
           render: (h, params) => {
@@ -50,7 +50,7 @@ export default {
                   props: {},
                   on: {
                     click: () => {
-                      this.parameterFlag = true;
+                      this.tableData.splice(params.index, 1);
                     }
                   }
                 },

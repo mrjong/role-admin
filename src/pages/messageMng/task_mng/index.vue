@@ -24,11 +24,5 @@
   line-height: 60px;
   padding: 0 16px;
 }
-/deep/ .ivu-form-item {
-  margin-bottom: 14px;
-}
-/deep/ .ivu-radio-wrapper {
-  min-width: 64px;
-}
 </style>
 

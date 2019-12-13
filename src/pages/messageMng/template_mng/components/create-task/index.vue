@@ -230,6 +230,9 @@
             <Table :data="tableData" border :columns="tableColumns" stripe></Table>
           </Col>
         </Col>
+        <Col :xs="24" :sm="24" :md="24" :lg="24" style="margin-bottom: 20px" v-if="disabled && tableData.length>0">
+            <Table :data="tableData" border :columns="tableColumns" stripe></Table>
+        </Col>
         <Col span="24" v-if="formItem.dataType === 'import' && !disabled">
           <FormItem :label-width="90">
             <Upload

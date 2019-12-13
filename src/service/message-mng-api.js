@@ -72,11 +72,12 @@ export const msgTempl_addTempl = (obj) =>
   });
 
 // 添加参数配置
-export const msgTempl_addParamConfig = (obj) =>
+export const msgTempl_addParamConfig = (obj, options) =>
   fetch({
     url: '/msgTempl/addParamConfig',
     method: 'POST',
-    data: qs.stringify(obj)
+    data: (obj),
+    ...options
   });
 
 

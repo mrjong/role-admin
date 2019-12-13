@@ -20,7 +20,9 @@ export default {
       getDirList: ['MSG_TEMPL_TYPE', 'MSG_TEMPL_STATUS'],
       getDirObj: {},
       formItem: {},
-      formRules: {},
+      formRules: {
+
+      },
       showPanelForm: false,
       showPanelTable: false,
       parameterFlag: false,//参数配置modal
@@ -99,6 +101,7 @@ export default {
                   props: {},
                   on: {
                     click: () => {
+                      this.currentRow = params.row;
                       this.parameterFlag = true;
                     }
                   }
@@ -142,7 +145,7 @@ export default {
     },
 
     clearForm() {
-      this.$refs.formItem.resetFields();
+      this.$refs['formItem'].resetFields();
     },
 
     // modal回调校验
@@ -153,6 +156,7 @@ export default {
           this.isBtnLoading = true;
           type === 'getTemplate' && this.handleSubmitTemplate(slotProps);
           type === 'createTask' && this.handleSubmitCreateTask(slotProps);
+          type === 'configParams' && this.handleSubmitParameter(slotProps);
         } else {
           console.log(slotProps, '校验不通过');
         }
@@ -200,7 +204,28 @@ export default {
 
     // 参数配置确定提交
     handleSubmitParameter(slotProps) {
-
+      let params = {
+        templCode: this.currentRow.templCode,
+        templType: this.currentRow.templType,
+        paramConfig: slotProps.formItem.parameterList,
+      }
+      api.msgTempl_addParamConfig(params, {
+        transformRequest: [
+          function(data) {
+            return JSON.stringify(data); //利用对应方法转换格式
+          }
+        ]
+      }).then(res => {
+        if (res.code === 1) {
+          this.handleCancelParameter();
+          this.$Message.success('参数配置成功');
+          this.msgTempl_list();
+        } else {
+          this.$Message.error(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     },
 
     // 关闭获取模板modal
@@ -264,6 +289,6 @@ export default {
         this.isBtnLoading = false;
         console.log(err)
       })
-    }
+    },
   },
 }

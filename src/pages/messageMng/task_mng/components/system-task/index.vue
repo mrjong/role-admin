@@ -28,13 +28,12 @@
             <FormItem span="4" label="任务类型:" prop="jobType">
               <Select
                 size="small"
-                multiple
                 clearable
                 placeholder="请选择任务类型"
                 v-model="formItem.jobType"
               >
                 <Option
-                  v-for="item in getDirObj.DIVIDE_PROD_TYPE"
+                  v-for="item in getDirObj.MSG_JOB_TYPE"
                   :value="item.itemCode"
                   :key="item.itemName"
                 >{{ item.itemName }}</Option>
@@ -55,7 +54,7 @@
             <FormItem span="6" label="任务状态:" prop="jobStatus">
               <Select clearable size="small" placeholder="请选择任务状态" v-model="formItem.jobStatus">
                 <Option
-                  v-for="item in getDirObj['DIVIDE_PROD_TYPE']"
+                  v-for="item in getDirObj['MSG_JOB_STATUS']"
                   :value="item.itemCode"
                   :key="item.itemCode"
                 >{{ item.itemName }}</Option>

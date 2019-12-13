@@ -9,7 +9,7 @@ export default {
     const middleWidth = 120;
     const maxWidth = 150;
     return {
-      getDirList: ['DIVIDE_PROD_TYPE',],
+      getDirList: ['MSG_JOB_STATUS', 'MSG_JOB_TYPE'],
       getDirObj: {},
       showPanelForm: false,
       showPanelTable: false,
