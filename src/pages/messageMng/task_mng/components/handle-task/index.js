@@ -102,7 +102,7 @@ export default {
         {
           title: '创建人',
           minWidth: minWidth,
-          key: 'creater',
+          key: 'createUser',
           align: 'center',
         },
         {
