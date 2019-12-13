@@ -138,7 +138,7 @@ export default {
   },
   created() {
     this.msgTempl_list()
-    console.log(day().format('YYYY-MM-DD'))
+    console.log(day('2019-12-13 18:00:00'))
   },
   methods: {
     handleSubmit(name) {
@@ -159,7 +159,7 @@ export default {
       console.log(slotProps)
       slotProps.validateFormData().then(isValid => {
         if (isValid) {
-          if (slotProps.formItem.jobType === 'artificial' && !slotProps.dataPath) {
+          if (slotProps.formItem.jobType === 'artificial' && slotProps.formItem.dataType === 'import' && !slotProps.dataPath) {
             // 判断手动任务是否包含文件
             this.$Message.error('请上传文件！');
             return;
@@ -276,7 +276,7 @@ export default {
         templType: this.currentRow.templType,
         jobScene: slotProps.formItem.jobScene_children? slotProps.formItem.jobScene_children: slotProps.formItem.jobScene,
         dataPath: slotProps.dataPath? slotProps.dataPath: null,
-        jobTime: slotProps.formItem.jobTime && slotProps.formItem.jobTime.length > 4? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobTime,
+        jobTime: slotProps.formItem.jobTime && typeof(slotProps.formItem.jobTime) == 'string' ? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobTime,
         conditions: slotProps.conditions,
       };
       api.msgJob_addMsgJob(params, {

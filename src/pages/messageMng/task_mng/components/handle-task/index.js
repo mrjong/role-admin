@@ -72,25 +72,25 @@ export default {
         {
           title: '案件量',
           minWidth: minWidth,
-          key: 'jobScene',
+          key: 'total',
           align: 'center',
         },
         {
           title: '成功数量',
           minWidth: minWidth,
-          key: 'jobScene',
+          key: 'successNum',
           align: 'center',
         },
         {
           title: '失败数量',
           minWidth: minWidth,
-          key: 'jobScene',
+          key: 'failNum',
           align: 'center',
         },
         {
           title: '处理中',
           minWidth: minWidth,
-          key: 'jobScene',
+          key: 'pendingNum',
           align: 'center',
         },
         {

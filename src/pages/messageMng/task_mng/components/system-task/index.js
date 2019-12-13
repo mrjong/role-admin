@@ -272,7 +272,7 @@ export default {
       console.log(slotProps)
       slotProps.validateFormData().then(isValid => {
         if (isValid) {
-          if (slotProps.formItem.jobType === 'artificial' && !slotProps.dataPath) {
+          if (slotProps.formItem.jobType === 'artificial'&& slotProps.formItem.dataType === 'import' && !slotProps.dataPath) {
             // 判断手动任务是否包含文件
             this.$Message.error('请上传文件！');
             return;
