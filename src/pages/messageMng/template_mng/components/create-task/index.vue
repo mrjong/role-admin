@@ -238,6 +238,7 @@
             <Upload
               type="drag"
               name="file"
+              :disabled='default_file_list.length>0? true: false'
               :show-upload-list="true"
               style="width: 100%"
               :format="['xls', 'xlsx']"
@@ -251,7 +252,7 @@
             >
               <div style="padding: 10px 0">
                 <Icon type="ios-cloud-upload" size="36" style="color: #3399ff"></Icon>
-                <p>单击或拖动此处以上传文件</p>
+                <p>单击或拖动此处以上传文件(最多上传一个文件)</p>
               </div>
             </Upload>
           </FormItem>

@@ -106,7 +106,7 @@ export default {
 
     //添加单个规则
     handleAdd() {
-      let obj;
+      let obj = {};
       this.$refs.formItem.validate(isValid => {
         if (isValid) {
           Object.assign(obj, this.copyObj)
@@ -147,6 +147,7 @@ export default {
       if (res.code === 1) {
         this.$Message.success('文件上传成功');
         var timer = setTimeout(() => {
+          this.default_file_list = fileList;
           this.dataPath = res.data;
         }, 300);
       } else {
