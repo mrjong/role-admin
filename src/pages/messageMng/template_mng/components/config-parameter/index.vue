@@ -3,7 +3,7 @@
     <Form
       ref="formItem"
       :model="formItem"
-      :label-width="95"
+      :label-width="105"
       style="padding: 10px 0"
     >
       <Row>
@@ -18,28 +18,30 @@
           >
             <Select
               size="small"
-              @on-change='selectChange'
+              @on-change='selectChange($event, index)'
               placeholder="请选择"
+              transfer
               style="width:40%; display: inline-block"
               v-model="item.source"
             >
               <Option
-                v-for="item in getDirObj.MSG_PARAM_SOURCE"
-                :value="item.itemCode"
-                :key="item.itemName"
-              >{{ item.itemName }}</Option>
+                v-for="childrenItem in getDirObj.MSG_PARAM_SOURCE"
+                :value="childrenItem.itemCode"
+                :key="childrenItem.itemName"
+              >{{ childrenItem.itemName }}</Option>
             </Select>
             <Select
               size="small"
+              transfer
               style="width:40%; display: inline-block"
               placeholder="请选择"
               v-model="item.partExpression"
             >
               <Option
-                v-for="item in childrenList"
-                :value="item.itemCode"
-                :key="item.itemName"
-              >{{ item.itemName }}</Option>
+                v-for="childrenItem in childrenList[`list${index}`]"
+                :value="childrenItem.itemCode"
+                :key="childrenItem.itemName"
+              >{{ childrenItem.itemName }}</Option>
             </Select>
           </FormItem>
         </Col>

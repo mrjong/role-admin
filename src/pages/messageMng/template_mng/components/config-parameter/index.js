@@ -14,12 +14,16 @@ export default {
       formItem: {},
       formRules: {},
       parameterList: [],
-      childrenList: [],
+      childrenList: {},
     }
   },
   created() {
     if (this.dataSource) {
       this.formItem.parameterList = this.dataSource.paramConfig;
+      this.formItem.parameterList.map((item,index) => {
+        this.$set(this.childrenList, `list${index}`, [])
+        item.source && this.sysDictionary_getListByParentId(item.source, index);
+      })
     }
   },
   methods: {
@@ -29,17 +33,17 @@ export default {
     },
 
     // selectChange
-    selectChange(val) {
-      val && this.sysDictionary_getListByParentId(val);
+    selectChange(val, index) {
+      val && this.sysDictionary_getListByParentId(val, index);
     },
 
     // 数据字典动态联动
-    sysDictionary_getListByParentId(itemCode) {
+    sysDictionary_getListByParentId(itemCode, index) {
       api.sysDictionary_getListByParentId({
         itemCode: itemCode,
       }).then(res => {
         if (res.code === 1) {
-          this.childrenList = res.data;
+          this.childrenList[`list${index}`] = res.data;
         } else {
 
         }

@@ -183,7 +183,7 @@ export default {
     },
 
     // 查询模板
-    msgTempl_list() {
+    msgTempl_list(messageText) {
       console.log(api)
       api.msgTempl_list({
         pageNum: this.pageNo,
@@ -193,6 +193,7 @@ export default {
         if (res.code === 1) {
           this.$set(this, 'tableData', res.data.content);
           this.$set(this, 'total', res.data.totalElements);
+          messageText && this.$Message.success(messageText);
         } else {
           this.$Message(res.message);
         }
@@ -221,11 +222,10 @@ export default {
             return JSON.stringify(data); //利用对应方法转换格式
           }
         ]
-      }).then(res => {
+      }).then(async res => {
         if (res.code === 1) {
           this.handleCancelParameter();
-          this.$Message.success('参数配置成功');
-          this.msgTempl_list();
+          this.msgTempl_list('参数配置成功');
         } else {
           this.$Message.error(res.message)
         }
@@ -246,8 +246,7 @@ export default {
       }).then(res => {
         if (res.code === 1) {
           this.handleCancelTemplate();
-          this.$Message.success('模板添加成功');
-          this.msgTempl_list();
+          this.msgTempl_list('模板添加成功');
         } else {
           this.$Message.error(res.message);
         }
@@ -285,8 +284,7 @@ export default {
       .then(res => {
         if (res.code === 1) {
           this.handleCancelCreateTask();
-          this.msgTempl_list();
-          this.$Message.success('任务创建成功');
+          this.msgTempl_list('任务创建成功');
         } else {
           this.$Message.error(res.message);
         }

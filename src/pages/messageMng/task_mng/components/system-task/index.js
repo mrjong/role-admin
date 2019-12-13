@@ -209,7 +209,7 @@ export default {
     },
 
     // 查询任务列表
-    getList() {
+    getList(messageText) {
       api.msgJob_queryJob({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
@@ -219,6 +219,7 @@ export default {
         if (res.code === 1) {
           this.$set(this, 'tableData', res.data.content);
           this.$set(this, 'total', res.data.totalElements);
+          messageText && this.$Message.success(messageText);
         } else {
           this.$Message(res.message);
         }
@@ -235,11 +236,7 @@ export default {
         id: id,
       }).then(res => {
         if (res.code === 1) {
-          this.getList();
-          this.$Message.success({
-            content: '启用成功',
-            duration: 2
-          });
+          this.getList('启用成功');
         } else {
           this.$Message.error(res.message);
         }
@@ -254,11 +251,7 @@ export default {
         id: id,
       }).then(async res => {
         if (res.code === 1) {
-          await this.getList();
-          this.$Message.success({
-            content: '禁用成功',
-            duration: 2
-          });
+          await this.getList('禁用成功');
         } else {
           this.$Message.error(res.message);
         }
@@ -292,7 +285,8 @@ export default {
         id: this.currentRow.id,
         jobScene: slotProps.formItem.jobScene_children? slotProps.formItem.jobScene_children: slotProps.formItem.jobScene,
         dataPath: slotProps.dataPath? slotProps.dataPath: null,
-        jobTime: slotProps.formItem.jobTime.length > 4? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobTime
+        jobTime: slotProps.formItem.jobTime.length > 4? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobTime,
+        conditions: slotProps.conditions,
       };
       api.msgJob_updateMsgJob(params, {
         transformRequest: [
@@ -303,8 +297,7 @@ export default {
       }).then(res => {
         if (res.code === 1) {
           this.handleCancelCreateTask();
-          this.getList();
-          this.$Message.success('任务修改成功');
+          this.getList('任务修改成功');
         } else {
           this.$Message.error(res.message);
         }
