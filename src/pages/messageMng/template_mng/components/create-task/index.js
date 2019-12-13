@@ -106,9 +106,11 @@ export default {
 
     //添加单个规则
     handleAdd() {
+      let obj;
       this.$refs.formItem.validate(isValid => {
         if (isValid) {
-          this.tableData.push(this.copyObj);
+          Object.assign(obj, this.copyObj)
+          this.tableData.push(obj);
           // this.$set(this, 'copyObj', {});
           // this.$set(this.formItem, 'partName', null);
           // this.$set(this.formItem, 'source', null)
@@ -165,6 +167,7 @@ export default {
     inputBlur(e) {
       console.log(e.target.value)
       this.$set(this.copyObj, 'valueShow', e.target.value);
+      this.$set(this.copyObj, 'value', e.target.value);
     },
 
     // select
@@ -231,7 +234,9 @@ export default {
           jobType === 'system' && this.$set(this.formItem, 'jobTime', day(jobTime).format('HH:mm'));
           jobType === 'artificial' && this.$set(this.formItem, 'jobTime', day(jobTime).format('yyyy-MM-dd HH:mm'));
           conditions && this.$set(this, 'tableData', conditions)
-          console.log(this.tableData)
+          this.tableData.map(item => {
+            item.value && (item.valueShow = item.value);
+          });
           this.$set(this.formItem, 'dataType', dataType);
           this.$set(this.formItem, 'jobDescribe', jobDescribe);
           this.$set(this.formItem, 'jobScene_children', jobScene);
