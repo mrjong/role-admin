@@ -14,7 +14,7 @@ export default {
     const middleWidth = 120;
     const maxWidth = 150;
     return {
-      getDirList: ['MSG_JOB_STATUS', 'MSG_JOB_TYPE'],
+      getDirList: ['MSG_JOB_STATUS', 'MSG_JOB_TYPE', 'MSG_TEMPL_TYPE'],
       getDirObj: {},
       showPanelForm: false,
       showPanelTable: false,
@@ -43,6 +43,7 @@ export default {
           minWidth: maxWidth,
           key: 'jobName',
           align: 'center',
+          tooltip: true,
         },
         {
           title: '模板类型',
@@ -61,6 +62,7 @@ export default {
           minWidth: maxWidth,
           key: 'templName',
           align: 'center',
+          tooltip: true,
         },
         {
           title: '发送时间',
@@ -86,6 +88,7 @@ export default {
           minWidth: maxWidth,
           key: 'jobDescribe',
           align: 'center',
+          tooltip: true,
         },
         {
           title: '创建人',

@@ -51,6 +51,7 @@ export default {
         {
           title: '模板名称',
           minWidth: maxWidth,
+          tooltip: true,
           key: 'templName',
           align: 'center',
         },

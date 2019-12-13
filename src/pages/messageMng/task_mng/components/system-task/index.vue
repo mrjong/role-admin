@@ -33,7 +33,7 @@
                 v-model="formItem.templType"
               >
                 <Option
-                  v-for="item in getDirObj.MSG_JOB_TYPE"
+                  v-for="item in getDirObj.MSG_TEMPL_TYPE"
                   :value="item.itemCode"
                   :key="item.itemName"
                 >{{ item.itemName }}</Option>

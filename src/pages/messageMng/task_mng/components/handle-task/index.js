@@ -34,12 +34,14 @@ export default {
           minWidth: maxWidth,
           key: 'jobName',
           align: 'center',
+          tooltip: true,
         },
         {
           title: '模板名称',
           minWidth: maxWidth,
           key: 'templName',
           align: 'center',
+          tooltip: true,
         },
         {
           title: '模板类型',
