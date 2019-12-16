@@ -287,6 +287,7 @@ export default {
         jobTime: slotProps.formItem.jobTime && typeof(slotProps.formItem.jobTime) == 'string' ? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobDateTime,
         conditions: slotProps.conditions,
       };
+      params.jobTime = (params.jobType === 'system' && params.jobScene === 'repeat') || (params.jobType === 'artificial' && params.jobScene === 'timing')? params.jobTime: null;
       api.msgJob_addMsgJob(params, {
         transformRequest: [
           function(data) {
