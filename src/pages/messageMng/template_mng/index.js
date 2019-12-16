@@ -282,7 +282,7 @@ export default {
         templId: this.currentRow.id,
         templCode: this.currentRow.templCode,
         templType: this.currentRow.templType,
-        jobScene: slotProps.formItem.jobScene_children? slotProps.formItem.jobScene_children: slotProps.formItem.jobScene,
+        jobScene: slotProps.formItem.jobScene === 'timing' || slotProps.formItem.jobType === 'artificial'? slotProps.formItem.jobScene_children: slotProps.formItem.jobScene,
         dataPath: slotProps.dataPath? slotProps.dataPath: null,
         jobTime: slotProps.formItem.jobTime && typeof(slotProps.formItem.jobTime) == 'string' ? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobDateTime,
         conditions: slotProps.conditions,
