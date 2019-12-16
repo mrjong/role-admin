@@ -66,7 +66,7 @@ export default {
         },
         {
           title: '模板编号',
-          minWidth: minWidth,
+          minWidth: middleWidth,
           key: 'templCode',
           align: 'center',
           tooltip: true,
@@ -302,7 +302,7 @@ export default {
         id: this.currentRow.id,
         jobScene: slotProps.formItem.jobScene_children? slotProps.formItem.jobScene_children: slotProps.formItem.jobScene,
         dataPath: slotProps.dataPath? slotProps.dataPath: null,
-        jobTime: slotProps.formItem.jobTime.length > 4? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobTime,
+        jobTime: slotProps.formItem.jobTime && typeof(slotProps.formItem.jobTime) == 'string'? day(day().format('YYYY-MM-DD') + '' + slotProps.formItem.jobTime+':00').$d: slotProps.formItem.jobDateTime,
         conditions: slotProps.conditions,
       };
       api.msgJob_updateMsgJob(params, {

@@ -45,7 +45,7 @@ export default {
         },
         {
           title: '模板编号',
-          minWidth: minWidth,
+          minWidth: middleWidth,
           key: 'templCode',
           align: 'center',
           tooltip: true,
@@ -70,7 +70,7 @@ export default {
           }
         },
         {
-          title: '案件量',
+          title: '发送总量',
           minWidth: minWidth,
           key: 'total',
           align: 'center',

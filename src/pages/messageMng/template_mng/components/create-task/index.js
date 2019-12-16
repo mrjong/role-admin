@@ -245,6 +245,7 @@ export default {
           this.$set(this.formItem, 'jobScene', jobScene);
           // 单独处理 使用场景的字段
           jobType === 'system' && (jobScene === 'immediately' || jobScene === 'repeat') && this.$set(this.formItem, 'jobScene', 'timing');
+
           jobType === 'system' && jobScene === 'repeat' && this.$set(this.formItem, 'jobScene', 'timing');
           this.$set(this.formItem, 'triggerNode', triggerNode);
           jobType === 'system' && this.$set(this.formItem, 'jobTime', day(jobTime).format('HH:mm'));
@@ -253,7 +254,8 @@ export default {
           this.$set(this.formItem, 'dataType', dataType);
           this.$set(this.formItem, 'jobDescribe', jobDescribe);
           // 单独处理 使用时间的字段
-          (jobScene === 'timing' || jobType === 'artificial') && this.$set(this.formItem, 'jobScene_children', jobScene);
+          (this.formItem.jobScene === 'timing' || jobType === 'artificial') && this.$set(this.formItem, 'jobScene_children', jobScene);
+          console.log(this.formItem)
         } else {
           this.$Message.error(res.message);
         }
