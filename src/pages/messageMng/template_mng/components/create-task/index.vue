@@ -10,7 +10,7 @@
       <Row>
         <Col :xs="24" :sm="24" :md="24" :lg="24">
           <FormItem label="任务类型：" prop="jobType">
-            <RadioGroup v-model="formItem.jobType" size="small">
+            <RadioGroup v-model="formItem.jobType" size="small" @on-change='radioChange'>
               <!-- <Radio label="01">系统任务</Radio>
               <Radio label="02">手动任务</Radio>-->
               <Radio
@@ -34,7 +34,13 @@
             />
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobType === 'system' && formItem.jobType === 'system'">
+        <Col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :lg="24"
+          v-if="formItem.jobType === 'system' && formItem.jobType === 'system'"
+        >
           <FormItem label="使用场景：" prop="jobScene">
             <RadioGroup v-model="formItem.jobScene" size="small">
               <!-- <Radio label="01">实时</Radio>
@@ -49,7 +55,13 @@
             </RadioGroup>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobScene === 'real_time' && formItem.jobType === 'system'">
+        <Col
+          :xs="24"
+          :sm="24"
+          :md="24"
+          :lg="24"
+          v-if="formItem.jobScene === 'real_time' && formItem.jobType === 'system'"
+        >
           <FormItem label="选择节点：" prop="triggerNode">
             <RadioGroup v-model="formItem.triggerNode" size="small">
               <!-- <Radio label="01">仲裁状态</Radio>
@@ -81,23 +93,26 @@
                 v-for="item,index in getDirObj.MSG_JOB_SCENE"
                 v-if="formItem.jobType === 'system'? (item.itemCode === 'repeat' || item.itemCode === 'immediately'): (item.itemCode === 'timing' || item.itemCode === 'immediately')"
               >{{ item.itemName }}</Radio>
-              <TimePicker
-                v-if="formItem.jobScene_children === 'repeat' && formItem.jobType === 'system'"
-                format="HH:mm"
-                v-model="formItem.jobTime"
-                :disabled="disabled"
-                placeholder="Select time"
-                size="small"
-              ></TimePicker>
-              <DatePicker
-                v-if="formItem.jobScene_children === 'timing' && formItem.jobType === 'artificial'"
-                format="yyyy-MM-dd HH:mm"
-                type="datetime"
-                v-model="formItem.jobTime"
-                :disabled="disabled"
-                placeholder="Select time"
-                size="small"
-              ></DatePicker>
+              <FormItem prop="jobTime" :label-width="0" style="display: inline-block" v-if="formItem.jobScene_children === 'repeat' && formItem.jobType === 'system'">
+                <TimePicker
+                  v-if="formItem.jobScene_children === 'repeat' && formItem.jobType === 'system'"
+                  format="HH:mm"
+                  v-model="formItem.jobTime"
+                  :disabled="disabled"
+                  placeholder="Select time"
+                  size="small"
+                ></TimePicker>
+              </FormItem>
+              <FormItem prop="jobDateTime" :label-width="0" style="display: inline-block" v-if="formItem.jobScene_children === 'timing' && formItem.jobType === 'artificial'">
+                <DatePicker
+                  format="yyyy-MM-dd HH:mm"
+                  type="datetime"
+                  v-model="formItem.jobDateTime"
+                  :disabled="disabled"
+                  placeholder="Select time"
+                  size="small"
+                ></DatePicker>
+              </FormItem>
             </RadioGroup>
           </FormItem>
         </Col>
@@ -123,125 +138,126 @@
           :label-width="90"
           style="padding: 10px 0"
         >
-        <Col
-          :xs="24"
-          :sm="24"
-          :md="24"
-          :lg="24"
-          v-if="formItem.dataType === 'rule_condition' && !disabled">
-          <Col :xs="24" :sm="24" :md="6" :lg="6" style="text-align: center">
-            <!-- <FormItem :label-width="8"> -->
-            字段来源
-            <!-- </FormItem> -->
+          <Col
+            :xs="24"
+            :sm="24"
+            :md="24"
+            :lg="24"
+            v-if="formItem.dataType === 'rule_condition' && !disabled"
+          >
+            <Col :xs="24" :sm="24" :md="6" :lg="6" style="text-align: center">
+              <!-- <FormItem :label-width="8"> -->
+              字段来源
+              <!-- </FormItem> -->
+            </Col>
+            <Col :xs="24" :sm="24" :md="6" :lg="6" style="text-align: center">
+              <!-- <FormItem :label-width="8"> -->
+              字段名称
+              <!-- </FormItem> -->
+            </Col>
+            <Col :xs="24" :sm="24" :md="5" :lg="5" style="text-align: center">
+              <!-- <FormItem :label-width="8"> -->
+              操作符
+              <!-- </FormItem> -->
+            </Col>
+            <Col :xs="24" :sm="24" :md="5" :lg="5" style="text-align: center">
+              <!-- <FormItem :label-width="8"> -->
+              值域
+              <!-- </FormItem> -->
+            </Col>
+            <Col :xs="24" :sm="24" :md="6" :lg="6" style="margin-bottom: 10px;">
+              <FormItem prop="source" :label-width="8">
+                <Select
+                  size="small"
+                  clearable
+                  @on-change="changeSelect($event, 'source')"
+                  placeholder="请选择来源"
+                  label-in-value
+                  v-model="formItemChildren.source"
+                >
+                  <Option
+                    v-for="item,index in getDirObj.MSG_DATA_SOURCE"
+                    :value="item.itemCode"
+                    :key="item.itemCode+index"
+                  >{{ item.itemName }}</Option>
+                </Select>
+              </FormItem>
+            </Col>
+            <Col :xs="24" :sm="24" :md="6" :lg="6">
+              <FormItem prop="partName" :label-width="8">
+                <Select
+                  size="small"
+                  clearable
+                  :disabled="!formItemChildren.source"
+                  @on-change="changeSelect($event, 'partName')"
+                  placeholder="请选择"
+                  label-in-value
+                  v-model="formItemChildren.partName"
+                >
+                  <Option
+                    v-for="item,index in partNameList"
+                    :value="item.itemCode"
+                    :key="item.itemCode+index"
+                  >{{ item.itemName }}</Option>
+                </Select>
+              </FormItem>
+            </Col>
+            <Col :xs="24" :sm="24" :md="5" :lg="5">
+              <FormItem prop="operator" :label-width="8">
+                <Select
+                  size="small"
+                  clearable
+                  :disabled="!formItemChildren.partName"
+                  placeholder="请选择"
+                  label-in-value
+                  @on-change="changeSelect($event, 'operator')"
+                  v-model="formItemChildren.operator"
+                >
+                  <Option
+                    v-for="item,index in getDirObj.MSG_OPERATOR"
+                    :value="item.itemCode"
+                    :key="item.itemCode+ index"
+                  >{{ item.itemName }}</Option>
+                </Select>
+              </FormItem>
+            </Col>
+            <Col :xs="24" :sm="24" :md="5" :lg="5">
+              <FormItem prop="value" :label-width="8">
+                <Select
+                  size="small"
+                  v-if="operatorList.length>0"
+                  clearable
+                  label-in-value
+                  @on-change="changeSelect($event, 'value')"
+                  :disabled="!formItemChildren.operator"
+                  placeholder="请选择"
+                  v-model="formItemChildren.value"
+                >
+                  <Option
+                    v-for="item,index in operatorList"
+                    :value="item.itemCode"
+                    :key="item.itemCode + index"
+                  >{{ item.itemName }}</Option>
+                </Select>
+                <Input
+                  size="small"
+                  v-else
+                  v-model.trim="formItemChildren.value"
+                  @on-blur="inputBlur"
+                  style="width: 100%;"
+                  placeholder="请输入"
+                  clearable
+                  :disabled="!formItemChildren.operator"
+                />
+              </FormItem>
+            </Col>
+            <Col :xs="24" :sm="24" :md="2" :lg="2" style="padding: 5px 0 0 10px;">
+              <Button type="success" size="small" @click="handleAdd">添加</Button>
+            </Col>
+            <Col :xs="24" :sm="24" :md="24" :lg="24" style="margin-bottom: 20px">
+              <Table :data="tableData" border :columns="tableColumns" stripe></Table>
+            </Col>
           </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" style="text-align: center">
-            <!-- <FormItem :label-width="8"> -->
-            字段名称
-            <!-- </FormItem> -->
-          </Col>
-          <Col :xs="24" :sm="24" :md="5" :lg="5" style="text-align: center">
-            <!-- <FormItem :label-width="8"> -->
-            操作符
-            <!-- </FormItem> -->
-          </Col>
-          <Col :xs="24" :sm="24" :md="5" :lg="5" style="text-align: center">
-            <!-- <FormItem :label-width="8"> -->
-            值域
-            <!-- </FormItem> -->
-          </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" style="margin-bottom: 10px;">
-            <FormItem prop="source" :label-width="8">
-              <Select
-                size="small"
-                clearable
-                @on-change="changeSelect($event, 'source')"
-                placeholder="请选择来源"
-                label-in-value
-                v-model="formItemChildren.source"
-              >
-                <Option
-                  v-for="item,index in getDirObj.MSG_DATA_SOURCE"
-                  :value="item.itemCode"
-                  :key="item.itemCode+index"
-                >{{ item.itemName }}</Option>
-              </Select>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6">
-            <FormItem prop="partName" :label-width="8">
-              <Select
-                size="small"
-                clearable
-                :disabled="!formItemChildren.source"
-                @on-change="changeSelect($event, 'partName')"
-                placeholder="请选择"
-                label-in-value
-                v-model="formItemChildren.partName"
-              >
-                <Option
-                  v-for="item,index in partNameList"
-                  :value="item.itemCode"
-                  :key="item.itemCode+index"
-                >{{ item.itemName }}</Option>
-              </Select>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="5" :lg="5">
-            <FormItem prop="operator" :label-width="8">
-              <Select
-                size="small"
-                clearable
-                :disabled="!formItemChildren.partName"
-                placeholder="请选择"
-                label-in-value
-                @on-change="changeSelect($event, 'operator')"
-                v-model="formItemChildren.operator"
-              >
-                <Option
-                  v-for="item,index in getDirObj.MSG_OPERATOR"
-                  :value="item.itemCode"
-                  :key="item.itemCode+ index"
-                >{{ item.itemName }}</Option>
-              </Select>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="5" :lg="5">
-            <FormItem prop="value" :label-width="8">
-              <Select
-                size="small"
-                v-if="operatorList.length>0"
-                clearable
-                label-in-value
-                @on-change="changeSelect($event, 'value')"
-                :disabled="!formItemChildren.operator"
-                placeholder="请选择"
-                v-model="formItemChildren.value"
-              >
-                <Option
-                  v-for="item,index in operatorList"
-                  :value="item.itemCode"
-                  :key="item.itemCode + index"
-                >{{ item.itemName }}</Option>
-              </Select>
-              <Input
-                size="small"
-                v-else
-                v-model.trim="formItemChildren.value"
-                @on-blur="inputBlur"
-                style="width: 100%;"
-                placeholder="请输入"
-                clearable
-                :disabled="!formItemChildren.operator"
-              />
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="2" :lg="2" style="padding: 5px 0 0 10px;">
-            <Button type="success" size="small" @click="handleAdd">添加</Button>
-          </Col>
-          <Col :xs="24" :sm="24" :md="24" :lg="24" style="margin-bottom: 20px">
-            <Table :data="tableData" border :columns="tableColumns" stripe></Table>
-          </Col>
-        </Col>
         </Form>
         <Col
           :xs="24"

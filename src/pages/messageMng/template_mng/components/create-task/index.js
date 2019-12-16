@@ -26,7 +26,8 @@ export default {
         jobScene: [{ required: true, message: '请选择使用场景', trigger: 'change' },],
         triggerNode: [{ required: true, message: '请选择节点', trigger: 'change' },],
         jobScene_children: [{ required: true, message: '请选择发送时间', trigger: 'change' },],
-        jobTime: [{ required: true, message: '请选择发送时间', trigger: 'change' },],
+        jobTime: [{ required: true, message: '请选择发送时间', trigger: 'change', type: 'string' },],
+        jobDateTime: [{ required: true, message: '请选择发送时间', trigger: 'change', type: 'date' },],
         dataType: [{ required: true, message: '请选择用户', trigger: 'change' },],
       },
       formItem: {},
@@ -70,12 +71,12 @@ export default {
         },
         {
           title: '字段来源',
-          key: 'partNameShow',
+          key: 'sourceShow',
           align: 'center',
         },
         {
           title: '字段名称',
-          key: 'sourceShow',
+          key: 'partNameShow',
           align: 'center',
         },
         {
@@ -168,6 +169,14 @@ export default {
       console.log(fileList, 'fileList');
     },
 
+    // radio监听
+    radioChange(val) {
+      if (this.dataSource) {
+        this.formItem = {}
+        this.formItem.jobType = val;
+      }
+    },
+
     // 输入框失焦
     inputBlur(e) {
       console.log(e.target.value)
@@ -239,7 +248,7 @@ export default {
           jobType === 'system' && jobScene === 'repeat' && this.$set(this.formItem, 'jobScene', 'timing');
           this.$set(this.formItem, 'triggerNode', triggerNode);
           jobType === 'system' && this.$set(this.formItem, 'jobTime', day(jobTime).format('HH:mm'));
-          jobType === 'artificial' && this.$set(this.formItem, 'jobTime', day(jobTime).format('yyyy-MM-dd HH:mm'));
+          jobType === 'artificial' && this.$set(this.formItem, 'jobDateTime', day(jobTime).format('yyyy-MM-dd HH:mm'));
           conditions && this.$set(this, 'tableData', conditions)
           this.$set(this.formItem, 'dataType', dataType);
           this.$set(this.formItem, 'jobDescribe', jobDescribe);
