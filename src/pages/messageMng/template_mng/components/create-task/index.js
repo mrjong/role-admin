@@ -239,9 +239,9 @@ export default {
           jobType === 'system' && this.$set(this.formItem, 'jobTime', day(jobTime).format('HH:mm'));
           jobType === 'artificial' && this.$set(this.formItem, 'jobTime', day(jobTime).format('yyyy-MM-dd HH:mm'));
           conditions && this.$set(this, 'tableData', conditions)
-          this.tableData.map(item => {
-            item.value && (item.valueShow = item.value);
-          });
+          // this.tableData.map(item => {
+          //   item.value && (item.valueShow = item.value);
+          // });
           this.$set(this.formItem, 'dataType', dataType);
           this.$set(this.formItem, 'jobDescribe', jobDescribe);
           this.$set(this.formItem, 'jobScene_children', jobScene);

@@ -277,6 +277,11 @@ export default {
             this.$Message.error('请上传文件！');
             return;
           }
+          if (slotProps.formItem.dataType === 'rule_condition' && slotProps.conditions.length<1) {
+            // 判断是否存在规则
+            this.$Message.error('请添加规则!');
+            return
+          }
           this.isBtnLoading = true;
           type === 'createTask' && this.handleSubmitCreateTask(slotProps);
         } else {

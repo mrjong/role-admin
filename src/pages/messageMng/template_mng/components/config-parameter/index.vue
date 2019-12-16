@@ -12,7 +12,7 @@
             v-for="(item, index) in formItem.parameterList"
             :key="index"
             :label="item.key+':'"
-            :prop="'parameterList.'+index+'.source'"
+            :prop="'parameterList.'+index+'.partExpression'"
             :rules="[{required: true, message: '请选择', trigger:'change'},]"
             style="margin-bottom: 8px"
           >

@@ -34,7 +34,7 @@
             />
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobType === 'system'">
+        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobType === 'system' && formItem.jobType === 'system'">
           <FormItem label="使用场景：" prop="jobScene">
             <RadioGroup v-model="formItem.jobScene" size="small">
               <!-- <Radio label="01">实时</Radio>
@@ -49,7 +49,7 @@
             </RadioGroup>
           </FormItem>
         </Col>
-        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobScene === 'real_time'">
+        <Col :xs="24" :sm="24" :md="24" :lg="24" v-if="formItem.jobScene === 'real_time' && formItem.jobType === 'system'">
           <FormItem label="选择节点：" prop="triggerNode">
             <RadioGroup v-model="formItem.triggerNode" size="small">
               <!-- <Radio label="01">仲裁状态</Radio>

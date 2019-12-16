@@ -163,7 +163,13 @@ export default {
             // 判断手动任务是否包含文件
             this.$Message.error('请上传文件！');
             return;
+          };
+          if (slotProps.formItem.dataType === 'rule_condition' && slotProps.conditions.length<1) {
+            // 判断是否存在规则
+            this.$Message.error('请添加规则!');
+            return
           }
+
           this.isBtnLoading = true;
           type === 'getTemplate' && this.handleSubmitTemplate(slotProps);
           type === 'createTask' && this.handleSubmitCreateTask(slotProps);
@@ -233,8 +239,10 @@ export default {
           this.msgTempl_list('参数配置成功');
         } else {
           this.$Message.error(res.message)
-        }
+        };
+        this.isBtnLoading = false;
       }).catch(err => {
+        this.isBtnLoading = false;
         console.log(err)
       })
     },
