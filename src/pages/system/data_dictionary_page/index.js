@@ -107,8 +107,8 @@ export default {
                   this.detailFlag = true;
                   this.menuFormItem = {
                     itemName: data.itemName,
-                    itemCode: data.itemCode,
-                    itemDesc: data.itemDesc,
+                    itemCode: this.escape2Html(data.itemCode),
+                    itemDesc: this.escape2Html(data.itemDesc),
                     sort: data.sort,
                     id: data.id,
                   }
@@ -180,6 +180,18 @@ export default {
     cancel() {
       this.modal = false;
     },
+
+    // 监听输入框
+    dealText(e, name, type) {
+      this.$set(this[type], name, this.escape2Html(e.target.value))
+    },
+
+    // 处理转义符
+    escape2Html(str) {
+      var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+      return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+    },
+
     // 获取表格数据
     async getList(params) {
       const res = await sysDictionary_list();

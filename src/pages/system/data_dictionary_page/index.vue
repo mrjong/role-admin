@@ -41,12 +41,12 @@
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="字典项代码:" prop="itemCode">
-                <Input size="small" v-model.trim="menuFormItem.itemCode" placeholder="请输入字典项代码"></Input>
+                <Input size="small" @on-blur="dealText($event, 'itemCode', 'menuFormItem')" v-model.trim="menuFormItem.itemCode" placeholder="请输入字典项代码"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
               <FormItem span="4" label="字典项描述:">
-                <Input size="small" v-model.trim="menuFormItem.itemDesc" placeholder="请输入字典项描述"></Input>
+                <Input size="small" @on-blur="dealText($event, 'itemDesc', 'menuFormItem')" v-model.trim="menuFormItem.itemDesc" placeholder="请输入字典项描述"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="20" :lg="20" span="4">
@@ -93,12 +93,12 @@
             </Col>
             <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
               <FormItem span="4" label="字典代码:" prop="itemCode">
-                <Input size="small" v-model="newMenuItem.itemCode"></Input>
+                <Input size="small" @on-blur="dealText($event, 'itemCode', 'newMenuItem')" v-model="newMenuItem.itemCode"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">
               <FormItem span="4" label="字典描述:" prop="itemDesc">
-                <Input size="small" v-model="newMenuItem.itemDesc"></Input>
+                <Input size="small" @on-blur="dealText($event, 'itemDesc', 'newMenuItem')" v-model="newMenuItem.itemDesc"></Input>
               </FormItem>
             </Col>
             <Col :xs="24" :sm="24" :md="16" :lg="16" span="4">

@@ -68,17 +68,8 @@ module.exports = merge(webpackBaseConfig, {
                 target:'http://172.16.174.166:8080',//测试环境
                 // target: 'https://fcs-admin-test.vbillbank.com',  // 测试地址
                 // target: 'http://172.16.170.158:8080', //开发环境地址
-                // target: 'http://172.16.154.239:8080', //志祥目标接口域名
-                //target: 'http://172.18.40.22:8080', // 胥尹辉后台本地
-                //target: 'http://172.18.40.245:8080', //志祥目标接口域名
-                // target: 'http://172.18.40.151:8080', // 胥尹辉后台本地
-                // target: 'http://172.18.40.116:8080', //测试
-                //  target: 'http://172.18.40.36:8080', //冯垚栋
-                // target: 'http://172.18.40.219:8080', //姚慧超
-                //target: 'http://172.18.30.201:8050', //本地
                 // target: 'http://172.18.40.100:8080', //jiaqi
                 // target: 'http://172.18.40.220:8080', //李鹏飞
-                // target: 'http://172.18.30.201:8080', //张建锋
                 // target: 'http://172.18.40.76:8080', //高峰
                 pathRewrite: { '^/admin': '' }, //重写接口
                 changeOrigin: true, //是否跨域

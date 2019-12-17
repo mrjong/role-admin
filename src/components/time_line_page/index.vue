@@ -3,7 +3,7 @@
     <p v-if="view_time" class="time_line_view_time">最近查看时间：{{view_time | formatDate}}</p>
     <p v-else class="time_line_view_time">最近无查看记录</p>
     <p class="time_line_view_time" v-if="login_count">总操作次数：{{login_count}}</p>
-    <ul class="time_line_wrap" :style="{'padding-left': list.length>12? '55%': '45%'}">
+    <ul class="time_line_wrap" :style="{'padding-left': list.length>12? '60%': '50%'}">
       <li class="ivu-timeline-item" v-for="(item,index) in list" :key="index">
         <span
           :class="item.hasProgress?'timeline_line':'timeline_line_unproceed'"
@@ -77,7 +77,7 @@ export default {
   color: #333;
 }
 .time_line_wrap > li:nth-child(1) {
-  margin-left: 150px !important;
+  margin-left: 200px !important;
 }
 .time_line_wrap {
   // width: 150%;
