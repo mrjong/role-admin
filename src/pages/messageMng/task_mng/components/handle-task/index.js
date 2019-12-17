@@ -13,6 +13,7 @@ export default {
       getDirObj: {},
       showPanelForm: false,
       showPanelTable: false,
+      tableLoading: false,//列表loading
       formItem: {},
       formRules: {},
       query_loading: false,
@@ -202,6 +203,7 @@ export default {
 
     // 启用任务
     msgJob_enableJob(id) {
+      this.tableLoading = true;
       api.msgJob_enableJob({
         id: id,
       }).then(res => {
@@ -214,13 +216,16 @@ export default {
         } else {
           this.$Message.error(res.message);
         }
+        this.tableLoading = false;
       }).catch(err => {
+        this.tableLoading = false;
         console.log(err)
       })
     },
 
     // 禁用任务
     msgJob_disableJob(id) {
+      this.tableLoading = true;
       api.msgJob_disableJob({
         id: id,
       }).then(async res => {
@@ -233,7 +238,9 @@ export default {
         } else {
           this.$Message.error(res.message);
         }
+        this.tableLoading = false;
       }).catch(err => {
+        this.tableLoading = false;
         console.log(err)
       })
     },

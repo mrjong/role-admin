@@ -97,7 +97,7 @@
       </p>
       <!-- 表格 -->
       <div v-if="!showPanelTable">
-        <Table :data="tableData" border :columns="tableColumns" stripe></Table>
+        <Table :data="tableData" border :loading='tableLoading' :columns="tableColumns" stripe></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div style="float: right;">

@@ -19,6 +19,7 @@ export default {
       showPanelForm: false,
       showPanelTable: false,
       taskDetailFlag: false,
+      tableLoading: false,//列表loading
       taskModalTitle: '',
       taskModal: '',
       formItem: {},
@@ -239,6 +240,7 @@ export default {
 
     // 启用任务
     msgJob_enableJob(id) {
+      this.tableLoading = true;
       api.msgJob_enableJob({
         id: id,
       }).then(res => {
@@ -247,13 +249,16 @@ export default {
         } else {
           this.$Message.error(res.message);
         }
+        this.tableLoading = false;
       }).catch(err => {
+        this.tableLoading = false;
         console.log(err)
       })
     },
 
     // 禁用任务
     msgJob_disableJob(id) {
+      this.tableLoading = true;
       api.msgJob_disableJob({
         id: id,
       }).then(async res => {
@@ -262,7 +267,9 @@ export default {
         } else {
           this.$Message.error(res.message);
         }
+        this.tableLoading = false;
       }).catch(err => {
+        this.tableLoading = false;
         console.log(err)
       })
     },
