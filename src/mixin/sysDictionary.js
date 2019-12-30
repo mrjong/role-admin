@@ -8,13 +8,9 @@ const mixin = {
     getDir(arg) {
       if (arg && arg.length > 0) {
         arg.forEach((element) => {
-        //   if (JSON.stringify(this.$store.state['sysDictionary']) !== "{}") {
-        //     this.$set(this.getDirObj, element, this.$store.state['sysDictionary'][element]);
-        //   } else {
-            this.$store.dispatch('getDictionary', element).then((res) => {
-              this.$set(this.getDirObj, element, res);
-            });
-        //   }
+          // this.$store.dispatch('getDictionary', element).then((res) => {
+          //   this.$set(this.getDirObj, element, res);
+          // });
         });
       }
     }

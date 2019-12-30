@@ -3,7 +3,6 @@ import iView from 'iview';
 import Cookie from 'js-cookie';
 import util from './util';
 import store from '@/store';
-import storage from '@/libs/storage';
 axios.defaults.baseURL = '/admin';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 let reqList = [];
@@ -79,7 +78,6 @@ axios.interceptors.response.use(
   }
 );
 export default function fetch({ url = '', method = 'GET', data = {}, options = {}, responseType }) {
-  console.log(method)
   return axios({
     method: method.toLocaleLowerCase(),
     url,

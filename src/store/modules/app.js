@@ -1,7 +1,7 @@
 import Util from '@/libs/util';
 import Vue from 'vue';
 import AllRouter from '@/router/routers';
-import { system_menu_findTreeByCurrentUser } from '@/service/getData';
+import { navigation_loadTree } from '@/service/getData';
 const LayoutMain = () => import('@/pages/common/main');
 
 import menuTree2 from './demo.json';
@@ -64,7 +64,7 @@ const app = {
   actions: {
     getMenuTreeOriginal({ commit }) {
       return new Promise(async (resolve, reject) => {
-        const menuTree = await system_menu_findTreeByCurrentUser();
+        const menuTree = await navigation_loadTree();
         let findArr = menuTree.data.find((value, index, arr) => {
           return value.text === '首页'
         });
@@ -90,7 +90,7 @@ const app = {
             name: item.url + child.url,
             icon: child.icon,
             title: child.text,
-            component: AllRouter[`${child.url}`],
+            component: AllRouter[`${item.url}${child.url}`],
             meta: {
               // 判断子菜单是否有按钮级别的控制
               btnPermissionsList: child.children ? child.children.map((btn) => btn) : []
@@ -101,6 +101,8 @@ const app = {
 
       commit('changeMenuTreeList', menuTreeList);
       commit('changeRouters', menuTreeList);
+
+      console.log(menuTreeList,'menuTreeList888')
 
       let tagsList = [];
       menuTreeList.map((item) => {

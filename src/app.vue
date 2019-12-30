@@ -40,14 +40,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import util from "@/libs/util";
-import {
-  callout_hung_off,
-  callout_fixed_hung_off,
-  callout_get_seat
-} from "@/service/getData";
 import spinModal from "@/components/spin_modal";
-import Cookie from "js-cookie";
 export default {
   components: {
     spinModal

@@ -125,10 +125,8 @@ export default {
         this.$Message.error(res.msg);
       }
     },
-    loginSuccess(res) {
+    loginSuccess() {
       this.$Message.success("登录成功!");
-      window.sessionStorage.setItem("websocket", true);
-      util.websocket();
       window.$router = this.$router;
       this.$router.push({
         path: "/home/home/home"
@@ -148,9 +146,8 @@ export default {
           if (res && res.code === '0000') {
             Cookies.set("user", this.form.loginName);
             Cookies.set("SXF-TOKEN", res.data.token);
-            Cookies.set("userType", res.data.userType);
-            Cookies.set("collectCategory", res.data.collectCategory);
             Cookies.set("access", 1);
+            this.loginSuccess()
           } else {
             this.login_code();
 
