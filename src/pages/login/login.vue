@@ -48,10 +48,6 @@
                 <span v-else>登录中...</span>
               </Button>
             </FormItem>
-            <!--<div @click="ss">呼出</div>-->
-            <!--<div @click="cc">挂断</div>-->
-            <!--<div @click="ee">保持</div>-->
-            <!--<div @click="aa">接回</div>-->
           </Form>
         </div>
       </Card>
@@ -62,7 +58,7 @@
 <script>
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
-import { login, callout_get_seat, login_code } from "@/service/getData";
+import { login, login_code } from "@/service/getData";
 import util from "@/libs/util";
 import {
   init,
@@ -100,7 +96,6 @@ export default {
     };
   },
   created() {
-    //    init()
     this.login_code();
     sessionStorage.removeItem("websocket");
     localStorage.removeItem("callData");
@@ -120,75 +115,14 @@ export default {
       }).ciphertext.toString();
       return enc;
     },
-
-    //    ss() {
-    //      callOut()
-    //    },
-    //
-    //    cc() {
-    //      hangUp()
-    //    },
-    //    ee(){
-    //      holdCall()
-    //    },
-    //    aa() {
-    //      retriveCall()
-    //    },
     async login_code() {
       const res = await login_code();
-      if (res.code === 1) {
+      if (res.code === '0000') {
         this.imageShow = res.data.base64Code;
         this.key = res.data.key;
         this.form.loginPic = "";
       } else {
-        this.$Message.error(res.message);
-      }
-    },
-    async callout_get_seat(data) {
-      const res = await callout_get_seat({
-        loginName: this.form.loginName
-      });
-      console.log(res);
-
-      if (res.code === 1) {
-        if (res.data.seatType === "KT" && res.data.callType === '1') {
-          this.call(res.data);
-        }
-        localStorage.setItem("callData", JSON.stringify(res.data));
-        res.data.seatType === 'DY' && window.sessionStorage.setItem("callSeat", JSON.stringify(res.data));
-        // res.data.seatType === 'DY' &&  this.$store.commit("changeInitDY", true);
-        this.loginSuccess(data);
-      } else {
-        this.$Message.error(res.message);
-      }
-    },
-    call(obj) {
-      var config = {
-        uname: obj.loginName,
-        pwd: obj.password,
-        debug: true,
-        isAutoAnswer: true,
-        stateListenerCallBack: this.stateCallback,
-        forceAnswerWhenRing: false, // 是否振铃自动接通
-        autoReady: true,
-        url: obj.url
-      };
-      CallHelper.init(config, this.initCallback);
-    },
-    /**
-     * 设置状态监听回调
-     */
-    stateCallback(data) {
-      this.$store.commit("changeCallData", data);
-    },
-    /**
-     * 初始化方法回调是否成功
-     */
-    initCallback(data) {
-      if (data.successChange) {
-        console.log("您已登录成功！");
-      } else {
-        // this.$Message.error('登录失败，请联系管理员！');
+        this.$Message.error(res.msg);
       }
     },
     loginSuccess(res) {
@@ -206,23 +140,20 @@ export default {
           this.login_loading = true;
           const res = await login({
             loginName: this.form.loginName,
-            loginPwd: this.passWord(),
+            loginPwd: this.form.loginPwd,
             code: this.form.loginPic,
             key: this.key
           });
           this.login_loading = false;
-          if (res && res.code === 1) {
+          if (res && res.code === '0000') {
             Cookies.set("user", this.form.loginName);
             Cookies.set("SXF-TOKEN", res.data.token);
             Cookies.set("userType", res.data.userType);
             Cookies.set("collectCategory", res.data.collectCategory);
             Cookies.set("access", 1);
-            this.callout_get_seat(res);
-          } else if (res && res.code === 3010010) {
+          } else {
             this.login_code();
 
-            this.$Message.error(res.message);
-          } else {
             this.$Message.error(res.message);
           }
         }

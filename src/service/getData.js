@@ -5,7 +5,7 @@ import qs from 'qs';
  */
 export const login = (obj = {}) =>
   fetch({
-    url: '/system/login',
+    url: '/login',
     method: 'POST',
     data: qs.stringify(obj)
   });
@@ -1407,7 +1407,7 @@ export const arb_check = (obj, options) =>
 * */
 export const login_code = (obj, options) =>
   fetch({
-    url: '/login/code',
+    url: '/getCaptchaCode',
     method: 'POST',
     data: qs.stringify(obj),
     options

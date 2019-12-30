@@ -302,6 +302,7 @@ export default {
       if (checkTreeNodes.length<=0) {
         return;
       }
+      console.log(checkTreeNodes,'nodes')
       checkTreeNodes.reduce((previousValue, currentValue, index, array) =>{
         this.menuIds.push(currentValue.id);
       },0)
@@ -316,11 +317,12 @@ export default {
         this.menuIds.push(item.id);
       });
       // this.menuIds = this.menuIds.join(',');
-      console.log(this.menuIds);
+      console.log(this.menuIds, '99999999');
     },
     // 选中节点的回调函数
     selectNode(node) {
-      console.log(node);
+      console.log(node,'node----');
+
     },
     renderContent(h, { root, node, data }) {
       return h('span', {

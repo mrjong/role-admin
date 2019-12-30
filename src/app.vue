@@ -2,8 +2,8 @@
   <div id="main" class="app-main">
     <div class="tel-box" v-if="showTel">
       <div class="tel-box-desc">
-        <div class="tel-num">{{telNoHid}}</div>
-        <div class="tel-desc">{{usrNameHid}}</div>
+        <div class="tel-num">{{ telNoHid }}</div>
+        <div class="tel-desc">{{ usrNameHid }}</div>
         <div class="tel-btn-box">
           <div class="item success" v-if="success">
             <div class="icon-box" @click="answer">
@@ -20,8 +20,19 @@
     </div>
     <spinModal :spin_data="spin_data"></spinModal>
     <router-view></router-view>
-    <video loop ref="ring" preload="auto" style="position: absolute" src="src/libs/ring.wav"></video>
-    <audio id="playaudio" src="./libs/ring1.wav" loop="loop" style="display: none"></audio>
+    <video
+      loop
+      ref="ring"
+      preload="auto"
+      style="position: absolute"
+      src="src/libs/ring.wav"
+    ></video>
+    <audio
+      id="playaudio"
+      src="./libs/ring1.wav"
+      loop="loop"
+      style="display: none"
+    ></audio>
     <video id="my-video" muted="muted" style="display:none"></video>
     <video id="peer-video" style="display:none"></video>
   </div>
@@ -54,53 +65,8 @@ export default {
       DY_script: null
     };
   },
-  async created() {
-    // this.$Message.config({
-    //   duration: 2
-    // });
-    const h = this.$createElement;
-    let callData = JSON.parse(localStorage.getItem("callData"));
-    if (callData && callData.seatType === "KT" && callData.callType === "1") {
-      this.call(callData);
-    }
 
-    let websocket = window.sessionStorage.getItem("websocket");
-    if (websocket) {
-      util.websocket();
-      if (document.hidden !== undefined) {
-        document.addEventListener("visibilitychange", () => {
-          // true 表示离开  false表示回来，再进行初始化
-          util.websocket();
-        });
-      }
-    }
-  },
-  mounted() {
-    let callSeat = sessionStorage.getItem("callSeat");
-    if (window.location.href.indexOf("/case_desc_page?") !== -1 && callSeat) {
-      if (
-        JSON.parse(callSeat).seatType &&
-        JSON.parse(callSeat).seatType === "DY"
-      ) {
-        this.$nextTick(() => {
-          // this.initDy();
-          this.callout_get_seat()
-        });
-        if (document.hidden !== undefined) {
-          document.addEventListener("visibilitychange", () => {
-            console.log(document.hidden);
-            if (!document.hidden) {
-              this.callout_get_seat();
-              // let nodeA = document.getElementById("dyCti");
-              // let callData = JSON.parse(sessionStorage.getItem("callSeat"));
-              // nodeA.src = `https://cti.duyansoft.com/ctibar.html?account_id=${callData.seatNo}&token=${callData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`;
-              // nodeA.height = 40;
-            }
-          });
-        }
-      }
-    }
-  },
+  mounted() {},
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
     ...mapGetters([
@@ -111,321 +77,8 @@ export default {
     ])
   },
 
-  methods: {
-    loadJs(url) {
-      var se = document.createElement("script");
-      se.id = "dySdkScript";
-      se.setAttribute("url", url);
-      se.setAttribute("ctype", "mini");
-      se.setAttribute("name", "DYSDK");
-      se.src = "https://cti.duyansoft.com/syui/dysdk/dysdk2.js";
-      // js 加载后执行
-      se.onload = () => {
-        Cookie.remove("DYISOK");
-        DYSDK.init({ stopBeforeunload: true });
-        let nodeA = document.getElementById("dyCti");
-        if (nodeA.parentNode.childNodes[1]) {
-          nodeA.parentNode.removeChild(nodeA.parentNode.childNodes[1]);
-        }
-        nodeA.height = 40;
-        nodeA.parentNode.style =
-          "position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); display: none";
-        let that = this;
-        DYSDK.ctiLogined(function(data) {
-          Cookie.set("DYISOK", true);
-          console.log("登录回调");
-          data.phone =
-            data.phone &&
-            data.phone.substring(0, 4) + "****" + data.phone.substring(7, 11);
-          console.log(DYSDK);
-          console.log(data);
-        });
-
-        // 接通电话的回调函数，返回电话号码等信息
-        DYSDK.callConfirm(function(data) {
-          console.log("接通电话的回调函数");
-          data.phone =
-            data.phone &&
-            data.phone.substring(0, 4) + "****" + data.phone.substring(7, 11);
-          console.log(data);
-        });
-
-        // 拨打电话失败的回调函数，返回电话号码等信息
-        DYSDK.callFail(function(data) {
-          console.log("拨打电话失败");
-          data.phone =
-            data.phone &&
-            data.phone.substring(0, 4) + "****" + data.phone.substring(7, 11);
-          that.duyanHungOff(data.uuid, nodeA);
-          !data.uuid && that.callout_get_seat();
-          console.log(data);
-        });
-
-        // 电话结束的回调函数，返回电话号码等信息
-        DYSDK.callEnd(function(data) {
-          console.log("电话结束");
-          data.phone =
-            data.phone &&
-            data.phone.substring(0, 4) + "****" + data.phone.substring(7, 11);
-          that.duyanHungOff(data.uuid, nodeA);
-          console.log(data);
-        });
-        // 正在拨打中的回调函数，返回电话号码等信息
-        DYSDK.callConnecting(function(data) {
-          console.log("正在拨打中的回调函数");
-          data.phone =
-            data.phone &&
-            data.phone.substring(0, 4) + "****" + data.phone.substring(7, 11);
-          sessionStorage.setItem("callId", data.uuid);
-          if (data.errorCode) {
-            that.duyanHungOff(data.uuid, nodeA);
-            that.$Message.error({
-              content: data.errorCode,
-              duration: 6
-            });
-          }
-          console.log(data);
-        });
-        DYSDK.ready(function(data) {
-          window.sessionStorage.setItem("DYSDK", JSON.stringify(DYSDK));
-          console.log(window.DYSDK);
-        });
-
-        DYSDK.getPhonelines(data => {
-          console.log(data);
-        });
-        that.$store.commit("chnageDYStatus", true);
-      };
-      console.log(document.getElementById("dySdkScript"));
-      if (document.getElementById("dySdkScript")) {
-        document.body.removeChild(document.getElementById("dySdkScript"));
-      }
-      document.body.appendChild(se);
-      // this.DY_script = se;
-      // console.log(this.DY_script);
-    },
-    initDy() {
-      this.$store.commit("chnageDYStatus", false);
-      //加载度言
-      let duyanData = sessionStorage.getItem("callSeat")
-        ? JSON.parse(sessionStorage.getItem("callSeat"))
-        : "";
-      this.loadJs(
-        `https://cti.duyansoft.com/ctibar.html?account_id=${duyanData.seatNo}&token=${duyanData.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`
-      );
-    },
-    duyanHungOff(uid, dom) {
-      callout_fixed_hung_off({
-        id: sessionStorage.getItem("recordIdDY"),
-        actionId: sessionStorage.getItem("callId")
-          ? sessionStorage.getItem("callId")
-          : uid
-      }).then(res => {
-        setTimeout(() => {
-          dom.parentNode.style =
-            "position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); display: none";
-        }, 1000);
-      });
-    },
-
-    call(obj) {
-      var config = {
-        uname: obj.loginName,
-        pwd: obj.password,
-        debug: true,
-        isAutoAnswer: true,
-        stateListenerCallBack: this.stateCallback,
-        forceAnswerWhenRing: false, // 是否振铃自动接通
-        autoReady: true,
-        url: obj.url
-      };
-      CallHelper.init(config, this.initCallback);
-    },
-    /**
-     * 设置状态监听回调
-     */
-    stateCallback(data) {
-      this.$store.commit("changeCallData", data);
-    },
-    /**
-     * 初始化方法回调是否成功
-     */
-    initCallback(data) {
-      if (data.successChange) {
-        localStorage.removeItem("callObj");
-        console.log("您已登录成功！app.vue");
-      } else {
-        // this.$Message.error('登录失败，请联系管理员！');
-      }
-    },
-
-    answer() {
-      CallHelper.answer(data => {
-        console.log(data);
-        this.success = false;
-        this.fail = true;
-      });
-    },
-    hangup() {
-      let callData = JSON.parse(localStorage.getItem("callData"));
-      if (callData.callType === "2") {
-        this.callout_kt_hung_off();
-      }
-      this.showTel = false;
-      CallHelper.hangup();
-      this.fail = false;
-      this.success = false;
-      // 清空展示
-      localStorage.removeItem("callObj");
-    },
-    play() {
-      this.$refs.ring.play();
-    },
-    pause1() {
-      this.$refs.ring.pause();
-    },
-    // 科天新路由模式的挂断
-    async callout_kt_hung_off() {
-      let callData = JSON.parse(localStorage.getItem("callData"));
-      const res = await callout_hung_off({
-        seatType: callData.seatType, //坐席类型
-        actionId: callData.actionId,
-        callno: callData.seatNo //坐席号
-      });
-      if (res.code === 1) {
-      } else {
-        this.$Message.error(res.message);
-      }
-    },
-    // 重新获取度言的相关参数
-    async callout_get_seat() {
-      const res = await callout_get_seat({
-        loginName: Cookie.get("user")
-      });
-      if (res.code === 1) {
-        res.data.seatType === "DY" &&
-          window.sessionStorage.setItem("callSeat", JSON.stringify(res.data));
-        clearTimeout(timer);
-        var timer = setTimeout(() => {
-          this.initDy(res.data.callToken);
-          let nodeA = document.getElementById("dyCti");
-          nodeA.src = `https://cti.duyansoft.com/ctibar.html?account_id=${res.data.seatNo}&token=${res.data.callToken}&nomsb=true&noNumberInput=true&noOpBtn=true&nopo=true&noNumberSelect=true`;
-          nodeA.height = 40;
-        }, 300);
-      }
-    }
-  },
-  watch: {
-    // spin监测
-    changeSpinData(res) {
-      this.spin_data = res;
-    },
-    // 科天监测
-    changeCallData(res) {
-      if (res.msg) {
-        console.log("电话状态======>", res);
-        this.pause1();
-        switch (res.msg) {
-          case "READY":
-            // 坐席就绪
-            this.showTel = false;
-            localStorage.removeItem("callObj");
-            break;
-          case "RINGING":
-            // 坐席振铃
-            if (res.data) {
-              const { direction, phoneNum } = res.data;
-              if (direction == "ob") {
-                // 呼出
-                console.log(localStorage.getItem("callObj"));
-                if (localStorage.getItem("callObj")) {
-                  let callObj = JSON.parse(localStorage.getItem("callObj"));
-                  console.log(callObj);
-                  this.telNoHid = callObj.telNoHid || "***********";
-                  this.usrNameHid = callObj.usrNameHid || "***";
-                }
-                this.answer();
-              } else if ("ib" == direction) {
-                // 呼入
-                (this.telNoHid = res.data.phoneNum || "***********"),
-                  (this.usrNameHid = res.data.area || "***"),
-                  this.play();
-                this.fail = true;
-                this.success = true;
-              }
-            }
-            this.showTel = true;
-            break;
-          // 触达第二端
-          case "ANSWERED":
-            Cookie.get("collectCategory") === "M01" &&
-              this.$store.commit("changeCallRecord", {
-                seatType: "KT",
-                status: "0"
-              });
-            break;
-          // 接听状态
-          case "REALTIME":
-            Cookie.get("collectCategory") === "M01" &&
-              this.$store.commit("changeCallRecord", {
-                seatType: "KT",
-                status: "1"
-              });
-            break;
-          case "HANGUP":
-            // 坐席挂机
-            let callData = JSON.parse(localStorage.getItem("callData"));
-            if (callData.callType === "2") {
-              this.callout_kt_hung_off();
-            }
-            localStorage.removeItem("callObj");
-            this.showTel = false;
-            this.fail = false;
-            this.success = false;
-            break;
-
-          default:
-            localStorage.removeItem("callObj");
-            break;
-        }
-        localStorage.removeItem("callObj");
-      } else {
-        this.$Message.error("拨打电话初始化异常");
-      }
-    },
-    // 度言监测
-    changeInitDY(res) {
-      let callSeat = sessionStorage.getItem("callSeat");
-      debugger;
-      if (res && callSeat) {
-        if (
-          JSON.parse(callSeat).seatType &&
-          JSON.parse(callSeat).seatType === "DY"
-        ) {
-          // this.initDy();
-          this.callout_get_seat();
-        }
-      }
-    },
-    // 初始化度言的标签
-    changeDYScript(res) {
-      if (res) {
-        console.log("--------------", this.DY_script);
-        // document.getElementById("dyCti").parentNode.style =
-        //   "position: fixed; bottom: 200px; background: rgba(55,55,55,.6); overflow: hidden; border-radius: 4px; padding: 10px; display: flex; align-items: flex-start; color: rgb(174, 174, 174); z-index:100";
-        // sessionStorage.setItem("recordIdDY", res.data.callRecordDomain.id);
-        // DYSDK.call(res.data.toCallMbl, function() {}, "");
-        // let dySdkScript = document.getElementById("dySdkScript");
-        // let dySdkScript = (window.sessionStorage.getItem("DY_script"));
-        // let dySdkScript = (Cookie.get("DY_script"));
-        // console.log(dySdkScript);
-        // // dySdkScript && document.removeChild(dySdkScript);
-        // console.log(this.DY_script);
-        // document.body.appendChild(dySdkScript);
-      }
-    }
-  },
-  beforeDestroy() {}
+  methods: {},
+  watch: {}
 };
 </script>
 

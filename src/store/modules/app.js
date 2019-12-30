@@ -1,9 +1,7 @@
 import Util from '@/libs/util';
-import Cookies from 'js-cookie';
 import Vue from 'vue';
-import { system_menu_findTreeByCurrentUser } from '@/service/getData';
-
 import AllRouter from '@/router/routers';
+import { system_menu_findTreeByCurrentUser } from '@/service/getData';
 const LayoutMain = () => import('@/pages/common/main');
 
 import menuTree2 from './demo.json';
@@ -100,16 +98,7 @@ const app = {
           }))
           : []
       }));
-      // let demo = {};
-      // menuTreeList.forEach(item => {
-      //   if(item.children) {
-      //     item.children.forEach(child => {
-      //       demo[`${child.path}`] = '';
-      //     })
-      //   }
-      // });
-      // console.log(JSON.stringify(demo), 'demo');
-      // console.log(JSON.stringify(menuTreeList), 'menuTreeList111');
+
       commit('changeMenuTreeList', menuTreeList);
       commit('changeRouters', menuTreeList);
 
