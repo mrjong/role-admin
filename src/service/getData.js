@@ -7,17 +7,16 @@ export const login = (obj = {}) =>
   fetch({
     url: "/login",
     method: "POST",
-    data: qs.stringify(obj)
+    data: obj
   });
 
 /**
  * 退出
  */
-export const logout = (obj = {}) =>
+export const logout = () =>
   fetch({
     url: "/system/logout",
-    method: "POST",
-    data: qs.stringify(obj)
+    method: "POST"
   });
 
 /**
@@ -25,9 +24,9 @@ export const logout = (obj = {}) =>
  */
 export const reset_passWord = (obj = {}) =>
   fetch({
-    url: "/reset/passWord",
+    url: "/editPwd",
     method: "POST",
-    data: qs.stringify(obj)
+    data: obj
   });
 
 /**
@@ -488,35 +487,35 @@ export const collect_local_list = obj =>
   });
 
 /*
- *
  * 系统用户查看用户列表接口
  * */
-export const system_user_list = (obj, options) =>
-  fetch({
-    url: "/system/user/list",
+export const system_user_list = obj => {
+  const { pageSize, pageNum, ...other } = obj;
+
+  return fetch({
+    url: `/system/user/list?pageNum=${pageNum}&pageSize=${pageSize}`,
     method: "POST",
-    data: qs.stringify(obj)
+    data: other
   });
+};
 
 /*
- *
  * 系统用户查看用户详情
  * */
-export const system_user_info = (obj, options) =>
+export const system_user_detail = id =>
   fetch({
-    url: "/system/user/info",
-    method: "POST",
-    data: qs.stringify(obj)
+    url: `/system/user/queryDetail?userId=${id}`,
+    method: "POST"
   });
 
 /*
  * 新增系统用户
  * */
-export const system_user_add = (obj, options) =>
+export const system_user_add = obj =>
   fetch({
     url: "/system/user/add",
     method: "POST",
-    data: qs.stringify(obj)
+    data: obj
   });
 
 /*
@@ -533,11 +532,11 @@ export const system_user_roles = (obj, options) =>
  *
  * 修改系统用户
  * */
-export const system_user_update = (obj, options) =>
+export const system_user_update = obj =>
   fetch({
     url: "/system/user/update",
     method: "POST",
-    data: qs.stringify(obj)
+    data: obj
   });
 
 // 业务管理的划扣管理
@@ -557,33 +556,51 @@ export const repayinfo_exportlist = (obj, options) =>
     options
   });
 // 系统管理系统角色相关接口
-// 查询接口
-export const system_role_list = obj =>
-  fetch({
-    url: "/system/role/list",
+export const system_role_list = obj => {
+  const { pageNum, pageSize, ...other } = obj;
+  return fetch({
+    url: `/system/role/list?pageNum=${pageNum}&pageSize=${pageSize}`,
     method: "POST",
-    data: qs.stringify(obj)
+    data: other
   });
+};
+
 // 角色管理添加接口
 export const system_role_add = obj =>
   fetch({
     url: "/system/role/add",
     method: "POST",
-    data: qs.stringify(obj)
+    data: obj
   });
-//编辑修改
-export const system_role_info = obj =>
+
+// 角色查看详情
+export const system_role_detail = id =>
   fetch({
-    url: "/system/role/info",
-    method: "POST",
-    data: qs.stringify(obj)
+    url: `/system/role/queryDetail?id=${id}`,
+    method: "POST"
   });
+
 // 角色更新接口
 export const system_role_update = obj =>
   fetch({
     url: "/system/role/update",
     method: "POST",
-    data: qs.stringify(obj)
+    data: obj
+  });
+
+// 查询菜单分配的接口
+export const system_role_menu_list = id =>
+  fetch({
+    url: `/system/role/queryPermissionTree?id=${id}`,
+    method: "POST"
+  });
+
+// 菜单分配的接口
+export const stytem_role_menu_opration = obj =>
+  fetch({
+    url: "/system/role/updatePermisson",
+    method: "POST",
+    data: obj
   });
 
 // 菜单管理的相关接口
@@ -624,21 +641,6 @@ export const system_menu_detail = id =>
     method: "POST"
   });
 
-// 查询菜单分配的接口
-export const system_role_menu_list = obj =>
-  fetch({
-    url: "/system/role/menu/list",
-    method: "POST",
-    data: qs.stringify(obj)
-  });
-
-// 菜单分配的接口
-export const stytem_menu_opration = obj =>
-  fetch({
-    url: "/system/menu/opration",
-    method: "POST",
-    data: qs.stringify(obj)
-  });
 // 坐席关系维护列表
 export const call_employee_list = obj =>
   fetch({
@@ -740,12 +742,6 @@ export const case_detail_bindcard_list = (obj, options) =>
     method: "POST",
     data: qs.stringify(obj)
   });
-/*
-* 新增系统用户
-/*
-* 新增系统用户* */
-//export const system_user_add = (obj, options) =>
-
 /*
  *
  * 分配信息（指定案件）
@@ -1200,12 +1196,11 @@ export const repayinfo_applayRepay = (obj, options) =>
 *
 系统用户密码重置接口
 * */
-export const system_user_reset = (obj, options) =>
+export const system_user_reset = obj =>
   fetch({
-    url: "/system/user/reset",
+    url: "/system/user/resetPwd",
     method: "POST",
-    data: qs.stringify(obj),
-    options
+    data: obj
   });
 
 /*

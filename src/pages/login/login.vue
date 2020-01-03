@@ -151,7 +151,7 @@ export default {
           } else {
             this.login_code();
 
-            this.$Message.error(res.message);
+            this.$Message.error(res.msg);
           }
         }
       });

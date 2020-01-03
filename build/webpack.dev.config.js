@@ -35,7 +35,7 @@ module.exports = merge(webpackBaseConfig, {
             minChunks: Infinity
         }),
         new HtmlWebpackPlugin({
-            title: '贷后管理系统',
+            title: '流量合作平台',
             filename: '../index.html',
             inject: false
         }),

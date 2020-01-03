@@ -160,7 +160,6 @@ export default {
     }
   },
   mounted () {
-      console.log(this.pageTagsList,'============')
     this.refsTag = this.$refs.tagsPageOpened;
     setTimeout(() => {
       this.refsTag.forEach((item, index) => {

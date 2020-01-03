@@ -6,13 +6,12 @@ import {
   system_menu_detail
 } from "@/service/getData";
 import IconList from "@/components/iconList";
-import sysDictionary from "@/mixin/sysDictionary";
 
 export default {
+  name: 'menu_manager_page',
   components: {
     IconList
   },
-  mixins: [sysDictionary],
   data() {
     return {
       getDirList: ["MENU_TYPE"],
@@ -114,46 +113,28 @@ export default {
     };
   },
   created() {
+    // 按钮权限初始化
+    let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
+    buttonPermissionList.forEach(item => {
+      switch (item.url) {
+        case "/findTree":
+          this.query = true;
+          break;
+        case "/add":
+          this.add = true;
+          break;
+        case "/delete":
+          this.delete = true;
+          break;
+        case "/update":
+          this.update = true;
+          break;
+        case "/queryDetail":
+          this.queryDetail = true;
+          break;
+      }
+    });
     this.getList();
-  },
-  watch: {
-    $route: {
-      handler: function() {
-        // 按钮权限初始化
-        let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
-        buttonPermissionList.forEach(item => {
-          console.log(item.url, "9087");
-          switch (item.url) {
-            case "/findTree":
-              if (item.hasPermission) {
-                this.query = true;
-              }
-              break;
-            case "/add":
-              if (item.hasPermission) {
-                this.add = true;
-              }
-              break;
-            case "/delete":
-              if (item.hasPermission) {
-                this.delete = true;
-              }
-              break;
-            case "/update":
-              if (item.hasPermission) {
-                this.update = true;
-              }
-              break;
-            case "/queryDetail":
-              if (item.hasPermission) {
-                this.queryDetail = true;
-              }
-              break;
-          }
-        });
-      },
-      immediate: true
-    }
   },
   methods: {
     // 选中节点的回调函数
@@ -161,7 +142,6 @@ export default {
       console.log(node);
     },
     renderContent(h, { root, node, data }) {
-      console.log(this.delete,'delete-btn');
       return h(
         "span",
         {
@@ -339,7 +319,7 @@ export default {
         this.data5 = res.data;
         this.data5[0].expand = true;
       } else {
-        this.$Message.error(res.message);
+        this.$Message.error(res.msg);
       }
     },
     // 修改菜单项
@@ -352,7 +332,7 @@ export default {
         this.modal = "";
         this.getList();
       } else {
-        this.$Message.error(res.message);
+        this.$Message.error(res.msg);
       }
     },
     // 菜单项详情
@@ -370,7 +350,7 @@ export default {
           sort: String(res.data.sort)
         };
       } else {
-        this.$Message.error(res.message);
+        this.$Message.error(res.msg);
       }
     },
     // 新增菜单项
@@ -383,7 +363,7 @@ export default {
         this.modal = "";
         this.getList();
       } else {
-        this.$Message.error(res.message);
+        this.$Message.error(res.msg);
       }
     },
     // 删除菜单项
@@ -395,7 +375,7 @@ export default {
         this.$Message.success("删除成功");
         this.getList();
       } else {
-        this.$Message.error(res.message);
+        this.$Message.error(res.msg);
       }
     }
   }

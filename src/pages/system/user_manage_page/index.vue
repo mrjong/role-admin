@@ -1,7 +1,6 @@
 <template>
   <div class="panel_list">
     <!-- 检索条件 -->
-    <!-- 检索条件 -->
     <Card class="vue-panel">
       <p slot="title" @click="showPanel=!showPanel">
         <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
@@ -26,12 +25,12 @@
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="状态:">
-              <Select size="small" clearable placeholder="请选择状态" v-model="formItem.state">
+              <Select size="small" clearable placeholder="请选择状态" v-model="formItem.sts">
                 <Option
-                  v-for="item in getDirObj['1_0_AVAILABLE_DISABLE']"
-                  :value="item.itemCode"
-                  :key="item.itemCode"
-                >{{ item.itemName }}</Option>
+                  v-for="item in status"
+                  :value="item.code"
+                  :key="item.code"
+                >{{ item.name }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -62,13 +61,11 @@
     <Card class="vue-panel-table collection_recording">
       <p slot="title">
         <Icon :type="!showPanel2?'chevron-down':'chevron-up'" @click="showPanel2=!showPanel2"></Icon>检索结果
-        <!-- <router-link to="/buffet/buffet_add">
-          <Button class="fr vue-back-btn header-btn" type="primary" size="small">导出数据</Button>
-        </router-link>-->
+
         <Button
           class="fr header-btn"
           type="primary"
-          @click="handleDelAll"
+          @click="handleResetAll"
           style="width:80px"
           long
           size="small"
@@ -115,7 +112,6 @@
     </Card>
     <Remodal
       v-model="parentData"
-      :getDirObj="getDirObj"
       v-if="parentData.modal"
       @passBack='passBack'
     ></Remodal>

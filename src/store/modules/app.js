@@ -102,8 +102,6 @@ const app = {
       commit('changeMenuTreeList', menuTreeList);
       commit('changeRouters', menuTreeList);
 
-      console.log(menuTreeList,'menuTreeList888')
-
       let tagsList = [];
       menuTreeList.map((item) => {
         if (item.children.length <= 1) {

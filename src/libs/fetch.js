@@ -4,7 +4,7 @@ import Cookie from 'js-cookie';
 import util from './util';
 import store from '@/store';
 axios.defaults.baseURL = '/admin';
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 let reqList = [];
 axios.interceptors.request.use(
   (config, options) => {

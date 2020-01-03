@@ -2,8 +2,8 @@
   <div class="panel_list">
     <!-- 检索条件 -->
     <Card class="vue-panel">
-      <p slot="title" @click="showPanel=!showPanel">
-        <Icon :type="!showPanel?'chevron-down':'chevron-up'"></Icon>检索条件
+      <p slot="title" @click="showPanel = !showPanel">
+        <Icon :type="!showPanel ? 'chevron-down' : 'chevron-up'"></Icon>检索条件
       </p>
       <Form
         v-if="!showPanel"
@@ -15,28 +15,27 @@
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="角色名称:">
-              <Input size="small" clearable v-model.trim="formValidate.name" placeholder="请输入角色名称"></Input>
+              <Input
+                size="small"
+                clearable
+                v-model.trim="formValidate.name"
+                placeholder="请输入角色名称"
+              ></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
             <FormItem label="状态:">
-              <Select size="small" v-model="formValidate.status" placeholder="请选择状态">
+              <Select
+                size="small"
+                v-model="formValidate.status"
+                placeholder="请选择状态"
+              >
                 <Option
-                  v-for="item in getDirObj['1_0_EFFECT_INVAL']"
-                  :value="item.itemCode"
-                  :key="item.itemCode"
-                >{{ item.itemName }}</Option>
-              </Select>
-            </FormItem>
-          </Col>
-          <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="角色类型:">
-              <Select size="small" placeholder="请选择角色类型" v-model="formValidate.roleType">
-                <Option
-                  v-for="item in getDirObj['ROLE_TYPE']"
-                  :value="item.itemCode"
-                  :key="item.itemCode"
-                >{{ item.itemName }}</Option>
+                  v-for="item in status"
+                  :value="item.code"
+                  :key="item.code"
+                  >{{ item.name }}</Option
+                >
               </Select>
             </FormItem>
           </Col>
@@ -59,15 +58,17 @@
                 size="small"
                 style="width:80px;margin-left: 8px"
                 @click="clearForm('formValidate')"
-              >重置</Button>
+                >重置</Button
+              >
             </FormItem>
           </Col>
         </Row>
       </Form>
     </Card>
     <Card class="vue-panel-table">
-      <p slot="title" @click="showPanel2=!showPanel2">
-        <Icon :type="!showPanel2?'chevron-down':'chevron-up'"></Icon>检索结果
+      <p slot="title" @click="showPanel2 = !showPanel2">
+        <Icon :type="!showPanel2 ? 'chevron-down' : 'chevron-up'"></Icon
+        >检索结果
         <Button
           type="primary"
           @click.stop="addRole"
@@ -75,11 +76,18 @@
           style="width:80px"
           size="small"
           v-if="add"
-        >添加</Button>
+          >添加</Button
+        >
       </p>
       <!-- 表格 -->
       <div v-if="!showPanel2">
-        <Table border :data="tableData" :columns="tableColumns" stripe class="tableBox"></Table>
+        <Table
+          border
+          :data="tableData"
+          :columns="tableColumns"
+          stripe
+          class="tableBox"
+        ></Table>
         <!-- 分页 -->
         <div class="vue-panel-page">
           <div style="float: right;">
@@ -99,6 +107,8 @@
         </div>
       </div>
     </Card>
+
+    <!-- 查看弹窗 -->
     <Modal v-model="modalSee" title="角色信息" @on-ok="ok" class="role-modal">
       <Card class="vue-panel panel_list" :dis-hover="true">
         <Form
@@ -111,16 +121,11 @@
           <Row class="eachRow">
             <Col span="12">
               <FormItem label="角色名称:">
-                <Input size="small" v-model="formValidateInfo.name" placeholder="请输入角色名称" disabled></Input>
-              </FormItem>
-            </Col>
-            <Col span="12">
-              <FormItem label="角色描述:">
                 <Input
-                  disabled
                   size="small"
-                  v-model="formValidateInfo.description"
-                  placeholder="请输入角色描述"
+                  v-model="formValidateInfo.roleName"
+                  placeholder="请输入角色名称"
+                  disabled
                 ></Input>
               </FormItem>
             </Col>
@@ -128,36 +133,56 @@
           <Row class="eachRow">
             <Col span="12">
               <FormItem label="创建时间:">
-                <Input disabled size="small" v-model="formValidateInfo.createtime" placeholder></Input>
+                <Input
+                  disabled
+                  size="small"
+                  v-model="formValidateInfo.createTime"
+                  placeholder
+                ></Input>
               </FormItem>
             </Col>
             <Col span="12">
               <FormItem label="创建人:">
-                <Input disabled size="small" v-model="formValidateInfo.createUser" placeholder></Input>
+                <Input
+                  disabled
+                  size="small"
+                  v-model="formValidateInfo.creator"
+                  placeholder
+                ></Input>
               </FormItem>
             </Col>
           </Row>
           <Row class="eachRow">
             <Col span="12">
               <FormItem label="修改时间:">
-                <Input disabled size="small" v-model="formValidateInfo.updatetime" placeholder></Input>
+                <Input
+                  disabled
+                  size="small"
+                  v-model="formValidateInfo.updateTime"
+                  placeholder
+                ></Input>
               </FormItem>
             </Col>
             <Col span="12">
               <FormItem label="修改人:">
-                <Input disabled size="small" v-model="formValidateInfo.updateUser" placeholder></Input>
+                <Input
+                  disabled
+                  size="small"
+                  v-model="formValidateInfo.updator"
+                  placeholder
+                ></Input>
               </FormItem>
             </Col>
           </Row>
           <Row class="eachRow">
             <Col span="12">
               <FormItem span="6" prop="mblNo" label="角色状态:">
-                <Input disabled size="small" v-model="formValidateInfo.roleStatusName" placeholder></Input>
-              </FormItem>
-            </Col>
-            <Col span="12">
-              <FormItem label="角色类型:">
-                <Input disabled size="small" v-model="formValidateInfo.roleTypeName" placeholder></Input>
+                <Input
+                  disabled
+                  size="small"
+                  v-model="formValidateInfo.sts"
+                  placeholder
+                ></Input>
               </FormItem>
             </Col>
           </Row>
@@ -167,6 +192,8 @@
         <Button size="small" @click="closeModal('1')">关闭</Button>
       </div>
     </Modal>
+
+    <!-- 修改弹窗 -->
     <Modal v-model="modalChange" title="基本信息" class="role-modal">
       <p slot="header">
         <Icon type="filing"></Icon>
@@ -182,51 +209,30 @@
         >
           <Row class>
             <Col span="12">
-              <FormItem label="角色名称:" prop="name">
+              <FormItem label="角色名称:" prop="roleName">
                 <Input
                   size="small"
                   clearable
-                  v-model="formValidateChange.name"
+                  v-model="formValidateChange.roleName"
                   placeholder="请输入角色名称"
-                ></Input>
-              </FormItem>
-            </Col>
-            <Col span="12">
-              <FormItem label="角色描述:">
-                <Input
-                  size="small"
-                  clearable
-                  v-model="formValidateChange.description"
-                  placeholder="请输入角色描述"
                 ></Input>
               </FormItem>
             </Col>
           </Row>
           <Row class>
             <Col span="12">
-              <FormItem label="角色类型:" prop="roleType">
+              <FormItem label="角色状态:" prop="roleStatus">
                 <Select
                   size="small"
-                  v-model="formValidateChange.roleType"
-                  disabled
-                  placeholder="请选择角色类型"
+                  v-model="formValidateChange.roleStatus"
+                  placeholder="请选择角色状态"
                 >
                   <Option
-                    v-for="item in getDirObj['ROLE_TYPE']"
-                    :value="item.itemCode"
-                    :key="item.itemCode"
-                  >{{ item.itemName }}</Option>
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span="12">
-              <FormItem label="角色状态:" prop="roleStatus">
-                <Select size="small" v-model="formValidateChange.roleStatus" placeholder="请选择角色状态">
-                  <Option
-                    v-for="item in getDirObj['1_0_EFFECT_INVAL']"
-                    :value="item.itemCode"
-                    :key="item.itemCode"
-                  >{{ item.itemName }}</Option>
+                    v-for="item in status"
+                    :value="item.code"
+                    :key="item.code"
+                    >{{ item.name }}</Option
+                  >
                 </Select>
               </FormItem>
             </Col>
@@ -235,7 +241,11 @@
       </Card>
       <p slot="footer">
         <Button @click="closeModal('2')">取消</Button>
-        <Button @click="modalChangeOk('formValidateChange')" type="primary" :loading='update_loading'>
+        <Button
+          @click="modalChangeOk('formValidateChange')"
+          type="primary"
+          :loading="update_loading"
+        >
           <span v-if="!update_loading">确定</span>
           <span v-else>修改中...</span>
         </Button>
@@ -256,41 +266,26 @@
         >
           <Row class>
             <Col span="12">
-              <FormItem label="角色名称:" prop="name">
-                <Input size="small" clearable v-model="formValidateAdd.name" placeholder="请输入角色名称"></Input>
-              </FormItem>
-            </Col>
-            <Col span="12">
-              <FormItem label="角色描述:">
+              <FormItem label="角色名称:" prop="roleName">
                 <Input
                   size="small"
                   clearable
-                  v-model="formValidateAdd.description"
-                  placeholder="请输入角色描述"
+                  v-model="formValidateAdd.roleName"
+                  placeholder="请输入角色名称"
                 ></Input>
               </FormItem>
             </Col>
           </Row>
           <Row class>
             <Col span="12">
-              <FormItem label="角色类型:" prop="roleType">
-                <Select size="small" v-model="formValidateAdd.roleType">
-                  <Option
-                    v-for="item in getDirObj['ROLE_TYPE']"
-                    :value="item.itemCode"
-                    :key="item.itemCode"
-                  >{{ item.itemName }}</Option>
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span="12">
               <FormItem label="角色状态:" prop="roleStatus">
                 <Select size="small" v-model="formValidateAdd.roleStatus">
                   <Option
-                    v-for="item in getDirObj['1_0_EFFECT_INVAL']"
-                    :value="item.itemCode"
-                    :key="item.itemCode"
-                  >{{ item.itemName }}</Option>
+                    v-for="item in status"
+                    :value="item.code"
+                    :key="item.code"
+                    >{{ item.name }}</Option
+                  >
                 </Select>
               </FormItem>
             </Col>
@@ -299,7 +294,11 @@
       </Card>
       <p slot="footer">
         <Button @click="closeModal('3')">取消</Button>
-        <Button @click="sureAddRole('formValidateAdd')" type="primary" :loading='add_loading'>
+        <Button
+          @click="sureAddRole('formValidateAdd')"
+          type="primary"
+          :loading="add_loading"
+        >
           <span v-if="!add_loading">确定</span>
           <span v-else>添加中...</span>
         </Button>
@@ -310,8 +309,15 @@
       <Modal v-model="menuModal" title="菜单" @on-ok="ok">
         <Row>
           <Col :xs="24" :sm="24" :md="16" :lg="16" span="6">
-            <label for="name">角色名称:</label>
-            <Input size="small" clearable v-model="name" disabled id="name" style="width: auto"></Input>
+            <label for="roleName">角色名称:</label>
+            <Input
+              size="small"
+              clearable
+              v-model="roleName"
+              disabled
+              id="name"
+              style="width: auto"
+            ></Input>
           </Col>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="6">
             <Tree
@@ -327,7 +333,13 @@
         </Row>
         <div slot="footer">
           <Button size="small" @click="menuModalClose">关闭</Button>
-          <Button size="small" type="primary" @click="menuUpdate" :loading='allot_loading'>
+          <Button
+            size="small"
+            type="primary"
+            @click="menuUpdate"
+            :loading="allot_loading"
+            v-if="allot_submit"
+          >
             <span v-if="!allot_loading">保存</span>
             <span v-else>保存中...</span>
           </Button>
