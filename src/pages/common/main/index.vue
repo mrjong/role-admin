@@ -2,7 +2,7 @@
 @import "./index.less";
 </style>
 <template>
-  <div class="main" :class="{'main-hide-text': shrink}">
+  <div class="main" :class="{ 'main-hide-text': shrink }">
     <Modal
       width="450"
       title="修改密码"
@@ -11,7 +11,12 @@
       class="panel_list"
       @on-cancel="cancel"
     >
-      <Form ref="formItem" :model="formItem" :label-width="80" :rules="ruleValidate">
+      <Form
+        ref="formItem"
+        :model="formItem"
+        :label-width="80"
+        :rules="ruleValidate"
+      >
         <Row>
           <Col :xs="24" :sm="24" :md="24" :lg="24" span="24">
             <FormItem span="6" label="旧密码:" prop="loginPwd">
@@ -41,7 +46,10 @@
     </Modal>
     <div
       class="sidebar-menu-con"
-      :style="{width: shrink?'60px':'200px', overflow: shrink ? 'visible' : 'auto'}"
+      :style="{
+        width: shrink ? '60px' : '200px',
+        overflow: shrink ? 'visible' : 'auto'
+      }"
     >
       <scroll-bar :shrink="shrink" ref="scrollBar">
         <shrinkable-menu
@@ -51,18 +59,28 @@
           :before-push="beforePush"
           :menu-list="menuList"
         >
-          <div slot="top" class="logo-con" @click="$router.push('/home/home/home')">
-            <img v-show="!shrink" src="../../../assets/images/logo.png" key="max-logo">
-            <img v-show="shrink" src="../../../assets/images/logo-min.png" key="min-logo">
+          <div slot="top" class="logo-con" @click="$router.push('/home')">
+            <!-- <img v-show="!shrink" src="../../../assets/images/logo.png" key="max-logo"> -->
+            <h1 v-show="!shrink" class="logo-con__text">流量合作平台</h1>
+            <img
+              v-show="shrink"
+              src="../../../assets/images/logo-min.png"
+              key="min-logo"
+            />
           </div>
         </shrinkable-menu>
       </scroll-bar>
     </div>
-    <div class="main-header-con" :style="{paddingLeft: shrink?'60px':'200px'}">
+    <div
+      class="main-header-con"
+      :style="{ paddingLeft: shrink ? '60px' : '200px' }"
+    >
       <div class="main-header">
         <div class="navicon-con">
           <Button
-            :style="{transform: 'rotateZ(' + (this.shrink ? '-90' : '0') + 'deg)'}"
+            :style="{
+              transform: 'rotateZ(' + (this.shrink ? '-90' : '0') + 'deg)'
+            }"
             type="text"
             @click="toggleClick"
           >
@@ -77,24 +95,25 @@
 
         <div class="header-avator-con">
           <div style="position: absolute; right: 200px">
-            <Button
-              type="primary"
-              @click="openCase"
-              style="width:150px"
-              long
-              size="small"
-            >
-              请设置次日接案量
-            </Button>
-            <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
+            <full-screen
+              v-model="isFullScreen"
+              @on-change="fullscreenChange"
+            ></full-screen>
             <lock-screen></lock-screen>
           </div>
 
-          <!-- <message-tip v-model="mesCount"></message-tip> -->
-          <!-- <theme-switch></theme-switch> -->
           <div class="user-dropdown-menu-con">
-            <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
-              <Dropdown transfer trigger="click" @on-click="handleClickUserDropdown">
+            <Row
+              type="flex"
+              justify="end"
+              align="middle"
+              class="user-dropdown-innercon"
+            >
+              <Dropdown
+                transfer
+                trigger="click"
+                @on-click="handleClickUserDropdown"
+              >
                 <a href="javascript:void(0)">
                   <span class="main-user-name">{{ userName }}</span>
                   <Icon type="md-arrow-dropdown"></Icon>
@@ -104,7 +123,10 @@
                   <DropdownItem name="loginout">退出登录</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-              <Avatar :src="avatorPath" style="background: #619fe7;margin-left: 10px;"></Avatar>
+              <Avatar
+                :src="avatorPath"
+                style="background: #619fe7;margin-left: 10px;"
+              ></Avatar>
             </Row>
           </div>
         </div>
@@ -113,15 +135,13 @@
         <tags-page-opened :pageTagsList="pageTagsList"></tags-page-opened>
       </div>
     </div>
-    <div class="single-page-con" :style="{left: shrink?'60px':'200px'}">
+    <div class="single-page-con" :style="{ left: shrink ? '60px' : '200px' }">
       <div class="single-page">
         <!-- <keep-alive :include="cachePage"> -->
         <router-view></router-view>
         <!-- </keep-alive> -->
       </div>
     </div>
-    <CaseLoading :showCaseLoading="showCaseLoading" @passBack="passBack" />
   </div>
 </template>
 <script src="./index.js"></script>
-

@@ -1,10 +1,4 @@
-import {
-  system_menu_update,
-  system_menu_add,
-  system_menu_delete,
-  system_menu_findTree,
-  system_menu_detail
-} from "@/service/getData";
+import api from "@/service";
 import IconList from "@/components/iconList";
 
 export default {
@@ -313,7 +307,7 @@ export default {
         return;
       }
       this.query_loading = true;
-      const res = await system_menu_findTree();
+      const res = await api.system_menu_findTree();
       this.query_loading = false;
       if (res.code === "0000") {
         this.data5 = res.data;
@@ -325,7 +319,7 @@ export default {
     // 修改菜单项
     async menuUpdate(params) {
       this.update_loading = true;
-      const res = await system_menu_update(params);
+      const res = await api.system_menu_update(params);
       this.update_loading = false;
       if (res.code === "0000") {
         this.$Message.success("更新成功");
@@ -337,7 +331,7 @@ export default {
     },
     // 菜单项详情
     async menuDetail(id) {
-      const res = await system_menu_detail(id);
+      const res = await api.system_menu_detail(id);
       if (res.code === "0000") {
         this.modal = "1";
 
@@ -356,7 +350,7 @@ export default {
     // 新增菜单项
     async menuAdd(params) {
       this.add_loading = true;
-      const res = await system_menu_add(params);
+      const res = await api.system_menu_add(params);
       this.add_loading = false;
       if (res.code === "0000") {
         this.$Message.success("添加成功");
@@ -369,7 +363,7 @@ export default {
     // 删除菜单项
     async system_menu_delete(id) {
       this.delete_loading = true;
-      const res = await system_menu_delete(id);
+      const res = await api.system_menu_delete(id);
       this.delete_loading = false;
       if (res.code === "0000") {
         this.$Message.success("删除成功");

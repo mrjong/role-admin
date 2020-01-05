@@ -3,18 +3,11 @@ import tagsPageOpened from "@/components/tags-page-opened.vue";
 import breadcrumbNav from "@/components/breadcrumb-nav.vue";
 import fullScreen from "@/components/fullscreen.vue";
 import lockScreen from "@/components/lockscreen/lockscreen.vue";
-import messageTip from "@/components/message-tip.vue";
-import themeSwitch from "@/components/theme-switch/theme-switch.vue";
-import CaseLoading from "../home/components/caseLoading";
+import scrollBar from "@/components/scroll-bar/vue-scroller-bars";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import util from "@/libs/util.js";
-import scrollBar from "@/components/scroll-bar/vue-scroller-bars";
-import {
-  logout,
-  findTreeByCurrentUser,
-  reset_passWord
-} from "@/service/getData";
+import api from "@/service";
 export default {
   components: {
     shrinkableMenu,
@@ -22,10 +15,7 @@ export default {
     breadcrumbNav,
     fullScreen,
     lockScreen,
-    messageTip,
-    themeSwitch,
     scrollBar,
-    CaseLoading
   },
   data() {
     return {
@@ -83,9 +73,7 @@ export default {
     }
   },
   methods: {
-    openCase() {
-      this.showCaseLoading = true;
-    },
+
     passWord(str) {
       let key = CryptoJS.enc.Hex.parse("63666262663331373130363634393864");
       let iv = CryptoJS.enc.Hex.parse("38313837386662346131393061333035");
@@ -104,7 +92,7 @@ export default {
       });
     },
     async reset_passWord() {
-      const res = await reset_passWord({
+      const res = await api.reset_passWord({
         // loginName: Cookies.get('user'),
         oldPwd: this.formItem.loginPwd,
         newPwd: this.formItem.newLoginPwd
@@ -124,11 +112,7 @@ export default {
       }
     },
     cancel() {},
-    // 获取菜单
-    async menuData() {
-      let res = await findTreeByCurrentUser();
-      console.log(demo);
-    },
+
     init() {
       let pathArr = util.setCurrentPath(this, this.$route.name);
       if (pathArr.length >= 2) {
@@ -148,7 +132,7 @@ export default {
         this.visible1 = true;
       } else if (name === "loginout") {
         // 退出登录
-        const res = await logout();
+        const res = await api.logout();
         window.sessionStorage.clear();
         if (res.code === 1) {
           this.$Message.success("退出成功");

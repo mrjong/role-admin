@@ -1,8 +1,4 @@
-import {
-  system_user_list,
-  system_user_reset,
-  system_user_detail
-} from "@/service/getData";
+import api from "@/service";
 import Remodal from "./components/user_info_form";
 import tablePage from "@/mixin/tablePage";
 export default {
@@ -268,7 +264,7 @@ export default {
     // 获取表格数据
     async system_user_reset(ids) {
 
-      const res = await system_user_reset(JSON.stringify(ids));
+      const res = await api.system_user_reset(JSON.stringify(ids));
       if (res.code === '0000') {
         this.$Message.success("重置密码成功");
         this.selectList = [];
@@ -285,7 +281,7 @@ export default {
       }
       this.query_loading = true;
 
-      const res = await system_user_list({
+      const res = await api.system_user_list({
         ...this.formItem,
         pageNum: this.pageNo,
         pageSize: this.pageSize
@@ -305,7 +301,7 @@ export default {
       if (type === "1" || type === "2") {
         // 查询或修改数据按钮
 
-        const res = await system_user_detail(id);
+        const res = await api.system_user_detail(id);
         if (res.code === "0000") {
           this.modal = true;
           this.parentData = {

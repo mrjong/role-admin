@@ -205,7 +205,7 @@
             slot="header"
             style="color:#333; font-size: 20px; font-weight: 600"
           >
-            <span>图标</span>
+            <span style="vertical-align: normal">图标</span>
           </p>
           <IconList v-on:passBack="passBack"></IconList>
           <div slot="footer">

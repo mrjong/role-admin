@@ -1,10 +1,10 @@
-import Util from '@/libs/util';
-import Vue from 'vue';
-import AllRouter from '@/router/routers';
-import { navigation_loadTree } from '@/service/getData';
-const LayoutMain = () => import('@/pages/common/main');
+import Util from "@/libs/util";
+import Vue from "vue";
+import AllRouter from "@/router/routers";
+import api from "@/service";
+const LayoutMain = () => import("@/pages/common/main");
 
-import menuTree2 from './demo.json';
+import menuTree2 from "./demo.json";
 const homeItem = {
   text: "首页",
   url: "/home",
@@ -13,70 +13,70 @@ const homeItem = {
   children: [
     {
       text: "首页",
-      url: "/home/home",
+      url: "",
       icon: "md-albums",
 
       children: [],
       checked: null
     }
-  ],
+  ]
 };
 const app = {
   state: {
     cachePage: [],
-    lang: '',
+    lang: "",
     isFullScreen: false,
     openedSubmenuArr: [], // 要展开的菜单数组
-    menuTheme: 'dark', // 主题
-    themeColor: '',
+    menuTheme: "dark", // 主题
+    themeColor: "",
     pageOpenedList: [
       {
-        title: '首页',
-        path: '/home',
-        name: '/home'
+        title: "首页",
+        path: "/home",
+        name: "/home"
       }
     ],
-    currentPageName: '',
+    currentPageName: "",
     currentPath: [
       {
-        title: '首页',
-        path: '/home',
-        name: '/home'
+        title: "首页",
+        path: "/home",
+        name: "/home"
       }
     ], // 面包屑数组
     menuList: [],
     routers: [],
     tagsList: [],
     messageCount: 0,
-    dontCache: ['text-editor', 'artical-publish'], // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
+    dontCache: ["text-editor", "artical-publish"], // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
     menuTreeOriginal: [], // 菜单树结构 源数据
     menuTreeList: [], // 菜单树结构 处理后的结构 需要动态添加的路由中去
     isFinishedRouteAdd: false
   },
   getters: {
-    menuTreeList: (state) => {
+    menuTreeList: state => {
       return state.menuTreeList;
     },
-    finishedRouteAddStatus: (state) => {
+    finishedRouteAddStatus: state => {
       return state.isFinishedRouteAdd;
     }
   },
   actions: {
     getMenuTreeOriginal({ commit }) {
       return new Promise(async (resolve, reject) => {
-        const menuTree = await navigation_loadTree();
+        const menuTree = await api.navigation_loadTree();
         let findArr = menuTree.data.find((value, index, arr) => {
-          return value.text === '首页'
+          return value.text === "首页";
         });
         if (findArr === undefined) {
-          menuTree.data.unshift(homeItem)
-        };
-        commit('changeMenuTreeOriginal', menuTree.data);
+          menuTree.data.unshift(homeItem);
+        }
+        commit("changeMenuTreeOriginal", menuTree.data);
         resolve(menuTree.data);
       });
     },
     async generateRoutes({ state, commit, dispatch }) {
-      await dispatch('getMenuTreeOriginal');
+      await dispatch("getMenuTreeOriginal");
       const menuTreeList = state.menuTreeOriginal.map((item, index1) => ({
         path: item.url,
         icon: item.icon,
@@ -86,31 +86,33 @@ const app = {
         // 判断一级菜单是否有子菜单
         children: item.children
           ? item.children.map((child, index) => ({
-            path: item.url + child.url,
-            name: item.url + child.url,
-            icon: child.icon,
-            title: child.text,
-            component: AllRouter[`${item.url}${child.url}`],
-            meta: {
-              // 判断子菜单是否有按钮级别的控制
-              btnPermissionsList: child.children ? child.children.map((btn) => btn) : []
-            }
-          }))
+              path: item.url + child.url,
+              name: item.url + child.url,
+              icon: child.icon,
+              title: child.text,
+              component: AllRouter[`${item.url}${child.url}`],
+              meta: {
+                // 判断子菜单是否有按钮级别的控制
+                btnPermissionsList: child.children
+                  ? child.children.map(btn => btn)
+                  : []
+              }
+            }))
           : []
       }));
 
-      commit('changeMenuTreeList', menuTreeList);
-      commit('changeRouters', menuTreeList);
+      commit("changeMenuTreeList", menuTreeList);
+      commit("changeRouters", menuTreeList);
 
       let tagsList = [];
-      menuTreeList.map((item) => {
+      menuTreeList.map(item => {
         if (item.children.length <= 1) {
           tagsList.push(item.children[0]);
         } else {
           tagsList.push(...item.children);
         }
       });
-      commit('setTagsList', tagsList);
+      commit("setTagsList", tagsList);
     }
   },
   mutations: {
@@ -197,7 +199,7 @@ const app = {
         state.pageOpenedList.splice(currentIndex + 1);
         state.pageOpenedList.splice(1, currentIndex - 1);
       }
-      let newCachepage = state.cachePage.filter((item) => {
+      let newCachepage = state.cachePage.filter(item => {
         return item === currentName;
       });
       state.cachePage = newCachepage;

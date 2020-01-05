@@ -58,15 +58,8 @@
 <script>
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
-import { login, login_code } from "@/service/getData";
+import api from "@/service";
 import util from "@/libs/util";
-import {
-  init,
-  callOut,
-  hangUp,
-  retriveCall,
-  holdCall
-} from "@/libs/news_crowd";
 export default {
   data() {
     return {
@@ -116,7 +109,7 @@ export default {
       return enc;
     },
     async login_code() {
-      const res = await login_code();
+      const res = await api.login_code();
       if (res.code === '0000') {
         this.imageShow = res.data.base64Code;
         this.key = res.data.key;
@@ -129,14 +122,14 @@ export default {
       this.$Message.success("登录成功!");
       window.$router = this.$router;
       this.$router.push({
-        path: "/home/home/home"
+        path: "/home"
       });
     },
     handleSubmit() {
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
           this.login_loading = true;
-          const res = await login({
+          const res = await api.login({
             loginName: this.form.loginName,
             loginPwd: this.form.loginPwd,
             code: this.form.loginPic,

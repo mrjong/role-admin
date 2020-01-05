@@ -1,11 +1,4 @@
-import {
-  system_role_list,
-  system_role_add,
-  system_role_update,
-  system_role_detail,
-  system_role_menu_list,
-  stytem_role_menu_opration
-} from "@/service/getData";
+import api from "@/service";
 export default {
   name: "role_manage_page",
   data() {
@@ -405,7 +398,7 @@ export default {
         return;
       }
       this.query_loading = true;
-      let res = await system_role_list({
+      let res = await api.system_role_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
         ...this.formValidate
@@ -420,7 +413,7 @@ export default {
     },
     //查看详情
     async getInfo(id) {
-      let res = await system_role_detail(id);
+      let res = await api.system_role_detail(id);
       if (res.code === "0000") {
         this.formValidateInfo = res.data;
         const { createTime, updateTime } = this.formValidateInfo;
@@ -443,7 +436,7 @@ export default {
     // 提交修改角色的接口
     async toChangeRole() {
       this.update_loading = true;
-      let res = await system_role_update({
+      let res = await api.system_role_update({
         ...this.formValidateChange,
         sts: this.formValidateChange.roleStatus
       });
@@ -461,7 +454,7 @@ export default {
     async toAddRole() {
       this.add_loading = true;
       const { roleName, roleStatus } = this.formValidateAdd;
-      let res = await system_role_add({ roleName, sts: roleStatus });
+      let res = await api.system_role_add({ roleName, sts: roleStatus });
       this.add_loading = true;
       if (res && res.code === "0000") {
         this.$Message.success("添加成功");
@@ -476,7 +469,7 @@ export default {
     },
     // 获取菜单列表数据
     async getMenuList() {
-      let res = await system_role_menu_list(this.roleId);
+      let res = await api.system_role_menu_list(this.roleId);
       if (res.code === "0000") {
         res.data[0].expand = true;
         this.data5 = res.data;
@@ -487,7 +480,7 @@ export default {
     // 菜单分配的接口
     async menuUpdate() {
       this.allot_loading = true;
-      let res = await stytem_role_menu_opration({
+      let res = await api.stytem_role_menu_opration({
         id: this.roleId,
         menuIds: this.menuIds
       });

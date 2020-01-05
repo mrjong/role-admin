@@ -13,7 +13,7 @@ export default {
       },
       query_auth: false, //检索权限
       channel_auth: false, //渠道筛选权限
-      export_auth: true,
+      export_auth: false,
       showPanel: false,
       showPanelTable: false,
       formValidate: {},
@@ -21,12 +21,6 @@ export default {
       export_table_loading: false,
       tableData: [],
       tableColumns: [
-        // {
-        //   type: "selection", // 通过给columns 数据设置 type:'selection'即可自动开启多选功能
-        //   width: 100,
-        //   align: alignCenter,
-        //   fixed: "left"
-        // },
         {
           type: "index",
           width: 80,
@@ -37,68 +31,68 @@ export default {
         {
           title: "时间",
           width: 150,
-          key: "createTime",
+          key: "date",
           className: "tableMainW",
-          align: alignCenter,
-          render: (h, params) => {
-            let res = params.row.createTime;
-            res = res
-              ? this.$options.filters["formatDate"](res, "YYYY-MM-DD HH:mm:ss")
-              : res;
-            return h("span", res);
-          }
+          align: alignCenter
+          // render: (h, params) => {
+          //   let res = params.row.date;
+          //   res = res
+          //     ? this.$options.filters["formatDate"](res, "YYYY-MM-DD HH:mm:ss")
+          //     : res;
+          //   return h("span", res);
+          // }
         },
         {
           title: "一级渠道",
-          key: "amount",
+          key: "firstLvlChannel",
           className: "tableMainW",
           align: alignCenter
         },
         {
           title: "二级渠道",
-          key: "amount",
+          key: "secondLvlChannel",
           className: "tableMainW",
           align: alignCenter
         },
         {
           title: "三级渠道",
-          key: "amount",
+          key: "thirdLvlChannel",
           className: "tableMainW",
           align: alignCenter
         },
         {
           title: "注册",
-          key: "registerDeduct",
+          key: "registerCount",
           className: "tableMainW",
           align: alignCenter
         },
         {
           title: "提交授信",
-          key: "submitDeduct",
+          key: "credCount",
           className: "tableMainW",
           align: alignCenter
         },
         {
           title: "首贷人数",
-          key: "loansDeductPeople",
+          key: "loansCount",
           className: "tableMainW",
           align: alignCenter
         },
         {
           title: "首贷金额",
-          key: "loansDeductAmount",
+          key: "loansSum",
           className: "tableMainW",
           align: alignCenter
         },
         {
           title: "结算标准",
-          key: "createUser",
+          key: "balanceStandard",
           className: "tableMainW",
           align: alignCenter
         },
         {
           title: "结算金额",
-          key: "createUser",
+          key: "balanceAmt",
           className: "tableMainW",
           align: alignCenter
         }
@@ -121,6 +115,9 @@ export default {
         case "/queryChannels":
           this.channel_auth = true;
           break;
+          case "/export":
+            this.export_auth = true;
+            break;
       }
     });
   },
@@ -155,7 +152,7 @@ export default {
     //查询渠道列表
     async query_channels(data) {
       const { pid, level } = data;
-      const res = await api.query_platform_channels({ pid, level });
+      const res = await api.query_flow_channels({ pid, level });
       if (res.code === "0000") {
         switch (level) {
           case "1":
@@ -209,36 +206,58 @@ export default {
         start,
         end
       } = this.formValidate;
-      const res = await api.query_platform_list({
+
+      const res = await api.query_flow_list({
         firstLvlChannel: channelOne,
         secondLvlChannel: channelTwo,
         thirdLvlChannel: channelThree,
-        startDt: start,
-        endDt: end,
+        startDt: this.formatDate(start),
+        endDt: this.formatDate(end),
         pageNum: this.pageNo,
         pageSize: this.pageSize
       });
       if (res.code === "0000") {
-        this.tableData = res.data;
-        this.total = 100;
+        this.tableData = res.data.list;
+        this.total = res.data.total;
       } else {
         this.$Message.error(res.msg);
       }
       this.query_loading = false;
     },
 
+    formatDate(date='') {
+      let str = "";
+      date.split("-").map(item => {
+        str += item;
+      });
+      return str;
+    },
+
     // 下载模板
     async export_table() {
       this.export_table_loading = true;
-      const res = await casesprocess_download_template(
-        {},
+      const {
+        channelOne,
+        channelTwo,
+        channelThree,
+        start,
+        end
+      } = this.formValidate;
+      const res = await api.flow_list_export(
+        {
+          firstLvlChannel: channelOne,
+          secondLvlChannel: channelTwo,
+          thirdLvlChannel: channelThree,
+          startDt: this.formatDate(start),
+          endDt: this.formatDate(end),
+        },
         {
           responseType: "blob",
           timeout: 120000
         }
       );
       this.export_table_loading = false;
-      util.dowloadfile("信用进度模板", res);
+      util.dowloadfile("流量合作列表", res);
     }
   }
 };
