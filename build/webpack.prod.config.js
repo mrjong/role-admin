@@ -13,7 +13,7 @@ const package = require('../package.json');
 
 fs.open('./build/env.js', 'w', function(err, fd) {
     const buf = 'export default "production";';
-    fs.write(fd, buf, 0, buf.length, 0, function(err, written, buffer) {});
+    fs.write(fd, buf, 0, 'utf-8', function(err, written, buffer) {});
 });
 
 module.exports = merge(webpackBaseConfig, {
@@ -41,8 +41,6 @@ module.exports = merge(webpackBaseConfig, {
             'process.env': {
                 NODE_ENV: '"production"'
             },
-            // 全局配置websocket的地址
-            LOCALHOST: '"wss://"+window.location.host+"/admin/websocket"'
         }),
         new webpack.optimize.UglifyJsPlugin({
             compress: {

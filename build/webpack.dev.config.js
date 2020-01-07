@@ -11,7 +11,7 @@ const package = require('../package.json');
 fs.open(__dirname + '/env.js', 'w', function (err, fd) {
     const buf = 'export default "development";';
     // TODO: 下面这个方法有兼容问题？
-    fs.write(fd, buf, 0, buf.length, function (err, written, buffer) {});
+    fs.write(fd, buf, 0, 'utf-8', function (err, written, buffer) {});
 });
 
 module.exports = merge(webpackBaseConfig, {
@@ -22,9 +22,6 @@ module.exports = merge(webpackBaseConfig, {
         chunkFilename: '[name].chunk.js'
     },
     plugins: [
-        new webpack.DefinePlugin({
-          LOCALHOST: '"ws://172.16.174.166:8080/websocket"'
-        }),
         new ExtractTextPlugin({
             filename: '[name].css',
             allChunks: true
