@@ -2,7 +2,9 @@ export default {
   name: "Home",
 
   data() {
-    return {};
+    return {
+      home_bg: require('../../../assets/images/home_bg.png')
+    };
   },
 
   created() {},

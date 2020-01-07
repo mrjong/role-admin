@@ -237,9 +237,7 @@ export default {
   },
   created() {
     let buttonPermissionList = this.$route.meta.btnPermissionsList || [];
-    console.log(buttonPermissionList,'buttonPermissionList')
     buttonPermissionList.forEach(item => {
-      console.log(item.url)
       switch (item.url) {
         case "/list":
           this.query = true;
@@ -257,8 +255,6 @@ export default {
           this.allot = true;
           break;
         case "/updatePermisson":
-          console.log(908)
-
           this.allot_submit = true;
           break;
       }
@@ -272,7 +268,6 @@ export default {
       if (checkTreeNodes.length <= 0) {
         return;
       }
-      console.log(checkTreeNodes, "checkTreeNodes");
       checkTreeNodes.reduce((previousValue, currentValue, index, array) => {
         this.menuIds.push(currentValue.id);
       }, 0);
@@ -480,7 +475,7 @@ export default {
     // 菜单分配的接口
     async menuUpdate() {
       this.allot_loading = true;
-      let res = await api.stytem_role_menu_opration({
+      let res = await api.system_role_menu_opration({
         id: this.roleId,
         menuIds: this.menuIds
       });

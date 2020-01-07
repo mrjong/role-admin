@@ -1,5 +1,4 @@
-import { sysDictionary_getListByParentId } from '@/service/getData';
-import { resolve } from 'path';
+import api from '@/service';
 
 const dictionary = {
 	state: {},
@@ -13,7 +12,7 @@ const dictionary = {
 	},
 	actions: {
 		async getDictionary({ commit }, arg) {
-			const { data } = await sysDictionary_getListByParentId(
+			const { data } = await api.sysDictionary_getListByParentId(
 				{
 					itemCode: arg
 				},

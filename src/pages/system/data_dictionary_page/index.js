@@ -1,4 +1,4 @@
-import { sysDictionary_list, sysDictionary_save, sysDictionary_delete, sysDictionary_update } from '@/service/getData';
+import api from '@/service';
 export default {
   data() {
     return {
@@ -194,7 +194,7 @@ export default {
 
     // 获取表格数据
     async getList(params) {
-      const res = await sysDictionary_list();
+      const res = await api.sysDictionary_list();
       console.log(res)
       if (res.code) {
         this.data5 = res.data;
@@ -205,7 +205,7 @@ export default {
     },
     // 修改菜单项
     async menuUpdate(params) {
-      const res = await sysDictionary_update(params);
+      const res = await api.sysDictionary_update(params);
       if (res.code === 1) {
         this.$Message.success('修改成功');
         this.getList();
@@ -215,7 +215,7 @@ export default {
     },
     // 新增菜单项
     async menuAdd(params) {
-      const res = await sysDictionary_save({
+      const res = await api.sysDictionary_save({
         ...this.newMenuItem
       });
       if (res.code === 1) {
@@ -231,7 +231,7 @@ export default {
     },
     // 删除菜单项
     async menuDelete(params) {
-      const res = await sysDictionary_delete(params);
+      const res = await api.sysDictionary_delete(params);
       if (res && res.code === 1) {
         this.$Message.success('删除成功');
         this.getList();

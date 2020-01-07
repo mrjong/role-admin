@@ -1,6 +1,6 @@
 <template>
   <div class="home-wrap">
-    <h2 class="title">欢迎使用</h2>
+    <img :src="home_bg" alt="">
   </div>
 </template>
 <script src="./index.js"></script>

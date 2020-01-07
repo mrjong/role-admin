@@ -1,4 +1,3 @@
-import Cookie from "js-cookie";
 import api from "@/service";
 import util from "@/libs/util";
 
@@ -7,10 +6,6 @@ export default {
   data() {
     const alignCenter = "center";
     return {
-      headers: {
-        "SXF-TOKEN": Cookie.get("SXF-TOKEN"),
-        timeout: 120000
-      },
       query_auth: false, //检索权限
       channel_auth: false, //渠道筛选权限
       export_auth: false,
@@ -31,32 +26,25 @@ export default {
         {
           title: "时间",
           width: 150,
-          key: "date",
+          key: "statisticalDate",
           className: "tableMainW",
           align: alignCenter,
-          // render: (h, params) => {
-          //   let res = params.row.date;
-          //   res = res
-          //     ? this.$options.filters["formatDate"](res, "YYYY-MM-DD HH:mm:ss")
-          //     : res;
-          //   return h("span", res);
-          // }
         },
         {
           title: "一级渠道",
-          key: "firstLvlChannel",
+          key: "firLvlChannel",
           className: "tableMainW",
           align: alignCenter
         },
         {
           title: "二级渠道",
-          key: "secondLvlChannel",
+          key: "secLvlChannel",
           className: "tableMainW",
           align: alignCenter
         },
         {
           title: "三级渠道",
-          key: "thirdLvlChannel",
+          key: "thdLvlChannel",
           className: "tableMainW",
           align: alignCenter
         },
@@ -74,13 +62,13 @@ export default {
         },
         {
           title: "首贷人数",
-          key: "loansCount",
+          key: "firLoanCount",
           className: "tableMainW",
           align: alignCenter
         },
         {
           title: "首贷金额",
-          key: "loansSum",
+          key: "firLoanAmt",
           className: "tableMainW",
           align: alignCenter
         },
@@ -122,7 +110,7 @@ export default {
     });
   },
   methods: {
-    handleSubmit(name) {
+    handleSubmit() {
       this.query_platform_list();
     },
     channelOneOpen(open) {
@@ -207,9 +195,9 @@ export default {
         end
       } = this.formValidate;
       const res = await api.query_platform_list({
-        firstLvlChannel: channelOne,
-        secondLvlChannel: channelTwo,
-        thirdLvlChannel: channelThree,
+        firLvlChannel: channelOne,
+        secLvlChannel: channelTwo,
+        thdLvlChannel: channelThree,
         startDt: this.formatDate(start),
         endDt: this.formatDate(end),
         pageNum: this.pageNo,
@@ -234,6 +222,10 @@ export default {
 
     // 下载模板
     async export_table() {
+      if (this.total === 0) {
+        this.$Message.info("暂无数据可导出");
+        return;
+      }
       this.export_table_loading = true;
       const {
         channelOne,
@@ -244,9 +236,9 @@ export default {
       } = this.formValidate;
       const res = await api.platform_list_export(
         {
-          firstLvlChannel: channelOne,
-          secondLvlChannel: channelTwo,
-          thirdLvlChannel: channelThree,
+          firLvlChannel: channelOne,
+          secLvlChannel: channelTwo,
+          thdLvlChannel: channelThree,
           startDt: this.formatDate(start),
           endDt: this.formatDate(end),
         },

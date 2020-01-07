@@ -108,6 +108,25 @@
                 </FormItem>
               </Col>
               <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
+                <FormItem label="渠道:" span="4" prop="channels">
+                  <Select
+                    size="small"
+                    v-model="formItem.channels"
+                    multiple
+                    :clearable="model.type !== '1' ? true : false"
+                    placeholder="请选择渠道"
+                    :disabled="model.type === '1' ? true : false"
+                  >
+                    <Option
+                      v-for="item in channelsList"
+                      :value="item.channelCode"
+                      :key="item.channelCode"
+                      >{{ item.channelName }}</Option
+                    >
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col :xs="24" :sm="24" :md="10" :lg="10" span="4">
                 <FormItem
                   span="4"
                   label="修改人:"
@@ -237,6 +256,7 @@ export default {
       childrenModel: false,
       button_loading: false, //保存按钮loading
       rolesData: [],
+      channelsList: [],
       ruleValidate: {
         name: [
           {
@@ -271,6 +291,14 @@ export default {
           {
             required: true,
             message: "请选择系统角色",
+            trigger: "change",
+            type: "array"
+          }
+        ],
+        channels: [
+          {
+            required: true,
+            message: "请选择渠道",
             trigger: "change",
             type: "array"
           }
@@ -310,6 +338,7 @@ export default {
         mbl,
         company,
         roleIds,
+        channels,
         creator,
         updator,
         createTime,
@@ -321,6 +350,7 @@ export default {
         name,
         loginName,
         sts,
+        channels,
         mobile: mbl,
         platform: company,
         roleIds,
@@ -338,6 +368,7 @@ export default {
       }
     }
     this.system_role_list();
+    this.query_channels();
   },
   methods: {
     // 获取系统角色列表数据
@@ -349,6 +380,21 @@ export default {
       });
       if (res.code === "0000") {
         this.rolesData = res.data.list;
+      } else {
+        this.$Message.error(res.msg);
+      }
+    },
+    // 获取渠道列表数据
+    async query_channels() {
+      const res = await api.system_user_channels();
+      if (res.code === "0000") {
+        let arr = res.data || [];
+        arr.unshift({
+          channelId: "000",
+          channelCode: "ALL",
+          channelName: "任意渠道"
+        });
+        this.channelsList = arr;
       } else {
         this.$Message.error(res.msg);
       }
@@ -369,7 +415,15 @@ export default {
 
     async system_user_update() {
       this.button_loading = true;
-      const { id, name, sts, mobile, platform, roleIds } = this.formItem;
+      const {
+        id,
+        name,
+        sts,
+        mobile,
+        platform,
+        roleIds,
+        channels
+      } = this.formItem;
 
       const res = await api.system_user_update({
         id,
@@ -377,7 +431,8 @@ export default {
         sts,
         company: platform,
         mbl: mobile,
-        roles: roleIds
+        roles: roleIds,
+        channels
       });
       this.button_loading = false;
       if (res.code === "0000") {
@@ -389,14 +444,23 @@ export default {
     },
     async system_user_add() {
       this.button_loading = true;
-      const { name, loginName, sts, mobile, platform, roleIds } = this.formItem;
+      const {
+        name,
+        loginName,
+        sts,
+        mobile,
+        platform,
+        roleIds,
+        channels
+      } = this.formItem;
       const res = await api.system_user_add({
         name,
         loginName,
         sts,
         mbl: mobile,
         company: platform,
-        roles: roleIds
+        roles: roleIds,
+        channels
       });
       this.button_loading = false;
       if (res.code === "0000") {

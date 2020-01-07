@@ -1,7 +1,9 @@
-import * as dataStatistics from './dataStatistics';
-import * as getData from './getData';
+import * as dataStatistics from "./dataStatistics";
+import * as system from "./system";
+import * as common from "./common";
 
 export default {
   ...dataStatistics,
-  ...getData
-}
+  ...system,
+  ...common
+};

@@ -1,45 +1,5 @@
 import fetch from "@/libs/fetch";
 import qs from "qs";
-/**
- * 登录
- */
-export const login = (obj = {}) =>
-  fetch({
-    url: "/login",
-    method: "POST",
-    data: obj
-  });
-
-/*
-*
-获取图片验证码
-* */
-export const login_code = (obj, options) =>
-  fetch({
-    url: "/getCaptchaCode",
-    method: "POST",
-    data: qs.stringify(obj),
-    options
-  });
-
-/**
- * 退出
- */
-export const logout = () =>
-  fetch({
-    url: "/system/logout",
-    method: "POST"
-  });
-
-/**
- * 重置密码
- */
-export const reset_passWord = (obj = {}) =>
-  fetch({
-    url: "/editPwd",
-    method: "POST",
-    data: obj
-  });
 
 /**
  * 菜单权限
@@ -49,28 +9,6 @@ export const system_menu_findTree = (obj = {}) =>
     url: "/system/menu/findTree",
     method: "POST",
     data: qs.stringify(obj)
-  });
-
-/**
- * 路由菜单列表
- */
-export const navigation_loadTree = (obj = {}) =>
-  fetch({
-    url: "/navigation/loadTree",
-    method: "GET",
-    data: qs.stringify(obj)
-  });
-
-/*
- *
- * 根据父级id获取相应字典数据
- * */
-export const sysDictionary_getListByParentId = (obj, options) =>
-  fetch({
-    url: "/sysDictionary/getListByParentId",
-    method: "POST",
-    data: qs.stringify(obj),
-    options
   });
 
 /*
@@ -114,6 +52,16 @@ export const system_user_roles = (obj, options) =>
     method: "POST",
     data: qs.stringify(obj)
   });
+
+/**
+ * 查询渠道
+ */
+export const system_user_channels = () => {
+  return fetch({
+    url: `/system/user/queryChannels`,
+    method: "POST"
+  });
+};
 
 /*
  *
@@ -167,7 +115,7 @@ export const system_role_menu_list = id =>
   });
 
 // 菜单分配的接口
-export const stytem_role_menu_opration = obj =>
+export const system_role_menu_opration = obj =>
   fetch({
     url: "/system/role/updatePermisson",
     method: "POST",
@@ -221,68 +169,4 @@ export const system_menu_detail = id =>
   fetch({
     url: `/system/menu/queryDetail?menuId=${id}`,
     method: "POST"
-  });
-
-// 案件查询导出
-export const query_export = (obj, options) =>
-  fetch({
-    url: "/cases/query/export",
-    method: "POST",
-    data: qs.stringify(obj),
-    responseType: "blob",
-    options
-  });
-// 案件分配导出
-export const allot_export = (obj, options) =>
-  fetch({
-    url: "/cases/allot/export",
-    method: "POST",
-    data: qs.stringify(obj),
-    responseType: "blob",
-    options
-  });
-
-/*
-*
-*
-数据字典查询
-* */
-export const sysDictionary_list = (obj, options) =>
-  fetch({
-    url: "/sysDictionary/list",
-    method: "POST",
-    data: qs.stringify(obj),
-    options
-  });
-
-// 数据字典添加
-export const sysDictionary_save = obj =>
-  fetch({
-    url: "/sysDictionary/save",
-    method: "POST",
-    data: qs.stringify(obj)
-  });
-// 数据字典删除
-export const sysDictionary_delete = obj =>
-  fetch({
-    url: "/sysDictionary/delete",
-    method: "POST",
-    data: qs.stringify(obj)
-  });
-// 数据字典删除
-export const sysDictionary_update = obj =>
-  fetch({
-    url: "/sysDictionary/update",
-    method: "POST",
-    data: qs.stringify(obj)
-  });
-
-// 划扣导出
-export const repayinfo_exportlist = (obj, options) =>
-  fetch({
-    url: "/repayinfo/exportlist",
-    method: "POST",
-    data: qs.stringify(obj),
-    responseType: "blob",
-    options
   });

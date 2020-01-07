@@ -90,9 +90,6 @@ export default {
   },
   created() {
     this.login_code();
-    sessionStorage.removeItem("websocket");
-    localStorage.removeItem("callData");
-    localStorage.removeItem("callObj");
     this.$nextTick(() => {
       document.oncontextmenu = new Function("event.returnValue=false");
     });

@@ -1,9 +1,7 @@
-import Cookie from "js-cookie";
 import Vue from "vue";
-import { Notification } from "element-ui";
 
-let _this = new Vue();
-const h = _this.$createElement;
+// let _this = new Vue();
+// const h = _this.$createElement;
 let util = {};
 util.title = function(title, vm) {
   let iTitle = "流量合作平台";
@@ -268,7 +266,6 @@ util.dowloadfile = function(name, res) {
   }); // application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
   var downloadElement = document.createElement("a");
   var href = window.URL.createObjectURL(blob); // 创建下载的链接
-  console.log(href, "--------------");
   downloadElement.href = href;
   downloadElement.download = name + ".xlsx"; // 下载后文件名
   document.body.appendChild(downloadElement);
@@ -277,13 +274,12 @@ util.dowloadfile = function(name, res) {
   window.URL.revokeObjectURL(href); // 释放掉blob对象
 };
 util.dowloadZip = function(res) {
-  const type = "application/zip"; //ZIP文件
+  const type = "application/zip"; //  ZIP文件
   const blob = new Blob([res], { type: type });
   const downloadElement = document.createElement("a");
   const href = window.URL.createObjectURL(blob);
-  //后台再header中传文件名
+  //  后台再header中传文件名
   // const name = decodeURI(res.headers['content-disposition'].split('=')[1])
-  console.log(href);
   downloadElement.href = href;
   downloadElement.download = "录音";
   document.body.appendChild(downloadElement);
@@ -292,7 +288,7 @@ util.dowloadZip = function(res) {
   window.URL.revokeObjectURL(href); // 释放掉blob对象
 };
 util.dowloadAudio = function(res) {
-  const type = "audio/mpeg"; //mp3文件
+  const type = "audio/mpeg"; // mp3文件
   const blob = new Blob([res], { type: type });
   const href = window.URL.createObjectURL(blob);
   return href;
@@ -302,13 +298,7 @@ util.fullscreenEvent = function(vm) {
   vm.$store.commit("initCachepage");
   // 全屏相关
 };
-// 处理导入文件的案件号分割
-util.slice_case_number = (arr, prevIndex, nextIndex) => {
-  let newArr = [];
-  newArr = arr.slice(prevIndex, nextIndex);
-  arr = [];
-  return newArr;
-};
+
 // 处理当前日期 xxxx-xx-xx
 util.getToday = num => {
   // num 0=> today, 1=> tomorrow, -1=> yesterday
@@ -330,187 +320,5 @@ util.getToday = num => {
   today = `${year}-${month}-${day}`;
   return today;
 };
-let chnNumChar = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
-let chnUnitSection = ["", "万", "亿", "万亿", "亿亿"];
-let chnUnitChar = ["", "十", "百", "千"];
 
-function SectionToChinese(section) {
-  var strIns = "",
-    chnStr = "";
-  var unitPos = 0;
-  var zero = true;
-  while (section > 0) {
-    var v = section % 10;
-    if (v === 0) {
-      if (!zero) {
-        zero = true;
-        chnStr = chnNumChar[v] + chnStr;
-      }
-    } else {
-      zero = false;
-      strIns = chnNumChar[v];
-      strIns += chnUnitChar[unitPos];
-      chnStr = strIns + chnStr;
-    }
-    unitPos++;
-    section = Math.floor(section / 10);
-  }
-  return chnStr;
-}
-
-util.NumberToChinese = num => {
-  var unitPos = 0;
-  var strIns = "",
-    chnStr = "";
-  var needZero = false;
-
-  if (num === 0) {
-    return chnNumChar[0];
-  }
-
-  while (num > 0) {
-    var section = num % 10000;
-    if (needZero) {
-      chnStr = chnNumChar[0] + chnStr;
-    }
-    strIns = SectionToChinese(section);
-    console.log(strIns);
-    strIns += section !== 0 ? chnUnitSection[unitPos] : chnUnitSection[0];
-    chnStr = strIns + chnStr;
-    needZero = section < 1000 && section > 0;
-    num = Math.floor(num / 10000);
-    unitPos++;
-  }
-  return chnStr;
-};
-
-util.websocket = () => {
-  //  地址配置在webpack
-  let websocket = new WebSocket(`${LOCALHOST}/${Cookie.get("user")}`);
-  // let websocket = new WebSocket(`wss://fcs-front-test.vbillbank.com/admin/websocket/${Cookie.get('user')}`);
-  console.log(LOCALHOST);
-  //连接发生错误的回调方法
-  websocket.onerror = function() {
-    //         setMessageInnerHTML("WebSocket连接发生错误");
-  }; //连接成功建立的回调方法
-
-  websocket.onopen = function() {
-    //         setMessageInnerHTML("WebSocket连接成功");
-    // websocket.send("我是从客户端发出去的消息");
-    // websocket.send("我是从客户端发出去的消息2");
-    // websocket.send("我是从客户端发出去的消息3");
-    // websocket.send("我是从客户端发出去的消息4");
-  }; //接收到消息的回调方法
-  websocket.onmessage = event => {
-    //         setMessageInnerHTML(event.data);
-    console.log(event.data);
-    let data = JSON.parse(event.data);
-    switch (data.msgType) {
-      case "00":
-        vueExample.$store.commit("changeSpinData", data.msgContent);
-        let timer;
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          vueExample.$store.commit("changeSpinData", "");
-        }, 3000);
-        break;
-      case "01":
-        Notification({
-          title: data.msgTitle,
-          message: h(
-            "span",
-            { style: "color: #fff; font-weight: 600" },
-            data.msgContent
-          ),
-          type: "error",
-          duration: 5000,
-          position: "bottom-left",
-          customClass: "notice-error"
-        });
-        break;
-      case "02":
-        Notification({
-          title: data.msgTitle,
-          message: h(
-            "span",
-            { style: "color: #fff; font-weight: 600" },
-            data.msgContent
-          ),
-          type: "info",
-          duration: 5000,
-          position: "bottom-left",
-          customClass: "notice-info"
-        });
-        break;
-      case "03":
-        Notification({
-          title: data.msgTitle,
-          message: h(
-            "span",
-            { style: "color: #fff; font-weight: 600" },
-            data.msgContent
-          ),
-          type: "success",
-          duration: 5000,
-          position: "bottom-left",
-          customClass: "notice-success"
-        });
-        break;
-      case "07":
-        vueExample.$store.commit("changeWebSocketData", data);
-        sessionStorage.setItem("changeWebSocketData", JSON.stringify(data));
-        break;
-      case "08":
-        Notification({
-          title: data.msgTitle,
-          message: h(
-            "span",
-            { style: "color: #fff; font-weight: 600" },
-            data.msgContent
-          ),
-          type: "success",
-          duration: 5000,
-          position: "bottom-left",
-          customClass: "notice-success"
-        });
-        break;
-    }
-  }; //连接关闭的回调方法
-
-  websocket.onclose = function() {
-    //         setMessageInnerHTML("WebSocket连接关闭");
-  }; //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-
-  window.onbeforeunload = function() {
-    // closeWebSocket();
-  };
-  /** 随机生成固定位数或者一定范围内的字符串数字组合
-   * @param {Number} min 范围最小值
-   * @param {Number} max 范围最大值，当不传递时表示生成指定位数的组合
-   * @param {String} charStr指定的字符串中生成组合
-   * @returns {String} 返回字符串结果
-   * */
-  util.randomRange = (min, max, charStr) => {
-    let returnStr = "",
-      range;
-    if (typeof min == "undefined") {
-      min = 16;
-    }
-    if (typeof max == "string") {
-      charStr = max;
-    }
-    range =
-      max && typeof max == "number"
-        ? Math.round(Math.random() * (max - min)) + min
-        : min;
-    charStr =
-      charStr ||
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (let i = 0; i < range; i++) {
-      let index = Math.round(Math.random() * (charStr.length - 1));
-      returnStr += charStr.substring(index, index + 1);
-    }
-    return returnStr;
-  };
-};
 export default util;
