@@ -1,12 +1,9 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const merge = require('webpack-merge');
 const webpackBaseConfig = require('./webpack.base.config.js');
 const fs = require('fs');
-const path = require('path');
-const package = require('../package.json');
 
 fs.open(__dirname + '/env.js', 'w', function (err, fd) {
     const buf = 'export default "development";';
@@ -35,16 +32,7 @@ module.exports = merge(webpackBaseConfig, {
             title: '流量合作平台',
             filename: '../index.html',
             inject: false
-        }),
-        new CopyWebpackPlugin([
-            {
-                from: 'src/components/theme-switch/theme'
-            },
-        ], {
-                ignore: [
-                    'text-editor.vue'
-                ]
-            })
+        })
     ],
     devServer: {
         // hot: true,
