@@ -1,4 +1,6 @@
 import api from "@/service";
+import util from "@/libs/util";
+
 export default {
   name: "role_manage_page",
   data() {
@@ -6,7 +8,6 @@ export default {
     var widthVal = 180;
     var widthMidVal = 180;
     return {
-      getDirList: ["ROLE_TYPE", "1_0_EFFECT_INVAL"],
       status: [
         {
           name: "有效",
@@ -17,7 +18,6 @@ export default {
           code: "0"
         }
       ],
-      getDirObj: {},
       showPanel: false,
       showPanel2: false,
       menuModal: false,
@@ -31,8 +31,6 @@ export default {
       update_loading: false, //修改按钮loading
       allot_loading: false, //分配按钮loading
       add_loading: false, //添加按钮loading
-      roleName: "",
-      userId: "",
       roleId: "",
       menuIds: [],
       data5: [],
@@ -40,20 +38,15 @@ export default {
       modalChange: false,
       modalAddRole: false,
       formValidate: {},
-      formValidateChange: { roleCode: "" },
+      formValidateInfo: {},
+      formValidateChange: {},
       formValidateAdd: {
         roleName: "",
-        roleStatus: "1"
+        sts: "1"
       },
-      ruleValidate: {
-        mblNo: [
-          {
-            pattern: this.GLOBAL.mblNo,
-            message: "请输入正确手机号",
-            trigger: "blur"
-          }
-        ]
-      },
+      pageNo: 1,
+      pageSize: 10,
+      total: 0,
       ruleValidateChange: {
         roleName: [
           {
@@ -62,8 +55,7 @@ export default {
             trigger: "blur"
           }
         ],
-
-        roleStatus: [
+        sts: [
           {
             required: true,
             message: "请设置角色状态",
@@ -79,8 +71,7 @@ export default {
             trigger: "blur"
           }
         ],
-
-        roleStatus: [
+        sts: [
           {
             required: true,
             message: "请设置角色状态",
@@ -88,10 +79,6 @@ export default {
           }
         ]
       },
-      pageNo: 1,
-      pageSize: 10,
-      total: 0,
-      formValidateInfo: {},
       tableData: [],
       tableColumns: [
         {
@@ -203,7 +190,7 @@ export default {
                           props: {},
                           on: {
                             click: () => {
-                              this.changeRole(changeInfo);
+                              this.changeRole(id);
                             }
                           }
                         },
@@ -321,10 +308,14 @@ export default {
       );
     },
     ok() {},
-    changeRole(params) {
+    async changeRole(id) {
       this.modalChange = true;
-      this.formValidateChange = params;
-      this.formValidateChange.roleStatus = params.sts === "有效" ? "1" : "0";
+      let res = await api.system_role_detail(id);
+      if (res.code === "0000") {
+        this.formValidateChange = res.data;
+      } else {
+        this.$Message.error(res.msg);
+      }
     },
     // 确认修改信息
     modalChangeOk(name) {
@@ -363,13 +354,9 @@ export default {
       this.pageNo = 1;
       this.getList();
     },
-    handleSubmit(name) {
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          this.pageNo = 1;
-          this.getList();
-        }
-      });
+    handleSubmit() {
+      this.pageNo = 1;
+      this.getList();
     },
     checkSeeClick(id) {
       this.getInfo(id);
@@ -393,10 +380,12 @@ export default {
         return;
       }
       this.query_loading = true;
+      const obj = util.filterEmptyKey(this.formValidate);
+
       let res = await api.system_role_list({
         pageNum: this.pageNo,
         pageSize: this.pageSize,
-        ...this.formValidate
+        ...obj
       });
       this.query_loading = false;
       if (res.code === "0000") {
@@ -432,8 +421,7 @@ export default {
     async toChangeRole() {
       this.update_loading = true;
       let res = await api.system_role_update({
-        ...this.formValidateChange,
-        sts: this.formValidateChange.roleStatus
+        ...this.formValidateChange
       });
       this.update_loading = false;
       if (res && res.code === "0000") {
@@ -448,8 +436,7 @@ export default {
     },
     async toAddRole() {
       this.add_loading = true;
-      const { roleName, roleStatus } = this.formValidateAdd;
-      let res = await api.system_role_add({ roleName, sts: roleStatus });
+      let res = await api.system_role_add({ ...this.formValidateAdd });
       this.add_loading = true;
       if (res && res.code === "0000") {
         this.$Message.success("添加成功");

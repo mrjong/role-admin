@@ -10,7 +10,6 @@
         ref="formValidate"
         :model="formValidate"
         :label-width="90"
-        :rules="ruleValidate"
       >
         <Row>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
@@ -18,17 +17,17 @@
               <Input
                 size="small"
                 clearable
-                v-model.trim="formValidate.name"
+                v-model.trim="formValidate.roleName"
                 placeholder="请输入角色名称"
               ></Input>
             </FormItem>
           </Col>
           <Col :xs="24" :sm="24" :md="6" :lg="6" span="6">
-            <FormItem label="状态:">
+            <FormItem label="角色状态:">
               <Select
                 size="small"
-                v-model="formValidate.status"
-                placeholder="请选择状态"
+                v-model="formValidate.sts"
+                placeholder="请选择角色状态"
               >
                 <Option
                   v-for="item in status"
@@ -111,13 +110,7 @@
     <!-- 查看弹窗 -->
     <Modal v-model="modalSee" title="角色信息" @on-ok="ok" class="role-modal">
       <Card class="vue-panel panel_list" :dis-hover="true">
-        <Form
-          v-if="!showPanel"
-          ref="formValidate"
-          :model="formValidate"
-          :label-width="90"
-          :rules="ruleValidate"
-        >
+        <Form v-if="!showPanel" :model="formValidateInfo" :label-width="90">
           <Row class="eachRow">
             <Col span="12">
               <FormItem label="角色名称:">
@@ -127,6 +120,23 @@
                   placeholder="请输入角色名称"
                   disabled
                 ></Input>
+              </FormItem>
+            </Col>
+            <Col span="12">
+              <FormItem span="6" label="角色状态:" prop="sts">
+                <Select
+                  size="small"
+                  v-model="formValidateInfo.sts"
+                  placeholder="请选择角色状态"
+                  disabled
+                >
+                  <Option
+                    v-for="item in status"
+                    :value="item.code"
+                    :key="item.code"
+                    >{{ item.name }}</Option
+                  >
+                </Select>
               </FormItem>
             </Col>
           </Row>
@@ -174,18 +184,6 @@
               </FormItem>
             </Col>
           </Row>
-          <Row class="eachRow">
-            <Col span="12">
-              <FormItem span="6" prop="mblNo" label="角色状态:">
-                <Input
-                  disabled
-                  size="small"
-                  v-model="formValidateInfo.sts"
-                  placeholder
-                ></Input>
-              </FormItem>
-            </Col>
-          </Row>
         </Form>
       </Card>
       <div slot="footer">
@@ -221,10 +219,10 @@
           </Row>
           <Row class>
             <Col span="12">
-              <FormItem label="角色状态:" prop="roleStatus">
+              <FormItem label="角色状态:" prop="sts">
                 <Select
                   size="small"
-                  v-model="formValidateChange.roleStatus"
+                  v-model="formValidateChange.sts"
                   placeholder="请选择角色状态"
                 >
                   <Option
@@ -251,6 +249,8 @@
         </Button>
       </p>
     </Modal>
+
+    <!-- 添加弹窗 -->
     <Modal v-model="modalAddRole" title="基本信息" class="role-modal">
       <p slot="header">
         <Icon type="filing"></Icon>
@@ -278,8 +278,8 @@
           </Row>
           <Row class>
             <Col span="12">
-              <FormItem label="角色状态:" prop="roleStatus">
-                <Select size="small" v-model="formValidateAdd.roleStatus">
+              <FormItem label="角色状态:" prop="sts">
+                <Select size="small" v-model="formValidateAdd.sts">
                   <Option
                     v-for="item in status"
                     :value="item.code"

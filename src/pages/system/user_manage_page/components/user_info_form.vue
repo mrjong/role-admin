@@ -18,8 +18,8 @@
         <Card class="vue-panel panel_list" :dis-hover="true">
           <Form
             v-if="!showPanel"
-            ref="formItem"
-            :model="formItem"
+            ref="formData"
+            :model="formData"
             :label-width="90"
             :rules="ruleValidate"
           >
@@ -29,7 +29,7 @@
                   <Input
                     size="small"
                     :clearable="model.type !== '1' ? true : false"
-                    v-model="formItem.name"
+                    v-model="formData.name"
                     placeholder="请输入姓名"
                     :disabled="model.type === '1' ? true : false"
                   ></Input>
@@ -40,7 +40,7 @@
                   <Input
                     size="small"
                     :clearable="model.type !== '1' ? true : false"
-                    v-model="formItem.loginName"
+                    v-model="formData.loginName"
                     placeholder="请输入账号"
                     :maxlength="10"
                     :disabled="model.type != '0' ? true : false"
@@ -51,7 +51,7 @@
                 <FormItem label="账户状态:" span="4" prop="sts">
                   <Select
                     size="small"
-                    v-model="formItem.sts"
+                    v-model="formData.sts"
                     filterable
                     :clearable="model.type === '1' ? false : true"
                     placeholder="请选择账户状态"
@@ -71,7 +71,7 @@
                   <Input
                     size="small"
                     :clearable="model.type !== '1' ? true : false"
-                    v-model="formItem.platform"
+                    v-model="formData.platform"
                     placeholder="请输入合作平台名称"
                     :disabled="model.type === '1' ? true : false"
                   ></Input>
@@ -82,7 +82,7 @@
                   <Input
                     size="small"
                     :clearable="model.type !== '1' ? true : false"
-                    v-model="formItem.mobile"
+                    v-model="formData.mobile"
                     placeholder="请输入电话号"
                     :disabled="model.type === '1' ? true : false"
                   ></Input>
@@ -92,7 +92,7 @@
                 <FormItem label="系统角色:" span="4" prop="roleIds">
                   <Select
                     size="small"
-                    v-model="formItem.roleIds"
+                    v-model="formData.roleIds"
                     multiple
                     :clearable="model.type !== '1' ? true : false"
                     placeholder="请选择系统角色"
@@ -111,7 +111,7 @@
                 <FormItem label="渠道:" span="4" prop="channels">
                   <Select
                     size="small"
-                    v-model="formItem.channels"
+                    v-model="formData.channels"
                     multiple
                     :clearable="model.type !== '1' ? true : false"
                     placeholder="请选择渠道"
@@ -135,7 +135,7 @@
                 >
                   <Input
                     size="small"
-                    v-model="formItem.updateUser"
+                    v-model="formData.updateUser"
                     placeholder="请输入修改人"
                     :disabled="true"
                   ></Input>
@@ -152,7 +152,7 @@
                 <FormItem span="4" label="创建人:" prop="createUser">
                   <Input
                     size="small"
-                    v-model="formItem.createUser"
+                    v-model="formData.createUser"
                     placeholder="请输入创建人"
                     :disabled="true"
                   ></Input>
@@ -174,7 +174,7 @@
                 >
                   <Input
                     size="small"
-                    v-model="formItem.updateTime"
+                    v-model="formData.updateTime"
                     disabled
                   ></Input>
                 </FormItem>
@@ -195,7 +195,7 @@
                 >
                   <Input
                     size="small"
-                    v-model="formItem.createTime"
+                    v-model="formData.createTime"
                     disabled
                   ></Input>
                 </FormItem>
@@ -209,7 +209,7 @@
         <Button
           type="primary"
           size="small"
-          @click="handleSubmit('formItem', model.type)"
+          @click="handleSubmit('formData', model.type)"
           v-if="model.type !== '1'"
           :loading="button_loading"
         >
@@ -252,11 +252,10 @@ export default {
     };
     return {
       showPanel: false,
-      childrenData: {},
-      childrenModel: false,
       button_loading: false, //保存按钮loading
       rolesData: [],
       channelsList: [],
+      formData: {},
       ruleValidate: {
         name: [
           {
@@ -268,7 +267,8 @@ export default {
         loginName: [
           {
             required: true,
-            validator: validateID,
+            // validator: validateID,
+            message: "请输入账号",
             trigger: "blur"
           }
         ],
@@ -304,29 +304,21 @@ export default {
           }
         ]
       },
-      formItem: {
-        roleIds: []
-      },
+
       status: [
         {
-          name: "可用",
+          name: "有效",
           code: "1"
         },
         {
-          name: "停用",
-          code: "2"
+          name: "无效",
+          code: "0"
         }
       ]
     };
   },
   props: {
     model: {}
-  },
-  watch: {
-    model: function() {
-      // 监听父组件的变化
-      this.childrenData = this.model;
-    }
   },
   created() {
     if (this.model.type === "1" || this.model.type === "2") {
@@ -345,7 +337,7 @@ export default {
         updateTime
       } = this.model.userData;
       //查看或修改用户
-      this.formItem = {
+      this.formData = {
         id,
         name,
         loginName,
@@ -357,14 +349,14 @@ export default {
         createUser: creator,
         updateUser: updator
       };
-      this.formItem.createTime = createTime
+      this.formData.createTime = createTime
         ? this.$options.filters["formatDate"](createTime, "YYYY-MM-DD HH:mm:ss")
         : createTime;
-      this.formItem.updateTime = updateTime
+      this.formData.updateTime = updateTime
         ? this.$options.filters["formatDate"](updateTime, "YYYY-MM-DD HH:mm:ss")
         : updateTime;
-      if (!this.formItem.roleIds) {
-        this.formItem.roleIds = [];
+      if (!this.formData.roleIds) {
+        this.formData.roleIds = [];
       }
     }
     this.system_role_list();
@@ -423,7 +415,7 @@ export default {
         platform,
         roleIds,
         channels
-      } = this.formItem;
+      } = this.formData;
 
       const res = await api.system_user_update({
         id,
@@ -452,7 +444,7 @@ export default {
         platform,
         roleIds,
         channels
-      } = this.formItem;
+      } = this.formData;
       const res = await api.system_user_add({
         name,
         loginName,
@@ -476,7 +468,7 @@ export default {
     // 重置
     clearForm(name) {
       this.pageNo = 1;
-      this.formItem = {};
+      this.formData = {};
       this.$refs[name].resetFields();
     }
   }

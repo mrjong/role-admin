@@ -27,7 +27,7 @@
               ></DatePicker>
             </FormItem>
           </Col>
-          <Col span="5">
+          <Col span="5" v-if="channel_auth">
             <FormItem label="一级渠道:">
               <Select
                 size="small"
@@ -35,7 +35,6 @@
                 placeholder="请选择状态"
                 v-model="formValidate.channelOne"
                 @on-open-change="channelOneOpen"
-                v-if="channel_auth"
               >
                 <Option
                   v-for="item in channelList1"
@@ -46,7 +45,7 @@
               </Select>
             </FormItem>
           </Col>
-          <Col span="5">
+          <Col span="5" v-if="channel_auth">
             <FormItem label="二级渠道:">
               <Select
                 size="small"
@@ -54,7 +53,6 @@
                 placeholder="请选择状态"
                 v-model="formValidate.channelTwo"
                 @on-open-change="channelTwoOpen"
-                v-if="channel_auth"
               >
                 <Option
                   v-for="item in channelList2"
@@ -65,7 +63,7 @@
               </Select>
             </FormItem>
           </Col>
-          <Col span="5">
+          <Col span="5" v-if="channel_auth">
             <FormItem label="三级渠道:">
               <Select
                 size="small"
@@ -73,7 +71,6 @@
                 placeholder="请选择状态"
                 v-model="formValidate.channelThree"
                 @on-open-change="channelThreeOpen"
-                v-if="channel_auth"
               >
                 <Option
                   v-for="item in channelList3"

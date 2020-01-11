@@ -1,6 +1,6 @@
 <template>
   <div class="home-wrap">
-    <img :src="home_bg" alt="">
+    <img :src="home_bg" alt="" class="home_bg">
   </div>
 </template>
 <script src="./index.js"></script>

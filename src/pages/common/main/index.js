@@ -109,9 +109,12 @@ export default {
         }, 2000);
       } else {
         this.$Message.error(res.msg);
+        this.$refs["formItem"].resetFields();
       }
     },
-    cancel() {},
+    cancel() {
+      this.$refs["formItem"].resetFields();
+    },
 
     init() {
       let pathArr = util.setCurrentPath(this, this.$route.name);

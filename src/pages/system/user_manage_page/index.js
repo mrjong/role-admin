@@ -1,23 +1,21 @@
 import api from "@/service";
 import Remodal from "./components/user_info_form";
-import tablePage from "@/mixin/tablePage";
+import util from "@/libs/util";
 export default {
-  name: 'user_manage_page',
+  name: "user_manage_page",
   components: {
     Remodal
   },
-  mixins: [tablePage],
-  name: "demo_list",
   data() {
     return {
       status: [
         {
           name: "有效",
-          code: '1'
+          code: "1"
         },
         {
           name: "无效",
-          code: '0'
+          code: "0"
         }
       ],
       query: false, //查询权限
@@ -28,17 +26,15 @@ export default {
       query_loading: false, //查询按钮loading
       showPanel: false,
       showPanel2: false,
-      modal: false,
       parentData: {
         modal: false
       },
-      ruleValidate: {},
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      formItem: {},
-      tableData: [],
+      formData: {},
       selectList: [],
+      tableData: [],
       tableColumns: [
         {
           title: "",
@@ -258,14 +254,13 @@ export default {
     // 重置
     clearForm(name) {
       //这里可以不用改变当前的分页组件之中的页码数值
-      this.formItem = {};
+      this.formData = {};
       this.$refs[name].resetFields();
     },
     // 获取表格数据
     async system_user_reset(ids) {
-
       const res = await api.system_user_reset(JSON.stringify(ids));
-      if (res.code === '0000') {
+      if (res.code === "0000") {
         this.$Message.success("重置密码成功");
         this.selectList = [];
         this.getList();
@@ -280,18 +275,16 @@ export default {
         return;
       }
       this.query_loading = true;
-
+      const obj = util.filterEmptyKey(this.formData);
       const res = await api.system_user_list({
-        ...this.formItem,
+        ...obj,
         pageNum: this.pageNo,
         pageSize: this.pageSize
       });
       this.query_loading = false;
       if (res.code === "0000") {
         this.tableData = res.data.list;
-        // this.pageSize = res.data.pageSize;
         this.total = res.data.total;
-        // this.pageNo = res.data.pageNum;
       } else {
         this.$Message.error(res.msg);
       }
@@ -303,9 +296,8 @@ export default {
 
         const res = await api.system_user_detail(id);
         if (res.code === "0000") {
-          this.modal = true;
           this.parentData = {
-            modal: this.modal,
+            modal: true,
             type,
             userData: res.data
           };
@@ -313,9 +305,8 @@ export default {
           this.$Message.error(res.msg);
         }
       } else {
-        this.modal = true;
         this.parentData = {
-          modal: this.modal,
+          modal: true,
           type
         };
       }

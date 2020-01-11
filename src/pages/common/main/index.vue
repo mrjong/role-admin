@@ -60,7 +60,6 @@
           :menu-list="menuList"
         >
           <div slot="top" class="logo-con" @click="$router.push('/home')">
-            <!-- <img v-show="!shrink" src="../../../assets/images/logo.png" key="max-logo"> -->
             <h1 v-show="!shrink" class="logo-con__text">流量合作平台</h1>
             <img
               v-show="shrink"
