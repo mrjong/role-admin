@@ -261,9 +261,9 @@ export default {
     async system_user_reset(ids) {
       const res = await api.system_user_reset(JSON.stringify(ids));
       if (res.code === "0000") {
-        this.$Message.success("重置密码成功");
         this.selectList = [];
         this.getList();
+        this.$Message.success("重置密码成功");
       } else {
         this.$Message.error(res.msg);
       }

@@ -425,11 +425,12 @@ export default {
       });
       this.update_loading = false;
       if (res && res.code === "0000") {
-        this.$Message.success("修改成功");
         this.$refs["formValidateChange"].resetFields();
         this.modalChange = false;
         // 刷新页面
         this.getList();
+        this.$Message.success("修改成功");
+
       } else {
         this.$Message.error(res.msg);
       }
@@ -439,11 +440,12 @@ export default {
       let res = await api.system_role_add({ ...this.formValidateAdd });
       this.add_loading = true;
       if (res && res.code === "0000") {
-        this.$Message.success("添加成功");
         this.modalAddRole = false;
         this.$refs["formValidateAdd"].resetFields();
         this.formValidateAdd = {};
         this.getList();
+        this.$Message.success("添加成功");
+
       } else {
         this.formValidateAdd = {};
         this.$Message.error(res.msg);

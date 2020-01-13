@@ -28,7 +28,7 @@ export default {
           width: 150,
           key: "statisticalDate",
           className: "tableMainW",
-          align: alignCenter,
+          align: alignCenter
         },
         {
           title: "一级渠道",
@@ -212,7 +212,7 @@ export default {
       this.query_loading = false;
     },
 
-    formatDate(date='') {
+    formatDate(date = "") {
       let str = "";
       date.split("-").map(item => {
         str += item;
@@ -240,7 +240,7 @@ export default {
           secLvlChannel: channelTwo,
           thdLvlChannel: channelThree,
           startDt: this.formatDate(start),
-          endDt: this.formatDate(end),
+          endDt: this.formatDate(end)
         },
         {
           responseType: "blob",
@@ -248,7 +248,11 @@ export default {
         }
       );
       this.export_table_loading = false;
-      util.dowloadfile("平台合作列表", res);
+      if (res && res.code === "9999") {
+        this.$Message.error("导出失败");
+      } else {
+        util.dowloadfile("平台合作列表", res);
+      }
     }
   }
 };

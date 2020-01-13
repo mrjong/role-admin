@@ -207,8 +207,8 @@ export default {
     async menuUpdate(params) {
       const res = await api.sysDictionary_update(params);
       if (res.code === 1) {
-        this.$Message.success('修改成功');
         this.getList();
+        this.$Message.success('修改成功');
       } else {
         this.$Message.error(res.message);
       }
@@ -219,12 +219,13 @@ export default {
         ...this.newMenuItem
       });
       if (res.code === 1) {
-        this.$Message.success('添加成功');
         this.newMenuItem = {
           parentId: ''
         };
         this.modal = false;
         this.getList();
+        this.$Message.success('添加成功');
+
       } else {
         this.$Message.error(res.message);
       }
@@ -233,8 +234,9 @@ export default {
     async menuDelete(params) {
       const res = await api.sysDictionary_delete(params);
       if (res && res.code === 1) {
-        this.$Message.success('删除成功');
         this.getList();
+        this.$Message.success('删除成功');
+
       } else {
         this.$Message.error(res.message);
       }

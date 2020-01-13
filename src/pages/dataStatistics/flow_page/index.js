@@ -237,7 +237,11 @@ export default {
         }
       );
       this.export_table_loading = false;
-      util.dowloadfile("流量合作列表", res);
+      if (res && res.code === "9999") {
+        this.$Message.error("导出失败");
+      } else {
+        util.dowloadfile("流量合作列表", res);
+      }
     }
   }
 };

@@ -38,8 +38,8 @@
               >
                 <Option
                   v-for="item in channelList1"
-                  :value="item.channelCode"
-                  :key="item.channelCode"
+                  :value="item.channelId"
+                  :key="item.channelId"
                   >{{ item.channelName }}</Option
                 >
               </Select>
@@ -56,8 +56,8 @@
               >
                 <Option
                   v-for="item in channelList2"
-                  :value="item.channelCode"
-                  :key="item.channelCode"
+                  :value="item.channelId"
+                  :key="item.channelId"
                   >{{ item.channelName }}</Option
                 >
               </Select>
@@ -74,8 +74,8 @@
               >
                 <Option
                   v-for="item in channelList3"
-                  :value="item.channelCode"
-                  :key="item.channelCode"
+                  :value="item.channelId"
+                  :key="item.channelId"
                   >{{ item.channelName }}</Option
                 >
               </Select>
