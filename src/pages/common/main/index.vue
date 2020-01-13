@@ -3,14 +3,7 @@
 </style>
 <template>
   <div class="main" :class="{ 'main-hide-text': shrink }">
-    <Modal
-      width="450"
-      title="修改密码"
-      v-model="visible1"
-      @on-ok="ok"
-      class="panel_list"
-      @on-cancel="cancel"
-    >
+    <Modal width="450" title="修改密码" v-model="visible1" class="panel_list">
       <Form
         ref="formItem"
         :model="formItem"
@@ -43,6 +36,10 @@
           <Col></Col>
         </Row>
       </Form>
+      <p slot="footer">
+        <Button @click="cancel">取消</Button>
+        <Button @click="ok" type="primary">确定</Button>
+      </p>
     </Modal>
     <div
       class="sidebar-menu-con"
@@ -60,7 +57,7 @@
           :menu-list="menuList"
         >
           <div slot="top" class="logo-con" @click="$router.push('/home')">
-            <h1 v-show="!shrink" class="logo-con__text">流量合作平台</h1>
+            <h1 v-show="!shrink" class="logo-con__text">对外合作管理</h1>
             <img
               v-show="shrink"
               src="../../../assets/images/logo-min.png"

@@ -6,20 +6,27 @@
   <div class="login" @keydown.enter="handleSubmit">
     <div class="login-con">
       <Card :bordered="false">
-        <p slot="title">
-          <Icon type="log-in"></Icon>欢迎登录
-        </p>
+        <p slot="title"><Icon type="log-in"></Icon>欢迎登录</p>
         <div class="form-con">
           <Form ref="loginForm" :model="form" :rules="rules">
             <FormItem prop="loginName">
-              <Input clearable v-model.trim="form.loginName" placeholder="请输入用户名">
+              <Input
+                clearable
+                v-model.trim="form.loginName"
+                placeholder="请输入用户名"
+              >
                 <span slot="prepend">
                   <Icon :size="16" type="ios-person"></Icon>
                 </span>
               </Input>
             </FormItem>
             <FormItem prop="loginPwd">
-              <Input clearable type="password" v-model.trim="form.loginPwd" placeholder="请输入密码">
+              <Input
+                clearable
+                type="password"
+                v-model.trim="form.loginPwd"
+                placeholder="请输入密码"
+              >
                 <span slot="prepend">
                   <Icon :size="14" type="ios-lock"></Icon>
                 </span>
@@ -43,7 +50,12 @@
               </div>
             </FormItem>
             <FormItem>
-              <Button @click="handleSubmit" type="primary" long :loading="login_loading">
+              <Button
+                @click="handleSubmit"
+                type="primary"
+                long
+                :loading="login_loading"
+              >
                 <span v-if="!login_loading">登录</span>
                 <span v-else>登录中...</span>
               </Button>
@@ -107,7 +119,7 @@ export default {
     },
     async login_code() {
       const res = await api.login_code();
-      if (res.code === '0000') {
+      if (res.code === "0000") {
         this.imageShow = res.data.base64Code;
         this.key = res.data.key;
         this.form.loginPic = "";
@@ -128,20 +140,22 @@ export default {
           this.login_loading = true;
           const res = await api.login({
             loginName: this.form.loginName,
-            loginPwd: this.form.loginPwd,
+            loginPwd: util.base64Encode(this.form.loginPwd),
             code: this.form.loginPic,
             key: this.key
           });
           this.login_loading = false;
-          if (res && res.code === '0000') {
+          if (res && res.code === "0000") {
             Cookies.set("user", this.form.loginName);
             Cookies.set("SXF-TOKEN", res.data.token);
             Cookies.set("access", 1);
-            this.loginSuccess()
+            this.loginSuccess();
           } else {
-            this.login_code();
-
             this.$Message.error(res.msg);
+            let timer = setTimeout(() => {
+              this.login_code();
+              clearTimeout(timer);
+            }, 1000);
           }
         }
       });

@@ -29,7 +29,7 @@ module.exports = merge(webpackBaseConfig, {
       minChunks: Infinity
     }),
     new HtmlWebpackPlugin({
-      title: "流量合作平台",
+      title: "对外合作管理",
       filename: "../index.html",
       inject: false
     })
@@ -50,7 +50,9 @@ module.exports = merge(webpackBaseConfig, {
     disableHostCheck: true,
     proxy: {
       "/admin": {
-        target: "http://172.16.174.225:8080",
+        // target: "http://172.16.174.225:8080",
+        target: "http://172.18.40.146:8080",
+
         pathRewrite: { "^/admin": "" }, //重写接口
         changeOrigin: true //是否跨域
       }

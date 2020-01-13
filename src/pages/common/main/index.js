@@ -15,7 +15,7 @@ export default {
     breadcrumbNav,
     fullScreen,
     lockScreen,
-    scrollBar,
+    scrollBar
   },
   data() {
     return {
@@ -56,7 +56,6 @@ export default {
       return this.$store.state.app.currentPath; // 当前面包屑数组
     },
     avatorPath() {
-      // return localStorage.avatorImgPath;
       return "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565095877898&di=c485a6e7f8c397c4671a4e0b18799e5d&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20190806%2F63eb83f209ea4f34bfd9d3b304dc4764.JPG";
     },
     cachePage() {
@@ -73,7 +72,6 @@ export default {
     }
   },
   methods: {
-
     passWord(str) {
       let key = CryptoJS.enc.Hex.parse("63666262663331373130363634393864");
       let iv = CryptoJS.enc.Hex.parse("38313837386662346131393061333035");
@@ -93,15 +91,16 @@ export default {
     },
     async reset_passWord() {
       const res = await api.reset_passWord({
-        // loginName: Cookies.get('user'),
-        oldPwd: this.formItem.loginPwd,
-        newPwd: this.formItem.newLoginPwd
+        oldPwd: util.base64Encode(this.formItem.loginPwd),
+        newPwd: util.base64Encode(this.formItem.newLoginPwd)
       });
       if (res.code === "0000") {
         this.$Message.success("修改成功");
         this.$store.commit("logout", this);
         this.$store.commit("clearOpenedSubmenu");
         util.clearAllCookie();
+        this.visible1 = false;
+
         setTimeout(() => {
           this.$router.push({
             name: "login"
@@ -114,6 +113,7 @@ export default {
     },
     cancel() {
       this.$refs["formItem"].resetFields();
+      this.visible1 = false;
     },
 
     init() {
