@@ -50,8 +50,8 @@ module.exports = merge(webpackBaseConfig, {
     disableHostCheck: true,
     proxy: {
       "/admin": {
-        // target: "http://172.16.174.225:8080",
-        target: "http://172.18.40.146:8080",
+        target: "http://172.16.174.225:8080", //测试环境
+        // target: "http://172.18.40.146:8080",
 
         pathRewrite: { "^/admin": "" }, //重写接口
         changeOrigin: true //是否跨域
