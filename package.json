@@ -8,6 +8,7 @@
     "dev": "npm run clear && webpack-dev-server  --config build/webpack.dev.config.js --watch",
     "build": "webpack --progress --hide-modules --config build/webpack.prod.config.js",
     "test": "webpack --progress --hide-modules --config build/webpack.test.config.js",
+    "rc": "webpack --progress --hide-modules --config build/webpack.rc.config.js",
     "push-test": "npm run test && cp -rf ./upload-test.sh ./dist && cd dist && sh upload-test.sh",
 		"push-rc": "npm run rc && cp -rf ./upload-rc.sh ./dist && cd dist && sh upload-rc.sh",
     "lint": "eslint --fix --ext .js,.vue src",
