@@ -40,10 +40,7 @@ export default {
       formValidate: {},
       formValidateInfo: {},
       formValidateChange: {},
-      formValidateAdd: {
-        roleName: "",
-        sts: "1"
-      },
+      formValidateAdd: {},
       pageNo: 1,
       pageSize: 10,
       total: 0,
@@ -438,7 +435,7 @@ export default {
     async toAddRole() {
       this.add_loading = true;
       let res = await api.system_role_add({ ...this.formValidateAdd });
-      this.add_loading = true;
+      this.add_loading = false;
       if (res && res.code === "0000") {
         this.modalAddRole = false;
         this.$refs["formValidateAdd"].resetFields();
