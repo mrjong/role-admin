@@ -1,5 +1,6 @@
 import api from "@/service";
 import util from "@/libs/util";
+import axios from "axios";
 
 export default {
   name: "dataStatistics-platform",
@@ -28,7 +29,7 @@ export default {
           width: 150,
           key: "statisticalDate",
           className: "tableMainW",
-          align: alignCenter,
+          align: alignCenter
         },
         {
           title: "一级渠道",
@@ -212,7 +213,7 @@ export default {
       this.query_loading = false;
     },
 
-    formatDate(date='') {
+    formatDate(date = "") {
       let str = "";
       date.split("-").map(item => {
         str += item;
@@ -234,21 +235,37 @@ export default {
         start,
         end
       } = this.formValidate;
-      const res = await api.platform_list_export(
-        {
-          firLvlChannel: channelOne,
-          secLvlChannel: channelTwo,
-          thdLvlChannel: channelThree,
-          startDt: this.formatDate(start),
-          endDt: this.formatDate(end),
-        },
-        {
-          responseType: "blob",
-          timeout: 120000
-        }
-      );
-      this.export_table_loading = false;
-      util.dowloadfile("平台合作列表", res);
+
+      axios
+        .post(
+          "/dataStatistics/platform/export",
+          {
+            firLvlChannel: channelOne,
+            secLvlChannel: channelTwo,
+            thdLvlChannel: channelThree,
+            startDt: this.formatDate(start),
+            endDt: this.formatDate(end)
+          },
+          {
+            responseType: "blob",
+            timeout: 120000
+          }
+        )
+        .then(res => {
+          let reader = new FileReader();
+          reader.onload = e => {
+            try {
+              let jsonData = JSON.parse(e.target.result);
+              if (jsonData.code !== "0000") {
+                this.$Message.error("导出失败");
+              }
+            } catch (err) {
+              // 解析成对象失败，说明是正常的文件流
+              util.dowloadfile("平台合作列表", res);
+            }
+          };
+          reader.readAsText(res);
+        });
     }
   }
 };

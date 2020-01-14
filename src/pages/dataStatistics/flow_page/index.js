@@ -223,21 +223,37 @@ export default {
         start,
         end
       } = this.formValidate;
-      const res = await api.flow_list_export(
-        {
-          firLvlChannel: channelOne,
-          secLvlChannel: channelTwo,
-          thdLvlChannel: channelThree,
-          startDt: this.formatDate(start),
-          endDt: this.formatDate(end)
-        },
-        {
-          responseType: "blob",
-          timeout: 120000
-        }
-      );
-      this.export_table_loading = false;
-      util.dowloadfile("流量合作列表", res);
+
+      axios
+        .post(
+          "/dataStatistics/flow/export",
+          {
+            firLvlChannel: channelOne,
+            secLvlChannel: channelTwo,
+            thdLvlChannel: channelThree,
+            startDt: this.formatDate(start),
+            endDt: this.formatDate(end)
+          },
+          {
+            responseType: "blob",
+            timeout: 120000
+          }
+        )
+        .then(res => {
+          let reader = new FileReader();
+          reader.onload = e => {
+            try {
+              let jsonData = JSON.parse(e.target.result);
+              if (jsonData.code !== "0000") {
+                this.$Message.error("导出失败");
+              }
+            } catch (err) {
+              // 解析成对象失败，说明是正常的文件流
+              util.dowloadfile("流量合作列表", res);
+            }
+          };
+          reader.readAsText(res);
+        });
     }
   }
 };

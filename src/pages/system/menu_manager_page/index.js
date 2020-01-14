@@ -322,9 +322,10 @@ export default {
       const res = await api.system_menu_update(params);
       this.update_loading = false;
       if (res.code === "0000") {
-        this.$Message.success("更新成功");
         this.modal = "";
         this.getList();
+        this.$Message.success("更新成功");
+
       } else {
         this.$Message.error(res.msg);
       }
@@ -353,9 +354,9 @@ export default {
       const res = await api.system_menu_add(params);
       this.add_loading = false;
       if (res.code === "0000") {
-        this.$Message.success("添加成功");
         this.modal = "";
         this.getList();
+        this.$Message.success("添加成功");
       } else {
         this.$Message.error(res.msg);
       }
@@ -366,8 +367,8 @@ export default {
       const res = await api.system_menu_delete(id);
       this.delete_loading = false;
       if (res.code === "0000") {
-        this.$Message.success("删除成功");
         this.getList();
+        this.$Message.success("删除成功");
       } else {
         this.$Message.error(res.msg);
       }

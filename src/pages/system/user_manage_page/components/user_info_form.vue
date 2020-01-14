@@ -113,9 +113,13 @@
                     size="small"
                     v-model="formData.channels"
                     multiple
+                    filterable
+                    remote
+                    :loading="queryChannelsLoading"
                     :clearable="model.type !== '1' ? true : false"
                     placeholder="请选择渠道"
                     :disabled="model.type === '1' ? true : false"
+                    @on-query-change="channelQueryChange"
                   >
                     <Option
                       v-for="item in channelsList"
@@ -239,22 +243,13 @@ export default {
       }
       callback();
     };
-    const validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("Please enter your password"));
-      } else {
-        if (this.formCustom.passwdCheck !== "") {
-          // 对第二个密码框单独验证
-          this.$refs.formCustom.validateField("passwdCheck");
-        }
-        callback();
-      }
-    };
     return {
       showPanel: false,
       button_loading: false, //保存按钮loading
+      queryChannelsLoading: false,
       rolesData: [],
       channelsList: [],
+      originChannelsList: [], //原始的渠道数据
       formData: {},
       ruleValidate: {
         name: [
@@ -387,8 +382,22 @@ export default {
           channelName: "任意渠道"
         });
         this.channelsList = arr;
+        this.originChannelsList = arr;
       } else {
         this.$Message.error(res.msg);
+      }
+    },
+    channelQueryChange(keyword) {
+      if (keyword !== "") {
+        this.queryChannelsLoading = true;
+        setTimeout(() => {
+          this.queryChannelsLoading = false;
+          this.channelsList = this.channelsList.filter(item =>
+            item.channelName.toLowerCase().includes(keyword.toLowerCase())
+          );
+        }, 200);
+      } else {
+        this.channelsList = this.originChannelsList;
       }
     },
     handleSubmit(name, type) {
