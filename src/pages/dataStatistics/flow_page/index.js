@@ -1,5 +1,6 @@
 import api from "@/service";
 import util from "@/libs/util";
+import axios from "axios";
 
 export default {
   name: "dataStatistics-platform",
@@ -240,6 +241,8 @@ export default {
           }
         )
         .then(res => {
+          this.export_table_loading = false;
+
           let reader = new FileReader();
           reader.onload = e => {
             try {
