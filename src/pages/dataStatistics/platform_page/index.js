@@ -252,6 +252,8 @@ export default {
           }
         )
         .then(res => {
+          this.export_table_loading = false;
+
           let reader = new FileReader();
           reader.onload = e => {
             try {
